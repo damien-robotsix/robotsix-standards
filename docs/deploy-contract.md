@@ -2,6 +2,9 @@
 
 > Version 1 — 2026-06-27
 
+> **Scope: deployable components only.** See the
+> [component standard](component-standard.md).
+
 > **Canonical home:** this document lives in `robotsix-standards` and is the
 > single authoritative copy. `robotsix-central-deploy` (whose parser implements
 > it) links here rather than keeping its own copy.

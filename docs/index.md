@@ -1,39 +1,57 @@
 # robotsix stack standards
 
-Cross-cutting conventions for the robotsix stack: how every service handles
-**configuration** and the **three deployment modes** (uv package install, local
-dev docker, and central-deploy) so a service is configured the same way no
-matter how it runs.
+Shared conventions for the robotsix stack, so that any repository — whoever
+wrote it, whenever — is configured, packaged, tested, and (if deployable)
+shipped in the same predictable way.
 
-## The problem these standards solve
+## Why this exists
 
-A cross-repo survey of `robotsix-central-deploy`, `robotsix-auto-mail`,
-`robotsix-llmio`, and `robotsix-mill` found **no two repos agreed** on:
+As a stack grows, each repository tends to solve the same recurring problems —
+how configuration is loaded and where it lives, how packages are installed and
+versioned, how CI and security gates are wired, and how a service is deployed —
+in its own slightly different way. Left unchecked, every repo becomes a small
+dialect: contributors relearn the conventions each time, tooling and CI get
+reinvented instead of shared, and operators face per-repo guesswork.
 
-- the config mechanism (env-only vs YAML-only vs YAML+env),
-- the precedence order (some make env beat the file, some make the file
-  authoritative, some make the CLI win),
-- the name of the config-path environment variable (`MAIL_CONFIG_PATH` vs
-  `MILL_CONFIG_FILE` vs none),
-- the secret representation (`""` vs a `SECRET` sentinel vs env-only),
-- the image registry (GHCR vs Docker Hub vs PyPI vs none).
+These standards define one way to do each of those things. The payoff is
+consistency: moving between repos is cheap, tooling and workflows are shared
+rather than duplicated, and a config or deploy setup learned once transfers
+everywhere.
 
-An operator who learns one service guesses wrong on the next. These standards
-define one way, and ship a library that makes it true by construction.
+## Two scopes
 
-## Read next
+### Every repository (libraries and deployable components)
 
-- **[Config standard](config-standard.md)** — the unified config model.
-- **[Packaging standard](packaging-standard.md)** — packaging, tiers, registry, tags.
-- **[Deploy contract](deploy-contract.md)** — the central-deploy compose contract.
-- **[Integrating a service](integrating-a-service.md)** — the how-to.
-- **[Entrypoint contract](entrypoint-contract.md)** — the container entrypoint.
+- **[Repo baseline](repo-baseline.md)** — tooling (uv), Python-version policy,
+  distribution tiers, changelog and module-registration hygiene, CI and
+  security gates, licensing.
+
+### Deployable components (additionally)
+
+A *deployable component* ships a runnable service (a container image) and
+integrates with the deployment system. Beyond the baseline it follows:
+
+- **[Component standard](component-standard.md)** — the three deploy modes,
+  image registry & tags, the two compose files.
+- **[Config standard](config-standard.md)** — one config model that resolves the
+  same way across all deploy modes.
+- **[Deploy contract](deploy-contract.md)** — the `deploy/docker-compose.yml`
+  shape the deployment system consumes.
+- **[Entrypoint contract](entrypoint-contract.md)** — how a component's
+  container starts up.
+- **[Integrating a service](integrating-a-service.md)** — the end-to-end how-to.
+
+## Which am I?
+
+- **Library** — imported by other packages, no runnable service of its own.
+  Follow the **repo baseline** only.
+- **Deployable component** — ships a service/container. Follow the **repo
+  baseline** *and* the **component** standards.
 
 ## Reference implementation
 
-The config standard is implemented by
-[`robotsix-yaml-config`](https://github.com/damien-robotsix/robotsix-yaml-config)
-(its `[pydantic]` extra): `load_config` resolves
+The config standard is implemented by the shared configuration library
+(`robotsix-yaml-config`, its `[pydantic]` extra): `load_config` resolves
 `defaults < config.yaml < env < overrides` into a validated model, with secret
-masking, a `0600` config writer, and a central-deploy template emitter. One
-shared library, already a stack dependency.
+masking, a `0600` config writer, and a deploy-template emitter. One shared
+library, already a stack dependency.

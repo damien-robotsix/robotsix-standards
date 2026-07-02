@@ -1,5 +1,8 @@
 # Making a repo deployable with robotsix central-deploy
 
+> **Scope: deployable components only.** See the
+> [component standard](component-standard.md).
+
 This is the **how-to guide** for adding a service repository to the
 [central-deploy](https://deploy.robotsix.net) system. It walks you from an
 existing repo to a one-click deploy in the dashboard.
@@ -48,8 +51,8 @@ deploy fails at pull time even with a perfect compose file.
   multiple services that each set their own `command:`.
 - Either bake a sensible default `CMD` into the image **or** set `command:` per
   service in the deploy compose. If your image is `ENTRYPOINT`-only with no
-  default `CMD` (auto-mail's case), you **must** set `command:` on each service,
-  or the container starts with no subcommand.
+  default `CMD`, you **must** set `command:` on each service, or the container
+  starts with no subcommand.
 
 > **Checklist:** the exact string in `image:` resolves to a real, pullable tag,
 > and the container starts the service either from its default `CMD` or from the
@@ -206,7 +209,7 @@ preflight fails (§8).
 
 If your CLI can generate a starter config (e.g. from an email address), you can
 declare it so the UI offers a "generate for me" step. Two labels on the primary
-(as auto-mail does):
+service:
 
 ```yaml
 labels:
@@ -277,8 +280,7 @@ surprised.
 
 ## Reference
 
-- [Deploy Contract](deploy-contract.md) — authoritative spec, error table, and
-  `ComponentConfig` mapping.
-- Working examples in the wild: `robotsix-auto-mail/deploy/docker-compose.yml`
-  (two services, config-assist), and the annotated examples in DEPLOY_CONTRACT
-  Appendix A.
+- [Deploy Contract](deploy-contract.md) — authoritative spec, error table,
+  `ComponentConfig` mapping, and annotated examples (Appendix A).
+- [Component standard](component-standard.md) — the three deploy modes, image
+  registry & tags, the two compose files.

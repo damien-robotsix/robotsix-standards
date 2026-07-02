@@ -1,6 +1,9 @@
 # Entrypoint contract
 
-A shared container `entrypoint.sh` pattern, so every service image behaves the
+> **Scope: deployable components only.** See the
+> [component standard](component-standard.md).
+
+A shared container `entrypoint.sh` pattern, so every component image behaves the
 same at startup regardless of which deploy mode launched it.
 
 ## Behavior

@@ -1,10 +1,17 @@
 # Config standard
 
-**One config schema per service, defined once, that resolves the same way in all
-three deploy modes.** This is the core of the stack standard; the
-[`robotsix-yaml-config`](https://github.com/damien-robotsix/robotsix-yaml-config)
-library implements it (its `[pydantic]` extra) so services get it by defining one
-pydantic model and calling `load_config`.
+> **Scope: deployable components** (and any package that reads a runtime config
+> file). A library takes its configuration through its own API — constructor
+> arguments or an explicit config object — not a config file; if a library reads
+> environment variables, it follows the `ROBOTSIX_<NAME>_` naming convention
+> below. See the [repo baseline](repo-baseline.md) and
+> [component standard](component-standard.md).
+
+**One config schema per component, defined once, that resolves the same way in
+all three deploy modes.** The shared configuration library
+([`robotsix-yaml-config`](https://github.com/damien-robotsix/robotsix-yaml-config),
+its `[pydantic]` extra) implements it: a component defines one pydantic model and
+calls `load_config`.
 
 ## The rule
 
@@ -20,8 +27,8 @@ pydantic model and calling `load_config`.
   deploy.)
 - The schema is defined once, in **pydantic v2**. Pydantic is what lets the same
   model validate the file, emit the central-deploy template, and mask secrets —
-  one definition, three uses. (Frozen dataclasses, as auto-mail uses today, are
-  the outlier and should migrate.)
+  one definition, three uses. (Non-pydantic config schemas — e.g. frozen
+  dataclasses — are the outlier and should migrate.)
 
 ### 2. Fixed precedence (lowest -> highest)
 
@@ -96,27 +103,29 @@ The library API:
 | `emit_deploy_template(model_cls)` | Generate the central-deploy config template. |
 | `CONFIG_FILE_ENV`, `DEFAULT_CONFIG_PATH` | The standard var name and default. |
 
-## Why this resolves the survey's key finding
+## Why one shared model
 
-Today the "same shape across three modes" property holds only for the two
-YAML-based services, and even they use different schema tools, precedence, and
-locate-variables. A shared model makes the property hold for the **whole stack
-by construction** — the same class instance is what a `uv`-installed run, the
-dev container, and central-deploy all read, and the drift check
-(`check_config_sync`, currently a per-repo script in auto-mail) becomes a shared
-CI helper.
+Without a shared model, the "same config across all three deploy modes" property
+holds only by accident, and even then each component tends to pick its own
+schema tool, precedence order, and config-path variable. A single shared model
+makes the property hold **by construction** — the same class instance is what a
+`uv`-installed run, the dev container, and the deployment system all read — and
+lets the config↔deploy-template drift check be a shared CI helper instead of a
+per-repo script.
 
 ## Rollout (incremental, clean cutover)
 
 The stack is pre-release with no external users, so migrations are a **clean
 cutover** — no deprecated aliases or compatibility shims.
 
-1. Ship the schema layer in `robotsix-yaml-config` (the `[pydantic]` extra) —
-   it's already a stack dependency, so no new library to adopt.
-2. Migrate services one at a time to `robotsix_yaml_config.schema.load_config`:
-   auto-mail (dataclasses -> pydantic, `config.yaml` filename in dev, `0600`
-   enforcement), then mill (precedence already close), then central-deploy adopts
-   `ROBOTSIX_CONFIG_FILE`. Old env-var names are dropped, not aliased.
-3. Turn `check_config_sync` into the shared CI gate so drift can't reappear.
+1. Ship the schema layer in the shared config library (the `[pydantic]` extra).
+2. Migrate components one at a time to `robotsix_yaml_config.schema.load_config`:
+   move any non-pydantic schema to a pydantic model, align the config filename
+   across dev and deploy (`config.yaml`), enforce the `0600` writer, and drop
+   old per-repo env-var names (no aliases). Do the ones furthest from the
+   standard first.
+3. Turn the config↔deploy-template drift check into a shared CI gate so drift
+   can't reappear.
 
-Each service migrates in one step — there's no dual-config transition to manage.
+Each component migrates in one step — there's no dual-config transition to
+manage.

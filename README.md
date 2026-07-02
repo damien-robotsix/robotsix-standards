@@ -1,12 +1,11 @@
 # robotsix-standards
 
-Cross-cutting conventions for the robotsix stack — how every service handles
-**configuration** and the **three deployment modes** (uv package install, local
-dev docker, and the central-deploy system) so an operator configures a service
-the same way no matter how it runs.
+Shared conventions for the robotsix stack, so any repository — whoever wrote it,
+whenever — is configured, packaged, tested, and (if deployable) shipped the same
+predictable way.
 
 This repo holds **the standard** (docs under `docs/`). The shared library that
-makes the config standard true by construction lives in
+implements the config standard lives in
 [`robotsix-yaml-config`](https://github.com/damien-robotsix/robotsix-yaml-config)
 — its cascade primitives plus the optional `[pydantic]` schema layer
 (`load_config`, `emit_deploy_template`, the `ROBOTSIX_CONFIG_FILE` convention,
@@ -14,22 +13,30 @@ the `0600` writer). One library, not two.
 
 ## Why this exists
 
-A survey of the stack (`robotsix-central-deploy`, `robotsix-auto-mail`,
-`robotsix-llmio`, `robotsix-mill`) found that **no two repos agreed** on the
-config mechanism, precedence order, config-path variable name, secret
-representation, or image registry. That makes the stack hard to learn and
-operate, and impossible to share config tooling across. These standards fix
-that.
+As a stack grows, each repository tends to solve the same recurring problems —
+config loading, packaging and versioning, CI and security gates, deployment — in
+its own slightly different way. Every repo becomes a small dialect: contributors
+relearn conventions each time, tooling and CI get reinvented, and operators face
+per-repo guesswork. These standards define one way to do each, so consistency is
+the default.
 
-## Documents
+## Two scopes
+
+**Every repository** (libraries and deployable components):
 
 | Doc | What it covers |
 |---|---|
-| [Config standard](docs/config-standard.md) | One YAML+env config model, fixed precedence, one secret convention — the same in all three deploy modes. |
-| [Packaging standard](docs/packaging-standard.md) | `requires-python`, console scripts, library-vs-service tiers, image registry & tags. |
-| [Deploy contract](docs/deploy-contract.md) | The `deploy/docker-compose.yml` shape central-deploy consumes (authoritative reference). |
-| [Integrating a service](docs/integrating-a-service.md) | Task-oriented how-to: take a repo from zero to a central-deploy one-click deploy. |
+| [Repo baseline](docs/repo-baseline.md) | uv tooling, `requires-python`, distribution tiers, changelog/module hygiene, CI & security gates, license. |
+
+**Deployable components** (additionally):
+
+| Doc | What it covers |
+|---|---|
+| [Component standard](docs/component-standard.md) | The three deploy modes, image registry & tags, the two compose files. |
+| [Config standard](docs/config-standard.md) | One config model, fixed precedence, one secret convention — the same in all three deploy modes. |
+| [Deploy contract](docs/deploy-contract.md) | The `deploy/docker-compose.yml` shape the deployment system consumes (authoritative reference). |
 | [Entrypoint contract](docs/entrypoint-contract.md) | The shared container `entrypoint.sh` behavior. |
+| [Integrating a service](docs/integrating-a-service.md) | Task-oriented how-to: zero to a one-click deploy. |
 
 ## The shared library
 

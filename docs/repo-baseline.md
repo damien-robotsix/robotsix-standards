@@ -16,12 +16,30 @@ distributed.
 
 | Tier | What it is | Ships as | How consumers/operators get it |
 |---|---|---|---|
-| **Library** | Imported by other packages; no runnable service | A package (e.g. PyPI wheel) | The language's package manager |
+| **Library** | Imported by other packages; no runnable service | Source in its git repository | Depend on it from git — no package index |
 | **Deployable component** | Ships a runnable service | Container image | Run the container, or install from a checkout |
 
 (The one exception is the deployment system itself — see the
 [bootstrap tier](deployment-system.md).) Packaging specifics per language:
 [Python](python.md).
+
+### No package index — consume libraries from git
+
+**The stack does not publish to any package index (no PyPI, no npm, etc.).** It
+is a single, first-party set of repositories; publishing and index accounts add
+release machinery no one asked for. First-party libraries are consumed **directly
+from their git repositories**, pinned by revision, using the language's native
+git-dependency support — for Python, uv's `[tool.uv.sources]`:
+
+```toml
+[tool.uv.sources]
+robotsix-config = { git = "https://github.com/damien-robotsix/robotsix-config.git", rev = "main" }
+```
+
+Repos therefore carry **no publish/release workflow** (no `pypi-publish`,
+release-please, or index token). A library that later needs genuine public
+distribution can add publishing back deliberately — but that is the exception,
+not the default.
 
 ## Language practices
 

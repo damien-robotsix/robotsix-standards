@@ -15,9 +15,15 @@ dependencies won't resolve). **Do not advertise a `pip install` path.**
 
 - **Build backend: `hatchling`.** Repos with git-pinned first-party
   dependencies need `[tool.hatch.metadata] allow-direct-references = true`.
-- **Libraries** ship a PyPI wheel with `py.typed`; consumers `uv add <lib>`.
+- **No PyPI.** Nothing is published to a package index (see the
+  [repo baseline](repo-baseline.md#no-package-index-consume-libraries-from-git)).
+  Repos carry **no publish/release workflow** — no `pypi-publish`, no
+  release-please, no PyPI token.
+- **Libraries** are consumed straight from git via uv `[tool.uv.sources]`
+  (`{ git = "…", rev = "…" }`), pinned by revision. They still ship `py.typed`
+  for downstream type-checking.
 - **Deployable components** ship a container image; the from-checkout path is
-  `uv sync` (uv honours `[tool.uv.sources]`, so this works unpublished).
+  `uv sync` (uv honours `[tool.uv.sources]`).
 - Dev tooling goes in a PEP 735 `[dependency-groups] dev` group, pulled in by
   default via `[tool.uv] default-groups`.
 

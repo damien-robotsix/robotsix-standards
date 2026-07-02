@@ -5,18 +5,20 @@ three deploy modes behave predictably across the stack.
 
 ## Distribution tier is explicit
 
-A repo is **either** a library **or** a service — decide and be consistent:
+A repo is **either** a library **or** a service — decide and be consistent.
+**uv is the standard tool** for installing and running robotsix packages
+(`uv sync`, `uv add`, `uv run`, `uvx`); pip is not a supported install path.
 
-| Tier | Ships as | Example | Rules |
+| Tier | Ships as | Example | Install |
 |---|---|---|---|
-| **Library** | PyPI wheel, `py.typed`, no Docker | `robotsix-llmio`, `robotsix-config` | Genuinely `pip install`-able; deps resolvable from PyPI. |
-| **Service** | Container image (not pip-installed by end users) | `robotsix-auto-mail`, `robotsix-mill` | Run the container or `uv sync` from the repo. |
+| **Library** | PyPI wheel + `py.typed` | `robotsix-llmio`, `robotsix-config` | Consumers `uv add <lib>` (published to PyPI). |
+| **Service** | Container image | `robotsix-auto-mail`, `robotsix-mill` | Run the container, or `uv sync` from a checkout. |
 
-**Do not advertise a pip path for a service whose deps are git-only.** Several
-services list first-party deps via `[tool.uv.sources]` git URLs, which pip
-ignores — so `pip install <service>` cannot work even from a built wheel.
-Document "run the container or `uv sync` from the repo" instead of a broken
-`pip install`.
+Because uv honours `[tool.uv.sources]`, a service's first-party git deps resolve
+under `uv sync`, so the from-checkout install works even when the package isn't
+on PyPI. **Do not promise a `pip install <service>` path** — pip ignores
+`[tool.uv.sources]` and can't resolve those git deps. The two supported answers
+are "run the container" and "`uv sync` from a checkout", both uv-based.
 
 ## `requires-python`
 

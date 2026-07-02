@@ -1,9 +1,9 @@
 # robotsix stack standards
 
 Cross-cutting conventions for the robotsix stack: how every service handles
-**configuration** and the **three deployment modes** (pip package, local dev
-docker, and central-deploy) so a service is configured the same way no matter
-how it runs.
+**configuration** and the **three deployment modes** (uv package install, local
+dev docker, and central-deploy) so a service is configured the same way no
+matter how it runs.
 
 ## The problem these standards solve
 

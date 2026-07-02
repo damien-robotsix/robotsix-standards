@@ -11,8 +11,9 @@ library implements it so services get it by subclassing one base model.
 
 - Runtime config is a **single YAML file**, default path `config/config.yaml`
   (matching the central-deploy contract), located by **one** environment
-  variable: **`ROBOTSIX_CONFIG_FILE`**. Legacy names (`MAIL_CONFIG_PATH`,
-  `MILL_CONFIG_FILE`) are kept as deprecated aliases for one release.
+  variable: **`ROBOTSIX_CONFIG_FILE`**. Per-service legacy names
+  (`MAIL_CONFIG_PATH`, `MILL_CONFIG_FILE`) are **removed, not aliased** — the
+  stack is pre-release, so a clean break is preferred over back-compat.
 - The **same filename in every mode** — `config.yaml` in dev docker *and* under
   central-deploy. (No more `mail.local.yaml` in dev but `config.yaml` in
   deploy.)
@@ -101,19 +102,22 @@ The library API:
 Today the "same shape across three modes" property holds only for the two
 YAML-based services, and even they use different schema tools, precedence, and
 locate-variables. A shared model makes the property hold for the **whole stack
-by construction** — the same class instance is what pip users, the dev
-container, and central-deploy all read, and the drift check
+by construction** — the same class instance is what a `uv`-installed run, the
+dev container, and central-deploy all read, and the drift check
 (`check_config_sync`, currently a per-repo script in auto-mail) becomes a shared
 CI helper.
 
-## Rollout (incremental, non-breaking)
+## Rollout (incremental, clean cutover)
+
+The stack is pre-release with no external users, so migrations are a **clean
+cutover** — no deprecated aliases or compatibility shims.
 
 1. Publish `robotsix-config` (`requires-python >=3.11` so the library tier can
    use it).
-2. Migrate services one at a time, keeping old env-var names as deprecated
-   aliases for one release: auto-mail (dataclasses -> pydantic, `config.yaml`
-   filename in dev, `0600` enforcement), then mill (precedence already close),
-   then central-deploy adopts `ROBOTSIX_CONFIG_FILE`.
+2. Migrate services one at a time: auto-mail (dataclasses -> pydantic,
+   `config.yaml` filename in dev, `0600` enforcement), then mill (precedence
+   already close), then central-deploy adopts `ROBOTSIX_CONFIG_FILE`. Old
+   env-var names are dropped, not aliased.
 3. Turn `check_config_sync` into the shared CI gate so drift can't reappear.
 
-Each step is independently shippable and reversible.
+Each service migrates in one step — there's no dual-config transition to manage.

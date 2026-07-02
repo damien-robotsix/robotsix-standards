@@ -13,8 +13,12 @@ dependencies won't resolve). **Do not advertise a `pip install` path.**
 
 ## Packaging
 
-- **Build backend: `hatchling`.** Repos with git-pinned first-party
-  dependencies need `[tool.hatch.metadata] allow-direct-references = true`.
+- **Build backend: `hatchling`.** `[tool.hatch.metadata]
+  allow-direct-references = true` is only needed when `[project.dependencies]`
+  itself contains direct URL references (`pkg @ git+https://…`). The standard
+  pattern — plain dependency names resolved through `[tool.uv.sources]` — does
+  not need it, because the git pin lives in uv's config, not in the project
+  metadata hatchling validates.
 - **No PyPI.** Nothing is published to a package index (see the
   [repo baseline](repo-baseline.md#no-package-index-consume-libraries-from-git)).
   Repos carry **no publish/release workflow** — no `pypi-publish`, no

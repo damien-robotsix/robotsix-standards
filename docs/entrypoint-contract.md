@@ -33,9 +33,9 @@ The entrypoint must:
 - **Dead `envsubst` templating.** Don't template config with `envsubst` unless
   `gettext-base` is actually installed in the runtime image stage — otherwise
   `command -v envsubst` fails and the block silently does nothing (a real bug
-  found in the stack). Prefer the config library's env overlay
-  (`ROBOTSIX_<SERVICE>_*`) over shell templating; delete the `envsubst` block if
-  present-but-unused.
+  found in the stack). There is nothing to template anyway: per the
+  [config standard](config-standard.md) the one config file is the only source
+  of values (no env overlay), so delete any `envsubst` block.
 - **Running the app without `exec`.** `docker stop` then can't deliver SIGTERM
   to Python; the container is SIGKILLed after the grace period with no clean
   shutdown.

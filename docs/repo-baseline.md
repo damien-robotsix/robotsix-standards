@@ -28,18 +28,40 @@ distributed.
 **The stack does not publish to any package index (no PyPI, no npm, etc.).** It
 is a single, first-party set of repositories; publishing and index accounts add
 release machinery no one asked for. First-party libraries are consumed **directly
-from their git repositories**, pinned by revision, using the language's native
-git-dependency support — for Python, uv's `[tool.uv.sources]`:
-
-```toml
-[tool.uv.sources]
-robotsix-config = { git = "https://github.com/damien-robotsix/robotsix-config.git", rev = "main" }
-```
+from their git repositories**, using the language's native git-dependency
+support — for Python, uv's `[tool.uv.sources]`.
 
 Repos therefore carry **no publish/release workflow** (no `pypi-publish`,
 release-please, or index token). A library that later needs genuine public
 distribution can add publishing back deliberately — but that is the exception,
 not the default.
+
+#### Pin to a commit SHA, not a branch
+
+Every first-party git source is pinned to a **commit SHA**, never a branch ref
+like `main`. A branch ref drifts silently — a fresh `uv lock` (or any
+lock-refresh) can pull in unrelated upstream changes with no PR, and a rename or
+breaking change upstream then breaks resolution out of nowhere.
+
+```toml
+[tool.uv.sources]
+# Pinned — reproducible, updated only via a reviewed bump.
+robotsix-config = { git = "https://github.com/damien-robotsix/robotsix-config.git", rev = "6f2a1c9e…" }
+# NOT this — a moving target:
+# robotsix-config = { git = "…", rev = "main" }
+```
+
+#### Auto-bump workflow keeps pins current
+
+Because pins are SHAs, they need an automated bump so they don't rot. A
+**scheduled pin-bump workflow** walks each repo's `[tool.uv.sources]`, resolves
+the latest commit on each dependency's default branch, and opens a PR that
+updates the `rev` and re-locks — updates land **deliberately, through green CI
+and review**, never silently. A **coherent-set resolver** keeps a dependency
+that several repos share pinned to the *same* SHA across the stack, so the fleet
+doesn't split-brain on transitive versions. (Third-party deps use the usual
+Dependabot/Renovate auto-merge path; this workflow is for the first-party git
+sources.)
 
 ## Language practices
 
@@ -52,7 +74,11 @@ New languages get their own page here before the first repo lands.
 
 - **Changelog.** Maintain `CHANGELOG.md` in [Keep a Changelog](https://keepachangelog.com)
   form under an `## 0.0.0 (unreleased)` heading; every PR adds an entry (CI
-  enforces it).
+  enforces it). The fleet mechanism is
+  [towncrier](https://towncrier.readthedocs.io) newsfragments: each PR drops a
+  fragment in `changelog.d/`, CI runs `towncrier check --compare-with
+  origin/<base>`, and fragments are compiled into `CHANGELOG.md` at release
+  time (a `skip-changelog` PR label exempts changes with nothing to record).
 - **Module registration.** Every file is registered in `docs/modules.yaml`
   under exactly one module; a drift check fails CI on unregistered or stale
   paths. New modules start by adding an entry there.

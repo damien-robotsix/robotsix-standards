@@ -5,9 +5,12 @@ Cross-cutting conventions for the robotsix stack — how every service handles
 dev docker, and the central-deploy system) so an operator configures a service
 the same way no matter how it runs.
 
-This repo is both **the standard** (docs under `docs/`) and **the reference
-implementation** (`robotsix-config`, a small shared library that makes the
-config standard true by construction).
+This repo holds **the standard** (docs under `docs/`). The shared library that
+makes the config standard true by construction lives in
+[`robotsix-yaml-config`](https://github.com/damien-robotsix/robotsix-yaml-config)
+— its cascade primitives plus the optional `[pydantic]` schema layer
+(`load_config`, `emit_deploy_template`, the `ROBOTSIX_CONFIG_FILE` convention,
+the `0600` writer). One library, not two.
 
 ## Why this exists
 
@@ -28,39 +31,36 @@ that.
 | [Integrating a service](docs/integrating-a-service.md) | Task-oriented how-to: take a repo from zero to a central-deploy one-click deploy. |
 | [Entrypoint contract](docs/entrypoint-contract.md) | The shared container `entrypoint.sh` behavior. |
 
-## The `robotsix-config` library
+## The shared library
+
+The config standard is implemented by
+[`robotsix-yaml-config`](https://github.com/damien-robotsix/robotsix-yaml-config)
+(its `[pydantic]` extra), which every service depends on:
 
 ```python
-from pydantic import SecretStr
-from pydantic_settings import SettingsConfigDict
-from robotsix_config import RobotsixConfig, emit_deploy_template, write_config_file
+from pydantic import BaseModel, SecretStr
+from robotsix_yaml_config.schema import load_config, emit_deploy_template
 
 
-class MailConfig(RobotsixConfig):
-    model_config = SettingsConfigDict(
-        env_prefix="ROBOTSIX_MAIL_", env_nested_delimiter="__", extra="ignore"
-    )
+class MailConfig(BaseModel):
     log_level: str = "info"
     password: SecretStr = SecretStr("")
 
 
-cfg = MailConfig()                      # defaults < config.yaml < env < kwargs
-print(emit_deploy_template(MailConfig)) # -> central-deploy config/config.yaml template
+cfg = load_config(MailConfig, env_prefix="ROBOTSIX_MAIL")
+# defaults < config.yaml < ROBOTSIX_MAIL_ env overlay < overrides
+print(emit_deploy_template(MailConfig))  # -> central-deploy config/config.yaml template
 ```
 
-Resolution order (lowest -> highest): **built-in defaults < `config.yaml` <
-`ROBOTSIX_` env overlay < explicit kwargs**. The YAML file is located by one
-variable, `ROBOTSIX_CONFIG_FILE` (default `config/config.yaml`). Secrets are
-`pydantic.SecretStr` (masked on read); `write_config_file` persists config
-`0600` in a `0700` directory.
+The YAML file is located by one variable, `ROBOTSIX_CONFIG_FILE` (default
+`config/config.yaml`). Secrets are `pydantic.SecretStr` (masked on read);
+`robotsix_yaml_config.write_config_file` persists config `0600` in a `0700`
+directory. See the [config standard](docs/config-standard.md) for the full rule.
 
-## Development
+## Building the docs
 
 ```sh
-uv sync --extra dev
-uv run pytest
-uv run ruff check src tests
-uv run mypy src
+uv run --group docs mkdocs build --strict
 ```
 
 ## Status

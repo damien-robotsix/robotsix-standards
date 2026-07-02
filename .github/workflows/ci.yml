@@ -12,13 +12,10 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  test:
+  docs:
     runs-on: ubuntu-latest
     permissions:
       contents: read
-    strategy:
-      matrix:
-        python-version: ["3.11", "3.12", "3.13", "3.14"]
     steps:
       - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
         with:
@@ -26,11 +23,6 @@ jobs:
       - uses: astral-sh/setup-uv@d0cc045d04ccac9d8b7881df0226f9e82c39688e # v6
         with:
           enable-cache: true
-          python-version: ${{ matrix.python-version }}
-      - run: uv sync --frozen --extra dev
-      - name: Ruff
-        run: uv run ruff check src tests
-      - name: Mypy
-        run: uv run mypy src
-      - name: Pytest
-        run: uv run pytest -q
+          python-version: "3.13"
+      - name: Build docs (strict)
+        run: uv run --group docs mkdocs build --strict

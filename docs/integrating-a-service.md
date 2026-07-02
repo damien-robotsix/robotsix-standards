@@ -6,7 +6,7 @@ existing repo to a one-click deploy in the dashboard.
 
 For the exhaustive field-by-field rules, error classification, and the
 `ComponentConfig` mapping, see the authoritative reference:
-[Deploy Contract](DEPLOY_CONTRACT.md). This guide points at the relevant
+[Deploy Contract](deploy-contract.md). This guide points at the relevant
 contract sections (§) as it goes; when the two ever disagree, the contract
 wins.
 
@@ -43,10 +43,9 @@ deploy fails at pull time even with a perfect compose file.
   deploy branch, tagged to match the ref in your compose (convention:
   `ghcr.io/damien-robotsix/<repo>:main`).
 - central-deploy **does honor** the compose `command:` (and `entrypoint:`) —
-  it is parsed and applied to each container. (Note: `DEPLOY_CONTRACT.md` §7
-  currently says these are *ignored*; that is a **doc bug** — the parser and
-  backend apply them. A fix is filed against central-deploy.) So a single image
-  can back multiple services that each set their own `command:`.
+  it is parsed and applied to each container (see the
+  [deploy contract](deploy-contract.md) §7). So a single image can back
+  multiple services that each set their own `command:`.
 - Either bake a sensible default `CMD` into the image **or** set `command:` per
   service in the deploy compose. If your image is `ENTRYPOINT`-only with no
   default `CMD` (auto-mail's case), you **must** set `command:` on each service,
@@ -278,7 +277,7 @@ surprised.
 
 ## Reference
 
-- [Deploy Contract](DEPLOY_CONTRACT.md) — authoritative spec, error table, and
+- [Deploy Contract](deploy-contract.md) — authoritative spec, error table, and
   `ComponentConfig` mapping.
 - Working examples in the wild: `robotsix-auto-mail/deploy/docker-compose.yml`
   (two services, config-assist), and the annotated examples in DEPLOY_CONTRACT

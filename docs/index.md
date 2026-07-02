@@ -31,7 +31,9 @@ define one way, and ship a library that makes it true by construction.
 
 ## Reference implementation
 
-The [`robotsix-config`](https://github.com/damien-robotsix/robotsix-standards)
-library in this repo implements the config standard: one schema per service,
-resolving `defaults < config.yaml < env < kwargs`, with secret masking, a
-`0600` config writer, and a central-deploy template emitter.
+The config standard is implemented by
+[`robotsix-yaml-config`](https://github.com/damien-robotsix/robotsix-yaml-config)
+(its `[pydantic]` extra): `load_config` resolves
+`defaults < config.yaml < env < overrides` into a validated model, with secret
+masking, a `0600` config writer, and a central-deploy template emitter. One
+shared library, already a stack dependency.

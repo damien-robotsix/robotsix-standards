@@ -2,8 +2,9 @@
 
 **One config schema per service, defined once, that resolves the same way in all
 three deploy modes.** This is the core of the stack standard; the
-[`robotsix-config`](https://github.com/damien-robotsix/robotsix-standards)
-library implements it so services get it by subclassing one base model.
+[`robotsix-yaml-config`](https://github.com/damien-robotsix/robotsix-yaml-config)
+library implements it (its `[pydantic]` extra) so services get it by defining one
+pydantic model and calling `load_config`.
 
 ## The rule
 
@@ -50,32 +51,30 @@ built-in defaults  <  config.yaml  <  ROBOTSIX_ env overlay  <  explicit kwargs 
 
 ## Using the library
 
+Install the extra (`uv add "robotsix-yaml-config[pydantic]"`), define plain
+pydantic models, and call `load_config`:
+
 ```python
-from pydantic import SecretStr
-from pydantic_settings import SettingsConfigDict
-from robotsix_config import RobotsixConfig, emit_deploy_template
+from pydantic import BaseModel, SecretStr
+from robotsix_yaml_config.schema import load_config, emit_deploy_template
+from robotsix_yaml_config import write_config_file
 
 
-class ImapConfig(RobotsixConfig):
-    model_config = SettingsConfigDict(env_prefix="ROBOTSIX_MAIL_", env_nested_delimiter="__")
+class ImapConfig(BaseModel):
     host: str = "localhost"
     port: int = 993
 
 
-class MailConfig(RobotsixConfig):
-    model_config = SettingsConfigDict(
-        env_prefix="ROBOTSIX_MAIL_", env_nested_delimiter="__", extra="ignore"
-    )
+class MailConfig(BaseModel):
     log_level: str = "info"
     password: SecretStr = SecretStr("")
     imap: ImapConfig = ImapConfig()
 
 
-# Resolution: defaults < ROBOTSIX_CONFIG_FILE yaml < ROBOTSIX_MAIL_* env < kwargs
-cfg = MailConfig()
+# Resolution: defaults < ROBOTSIX_CONFIG_FILE yaml < ROBOTSIX_MAIL_* env < overrides
+cfg = load_config(MailConfig, env_prefix="ROBOTSIX_MAIL")
 
 # Persist merged config with 0600 perms (e.g. central-deploy writing the volume):
-from robotsix_config import write_config_file
 write_config_file("config/config.yaml", cfg.model_dump())
 
 # Emit the central-deploy config/config.yaml template from the schema:
@@ -91,7 +90,7 @@ The library API:
 
 | Symbol | Purpose |
 |---|---|
-| `RobotsixConfig` | Base `BaseSettings` with the fixed source ordering. |
+| `schema.load_config(model_cls, *, env_prefix, ...)` | Cascade + validate into a pydantic model (fixed precedence). |
 | `resolve_config_path()` | The `ROBOTSIX_CONFIG_FILE`-or-default path. |
 | `write_config_file(path, data)` | Write YAML `0600` in a `0700` dir. |
 | `emit_deploy_template(model_cls)` | Generate the central-deploy config template. |
@@ -112,12 +111,12 @@ CI helper.
 The stack is pre-release with no external users, so migrations are a **clean
 cutover** — no deprecated aliases or compatibility shims.
 
-1. Publish `robotsix-config` (`requires-python >=3.11` so the library tier can
-   use it).
-2. Migrate services one at a time: auto-mail (dataclasses -> pydantic,
-   `config.yaml` filename in dev, `0600` enforcement), then mill (precedence
-   already close), then central-deploy adopts `ROBOTSIX_CONFIG_FILE`. Old
-   env-var names are dropped, not aliased.
+1. Ship the schema layer in `robotsix-yaml-config` (the `[pydantic]` extra) —
+   it's already a stack dependency, so no new library to adopt.
+2. Migrate services one at a time to `robotsix_yaml_config.schema.load_config`:
+   auto-mail (dataclasses -> pydantic, `config.yaml` filename in dev, `0600`
+   enforcement), then mill (precedence already close), then central-deploy adopts
+   `ROBOTSIX_CONFIG_FILE`. Old env-var names are dropped, not aliased.
 3. Turn `check_config_sync` into the shared CI gate so drift can't reappear.
 
 Each service migrates in one step — there's no dual-config transition to manage.

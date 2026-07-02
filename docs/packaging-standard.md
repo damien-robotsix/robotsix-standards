@@ -11,7 +11,7 @@ A repo is **either** a library **or** a service — decide and be consistent.
 
 | Tier | Ships as | Example | Install |
 |---|---|---|---|
-| **Library** | PyPI wheel + `py.typed` | `robotsix-llmio`, `robotsix-config` | Consumers `uv add <lib>` (published to PyPI). |
+| **Library** | PyPI wheel + `py.typed` | `robotsix-llmio`, `robotsix-yaml-config` | Consumers `uv add <lib>` (published to PyPI). |
 | **Service** | Container image | `robotsix-auto-mail`, `robotsix-mill` | Run the container, or `uv sync` from a checkout. |
 
 Because uv honours `[tool.uv.sources]`, a service's first-party git deps resolve
@@ -24,7 +24,9 @@ are "run the container" and "`uv sync` from a checkout", both uv-based.
 
 - **Services**: standardize on `>=3.14` (the stack's runtime baseline).
 - **Libraries**: target `>=3.11` so the widest set of consumers can depend on
-  them — `robotsix-config` is `>=3.11` for exactly this reason.
+  them — `robotsix-llmio` is `>=3.11` for exactly this reason. (`robotsix-yaml-config`
+  is currently `>=3.14`; lower it to `>=3.11` if a 3.11 library needs to depend
+  on it.)
 - **Keep the README in sync.** A README claiming "Python 3.12+" while
   `pyproject.toml` pins `>=3.14,<3.15` hard-blocks users the docs invite. The
   metadata is authoritative; fix the prose.

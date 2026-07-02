@@ -53,7 +53,9 @@ integrates with the deployment system. Beyond the baseline it follows:
 ## Reference implementation
 
 The config standard is implemented by the shared configuration library
-(`robotsix-yaml-config`, its `[pydantic]` extra): `load_config` resolves
-`defaults < config.yaml < env < overrides` into a validated model, with secret
-masking, a `0600` config writer, and a deploy-template emitter. One shared
-library, already a stack dependency.
+(`robotsix-yaml-config`, its `[pydantic]` extra): `load_config` loads **the one
+config file** (`ROBOTSIX_CONFIG_FILE`, default `config/config.yaml`) into a
+validated model — the file is the only source of values, the model's defaults
+fill the rest; no env overlay, no CLI merge — with secret masking, a `0600`
+config writer, and deploy-schema/template emitters. One shared library, already
+a stack dependency.

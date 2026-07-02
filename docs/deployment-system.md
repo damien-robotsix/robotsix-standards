@@ -40,11 +40,11 @@ to "the root compose is dev-only". That compose:
   the proxy, read-only; the host filesystem read-only for disk reporting) —
   they are the reason this tier exists.
 
-### Config standard (one YAML file)
+### Config standard (one JSON file)
 
 central-deploy is configured by **`ROBOTSIX_LIFECYCLE_*` environment
 variables** (pydantic-settings), injected by its own compose file. The
-component that writes every other service's `config.yaml` takes its own
+component that writes every other service's `config.json` takes its own
 configuration from the layer below it; a config file would add a volume and a
 bootstrap step to the thing that exists to remove those steps. Its env-var
 table lives in its own docs, not here.

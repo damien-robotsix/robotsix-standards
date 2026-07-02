@@ -32,8 +32,8 @@ So "make my repo deployable" is really three tasks:
 
 - **A.** Publish an image from CI.
 - **B.** Write a contract-compliant `deploy/docker-compose.yml`.
-- **C.** (If your app needs runtime config) add `config/config.yaml` and wire it
-  with a label.
+- **C.** (If your app needs runtime config) add `config/config.json` +
+  `config/config.schema.json` and wire them with a label.
 
 ---
 
@@ -161,38 +161,34 @@ Both bypass the "named volumes only" rule and are injected at runtime, so do
 
 ---
 
-## C. Runtime config via `config/config.yaml` (optional)
+## C. Runtime config via `config/config.json` (optional)
 
 If your service reads a config file at runtime, don't bake it into the image and
-don't ask operators to hand-edit a volume. Instead:
+don't ask operators to hand-edit a volume. Per the
+[config standard](config-standard.md), the app loads **one JSON file** with
+`robotsix_config.load_config`, and the repo commits the model's typed schema:
 
-1. Add **`config/config.yaml`** at the repo root as a schema/defaults template
-   (§8). It must be a YAML mapping; nested mappings become UI sections; a leaf
-   with value `""` / `null` becomes a **masked secret input**.
-
-   ```yaml
-   server:
-     host: 0.0.0.0
-     port: 8080
-   smtp:
-     host: smtp.example.com
-     user: ""        # secret → masked
-     password: ""    # secret → masked
-   log_level: info
-   ```
+1. Add **`config/config.json`** at the repo root (the defaults template —
+   emitted from the pydantic model) and **`config/config.schema.json`** (from
+   `config_schema_json`, kept in sync by a CI drift check). The deploy UI
+   renders typed inputs from the schema — numbers, booleans, enum dropdowns —
+   and masks any `SecretStr` field
+   (`{"type": "string", "format": "password", "writeOnly": true}`).
 
 2. On the **primary** service in `deploy/docker-compose.yml`, add the
    `config-target` label pointing at the in-container path your app reads, and
-   mount a named volume whose container path is that file's **dirname** (§5, §8):
+   mount a named volume whose container path is that file's **dirname** (§5, §8).
+   With the [standardized container layout](docker-standard.md) that path is
+   always `/home/app/config/config.json`:
 
    ```yaml
    services:
      my-service:
        image: ghcr.io/damien-robotsix/my-service:main
        labels:
-         robotsix.deploy.config-target: "/app/config/config.yaml"
+         robotsix.deploy.config-target: "/home/app/config/config.json"
        volumes:
-         - my-service-config:/app/config    # dirname of config-target must match a mount
+         - my-service-config:/home/app/config    # dirname of config-target must match a mount
    volumes:
      my-service-config:
        labels:
@@ -200,10 +196,15 @@ don't ask operators to hand-edit a volume. Instead:
    ```
 
 central-deploy merges operator edits into the template and **writes
-`config.yaml` into that volume before the container starts**, on every config
-save. Your app reads only from the mounted file. If `config/config.yaml` exists
+`config.json` into that volume before the container starts**, on every config
+save. Your app reads only from the mounted file. If the config template exists
 but the `config-target` label is missing or its dirname doesn't match a mount,
 preflight fails (§8).
+
+> **Transition note:** contract § 8 as currently served still describes the
+> YAML empty-leaf-is-a-secret heuristic; central-deploy's JSON + typed-schema
+> support is the in-progress § 8 revision. The contract page in central-deploy
+> is authoritative for what the running server accepts today.
 
 ### config-assist (auto-generating operator config)
 
@@ -213,7 +214,7 @@ service:
 
 ```yaml
 labels:
-  robotsix.deploy.config-assist: "detect {accounts.0.auth.username} --id {accounts.0.id} --overwrite --password {accounts.0.auth.password} --no-verify --output /home/mailbot/config/config.yaml"
+  robotsix.deploy.config-assist: "detect {accounts.0.auth.username} --id {accounts.0.id} --overwrite --password {accounts.0.auth.password} --no-verify --output /home/app/config/config.json"
   robotsix.deploy.config-assist-seeds: "accounts.0.auth.username,accounts.0.auth.password"
 ```
 
@@ -228,7 +229,7 @@ labels:
 ## D. Onboard in the dashboard
 
 1. In the central-deploy UI, start onboarding and point it at your repo. It
-   fetches `deploy/docker-compose.yml` (and `config/config.yaml` if present) via
+   fetches `deploy/docker-compose.yml` (and the config template if present) via
    `POST /onboard/preflight` and shows the parsed component.
 2. Fill secret slots (empty-value env keys and masked config leaves).
 3. Acknowledge any **stateful-volume warning** — flagged volumes start EMPTY;
@@ -253,7 +254,7 @@ Run through this before onboarding — each maps to a §7 / Appendix A parse err
 - [ ] Every named volume used is declared in the top-level `volumes:` section.
 - [ ] Any `driver:` on a volume is `local` (or omitted).
 - [ ] Service keys match `^[a-z0-9][a-z0-9-]*$`.
-- [ ] If `config/config.yaml` exists → primary has a `config-target` label whose
+- [ ] If the config template exists → primary has a `config-target` label whose
       dirname matches a named-volume mount.
 - [ ] `host-docker-sock` (if used) is on a non-primary service only.
 - [ ] Each service starts correctly — either the image has a default `CMD`, or

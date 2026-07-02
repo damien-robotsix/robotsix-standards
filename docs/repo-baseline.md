@@ -96,8 +96,12 @@ commit SHA (with a `# vX.Y.Z` comment). The standard gate set:
 
 - **Lint & types:** the language page's linters and type checker, as blocking
   gates ([Python](python.md): ruff, mypy strict, deptry).
-- **Tests & coverage:** the test suite with a coverage floor enforced in CI
-  (the fleet floor is **80%**).
+- **Tests & coverage:** the test suite with a coverage floor enforced in CI.
+  The fleet floor is **80%**, and the gate **ratchets**: each repo pins its CI
+  threshold at (or just below) its current measured coverage and never lowers
+  it. Keep the CI threshold and the in-repo config (e.g. coverage
+  `fail_under`) identical — a CI flag silently overrides the repo config, so a
+  mismatch means the weaker number wins.
 - **Docs:** a strict docs build (`mkdocs build --strict`) when the repo
   publishes a docs site.
 - **Security:** CodeQL (SAST), secret scanning + push protection, a dependency

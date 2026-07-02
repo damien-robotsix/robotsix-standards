@@ -74,8 +74,12 @@ extend-select = ["S"]
 
 ## Tests
 
-- `pytest`, with coverage enforced in CI: the fleet floor is **80%**
-  (`--cov-fail-under=80` via the shared workflow's `coverage-threshold`).
+- `pytest`, with coverage enforced in CI via the shared workflow's
+  `coverage-threshold` (`--cov-fail-under`). The fleet floor is **80%**; the
+  gate **ratchets** — pin it at (or just below) current measured coverage,
+  raise it as coverage grows, never lower it. Set
+  `[tool.coverage.report] fail_under` to the same value: the CLI flag
+  overrides it, so a lower `coverage-threshold` silently weakens the gate.
 - **Test layout mirrors the package:** tests for module X live under
   `tests/X/`, never at the `tests/` root. New modules get a matching test
   directory.

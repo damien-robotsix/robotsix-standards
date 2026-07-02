@@ -11,14 +11,14 @@ same at startup regardless of which deploy mode launched it.
 The entrypoint must:
 
 1. **Locate config the standard way.** Read `ROBOTSIX_CONFIG_FILE` (default
-   `config/config.yaml`) — the same variable the app uses (see the
+   `config/config.json`) — the same variable the app uses (see the
    [config standard](config-standard.md)).
 2. **Validate config presence for commands that need it**, and **skip that
    check** for commands that don't (`detect`, `--help`, `--version`, other
    bootstrap subcommands). A service that can generate its own config must be
    runnable before a config exists.
 3. **Enforce `0600` on the config file** if it holds secrets (the app/library's
-   `write_config_file` does this when it writes; the entrypoint tightens an
+   `dump_config` does this when it writes; the entrypoint tightens an
    externally-mounted file defensively).
 4. **`exec` the application** as the final step, so signals (SIGTERM from
    `docker stop`) reach the Python process directly — never run the app as a
@@ -48,7 +48,7 @@ The entrypoint must:
 #!/bin/sh
 set -eu
 
-CONFIG_FILE="${ROBOTSIX_CONFIG_FILE:-config/config.yaml}"
+CONFIG_FILE="${ROBOTSIX_CONFIG_FILE:-config/config.json}"
 
 case "${1:-}" in
   detect|--help|-h|--version|"")

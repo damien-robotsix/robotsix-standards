@@ -65,9 +65,10 @@ cannot be deployed through itself:
 ## Reference implementation
 
 The config standard is implemented by the shared configuration library
-(`robotsix-yaml-config`, its `[pydantic]` extra): `load_config` loads **the one
-config file** (`ROBOTSIX_CONFIG_FILE`, default `config/config.yaml`) into a
-validated model — the file is the only source of values, the model's defaults
-fill the rest; no env overlay, no CLI merge — with secret masking, a `0600`
-config writer, and deploy-schema/template emitters. One shared library, already
-a stack dependency.
+([`robotsix-config`](https://github.com/damien-robotsix/robotsix-config)):
+`load_config` loads **the one config file** (`ROBOTSIX_CONFIG_FILE`, default
+`config/config.json`) into a validated pydantic model — the file is the only
+source of values, the model's defaults fill the rest; no env overlay, no CLI
+merge — with secret masking (`SecretStr`), a `0600` config writer
+(`dump_config`), and a JSON-Schema emitter (`config_schema_json`) for the
+deploy UI. One shared library, already a stack dependency.

@@ -6,9 +6,9 @@ predictable way.
 
 This repo holds **the standard** (docs under `docs/`). The shared library that
 implements the config standard lives in
-[`robotsix-yaml-config`](https://github.com/damien-robotsix/robotsix-yaml-config)
-— its optional `[pydantic]` schema layer (`load_config`, `emit_deploy_schema`,
-`emit_deploy_template`), the `ROBOTSIX_CONFIG_FILE` convention, and the `0600`
+[`robotsix-config`](https://github.com/damien-robotsix/robotsix-config)
+— one pydantic model, one JSON file (`load_config`, `dump_config`,
+`config_schema_json`), the `ROBOTSIX_CONFIG_FILE` convention, and the `0600`
 writer. One library, not two.
 
 ## Why this exists
@@ -49,12 +49,12 @@ the default.
 ## The shared library
 
 The config standard is implemented by
-[`robotsix-yaml-config`](https://github.com/damien-robotsix/robotsix-yaml-config)
-(its `[pydantic]` extra), which every service depends on:
+[`robotsix-config`](https://github.com/damien-robotsix/robotsix-config),
+which every service depends on:
 
 ```python
 from pydantic import BaseModel, SecretStr
-from robotsix_yaml_config.schema import load_config, emit_deploy_template
+from robotsix_config import config_schema_json, load_config
 
 
 class MailConfig(BaseModel):
@@ -62,16 +62,16 @@ class MailConfig(BaseModel):
     password: SecretStr = SecretStr("")
 
 
-# The one file (ROBOTSIX_CONFIG_FILE, default config/config.yaml) is the only
+# The one file (ROBOTSIX_CONFIG_FILE, default config/config.json) is the only
 # source of values; the model's defaults fill anything the file omits.
 # No env overlay, no CLI merge.
 cfg = load_config(MailConfig)
-print(emit_deploy_template(MailConfig))  # -> starter config/config.yaml template
+print(config_schema_json(MailConfig))  # -> commit as config/config.schema.json
 ```
 
-The YAML file is located by one variable, `ROBOTSIX_CONFIG_FILE` (default
-`config/config.yaml`). Secrets are `pydantic.SecretStr` (masked on read);
-`robotsix_yaml_config.write_config_file` persists config `0600` in a `0700`
+The JSON file is located by one variable, `ROBOTSIX_CONFIG_FILE` (default
+`config/config.json`). Secrets are `pydantic.SecretStr` (masked on read);
+`robotsix_config.dump_config` persists config `0600` in a `0700`
 directory. See the [config standard](docs/config-standard.md) for the full rule.
 
 ## Building the docs

@@ -39,6 +39,12 @@ the default.
 | [Entrypoint contract](docs/entrypoint-contract.md) | The shared container `entrypoint.sh` behavior. |
 | [Integrating a service](docs/integrating-a-service.md) | Task-oriented how-to: zero to a one-click deploy. |
 
+**The deployment system** (central-deploy only):
+
+| Doc | What it covers |
+|---|---|
+| [Deployment system](docs/deployment-system.md) | The bootstrap tier: which standards central-deploy follows and which it is exempt from, and why. |
+
 ## The shared library
 
 The config standard is implemented by

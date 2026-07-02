@@ -43,12 +43,23 @@ integrates with the deployment system. Beyond the baseline it follows:
   container starts up.
 - **[Integrating a service](integrating-a-service.md)** — the end-to-end how-to.
 
+### The deployment system (bootstrap tier)
+
+One repo — `robotsix-central-deploy` — is the deployment system itself and
+cannot be deployed through itself:
+
+- **[Deployment system](deployment-system.md)** — which standards it follows
+  (baseline, docker build & release) and which it is exempt from (deploy
+  contract, config standard, entrypoint contract), and why.
+
 ## Which am I?
 
 - **Library** — imported by other packages, no runnable service of its own.
   Follow the **repo baseline** only.
 - **Deployable component** — ships a service/container. Follow the **repo
   baseline** *and* the **component** standards.
+- **The deployment system** — central-deploy only. Follow the
+  [deployment-system tier](deployment-system.md).
 
 ## Reference implementation
 

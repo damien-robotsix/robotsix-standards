@@ -7,9 +7,9 @@ predictable way.
 This repo holds **the standard** (docs under `docs/`). The shared library that
 implements the config standard lives in
 [`robotsix-yaml-config`](https://github.com/damien-robotsix/robotsix-yaml-config)
-— its cascade primitives plus the optional `[pydantic]` schema layer
-(`load_config`, `emit_deploy_template`, the `ROBOTSIX_CONFIG_FILE` convention,
-the `0600` writer). One library, not two.
+— its optional `[pydantic]` schema layer (`load_config`, `emit_deploy_schema`,
+`emit_deploy_template`), the `ROBOTSIX_CONFIG_FILE` convention, and the `0600`
+writer. One library, not two.
 
 ## Why this exists
 
@@ -33,7 +33,7 @@ the default.
 | Doc | What it covers |
 |---|---|
 | [Component standard](docs/component-standard.md) | The three deploy modes, image registry & tags, the two compose files. |
-| [Config standard](docs/config-standard.md) | One config model, fixed precedence, one secret convention — the same in all three deploy modes. |
+| [Config standard](docs/config-standard.md) | One config model, one file (no env overlay, no CLI merge), one secret convention — the same in all three deploy modes. |
 | [Docker build & release](docs/docker-standard.md) | One Dockerfile pattern + one shared publish workflow → GHCR, with attestation and scanning. |
 | [Deploy contract](docs/deploy-contract.md) | The `deploy/docker-compose.yml` shape the deployment system consumes (canonical copy lives in [central-deploy](https://github.com/damien-robotsix/robotsix-central-deploy/blob/main/docs/DEPLOY_CONTRACT.md)). |
 | [Entrypoint contract](docs/entrypoint-contract.md) | The shared container `entrypoint.sh` behavior. |
@@ -55,9 +55,11 @@ class MailConfig(BaseModel):
     password: SecretStr = SecretStr("")
 
 
-cfg = load_config(MailConfig, env_prefix="ROBOTSIX_MAIL")
-# defaults < config.yaml < ROBOTSIX_MAIL_ env overlay < overrides
-print(emit_deploy_template(MailConfig))  # -> central-deploy config/config.yaml template
+# The one file (ROBOTSIX_CONFIG_FILE, default config/config.yaml) is the only
+# source of values; the model's defaults fill anything the file omits.
+# No env overlay, no CLI merge.
+cfg = load_config(MailConfig)
+print(emit_deploy_template(MailConfig))  # -> starter config/config.yaml template
 ```
 
 The YAML file is located by one variable, `ROBOTSIX_CONFIG_FILE` (default

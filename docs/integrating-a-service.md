@@ -144,7 +144,7 @@ volumes:
 | Rename a container | `container_name:` | §2 |
 | **Build an image** | ❌ not allowed — publish it from CI instead | §7 (parse error) |
 | **Bind-mount a host path** | ❌ not allowed (except the two labels below) | §4 (parse error) |
-| **Set a per-service command** | `command:` — it **is** applied (contra §7's stale text) | §7 (doc fix filed) |
+| **Set a per-service command** | `command:` — parsed and applied at container-create time | §7 |
 | **Set restart / networks / depends_on** | don't bother — silently ignored | §7 |
 
 ### Special host-mount labels (rare)

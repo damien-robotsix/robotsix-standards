@@ -35,8 +35,10 @@ onboarding flow accepts it:
   host-docker-sock, config-target, config-assist);
 - volume declarations and the stateful-volume onboarding gate;
 - ignored vs. prohibited compose fields (error classification);
-- runtime configuration via `config/config.yaml` (§ 8) and the
-  field → `ComponentConfig` mapping.
+- runtime configuration via the repo's config template (§ 8 — transitioning
+  from the YAML empty-leaf heuristic to `config/config.json` +
+  `config/config.schema.json` per the [config standard](config-standard.md))
+  and the field → `ComponentConfig` mapping.
 
 For the task-oriented walkthrough of making a repo deployable, see
 [Integrating a service](integrating-a-service.md).

@@ -19,7 +19,21 @@ A multi-stage Dockerfile that keeps build tooling out of the runtime image:
   extras). Never install dev/test tooling into the image.
 - **Runtime stage:** copy only the installed site-packages and the console
   script from the builder — no uv, no compilers, no source-only build deps.
-- **Non-root:** create and `USER` a non-root account (uid 1000).
+  A component whose *runtime* genuinely needs a system dependency (e.g.
+  Node.js + the `claude` CLI for the claude-sdk subscription transport, which
+  spawns the CLI as a subprocess) may install it in the runtime stage — kept
+  minimal, with a comment saying why it is required, and with apt caches
+  cleaned in the same layer.
+- **Non-root, standardized layout:** every image runs as the same non-root
+  account so mounts land in the same place in every container: user **`app`**,
+  **uid/gid 1001**, home **`/home/app`**, `WORKDIR /home/app`. The uid matches
+  the deploy host's operator account, so host-mounted credentials (mode-`0600`
+  files such as `~/.claude`) are readable without loosening their permissions.
+  Consequences of the fixed layout: the deployment system's `claude-mount`
+  always binds to **`/home/app/.claude`**, and the config volume/target lives
+  under **`/home/app/config/`** (`config.json` per the
+  [config standard](config-standard.md)) — no per-component mount-target
+  configuration exists or is needed.
 - **Healthcheck:** declare a `HEALTHCHECK` hitting the service's health endpoint.
 - **Entrypoint:** `ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]` — see the
   [entrypoint contract](entrypoint-contract.md). The entrypoint `exec`s the app
@@ -41,7 +55,9 @@ FROM python:3.14-slim@${BASE_DIGEST} AS production
 COPY --from=builder /usr/local/lib/python3.14/site-packages/ /usr/local/lib/python3.14/site-packages/
 COPY --from=builder /usr/local/bin/robotsix-<name> /usr/local/bin/robotsix-<name>
 COPY entrypoint.sh /usr/local/bin/entrypoint.sh
-RUN useradd -u 1000 -m app
+# Standardized layout: app/1001, /home/app — see "Non-root, standardized layout".
+RUN groupadd --gid 1001 app && useradd --create-home --uid 1001 --gid 1001 app
+WORKDIR /home/app
 USER app
 EXPOSE 8080
 HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
@@ -109,12 +125,23 @@ The release workflow's Trivy gate runs only when an image is published. To
 catch vulnerable base images and dependencies **before** merge, CI also builds
 the image on every PR and scans it:
 
-- Build with `docker/build-push-action` (`push: false`, `load: true`).
+- Build with `docker/build-push-action` (`push: false`, `load: true`), with a
+  GHA layer cache (`cache-from: type=gha`, `cache-to: type=gha,mode=max`) so
+  repeat PR builds reuse unchanged layers.
 - Scan with `aquasecurity/trivy-action` at `severity: CRITICAL,HIGH`, SARIF
   uploaded to Code Scanning.
-- Known-unexploitable base-image CVEs are suppressed via a **curated
-  `.trivyignore`** — every entry carries a comment saying why it doesn't apply.
-  Never blanket-ignore; the file is the audit trail.
+- **Gate policy: block on fixable findings only** — `ignore-unfixed: true` +
+  `exit-code: 1`. A red gate then always means "a fixed version exists, take
+  it". Base-image CVEs with **no released fix** are unactionable by a PR
+  author (the package can be neither upgraded nor removed) and must not block
+  merges; they stay visible through the SARIF upload and a scheduled weekly
+  rescan of the published image.
+- A finding that **has** a fix but genuinely doesn't apply is suppressed via a
+  **curated `.trivyignore`** — every entry carries a comment saying why it
+  doesn't apply. Never blanket-ignore; the file is the audit trail.
+- Complement the PR gate with a **weekly scheduled rescan** of the published
+  `:main` image (report-only, SARIF to Code Scanning) — it catches CVEs
+  disclosed after the image was built.
 
 ## Deploy
 

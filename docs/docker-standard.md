@@ -103,6 +103,19 @@ all of the following, identically for every component:
   default-branch build), `sha-<short>` (immutable/reproducible), `X.Y.Z` (on
   version tags), and `latest`.
 
+## CI-time image scan
+
+The release workflow's Trivy gate runs only when an image is published. To
+catch vulnerable base images and dependencies **before** merge, CI also builds
+the image on every PR and scans it:
+
+- Build with `docker/build-push-action` (`push: false`, `load: true`).
+- Scan with `aquasecurity/trivy-action` at `severity: CRITICAL,HIGH`, SARIF
+  uploaded to Code Scanning.
+- Known-unexploitable base-image CVEs are suppressed via a **curated
+  `.trivyignore`** — every entry carries a comment saying why it doesn't apply.
+  Never blanket-ignore; the file is the audit trail.
+
 ## Deploy
 
 The deployment system (central-deploy) **pulls** the published image via the

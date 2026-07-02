@@ -26,7 +26,8 @@ the default.
 
 | Doc | What it covers |
 |---|---|
-| [Repo baseline](docs/repo-baseline.md) | uv tooling, `requires-python`, distribution tiers, changelog/module hygiene, CI & security gates, license. |
+| [Repo baseline](docs/repo-baseline.md) | Distribution tiers, changelog/module hygiene, CI & security gates, license — language-agnostic. |
+| [Python practices](docs/python.md) | uv, hatchling, `requires-python`, lint/type/security gates, test layout, pre-commit hooks. |
 
 **Deployable components** (additionally):
 

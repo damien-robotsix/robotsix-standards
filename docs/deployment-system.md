@@ -12,9 +12,9 @@ states exactly which standards it follows and which it is exempt from, and why.
 
 ## What it follows
 
-- **[Repo baseline](repo-baseline.md)** — fully. uv tooling, hatchling,
-  `requires-python >= 3.14`, changelog and module hygiene, MIT license, the
-  full CI gate set.
+- **[Repo baseline](repo-baseline.md)** and **[Python practices](python.md)** —
+  fully. uv tooling, hatchling, `requires-python >= 3.14`, changelog and
+  module hygiene, MIT license, the full CI gate set.
 - **[Docker build & release](docker-standard.md)** — fully. Digest-pinned
   `python:3.14-slim` in both stages, uv via `COPY --from=ghcr.io/astral-sh/uv`,
   frozen-lockfile install, runtime image without build tooling, non-root user

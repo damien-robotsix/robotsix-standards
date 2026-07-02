@@ -1,18 +1,12 @@
 # Repo baseline
 
 > **Scope: every robotsix repository** — libraries and deployable components
-> alike. Deployable components follow these conventions *and* the
+> alike, in any language. Language-specific practices live on their own page
+> ([Python](python.md)); deployable components additionally follow the
 > [component standard](component-standard.md).
 
 Conventions every repository shares, so tooling, CI, and contributor workflow
 are the same everywhere.
-
-## Tooling: uv
-
-**uv is the standard tool** for installing, running, and building robotsix
-packages — `uv sync`, `uv add`, `uv run`, `uvx`, `uv build`. pip is not a
-supported install path (it ignores `[tool.uv.sources]`, so first-party git
-dependencies won't resolve). Build backend is `hatchling`.
 
 ## Distribution tier is explicit
 
@@ -22,30 +16,19 @@ distributed.
 
 | Tier | What it is | Ships as | How consumers/operators get it |
 |---|---|---|---|
-| **Library** | Imported by other packages; no runnable service | PyPI wheel + `py.typed` | `uv add <lib>` |
-| **Deployable component** | Ships a runnable service | Container image | Run the container, or `uv sync` from a checkout |
+| **Library** | Imported by other packages; no runnable service | A package (e.g. PyPI wheel) | The language's package manager |
+| **Deployable component** | Ships a runnable service | Container image | Run the container, or install from a checkout |
 
-A component's first-party git dependencies resolve under `uv sync` (uv honours
-`[tool.uv.sources]`), so the from-checkout install works even when the package
-is not published to PyPI. **Do not advertise a `pip install <component>` path.**
+(The one exception is the deployment system itself — see the
+[bootstrap tier](deployment-system.md).) Packaging specifics per language:
+[Python](python.md).
 
-Deployable components additionally follow the [component standard](component-standard.md).
+## Language practices
 
-## `requires-python`
+- **[Python](python.md)** — uv, hatchling, `requires-python` policy, console
+  scripts, lint/type/security gates, test layout, pre-commit hooks.
 
-- **Libraries** target `>=3.11` so the widest set of consumers can depend on
-  them.
-- **Deployable components** target the stack runtime baseline (`>=3.14`).
-- **Metadata is authoritative — keep prose in sync.** A README claiming a
-  Python floor different from `pyproject.toml` hard-blocks users the docs
-  invite. Fix the prose, not the metadata.
-
-## Console scripts
-
-- One primary entry point per package: `robotsix-<name>`.
-- **Host-side ops tooling does not belong in `[project.scripts]`.** Update/deploy
-  helpers (git-pull + `docker compose up`, etc.) aren't part of the shipped
-  package and aren't copied into a runtime image — keep them in `scripts/`.
+New languages get their own page here before the first repo lands.
 
 ## Repo hygiene
 
@@ -60,22 +43,28 @@ Deployable components additionally follow the [component standard](component-sta
 - **Point at the standards.** Every repo's `README.md` and `AGENT.md` link to
   [`robotsix-standards`](https://github.com/damien-robotsix/robotsix-standards)
   so contributors find the shared conventions from any repo.
-- **License.** MIT.
+- **License.** MIT, as a `LICENSE` file at the repo root.
 
 ## CI and security gates
 
 Prefer the fleet's shared reusable workflows; pin every third-party action to a
 commit SHA (with a `# vX.Y.Z` comment). The standard gate set:
 
-- **Lint & types:** `ruff check` + `ruff format --check`, `mypy` (strict),
-  `vulture` (dead-code, with a whitelist), `deptry` (dependency hygiene).
-- **Tests & coverage:** `pytest` with a coverage floor enforced in CI.
-- **Docs:** `mkdocs build --strict` when the repo publishes a docs site.
-- **Security:** CodeQL (SAST), secret scanning + push protection, and
-  `dependency-review` on PRs (`fail-on-severity: high`).
+- **Lint & types:** the language page's linters and type checker, as blocking
+  gates ([Python](python.md): ruff, mypy strict, deptry).
+- **Tests & coverage:** the test suite with a coverage floor enforced in CI
+  (the fleet floor is **80%**).
+- **Docs:** a strict docs build (`mkdocs build --strict`) when the repo
+  publishes a docs site.
+- **Security:** CodeQL (SAST), secret scanning + push protection, a dependency
+  CVE audit, and `dependency-review` on PRs (`fail-on-severity: high`).
+- **Container image:** repos that ship an image also scan it in CI — see
+  [Docker build & release](docker-standard.md).
 
 > **Dependency-review needs the Dependency graph enabled.** The
 > `dependency-review` action errors with *"Dependency review is not supported on
 > this repository"* until the repo's **Dependency graph** is turned on (enable
 > Dependabot alerts / automated security fixes, which turn it on). Enable it once
-> per repo, or the gate can never go green.
+> per repo, or the gate can never go green. It also only supports
+> `pull_request` events — skip it on pushes (`if: github.event_name ==
+> 'pull_request'`) or it fails every push to main.

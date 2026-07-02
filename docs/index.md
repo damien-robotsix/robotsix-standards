@@ -35,6 +35,8 @@ integrates with the deployment system. Beyond the baseline it follows:
   image registry & tags, the two compose files.
 - **[Config standard](config-standard.md)** — one config model that resolves the
   same way across all deploy modes.
+- **[Docker build & release](docker-standard.md)** — one Dockerfile pattern and
+  one publish workflow to a single registry.
 - **[Deploy contract](deploy-contract.md)** — the `deploy/docker-compose.yml`
   shape the deployment system consumes.
 - **[Entrypoint contract](entrypoint-contract.md)** — how a component's

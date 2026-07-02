@@ -21,17 +21,12 @@ the detailed contracts are linked at the end.
 Configuration is identical across all three modes — see the
 [config standard](config-standard.md).
 
-## Image registry & tags
+## Build & release
 
-- **One registry** for all component images: **GHCR**
-  (`ghcr.io/<owner>/<repo>`) — no extra registry secret is required and it
-  integrates with the repo's own permissions.
-- **Tag convention:**
-  - `main` — current default-branch build.
-  - `sha-<short>` — immutable, reproducible pin.
-  - `X.Y.Z` — on version tags.
-- Deploy composes pin `:main`; document `sha-<short>` as the reproducible option
-  for operators who want immutability.
+Every component builds and publishes its image the same way — one Dockerfile
+pattern and one shared reusable publish workflow, to a single registry (GHCR),
+with SBOM/provenance attestation and a vulnerability scan. No repo hand-rolls
+its own build/push. Full detail: [Docker build & release](docker-standard.md).
 
 ## The two compose files
 
@@ -48,6 +43,7 @@ published image). Keep the service/CLI command set consistent between them.
 ## Detailed contracts
 
 - [Config standard](config-standard.md) — one config model across all deploy modes.
+- [Docker build & release](docker-standard.md) — the single build + publish method.
 - [Deploy contract](deploy-contract.md) — the `deploy/docker-compose.yml` shape.
 - [Entrypoint contract](entrypoint-contract.md) — container startup behavior.
 - [Integrating a service](integrating-a-service.md) — the end-to-end how-to.

@@ -34,6 +34,7 @@ the default.
 |---|---|
 | [Component standard](docs/component-standard.md) | The three deploy modes, image registry & tags, the two compose files. |
 | [Config standard](docs/config-standard.md) | One config model, fixed precedence, one secret convention — the same in all three deploy modes. |
+| [Docker build & release](docs/docker-standard.md) | One Dockerfile pattern + one shared publish workflow → GHCR, with attestation and scanning. |
 | [Deploy contract](docs/deploy-contract.md) | The `deploy/docker-compose.yml` shape the deployment system consumes (authoritative reference). |
 | [Entrypoint contract](docs/entrypoint-contract.md) | The shared container `entrypoint.sh` behavior. |
 | [Integrating a service](docs/integrating-a-service.md) | Task-oriented how-to: zero to a one-click deploy. |

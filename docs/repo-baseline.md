@@ -57,6 +57,9 @@ Deployable components additionally follow the [component standard](component-sta
   paths. New modules start by adding an entry there.
 - **Truthful docs.** README / AGENT.md describe what the code actually does;
   don't let removed commands, renamed paths, or old version claims linger.
+- **Point at the standards.** Every repo's `README.md` and `AGENT.md` link to
+  [`robotsix-standards`](https://github.com/damien-robotsix/robotsix-standards)
+  so contributors find the shared conventions from any repo.
 - **License.** MIT.
 
 ## CI and security gates

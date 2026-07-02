@@ -22,9 +22,10 @@ everywhere.
 
 ### Every repository (libraries and deployable components)
 
-- **[Repo baseline](repo-baseline.md)** — tooling (uv), Python-version policy,
-  distribution tiers, changelog and module-registration hygiene, CI and
-  security gates, licensing.
+- **[Repo baseline](repo-baseline.md)** — distribution tiers, changelog and
+  module-registration hygiene, CI and security gates, licensing.
+- **[Python practices](python.md)** — uv, hatchling, `requires-python` policy,
+  lint/type/security gates, test layout, pre-commit hooks.
 
 ### Deployable components (additionally)
 

@@ -36,6 +36,7 @@ nav:
   - Home: index.md
   - Every repo:
       - Repo baseline: repo-baseline.md
+      - Python practices: python.md
   - Deployable components:
       - Component standard: component-standard.md
       - Config standard: config-standard.md

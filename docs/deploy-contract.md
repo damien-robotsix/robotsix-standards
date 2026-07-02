@@ -23,7 +23,8 @@ centrally-deploy expects the following files in a conforming service repo:
 | Path | Role |
 |------|------|
 | `deploy/docker-compose.yml` | **Deploy compose** (this contract). Required. |
-| `config/config.yaml` | Runtime config schema (§ 8). Optional. |
+| `config/config.schema.json` | **Typed config schema** (§ 8) — drives the deploy UI. Optional. |
+| `config/config.yaml` | Starter config values for local dev (§ 8). Optional. |
 | `docker-compose.yml` (repo root) | Dev compose — **ignored by central-deploy**. |
 
 The root `docker-compose.yml` is every repo's local-dev compose (may contain
@@ -330,35 +331,61 @@ volumes:
 
 ---
 
-## § 8  config/config.yaml — unified configuration schema
+## § 8  Configuration — typed schema
 
-### Presence
-Optional. If `config/config.yaml` exists at the repo root, central-deploy fetches it at
-`POST /onboard/preflight` (alongside `deploy/docker-compose.yml`) and returns the parsed schema
+A component's runtime configuration is defined by **one pydantic model** and
+loaded from **one file** (`config/config.yaml`), per the
+[config standard](config-standard.md). The deploy UI is driven by the model's
+**typed JSON Schema**, not by guessing types from a values file.
+
+### Presence and artifacts
+Optional. A component that needs runtime config ships, at the repo root:
+
+| File | Role |
+|---|---|
+| `config/config.schema.json` | **Authoritative typed schema** — the model's JSON Schema (from `robotsix_yaml_config.schema.emit_deploy_schema`): field types, required/optional, enums, defaults, and secret marking. Kept in sync with the model by a CI check. |
+| `config/config.yaml` | Optional starter values (defaults + empty secret slots) for local dev. |
+
+If `config/config.schema.json` exists, central-deploy fetches it at
+`POST /onboard/preflight` (alongside `deploy/docker-compose.yml`) and returns it
 in the preflight response.
 
-### Structure
-Must be a YAML mapping (dict) at the top level. Nested mappings become UI sections.
-Scalar leaf values are runtime defaults.
+### Typed UI
+The configuration UI renders an input **per field type** from the schema — a
+number field for `integer`/`number`, a checkbox for `boolean`, a dropdown for an
+`enum`, a text field for `string`, and nested `object`s as sections. Required
+fields are marked and defaults prefill. The UI **validates operator input
+against the schema and rejects wrong types before deploy** (no untyped string
+blob reaching the container).
 
 ### Secret-field convention
-A leaf with value `""` (empty string) or `null`/`~` is a **secret field**:
-- Rendered as a masked password input in the configuration UI
+A field marked `"format": "password"` with `"writeOnly": true` (pydantic
+`SecretStr`) is a **secret**:
+- Rendered as a masked password input.
 - Stored in central-deploy's data volume; never echoed back in GET responses
-  (masked as `"***"` in the `current` dict)
-- Preserved on save if the submitted value is the sentinel `"***"` (unchanged)
+  (masked as `"***"` in the `current` dict).
+- Preserved on save if the submitted value is the sentinel `"***"` (unchanged).
 
-### Example `config/config.yaml`
+Secrets are **typed in the schema**, not inferred from an empty leaf.
 
-```yaml
-server:
-  host: localhost
-  port: 8080
-smtp:
-  host: smtp.example.com
-  user: ""      # secret — blank → masked input
-  password: "" # secret — blank → masked input
-log_level: info
+### Writing config
+central-deploy writes the operator-entered values as `config.yaml` (`0600`) into
+the config volume; the component reads that single file via `load_config`. There
+is no environment overlay — the file is the only source of config values.
+
+### Example `config/config.schema.json` (excerpt)
+
+```json
+{
+  "title": "MailConfig",
+  "type": "object",
+  "properties": {
+    "log_level": {"enum": ["info", "debug"], "default": "info"},
+    "port": {"type": "integer", "default": 993},
+    "password": {"type": "string", "format": "password", "writeOnly": true}
+  },
+  "required": ["host"]
+}
 ```
 
 ### Deploy compose requirement

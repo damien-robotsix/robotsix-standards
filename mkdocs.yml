@@ -1,0 +1,41 @@
+site_name: "Robotsix Standards"
+site_url: "https://robotsix.net/standards/"
+site_description: "Cross-cutting config and deployment standards for the robotsix stack"
+repo_url: "https://github.com/damien-robotsix/robotsix-standards"
+
+theme:
+  name: material
+  palette:
+    - scheme: default
+      primary: indigo
+      accent: indigo
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+    - scheme: slate
+      primary: indigo
+      accent: indigo
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
+  features:
+    - navigation.sections
+    - navigation.expand
+    - content.code.copy
+  language: en
+
+markdown_extensions:
+  - admonition
+  - pymdownx.details
+  - pymdownx.superfences
+  - pymdownx.highlight
+  - toc:
+      permalink: true
+
+nav:
+  - Home: index.md
+  - Config standard: config-standard.md
+  - Packaging standard: packaging-standard.md
+  - Deploy contract: deploy-contract.md
+  - Integrating a service: integrating-a-service.md
+  - Entrypoint contract: entrypoint-contract.md

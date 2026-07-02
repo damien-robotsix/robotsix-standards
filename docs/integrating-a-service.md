@@ -1,0 +1,285 @@
+# Making a repo deployable with robotsix central-deploy
+
+This is the **how-to guide** for adding a service repository to the
+[central-deploy](https://deploy.robotsix.net) system. It walks you from an
+existing repo to a one-click deploy in the dashboard.
+
+For the exhaustive field-by-field rules, error classification, and the
+`ComponentConfig` mapping, see the authoritative reference:
+[Deploy Contract](DEPLOY_CONTRACT.md). This guide points at the relevant
+contract sections (§) as it goes; when the two ever disagree, the contract
+wins.
+
+---
+
+## Mental model (read this first)
+
+central-deploy is **not** a builder and **not** a compose runner. It:
+
+1. **Pulls a pre-built image** you publish (typically to GHCR). It never runs
+   `docker build` — a `build:` key is a hard error (§7).
+2. **Reads one file from your repo**, `deploy/docker-compose.yml`, and parses a
+   restricted subset of compose into an internal `ComponentConfig`. Your repo's
+   root `docker-compose.yml` is your local-dev compose and is **ignored** (§0).
+3. **Manages lifecycle itself** — restart policy, networking, gateway routing,
+   config injection, secrets. Many compose fields you'd normally set are
+   therefore ignored on purpose (§7).
+
+So "make my repo deployable" is really three tasks:
+
+- **A.** Publish an image from CI.
+- **B.** Write a contract-compliant `deploy/docker-compose.yml`.
+- **C.** (If your app needs runtime config) add `config/config.yaml` and wire it
+  with a label.
+
+---
+
+## A. Publish an image from CI (prerequisite)
+
+central-deploy pulls the `image:` ref verbatim. If CI doesn't publish it, the
+deploy fails at pull time even with a perfect compose file.
+
+- Add a GitHub Actions workflow that builds and pushes on every push to the
+  deploy branch, tagged to match the ref in your compose (convention:
+  `ghcr.io/damien-robotsix/<repo>:main`).
+- central-deploy **does honor** the compose `command:` (and `entrypoint:`) —
+  it is parsed and applied to each container. (Note: `DEPLOY_CONTRACT.md` §7
+  currently says these are *ignored*; that is a **doc bug** — the parser and
+  backend apply them. A fix is filed against central-deploy.) So a single image
+  can back multiple services that each set their own `command:`.
+- Either bake a sensible default `CMD` into the image **or** set `command:` per
+  service in the deploy compose. If your image is `ENTRYPOINT`-only with no
+  default `CMD` (auto-mail's case), you **must** set `command:` on each service,
+  or the container starts with no subcommand.
+
+> **Checklist:** the exact string in `image:` resolves to a real, pullable tag,
+> and the container starts the service either from its default `CMD` or from the
+> `command:` you set in the deploy compose.
+
+---
+
+## B. Write `deploy/docker-compose.yml`
+
+Create the file at **`deploy/`**, not the repo root. First line must be the
+version header exactly (§1):
+
+```yaml
+# central-deploy-contract-version: 1
+```
+
+Missing header, or a version the server doesn't recognize, is a parse error.
+
+### Single-service skeleton (the common case)
+
+One service is implicitly primary — no `primary` label needed (§2).
+
+```yaml
+# central-deploy-contract-version: 1
+services:
+  my-service:                     # service key = component id, must match ^[a-z0-9][a-z0-9-]*$
+    image: ghcr.io/damien-robotsix/my-service:main
+    ports:
+      - "8300:8080"               # "<host>:<container>"; host port unique across all components
+    environment:
+      API_KEY: ""                 # empty value = secret slot, operator fills it in the UI
+      LOG_LEVEL: info             # non-empty value = editable default
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/health"]
+      interval: 30s               # Go duration strings (30s, 1m30s), converted to seconds
+      timeout: 10s
+      retries: 3
+      start_period: 15s
+    volumes:
+      - my-service-data:/data     # named volumes ONLY — no ./ , / , or ~ paths (§4)
+volumes:
+  my-service-data:                # every named volume used above must be declared here
+    labels:
+      robotsix.deploy.stateful: "true"   # persistent data → blocking "starts EMPTY" warning at onboard (§6)
+```
+
+### Multi-service skeleton
+
+When you have ≥2 services, exactly one **must** carry
+`robotsix.deploy.primary: "true"` (§2, §5). The primary's first port gets the
+gateway route `deploy.robotsix.net/<component>/*` and its health is the
+component health. Sibling container names derive as `<component>-<service-key>`.
+
+```yaml
+# central-deploy-contract-version: 1
+services:
+  board:                          # this key becomes the component id
+    image: ghcr.io/damien-robotsix/my-app:main
+    labels:
+      robotsix.deploy.primary: "true"
+    ports:
+      - "8300:8080"
+    environment:
+      AUTH_TOKEN: ""
+  worker:                         # sibling → container "my-app-worker" (component id is still "board"'s key — see note)
+    image: ghcr.io/damien-robotsix/my-app-worker:main
+    volumes:
+      - my-app-data:/data
+volumes:
+  my-app-data:
+    labels:
+      robotsix.deploy.stateful: "true"
+```
+
+> Note: the **component id** comes from the operator-supplied `name` at
+> onboarding; the primary **service key** is used as the default container name.
+> Keep both the primary key and every sibling key matching
+> `^[a-z0-9][a-z0-9-]*$`.
+
+### What you can set (and what you can't)
+
+| You want to… | Do this | Contract |
+|---|---|---|
+| Expose a port | `ports: ["<host>:<container>"]` | §4 |
+| Persist data | named volume + top-level `volumes:` entry, flag `stateful` | §4, §6 |
+| A secret the operator fills in | `environment:` key with empty value (`KEY: ""`) | §4 |
+| A default env value | `environment:` key with a value | §4 |
+| A health probe | `healthcheck:` with `["CMD", …]` or `["CMD-SHELL", …]` | §4 |
+| Rename a container | `container_name:` | §2 |
+| **Build an image** | ❌ not allowed — publish it from CI instead | §7 (parse error) |
+| **Bind-mount a host path** | ❌ not allowed (except the two labels below) | §4 (parse error) |
+| **Set a per-service command** | `command:` — it **is** applied (contra §7's stale text) | §7 (doc fix filed) |
+| **Set restart / networks / depends_on** | don't bother — silently ignored | §7 |
+
+### Special host-mount labels (rare)
+
+Both bypass the "named volumes only" rule and are injected at runtime, so do
+**not** list them in `volumes:` (§5):
+
+- `robotsix.deploy.claude-mount: "true"` — mounts `~/.claude` → `/root/.claude`
+  (rw). Only if the service runs Claude Code and needs its session state.
+- `robotsix.deploy.host-docker-sock: "true"` — mounts the host Docker socket
+  (ro) into a **non-primary** service only. **Dangerous** — root-equivalent host
+  control. Use only on a hardened socket-proxy sibling, never on the app
+  container. (§5 has the full security warning.)
+
+---
+
+## C. Runtime config via `config/config.yaml` (optional)
+
+If your service reads a config file at runtime, don't bake it into the image and
+don't ask operators to hand-edit a volume. Instead:
+
+1. Add **`config/config.yaml`** at the repo root as a schema/defaults template
+   (§8). It must be a YAML mapping; nested mappings become UI sections; a leaf
+   with value `""` / `null` becomes a **masked secret input**.
+
+   ```yaml
+   server:
+     host: 0.0.0.0
+     port: 8080
+   smtp:
+     host: smtp.example.com
+     user: ""        # secret → masked
+     password: ""    # secret → masked
+   log_level: info
+   ```
+
+2. On the **primary** service in `deploy/docker-compose.yml`, add the
+   `config-target` label pointing at the in-container path your app reads, and
+   mount a named volume whose container path is that file's **dirname** (§5, §8):
+
+   ```yaml
+   services:
+     my-service:
+       image: ghcr.io/damien-robotsix/my-service:main
+       labels:
+         robotsix.deploy.config-target: "/app/config/config.yaml"
+       volumes:
+         - my-service-config:/app/config    # dirname of config-target must match a mount
+   volumes:
+     my-service-config:
+       labels:
+         robotsix.deploy.stateful: "true"
+   ```
+
+central-deploy merges operator edits into the template and **writes
+`config.yaml` into that volume before the container starts**, on every config
+save. Your app reads only from the mounted file. If `config/config.yaml` exists
+but the `config-target` label is missing or its dirname doesn't match a mount,
+preflight fails (§8).
+
+### config-assist (auto-generating operator config)
+
+If your CLI can generate a starter config (e.g. from an email address), you can
+declare it so the UI offers a "generate for me" step. Two labels on the primary
+(as auto-mail does):
+
+```yaml
+labels:
+  robotsix.deploy.config-assist: "detect {accounts.0.auth.username} --id {accounts.0.id} --overwrite --password {accounts.0.auth.password} --no-verify --output /home/mailbot/config/config.yaml"
+  robotsix.deploy.config-assist-seeds: "accounts.0.auth.username,accounts.0.auth.password"
+```
+
+- `config-assist` is a command run inside the image; `{dotted.path}`
+  placeholders are filled from operator-entered seed values.
+- `config-assist-seeds` lists which fields the UI collects before running it.
+- Every referenced command + flag **must actually exist** in the shipped CLI —
+  verify against your real entry point, or the assist step fails at deploy time.
+
+---
+
+## D. Onboard in the dashboard
+
+1. In the central-deploy UI, start onboarding and point it at your repo. It
+   fetches `deploy/docker-compose.yml` (and `config/config.yaml` if present) via
+   `POST /onboard/preflight` and shows the parsed component.
+2. Fill secret slots (empty-value env keys and masked config leaves).
+3. Acknowledge any **stateful-volume warning** — flagged volumes start EMPTY;
+   migrate data first if needed. The Deploy button stays disabled until every
+   such warning is dismissed (§6).
+4. Confirm optional toggles (e.g. the Claude mount) if you used those labels.
+5. Deploy. central-deploy pulls the image, injects config + secrets, applies
+   `restart: unless-stopped`, wires networking, and routes the primary port.
+
+---
+
+## E. Pre-flight checklist (avoid the common parse errors)
+
+Run through this before onboarding — each maps to a §7 / Appendix A parse error:
+
+- [ ] File is at `deploy/docker-compose.yml` (not repo root).
+- [ ] First line is exactly `# central-deploy-contract-version: 1`.
+- [ ] Every service has a non-empty `image:` that CI actually publishes.
+- [ ] No `build:` key anywhere.
+- [ ] ≥2 services → exactly one `robotsix.deploy.primary: "true"`.
+- [ ] All service `volumes:` entries are **named** (no `.` / `/` / `~` sources).
+- [ ] Every named volume used is declared in the top-level `volumes:` section.
+- [ ] Any `driver:` on a volume is `local` (or omitted).
+- [ ] Service keys match `^[a-z0-9][a-z0-9-]*$`.
+- [ ] If `config/config.yaml` exists → primary has a `config-target` label whose
+      dirname matches a named-volume mount.
+- [ ] `host-docker-sock` (if used) is on a non-primary service only.
+- [ ] Each service starts correctly — either the image has a default `CMD`, or
+      you set `command:` on the service (central-deploy applies it).
+- [ ] Host ports don't collide with other deployed components.
+
+---
+
+## F. Keeping the dev and deploy composes straight
+
+You maintain **two** compose files with different jobs:
+
+| File | Audience | Contains | central-deploy |
+|---|---|---|---|
+| `docker-compose.yml` (root) | Local dev | `build:`, host bind-mounts, dev ports, `command:` overrides | **Ignored** |
+| `deploy/docker-compose.yml` | Production via central-deploy | pre-built `image:`, named volumes, secret slots, labels | **The contract** |
+
+They will legitimately diverge (the dev compose builds locally and mounts your
+source; the deploy compose pulls a published image). That's expected — just keep
+the service/CLI command set consistent between them so operators aren't
+surprised.
+
+---
+
+## Reference
+
+- [Deploy Contract](DEPLOY_CONTRACT.md) — authoritative spec, error table, and
+  `ComponentConfig` mapping.
+- Working examples in the wild: `robotsix-auto-mail/deploy/docker-compose.yml`
+  (two services, config-assist), and the annotated examples in DEPLOY_CONTRACT
+  Appendix A.

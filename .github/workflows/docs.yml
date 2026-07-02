@@ -1,0 +1,21 @@
+name: Docs
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    uses: damien-robotsix/robotsix-github-workflows/.github/workflows/python-docs.yml@5cd8c1facb02299da618979e7a55f1953f9c075a
+    with:
+      docs-install-args: "--group docs"
+    secrets: {}

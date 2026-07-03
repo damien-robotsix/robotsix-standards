@@ -21,6 +21,38 @@ the detailed contracts are linked at the end.
 Configuration is identical across all three modes — see the
 [config standard](config-standard.md).
 
+## Authentication is centralized — components ship none
+
+A deployable component implements **no user-facing authentication** of its
+own: no login page, no HTTP Basic middleware, no session handling, no
+`auth.*` config section. Authentication happens **once, at the deployment
+system's gateway** — central-deploy validates the operator's session on every
+proxied HTTP and WebSocket request before traffic reaches a component, so a
+component behind the gateway only ever receives authenticated requests.
+Per-component auth on top of that is a second password for the same door:
+each one is an extra credential to provision, rotate, and get wrong.
+
+Scope — what this does and doesn't cover:
+
+- **Removed**: operator/user-facing auth — UI login walls, Basic-auth
+  middleware, password/session config fields.
+- **Kept**: machine-to-machine credentials a component *uses or serves* —
+  broker bearer tokens, third-party API keys, webhook signatures. Those are
+  secrets (see the [config standard](config-standard.md)), not an auth
+  system.
+- **Deployed any other way** (own reverse proxy, raw port, local dev),
+  authentication is the **operator's responsibility** — e.g. auth at their
+  proxy. A component must never be exposed directly to an untrusted network
+  on the assumption that it protects itself; it doesn't.
+- **Trust model**: the network behind the gateway is trusted; isolating
+  components from each other is the deployment system's concern, not
+  per-component auth.
+
+Migration sequencing: a component that today relies on its embedded auth
+(e.g. behind a plain reverse proxy) removes it **only after** it is served
+exclusively through the gateway — otherwise the removal window exposes it
+unauthenticated.
+
 ## Build & release
 
 Every component builds and publishes its image the same way — one Dockerfile

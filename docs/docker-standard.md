@@ -43,8 +43,8 @@ A multi-stage Dockerfile that keeps build tooling out of the runtime image:
   minimal, with a comment saying why it is required, and with apt caches
   cleaned in the same layer.
 - **Non-root, standardized layout:** every image defaults to the same non-root
-  account: user **`app`**, **uid/gid 1000** (overridable via
-  `ARG APP_UID`/`APP_GID`), home **`/home/app`**, `WORKDIR /home/app`. The
+  account: user **`app`**, **uid/gid 1000**, home **`/home/app`**,
+  `WORKDIR /home/app`. The
   deployment system sets the container user to **the single deployment uid
   (1000) at container-create time**, so ownership inside managed volumes is
   consistent across the whole fleet regardless of what an image baked in.
@@ -97,10 +97,8 @@ COPY --from=builder /usr/local/bin/robotsix-<name> /usr/local/bin/robotsix-<name
 # Standardized layout: app/1000, /home/app. The deployment system sets the
 # container user to the deployment uid (1000) at create time; $HOME is
 # read-only — all writes go to the mounted volumes (config/, /data).
-ARG APP_UID=1000
-ARG APP_GID=1000
-RUN groupadd --gid ${APP_GID} app \
-    && useradd --create-home --uid ${APP_UID} --gid ${APP_GID} app
+RUN groupadd --gid 1000 app \
+    && useradd --create-home --uid 1000 --gid 1000 app
 WORKDIR /home/app
 USER app
 EXPOSE 8080

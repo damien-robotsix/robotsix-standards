@@ -67,11 +67,26 @@ health as component health, and nothing has to guess.
   endpoint can be added deliberately when something needs it.
 - Response body unspecified (a small JSON status is fine; nothing parses it).
 
+## Sibling resilience
+
+Startup order is undefined (the deploy contract ignores `depends_on`) and
+siblings routinely restart, so:
+
+- **Start without dependencies.** A component reaches "alive, serving
+  `/health` 200" with every `<name>_url` dependency unreachable — no
+  import-time or startup connectivity checks.
+- **Fail per-operation, not per-process.** A call to a down sibling fails
+  that request or cycle (log it, return an error, skip the tick); the process
+  keeps running and recovers on the next attempt. No backoff framework, no
+  circuit breakers — retry-next-time matches the fleet's scale.
+
 ## Logging
 
 - **Logs go to stdout/stderr, never to files.** The container log stream is
   the fleet's one log sink — `docker logs` and the deploy dashboard see
-  everything, and rotation is the runtime's problem. A file under a volume is
+  everything, and rotation is configured **host-wide** (json-file
+  `max-size`/`max-file` in the daemon config — see central-deploy's host
+  setup docs); components never rotate their own output. A file under a volume is
   either *data* (an audit trail the app produces — then name the volume as
   data) or a mistake: file logs are invisible to the log view and grow
   without rotation.

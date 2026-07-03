@@ -131,6 +131,15 @@ ruff suppressions above.
 - **Test layout mirrors the package:** tests for module X live under
   `tests/X/`, never at the `tests/` root. New modules get a matching test
   directory.
+- **The default test run is offline and credential-free**: declare
+  `addopts = ["-m", "not live", "--strict-markers", "--strict-config"]`.
+  Tests that genuinely need the network or real credentials carry the
+  **`live` marker** and run only by explicit opt-in (`pytest -m live`),
+  never in the standard CI gate — in mill sandboxes (egress-proxied) and CI,
+  an accidental network call is a hang or a paid flake. `--strict-markers`
+  makes a misspelled marker an error instead of an always-running test.
+  `tests/.env.example` lists exactly the live-suite credentials — nothing
+  else.
 - **Shared fixtures live in `conftest.py`:** when two test files under the
   same `tests/<module>/` define the same fixture, extract it to
   `tests/<module>/conftest.py` — pytest discovers it for all sibling tests.

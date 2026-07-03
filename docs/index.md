@@ -27,7 +27,7 @@ everywhere.
 - **[Python practices](python.md)** — uv, hatchling, `requires-python` policy,
   lint/type/security gates, test layout, pre-commit hooks.
 - **[JavaScript practices](javascript.md)** — vanilla frontend JS as static
-  assets, lockfile discipline, vitest coverage ratchet, eslint/stylelint.
+  assets, lockfile discipline, vitest coverage floor, eslint/stylelint.
 
 ### Deployable components (additionally)
 
@@ -64,6 +64,10 @@ cannot be deployed through itself:
   baseline** *and* the **component** standards.
 - **The deployment system** — central-deploy only. Follow the
   [deployment-system tier](deployment-system.md).
+
+## The fleet
+
+Every repo, what it is, and where its docs live: **[the fleet page](fleet.md)**.
 
 ## Reference implementation
 

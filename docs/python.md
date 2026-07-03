@@ -78,6 +78,14 @@ dependencies won't resolve). **Do not advertise a `pip install` path.**
   Don't misread it as the legacy Python-2 `except E, var:` bind-as form, and
   don't "fix" it back to parentheses.
 
+## Datetimes
+
+**UTC everywhere; naive datetimes are forbidden in stored or emitted data.**
+`datetime.now(tz=UTC)`, never bare `now()`/`utcnow()` — a naive datetime
+means "whatever timezone the host happens to run" (the deploy host runs
+CEST). Serialize ISO-8601 with explicit offset. Rendering local time is a UI
+concern (see the [component standard](component-standard.md#logging)).
+
 ## Console scripts
 
 - One primary entry point per package: `robotsix-<name>`.

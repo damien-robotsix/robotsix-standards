@@ -90,6 +90,11 @@ siblings routinely restart, so:
   either *data* (an audit trail the app produces — then name the volume as
   data) or a mistake: file logs are invisible to the log view and grow
   without rotation.
+- **All timestamps are UTC, ISO-8601 with explicit offset**
+  (`2026-07-03T14:00:00Z`) — logs, stored data, API responses, filenames.
+  Rendering local time is strictly a UI concern. Interleaving services'
+  logs during incident reconstruction is exactly when a stray local-time
+  stamp costs an hour.
 - **Log level is a config field** — a `log_level` enum in the component's
   pydantic model (see the [config standard](config-standard.md)), not an
   environment variable.
@@ -98,10 +103,25 @@ Nothing more is standardized on purpose — no structured-JSON mandate, no
 metrics/collector requirement. Either gets added deliberately when something
 in the fleet needs it.
 
-## LLM tracing
+## LLM usage
 
 > Only for components that call LLMs — most repos never need this section.
 
+- LLM calls go through **robotsix-llmio**, and the consumer only ever picks
+  a **capability level** — llmio's `level1`–`level4` scale (1 = cheap and
+  repetitive, 2 = intermediate, 3 = high-level organisation, 4 = frontier
+  reasoning). Which model/provider backs each level is llmio's tier
+  configuration, not the component's business.
+- **The level is a config field, always** — a typed llmio-level enum in the
+  component's pydantic model (per-call-site fields where a component makes
+  differently-hard calls), set in the deploy UI like any other option. Never
+  hard-code a level, and never take it from env (`LLMIO_MODEL_LEVEL`-style
+  variables are the pre-standard form). Operators tune capability vs. cost
+  per deployment without touching code.
+- **The level→model tier mapping is fleet-global**, managed through the
+  deployment system: changing "level 3" from one model to another happens
+  once, for every component at once — no component defines its own mapping.
+  (Distribution mechanism is central-deploy's; components just call llmio.)
 - Tracing is **opt-in, one way**: Langfuse via `robotsix-llmio[tracing]`,
   a graceful no-op when unconfigured.
 - Tracing credentials are **`SecretStr` fields in the config model**, like

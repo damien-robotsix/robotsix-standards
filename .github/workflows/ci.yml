@@ -26,3 +26,10 @@ jobs:
           python-version: "3.14"
       - name: Build docs (strict)
         run: uv run --group docs mkdocs build --strict
+
+  changelog:
+    # skip-changelog label handling lives inside the shared workflow.
+    if: github.event_name == 'pull_request'
+    permissions:
+      contents: read
+    uses: damien-robotsix/robotsix-github-workflows/.github/workflows/changelog-check.yml@089b2aa0ae1ee81de5069864140a49b841df44d7 # main

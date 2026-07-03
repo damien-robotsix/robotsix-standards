@@ -73,6 +73,17 @@ channel for first-party code. Three cases:
   channels for the same value is precisely the "why is this value what it is"
   ambiguity the one-file rule exists to kill.
 
+### 5. Calling another service: a `<name>_url` config field
+
+A component that calls another service declares its dependency's base URL as
+an **ordinary config field** — `<name>_url`, typed in the model, with a
+sensible localhost default for dev — and the operator sets the real value in
+the deploy UI like any other field. Credentials for that call are `SecretStr`
+fields next to the URL. Explicitly **not** part of the stack, added
+deliberately only if ever needed: service discovery, a registry,
+central-deploy-injected addresses, DNS-name conventions. Plain config fields
+are the whole mechanism.
+
 ## Using the library
 
 Install it (`uv add robotsix-config`, SHA-pinned via `[tool.uv.sources]` per

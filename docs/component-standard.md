@@ -37,7 +37,7 @@ Scope — what this does and doesn't cover:
 - **Removed**: operator/user-facing auth — UI login walls, Basic-auth
   middleware, password/session config fields.
 - **Kept**: machine-to-machine credentials a component *uses or serves* —
-  broker bearer tokens, third-party API keys, webhook signatures. Those are
+  service bearer tokens, third-party API keys, webhook signatures. Those are
   secrets (see the [config standard](config-standard.md)), not an auth
   system.
 - **Deployed any other way** (own reverse proxy, raw port, local dev),
@@ -52,6 +52,20 @@ Migration sequencing: a component that today relies on its embedded auth
 (e.g. behind a plain reverse proxy) removes it **only after** it is served
 exclusively through the gateway — otherwise the removal window exposes it
 unauthenticated.
+
+## Health endpoint
+
+Every deployable component serves **`GET /health`** on its service port —
+**200 means alive**, anything else means not. One fleet-wide path (it was a
+three-way split — `/health`, `/health/live`, `/healthz` — for no reason):
+the image `HEALTHCHECK` probes it, the deployment system reads the primary's
+health as component health, and nothing has to guess.
+
+- Semantics: **liveness only** — "the process is up and serving". No
+  dependency checks: a service that reports unhealthy because a *sibling* is
+  down turns one outage into a restart cascade. A readiness/deep-check
+  endpoint can be added deliberately when something needs it.
+- Response body unspecified (a small JSON status is fine; nothing parses it).
 
 ## Logging
 

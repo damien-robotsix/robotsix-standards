@@ -40,5 +40,19 @@ onboarding flow accepts it:
   [config standard](config-standard.md)) and the field → `ComponentConfig`
   mapping.
 
+## Volumes only — no host-path bind mounts
+
+Deployed components **never bind-mount host paths**; all persistent or shared
+state goes through **named volumes** (declared in the compose, or injected by
+central-deploy — e.g. the managed `claude-auth` volume behind the
+claude-mount label). Coupling a component to host filesystem layout caused a
+real outage (2026-07-03, robotsix-chat: host-uid-dependent credential
+readability plus a containerized `~` expansion silently auto-creating empty
+root-owned host directories). The **single sanctioned exception** is the
+Docker socket, read-only, on a hardened non-primary socket-proxy sibling
+(`host-docker-sock` label). central-deploy's own infra mounts are the
+deployment system itself ([bootstrap tier](deployment-system.md)), not a
+managed component.
+
 For the task-oriented walkthrough of making a repo deployable, see
 [Integrating a service](integrating-a-service.md).

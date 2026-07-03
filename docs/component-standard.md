@@ -15,7 +15,7 @@ the detailed contracts are linked at the end.
 | Mode | What it is | Notes |
 |---|---|---|
 | **uv install** | `uv sync` from a checkout (or run the published image) | The from-checkout path; git deps resolve via `[tool.uv.sources]`. Not `pip install`. |
-| **Local dev docker** | Root `docker-compose.yml` + `Dockerfile` + `entrypoint.sh` | For local development; may `build:` and bind-mount source. |
+| **Local dev docker** | Root `docker-compose.yml` + `Dockerfile` | For local development; may `build:` and bind-mount source. |
 | **Deployment system** | `deploy/docker-compose.yml` consumed by central-deploy | Pre-built image, named volumes, `robotsix.deploy.*` labels. |
 
 Configuration is identical across all three modes — see the
@@ -52,6 +52,34 @@ Migration sequencing: a component that today relies on its embedded auth
 (e.g. behind a plain reverse proxy) removes it **only after** it is served
 exclusively through the gateway — otherwise the removal window exposes it
 unauthenticated.
+
+## Logging
+
+- **Logs go to stdout/stderr, never to files.** The container log stream is
+  the fleet's one log sink — `docker logs` and the deploy dashboard see
+  everything, and rotation is the runtime's problem. A file under a volume is
+  either *data* (an audit trail the app produces — then name and treat it as
+  data, `stateful` flag and all) or a mistake: file logs are invisible to the
+  log view, grow without rotation, and pollute stateful-volume handling.
+- **Log level is a config field** — a `log_level` enum in the component's
+  pydantic model (see the [config standard](config-standard.md)), not an
+  environment variable.
+
+Nothing more is standardized on purpose — no structured-JSON mandate, no
+metrics/collector requirement. Either gets added deliberately when something
+in the fleet needs it.
+
+## LLM tracing
+
+> Only for components that call LLMs — most repos never need this section.
+
+- Tracing is **opt-in, one way**: Langfuse via `robotsix-llmio[tracing]`,
+  a graceful no-op when unconfigured.
+- Tracing credentials are **`SecretStr` fields in the config model**, like
+  any other secret; at startup the app exports them to the `LANGFUSE_*`
+  process environment the SDK expects, *before* the SDK initializes. No
+  tracing credentials in compose `environment:` (see the config standard's
+  [`environment:` rule](config-standard.md#4-what-environment-is-for)).
 
 ## Build & release
 

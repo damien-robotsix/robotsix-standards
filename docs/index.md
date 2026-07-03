@@ -26,6 +26,8 @@ everywhere.
   module-registration hygiene, CI and security gates, licensing.
 - **[Python practices](python.md)** — uv, hatchling, `requires-python` policy,
   lint/type/security gates, test layout, pre-commit hooks.
+- **[JavaScript practices](javascript.md)** — vanilla frontend JS as static
+  assets, lockfile discipline, vitest coverage ratchet, eslint/stylelint.
 
 ### Deployable components (additionally)
 
@@ -51,8 +53,8 @@ One repo — `robotsix-central-deploy` — is the deployment system itself and
 cannot be deployed through itself:
 
 - **[Deployment system](deployment-system.md)** — which standards it follows
-  (baseline, docker build & release) and which it is exempt from (deploy
-  contract, config standard, entrypoint contract), and why.
+  (baseline, docker build & release, entrypoint contract) and which it is
+  exempt from (deploy contract, config standard), and why.
 
 ## Which am I?
 

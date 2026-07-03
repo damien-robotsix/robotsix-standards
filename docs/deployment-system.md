@@ -17,10 +17,14 @@ states exactly which standards it follows and which it is exempt from, and why.
   module hygiene, MIT license, the full CI gate set.
 - **[Docker build & release](docker-standard.md)** — fully. Digest-pinned
   `python:3.14-slim` in both stages, uv via `COPY --from=ghcr.io/astral-sh/uv`,
-  frozen-lockfile install, runtime image without build tooling, non-root user
-  (uid 1000), `HEALTHCHECK` on `/health`, and the shared `docker-release.yml`
-  workflow publishing `ghcr.io/damien-robotsix/robotsix-central-deploy` with
-  SBOM/provenance attestation and a Trivy gate.
+  frozen-lockfile system-interpreter install, runtime image without build
+  tooling, non-root user (uid 1000), `HEALTHCHECK` on `/health` (Python
+  stdlib), and the shared `docker-release.yml` workflow publishing
+  `ghcr.io/damien-robotsix/robotsix-central-deploy` with SBOM/provenance
+  attestation and a Trivy gate.
+- **[Entrypoint contract](entrypoint-contract.md)** — in its default form: no
+  `entrypoint.sh`; the exec-form console script is PID 1, so SIGTERM reaches
+  the server directly.
 
 ## What it is exempt from
 
@@ -38,7 +42,14 @@ to "the root compose is dev-only". That compose:
   components;
 - carries the host bind-mounts no component may declare (the Docker socket on
   the proxy, read-only; the host filesystem read-only for disk reporting) —
-  they are the reason this tier exists.
+  they are the reason this tier exists;
+- runs a dedicated **self-update Watchtower**, scoped to central-deploy's own
+  container — **the single sanctioned auto-updater in the stack**. Components
+  update only via central-deploy's Update action (see
+  [Docker build & release](docker-standard.md#deploy-updates-are-deliberate));
+  central-deploy itself has no button above it, so a Watchtower presses it.
+  Any other Watchtower or registry poller in the fleet is legacy and must be
+  removed.
 
 ### Config standard (one JSON file)
 
@@ -48,12 +59,6 @@ component that writes every other service's `config.json` takes its own
 configuration from the layer below it; a config file would add a volume and a
 bootstrap step to the thing that exists to remove those steps. Its env-var
 table lives in its own docs, not here.
-
-### Entrypoint contract
-
-No `entrypoint.sh`. There is no config file to locate or validate, and the
-exec-form `CMD` already makes the console script PID 1, so SIGTERM reaches the
-server directly. The contract's remaining duties don't apply.
 
 ## Rule of thumb
 

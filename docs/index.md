@@ -26,6 +26,8 @@ everywhere.
   module-registration hygiene, CI and security gates, licensing.
 - **[Python practices](python.md)** — uv, hatchling, `requires-python` policy,
   lint/type/security gates, test layout, pre-commit hooks.
+- **[JavaScript practices](javascript.md)** — vanilla frontend JS as static
+  assets, lockfile discipline, vitest coverage ratchet, eslint/stylelint.
 
 ### Deployable components (additionally)
 

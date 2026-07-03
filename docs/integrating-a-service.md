@@ -280,7 +280,10 @@ Run through this before onboarding — each maps to a §7 / Appendix A parse err
 - [ ] `host-docker-sock` (if used) is on a non-primary service only.
 - [ ] Each service starts correctly — either the image has a default `CMD`, or
       you set `command:` on the service (central-deploy applies it).
-- [ ] Host ports don't collide with other deployed components.
+- [ ] Host ports are **defaults**, not contracts: preflight checks them
+      against every deployed component, auto-assigns a free port on collision,
+      and files a mill ticket so the colliding default gets fixed at the
+      source. Pick a sensible default anyway.
 
 ---
 

@@ -70,8 +70,13 @@ sources.)
 
 - **[Python](python.md)** — uv, hatchling, `requires-python` policy, console
   scripts, lint/type/security gates, test layout, pre-commit hooks.
+- **[JavaScript](javascript.md)** — vanilla frontend JS as static assets,
+  lockfile discipline, vitest coverage ratchet, eslint/stylelint.
 
-New languages get their own page here before the first repo lands.
+New languages get their own page here before the first repo lands. Generic
+language conventions live **only** on these pages — agent systems (the mill's
+implement/refine/review agents) point here rather than carrying their own
+copies, and repo AGENT.mds link rather than restate.
 
 ## Changelog & releases
 
@@ -141,11 +146,16 @@ knowledge for agents and contributors.
 
 **The standards hold the rules; the gates live in
 [robotsix-github-workflows](https://github.com/damien-robotsix/robotsix-github-workflows).**
-Repos call the shared reusable workflows rather than assembling their own
-steps, and the copy-paste caller template for each workflow lives in that
-repo's README — standards pages don't embed workflow YAML, so templates
-version with the workflows they call. Pin every third-party action to a commit
-SHA (with a `# vX.Y.Z` comment). The standard gate set:
+Repos **call the shared reusable workflows** for the standard gate set — this
+is a rule, not a preference: a gate added to the fleet (a new check, a policy
+change) must reach every repo without N re-implementations, and a hand-rolled
+copy silently misses every improvement after the day it was written. A
+hand-rolled gate is the exception and carries a comment justifying it, same
+as a lint suppression. The copy-paste caller template for each workflow lives
+in the robotsix-github-workflows README — standards pages don't embed
+workflow YAML, so templates version with the workflows they call. Pin every
+third-party action to a commit SHA (with a `# vX.Y.Z` comment). The standard
+gate set:
 
 - **Lint & types:** the language page's linters and type checker, as blocking
   gates ([Python](python.md): ruff, mypy strict, deptry).
@@ -165,6 +175,11 @@ SHA (with a `# vX.Y.Z` comment). The standard gate set:
   mechanical rules of this page — `AGENT.md` present and linking the
   standards, `dependabot.yml` covering the
   [required ecosystems](#automated-dependency-updates).
+- **Required-artifact uploads use `if: always()`.** A step that uploads an
+  artifact the gate depends on (SBOM, coverage report) must run even when an
+  earlier step failed — otherwise the failure skips the upload and the
+  `if-no-files-found: error` backstop never fires, silently dropping the
+  artifact (a real incident in robotsix-llmio).
 
 > **Dependency-review needs the Dependency graph enabled.** The
 > `dependency-review` action errors with *"Dependency review is not supported
@@ -186,9 +201,11 @@ receiving security patches until someone moves it):
 | GitHub Actions SHAs | Dependabot `github-actions` ecosystem |
 | Base-image digests + the uv `COPY --from` pin | Dependabot `docker` ecosystem |
 | Pre-commit hook versions | Dependabot `pre-commit` ecosystem |
+| npm packages (`package-lock.json`) | Dependabot `npm` ecosystem |
 
 `.github/dependabot.yml` therefore covers **`uv`, `github-actions`, and
 `pre-commit`** in every repo, plus **`docker`** in repos that ship an image
+and **`npm`** in repos with a `package.json`
 (GitHub only reads the file per-repo — it cannot be centralized, so the
 baseline-check gate verifies its contents instead). Dependabot PRs auto-merge
 once required checks pass, via the shared `dependabot-auto-merge.yml` caller

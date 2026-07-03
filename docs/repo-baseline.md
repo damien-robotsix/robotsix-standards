@@ -175,8 +175,11 @@ gate set:
   every repo already clears the new value (see [Tests](python.md#tests)).
 - **Docs:** a strict docs build (`mkdocs build --strict`) when the repo
   publishes a docs site.
-- **Security:** CodeQL (SAST), secret scanning + push protection, a dependency
-  CVE audit, and `dependency-review` on PRs (`fail-on-severity: high`).
+- **Security:** CodeQL (SAST), GitHub secret scanning + push protection
+  (complemented by TruffleHog for PR-diff and full-repo scans in the shared
+  security workflow), a dependency CVE audit (`pip-audit` in the security
+  workflow, `uv audit` in CI), `dependency-review` on PRs (`fail-on-severity:
+  high`), and a CycloneDX SBOM generated and uploaded as a workflow artifact.
 - **Container image:** repos that ship an image also scan it in CI — see
   [Docker build & release](docker-standard.md).
 - **Baseline conformance:** the shared baseline-check workflow verifies the

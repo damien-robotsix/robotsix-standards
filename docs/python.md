@@ -102,6 +102,11 @@ Run via the shared `python-ci.yml` reusable workflow:
 - `deptry` (dependency hygiene)
 - `bandit` (security SAST) and a dependency CVE audit (`uv audit`)
 
+The shared `python-security.yml` workflow is a separate gate that additionally
+runs `pip-audit` (a second CVE audit pass), TruffleHog for secret scanning
+(PR-diff and full-repo), and generates a CycloneDX SBOM uploaded as a workflow
+artifact.
+
 **Security lint convention:** enable ruff's bandit rules in `pyproject.toml`
 (`[tool.ruff.lint] extend-select = ["S"]`). Suppressions are per-file ignores,
 and **every ignore carries a comment justifying it** — a reviewer should never

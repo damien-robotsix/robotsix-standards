@@ -175,8 +175,11 @@ gate set:
   every repo already clears the new value (see [Tests](python.md#tests)).
 - **Docs:** a strict docs build (`mkdocs build --strict`) when the repo
   publishes a docs site.
-- **Security:** CodeQL (SAST), secret scanning + push protection, a dependency
-  CVE audit, and `dependency-review` on PRs (`fail-on-severity: high`).
+- **Security:** CodeQL (SAST), GitHub secret scanning + push protection
+  (complemented by TruffleHog for PR-diff and full-repo scans in the shared
+  security workflow), a dependency CVE audit (`pip-audit` in the security
+  workflow, `uv audit` in CI), `dependency-review` on PRs (`fail-on-severity:
+  high`), and a CycloneDX SBOM generated and uploaded as a workflow artifact.
 - **Container image:** repos that ship an image also scan it in CI — see
   [Docker build & release](docker-standard.md).
 - **Baseline conformance:** the shared baseline-check workflow verifies the
@@ -187,7 +190,10 @@ gate set:
   artifact the gate depends on (SBOM, coverage report) must run even when an
   earlier step failed — otherwise the failure skips the upload and the
   `if-no-files-found: error` backstop never fires, silently dropping the
-  artifact (a real incident in robotsix-llmio).
+  artifact (a real incident in robotsix-llmio). The CycloneDX SBOM generated
+  by `python-security.yml` follows this pattern: the upload step uses
+  `if: always()` and `if-no-files-found: error`, so a failed scan step never
+  silently drops the SBOM artifact.
 
 **Completeness principle:** a gate in this list exists as (part of) a shared
 reusable workflow — if it can't be called from robotsix-github-workflows, it

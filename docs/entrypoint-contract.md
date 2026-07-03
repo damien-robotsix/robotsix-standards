@@ -3,64 +3,53 @@
 > **Scope: deployable components only.** See the
 > [component standard](component-standard.md).
 
-A shared container `entrypoint.sh` pattern, so every component image behaves the
-same at startup regardless of which deploy mode launched it.
+How a component's container starts. The rule is simple: **the console script
+is PID 1.**
 
-## Behavior
+## The standard: no entrypoint script
 
-The entrypoint must:
+The default — what most of the fleet ships — is a direct exec-form entrypoint
+in the Dockerfile:
 
-1. **Locate config the standard way.** Read `ROBOTSIX_CONFIG_FILE` (default
-   `config/config.json`) — the same variable the app uses (see the
-   [config standard](config-standard.md)).
-2. **Validate config presence for commands that need it**, and **skip that
-   check** for commands that don't (`detect`, `--help`, `--version`, other
-   bootstrap subcommands). A service that can generate its own config must be
-   runnable before a config exists.
-3. **Enforce `0600` on the config file** if it holds secrets (the app/library's
-   `dump_config` does this when it writes; the entrypoint tightens an
-   externally-mounted file defensively).
-4. **`exec` the application** as the final step, so signals (SIGTERM from
-   `docker stop`) reach the Python process directly — never run the app as a
-   child of the shell.
-5. **Handle SIGTERM for long-running loops.** A `--watch`/daemon subcommand
-   should stop cleanly on SIGTERM (log a stop line, drain if mid-cycle, exit 0),
-   not be hard-killed. `exec` covers signal delivery; the app implements the
-   handler.
-
-## Anti-patterns to avoid
-
-- **Dead `envsubst` templating.** Don't template config with `envsubst` unless
-  `gettext-base` is actually installed in the runtime image stage — otherwise
-  `command -v envsubst` fails and the block silently does nothing (a real bug
-  found in the stack). There is nothing to template anyway: per the
-  [config standard](config-standard.md) the one config file is the only source
-  of values (no env overlay), so delete any `envsubst` block.
-- **Running the app without `exec`.** `docker stop` then can't deliver SIGTERM
-  to Python; the container is SIGKILLed after the grace period with no clean
-  shutdown.
-- **Requiring config for `--help`/`detect`.** Blocks the bootstrap path a fresh
-  operator needs.
-
-## Skeleton
-
-```sh
-#!/bin/sh
-set -eu
-
-CONFIG_FILE="${ROBOTSIX_CONFIG_FILE:-config/config.json}"
-
-case "${1:-}" in
-  detect|--help|-h|--version|"")
-    exec robotsix-<service> "$@" ;;   # bootstrap/no-config commands
-esac
-
-if [ ! -f "$CONFIG_FILE" ]; then
-  echo "config file not found: $CONFIG_FILE" >&2
-  exit 1
-fi
-# Tighten perms defensively if the file carries secrets.
-chmod 0600 "$CONFIG_FILE" 2>/dev/null || true
-
-exec robotsix-<service> "$@"          # exec so SIGTERM reaches the app
+```dockerfile
+ENTRYPOINT ["robotsix-<name>"]
 ```
+
+Every duty an entrypoint script used to carry has a better home:
+
+- **Signal delivery** — exec form makes the console script PID 1, so SIGTERM
+  from `docker stop` reaches the Python process directly. A `--watch`/daemon
+  subcommand stops cleanly on SIGTERM (log a stop line, drain if mid-cycle,
+  exit 0) — the **app** implements the handler.
+- **Config validation** — `robotsix_config.load_config` already fails fast
+  with a clear `MissingConfigError`/`InvalidConfigError`; a shell pre-check
+  duplicates it with a worse message. Bootstrap commands that must run before
+  a config exists (`detect`, `--help`, `--version`) simply don't call
+  `load_config` — the app knows which of its commands need config, whereas a
+  shell-script allowlist of subcommand names rots the first time one is added.
+- **Config file permissions** — enforced by whoever *writes* the file:
+  `dump_config` writes `0600` in a `0700` directory, and central-deploy owns
+  the config volume it writes into. Not a per-container `chmod`.
+
+## The exception: genuine startup work
+
+A component ships an `entrypoint.sh` only when the container must do real work
+before the app can run that the app itself cannot do — the canonical example
+is robotsix-mill's privilege drop (start as root, join the host docker-socket
+group, `runuser` down to the app user). If you are not sure you need one, you
+don't.
+
+Rules for such a script:
+
+1. **`exec` the application as the final step** — never run the app as a child
+   of the shell, or `docker stop` can't deliver SIGTERM and the container is
+   SIGKILLed after the grace period with no clean shutdown.
+2. **Never gate bootstrap commands on config** (`--help`, `detect`, …) — a
+   fresh operator must be able to run them before any config exists.
+3. **No config templating.** Don't template with `envsubst`: per the
+   [config standard](config-standard.md) the one config file is the only
+   source of values, so there is nothing to template — and `gettext-base`
+   isn't in the runtime image anyway, so the block silently does nothing (a
+   real bug found in the stack). Delete any `envsubst` block.
+4. **Keep it short, and comment why it exists** — the script is an exception;
+   the comment is its justification.

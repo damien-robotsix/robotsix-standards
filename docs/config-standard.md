@@ -54,6 +54,25 @@ implements it: a component defines one pydantic model and calls `load_config`.
   directory**, enforced in shared loader code (`dump_config`) — not per-repo,
   not docstring-only. No real credentials are committed anywhere.
 
+### 4. What `environment:` is for
+
+The one-file rule means `environment:` in a compose file is **never** a config
+channel for first-party code. Three cases:
+
+- **Allowed — infrastructure wiring.** Variables the *deploy topology* needs,
+  not app settings: `ROBOTSIX_CONFIG_FILE` locating the file, `DOCKER_HOST`
+  pointing a service at its socket-proxy sibling. Rule of thumb: if the value
+  only makes sense inside a compose file, it's wiring.
+- **Allowed — third-party images.** A sibling you don't control (a database,
+  a proxy) takes its config and secrets however it takes them; the deploy
+  contract's env secret slots (`KEY: ""`) exist for exactly this.
+- **Forbidden — first-party app config and secrets.** Anything the
+  component's own code reads as a setting or credential lives in the config
+  file (`SecretStr` for secrets, masked in the deploy UI via the typed
+  schema). No `API_KEY: ""`-style slots on first-party services — two open
+  channels for the same value is precisely the "why is this value what it is"
+  ambiguity the one-file rule exists to kill.
+
 ## Using the library
 
 Install it (`uv add robotsix-config`, SHA-pinned via `[tool.uv.sources]` per
@@ -131,9 +150,10 @@ cutover** — no deprecated aliases or compatibility shims.
    pydantic + JSON, no YAML, no env overlay).
 2. Migrate components one at a time to `robotsix_config.load_config`: move any
    non-pydantic schema to a pydantic model, load from the one file (drop every
-   `ROBOTSIX_*` value variable and CLI-override path — no aliases), align the
-   config filename across dev and deploy (`config.json`), and use the `0600`
-   writer. Do the ones furthest from the standard first.
+   `ROBOTSIX_*` value variable, CLI-override path, *and* first-party env
+   secret slot in the deploy compose — no aliases), align the config filename
+   across dev and deploy (`config.json`), and use the `0600` writer. Do the
+   ones furthest from the standard first.
 3. Commit `config/config.schema.json` (from `config_schema_json`) and add the
    CI drift check so the typed schema stays in sync with the model.
 4. The deployment system consumes the schema: central-deploy's contract § 8

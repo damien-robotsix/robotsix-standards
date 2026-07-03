@@ -21,8 +21,11 @@ dependencies won't resolve). **Do not advertise a `pip install` path.**
   metadata hatchling validates.
 - **No PyPI.** Nothing is published to a package index (see the
   [repo baseline](repo-baseline.md#no-package-index-consume-libraries-from-git)).
-  Repos carry **no publish/release workflow** — no `pypi-publish`, no
-  release-please, no PyPI token.
+  Repos carry **no index-publish workflow** — no `pypi-publish`, no
+  release-please, no PyPI token. (The shared auto-release workflow tags
+  versions and compiles the changelog — see
+  [changelog & releases](repo-baseline.md#changelog-releases) — but publishes
+  nothing to any index.)
 - **Libraries** are consumed straight from git via uv `[tool.uv.sources]`
   (`{ git = "…", rev = "…" }`), pinned by revision. They still ship `py.typed`
   for downstream type-checking.
@@ -33,9 +36,15 @@ dependencies won't resolve). **Do not advertise a `pip install` path.**
 
 ## `requires-python`
 
-- **Libraries** target `>=3.11` so the widest set of consumers can depend on
-  them.
-- **Deployable components** target the stack runtime baseline (`>=3.14`).
+- **Every repo — libraries and deployable components alike — targets the
+  stack runtime baseline: `requires-python = ">=3.14"`.** The stack has no
+  external consumers (no package index; first-party deps come from git), so a
+  lower library floor buys nothing and costs real things: three years of
+  language features forgone, and either a CI matrix for versions nothing
+  runs, or a support claim CI never tests.
+- **Lowering the floor is the exception, made deliberately** — when a library
+  gains a genuine consumer on an older runtime. Like PyPI publishing: added
+  back on purpose, never the default.
 - **Metadata is authoritative — keep prose in sync.** A README claiming a
   Python floor different from `pyproject.toml` hard-blocks users the docs
   invite. Fix the prose, not the metadata.

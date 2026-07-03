@@ -42,9 +42,12 @@ So "make my repo deployable" is really three tasks:
 central-deploy pulls the `image:` ref verbatim. If CI doesn't publish it, the
 deploy fails at pull time even with a perfect compose file.
 
-- Add a GitHub Actions workflow that builds and pushes on every push to the
-  deploy branch, tagged to match the ref in your compose (convention:
-  `ghcr.io/damien-robotsix/<repo>:main`).
+- Add a `release.yml` that calls the shared `docker-release.yml` reusable
+  workflow (caller template in the
+  [robotsix-github-workflows](https://github.com/damien-robotsix/robotsix-github-workflows)
+  README; policy in [Docker build & release](docker-standard.md)). It
+  publishes `ghcr.io/damien-robotsix/<repo>:main` on every push to main —
+  matching the ref in your compose.
 - central-deploy **does honor** the compose `command:` (and `entrypoint:`) —
   it is parsed and applied to each container (see the
   [deploy contract](deploy-contract.md) §7). So a single image can back
@@ -82,15 +85,6 @@ services:
     image: ghcr.io/damien-robotsix/my-service:main
     ports:
       - "8300:8080"               # "<host>:<container>"; host port unique across all components
-    environment:
-      API_KEY: ""                 # empty value = secret slot, operator fills it in the UI
-      LOG_LEVEL: info             # non-empty value = editable default
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8080/health"]
-      interval: 30s               # Go duration strings (30s, 1m30s), converted to seconds
-      timeout: 10s
-      retries: 3
-      start_period: 15s
     volumes:
       - my-service-data:/data     # named volumes ONLY — no ./ , / , or ~ paths (§4)
 volumes:
@@ -98,6 +92,30 @@ volumes:
     labels:
       robotsix.deploy.stateful: "true"   # persistent data → blocking "starts EMPTY" warning at onboard (§6)
 ```
+
+Two things deliberately absent from the skeleton:
+
+- **No `healthcheck:`** — the image's `HEALTHCHECK` is the canonical probe
+  (see [Docker build & release](docker-standard.md)) and applies
+  automatically. Add a compose-level override only when the deploy context
+  genuinely needs a different probe, and use only the Python stdlib (the
+  image has no curl):
+
+  ```yaml
+  healthcheck:
+    test: ["CMD", "python", "-c", "import urllib.request,sys; sys.exit(0 if urllib.request.urlopen('http://localhost:8080/health').status==200 else 1)"]
+    interval: 30s                 # Go duration strings (30s, 1m30s), converted to seconds
+    timeout: 10s
+    retries: 3
+  ```
+
+- **No `environment:` config or secrets** — a first-party service takes all
+  settings and secrets through the config file (step C below; see the
+  [config standard](config-standard.md)). `environment:` is for
+  infrastructure wiring (e.g. `DOCKER_HOST` to a socket-proxy sibling) and
+  for **third-party sibling images**, where an empty value (`KEY: ""`)
+  declares a secret slot the operator fills in the UI and a non-empty value
+  is an editable default.
 
 ### Multi-service skeleton
 
@@ -115,8 +133,6 @@ services:
       robotsix.deploy.primary: "true"
     ports:
       - "8300:8080"
-    environment:
-      AUTH_TOKEN: ""
   worker:                         # sibling → container "my-app-worker" (component id is still "board"'s key — see note)
     image: ghcr.io/damien-robotsix/my-app-worker:main
     volumes:
@@ -138,8 +154,9 @@ volumes:
 |---|---|---|
 | Expose a port | `ports: ["<host>:<container>"]` | §4 |
 | Persist data | named volume + top-level `volumes:` entry, flag `stateful` | §4, §6 |
-| A secret the operator fills in | `environment:` key with empty value (`KEY: ""`) | §4 |
-| A default env value | `environment:` key with a value | §4 |
+| A first-party secret or setting | the config file — **not** `environment:` (see the [config standard](config-standard.md)) | §8 |
+| A secret slot on a *third-party* sibling | `environment:` key with empty value (`KEY: ""`) | §4 |
+| A default env value on a *third-party* sibling | `environment:` key with a value | §4 |
 | A health probe | `healthcheck:` with `["CMD", …]` or `["CMD-SHELL", …]` | §4 |
 | Rename a container | `container_name:` | §2 |
 | **Build an image** | ❌ not allowed — publish it from CI instead | §7 (parse error) |
@@ -152,8 +169,12 @@ volumes:
 Both bypass the "named volumes only" rule and are injected at runtime, so do
 **not** list them in `volumes:` (§5):
 
-- `robotsix.deploy.claude-mount: "true"` — mounts `~/.claude` → `/root/.claude`
-  (rw). Only if the service runs Claude Code and needs its session state.
+- `robotsix.deploy.claude-mount: "true"` — mounts the host `~/.claude` →
+  **`/home/app/.claude`** (rw), per the
+  [standardized container layout](docker-standard.md). The mode-`0600`
+  credentials inside stay readable because central-deploy runs the container
+  as the host operator's uid. Only if the service runs Claude Code / the
+  claude-sdk transport and needs its session state.
 - `robotsix.deploy.host-docker-sock: "true"` — mounts the host Docker socket
   (ro) into a **non-primary** service only. **Dangerous** — root-equivalent host
   control. Use only on a hardened socket-proxy sibling, never on the app

@@ -31,10 +31,13 @@ release machinery no one asked for. First-party libraries are consumed **directl
 from their git repositories**, using the language's native git-dependency
 support — for Python, uv's `[tool.uv.sources]`.
 
-Repos therefore carry **no publish/release workflow** (no `pypi-publish`,
+Repos therefore carry **no index-publish workflow** (no `pypi-publish`,
 release-please, or index token). A library that later needs genuine public
 distribution can add publishing back deliberately — but that is the exception,
-not the default.
+not the default. (Repos *do* release — versions, tags, a compiled changelog —
+via the shared auto-release workflow; see
+[changelog & releases](#changelog-releases). A release publishes nothing to
+any package index.)
 
 #### Pin to a commit SHA, not a branch
 
@@ -70,18 +73,45 @@ sources.)
 
 New languages get their own page here before the first repo lands.
 
+## Changelog & releases
+
+One mechanism, fleet-wide: **[towncrier](https://towncrier.readthedocs.io)
+newsfragments, compiled by the shared auto-release workflow.**
+
+- **Every PR adds a newsfragment** in `changelog.d/` (`.breaking.md`,
+  `.feature.md`, `.bugfix.md`, `.misc.md`); CI enforces it via `towncrier
+  check --compare-with origin/<base>` (a `skip-changelog` PR label exempts
+  changes with nothing to record). Fragments are per-PR files, so parallel
+  PRs never conflict on the changelog.
+- **`CHANGELOG.md` is written only by the release workflow** — never by hand.
+  It stays in [Keep a Changelog](https://keepachangelog.com) form.
+- **Releases are automated.** The shared auto-release workflow (in
+  [robotsix-github-workflows](https://github.com/damien-robotsix/robotsix-github-workflows);
+  runs weekly plus on demand) does nothing when `changelog.d/` is empty;
+  otherwise it derives the bump from the fragment types (any `breaking` or
+  `feature` → minor, else patch), runs `towncrier build`, bumps the version in
+  `pyproject.toml`, commits, and tags `v0.X.Y`. For deployable components the
+  `v*` tag in turn publishes the `X.Y.Z` image tag (see
+  [Docker build & release](docker-standard.md)).
+- **Versions stay `0.x`** until a repo deliberately declares `1.0.0` — that is
+  a human statement about stability, never automated. Under semver 0.x there
+  is no compatibility promise, which matches the stack's pre-release,
+  clean-cutover stance.
+
 ## Repo hygiene
 
-- **Changelog.** Maintain `CHANGELOG.md` in [Keep a Changelog](https://keepachangelog.com)
-  form under an `## 0.0.0 (unreleased)` heading; every PR adds an entry (CI
-  enforces it). The fleet mechanism is
-  [towncrier](https://towncrier.readthedocs.io) newsfragments: each PR drops a
-  fragment in `changelog.d/`, CI runs `towncrier check --compare-with
-  origin/<base>`, and fragments are compiled into `CHANGELOG.md` at release
-  time (a `skip-changelog` PR label exempts changes with nothing to record).
-- **Module registration.** Every file is registered in `docs/modules.yaml`
-  under exactly one module; a drift check fails CI on unregistered or stale
-  paths. New modules start by adding an entry there.
+- **Module registration.** `docs/modules.yaml` is the repo's machine-readable
+  module map, consumed by
+  [robotsix-modules](https://github.com/damien-robotsix/robotsix-modules):
+  the CI drift gate, the mill's module-scoped agent workflows, and agents
+  navigating the repo (read the map first instead of exploring). Each module
+  declares an **id**, a required **one-to-two-line description** (what it
+  does, when to look there — the part that beats `ls`), and root globs that
+  default to the standard layout (`src/<pkg>/<module>/**`,
+  `tests/<module>/**`, `docs/<module>/**`) — a conventional module needs no
+  explicit paths; only out-of-convention files are listed. The drift check
+  fails CI when a file matches **no** module's globs, so nothing is invisible
+  to module-scoped tooling.
 - **Truthful docs.** README / AGENT.md describe what the code actually does;
   don't let removed commands, renamed paths, or old version claims linger.
 - **Point at the standards.** Every repo's `README.md` and `AGENT.md` link to
@@ -89,10 +119,33 @@ New languages get their own page here before the first repo lands.
   so contributors find the shared conventions from any repo.
 - **License.** MIT, as a `LICENSE` file at the repo root.
 
+## AGENT.md
+
+Every repo ships an `AGENT.md`: the accumulated, repo-specific working
+knowledge for agents and contributors.
+
+- **Skeleton:** an opening line linking robotsix-standards, one paragraph
+  stating what the repo is and its tier (library / deployable component /
+  bootstrap), then rule sections.
+- **Format:** each entry is a **Rule** (imperative, checkable) followed by its
+  **Rationale** — the failure it prevents, with the incident/PR/ticket
+  reference when one exists. A rule whose failure mode can't be stated
+  probably isn't one.
+- **Scope: repo-specific knowledge only.** Anything true fleet-wide belongs in
+  robotsix-standards, linked rather than restated — a copied rule silently
+  drifts the moment the standard changes. The test: *would this rule apply in
+  a sibling repo?* Then it goes upstream.
+- Truthfulness applies as to the README: prune rules whose code is gone.
+
 ## CI and security gates
 
-Prefer the fleet's shared reusable workflows; pin every third-party action to a
-commit SHA (with a `# vX.Y.Z` comment). The standard gate set:
+**The standards hold the rules; the gates live in
+[robotsix-github-workflows](https://github.com/damien-robotsix/robotsix-github-workflows).**
+Repos call the shared reusable workflows rather than assembling their own
+steps, and the copy-paste caller template for each workflow lives in that
+repo's README — standards pages don't embed workflow YAML, so templates
+version with the workflows they call. Pin every third-party action to a commit
+SHA (with a `# vX.Y.Z` comment). The standard gate set:
 
 - **Lint & types:** the language page's linters and type checker, as blocking
   gates ([Python](python.md): ruff, mypy strict, deptry).
@@ -108,11 +161,35 @@ commit SHA (with a `# vX.Y.Z` comment). The standard gate set:
   CVE audit, and `dependency-review` on PRs (`fail-on-severity: high`).
 - **Container image:** repos that ship an image also scan it in CI — see
   [Docker build & release](docker-standard.md).
+- **Baseline conformance:** the shared baseline-check workflow verifies the
+  mechanical rules of this page — `AGENT.md` present and linking the
+  standards, `dependabot.yml` covering the
+  [required ecosystems](#automated-dependency-updates).
 
 > **Dependency-review needs the Dependency graph enabled.** The
-> `dependency-review` action errors with *"Dependency review is not supported on
-> this repository"* until the repo's **Dependency graph** is turned on (enable
-> Dependabot alerts / automated security fixes, which turn it on). Enable it once
-> per repo, or the gate can never go green. It also only supports
-> `pull_request` events — skip it on pushes (`if: github.event_name ==
-> 'pull_request'`) or it fails every push to main.
+> `dependency-review` action errors with *"Dependency review is not supported
+> on this repository"* until the repo's **Dependency graph** is turned on
+> (enable Dependabot alerts / automated security fixes, which turn it on).
+> Enable it once per repo — a GitHub setting no workflow can automate — or the
+> gate can never go green.
+
+## Automated dependency updates
+
+Every pin the standards mandate has exactly one named bumper — a pin without a
+bumper is a slow leak (a frozen base-image digest, for instance, stops
+receiving security patches until someone moves it):
+
+| Pin | Bumper |
+|---|---|
+| First-party `[tool.uv.sources]` SHAs | the scheduled pin-bump workflow (above) |
+| Third-party packages (`uv.lock`) | Dependabot `uv` ecosystem |
+| GitHub Actions SHAs | Dependabot `github-actions` ecosystem |
+| Base-image digests + the uv `COPY --from` pin | Dependabot `docker` ecosystem |
+| Pre-commit hook versions | Dependabot `pre-commit` ecosystem |
+
+`.github/dependabot.yml` therefore covers **`uv`, `github-actions`, and
+`pre-commit`** in every repo, plus **`docker`** in repos that ship an image
+(GitHub only reads the file per-repo — it cannot be centralized, so the
+baseline-check gate verifies its contents instead). Dependabot PRs auto-merge
+once required checks pass, via the shared `dependabot-auto-merge.yml` caller
+from robotsix-github-workflows.

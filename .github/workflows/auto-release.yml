@@ -12,7 +12,7 @@ jobs:
     permissions:
       contents: write
       pull-requests: write
-    uses: damien-robotsix/robotsix-github-workflows/.github/workflows/auto-release.yml@54ffc3ec7cfdb1b74cd105fa5df78e68363edcbb # main
+    uses: damien-robotsix/robotsix-github-workflows/.github/workflows/auto-release.yml@7314c9b6c2b536ca81023e8841f272b72733262e # main
     # Authenticates as the fleet GitHub App — the installation token is
     # minted inside the reusable workflow; no PAT to rotate.
     with:

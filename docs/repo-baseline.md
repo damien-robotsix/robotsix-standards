@@ -176,7 +176,9 @@ gate set:
 - **Docs:** a strict docs build (`mkdocs build --strict`) when the repo
   publishes a docs site.
 - **Security:** CodeQL (SAST), secret scanning + push protection, a dependency
-  CVE audit, and `dependency-review` on PRs (`fail-on-severity: high`).
+  CVE audit, and `dependency-review` on PRs (`fail-on-severity: high` is the
+  required floor; a repo may set a stricter value such as `moderate` —
+  strictness is per-repo headroom, laxity is not).
 - **Container image:** repos that ship an image also scan it in CI — see
   [Docker build & release](docker-standard.md).
 - **Baseline conformance:** the shared baseline-check workflow verifies the

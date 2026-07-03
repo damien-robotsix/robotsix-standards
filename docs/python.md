@@ -161,8 +161,11 @@ fleet's converged practice, not a minimum to improvise beyond):
 
 - **File checks:** `end-of-file-fixer`, `trailing-whitespace`,
   `check-merge-conflict`, `check-added-large-files`, `check-yaml`,
-  `check-toml`, `check-json`, `detect-private-key`.
-- **Code:** `ruff` (with `--fix`), `ruff-format`, `mypy`.
+  `check-toml`, `check-json`, `check-case-conflict`, `detect-private-key`.
+- **Code:** `ruff` (with `--fix`), `ruff-format`, `mypy`, `check-ast`
+  (rejects Python that doesn't parse before slower hooks run),
+  `debug-statements` (leftover `breakpoint()`/`pdb` — cheap to catch at
+  commit time, embarrassing to catch in review).
 - **Secrets:** `detect-secrets` (with a committed `.secrets.baseline`) —
   catches credentials *before* the commit exists, complementing CI's push
   protection; this matters more when agents author most commits.

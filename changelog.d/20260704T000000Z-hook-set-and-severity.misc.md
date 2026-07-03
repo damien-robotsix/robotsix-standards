@@ -1,0 +1,1 @@
+Pre-commit converged set adopts the hooks the mill already rolled out fleet-wide (`check-ast`, `check-case-conflict`, `debug-statements`); dependency-review severity clarified as a floor (`high` required, stricter per-repo values like `moderate` allowed). Both from the 2026-07-03/04 robotsix-llmio conformance audit.

@@ -152,13 +152,15 @@ cutover** — no deprecated aliases or compatibility shims.
    non-pydantic schema to a pydantic model, load from the one file (drop every
    `ROBOTSIX_*` value variable, CLI-override path, *and* first-party env
    secret slot in the deploy compose — no aliases), align the config filename
-   across dev and deploy (`config.json`), and use the `0600` writer. Do the
-   ones furthest from the standard first.
+   across dev and deploy (`config.json`), and use the `0600` writer.
+   **The old YAML path is deleted in the same change** — no backward
+   compatibility, no dual-config window; any data/format migration is handled
+   by hand, case by case. Do the ones furthest from the standard first.
 3. Commit `config/config.schema.json` (from `config_schema_json`) and add the
    CI drift check so the typed schema stays in sync with the model.
 4. The deployment system consumes the schema: central-deploy's contract § 8
    reads `config/config.json` + `config/config.schema.json` and renders typed
-   inputs (transition from the YAML empty-leaf heuristic is in progress).
+   inputs; the old YAML empty-leaf heuristic is removed outright, not aliased.
 
 Each component migrates in one step — there's no dual-config transition to
 manage.

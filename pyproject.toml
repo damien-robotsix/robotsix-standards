@@ -3,13 +3,37 @@ name = "robotsix-standards"
 version = "0.1.0"
 description = "Cross-cutting config and deployment standards for the robotsix stack."
 readme = "README.md"
-requires-python = ">=3.11"
+requires-python = ">=3.14"
 license = { file = "LICENSE" }
 authors = [{ name = "Damien SIX", email = "damien.robotsix@gmail.com" }]
 
 [dependency-groups]
 docs = ["mkdocs-material"]
 
+[tool.towncrier]
+directory = "changelog.d"
+filename = "CHANGELOG.md"
+name = "robotsix-standards"
+
+[[tool.towncrier.type]]
+directory = "breaking"
+name = "Breaking"
+showcontent = true
+
+[[tool.towncrier.type]]
+directory = "feature"
+name = "Added"
+showcontent = true
+
+[[tool.towncrier.type]]
+directory = "bugfix"
+name = "Fixed"
+showcontent = true
+
+[[tool.towncrier.type]]
+directory = "misc"
+name = "Changed"
+showcontent = true
+
 # This repo is documentation only. The shared configuration library that
-# implements the config standard lives in `robotsix-yaml-config` (its
-# `[pydantic]` extra), not here.
+# implements the config standard lives in `robotsix-config`, not here.

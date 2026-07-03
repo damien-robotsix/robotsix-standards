@@ -58,9 +58,9 @@ unauthenticated.
 - **Logs go to stdout/stderr, never to files.** The container log stream is
   the fleet's one log sink — `docker logs` and the deploy dashboard see
   everything, and rotation is the runtime's problem. A file under a volume is
-  either *data* (an audit trail the app produces — then name and treat it as
-  data, `stateful` flag and all) or a mistake: file logs are invisible to the
-  log view, grow without rotation, and pollute stateful-volume handling.
+  either *data* (an audit trail the app produces — then name the volume as
+  data) or a mistake: file logs are invisible to the log view and grow
+  without rotation.
 - **Log level is a config field** — a `log_level` enum in the component's
   pydantic model (see the [config standard](config-standard.md)), not an
   environment variable.

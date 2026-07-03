@@ -29,10 +29,9 @@ genuinely outgrows static files — that is the exception, not the default.
 ## Tests
 
 - **vitest** with `@vitest/coverage-v8`, run in CI (`vitest run --coverage`).
-- The `thresholds` in `vitest.config.mjs` are a **ratchet floor that only
-  ever increases** — parity with the Python coverage gate: never lower a
-  threshold to make a PR pass; add tests, then ratchet the floor up to just
-  under the reported values.
+- The `thresholds` in `vitest.config.mjs` are the **same fleet-wide floor as
+  Python: 80** (see [Tests](python.md#tests)) — one number, never lowered to
+  make a PR pass; add tests instead. The floor moves only fleet-wide.
 - **Every module-level function is attached to an explicit export surface**
   (e.g. a public `window.<pkg>*` assignment or a `…Internals` object for
   testable helpers), so every function is unit-testable. *Rationale: a

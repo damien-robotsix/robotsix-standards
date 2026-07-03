@@ -103,12 +103,16 @@ ruff suppressions above.
 
 ## Tests
 
-- `pytest`, with coverage enforced in CI via the shared workflow's
-  `coverage-threshold` (`--cov-fail-under`). The fleet floor is **80%**; the
-  gate **ratchets** — pin it at (or just below) current measured coverage,
-  raise it as coverage grows, never lower it. Set
-  `[tool.coverage.report] fail_under` to the same value: the CLI flag
-  overrides it, so a lower `coverage-threshold` silently weakens the gate.
+- `pytest`, with coverage gated at **one fleet-wide floor: 80%**, the same in
+  every repo. The floor is enforced by the shared `python-ci.yml` workflow —
+  it lives in one place, so no repo can slide under it — and
+  `[tool.coverage.report] fail_under = 80` in each repo keeps local runs
+  honest. No per-repo thresholds, no ratchet to maintain: coverage above the
+  floor is welcome, but the gate stops caring beyond 80.
+- **The floor moves only fleet-wide.** When every repo measures above a
+  higher value, the floor in the shared workflow is raised for everyone at
+  once — one PR in robotsix-github-workflows, a deliberate decision. It never
+  rises above what the weakest repo clears, and it never moves per-repo.
 - **Test layout mirrors the package:** tests for module X live under
   `tests/X/`, never at the `tests/` root. New modules get a matching test
   directory.

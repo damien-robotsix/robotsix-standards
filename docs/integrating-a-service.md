@@ -89,9 +89,11 @@ services:
       - my-service-data:/data     # named volumes ONLY — no ./ , / , or ~ paths (§4)
 volumes:
   my-service-data:                # every named volume used above must be declared here
-    labels:
-      robotsix.deploy.stateful: "true"   # persistent data → blocking "starts EMPTY" warning at onboard (§6)
 ```
+
+> Named volumes start **empty** on first deploy; migrate data in by hand if
+> needed. Backing volumes up is the **operator's responsibility** at the host
+> level — the deployment system does not manage backups.
 
 Two things deliberately absent from the skeleton:
 
@@ -139,8 +141,6 @@ services:
       - my-app-data:/data
 volumes:
   my-app-data:
-    labels:
-      robotsix.deploy.stateful: "true"
 ```
 
 > Note: the **component id** comes from the operator-supplied `name` at
@@ -153,7 +153,7 @@ volumes:
 | You want to… | Do this | Contract |
 |---|---|---|
 | Expose a port | `ports: ["<host>:<container>"]` | §4 |
-| Persist data | named volume + top-level `volumes:` entry, flag `stateful` | §4, §6 |
+| Persist data | named volume + top-level `volumes:` entry | §4 |
 | A first-party secret or setting | the config file — **not** `environment:` (see the [config standard](config-standard.md)) | §8 |
 | A secret slot on a *third-party* sibling | `environment:` key with empty value (`KEY: ""`) | §4 |
 | A default env value on a *third-party* sibling | `environment:` key with a value | §4 |
@@ -212,8 +212,6 @@ don't ask operators to hand-edit a volume. Per the
          - my-service-config:/home/app/config    # dirname of config-target must match a mount
    volumes:
      my-service-config:
-       labels:
-         robotsix.deploy.stateful: "true"
    ```
 
 central-deploy merges operator edits into the template and **writes
@@ -221,11 +219,6 @@ central-deploy merges operator edits into the template and **writes
 save. Your app reads only from the mounted file. If the config template exists
 but the `config-target` label is missing or its dirname doesn't match a mount,
 preflight fails (§8).
-
-> **Transition note:** contract § 8 as currently served still describes the
-> YAML empty-leaf-is-a-secret heuristic; central-deploy's JSON + typed-schema
-> support is the in-progress § 8 revision. The contract page in central-deploy
-> is authoritative for what the running server accepts today.
 
 ### config-assist (auto-generating operator config)
 
@@ -253,11 +246,8 @@ labels:
    fetches `deploy/docker-compose.yml` (and the config template if present) via
    `POST /onboard/preflight` and shows the parsed component.
 2. Fill secret slots (empty-value env keys and masked config leaves).
-3. Acknowledge any **stateful-volume warning** — flagged volumes start EMPTY;
-   migrate data first if needed. The Deploy button stays disabled until every
-   such warning is dismissed (§6).
-4. Confirm optional toggles (e.g. the Claude mount) if you used those labels.
-5. Deploy. central-deploy pulls the image, injects config + secrets, applies
+3. Confirm optional toggles (e.g. the Claude mount) if you used those labels.
+4. Deploy. central-deploy pulls the image, injects config + secrets, applies
    `restart: unless-stopped`, wires networking, and routes the primary port.
 
 ---

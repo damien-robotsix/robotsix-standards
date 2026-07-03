@@ -190,7 +190,10 @@ gate set:
   artifact the gate depends on (SBOM, coverage report) must run even when an
   earlier step failed — otherwise the failure skips the upload and the
   `if-no-files-found: error` backstop never fires, silently dropping the
-  artifact (a real incident in robotsix-llmio).
+  artifact (a real incident in robotsix-llmio). The CycloneDX SBOM generated
+  by `python-security.yml` follows this pattern: the upload step uses
+  `if: always()` and `if-no-files-found: error`, so a failed scan step never
+  silently drops the SBOM artifact.
 
 **Completeness principle:** a gate in this list exists as (part of) a shared
 reusable workflow — if it can't be called from robotsix-github-workflows, it

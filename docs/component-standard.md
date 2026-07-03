@@ -124,11 +124,28 @@ in the fleet needs it.
   (Distribution mechanism is central-deploy's; components just call llmio.)
 - Tracing is **opt-in, one way**: Langfuse via `robotsix-llmio[tracing]`,
   a graceful no-op when unconfigured.
+- **One Langfuse project per repo/function.** A component's main LLM
+  function traces to a project named `<repo>`; every distinct
+  LLM-generating function inside a component (e.g. a memory subsystem
+  making its own extraction/recall calls) traces to its **own** project,
+  named `<repo>-<function>` — never funnel two functions' traffic into a
+  shared project, tagged or otherwise. Failure prevented: a shared project
+  breaks cost-monitor's 1:1 reconciliation model (one Langfuse project ↔
+  one OpenRouter key ↔ one reconciliation row), and high-volume background
+  traffic drowns the interactive function's traces and skews its
+  latency/cost dashboards.
+- **Each project is registered in cost-monitor's `projects.yaml`**,
+  alongside the OpenRouter key that funds that function. An unregistered
+  project is invisible to the cost dashboard and reconciliation — spend
+  drifts unnoticed.
 - Tracing credentials are **`SecretStr` fields in the config model**, like
   any other secret; at startup the app exports them to the `LANGFUSE_*`
   process environment the SDK expects, *before* the SDK initializes. No
   tracing credentials in compose `environment:` (see the config standard's
   [`environment:` rule](config-standard.md#4-what-environment-is-for)).
+  A subsystem's project gets its **own** credential fields — it must not
+  reuse the component's main `LANGFUSE_*` credentials, or its traffic
+  lands in the main project and silently defeats the per-function split.
 
 ## Build & release
 

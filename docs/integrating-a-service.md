@@ -160,25 +160,27 @@ volumes:
 | A health probe | `healthcheck:` with `["CMD", …]` or `["CMD-SHELL", …]` | §4 |
 | Rename a container | `container_name:` | §2 |
 | **Build an image** | ❌ not allowed — publish it from CI instead | §7 (parse error) |
-| **Bind-mount a host path** | ❌ not allowed (except the two labels below) | §4 (parse error) |
+| **Bind-mount a host path** | ❌ never — named volumes only, no exceptions for components | §4 (parse error) |
 | **Set a per-service command** | `command:` — parsed and applied at container-create time | §7 |
 | **Set restart / networks / depends_on** | don't bother — silently ignored | §7 |
 
-### Special host-mount labels (rare)
+### Special mount labels (rare)
 
-Both bypass the "named volumes only" rule and are injected at runtime, so do
-**not** list them in `volumes:` (§5):
+Both are injected at runtime by central-deploy, so do **not** list them in
+`volumes:` (§5):
 
-- `robotsix.deploy.claude-mount: "true"` — mounts the host `~/.claude` →
-  **`/home/app/.claude`** (rw), per the
-  [standardized container layout](docker-standard.md). The mode-`0600`
-  credentials inside stay readable because central-deploy runs the container
-  as the host operator's uid. Only if the service runs Claude Code / the
-  claude-sdk transport and needs its session state.
+- `robotsix.deploy.claude-mount: "true"` — mounts the central-deploy-managed
+  **`claude-auth` named volume** (rw) at **`/home/app/.claude`**, per the
+  [standardized container layout](docker-standard.md). Authentication happens
+  through **central-deploy's dashboard login flow**, which runs `claude login`
+  into that volume — never by preparing files on the host; no host `~/.claude`
+  is involved. Only for services that run Claude Code / the claude-sdk
+  transport and need its session state.
 - `robotsix.deploy.host-docker-sock: "true"` — mounts the host Docker socket
-  (ro) into a **non-primary** service only. **Dangerous** — root-equivalent host
-  control. Use only on a hardened socket-proxy sibling, never on the app
-  container. (§5 has the full security warning.)
+  (ro) into a **non-primary** service only: the **single sanctioned host
+  mount**, and only on a hardened socket-proxy sibling, never on the app
+  container. **Dangerous** — root-equivalent host control. (§5 has the full
+  security warning.)
 
 ---
 

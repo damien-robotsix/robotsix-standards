@@ -45,16 +45,18 @@ A multi-stage Dockerfile that keeps build tooling out of the runtime image:
 - **Non-root, standardized layout:** every image defaults to the same non-root
   account: user **`app`**, **uid/gid 1000** (overridable via
   `ARG APP_UID`/`APP_GID`), home **`/home/app`**, `WORKDIR /home/app`. The
-  baked uid only matters for local dev: **the deployment system overrides the
-  container user to the deploy host's operator uid:gid at container-create
-  time**, so host-mounted mode-`0600` credentials are readable on any host
-  without loosening their permissions. Consequences of the fixed layout: the
-  deployment system's `claude-mount` always binds to **`/home/app/.claude`**,
-  and the config volume/target lives under **`/home/app/config/`**
-  (`config.json` per the [config standard](config-standard.md)) — no
-  per-component mount-target configuration exists or is needed. Because the
-  runtime uid is not known at build time, **containers treat `$HOME` as
-  read-only and write only to mounted volumes**.
+  deployment system sets the container user to **the single deployment uid
+  (1000) at container-create time**, so ownership inside managed volumes is
+  consistent across the whole fleet regardless of what an image baked in.
+  Fixed mount points, the same in every container: config at
+  **`/home/app/config/`** (`config.json` per the
+  [config standard](config-standard.md)), persistent data at **`/data`**, and
+  — for components carrying the claude-mount label — the central-deploy-managed
+  **`claude-auth` named volume** (contents owned by the deployment uid) at
+  **`/home/app/.claude`**. No per-component mount-target configuration exists
+  or is needed. **Nothing is ever bind-mounted from the host** (see the
+  [deploy contract](deploy-contract.md)); the container's writable surface is
+  exactly its mounted volumes — `$HOME` is otherwise read-only.
 - **Healthcheck:** declare a `HEALTHCHECK` probing the service's health
   endpoint **using only the Python stdlib** — the slim image has no `curl` or
   `wget`, so a curl-based probe fails on every run. The image `HEALTHCHECK` is
@@ -92,9 +94,9 @@ RUN uv export --frozen --no-emit-project --format requirements-txt -o /tmp/requi
 FROM python:3.14-slim@${BASE_DIGEST} AS production
 COPY --from=builder /usr/local/lib/python3.14/site-packages/ /usr/local/lib/python3.14/site-packages/
 COPY --from=builder /usr/local/bin/robotsix-<name> /usr/local/bin/robotsix-<name>
-# Standardized layout: app/1000 default, /home/app. The deployment system
-# overrides the user to the host operator's uid:gid at container-create time,
-# so $HOME is treated as read-only; all writes go to mounted volumes.
+# Standardized layout: app/1000, /home/app. The deployment system sets the
+# container user to the deployment uid (1000) at create time; $HOME is
+# read-only — all writes go to the mounted volumes (config/, /data).
 ARG APP_UID=1000
 ARG APP_GID=1000
 RUN groupadd --gid ${APP_GID} app \

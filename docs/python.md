@@ -4,6 +4,21 @@
 > practices; the language-agnostic rules (tiers, hygiene, CI philosophy) live
 > in the [repo baseline](repo-baseline.md).
 
+## Project layout
+
+- **src layout, one primary package:** code lives in `src/robotsix_<name>/`,
+  the snake_case of the repo name. Every package ships **`py.typed`** — any
+  package may be imported by tests or tooling, and downstream type-checking
+  must see the annotations.
+- **Modules are subdirectories** of the package, mirrored by
+  `tests/<module>/` and `docs/<module>/` — the same convention
+  `docs/modules.yaml`'s default globs assume (see the
+  [repo baseline](repo-baseline.md#repo-hygiene)).
+- **Secondary packages are deliberate**, for one named reason: a client
+  library siblings can import without pulling the service's dependencies
+  (`robotsix_board_client` next to `robotsix_board_agent` is the exemplar).
+  Each extra package registers in `modules.yaml` like anything else.
+
 ## Tooling: uv
 
 **uv is the standard tool** for installing, running, and building robotsix
@@ -155,5 +170,7 @@ CI runs `pre-commit run --all-files` so the hooks and the gates can't drift.
 
 ## Docs
 
-Repos that publish a docs site build with `mkdocs` (material theme) and gate
-CI on `mkdocs build --strict`.
+**Every repo publishes its docs site**: `mkdocs` (material theme), built and
+deployed to GitHub Pages by the shared `python-docs.yml` reusable workflow,
+gated in CI by `mkdocs build --strict`. The fleet's sites are indexed on the
+standards' [fleet page](fleet.md).

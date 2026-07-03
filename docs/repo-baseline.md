@@ -105,7 +105,9 @@ newsfragments, compiled by the shared auto-release workflow.**
 
 ## Repo hygiene
 
-- **Module registration.** `docs/modules.yaml` is the repo's machine-readable
+- **Module registration** *(mill-managed repos — those with a board; a repo
+  nothing consumes the registry from, e.g. a docs-only repo, is exempt)*.
+  `docs/modules.yaml` is the repo's machine-readable
   module map, consumed by
   [robotsix-modules](https://github.com/damien-robotsix/robotsix-modules):
   the CI drift gate, the mill's module-scoped agent workflows, and agents
@@ -159,12 +161,10 @@ gate set:
 
 - **Lint & types:** the language page's linters and type checker, as blocking
   gates ([Python](python.md): ruff, mypy strict, deptry).
-- **Tests & coverage:** the test suite with a coverage floor enforced in CI.
-  The fleet floor is **80%**, and the gate **ratchets**: each repo pins its CI
-  threshold at (or just below) its current measured coverage and never lowers
-  it. Keep the CI threshold and the in-repo config (e.g. coverage
-  `fail_under`) identical — a CI flag silently overrides the repo config, so a
-  mismatch means the weaker number wins.
+- **Tests & coverage:** the test suite with **one fleet-wide coverage floor
+  (80%)**, enforced by the shared workflow so it lives in exactly one place.
+  No per-repo thresholds; the floor is raised fleet-wide, deliberately, when
+  every repo already clears the new value (see [Tests](python.md#tests)).
 - **Docs:** a strict docs build (`mkdocs build --strict`) when the repo
   publishes a docs site.
 - **Security:** CodeQL (SAST), secret scanning + push protection, a dependency
@@ -180,6 +180,39 @@ gate set:
   earlier step failed — otherwise the failure skips the upload and the
   `if-no-files-found: error` backstop never fires, silently dropping the
   artifact (a real incident in robotsix-llmio).
+
+**Completeness principle:** a gate in this list exists as (part of) a shared
+reusable workflow — if it can't be called from robotsix-github-workflows, it
+isn't a standard gate yet. Gates adopted à la carte drift à la carte: before
+this rule, CodeQL ran in 4 of 13 repos and the weekly image rescan in 3 of 8,
+each a hand-copied workflow file.
+
+## Branch protection
+
+`main` is protected identically in every repo — several standards are
+silently vacuous without it (auto-merge merges instantly, direct pushes
+bypass every gate, the changelog check never runs):
+
+- **PRs only** — no direct pushes to `main`.
+- **Required status checks** — the shared-workflow gates above.
+- **Squash merge**, force-push disabled.
+
+GitHub settings can't live in the repo, so uniformity comes from the
+idempotent apply-script in robotsix-github-workflows (`gh api` loop over the
+fleet) — run it when a repo is created or the required-check set changes.
+
+## Starting a new repo
+
+New repos start from the language's template repository —
+**`robotsix-template-python`** (a GitHub template) carries the full baseline
+pre-assembled: pyproject skeleton, `dependabot.yml`, the standard pre-commit
+set, shared-workflow callers, towncrier config, `AGENT.md` skeleton,
+`docs/modules.yaml`, LICENSE — plus a component overlay (Dockerfile, the two
+composes, `config/` scaffolding) for deployable services. The template is a
+fleet member like any other: the baseline-check gates it, dependabot bumps
+it, standards changes land there as tickets — so it cannot rot. Templates
+are per-language, parallel to the language pages: a new language earns a
+standards page *and* a template before its first repo lands.
 
 > **Dependency-review needs the Dependency graph enabled.** The
 > `dependency-review` action errors with *"Dependency review is not supported

@@ -79,3 +79,20 @@ source of values, the model's defaults fill the rest; no env overlay, no CLI
 merge — with secret masking (`SecretStr`), a `0600` config writer
 (`dump_config`), and a JSON-Schema emitter (`config_schema_json`) for the
 deploy UI. One shared library, already a stack dependency.
+
+## Changing the standards
+
+The standards change through the mill, like everything else:
+
+- **File a ticket on the `robotsix-standards` board** — for a gap, a
+  contradiction with fleet reality, or an incident whose post-mortem traces
+  to a standards flaw (the 2026-07-03 claude-mount outage is the worked
+  example: outage → standards change → fleet tickets, same day).
+- The ticket follows the normal mill pipeline; **the approval gate is the
+  operator's decision point**. A standard nobody approved is a suggestion.
+- An accepted change lands as **one docs PR plus fleet-alignment tickets** —
+  a standards change with no tickets is a wish.
+- **Clean cutover is the default** for every migration: no compatibility
+  shims, no aliases; data moves by hand, case by case.
+- **Supersession is normal.** When reality reverses a decision, the new text
+  references what it replaces — openly, not by silent rewrite.

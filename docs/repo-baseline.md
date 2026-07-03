@@ -73,7 +73,10 @@ sources.)
 - **[JavaScript](javascript.md)** — vanilla frontend JS as static assets,
   lockfile discipline, vitest coverage floor, eslint/stylelint.
 
-New languages get their own page here before the first repo lands. Generic
+New languages get their own page here before the first repo lands
+(`robotsix-mill-ros2` predates this rule; its ROS 2 practices page is being
+derived from that repo's actual conventions — started solid, adapted as it
+goes). Generic
 language conventions live **only** on these pages — agent systems (the mill's
 implement/refine/review agents) point here rather than carrying their own
 copies, and repo AGENT.mds link rather than restate.
@@ -119,6 +122,11 @@ newsfragments, compiled by the shared auto-release workflow.**
   explicit paths; only out-of-convention files are listed. The drift check
   fails CI when a file matches **no** module's globs, so nothing is invisible
   to module-scoped tooling.
+- **README skeleton.** Five required elements, prose not ceremony: what the
+  repo is (one paragraph — the same one-liner the [fleet page](fleet.md)
+  carries; they must agree), its tier (linking the standards), a quickstart
+  (the 3-5 commands that actually work), the docs-site link, and the
+  standards link. Anything deeper belongs in the docs site or AGENT.md.
 - **Truthful docs.** README / AGENT.md describe what the code actually does;
   don't let removed commands, renamed paths, or old version claims linger.
 - **Point at the standards.** Every repo's `README.md` and `AGENT.md` link to
@@ -213,6 +221,22 @@ fleet member like any other: the baseline-check gates it, dependabot bumps
 it, standards changes land there as tickets — so it cannot rot. Templates
 are per-language, parallel to the language pages: a new language earns a
 standards page *and* a template before its first repo lands.
+
+## Retiring a repo
+
+The mirror image, exercised by the broker decommission (2026-07-03):
+
+1. **Deprecate first.** File removal tickets in every consumer — find them
+   by sweeping the fleet's `[tool.uv.sources]` for the repo. Removals are
+   clean cutover, per house rule.
+2. **Gate the archive on the removals** (the mill's `unblocks` mechanism).
+   **Never privatize or archive while any git pin still points at the
+   repo** — consumers resolve first-party deps from git, so flipping
+   visibility first breaks every dependent's CI at once.
+3. **Then retire:** visibility → private, *then* archive (order matters —
+   archived repos can't be edited); remove the mill board registration, any
+   deployment, and the [fleet page](fleet.md) row.
+4. **Recovery is cheap:** unarchive — nothing is deleted.
 
 > **Dependency-review needs the Dependency graph enabled.** The
 > `dependency-review` action errors with *"Dependency review is not supported

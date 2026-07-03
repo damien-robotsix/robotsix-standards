@@ -71,7 +71,7 @@ sources.)
 - **[Python](python.md)** — uv, hatchling, `requires-python` policy, console
   scripts, lint/type/security gates, test layout, pre-commit hooks.
 - **[JavaScript](javascript.md)** — vanilla frontend JS as static assets,
-  lockfile discipline, vitest coverage ratchet, eslint/stylelint.
+  lockfile discipline, vitest coverage floor, eslint/stylelint.
 
 New languages get their own page here before the first repo lands. Generic
 language conventions live **only** on these pages — agent systems (the mill's

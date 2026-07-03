@@ -54,5 +54,10 @@ Docker socket, read-only, on a hardened non-primary socket-proxy sibling
 deployment system itself ([bootstrap tier](deployment-system.md)), not a
 managed component.
 
+Resource limits follow the same shape: compose resource fields are ignored —
+central-deploy applies a **default memory limit** to every managed container
+(overridable per component in the dashboard), so one leaking service OOMs and
+restarts alone instead of taking the host with it.
+
 For the task-oriented walkthrough of making a repo deployable, see
 [Integrating a service](integrating-a-service.md).

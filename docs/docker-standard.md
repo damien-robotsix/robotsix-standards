@@ -125,9 +125,12 @@ The release workflow's Trivy gate runs only when an image is published. To
 catch vulnerable base images and dependencies **before** merge, CI also builds
 the image on every PR and scans it:
 
-- Build with `docker/build-push-action` (`push: false`, `load: true`), with a
-  GHA layer cache (`cache-from: type=gha`, `cache-to: type=gha,mode=max`) so
-  repeat PR builds reuse unchanged layers.
+- Build with `docker/build-push-action` (`push: false`, `load: true`).
+  **Skip the GHA layer cache for large images**: exporting a multi-GB image's
+  layers to the cache API (`cache-to`) was measured at 45-55 minutes per run
+  on a robotsix image whose cold build takes ~4 minutes — the cache is a net
+  loss well before the gigabyte mark. Only add `cache-from`/`cache-to` after
+  timing both paths on the actual image.
 - Scan with `aquasecurity/trivy-action` at `severity: CRITICAL,HIGH`, SARIF
   uploaded to Code Scanning.
 - **Gate policy: block on fixable findings only** — `ignore-unfixed: true` +

@@ -687,6 +687,23 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="Volumes only — no host-path bind mounts">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#volume-ownership-deployer-guarantee-component-obligation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Volume ownership (deployer guarantee + component obligation)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
     </ul>
@@ -935,6 +952,23 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="Volumes only — no host-path bind mounts">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#volume-ownership-deployer-guarantee-component-obligation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Volume ownership (deployer guarantee + component obligation)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
     </ul>
@@ -1013,6 +1047,23 @@ managed component.</p>
 central-deploy applies a <strong>default memory limit</strong> to every managed container
 (overridable per component in the dashboard), so one leaking service OOMs and
 restarts alone instead of taking the host with it.</p>
+<h3 id="volume-ownership-deployer-guarantee-component-obligation">Volume ownership (deployer guarantee + component obligation)<a class="headerlink" href="#volume-ownership-deployer-guarantee-component-obligation" title="Permanent link">&para;</a></h3>
+<p>Docker's copy-up only fixes named-volume ownership when the image already
+contains the mount path. When a component uses a path the image never prepared
+(e.g. <code>/data</code>, <code>/home/app/.claude</code>), freshly created volumes stay root-owned
+and the component silently fails every write while reporting healthy — chat
+lost all conversations in production (2026-07-04).</p>
+<p><strong>Deployer guarantee.</strong> When the deployment system creates a named volume (first
+creation only — existing volume data is <strong>never touched</strong>), it makes the volume
+root writable by the component's runtime uid: either the uid declared via
+<code>user:</code> in the compose service, or the platform-forced uid when no <code>user:</code> is
+set.</p>
+<p><strong>Component obligation.</strong> Components <strong>MUST NOT</strong> rely on image-side directory
+preparation (Dockerfile <code>mkdir</code> / <code>chown</code>) for volume mount paths, and
+<strong>SHOULD</strong> log resolved persistence paths at startup. The startup log line was
+the single diagnostic that made the root-owned-volume outage diagnosable in
+seconds rather than hours — without it, a component that cannot write its data
+directory reports healthy and the failure is invisible.</p>
 <p>For the task-oriented walkthrough of making a repo deployable, see
 <a href="../integrating-a-service/">Integrating a service</a>.</p>
 

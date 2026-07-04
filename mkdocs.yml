@@ -46,5 +46,6 @@ nav:
       - Deploy contract: deploy-contract.md
       - Entrypoint contract: entrypoint-contract.md
       - Integrating a service: integrating-a-service.md
+      - Chat access: chat-access-standard.md
   - Deployment system:
       - Bootstrap tier: deployment-system.md

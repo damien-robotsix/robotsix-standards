@@ -59,5 +59,26 @@ central-deploy applies a **default memory limit** to every managed container
 (overridable per component in the dashboard), so one leaking service OOMs and
 restarts alone instead of taking the host with it.
 
+### Volume ownership (deployer guarantee + component obligation)
+
+Docker's copy-up only fixes named-volume ownership when the image already
+contains the mount path. When a component uses a path the image never prepared
+(e.g. `/data`, `/home/app/.claude`), freshly created volumes stay root-owned
+and the component silently fails every write while reporting healthy — chat
+lost all conversations in production (2026-07-04).
+
+**Deployer guarantee.** When the deployment system creates a named volume (first
+creation only — existing volume data is **never touched**), it makes the volume
+root writable by the component's runtime uid: either the uid declared via
+`user:` in the compose service, or the platform-forced uid when no `user:` is
+set.
+
+**Component obligation.** Components **MUST NOT** rely on image-side directory
+preparation (Dockerfile `mkdir` / `chown`) for volume mount paths, and
+**SHOULD** log resolved persistence paths at startup. The startup log line was
+the single diagnostic that made the root-owned-volume outage diagnosable in
+seconds rather than hours — without it, a component that cannot write its data
+directory reports healthy and the failure is invisible.
+
 For the task-oriented walkthrough of making a repo deployable, see
 [Integrating a service](integrating-a-service.md).

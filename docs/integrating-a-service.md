@@ -94,6 +94,13 @@ volumes:
 > Named volumes start **empty** on first deploy; migrate data in by hand if
 > needed. Backing volumes up is the **operator's responsibility** at the host
 > level — the deployment system does not manage backups.
+>
+> **Volume ownership.** The deployment system guarantees that every named volume
+> it creates is writable by the component's runtime uid before the first
+> container start (first creation only — existing data is never touched).
+> Components **MUST NOT** rely on image-side `mkdir`/`chown` for volume mount
+> paths, and **SHOULD** log resolved persistence paths at startup. See the
+> [deploy contract](deploy-contract.md) for the full guarantee.
 
 Two things deliberately absent from the skeleton:
 

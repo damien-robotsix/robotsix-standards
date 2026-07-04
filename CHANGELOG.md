@@ -14,6 +14,7 @@
 
 ## 0.0.0 (unreleased)
 
+- Deploy contract: specify volume-ownership responsibility — deployer guarantee (writable-by-uid on first creation) and component obligation (no image-side mkdir/chown reliance; log persistence paths at startup).
 - Switched docs deployment from `actions/deploy-pages` (Pages Actions API) to `peaceiris/actions-gh-pages` (branch-based) to work around persistent "Deployment failed, try again later" errors from the GitHub Pages API. Requires the repo's Pages source to be set to "Deploy from a branch" (branch: `gh-pages`).
 - Revert docs deployment to self-contained workflow; the shared python-docs
   reusable workflow's deploy job, though correctly configured for Pages

@@ -4,7 +4,9 @@ Shared conventions for the robotsix stack, so any repository — whoever wrote i
 whenever — is configured, packaged, tested, and (if deployable) shipped the same
 predictable way.
 
-This repo holds **the standard** (docs under `docs/`). The shared library that
+This repo ([`damien-robotsix/robotsix-standards`](https://github.com/damien-robotsix/robotsix-standards))
+holds **the standard** (docs under `docs/`) — the canonical target of the
+standards link every fleet README and AGENT.md carries. The shared library that
 implements the config standard lives in
 [`robotsix-config`](https://github.com/damien-robotsix/robotsix-config)
 — one pydantic model, one JSON file (`load_config`, `dump_config`,

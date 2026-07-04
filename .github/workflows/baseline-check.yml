@@ -1,0 +1,20 @@
+name: Baseline Check
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions: {}
+
+jobs:
+  baseline:
+    permissions:
+      contents: read
+    uses: damien-robotsix/robotsix-github-workflows/.github/workflows/baseline-check.yml@7314c9b6c2b536ca81023e8841f272b72733262e # main
+    with:
+      has-docker: false
+      # This repo has a mill board but is docs-only: nothing consumes a
+      # module registry from it, so docs/modules.yaml is exempt per the
+      # repo-baseline module-registration rule.
+      has-board: false

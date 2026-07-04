@@ -21,7 +21,7 @@ created; remove it when one is archived.
 |---|---|---|
 | [robotsix-central-deploy](https://github.com/damien-robotsix/robotsix-central-deploy) | The deployment system ([bootstrap tier](deployment-system.md)). | [site](https://robotsix.net/central-deploy/) |
 | [robotsix-mill](https://github.com/damien-robotsix/robotsix-mill) | The agent-driven ticket pipeline (draft → implement → review → deliver). | [site](https://damien-robotsix.github.io/robotsix-mill/) |
-| [robotsix-chat](https://github.com/damien-robotsix/robotsix-chat) | Chat service. | [site](https://damien-robotsix.github.io/robotsix-chat/) |
+| [robotsix-chat](https://github.com/damien-robotsix/robotsix-chat) | Browser + SSE chat server exposing an LLM agent to human users. | [site](https://damien-robotsix.github.io/robotsix-chat/) |
 | [robotsix-auto-mail](https://github.com/damien-robotsix/robotsix-auto-mail) | Mail automation service. | [site](https://damien-robotsix.github.io/robotsix-auto-mail/) |
 | [robotsix-calendar-agent](https://github.com/damien-robotsix/robotsix-calendar-agent) | Calendar agent service. | [site](https://damien-robotsix.github.io/robotsix-calendar-agent/) |
 | [robotsix-board-agent](https://github.com/damien-robotsix/robotsix-board-agent) | Board agent (+ `robotsix_board_client` client library). | [site](https://damien-robotsix.github.io/robotsix-board-agent/) |

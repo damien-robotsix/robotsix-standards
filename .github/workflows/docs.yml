@@ -5,6 +5,10 @@ on:
     branches: [main]
   workflow_dispatch:
 
+# GitHub Pages deploy via the modern Pages Actions (build type: workflow).
+# Self-contained: the shared python-docs reusable workflow, though correctly
+# configured for Pages Actions, causes deploy-pages to fail with "Deployment
+# failed, try again later" when called from this repo.
 permissions:
   contents: read
   pages: write
@@ -15,5 +19,29 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+        with:
+          persist-credentials: false
+      - uses: actions/configure-pages@45bfe0192ca1faeb007ade9deae92b16b8254a0d # v6.0.0
+      - uses: astral-sh/setup-uv@d0cc045d04ccac9d8b7881df0226f9e82c39688e # v6
+        with:
+          enable-cache: true
+          python-version: "3.14"
+      - name: Build docs (strict)
+        run: uv run --group docs mkdocs build --strict
+      - uses: actions/upload-pages-artifact@fc324d3547104276b827a68afc52ff2a11cc49c9 # v5.0.0
+        with:
+          path: site
+
   deploy:
-    uses: damien-robotsix/robotsix-github-workflows/.github/workflows/python-docs.yml@7314c9b6c2b536ca81023e8841f272b72733262e # main
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@cd2ce8fcbc39b97be8ca5fce6e763baed58fa128 # v5.0.0

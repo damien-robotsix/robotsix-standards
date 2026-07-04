@@ -14,5 +14,9 @@
 
 ## 0.0.0 (unreleased)
 
+- Revert docs deployment to self-contained workflow; the shared python-docs
+  reusable workflow's deploy job, though correctly configured for Pages
+  Actions, causes deploy-pages to return "Deployment failed, try again
+  later" when called from this repo.
 - New standard: [Chat access standard](docs/chat-access-standard.md) — how a fleet component makes itself operable by the chat agent (robotsix-chat) via `GET /chat-skill` + `robotsix.deploy.chat-access` label. Cross-linked from component-standard and integrating-a-service checklist.
 - Document python-security.yml's actual gate contents (SBOM, TruffleHog) in the security gate list

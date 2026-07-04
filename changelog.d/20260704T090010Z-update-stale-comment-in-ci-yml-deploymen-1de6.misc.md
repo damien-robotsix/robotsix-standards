@@ -1,0 +1,1 @@
+Update stale comment in ci.yml: deployment no longer uses shared python-docs workflow

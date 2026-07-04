@@ -179,7 +179,8 @@ gate set:
   (complemented by TruffleHog for PR-diff and full-repo scans in the shared
   security workflow), a dependency CVE audit (`pip-audit` in the security
   workflow, `uv audit` in CI), `dependency-review` on PRs (`fail-on-severity:
-  high`), and a CycloneDX SBOM generated and uploaded as a workflow artifact.
+  moderate`), and a CycloneDX SBOM generated and uploaded as a workflow
+  artifact.
 - **Container image:** repos that ship an image also scan it in CI — see
   [Docker build & release](docker-standard.md).
 - **Baseline conformance:** the shared baseline-check workflow verifies the

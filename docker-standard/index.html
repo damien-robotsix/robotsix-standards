@@ -1,0 +1,1274 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Cross-cutting config and deployment standards for the robotsix stack">
+      
+      
+      
+        <link rel="canonical" href="https://damien-robotsix.github.io/robotsix-standards/docker-standard/">
+      
+      
+        <link rel="prev" href="../config-standard/">
+      
+      
+        <link rel="next" href="../deploy-contract/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>Docker build & release - Robotsix Standards</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#docker-build-release" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="Robotsix Standards" class="md-header__button md-logo" aria-label="Robotsix Standards" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Robotsix Standards
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Docker build & release
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/damien-robotsix/robotsix-standards" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="Robotsix Standards" class="md-nav__button md-logo" aria-label="Robotsix Standards" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Robotsix Standards
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/damien-robotsix/robotsix-standards" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../fleet/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    The fleet
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Every repo
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Every repo
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../repo-baseline/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Repo baseline
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../python/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Python practices
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../javascript/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    JavaScript practices
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Deployable components
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Deployable components
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../component-standard/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Component standard
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../config-standard/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Config standard
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Docker build & release
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Docker build & release
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#build-the-dockerfile" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Build — the Dockerfile
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#publish-one-reusable-workflow-the-single-method" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Publish — one reusable workflow (the single method)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#registry-tags" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Registry &amp; tags
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ci-time-image-scan" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        CI-time image scan
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#deploy-updates-are-deliberate" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Deploy — updates are deliberate
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#migrating-off-a-hand-rolled-publish" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Migrating off a hand-rolled publish
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../deploy-contract/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Deploy contract
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../entrypoint-contract/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Entrypoint contract
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../integrating-a-service/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Integrating a service
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../chat-access-standard/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chat access
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Deployment system
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Deployment system
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../deployment-system/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Bootstrap tier
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#build-the-dockerfile" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Build — the Dockerfile
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#publish-one-reusable-workflow-the-single-method" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Publish — one reusable workflow (the single method)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#registry-tags" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Registry &amp; tags
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ci-time-image-scan" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        CI-time image scan
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#deploy-updates-are-deliberate" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Deploy — updates are deliberate
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#migrating-off-a-hand-rolled-publish" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Migrating off a hand-rolled publish
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="docker-build-release">Docker build &amp; release<a class="headerlink" href="#docker-build-release" title="Permanent link">&para;</a></h1>
+<blockquote>
+<p><strong>Scope: deployable components only.</strong> See the
+<a href="../component-standard/">component standard</a>.</p>
+</blockquote>
+<p>Every component builds and ships its image <strong>one way</strong>: one Dockerfile pattern,
+one publish workflow, one registry, one deploy path. No repo hand-rolls its own
+<code>docker build</code>/<code>push</code> — that is how registries, tags, and attestations drift
+apart across the stack.</p>
+<h2 id="build-the-dockerfile">Build — the Dockerfile<a class="headerlink" href="#build-the-dockerfile" title="Permanent link">&para;</a></h2>
+<p>A multi-stage Dockerfile that keeps build tooling out of the runtime image:</p>
+<ul>
+<li><strong>Base:</strong> <code>python:3.14-slim</code>, <strong>digest-pinned</strong> (<code>@sha256:…</code>), matching the
+  component's <code>requires-python</code>. Use the same base in both stages. (Dependabot's
+  <code>docker</code> ecosystem bumps the digest — see
+  <a href="../repo-baseline/#automated-dependency-updates">automated dependency updates</a>;
+  an unbumped digest pin silently stops receiving base security patches.)</li>
+<li><strong>Builder stage:</strong> bring in uv
+  (<code>COPY --from=ghcr.io/astral-sh/uv:&lt;x.y.z&gt; /uv /uvx /bin/</code>, pinned to a
+  released version), install <code>git</code> (uv needs it to clone the
+  <code>[tool.uv.sources]</code> git-pinned first-party dependencies), and install the
+  project <strong>into the system interpreter</strong> from the frozen lockfile:</li>
+</ul>
+<div class="highlight"><pre><span></span><code>uv<span class="w"> </span><span class="nb">export</span><span class="w"> </span>--frozen<span class="w"> </span>--no-emit-project<span class="w"> </span>--format<span class="w"> </span>requirements-txt<span class="w"> </span>-o<span class="w"> </span>/tmp/requirements.txt
+uv<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>--system<span class="w"> </span>--no-cache<span class="w"> </span>-r<span class="w"> </span>/tmp/requirements.txt
+uv<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>--system<span class="w"> </span>--no-cache<span class="w"> </span>--no-deps<span class="w"> </span>.
+</code></pre></div>
+<p>Do <strong>not</strong> use <code>uv sync</code> here: it installs into a project virtualenv
+  (<code>/app/.venv</code>), so the runtime stage's <code>COPY --from=builder /usr/local/…</code>
+  finds nothing and the image ships without the app (this has regressed real
+  builds twice — robotsix-mill's Dockerfile carries the scar comment).
+  <code>uv pip install --system</code> targets <code>/usr/local</code>, which is exactly what the
+  runtime stage copies. Never install dev/test tooling into the image.
+- <strong>Runtime stage:</strong> copy only the installed site-packages and the console
+  script from the builder — no uv, no git, no compilers, no source-only build
+  deps. A component whose <em>runtime</em> genuinely needs a system dependency (e.g.
+  Node.js + the <code>claude</code> CLI for the claude-sdk subscription transport, which
+  spawns the CLI as a subprocess) may install it in the runtime stage — kept
+  minimal, with a comment saying why it is required, and with apt caches
+  cleaned in the same layer.
+- <strong>Non-root, standardized layout:</strong> every image defaults to the same non-root
+  account: user <strong><code>app</code></strong>, <strong>uid/gid 1000</strong>, home <strong><code>/home/app</code></strong>,
+  <code>WORKDIR /home/app</code>. The
+  deployment system sets the container user to <strong>the single deployment uid
+  (1000) at container-create time</strong>, so ownership inside managed volumes is
+  consistent across the whole fleet regardless of what an image baked in.
+  Fixed mount points, the same in every container: config at
+  <strong><code>/home/app/config/</code></strong> (<code>config.json</code> per the
+  <a href="../config-standard/">config standard</a>), persistent data at <strong><code>/data</code></strong>, and
+  — for components carrying the claude-mount label — the central-deploy-managed
+  <strong><code>claude-auth</code> named volume</strong> (contents owned by the deployment uid) at
+  <strong><code>/home/app/.claude</code></strong>. No per-component mount-target configuration exists
+  or is needed. <strong>Nothing is ever bind-mounted from the host</strong> (see the
+  <a href="../deploy-contract/">deploy contract</a>); the container's writable surface is
+  exactly its mounted volumes — <code>$HOME</code> is otherwise read-only.
+- <strong>Healthcheck:</strong> declare a <code>HEALTHCHECK</code> probing the service's health
+  endpoint <strong>using only the Python stdlib</strong> — the slim image has no <code>curl</code> or
+  <code>wget</code>, so a curl-based probe fails on every run. The image <code>HEALTHCHECK</code> is
+  the <strong>canonical</strong> probe: it travels with the image and applies in every
+  deploy mode. A compose-level <code>healthcheck:</code> is an optional override for
+  deploy contexts that genuinely need a different probe (a heartbeat-file
+  check for a non-HTTP worker, a longer timeout under sustained load).
+- <strong>Entrypoint:</strong> exec-form <strong><code>ENTRYPOINT ["robotsix-&lt;name&gt;"]</code></strong> — the console
+  script is PID 1 and receives SIGTERM directly. An <code>entrypoint.sh</code> is the
+  exception for genuine startup work, not the rule — see the
+  <a href="../entrypoint-contract/">entrypoint contract</a>.
+- <strong>Port:</strong> <code>EXPOSE</code> the service port.</p>
+<div class="highlight"><pre><span></span><code><span class="c"># syntax=docker/dockerfile:1</span>
+<span class="k">ARG</span><span class="w"> </span><span class="nv">BASE_DIGEST</span><span class="o">=</span>sha256:...<span class="w">        </span>#<span class="w"> </span>pin<span class="w"> </span>the<span class="w"> </span>python:3.14-slim<span class="w"> </span>digest
+
+<span class="k">FROM</span><span class="w"> </span><span class="s">python:3.14-slim@${BASE_DIGEST}</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="s">builder</span>
+<span class="k">COPY</span><span class="w"> </span>--from<span class="o">=</span>ghcr.io/astral-sh/uv:0.11.26<span class="w"> </span>/uv<span class="w"> </span>/uvx<span class="w"> </span>/bin/
+<span class="k">WORKDIR</span><span class="w"> </span><span class="s">/app</span>
+
+<span class="c"># git: uv must clone the [tool.uv.sources] git-pinned first-party deps.</span>
+<span class="k">RUN</span><span class="w"> </span>apt-get<span class="w"> </span>update<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>apt-get<span class="w"> </span>install<span class="w"> </span>-y<span class="w"> </span>--no-install-recommends<span class="w"> </span>git<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span><span class="o">&amp;&amp;</span><span class="w"> </span>rm<span class="w"> </span>-rf<span class="w"> </span>/var/lib/apt/lists/*
+
+<span class="k">COPY</span><span class="w"> </span>pyproject.toml<span class="w"> </span>uv.lock<span class="w"> </span>./
+<span class="k">COPY</span><span class="w"> </span>src<span class="w"> </span>./src
+<span class="c"># Install into the system interpreter (/usr/local) — NOT `uv sync`, which</span>
+<span class="c"># builds a venv the runtime COPY would miss. Add runtime extras via --extra.</span>
+<span class="k">RUN</span><span class="w"> </span>uv<span class="w"> </span><span class="nb">export</span><span class="w"> </span>--frozen<span class="w"> </span>--no-emit-project<span class="w"> </span>--format<span class="w"> </span>requirements-txt<span class="w"> </span>-o<span class="w"> </span>/tmp/requirements.txt<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span><span class="o">&amp;&amp;</span><span class="w"> </span>uv<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>--system<span class="w"> </span>--no-cache<span class="w"> </span>-r<span class="w"> </span>/tmp/requirements.txt<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span><span class="o">&amp;&amp;</span><span class="w"> </span>uv<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>--system<span class="w"> </span>--no-cache<span class="w"> </span>--no-deps<span class="w"> </span>.<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span><span class="o">&amp;&amp;</span><span class="w"> </span>rm<span class="w"> </span>-f<span class="w"> </span>/tmp/requirements.txt
+
+<span class="k">FROM</span><span class="w"> </span><span class="s">python:3.14-slim@${BASE_DIGEST}</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="s">production</span>
+<span class="k">COPY</span><span class="w"> </span>--from<span class="o">=</span>builder<span class="w"> </span>/usr/local/lib/python3.14/site-packages/<span class="w"> </span>/usr/local/lib/python3.14/site-packages/
+<span class="k">COPY</span><span class="w"> </span>--from<span class="o">=</span>builder<span class="w"> </span>/usr/local/bin/robotsix-&lt;name&gt;<span class="w"> </span>/usr/local/bin/robotsix-&lt;name&gt;
+<span class="c"># Standardized layout: app/1000, /home/app. The deployment system sets the</span>
+<span class="c"># container user to the deployment uid (1000) at create time; $HOME is</span>
+<span class="c"># read-only — all writes go to the mounted volumes (config/, /data).</span>
+<span class="k">RUN</span><span class="w"> </span>groupadd<span class="w"> </span>--gid<span class="w"> </span><span class="m">1000</span><span class="w"> </span>app<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span><span class="o">&amp;&amp;</span><span class="w"> </span>useradd<span class="w"> </span>--create-home<span class="w"> </span>--uid<span class="w"> </span><span class="m">1000</span><span class="w"> </span>--gid<span class="w"> </span><span class="m">1000</span><span class="w"> </span>app
+<span class="k">WORKDIR</span><span class="w"> </span><span class="s">/home/app</span>
+<span class="k">USER</span><span class="w"> </span><span class="s">app</span>
+<span class="k">EXPOSE</span><span class="w"> </span><span class="s">8080</span>
+<span class="k">HEALTHCHECK</span><span class="w"> </span>--interval<span class="o">=</span>30s<span class="w"> </span>--timeout<span class="o">=</span>3s<span class="w"> </span>--start-period<span class="o">=</span>5s<span class="w"> </span>--retries<span class="o">=</span><span class="m">3</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>CMD<span class="w"> </span>python<span class="w"> </span>-c<span class="w"> </span><span class="s2">&quot;import urllib.request,sys; sys.exit(0 if urllib.request.urlopen(&#39;http://localhost:8080/health&#39;).status==200 else 1)&quot;</span>
+<span class="k">ENTRYPOINT</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;robotsix-&lt;name&gt;&quot;</span><span class="p">]</span>
+</code></pre></div>
+<h2 id="publish-one-reusable-workflow-the-single-method">Publish — one reusable workflow (the single method)<a class="headerlink" href="#publish-one-reusable-workflow-the-single-method" title="Permanent link">&para;</a></h2>
+<p><strong>Do not</strong> hand-roll <code>docker/build-push-action</code>, <code>docker/metadata-action</code>, a
+registry login, or a per-repo tag scheme. Publish by calling the shared
+<code>docker-release.yml</code> reusable workflow from
+<a href="https://github.com/damien-robotsix/robotsix-github-workflows">robotsix-github-workflows</a>,
+triggered on pushes to <code>main</code> and <code>v*</code> tags. The copy-paste caller template
+lives in that repo's README — standards pages deliberately do not embed
+workflow YAML, so the template versions with the workflow it calls and cannot
+drift from it.</p>
+<p>The reusable workflow does all of the following, identically for every
+component:</p>
+<ul>
+<li><strong>Builds and pushes to GHCR:</strong> <code>ghcr.io/&lt;owner&gt;/&lt;repo&gt;</code>.</li>
+<li><strong>Tags:</strong> push to <code>main</code> → <code>main</code>, <code>sha-&lt;short&gt;</code>; a <code>v*</code> tag (created by the
+  shared auto-release workflow — see
+  <a href="../repo-baseline/#changelog-releases">changelog &amp; releases</a>) → <code>X.Y.Z</code>,
+  <code>sha-&lt;short&gt;</code>.</li>
+<li><strong>Attestations:</strong> SBOM + build provenance (<code>provenance: mode=max</code>,
+  <code>sbom: true</code>), signed via OIDC.</li>
+<li><strong>Scan:</strong> a Trivy vulnerability scan with SARIF uploaded to Code Scanning.</li>
+</ul>
+<h2 id="registry-tags">Registry &amp; tags<a class="headerlink" href="#registry-tags" title="Permanent link">&para;</a></h2>
+<ul>
+<li><strong>One registry: GHCR</strong> (<code>ghcr.io/&lt;owner&gt;/&lt;repo&gt;</code>). No component image goes to
+  Docker Hub or any other registry — one registry across the stack, no per-repo
+  registry secret to manage.</li>
+<li><strong>Tags:</strong> <code>main</code> (latest default-branch build), <code>sha-&lt;short&gt;</code>
+  (immutable/reproducible), <code>X.Y.Z</code> (on release tags). There is <strong>no <code>latest</code>
+  tag</strong> — it would duplicate <code>main</code> under a second name and invite unpinned
+  pulls from outside the standard.</li>
+</ul>
+<h2 id="ci-time-image-scan">CI-time image scan<a class="headerlink" href="#ci-time-image-scan" title="Permanent link">&para;</a></h2>
+<p>The release workflow's Trivy gate runs only when an image is published. To
+catch vulnerable base images and dependencies <strong>before</strong> merge, every PR also
+builds the image and scans it, via the shared PR-scan reusable workflow in
+robotsix-github-workflows (caller template in its README). The policy the
+workflow enforces:</p>
+<ul>
+<li>Build with <code>docker/build-push-action</code> (<code>push: false</code>, <code>load: true</code>).
+  <strong>Skip the GHA layer cache for large images</strong>: exporting a multi-GB image's
+  layers to the cache API (<code>cache-to</code>) was measured at 45-55 minutes per run
+  on a robotsix image whose cold build takes ~4 minutes — the cache is a net
+  loss well before the gigabyte mark. Only add <code>cache-from</code>/<code>cache-to</code> after
+  timing both paths on the actual image.</li>
+<li><strong>Gate policy: block on fixable findings only</strong> (<code>severity: CRITICAL,HIGH</code>,
+  <code>ignore-unfixed: true</code>, <code>exit-code: 1</code>, SARIF uploaded to Code Scanning). A
+  red gate then always means "a fixed version exists, take it". Base-image
+  CVEs with <strong>no released fix</strong> are unactionable by a PR author (the package
+  can be neither upgraded nor removed) and must not block merges; they stay
+  visible through the SARIF upload and the weekly rescan.</li>
+<li>A finding that <strong>has</strong> a fix but genuinely doesn't apply is suppressed via a
+  <strong>curated <code>.trivyignore</code></strong> — every entry carries a comment saying why it
+  doesn't apply. Never blanket-ignore; the file is the audit trail.</li>
+<li>A <strong>weekly scheduled rescan</strong> of the published <code>:main</code> image (report-only,
+  SARIF to Code Scanning) complements the PR gate — it catches CVEs disclosed
+  after the image was built.</li>
+</ul>
+<h2 id="deploy-updates-are-deliberate">Deploy — updates are deliberate<a class="headerlink" href="#deploy-updates-are-deliberate" title="Permanent link">&para;</a></h2>
+<p>The deployment system (central-deploy) <strong>pulls</strong> the published image via the
+component's <code>deploy/docker-compose.yml</code> — it never builds. Reference the GHCR
+image at <code>:main</code>.</p>
+<p><code>:main</code> is a moving tag by design, but updates are <strong>not</strong> continuous:</p>
+<ul>
+<li>A component updates <strong>only when the operator triggers Update in
+  central-deploy</strong>. No component runs its own Watchtower, registry poller, or
+  auto-updater — the one sanctioned exception is central-deploy's own
+  self-updater (see the <a href="../deployment-system/">bootstrap tier</a>), because
+  nothing sits above it to press the button.</li>
+<li>At every deploy/update, central-deploy <strong>resolves the tag to its digest and
+  records it</strong> per component, so "what exactly is running" is always
+  answerable and rollback targets the previously recorded digest.</li>
+</ul>
+<p>Reproducibility is preserved <em>upstream</em> of the deploy boundary — SHA-pinned
+first-party deps, digest-pinned bases, and the immutable <code>sha-&lt;short&gt;</code> tag on
+every published image — while the deploy boundary itself trades
+reproducibility for freshness, deliberately.</p>
+<p>The compose shape is the <a href="../deploy-contract/">deploy contract</a>; the end-to-end
+walkthrough is <a href="../integrating-a-service/">Integrating a service</a>.</p>
+<h2 id="migrating-off-a-hand-rolled-publish">Migrating off a hand-rolled publish<a class="headerlink" href="#migrating-off-a-hand-rolled-publish" title="Permanent link">&para;</a></h2>
+<p>If a component currently builds/pushes its own image (custom
+<code>build-push-action</code>/<code>metadata-action</code>, a non-GHCR registry, per-repo login
+secrets):</p>
+<ol>
+<li>Replace the custom workflow with a caller of the shared <code>docker-release.yml</code>
+   (template in the robotsix-github-workflows README).</li>
+<li>Delete the hand-rolled build/push workflow and its registry secrets.</li>
+<li>Repoint <code>deploy/docker-compose.yml</code> (and any image references) at
+   <code>ghcr.io/&lt;owner&gt;/&lt;repo&gt;</code>.</li>
+<li>Cut over deployments to the GHCR image.</li>
+</ol>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.sections", "navigation.expand", "content.code.copy"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+    
+  </body>
+</html>

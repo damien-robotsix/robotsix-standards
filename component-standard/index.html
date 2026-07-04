@@ -1,0 +1,1375 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Cross-cutting config and deployment standards for the robotsix stack">
+      
+      
+      
+        <link rel="canonical" href="https://damien-robotsix.github.io/robotsix-standards/component-standard/">
+      
+      
+        <link rel="prev" href="../javascript/">
+      
+      
+        <link rel="next" href="../config-standard/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>Component standard - Robotsix Standards</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#component-standard" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="Robotsix Standards" class="md-header__button md-logo" aria-label="Robotsix Standards" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Robotsix Standards
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Component standard
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/damien-robotsix/robotsix-standards" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="Robotsix Standards" class="md-nav__button md-logo" aria-label="Robotsix Standards" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Robotsix Standards
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/damien-robotsix/robotsix-standards" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../fleet/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    The fleet
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Every repo
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Every repo
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../repo-baseline/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Repo baseline
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../python/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Python practices
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../javascript/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    JavaScript practices
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Deployable components
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Deployable components
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Component standard
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Component standard
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#the-three-deploy-modes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The three deploy modes
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#authentication-is-centralized-components-ship-none" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Authentication is centralized — components ship none
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#health-endpoint" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Health endpoint
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sibling-resilience" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Sibling resilience
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#logging" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Logging
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#llm-usage" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        LLM usage
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#build-release" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Build &amp; release
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-two-compose-files" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The two compose files
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#chat-access-opt-in" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Chat access (opt-in)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#detailed-contracts" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Detailed contracts
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../config-standard/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Config standard
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../docker-standard/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Docker build & release
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../deploy-contract/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Deploy contract
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../entrypoint-contract/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Entrypoint contract
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../integrating-a-service/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Integrating a service
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../chat-access-standard/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chat access
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Deployment system
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Deployment system
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../deployment-system/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Bootstrap tier
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#the-three-deploy-modes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The three deploy modes
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#authentication-is-centralized-components-ship-none" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Authentication is centralized — components ship none
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#health-endpoint" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Health endpoint
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sibling-resilience" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Sibling resilience
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#logging" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Logging
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#llm-usage" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        LLM usage
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#build-release" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Build &amp; release
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-two-compose-files" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The two compose files
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#chat-access-opt-in" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Chat access (opt-in)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#detailed-contracts" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Detailed contracts
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="component-standard">Component standard<a class="headerlink" href="#component-standard" title="Permanent link">&para;</a></h1>
+<blockquote>
+<p><strong>Scope: deployable components only</strong> — a repository that ships a runnable
+service (a container image) and integrates with the deployment system. This is
+<em>in addition to</em> the <a href="../repo-baseline/">repo baseline</a>, which every repo
+follows.</p>
+</blockquote>
+<p>A deployable component must run predictably three ways — installed from the
+package, via local dev docker, and via the deployment system — and be configured
+the same way in all three. This page covers the component-level packaging;
+the detailed contracts are linked at the end.</p>
+<h2 id="the-three-deploy-modes">The three deploy modes<a class="headerlink" href="#the-three-deploy-modes" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Mode</th>
+<th>What it is</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>uv install</strong></td>
+<td><code>uv sync</code> from a checkout (or run the published image)</td>
+<td>The from-checkout path; git deps resolve via <code>[tool.uv.sources]</code>. Not <code>pip install</code>.</td>
+</tr>
+<tr>
+<td><strong>Local dev docker</strong></td>
+<td>Root <code>docker-compose.yml</code> + <code>Dockerfile</code></td>
+<td>For local development; may <code>build:</code> and bind-mount source.</td>
+</tr>
+<tr>
+<td><strong>Deployment system</strong></td>
+<td><code>deploy/docker-compose.yml</code> consumed by central-deploy</td>
+<td>Pre-built image, named volumes, <code>robotsix.deploy.*</code> labels.</td>
+</tr>
+</tbody>
+</table>
+<p>Configuration is identical across all three modes — see the
+<a href="../config-standard/">config standard</a>.</p>
+<h2 id="authentication-is-centralized-components-ship-none">Authentication is centralized — components ship none<a class="headerlink" href="#authentication-is-centralized-components-ship-none" title="Permanent link">&para;</a></h2>
+<p>A deployable component implements <strong>no user-facing authentication</strong> of its
+own: no login page, no HTTP Basic middleware, no session handling, no
+<code>auth.*</code> config section. Authentication happens <strong>once, at the deployment
+system's gateway</strong> — central-deploy validates the operator's session on every
+proxied HTTP and WebSocket request before traffic reaches a component, so a
+component behind the gateway only ever receives authenticated requests.
+Per-component auth on top of that is a second password for the same door:
+each one is an extra credential to provision, rotate, and get wrong.</p>
+<p>Scope — what this does and doesn't cover:</p>
+<ul>
+<li><strong>Removed</strong>: operator/user-facing auth — UI login walls, Basic-auth
+  middleware, password/session config fields.</li>
+<li><strong>Kept</strong>: machine-to-machine credentials a component <em>uses or serves</em> —
+  service bearer tokens, third-party API keys, webhook signatures. Those are
+  secrets (see the <a href="../config-standard/">config standard</a>), not an auth
+  system.</li>
+<li><strong>Deployed any other way</strong> (own reverse proxy, raw port, local dev),
+  authentication is the <strong>operator's responsibility</strong> — e.g. auth at their
+  proxy. A component must never be exposed directly to an untrusted network
+  on the assumption that it protects itself; it doesn't.</li>
+<li><strong>Trust model</strong>: the network behind the gateway is trusted; isolating
+  components from each other is the deployment system's concern, not
+  per-component auth.</li>
+</ul>
+<p>Migration sequencing: a component that today relies on its embedded auth
+(e.g. behind a plain reverse proxy) removes it <strong>only after</strong> it is served
+exclusively through the gateway — otherwise the removal window exposes it
+unauthenticated.</p>
+<h2 id="health-endpoint">Health endpoint<a class="headerlink" href="#health-endpoint" title="Permanent link">&para;</a></h2>
+<p>Every deployable component serves <strong><code>GET /health</code></strong> on its service port —
+<strong>200 means alive</strong>, anything else means not. One fleet-wide path (it was a
+three-way split — <code>/health</code>, <code>/health/live</code>, <code>/healthz</code> — for no reason):
+the image <code>HEALTHCHECK</code> probes it, the deployment system reads the primary's
+health as component health, and nothing has to guess.</p>
+<ul>
+<li>Semantics: <strong>liveness only</strong> — "the process is up and serving". No
+  dependency checks: a service that reports unhealthy because a <em>sibling</em> is
+  down turns one outage into a restart cascade. A readiness/deep-check
+  endpoint can be added deliberately when something needs it.</li>
+<li>Response body unspecified (a small JSON status is fine; nothing parses it).</li>
+</ul>
+<h2 id="sibling-resilience">Sibling resilience<a class="headerlink" href="#sibling-resilience" title="Permanent link">&para;</a></h2>
+<p>Startup order is undefined (the deploy contract ignores <code>depends_on</code>) and
+siblings routinely restart, so:</p>
+<ul>
+<li><strong>Start without dependencies.</strong> A component reaches "alive, serving
+  <code>/health</code> 200" with every <code>&lt;name&gt;_url</code> dependency unreachable — no
+  import-time or startup connectivity checks.</li>
+<li><strong>Fail per-operation, not per-process.</strong> A call to a down sibling fails
+  that request or cycle (log it, return an error, skip the tick); the process
+  keeps running and recovers on the next attempt. No backoff framework, no
+  circuit breakers — retry-next-time matches the fleet's scale.</li>
+</ul>
+<h2 id="logging">Logging<a class="headerlink" href="#logging" title="Permanent link">&para;</a></h2>
+<ul>
+<li><strong>Logs go to stdout/stderr, never to files.</strong> The container log stream is
+  the fleet's one log sink — <code>docker logs</code> and the deploy dashboard see
+  everything, and rotation is configured <strong>host-wide</strong> (json-file
+  <code>max-size</code>/<code>max-file</code> in the daemon config — see central-deploy's host
+  setup docs); components never rotate their own output. A file under a volume is
+  either <em>data</em> (an audit trail the app produces — then name the volume as
+  data) or a mistake: file logs are invisible to the log view and grow
+  without rotation.</li>
+<li><strong>All timestamps are UTC, ISO-8601 with explicit offset</strong>
+  (<code>2026-07-03T14:00:00Z</code>) — logs, stored data, API responses, filenames.
+  Rendering local time is strictly a UI concern. Interleaving services'
+  logs during incident reconstruction is exactly when a stray local-time
+  stamp costs an hour.</li>
+<li><strong>Log level is a config field</strong> — a <code>log_level</code> enum in the component's
+  pydantic model (see the <a href="../config-standard/">config standard</a>), not an
+  environment variable.</li>
+</ul>
+<p>Nothing more is standardized on purpose — no structured-JSON mandate, no
+metrics/collector requirement. Either gets added deliberately when something
+in the fleet needs it.</p>
+<h2 id="llm-usage">LLM usage<a class="headerlink" href="#llm-usage" title="Permanent link">&para;</a></h2>
+<blockquote>
+<p>Only for components that call LLMs — most repos never need this section.</p>
+</blockquote>
+<ul>
+<li>LLM calls go through <strong>robotsix-llmio</strong>, and the consumer only ever picks
+  a <strong>capability level</strong> — llmio's <code>level1</code>–<code>level4</code> scale (1 = cheap and
+  repetitive, 2 = intermediate, 3 = high-level organisation, 4 = frontier
+  reasoning). Which model/provider backs each level is llmio's tier
+  configuration, not the component's business.</li>
+<li><strong>The level is a config field, always</strong> — a typed llmio-level enum in the
+  component's pydantic model (per-call-site fields where a component makes
+  differently-hard calls), set in the deploy UI like any other option. Never
+  hard-code a level, and never take it from env (<code>LLMIO_MODEL_LEVEL</code>-style
+  variables are the pre-standard form). Operators tune capability vs. cost
+  per deployment without touching code.</li>
+<li><strong>The level→model tier mapping is fleet-global</strong>, managed through the
+  deployment system: changing "level 3" from one model to another happens
+  once, for every component at once — no component defines its own mapping.
+  (Distribution mechanism is central-deploy's; components just call llmio.)</li>
+<li>Tracing is <strong>opt-in, one way</strong>: Langfuse via <code>robotsix-llmio[tracing]</code>,
+  a graceful no-op when unconfigured.</li>
+<li><strong>One Langfuse project per repo/function.</strong> A component's main LLM
+  function traces to a project named <code>&lt;repo&gt;</code>; every distinct
+  LLM-generating function inside a component (e.g. a memory subsystem
+  making its own extraction/recall calls) traces to its <strong>own</strong> project,
+  named <code>&lt;repo&gt;-&lt;function&gt;</code> — never funnel two functions' traffic into a
+  shared project, tagged or otherwise. Failure prevented: a shared project
+  breaks cost-monitor's 1:1 reconciliation model (one Langfuse project ↔
+  one OpenRouter key ↔ one reconciliation row), and high-volume background
+  traffic drowns the interactive function's traces and skews its
+  latency/cost dashboards.</li>
+<li><strong>Each project is registered in cost-monitor's <code>projects.yaml</code></strong>,
+  alongside the OpenRouter key that funds that function. An unregistered
+  project is invisible to the cost dashboard and reconciliation — spend
+  drifts unnoticed.</li>
+<li>Tracing credentials are <strong><code>SecretStr</code> fields in the config model</strong>, like
+  any other secret; at startup the app exports them to the <code>LANGFUSE_*</code>
+  process environment the SDK expects, <em>before</em> the SDK initializes. No
+  tracing credentials in compose <code>environment:</code> (see the config standard's
+  <a href="../config-standard/#4-what-environment-is-for"><code>environment:</code> rule</a>).
+  A subsystem's project gets its <strong>own</strong> credential fields — it must not
+  reuse the component's main <code>LANGFUSE_*</code> credentials, or its traffic
+  lands in the main project and silently defeats the per-function split.</li>
+</ul>
+<h2 id="build-release">Build &amp; release<a class="headerlink" href="#build-release" title="Permanent link">&para;</a></h2>
+<p>Every component builds and publishes its image the same way — one Dockerfile
+pattern and one shared reusable publish workflow, to a single registry (GHCR),
+with SBOM/provenance attestation and a vulnerability scan. No repo hand-rolls
+its own build/push. Full detail: <a href="../docker-standard/">Docker build &amp; release</a>.</p>
+<h2 id="the-two-compose-files">The two compose files<a class="headerlink" href="#the-two-compose-files" title="Permanent link">&para;</a></h2>
+<p>Every component maintains two compose files with distinct jobs:</p>
+<table>
+<thead>
+<tr>
+<th>File</th>
+<th>Job</th>
+<th>Deployment system</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>docker-compose.yml</code> (root)</td>
+<td>Local dev — may <code>build:</code>, bind-mount source, use dev ports</td>
+<td><strong>Ignored</strong></td>
+</tr>
+<tr>
+<td><code>deploy/docker-compose.yml</code></td>
+<td>Production — pre-built image, named volumes, labels</td>
+<td><strong>The contract</strong></td>
+</tr>
+</tbody>
+</table>
+<p>They legitimately diverge (dev builds locally and mounts source; deploy pulls a
+published image). Keep the service/CLI command set consistent between them.</p>
+<h2 id="chat-access-opt-in">Chat access (opt-in)<a class="headerlink" href="#chat-access-opt-in" title="Permanent link">&para;</a></h2>
+<p>A component can make itself operable by the chat agent (<code>robotsix-chat</code>) by
+serving a skill endpoint and adding a deploy label. This is entirely
+optional — components with no chat-operable surface skip it. Full detail:
+<a href="../chat-access-standard/">Chat access standard</a>.</p>
+<h2 id="detailed-contracts">Detailed contracts<a class="headerlink" href="#detailed-contracts" title="Permanent link">&para;</a></h2>
+<ul>
+<li><a href="../config-standard/">Config standard</a> — one config model across all deploy modes.</li>
+<li><a href="../docker-standard/">Docker build &amp; release</a> — the single build + publish method.</li>
+<li><a href="../deploy-contract/">Deploy contract</a> — the <code>deploy/docker-compose.yml</code> shape.</li>
+<li><a href="../entrypoint-contract/">Entrypoint contract</a> — container startup behavior.</li>
+<li><a href="../integrating-a-service/">Integrating a service</a> — the end-to-end how-to.</li>
+<li><a href="../chat-access-standard/">Chat access standard</a> — the opt-in skill endpoint + label.</li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.sections", "navigation.expand", "content.code.copy"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+    
+  </body>
+</html>

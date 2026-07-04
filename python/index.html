@@ -1,0 +1,1386 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Cross-cutting config and deployment standards for the robotsix stack">
+      
+      
+      
+        <link rel="canonical" href="https://damien-robotsix.github.io/robotsix-standards/python/">
+      
+      
+        <link rel="prev" href="../repo-baseline/">
+      
+      
+        <link rel="next" href="../javascript/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>Python practices - Robotsix Standards</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#python-practices" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="Robotsix Standards" class="md-header__button md-logo" aria-label="Robotsix Standards" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Robotsix Standards
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Python practices
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/damien-robotsix/robotsix-standards" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="Robotsix Standards" class="md-nav__button md-logo" aria-label="Robotsix Standards" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Robotsix Standards
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/damien-robotsix/robotsix-standards" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../fleet/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    The fleet
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Every repo
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Every repo
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../repo-baseline/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Repo baseline
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Python practices
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Python practices
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#project-layout" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Project layout
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#tooling-uv" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Tooling: uv
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#packaging" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Packaging
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#requires-python" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        requires-python
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="requires-python">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#314-syntax-notes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.14 syntax notes
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#datetimes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Datetimes
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#console-scripts" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Console scripts
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#lint-types-and-security-lint" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Lint, types, and security lint
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#tests" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Tests
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pre-commit-hooks" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Pre-commit hooks
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#docs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Docs
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../javascript/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    JavaScript practices
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Deployable components
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Deployable components
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../component-standard/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Component standard
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../config-standard/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Config standard
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../docker-standard/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Docker build & release
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../deploy-contract/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Deploy contract
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../entrypoint-contract/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Entrypoint contract
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../integrating-a-service/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Integrating a service
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../chat-access-standard/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chat access
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Deployment system
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Deployment system
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../deployment-system/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Bootstrap tier
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#project-layout" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Project layout
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#tooling-uv" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Tooling: uv
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#packaging" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Packaging
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#requires-python" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        requires-python
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="requires-python">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#314-syntax-notes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.14 syntax notes
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#datetimes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Datetimes
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#console-scripts" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Console scripts
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#lint-types-and-security-lint" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Lint, types, and security lint
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#tests" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Tests
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pre-commit-hooks" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Pre-commit hooks
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#docs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Docs
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="python-practices">Python practices<a class="headerlink" href="#python-practices" title="Permanent link">&para;</a></h1>
+<blockquote>
+<p><strong>Scope: every Python repository.</strong> These are the language-specific
+practices; the language-agnostic rules (tiers, hygiene, CI philosophy) live
+in the <a href="../repo-baseline/">repo baseline</a>.</p>
+</blockquote>
+<h2 id="project-layout">Project layout<a class="headerlink" href="#project-layout" title="Permanent link">&para;</a></h2>
+<ul>
+<li><strong>src layout, one primary package:</strong> code lives in <code>src/robotsix_&lt;name&gt;/</code>,
+  the snake_case of the repo name. Every package ships <strong><code>py.typed</code></strong> — any
+  package may be imported by tests or tooling, and downstream type-checking
+  must see the annotations.</li>
+<li><strong>Modules are subdirectories</strong> of the package, mirrored by
+  <code>tests/&lt;module&gt;/</code> and <code>docs/&lt;module&gt;/</code> — the same convention
+  <code>docs/modules.yaml</code>'s default globs assume (see the
+  <a href="../repo-baseline/#repo-hygiene">repo baseline</a>).</li>
+<li><strong>Secondary packages are deliberate</strong>, for one named reason: a client
+  library siblings can import without pulling the service's dependencies
+  (<code>robotsix_board_client</code> next to <code>robotsix_board_agent</code> is the exemplar).
+  Each extra package registers in <code>modules.yaml</code> like anything else.</li>
+</ul>
+<h2 id="tooling-uv">Tooling: uv<a class="headerlink" href="#tooling-uv" title="Permanent link">&para;</a></h2>
+<p><strong>uv is the standard tool</strong> for installing, running, and building robotsix
+packages — <code>uv sync</code>, <code>uv add</code>, <code>uv run</code>, <code>uvx</code>, <code>uv build</code>. pip is not a
+supported install path (it ignores <code>[tool.uv.sources]</code>, so first-party git
+dependencies won't resolve). <strong>Do not advertise a <code>pip install</code> path.</strong></p>
+<h2 id="packaging">Packaging<a class="headerlink" href="#packaging" title="Permanent link">&para;</a></h2>
+<ul>
+<li><strong>Build backend: <code>hatchling</code>.</strong> <code>[tool.hatch.metadata]
+  allow-direct-references = true</code> is only needed when <code>[project.dependencies]</code>
+  itself contains direct URL references (<code>pkg @ git+https://…</code>). The standard
+  pattern — plain dependency names resolved through <code>[tool.uv.sources]</code> — does
+  not need it, because the git pin lives in uv's config, not in the project
+  metadata hatchling validates.</li>
+<li><strong>No PyPI.</strong> Nothing is published to a package index (see the
+  <a href="../repo-baseline/#no-package-index-consume-libraries-from-git">repo baseline</a>).
+  Repos carry <strong>no index-publish workflow</strong> — no <code>pypi-publish</code>, no
+  release-please, no PyPI token. (The shared auto-release workflow tags
+  versions and compiles the changelog — see
+  <a href="../repo-baseline/#changelog-releases">changelog &amp; releases</a> — but publishes
+  nothing to any index.)</li>
+<li><strong>Libraries</strong> are consumed straight from git via uv <code>[tool.uv.sources]</code>
+  (<code>{ git = "…", rev = "…" }</code>), pinned by revision. They still ship <code>py.typed</code>
+  for downstream type-checking.</li>
+<li><strong>Deployable components</strong> ship a container image; the from-checkout path is
+  <code>uv sync</code> (uv honours <code>[tool.uv.sources]</code>).</li>
+<li>Dev tooling goes in a PEP 735 <code>[dependency-groups] dev</code> group, pulled in by
+  default via <code>[tool.uv] default-groups</code>.</li>
+</ul>
+<h2 id="requires-python"><code>requires-python</code><a class="headerlink" href="#requires-python" title="Permanent link">&para;</a></h2>
+<ul>
+<li><strong>Every repo — libraries and deployable components alike — targets the
+  stack runtime baseline: <code>requires-python = "&gt;=3.14"</code>.</strong> The stack has no
+  external consumers (no package index; first-party deps come from git), so a
+  lower library floor buys nothing and costs real things: three years of
+  language features forgone, and either a CI matrix for versions nothing
+  runs, or a support claim CI never tests.</li>
+<li><strong>Lowering the floor is the exception, made deliberately</strong> — when a library
+  gains a genuine consumer on an older runtime. Like PyPI publishing: added
+  back on purpose, never the default.</li>
+<li><strong>No upper bound.</strong> <code>&gt;=3.14</code>, never <code>&gt;=3.14,&lt;3.15</code>: a cap poisons
+  resolution for every dependent (uv must satisfy the intersection of all
+  bounds, so one capped package caps the whole tree) and encodes a breakage
+  that hasn't happened. Cap only for a known, linked incompatibility, and
+  remove the cap when it's fixed.</li>
+<li><strong>Metadata is authoritative — keep prose in sync.</strong> A README claiming a
+  Python floor different from <code>pyproject.toml</code> hard-blocks users the docs
+  invite. Fix the prose, not the metadata.</li>
+</ul>
+<h3 id="314-syntax-notes">3.14 syntax notes<a class="headerlink" href="#314-syntax-notes" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>PEP 758: parentheses around multiple exception types are optional.</strong>
+  <code>except ValueError, KeyError:</code> is valid 3.14 syntax, exactly equivalent to
+  <code>except (ValueError, KeyError):</code> — and <code>ruff format</code> on a <code>&gt;=3.14</code> target
+  normalises to the parens-free form, making it the tool-enforced style.
+  Don't misread it as the legacy Python-2 <code>except E, var:</code> bind-as form, and
+  don't "fix" it back to parentheses.</li>
+</ul>
+<h2 id="datetimes">Datetimes<a class="headerlink" href="#datetimes" title="Permanent link">&para;</a></h2>
+<p><strong>UTC everywhere; naive datetimes are forbidden in stored or emitted data.</strong>
+<code>datetime.now(tz=UTC)</code>, never bare <code>now()</code>/<code>utcnow()</code> — a naive datetime
+means "whatever timezone the host happens to run" (the deploy host runs
+CEST). Serialize ISO-8601 with explicit offset. Rendering local time is a UI
+concern (see the <a href="../component-standard/#logging">component standard</a>).</p>
+<h2 id="console-scripts">Console scripts<a class="headerlink" href="#console-scripts" title="Permanent link">&para;</a></h2>
+<ul>
+<li>One primary entry point per package: <code>robotsix-&lt;name&gt;</code>.</li>
+<li><strong>Host-side ops tooling does not belong in <code>[project.scripts]</code>.</strong> Update/deploy
+  helpers (git-pull + <code>docker compose up</code>, etc.) aren't part of the shipped
+  package and aren't copied into a runtime image — keep them in <code>scripts/</code>.</li>
+</ul>
+<h2 id="lint-types-and-security-lint">Lint, types, and security lint<a class="headerlink" href="#lint-types-and-security-lint" title="Permanent link">&para;</a></h2>
+<p>Run via the shared <code>python-ci.yml</code> reusable workflow:</p>
+<ul>
+<li><code>ruff check</code> + <code>ruff format --check</code></li>
+<li><code>mypy --strict</code></li>
+<li><code>deptry</code> (dependency hygiene)</li>
+<li><code>bandit</code> (security SAST) and a dependency CVE audit (<code>uv audit</code>)</li>
+</ul>
+<p>The shared <code>python-security.yml</code> workflow is a separate gate that additionally
+runs <code>pip-audit</code> (a second CVE audit pass), TruffleHog for secret scanning
+(PR-diff and full-repo), and generates a CycloneDX SBOM uploaded as a workflow
+artifact.</p>
+<p><strong>Security lint convention:</strong> enable ruff's bandit rules in <code>pyproject.toml</code>
+(<code>[tool.ruff.lint] extend-select = ["S"]</code>). Suppressions are per-file ignores,
+and <strong>every ignore carries a comment justifying it</strong> — a reviewer should never
+have to guess why <code>S105</code> is off for a file:</p>
+<div class="highlight"><pre><span></span><code><span class="k">[tool.ruff.lint]</span>
+<span class="n">extend-select</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;S&quot;</span><span class="p">]</span>
+
+<span class="k">[tool.ruff.lint.per-file-ignores]</span>
+<span class="c1"># S105: &quot;secrets.key&quot; is a filename, not a hardcoded credential.</span>
+<span class="s2">&quot;src/&lt;pkg&gt;/config.py&quot;</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;S105&quot;</span><span class="p">]</span>
+<span class="c1"># Test files routinely use hard-coded sentinel strings and asserts.</span>
+<span class="s2">&quot;tests/**/*.py&quot;</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;S101&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;S105&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;S106&quot;</span><span class="p">]</span>
+</code></pre></div>
+<p><strong>deptry and CLI-tool dependencies:</strong> a package installed as a <em>tool</em> but
+never imported (a linter or formatter in an optional group) gets flagged as
+unused by deptry and fails CI. Register it under <code>DEP002</code> in
+<code>[tool.deptry.per_rule_ignores]</code>, with a comment — same convention as the
+ruff suppressions above.</p>
+<h2 id="tests">Tests<a class="headerlink" href="#tests" title="Permanent link">&para;</a></h2>
+<ul>
+<li><code>pytest</code>, with coverage gated at <strong>one fleet-wide floor: 80%</strong>, the same in
+  every repo. The floor is enforced by the shared <code>python-ci.yml</code> workflow —
+  it lives in one place, so no repo can slide under it — and
+  <code>[tool.coverage.report] fail_under = 80</code> in each repo keeps local runs
+  honest. No per-repo thresholds, no ratchet to maintain: coverage above the
+  floor is welcome, but the gate stops caring beyond 80.</li>
+<li><strong>The floor moves only fleet-wide.</strong> When every repo measures above a
+  higher value, the floor in the shared workflow is raised for everyone at
+  once — one PR in robotsix-github-workflows, a deliberate decision. It never
+  rises above what the weakest repo clears, and it never moves per-repo.</li>
+<li><strong>Test layout mirrors the package:</strong> tests for module X live under
+  <code>tests/X/</code>, never at the <code>tests/</code> root. New modules get a matching test
+  directory.</li>
+<li><strong>The default test run is offline and credential-free</strong>: declare
+  <code>addopts = ["-m", "not live", "--strict-markers", "--strict-config"]</code>.
+  Tests that genuinely need the network or real credentials carry the
+  <strong><code>live</code> marker</strong> and run only by explicit opt-in (<code>pytest -m live</code>),
+  never in the standard CI gate — in mill sandboxes (egress-proxied) and CI,
+  an accidental network call is a hang or a paid flake. <code>--strict-markers</code>
+  makes a misspelled marker an error instead of an always-running test.
+  <code>tests/.env.example</code> lists exactly the live-suite credentials — nothing
+  else.</li>
+<li><strong>Shared fixtures live in <code>conftest.py</code>:</strong> when two test files under the
+  same <code>tests/&lt;module&gt;/</code> define the same fixture, extract it to
+  <code>tests/&lt;module&gt;/conftest.py</code> — pytest discovers it for all sibling tests.
+  Duplicated fixtures drift apart; this recurs especially in agent-written
+  PRs.</li>
+</ul>
+<h2 id="pre-commit-hooks">Pre-commit hooks<a class="headerlink" href="#pre-commit-hooks" title="Permanent link">&para;</a></h2>
+<p>Every repo ships <code>.pre-commit-config.yaml</code> with the standard set (this is the
+fleet's converged practice, not a minimum to improvise beyond):</p>
+<ul>
+<li><strong>File checks:</strong> <code>end-of-file-fixer</code>, <code>trailing-whitespace</code>,
+  <code>check-merge-conflict</code>, <code>check-added-large-files</code>, <code>check-yaml</code>,
+  <code>check-toml</code>, <code>check-json</code>, <code>detect-private-key</code>.</li>
+<li><strong>Code:</strong> <code>ruff</code> (with <code>--fix</code>), <code>ruff-format</code>, <code>mypy</code>.</li>
+<li><strong>Secrets:</strong> <code>detect-secrets</code> (with a committed <code>.secrets.baseline</code>) —
+  catches credentials <em>before</em> the commit exists, complementing CI's push
+  protection; this matters more when agents author most commits.</li>
+<li><strong>Workflows:</strong> <code>actionlint</code> — catches broken workflow/caller YAML at commit
+  time.</li>
+<li><strong>Dead code:</strong> <code>vulture</code> — agent-written changes are prone to orphaned
+  helpers.</li>
+<li><strong>Image-shipping repos additionally:</strong> <code>hadolint</code> — the
+  <a href="../docker-standard/">Dockerfile pattern</a> is a standard; hadolint keeps it
+  one.</li>
+</ul>
+<p>Deliberately not in the set: <code>bandit</code> as a hook (it already gates in CI via
+the shared workflow, and ruff's <code>S</code> rules cover the commit-time subset — a
+slow duplicate hook buys little). Dev setup is:</p>
+<div class="highlight"><pre><span></span><code>uv<span class="w"> </span>sync
+pre-commit<span class="w"> </span>install
+</code></pre></div>
+<p>CI runs <code>pre-commit run --all-files</code> so the hooks and the gates can't drift.</p>
+<h2 id="docs">Docs<a class="headerlink" href="#docs" title="Permanent link">&para;</a></h2>
+<p><strong>Every repo publishes its docs site</strong>: <code>mkdocs</code> (material theme), built and
+deployed to GitHub Pages by the shared <code>python-docs.yml</code> reusable workflow,
+gated in CI by <code>mkdocs build --strict</code>. The fleet's sites are indexed on the
+standards' <a href="../fleet/">fleet page</a>.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.sections", "navigation.expand", "content.code.copy"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+    
+  </body>
+</html>

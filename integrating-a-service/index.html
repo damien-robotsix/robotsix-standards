@@ -1,0 +1,1638 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Cross-cutting config and deployment standards for the robotsix stack">
+      
+      
+      
+        <link rel="canonical" href="https://damien-robotsix.github.io/robotsix-standards/integrating-a-service/">
+      
+      
+        <link rel="prev" href="../entrypoint-contract/">
+      
+      
+        <link rel="next" href="../chat-access-standard/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>Integrating a service - Robotsix Standards</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#making-a-repo-deployable-with-robotsix-central-deploy" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="Robotsix Standards" class="md-header__button md-logo" aria-label="Robotsix Standards" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Robotsix Standards
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Integrating a service
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/damien-robotsix/robotsix-standards" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="Robotsix Standards" class="md-nav__button md-logo" aria-label="Robotsix Standards" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Robotsix Standards
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/damien-robotsix/robotsix-standards" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../fleet/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    The fleet
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Every repo
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Every repo
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../repo-baseline/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Repo baseline
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../python/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Python practices
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../javascript/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    JavaScript practices
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Deployable components
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Deployable components
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../component-standard/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Component standard
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../config-standard/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Config standard
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../docker-standard/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Docker build & release
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../deploy-contract/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Deploy contract
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../entrypoint-contract/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Entrypoint contract
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Integrating a service
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Integrating a service
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#mental-model-read-this-first" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Mental model (read this first)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#a-publish-an-image-from-ci-prerequisite" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        A. Publish an image from CI (prerequisite)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#b-write-deploydocker-composeyml" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        B. Write deploy/docker-compose.yml
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="B. Write deploy/docker-compose.yml">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#single-service-skeleton-the-common-case" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Single-service skeleton (the common case)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#multi-service-skeleton" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Multi-service skeleton
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#what-you-can-set-and-what-you-cant" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What you can set (and what you can't)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#special-mount-labels-rare" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Special mount labels (rare)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#chat-access-label-opt-in" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Chat access label (opt-in)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#c-runtime-config-via-configconfigjson-optional" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        C. Runtime config via config/config.json (optional)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="C. Runtime config via config/config.json (optional)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#config-assist-auto-generating-operator-config" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        config-assist (auto-generating operator config)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#d-onboard-in-the-dashboard" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        D. Onboard in the dashboard
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#e-pre-flight-checklist-avoid-the-common-parse-errors" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        E. Pre-flight checklist (avoid the common parse errors)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#f-keeping-the-dev-and-deploy-composes-straight" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        F. Keeping the dev and deploy composes straight
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#reference" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Reference
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../chat-access-standard/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chat access
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Deployment system
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Deployment system
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../deployment-system/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Bootstrap tier
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#mental-model-read-this-first" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Mental model (read this first)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#a-publish-an-image-from-ci-prerequisite" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        A. Publish an image from CI (prerequisite)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#b-write-deploydocker-composeyml" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        B. Write deploy/docker-compose.yml
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="B. Write deploy/docker-compose.yml">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#single-service-skeleton-the-common-case" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Single-service skeleton (the common case)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#multi-service-skeleton" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Multi-service skeleton
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#what-you-can-set-and-what-you-cant" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What you can set (and what you can't)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#special-mount-labels-rare" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Special mount labels (rare)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#chat-access-label-opt-in" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Chat access label (opt-in)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#c-runtime-config-via-configconfigjson-optional" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        C. Runtime config via config/config.json (optional)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="C. Runtime config via config/config.json (optional)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#config-assist-auto-generating-operator-config" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        config-assist (auto-generating operator config)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#d-onboard-in-the-dashboard" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        D. Onboard in the dashboard
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#e-pre-flight-checklist-avoid-the-common-parse-errors" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        E. Pre-flight checklist (avoid the common parse errors)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#f-keeping-the-dev-and-deploy-composes-straight" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        F. Keeping the dev and deploy composes straight
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#reference" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Reference
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="making-a-repo-deployable-with-robotsix-central-deploy">Making a repo deployable with robotsix central-deploy<a class="headerlink" href="#making-a-repo-deployable-with-robotsix-central-deploy" title="Permanent link">&para;</a></h1>
+<blockquote>
+<p><strong>Scope: deployable components only.</strong> See the
+<a href="../component-standard/">component standard</a>.</p>
+</blockquote>
+<p>This is the <strong>how-to guide</strong> for adding a service repository to the
+<a href="https://deploy.robotsix.net">central-deploy</a> system. It walks you from an
+existing repo to a one-click deploy in the dashboard.</p>
+<p>For the exhaustive field-by-field rules, error classification, and the
+<code>ComponentConfig</code> mapping, see the authoritative reference:
+<a href="../deploy-contract/">Deploy Contract</a>. This guide points at the relevant
+contract sections (§) as it goes; when the two ever disagree, the contract
+wins.</p>
+<hr />
+<h2 id="mental-model-read-this-first">Mental model (read this first)<a class="headerlink" href="#mental-model-read-this-first" title="Permanent link">&para;</a></h2>
+<p>central-deploy is <strong>not</strong> a builder and <strong>not</strong> a compose runner. It:</p>
+<ol>
+<li><strong>Pulls a pre-built image</strong> you publish (typically to GHCR). It never runs
+   <code>docker build</code> — a <code>build:</code> key is a hard error (§7).</li>
+<li><strong>Reads one file from your repo</strong>, <code>deploy/docker-compose.yml</code>, and parses a
+   restricted subset of compose into an internal <code>ComponentConfig</code>. Your repo's
+   root <code>docker-compose.yml</code> is your local-dev compose and is <strong>ignored</strong> (§0).</li>
+<li><strong>Manages lifecycle itself</strong> — restart policy, networking, gateway routing,
+   config injection, secrets. Many compose fields you'd normally set are
+   therefore ignored on purpose (§7).</li>
+</ol>
+<p>So "make my repo deployable" is really three tasks:</p>
+<ul>
+<li><strong>A.</strong> Publish an image from CI.</li>
+<li><strong>B.</strong> Write a contract-compliant <code>deploy/docker-compose.yml</code>.</li>
+<li><strong>C.</strong> (If your app needs runtime config) add <code>config/config.json</code> +
+  <code>config/config.schema.json</code> and wire them with a label.</li>
+</ul>
+<hr />
+<h2 id="a-publish-an-image-from-ci-prerequisite">A. Publish an image from CI (prerequisite)<a class="headerlink" href="#a-publish-an-image-from-ci-prerequisite" title="Permanent link">&para;</a></h2>
+<p>central-deploy pulls the <code>image:</code> ref verbatim. If CI doesn't publish it, the
+deploy fails at pull time even with a perfect compose file.</p>
+<ul>
+<li>Add a <code>release.yml</code> that calls the shared <code>docker-release.yml</code> reusable
+  workflow (caller template in the
+  <a href="https://github.com/damien-robotsix/robotsix-github-workflows">robotsix-github-workflows</a>
+  README; policy in <a href="../docker-standard/">Docker build &amp; release</a>). It
+  publishes <code>ghcr.io/damien-robotsix/&lt;repo&gt;:main</code> on every push to main —
+  matching the ref in your compose.</li>
+<li>central-deploy <strong>does honor</strong> the compose <code>command:</code> (and <code>entrypoint:</code>) —
+  it is parsed and applied to each container (see the
+  <a href="../deploy-contract/">deploy contract</a> §7). So a single image can back
+  multiple services that each set their own <code>command:</code>.</li>
+<li>Either bake a sensible default <code>CMD</code> into the image <strong>or</strong> set <code>command:</code> per
+  service in the deploy compose. If your image is <code>ENTRYPOINT</code>-only with no
+  default <code>CMD</code>, you <strong>must</strong> set <code>command:</code> on each service, or the container
+  starts with no subcommand.</li>
+</ul>
+<blockquote>
+<p><strong>Checklist:</strong> the exact string in <code>image:</code> resolves to a real, pullable tag,
+and the container starts the service either from its default <code>CMD</code> or from the
+<code>command:</code> you set in the deploy compose.</p>
+</blockquote>
+<hr />
+<h2 id="b-write-deploydocker-composeyml">B. Write <code>deploy/docker-compose.yml</code><a class="headerlink" href="#b-write-deploydocker-composeyml" title="Permanent link">&para;</a></h2>
+<p>Create the file at <strong><code>deploy/</code></strong>, not the repo root. First line must be the
+version header exactly (§1):</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># central-deploy-contract-version: 1</span>
+</code></pre></div>
+<p>Missing header, or a version the server doesn't recognize, is a parse error.</p>
+<h3 id="single-service-skeleton-the-common-case">Single-service skeleton (the common case)<a class="headerlink" href="#single-service-skeleton-the-common-case" title="Permanent link">&para;</a></h3>
+<p>One service is implicitly primary — no <code>primary</code> label needed (§2).</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># central-deploy-contract-version: 1</span>
+<span class="nt">services</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">my-service</span><span class="p">:</span><span class="w">                     </span><span class="c1"># service key = component id, must match ^[a-z0-9][a-z0-9-]*$</span>
+<span class="w">    </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ghcr.io/damien-robotsix/my-service:main</span>
+<span class="w">    </span><span class="nt">ports</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;8300:8080&quot;</span><span class="w">               </span><span class="c1"># &quot;&lt;host&gt;:&lt;container&gt;&quot;; host port unique across all components</span>
+<span class="w">    </span><span class="nt">volumes</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my-service-data:/data</span><span class="w">     </span><span class="c1"># named volumes ONLY — no ./ , / , or ~ paths (§4)</span>
+<span class="nt">volumes</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">my-service-data</span><span class="p">:</span><span class="w">                </span><span class="c1"># every named volume used above must be declared here</span>
+</code></pre></div>
+<blockquote>
+<p>Named volumes start <strong>empty</strong> on first deploy; migrate data in by hand if
+needed. Backing volumes up is the <strong>operator's responsibility</strong> at the host
+level — the deployment system does not manage backups.</p>
+</blockquote>
+<p>Two things deliberately absent from the skeleton:</p>
+<ul>
+<li><strong>No <code>healthcheck:</code></strong> — the image's <code>HEALTHCHECK</code> is the canonical probe
+  (see <a href="../docker-standard/">Docker build &amp; release</a>) and applies
+  automatically. Add a compose-level override only when the deploy context
+  genuinely needs a different probe, and use only the Python stdlib (the
+  image has no curl):</li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="nt">healthcheck</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">test</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&quot;CMD&quot;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&quot;python&quot;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&quot;-c&quot;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&quot;import</span><span class="nv"> </span><span class="s">urllib.request,sys;</span><span class="nv"> </span><span class="s">sys.exit(0</span><span class="nv"> </span><span class="s">if</span><span class="nv"> </span><span class="s">urllib.request.urlopen(&#39;http://localhost:8080/health&#39;).status==200</span><span class="nv"> </span><span class="s">else</span><span class="nv"> </span><span class="s">1)&quot;</span><span class="p p-Indicator">]</span>
+<span class="w">  </span><span class="nt">interval</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">30s</span><span class="w">                 </span><span class="c1"># Go duration strings (30s, 1m30s), converted to seconds</span>
+<span class="w">  </span><span class="nt">timeout</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">10s</span>
+<span class="w">  </span><span class="nt">retries</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">3</span>
+</code></pre></div>
+<ul>
+<li><strong>No <code>environment:</code> config or secrets</strong> — a first-party service takes all
+  settings and secrets through the config file (step C below; see the
+  <a href="../config-standard/">config standard</a>). <code>environment:</code> is for
+  infrastructure wiring (e.g. <code>DOCKER_HOST</code> to a socket-proxy sibling) and
+  for <strong>third-party sibling images</strong>, where an empty value (<code>KEY: ""</code>)
+  declares a secret slot the operator fills in the UI and a non-empty value
+  is an editable default.</li>
+</ul>
+<h3 id="multi-service-skeleton">Multi-service skeleton<a class="headerlink" href="#multi-service-skeleton" title="Permanent link">&para;</a></h3>
+<p>When you have ≥2 services, exactly one <strong>must</strong> carry
+<code>robotsix.deploy.primary: "true"</code> (§2, §5). The primary's first port gets the
+gateway route <code>deploy.robotsix.net/&lt;component&gt;/*</code> and its health is the
+component health. Sibling container names derive as <code>&lt;component&gt;-&lt;service-key&gt;</code>.</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># central-deploy-contract-version: 1</span>
+<span class="nt">services</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">board</span><span class="p">:</span><span class="w">                          </span><span class="c1"># this key becomes the component id</span>
+<span class="w">    </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ghcr.io/damien-robotsix/my-app:main</span>
+<span class="w">    </span><span class="nt">labels</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">robotsix.deploy.primary</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;true&quot;</span>
+<span class="w">    </span><span class="nt">ports</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;8300:8080&quot;</span>
+<span class="w">  </span><span class="nt">worker</span><span class="p">:</span><span class="w">                         </span><span class="c1"># sibling → container &quot;my-app-worker&quot; (component id is still &quot;board&quot;&#39;s key — see note)</span>
+<span class="w">    </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ghcr.io/damien-robotsix/my-app-worker:main</span>
+<span class="w">    </span><span class="nt">volumes</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my-app-data:/data</span>
+<span class="nt">volumes</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">my-app-data</span><span class="p">:</span>
+</code></pre></div>
+<blockquote>
+<p>Note: the <strong>component id</strong> comes from the operator-supplied <code>name</code> at
+onboarding; the primary <strong>service key</strong> is used as the default container name.
+Keep both the primary key and every sibling key matching
+<code>^[a-z0-9][a-z0-9-]*$</code>.</p>
+</blockquote>
+<h3 id="what-you-can-set-and-what-you-cant">What you can set (and what you can't)<a class="headerlink" href="#what-you-can-set-and-what-you-cant" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>You want to…</th>
+<th>Do this</th>
+<th>Contract</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Expose a port</td>
+<td><code>ports: ["&lt;host&gt;:&lt;container&gt;"]</code></td>
+<td>§4</td>
+</tr>
+<tr>
+<td>Persist data</td>
+<td>named volume + top-level <code>volumes:</code> entry</td>
+<td>§4</td>
+</tr>
+<tr>
+<td>A first-party secret or setting</td>
+<td>the config file — <strong>not</strong> <code>environment:</code> (see the <a href="../config-standard/">config standard</a>)</td>
+<td>§8</td>
+</tr>
+<tr>
+<td>A secret slot on a <em>third-party</em> sibling</td>
+<td><code>environment:</code> key with empty value (<code>KEY: ""</code>)</td>
+<td>§4</td>
+</tr>
+<tr>
+<td>A default env value on a <em>third-party</em> sibling</td>
+<td><code>environment:</code> key with a value</td>
+<td>§4</td>
+</tr>
+<tr>
+<td>A health probe</td>
+<td><code>healthcheck:</code> with <code>["CMD", …]</code> or <code>["CMD-SHELL", …]</code></td>
+<td>§4</td>
+</tr>
+<tr>
+<td>Rename a container</td>
+<td><code>container_name:</code></td>
+<td>§2</td>
+</tr>
+<tr>
+<td><strong>Build an image</strong></td>
+<td>❌ not allowed — publish it from CI instead</td>
+<td>§7 (parse error)</td>
+</tr>
+<tr>
+<td><strong>Bind-mount a host path</strong></td>
+<td>❌ never — named volumes only, no exceptions for components</td>
+<td>§4 (parse error)</td>
+</tr>
+<tr>
+<td><strong>Set a per-service command</strong></td>
+<td><code>command:</code> — parsed and applied at container-create time</td>
+<td>§7</td>
+</tr>
+<tr>
+<td><strong>Set restart / networks / depends_on</strong></td>
+<td>don't bother — silently ignored</td>
+<td>§7</td>
+</tr>
+</tbody>
+</table>
+<h3 id="special-mount-labels-rare">Special mount labels (rare)<a class="headerlink" href="#special-mount-labels-rare" title="Permanent link">&para;</a></h3>
+<p>Both are injected at runtime by central-deploy, so do <strong>not</strong> list them in
+<code>volumes:</code> (§5):</p>
+<ul>
+<li><code>robotsix.deploy.claude-mount: "true"</code> — mounts the central-deploy-managed
+  <strong><code>claude-auth</code> named volume</strong> (rw) at <strong><code>/home/app/.claude</code></strong>, per the
+  <a href="../docker-standard/">standardized container layout</a>. Authentication happens
+  through <strong>central-deploy's dashboard login flow</strong>, which runs <code>claude login</code>
+  into that volume — never by preparing files on the host; no host <code>~/.claude</code>
+  is involved. Only for services that run Claude Code / the claude-sdk
+  transport and need its session state.</li>
+<li><code>robotsix.deploy.host-docker-sock: "true"</code> — mounts the host Docker socket
+  (ro) into a <strong>non-primary</strong> service only: the <strong>single sanctioned host
+  mount</strong>, and only on a hardened socket-proxy sibling, never on the app
+  container. <strong>Dangerous</strong> — root-equivalent host control. (§5 has the full
+  security warning.)</li>
+</ul>
+<h3 id="chat-access-label-opt-in">Chat access label (opt-in)<a class="headerlink" href="#chat-access-label-opt-in" title="Permanent link">&para;</a></h3>
+<p>If the component wants to be operable by the chat agent (<code>robotsix-chat</code>),
+add the label on the primary service:</p>
+<div class="highlight"><pre><span></span><code><span class="nt">labels</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">robotsix.deploy.chat-access</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;true&quot;</span>
+</code></pre></div>
+<p>This hints the deployer to default the component's chat-access checkbox to
+<strong>on</strong>. The operator checkbox in the central-deploy UI remains the actual
+authorization switch. See the <a href="../chat-access-standard/">chat access standard</a>
+for the full contract — the component must also serve a <code>GET /chat-skill</code>
+endpoint returning <code>text/markdown</code>.</p>
+<hr />
+<h2 id="c-runtime-config-via-configconfigjson-optional">C. Runtime config via <code>config/config.json</code> (optional)<a class="headerlink" href="#c-runtime-config-via-configconfigjson-optional" title="Permanent link">&para;</a></h2>
+<p>If your service reads a config file at runtime, don't bake it into the image and
+don't ask operators to hand-edit a volume. Per the
+<a href="../config-standard/">config standard</a>, the app loads <strong>one JSON file</strong> with
+<code>robotsix_config.load_config</code>, and the repo commits the model's typed schema:</p>
+<ol>
+<li>
+<p>Add <strong><code>config/config.json</code></strong> at the repo root (the defaults template —
+   emitted from the pydantic model) and <strong><code>config/config.schema.json</code></strong> (from
+   <code>config_schema_json</code>, kept in sync by a CI drift check). The deploy UI
+   renders typed inputs from the schema — numbers, booleans, enum dropdowns —
+   and masks any <code>SecretStr</code> field
+   (<code>{"type": "string", "format": "password", "writeOnly": true}</code>).</p>
+</li>
+<li>
+<p>On the <strong>primary</strong> service in <code>deploy/docker-compose.yml</code>, add the
+   <code>config-target</code> label pointing at the in-container path your app reads, and
+   mount a named volume whose container path is that file's <strong>dirname</strong> (§5, §8).
+   With the <a href="../docker-standard/">standardized container layout</a> that path is
+   always <code>/home/app/config/config.json</code>:</p>
+</li>
+</ol>
+<div class="highlight"><pre><span></span><code><span class="nt">services</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">my-service</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ghcr.io/damien-robotsix/my-service:main</span>
+<span class="w">    </span><span class="nt">labels</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">robotsix.deploy.config-target</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;/home/app/config/config.json&quot;</span>
+<span class="w">    </span><span class="nt">volumes</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my-service-config:/home/app/config</span><span class="w">    </span><span class="c1"># dirname of config-target must match a mount</span>
+<span class="nt">volumes</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">my-service-config</span><span class="p">:</span>
+</code></pre></div>
+<p>central-deploy merges operator edits into the template and <strong>writes
+<code>config.json</code> into that volume before the container starts</strong>, on every config
+save. Your app reads only from the mounted file. If the config template exists
+but the <code>config-target</code> label is missing or its dirname doesn't match a mount,
+preflight fails (§8).</p>
+<h3 id="config-assist-auto-generating-operator-config">config-assist (auto-generating operator config)<a class="headerlink" href="#config-assist-auto-generating-operator-config" title="Permanent link">&para;</a></h3>
+<p>If your CLI can generate a starter config (e.g. from an email address), you can
+declare it so the UI offers a "generate for me" step. Two labels on the primary
+service:</p>
+<div class="highlight"><pre><span></span><code><span class="nt">labels</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">robotsix.deploy.config-assist</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;detect</span><span class="nv"> </span><span class="s">{accounts.0.auth.username}</span><span class="nv"> </span><span class="s">--id</span><span class="nv"> </span><span class="s">{accounts.0.id}</span><span class="nv"> </span><span class="s">--overwrite</span><span class="nv"> </span><span class="s">--password</span><span class="nv"> </span><span class="s">{accounts.0.auth.password}</span><span class="nv"> </span><span class="s">--no-verify</span><span class="nv"> </span><span class="s">--output</span><span class="nv"> </span><span class="s">/home/app/config/config.json&quot;</span>
+<span class="w">  </span><span class="nt">robotsix.deploy.config-assist-seeds</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;accounts.0.auth.username,accounts.0.auth.password&quot;</span>
+</code></pre></div>
+<ul>
+<li><code>config-assist</code> is a command run inside the image; <code>{dotted.path}</code>
+  placeholders are filled from operator-entered seed values.</li>
+<li><code>config-assist-seeds</code> lists which fields the UI collects before running it.</li>
+<li>Every referenced command + flag <strong>must actually exist</strong> in the shipped CLI —
+  verify against your real entry point, or the assist step fails at deploy time.</li>
+</ul>
+<hr />
+<h2 id="d-onboard-in-the-dashboard">D. Onboard in the dashboard<a class="headerlink" href="#d-onboard-in-the-dashboard" title="Permanent link">&para;</a></h2>
+<ol>
+<li>In the central-deploy UI, start onboarding and point it at your repo. It
+   fetches <code>deploy/docker-compose.yml</code> (and the config template if present) via
+   <code>POST /onboard/preflight</code> and shows the parsed component.</li>
+<li>Fill secret slots (empty-value env keys and masked config leaves).</li>
+<li>Confirm optional toggles (e.g. the Claude mount) if you used those labels.</li>
+<li>Deploy. central-deploy pulls the image, injects config + secrets, applies
+   <code>restart: unless-stopped</code>, wires networking, and routes the primary port.</li>
+</ol>
+<hr />
+<h2 id="e-pre-flight-checklist-avoid-the-common-parse-errors">E. Pre-flight checklist (avoid the common parse errors)<a class="headerlink" href="#e-pre-flight-checklist-avoid-the-common-parse-errors" title="Permanent link">&para;</a></h2>
+<p>Run through this before onboarding — each maps to a §7 / Appendix A parse error:</p>
+<ul>
+<li>[ ] File is at <code>deploy/docker-compose.yml</code> (not repo root).</li>
+<li>[ ] First line is exactly <code># central-deploy-contract-version: 1</code>.</li>
+<li>[ ] Every service has a non-empty <code>image:</code> that CI actually publishes.</li>
+<li>[ ] No <code>build:</code> key anywhere.</li>
+<li>[ ] ≥2 services → exactly one <code>robotsix.deploy.primary: "true"</code>.</li>
+<li>[ ] All service <code>volumes:</code> entries are <strong>named</strong> (no <code>.</code> / <code>/</code> / <code>~</code> sources).</li>
+<li>[ ] Every named volume used is declared in the top-level <code>volumes:</code> section.</li>
+<li>[ ] Any <code>driver:</code> on a volume is <code>local</code> (or omitted).</li>
+<li>[ ] Service keys match <code>^[a-z0-9][a-z0-9-]*$</code>.</li>
+<li>[ ] If the config template exists → primary has a <code>config-target</code> label whose
+      dirname matches a named-volume mount.</li>
+<li>[ ] <code>host-docker-sock</code> (if used) is on a non-primary service only.</li>
+<li>[ ] Each service starts correctly — either the image has a default <code>CMD</code>, or
+      you set <code>command:</code> on the service (central-deploy applies it).</li>
+<li>[ ] Host ports are <strong>defaults</strong>, not contracts: preflight checks them
+      against every deployed component, auto-assigns a free port on collision,
+      and files a mill ticket so the colliding default gets fixed at the
+      source. Pick a sensible default anyway.</li>
+<li>[ ] If opting into chat access: primary service has <code>robotsix.deploy.chat-access: "true"</code>
+      label, and the component serves <code>GET /chat-skill</code> returning <code>text/markdown</code>
+      (see the <a href="../chat-access-standard/">chat access standard</a>).</li>
+</ul>
+<hr />
+<h2 id="f-keeping-the-dev-and-deploy-composes-straight">F. Keeping the dev and deploy composes straight<a class="headerlink" href="#f-keeping-the-dev-and-deploy-composes-straight" title="Permanent link">&para;</a></h2>
+<p>You maintain <strong>two</strong> compose files with different jobs:</p>
+<table>
+<thead>
+<tr>
+<th>File</th>
+<th>Audience</th>
+<th>Contains</th>
+<th>central-deploy</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>docker-compose.yml</code> (root)</td>
+<td>Local dev</td>
+<td><code>build:</code>, host bind-mounts, dev ports, <code>command:</code> overrides</td>
+<td><strong>Ignored</strong></td>
+</tr>
+<tr>
+<td><code>deploy/docker-compose.yml</code></td>
+<td>Production via central-deploy</td>
+<td>pre-built <code>image:</code>, named volumes, secret slots, labels</td>
+<td><strong>The contract</strong></td>
+</tr>
+</tbody>
+</table>
+<p>They will legitimately diverge (the dev compose builds locally and mounts your
+source; the deploy compose pulls a published image). That's expected — just keep
+the service/CLI command set consistent between them so operators aren't
+surprised.</p>
+<hr />
+<h2 id="reference">Reference<a class="headerlink" href="#reference" title="Permanent link">&para;</a></h2>
+<ul>
+<li><a href="../deploy-contract/">Deploy Contract</a> — authoritative spec, error table,
+  <code>ComponentConfig</code> mapping, and annotated examples (Appendix A).</li>
+<li><a href="../component-standard/">Component standard</a> — the three deploy modes, image
+  registry &amp; tags, the two compose files.</li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.sections", "navigation.expand", "content.code.copy"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+    
+  </body>
+</html>

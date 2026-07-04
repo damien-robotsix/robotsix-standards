@@ -166,6 +166,13 @@ Every component maintains two compose files with distinct jobs:
 They legitimately diverge (dev builds locally and mounts source; deploy pulls a
 published image). Keep the service/CLI command set consistent between them.
 
+## Chat access (opt-in)
+
+A component can make itself operable by the chat agent (`robotsix-chat`) by
+serving a skill endpoint and adding a deploy label. This is entirely
+optional — components with no chat-operable surface skip it. Full detail:
+[Chat access standard](chat-access-standard.md).
+
 ## Detailed contracts
 
 - [Config standard](config-standard.md) — one config model across all deploy modes.
@@ -173,3 +180,4 @@ published image). Keep the service/CLI command set consistent between them.
 - [Deploy contract](deploy-contract.md) — the `deploy/docker-compose.yml` shape.
 - [Entrypoint contract](entrypoint-contract.md) — container startup behavior.
 - [Integrating a service](integrating-a-service.md) — the end-to-end how-to.
+- [Chat access standard](chat-access-standard.md) — the opt-in skill endpoint + label.

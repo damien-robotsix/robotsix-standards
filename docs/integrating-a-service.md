@@ -182,6 +182,22 @@ Both are injected at runtime by central-deploy, so do **not** list them in
   container. **Dangerous** — root-equivalent host control. (§5 has the full
   security warning.)
 
+### Chat access label (opt-in)
+
+If the component wants to be operable by the chat agent (`robotsix-chat`),
+add the label on the primary service:
+
+```yaml
+labels:
+  robotsix.deploy.chat-access: "true"
+```
+
+This hints the deployer to default the component's chat-access checkbox to
+**on**. The operator checkbox in the central-deploy UI remains the actual
+authorization switch. See the [chat access standard](chat-access-standard.md)
+for the full contract — the component must also serve a `GET /chat-skill`
+endpoint returning `text/markdown`.
+
 ---
 
 ## C. Runtime config via `config/config.json` (optional)
@@ -276,6 +292,9 @@ Run through this before onboarding — each maps to a §7 / Appendix A parse err
       against every deployed component, auto-assigns a free port on collision,
       and files a mill ticket so the colliding default gets fixed at the
       source. Pick a sensible default anyway.
+- [ ] If opting into chat access: primary service has `robotsix.deploy.chat-access: "true"`
+      label, and the component serves `GET /chat-skill` returning `text/markdown`
+      (see the [chat access standard](chat-access-standard.md)).
 
 ---
 

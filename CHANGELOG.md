@@ -14,4 +14,5 @@
 
 ## 0.0.0 (unreleased)
 
+- New standard: [Chat access standard](docs/chat-access-standard.md) — how a fleet component makes itself operable by the chat agent (robotsix-chat) via `GET /chat-skill` + `robotsix.deploy.chat-access` label. Cross-linked from component-standard and integrating-a-service checklist.
 - Document python-security.yml's actual gate contents (SBOM, TruffleHog) in the security gate list

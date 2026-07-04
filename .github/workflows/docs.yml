@@ -5,43 +5,32 @@ on:
     branches: [main]
   workflow_dispatch:
 
-# GitHub Pages deploy via the modern Pages Actions (build type: workflow).
-# Self-contained: the shared python-docs reusable workflow, though correctly
-# configured for Pages Actions, causes deploy-pages to fail with "Deployment
-# failed, try again later" when called from this repo.
+# Deploy the built site to the gh-pages branch via peaceiris/actions-gh-pages.
+# This branch-based approach bypasses the Pages Actions API (actions/deploy-pages),
+# which returns "Deployment failed, try again later" for this repo regardless of
+# whether the workflow is self-contained or called through a reusable workflow.
+# Requires the repo's Pages source to be set to "Deploy from a branch" (branch: gh-pages).
 permissions:
-  contents: read
-  pages: write
-  id-token: write
+  contents: write  # needed for peaceiris/actions-gh-pages to push to gh-pages branch
 
 concurrency:
   group: pages
   cancel-in-progress: false
 
 jobs:
-  build:
+  build-and-deploy:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
         with:
           persist-credentials: false
-      - uses: actions/configure-pages@45bfe0192ca1faeb007ade9deae92b16b8254a0d # v6.0.0
       - uses: astral-sh/setup-uv@d0cc045d04ccac9d8b7881df0226f9e82c39688e # v6
         with:
           enable-cache: true
           python-version: "3.14"
       - name: Build docs (strict)
         run: uv run --group docs mkdocs build --strict
-      - uses: actions/upload-pages-artifact@fc324d3547104276b827a68afc52ff2a11cc49c9 # v5.0.0
+      - uses: peaceiris/actions-gh-pages@84c30a85c19949d7eee79c4ff27748b70285e453 # v4.1.0
         with:
-          path: site
-
-  deploy:
-    needs: build
-    runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    steps:
-      - id: deployment
-        uses: actions/deploy-pages@cd2ce8fcbc39b97be8ca5fce6e763baed58fa128 # v5.0.0
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./site

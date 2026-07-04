@@ -16,7 +16,9 @@ jobs:
     # Hand-rolled gate, justified: this docs-only repo has no Python package,
     # so the shared python-ci.yml (lint/type/test/coverage) does not apply.
     # This job is the PR-time strict docs build; deployment goes through the
-    # shared python-docs.yml caller in docs.yml.
+    # self-contained build+deploy workflow in docs.yml (the shared
+    # python-docs.yml reusable causes 'Deployment failed, try again later'
+    # from the Pages API for this repo).
     runs-on: ubuntu-latest
     permissions:
       contents: read

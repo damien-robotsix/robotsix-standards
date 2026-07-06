@@ -1,3 +1,25 @@
+# robotsix-standards 0.1.2 (2026-07-06)
+
+## Changed
+
+- Baseline self-conformance sweep: standard pre-commit set (docs-repo
+  subset), shared baseline-check and dependabot-auto-merge callers, docs
+  deploy via the shared python-docs workflow (stale gh-deploy justification
+  removed), and a towncrier-ignored `.gitkeep` so `changelog.d/` survives
+  releases that consume every fragment. (20260704T000500Z-baseline-conformance-sweep)
+- chat-access standard: /chat-skill endpoint, chat-access label, roster trust model (20260704T001648Z-chat-access-standard-chat-skill-endpoint-e0a5)
+- CI failure: Docs on main (20260704T083125Z-ci-failure-docs-on-main-668e, 20260704T093015Z-ci-failure-docs-on-main-9c8e, 20260703T234007Z-ci-failure-docs-on-main-1baa)
+- Update stale comment in ci.yml: deployment no longer uses shared python-docs workflow (20260704T090010Z-update-stale-comment-in-ci-yml-deploymen-1de6)
+- dependency-review gate: align the documented `fail-on-severity` to `moderate`
+  (what the fleet's strictest deployment, robotsix-chat, already enforces) —
+  supersedes the previous `high`. (20260704T091500Z-dependency-review-severity-moderate)
+- fleet page: robotsix-chat one-liner aligned with its README ("Browser + SSE
+  chat server exposing an LLM agent to human users") per the README-skeleton
+  agreement rule. (20260704T093000Z-fleet-chat-oneliner)
+- deploy contract: specify named-volume ownership guarantee (deployer chowns to runtime uid on creation) (20260704T131022Z-deploy-contract-specify-named-volume-own-2def)
+- CI failure: Auto Release on main (20260703T234004Z-ci-failure-auto-release-on-main-2aa9)
+
+
 # robotsix-standards 0.1.1 (2026-07-03)
 
 ## Changed

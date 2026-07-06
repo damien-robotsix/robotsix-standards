@@ -1,6 +1,6 @@
 [project]
 name = "robotsix-standards"
-version = "0.1.1"
+version = "0.1.2"
 description = "Cross-cutting config and deployment standards for the robotsix stack."
 readme = "README.md"
 requires-python = ">=3.14"

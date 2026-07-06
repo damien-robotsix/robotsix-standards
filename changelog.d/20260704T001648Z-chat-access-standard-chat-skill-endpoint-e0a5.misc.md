@@ -1,1 +1,0 @@
-chat-access standard: /chat-skill endpoint, chat-access label, roster trust model

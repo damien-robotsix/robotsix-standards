@@ -39,6 +39,7 @@ nav:
       - Repo baseline: repo-baseline.md
       - Python practices: python.md
       - JavaScript practices: javascript.md
+      - ROS 2 practices: ros2.md
   - Deployable components:
       - Component standard: component-standard.md
       - Config standard: config-standard.md

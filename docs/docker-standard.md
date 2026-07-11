@@ -53,8 +53,11 @@ A multi-stage Dockerfile that keeps build tooling out of the runtime image:
   [config standard](config-standard.md)), persistent data at **`/data`**, and
   — for components carrying the claude-mount label — the central-deploy-managed
   **`claude-auth` named volume** (contents owned by the deployment uid) at
-  **`/home/app/.claude`**. No per-component mount-target configuration exists
-  or is needed. **Nothing is ever bind-mounted from the host** (see the
+  **`/home/app/.claude`**. The mount target is the container's home
+  directory — there is no per-component mount-target configuration and no
+  `/root/.claude` variant: every managed container runs as the deployment uid
+  (1000) with home `/home/app`, so `/root` is neither accessible nor
+  meaningful. **Nothing is ever bind-mounted from the host** (see the
   [deploy contract](deploy-contract.md)); the container's writable surface is
   exactly its mounted volumes — `$HOME` is otherwise read-only.
 - **Healthcheck:** declare a `HEALTHCHECK` probing the service's health

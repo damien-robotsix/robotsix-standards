@@ -1102,8 +1102,11 @@ uv<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </s
   <a href="../config-standard/">config standard</a>), persistent data at <strong><code>/data</code></strong>, and
   — for components carrying the claude-mount label — the central-deploy-managed
   <strong><code>claude-auth</code> named volume</strong> (contents owned by the deployment uid) at
-  <strong><code>/home/app/.claude</code></strong>. No per-component mount-target configuration exists
-  or is needed. <strong>Nothing is ever bind-mounted from the host</strong> (see the
+  <strong><code>/home/app/.claude</code></strong>. The mount target is the container's home
+  directory — there is no per-component mount-target configuration and no
+  <code>/root/.claude</code> variant: every managed container runs as the deployment uid
+  (1000) with home <code>/home/app</code>, so <code>/root</code> is neither accessible nor
+  meaningful. <strong>Nothing is ever bind-mounted from the host</strong> (see the
   <a href="../deploy-contract/">deploy contract</a>); the container's writable surface is
   exactly its mounted volumes — <code>$HOME</code> is otherwise read-only.
 - <strong>Healthcheck:</strong> declare a <code>HEALTHCHECK</code> probing the service's health

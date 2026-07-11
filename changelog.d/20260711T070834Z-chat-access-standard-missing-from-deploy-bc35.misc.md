@@ -1,0 +1,1 @@
+chat-access-standard missing from 'Deployable components' tables in README.md and docs/index.md

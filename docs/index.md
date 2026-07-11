@@ -46,6 +46,8 @@ integrates with the deployment system. Beyond the baseline it follows:
 - **[Entrypoint contract](entrypoint-contract.md)** — how a component's
   container starts up.
 - **[Integrating a service](integrating-a-service.md)** — the end-to-end how-to.
+- **[Chat access](chat-access-standard.md)** — a standard skill endpoint so the
+  chat agent can invoke operations on the component.
 
 ### The deployment system (bootstrap tier)
 

@@ -1,3 +1,20 @@
+## 0.0.0 (unreleased)
+
+- Removed all Python-specific `uv` references from the language-agnostic `repo-baseline.md`; consolidated `uv` Dependabot ecosystem and SHA-pin rules into `python.md`.
+- Add chat-access standard to the deployable components tables in README.md and docs/index.md.
+- Landed stub ROS 2 practices page (`docs/ros2.md`) and linked it from the repo baseline — resolves a dangling promise that had been "being derived" across several review rounds.
+- entrypoint-contract: update mill example rationale from stale socket-group-join
+  to volume-ownership reconciliation + ulimit raise; relabel socket-group-join
+  as legacy direct-mount branch.
+- Deploy contract: specify volume-ownership responsibility — deployer guarantee (writable-by-uid on first creation) and component obligation (no image-side mkdir/chown reliance; log persistence paths at startup).
+- Switched docs deployment from `actions/deploy-pages` (Pages Actions API) to `peaceiris/actions-gh-pages` (branch-based) to work around persistent "Deployment failed, try again later" errors from the GitHub Pages API. Requires the repo's Pages source to be set to "Deploy from a branch" (branch: `gh-pages`).
+- Revert docs deployment to self-contained workflow; the shared python-docs
+  reusable workflow's deploy job, though correctly configured for Pages
+  Actions, causes deploy-pages to return "Deployment failed, try again
+  later" when called from this repo.
+- New standard: [Chat access standard](docs/chat-access-standard.md) — how a fleet component makes itself operable by the chat agent (robotsix-chat) via `GET /chat-skill` + `robotsix.deploy.chat-access` label. Cross-linked from component-standard and integrating-a-service checklist.
+- Document python-security.yml's actual gate contents (SBOM, TruffleHog) in the security gate list
+
 # robotsix-standards 0.1.2 (2026-07-06)
 
 ## Changed
@@ -34,19 +51,3 @@
   workflow (weekly + on-demand) and the shared changelog-check gate in CI. (20260703T231741Z-wire-auto-release-and-changelog-gate)
 
 
-## 0.0.0 (unreleased)
-
-- Removed all Python-specific `uv` references from the language-agnostic `repo-baseline.md`; consolidated `uv` Dependabot ecosystem and SHA-pin rules into `python.md`.
-- Add chat-access standard to the deployable components tables in README.md and docs/index.md.
-- Landed stub ROS 2 practices page (`docs/ros2.md`) and linked it from the repo baseline — resolves a dangling promise that had been "being derived" across several review rounds.
-- entrypoint-contract: update mill example rationale from stale socket-group-join
-  to volume-ownership reconciliation + ulimit raise; relabel socket-group-join
-  as legacy direct-mount branch.
-- Deploy contract: specify volume-ownership responsibility — deployer guarantee (writable-by-uid on first creation) and component obligation (no image-side mkdir/chown reliance; log persistence paths at startup).
-- Switched docs deployment from `actions/deploy-pages` (Pages Actions API) to `peaceiris/actions-gh-pages` (branch-based) to work around persistent "Deployment failed, try again later" errors from the GitHub Pages API. Requires the repo's Pages source to be set to "Deploy from a branch" (branch: `gh-pages`).
-- Revert docs deployment to self-contained workflow; the shared python-docs
-  reusable workflow's deploy job, though correctly configured for Pages
-  Actions, causes deploy-pages to return "Deployment failed, try again
-  later" when called from this repo.
-- New standard: [Chat access standard](docs/chat-access-standard.md) — how a fleet component makes itself operable by the chat agent (robotsix-chat) via `GET /chat-skill` + `robotsix.deploy.chat-access` label. Cross-linked from component-standard and integrating-a-service checklist.
-- Document python-security.yml's actual gate contents (SBOM, TruffleHog) in the security gate list

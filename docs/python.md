@@ -26,6 +26,13 @@ packages — `uv sync`, `uv add`, `uv run`, `uvx`, `uv build`. pip is not a
 supported install path (it ignores `[tool.uv.sources]`, so first-party git
 dependencies won't resolve). **Do not advertise a `pip install` path.**
 
+**First-party dependencies are pinned to commit SHAs** in `[tool.uv.sources]`, never
+branch refs — a branch ref drifts silently when `uv lock` re-resolves.
+See the [repo baseline](repo-baseline.md#pin-to-a-commit-sha-not-a-branch)
+for the pin rule and the auto-bump workflow. **Third-party dependencies**
+go through Dependabot's `uv` ecosystem; `.github/dependabot.yml` must
+declare it in every Python repo (the baseline-check gate verifies this).
+
 ## Packaging
 
 - **Build backend: `hatchling`.** `[tool.hatch.metadata]

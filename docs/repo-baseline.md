@@ -29,7 +29,7 @@ distributed.
 is a single, first-party set of repositories; publishing and index accounts add
 release machinery no one asked for. First-party libraries are consumed **directly
 from their git repositories**, using the language's native git-dependency
-support — for Python, uv's `[tool.uv.sources]`.
+support.
 
 Repos therefore carry **no index-publish workflow** (no `pypi-publish`,
 release-please, or index token). A library that later needs genuine public
@@ -42,24 +42,16 @@ any package index.)
 #### Pin to a commit SHA, not a branch
 
 Every first-party git source is pinned to a **commit SHA**, never a branch ref
-like `main`. A branch ref drifts silently — a fresh `uv lock` (or any
+like `main`. A branch ref drifts silently — a fresh lock (or any
 lock-refresh) can pull in unrelated upstream changes with no PR, and a rename or
 breaking change upstream then breaks resolution out of nowhere.
-
-```toml
-[tool.uv.sources]
-# Pinned — reproducible, updated only via a reviewed bump.
-robotsix-config = { git = "https://github.com/damien-robotsix/robotsix-config.git", rev = "6f2a1c9e…" }
-# NOT this — a moving target:
-# robotsix-config = { git = "…", rev = "main" }
-```
 
 #### Auto-bump workflow keeps pins current
 
 Because pins are SHAs, they need an automated bump so they don't rot. A
-**scheduled pin-bump workflow** walks each repo's `[tool.uv.sources]`, resolves
+**scheduled pin-bump workflow** walks each repo's dependency manifest, resolves
 the latest commit on each dependency's default branch, and opens a PR that
-updates the `rev` and re-locks — updates land **deliberately, through green CI
+updates the pin and re-locks — updates land **deliberately, through green CI
 and review**, never silently. A **coherent-set resolver** keeps a dependency
 that several repos share pinned to the *same* SHA across the stack, so the fleet
 doesn't split-brain on transitive versions. (Third-party deps use the usual
@@ -68,7 +60,7 @@ sources.)
 
 ## Language practices
 
-- **[Python](python.md)** — uv, hatchling, `requires-python` policy, console
+- **[Python](python.md)** — `requires-python` policy, console
   scripts, lint/type/security gates, test layout, pre-commit hooks.
 - **[JavaScript](javascript.md)** — vanilla frontend JS as static assets,
   lockfile discipline, vitest coverage floor, eslint/stylelint.
@@ -178,7 +170,7 @@ gate set:
 - **Security:** CodeQL (SAST), GitHub secret scanning + push protection
   (complemented by TruffleHog for PR-diff and full-repo scans in the shared
   security workflow), a dependency CVE audit (`pip-audit` in the security
-  workflow, `uv audit` in CI), `dependency-review` on PRs (`fail-on-severity:
+  workflow), `dependency-review` on PRs (`fail-on-severity:
   moderate`), and a CycloneDX SBOM generated and uploaded as a workflow
   artifact.
 - **Container image:** repos that ship an image also scan it in CI — see
@@ -234,7 +226,7 @@ standards page *and* a template before its first repo lands.
 The mirror image, exercised by the broker decommission (2026-07-03):
 
 1. **Deprecate first.** File removal tickets in every consumer — find them
-   by sweeping the fleet's `[tool.uv.sources]` for the repo. Removals are
+   by sweeping the fleet's dependency manifests for the repo. Removals are
    clean cutover, per house rule.
 2. **Gate the archive on the removals** (the mill's `unblocks` mechanism).
    **Never privatize or archive while any git pin still points at the
@@ -260,14 +252,14 @@ receiving security patches until someone moves it):
 
 | Pin | Bumper |
 |---|---|
-| First-party `[tool.uv.sources]` SHAs | the scheduled pin-bump workflow (above) |
-| Third-party packages (`uv.lock`) | Dependabot `uv` ecosystem |
+| First-party git-dependency pins | the scheduled pin-bump workflow (above) |
+| Third-party packages (lockfile) | Dependabot — language-specific ecosystem |
 | GitHub Actions SHAs | Dependabot `github-actions` ecosystem |
-| Base-image digests + the uv `COPY --from` pin | Dependabot `docker` ecosystem |
+| Base-image digests + the `COPY --from` pin | Dependabot `docker` ecosystem |
 | Pre-commit hook versions | Dependabot `pre-commit` ecosystem |
 | npm packages (`package-lock.json`) | Dependabot `npm` ecosystem |
 
-`.github/dependabot.yml` therefore covers **`uv`, `github-actions`, and
+`.github/dependabot.yml` therefore covers **`github-actions` and
 `pre-commit`** in every repo, plus **`docker`** in repos that ship an image
 and **`npm`** in repos with a `package.json`
 (GitHub only reads the file per-repo — it cannot be centralized, so the

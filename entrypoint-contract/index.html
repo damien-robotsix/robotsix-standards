@@ -966,8 +966,11 @@ in the Dockerfile:</p>
 <h2 id="the-exception-genuine-startup-work">The exception: genuine startup work<a class="headerlink" href="#the-exception-genuine-startup-work" title="Permanent link">&para;</a></h2>
 <p>A component ships an <code>entrypoint.sh</code> only when the container must do real work
 before the app can run that the app itself cannot do — the canonical example
-is robotsix-mill's privilege drop (start as root, join the host docker-socket
-group, <code>runuser</code> down to the app user). If you are not sure you need one, you
+is robotsix-mill's privilege drop: start as root to reconcile config/data
+volume ownership (<code>chmod 600</code> secrets, <code>chown</code> to the runtime user) and raise
+the fd ulimit, then <code>runuser</code> down to the app user. The older
+socket-group-join pattern is the legacy direct-mount branch, which the deploy
+contract forbids for app containers. If you are not sure you need one, you
 don't.</p>
 <p>Rules for such a script:</p>
 <ol>

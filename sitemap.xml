@@ -52,4 +52,8 @@
          <loc>https://damien-robotsix.github.io/robotsix-standards/repo-baseline/</loc>
          <lastmod>2026-07-11</lastmod>
     </url>
+    <url>
+         <loc>https://damien-robotsix.github.io/robotsix-standards/ros2/</loc>
+         <lastmod>2026-07-11</lastmod>
+    </url>
 </urlset>

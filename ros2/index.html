@@ -10,13 +10,13 @@
       
       
       
-        <link rel="canonical" href="https://damien-robotsix.github.io/robotsix-standards/entrypoint-contract/">
+        <link rel="canonical" href="https://damien-robotsix.github.io/robotsix-standards/ros2/">
       
       
-        <link rel="prev" href="../deploy-contract/">
+        <link rel="prev" href="../javascript/">
       
       
-        <link rel="next" href="../integrating-a-service/">
+        <link rel="next" href="../component-standard/">
       
       
         
@@ -27,7 +27,7 @@
     
     
       
-        <title>Entrypoint contract - Robotsix Standards</title>
+        <title>ROS 2 practices - Robotsix Standards</title>
       
     
     
@@ -78,7 +78,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#entrypoint-contract" class="md-skip">
+        <a href="#ros-2-practices" class="md-skip">
           Skip to content
         </a>
       
@@ -114,7 +114,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Entrypoint contract
+              ROS 2 practices
             
           </span>
         </div>
@@ -311,8 +311,10 @@
       
   
   
+    
   
   
+  
     
     
     
@@ -323,13 +325,11 @@
       
     
     
-    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
       
         
         
-          
-        
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
         
           
           <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
@@ -350,7 +350,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_3">
             <span class="md-nav__icon md-icon"></span>
             
@@ -449,10 +449,37 @@
                 
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="../ros2/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ROS 2 practices
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   
@@ -468,6 +495,37 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#project-layout" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Project layout
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -484,8 +542,6 @@
       
   
   
-    
-  
   
   
     
@@ -498,11 +554,13 @@
       
     
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4" >
         
           
           <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
@@ -523,7 +581,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_4">
             <span class="md-nav__icon md-icon"></span>
             
@@ -650,37 +708,10 @@
                 
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Entrypoint contract
-  
-
-    
-  </span>
-  
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../entrypoint-contract/" class="md-nav__link">
         
   
   
@@ -696,48 +727,6 @@
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#the-standard-no-entrypoint-script" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        The standard: no entrypoint script
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#the-exception-genuine-startup-work" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        The exception: genuine startup work
-      
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -922,21 +911,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#the-standard-no-entrypoint-script" class="md-nav__link">
+  <a href="#project-layout" class="md-nav__link">
     <span class="md-ellipsis">
       
-        The standard: no entrypoint script
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#the-exception-genuine-startup-work" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        The exception: genuine startup work
+        Project layout
       
     </span>
   </a>
@@ -963,58 +941,23 @@
   
 
 
-<h1 id="entrypoint-contract">Entrypoint contract<a class="headerlink" href="#entrypoint-contract" title="Permanent link">&para;</a></h1>
+<h1 id="ros-2-practices">ROS 2 practices<a class="headerlink" href="#ros-2-practices" title="Permanent link">&para;</a></h1>
 <blockquote>
-<p><strong>Scope: deployable components only.</strong> See the
-<a href="../component-standard/">component standard</a>.</p>
+<p><strong>Scope: every ROS 2 repository.</strong> These are the language-specific
+practices for ROS 2 packages; the language-agnostic rules (tiers, hygiene,
+CI philosophy) live in the <a href="../repo-baseline/">repo baseline</a>.</p>
 </blockquote>
-<p>How a component's container starts. The rule is simple: <strong>the console script
-is PID 1.</strong></p>
-<h2 id="the-standard-no-entrypoint-script">The standard: no entrypoint script<a class="headerlink" href="#the-standard-no-entrypoint-script" title="Permanent link">&para;</a></h2>
-<p>The default — what most of the fleet ships — is a direct exec-form entrypoint
-in the Dockerfile:</p>
-<div class="highlight"><pre><span></span><code><span class="k">ENTRYPOINT</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;robotsix-&lt;name&gt;&quot;</span><span class="p">]</span>
-</code></pre></div>
-<p>Every duty an entrypoint script used to carry has a better home:</p>
-<ul>
-<li><strong>Signal delivery</strong> — exec form makes the console script PID 1, so SIGTERM
-  from <code>docker stop</code> reaches the Python process directly. A <code>--watch</code>/daemon
-  subcommand stops cleanly on SIGTERM (log a stop line, drain if mid-cycle,
-  exit 0) — the <strong>app</strong> implements the handler.</li>
-<li><strong>Config validation</strong> — <code>robotsix_config.load_config</code> already fails fast
-  with a clear <code>MissingConfigError</code>/<code>InvalidConfigError</code>; a shell pre-check
-  duplicates it with a worse message. Bootstrap commands that must run before
-  a config exists (<code>detect</code>, <code>--help</code>, <code>--version</code>) simply don't call
-  <code>load_config</code> — the app knows which of its commands need config, whereas a
-  shell-script allowlist of subcommand names rots the first time one is added.</li>
-<li><strong>Config file permissions</strong> — enforced by whoever <em>writes</em> the file:
-  <code>dump_config</code> writes <code>0600</code> in a <code>0700</code> directory, and central-deploy owns
-  the config volume it writes into. Not a per-container <code>chmod</code>.</li>
-</ul>
-<h2 id="the-exception-genuine-startup-work">The exception: genuine startup work<a class="headerlink" href="#the-exception-genuine-startup-work" title="Permanent link">&para;</a></h2>
-<p>A component ships an <code>entrypoint.sh</code> only when the container must do real work
-before the app can run that the app itself cannot do — the canonical example
-is robotsix-mill's privilege drop: start as root to reconcile config/data
-volume ownership (<code>chmod 600</code> secrets, <code>chown</code> to the runtime user) and raise
-the fd ulimit, then <code>runuser</code> down to the app user. The older
-socket-group-join pattern is the legacy direct-mount branch, which the deploy
-contract forbids for app containers. If you are not sure you need one, you
-don't.</p>
-<p>Rules for such a script:</p>
-<ol>
-<li><strong><code>exec</code> the application as the final step</strong> — never run the app as a child
-   of the shell, or <code>docker stop</code> can't deliver SIGTERM and the container is
-   SIGKILLed after the grace period with no clean shutdown.</li>
-<li><strong>Never gate bootstrap commands on config</strong> (<code>--help</code>, <code>detect</code>, …) — a
-   fresh operator must be able to run them before any config exists.</li>
-<li><strong>No config templating.</strong> Don't template with <code>envsubst</code>: per the
-   <a href="../config-standard/">config standard</a> the one config file is the only
-   source of values, so there is nothing to template — and <code>gettext-base</code>
-   isn't in the runtime image anyway, so the block silently does nothing (a
-   real bug found in the stack). Delete any <code>envsubst</code> block.</li>
-<li><strong>Keep it short, and comment why it exists</strong> — the script is an exception;
-   the comment is its justification.</li>
-</ol>
+<div class="admonition note">
+<p class="admonition-title">Status: derived from robotsix-mill-ros2</p>
+<p>The <code>robotsix-mill-ros2</code> repo predates this standards page; the
+conventions below are being extracted from that repo's actual working
+practices. This page will expand as more ROS 2 repos land in the fleet
+and as existing patterns are documented.</p>
+</div>
+<h2 id="project-layout">Project layout<a class="headerlink" href="#project-layout" title="Permanent link">&para;</a></h2>
+<blockquote>
+<p>⏳  Pending extraction from <code>robotsix-mill-ros2</code>.</p>
+</blockquote>
 
 
 

@@ -1246,7 +1246,7 @@ distributed.</p>
 is a single, first-party set of repositories; publishing and index accounts add
 release machinery no one asked for. First-party libraries are consumed <strong>directly
 from their git repositories</strong>, using the language's native git-dependency
-support — for Python, uv's <code>[tool.uv.sources]</code>.</p>
+support.</p>
 <p>Repos therefore carry <strong>no index-publish workflow</strong> (no <code>pypi-publish</code>,
 release-please, or index token). A library that later needs genuine public
 distribution can add publishing back deliberately — but that is the exception,
@@ -1256,20 +1256,14 @@ via the shared auto-release workflow; see
 any package index.)</p>
 <h4 id="pin-to-a-commit-sha-not-a-branch">Pin to a commit SHA, not a branch<a class="headerlink" href="#pin-to-a-commit-sha-not-a-branch" title="Permanent link">&para;</a></h4>
 <p>Every first-party git source is pinned to a <strong>commit SHA</strong>, never a branch ref
-like <code>main</code>. A branch ref drifts silently — a fresh <code>uv lock</code> (or any
+like <code>main</code>. A branch ref drifts silently — a fresh lock (or any
 lock-refresh) can pull in unrelated upstream changes with no PR, and a rename or
 breaking change upstream then breaks resolution out of nowhere.</p>
-<div class="highlight"><pre><span></span><code><span class="k">[tool.uv.sources]</span>
-<span class="c1"># Pinned — reproducible, updated only via a reviewed bump.</span>
-<span class="n">robotsix-config</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">git</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">&quot;https://github.com/damien-robotsix/robotsix-config.git&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">rev</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">&quot;6f2a1c9e…&quot;</span><span class="w"> </span><span class="p">}</span>
-<span class="c1"># NOT this — a moving target:</span>
-<span class="c1"># robotsix-config = { git = &quot;…&quot;, rev = &quot;main&quot; }</span>
-</code></pre></div>
 <h4 id="auto-bump-workflow-keeps-pins-current">Auto-bump workflow keeps pins current<a class="headerlink" href="#auto-bump-workflow-keeps-pins-current" title="Permanent link">&para;</a></h4>
 <p>Because pins are SHAs, they need an automated bump so they don't rot. A
-<strong>scheduled pin-bump workflow</strong> walks each repo's <code>[tool.uv.sources]</code>, resolves
+<strong>scheduled pin-bump workflow</strong> walks each repo's dependency manifest, resolves
 the latest commit on each dependency's default branch, and opens a PR that
-updates the <code>rev</code> and re-locks — updates land <strong>deliberately, through green CI
+updates the pin and re-locks — updates land <strong>deliberately, through green CI
 and review</strong>, never silently. A <strong>coherent-set resolver</strong> keeps a dependency
 that several repos share pinned to the <em>same</em> SHA across the stack, so the fleet
 doesn't split-brain on transitive versions. (Third-party deps use the usual
@@ -1277,7 +1271,7 @@ Dependabot/Renovate auto-merge path; this workflow is for the first-party git
 sources.)</p>
 <h2 id="language-practices">Language practices<a class="headerlink" href="#language-practices" title="Permanent link">&para;</a></h2>
 <ul>
-<li><strong><a href="../python/">Python</a></strong> — uv, hatchling, <code>requires-python</code> policy, console
+<li><strong><a href="../python/">Python</a></strong> — <code>requires-python</code> policy, console
   scripts, lint/type/security gates, test layout, pre-commit hooks.</li>
 <li><strong><a href="../javascript/">JavaScript</a></strong> — vanilla frontend JS as static assets,
   lockfile discipline, vitest coverage floor, eslint/stylelint.</li>
@@ -1383,7 +1377,7 @@ gate set:</p>
 <li><strong>Security:</strong> CodeQL (SAST), GitHub secret scanning + push protection
   (complemented by TruffleHog for PR-diff and full-repo scans in the shared
   security workflow), a dependency CVE audit (<code>pip-audit</code> in the security
-  workflow, <code>uv audit</code> in CI), <code>dependency-review</code> on PRs (<code>fail-on-severity:
+  workflow), <code>dependency-review</code> on PRs (<code>fail-on-severity:
   moderate</code>), and a CycloneDX SBOM generated and uploaded as a workflow
   artifact.</li>
 <li><strong>Container image:</strong> repos that ship an image also scan it in CI — see
@@ -1433,7 +1427,7 @@ standards page <em>and</em> a template before its first repo lands.</p>
 <p>The mirror image, exercised by the broker decommission (2026-07-03):</p>
 <ol>
 <li><strong>Deprecate first.</strong> File removal tickets in every consumer — find them
-   by sweeping the fleet's <code>[tool.uv.sources]</code> for the repo. Removals are
+   by sweeping the fleet's dependency manifests for the repo. Removals are
    clean cutover, per house rule.</li>
 <li><strong>Gate the archive on the removals</strong> (the mill's <code>unblocks</code> mechanism).
    <strong>Never privatize or archive while any git pin still points at the
@@ -1465,19 +1459,19 @@ receiving security patches until someone moves it):</p>
 </thead>
 <tbody>
 <tr>
-<td>First-party <code>[tool.uv.sources]</code> SHAs</td>
+<td>First-party git-dependency pins</td>
 <td>the scheduled pin-bump workflow (above)</td>
 </tr>
 <tr>
-<td>Third-party packages (<code>uv.lock</code>)</td>
-<td>Dependabot <code>uv</code> ecosystem</td>
+<td>Third-party packages (lockfile)</td>
+<td>Dependabot — language-specific ecosystem</td>
 </tr>
 <tr>
 <td>GitHub Actions SHAs</td>
 <td>Dependabot <code>github-actions</code> ecosystem</td>
 </tr>
 <tr>
-<td>Base-image digests + the uv <code>COPY --from</code> pin</td>
+<td>Base-image digests + the <code>COPY --from</code> pin</td>
 <td>Dependabot <code>docker</code> ecosystem</td>
 </tr>
 <tr>
@@ -1490,7 +1484,7 @@ receiving security patches until someone moves it):</p>
 </tr>
 </tbody>
 </table>
-<p><code>.github/dependabot.yml</code> therefore covers <strong><code>uv</code>, <code>github-actions</code>, and
+<p><code>.github/dependabot.yml</code> therefore covers <strong><code>github-actions</code> and
 <code>pre-commit</code></strong> in every repo, plus <strong><code>docker</code></strong> in repos that ship an image
 and <strong><code>npm</code></strong> in repos with a <code>package.json</code>
 (GitHub only reads the file per-repo — it cannot be centralized, so the

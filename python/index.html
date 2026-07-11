@@ -1171,6 +1171,12 @@ in the <a href="../repo-baseline/">repo baseline</a>.</p>
 packages — <code>uv sync</code>, <code>uv add</code>, <code>uv run</code>, <code>uvx</code>, <code>uv build</code>. pip is not a
 supported install path (it ignores <code>[tool.uv.sources]</code>, so first-party git
 dependencies won't resolve). <strong>Do not advertise a <code>pip install</code> path.</strong></p>
+<p><strong>First-party dependencies are pinned to commit SHAs</strong> in <code>[tool.uv.sources]</code>, never
+branch refs — a branch ref drifts silently when <code>uv lock</code> re-resolves.
+See the <a href="../repo-baseline/#pin-to-a-commit-sha-not-a-branch">repo baseline</a>
+for the pin rule and the auto-bump workflow. <strong>Third-party dependencies</strong>
+go through Dependabot's <code>uv</code> ecosystem; <code>.github/dependabot.yml</code> must
+declare it in every Python repo (the baseline-check gate verifies this).</p>
 <h2 id="packaging">Packaging<a class="headerlink" href="#packaging" title="Permanent link">&para;</a></h2>
 <ul>
 <li><strong>Build backend: <code>hatchling</code>.</strong> <code>[tool.hatch.metadata]

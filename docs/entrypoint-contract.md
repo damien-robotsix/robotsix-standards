@@ -35,8 +35,11 @@ Every duty an entrypoint script used to carry has a better home:
 
 A component ships an `entrypoint.sh` only when the container must do real work
 before the app can run that the app itself cannot do — the canonical example
-is robotsix-mill's privilege drop (start as root, join the host docker-socket
-group, `runuser` down to the app user). If you are not sure you need one, you
+is robotsix-mill's privilege drop: start as root to reconcile config/data
+volume ownership (`chmod 600` secrets, `chown` to the runtime user) and raise
+the fd ulimit, then `runuser` down to the app user. The older
+socket-group-join pattern is the legacy direct-mount branch, which the deploy
+contract forbids for app containers. If you are not sure you need one, you
 don't.
 
 Rules for such a script:

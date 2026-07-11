@@ -1,5 +1,6 @@
 ## 0.0.0 (unreleased)
 
+- Clarify the `claude-auth` mount target in the docker standard: `/home/app/.claude` is the only valid target for standard `app`-user containers; there is no `/root/.claude` variant (containers run as uid 1000 with home `/home/app`, so `/root` is neither accessible nor meaningful).
 - Removed all Python-specific `uv` references from the language-agnostic `repo-baseline.md`; consolidated `uv` Dependabot ecosystem and SHA-pin rules into `python.md`.
 - Add chat-access standard to the deployable components tables in README.md and docs/index.md.
 - Landed stub ROS 2 practices page (`docs/ros2.md`) and linked it from the repo baseline — resolves a dangling promise that had been "being derived" across several review rounds.

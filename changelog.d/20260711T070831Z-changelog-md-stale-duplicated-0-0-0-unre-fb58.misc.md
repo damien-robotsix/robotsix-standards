@@ -1,0 +1,1 @@
+CHANGELOG.md: stale duplicated '0.0.0 (unreleased)' block below released sections

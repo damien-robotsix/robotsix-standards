@@ -1,0 +1,1 @@
+ROS 2 practices page/template promised in repo-baseline.md but still absent

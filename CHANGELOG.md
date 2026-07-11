@@ -37,6 +37,7 @@
 ## 0.0.0 (unreleased)
 
 - Add chat-access standard to the deployable components tables in README.md and docs/index.md.
+- Landed stub ROS 2 practices page (`docs/ros2.md`) and linked it from the repo baseline — resolves a dangling promise that had been "being derived" across several review rounds.
 - entrypoint-contract: update mill example rationale from stale socket-group-join
   to volume-ownership reconciliation + ulimit raise; relabel socket-group-join
   as legacy direct-mount branch.

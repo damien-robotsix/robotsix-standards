@@ -74,8 +74,8 @@ sources.)
   lockfile discipline, vitest coverage floor, eslint/stylelint.
 
 New languages get their own page here before the first repo lands
-(`robotsix-mill-ros2` predates this rule; its ROS 2 practices page is being
-derived from that repo's actual conventions — started solid, adapted as it
+(`robotsix-mill-ros2` predates this rule; its conventions are being extracted
+into the **[ROS 2 practices](ros2.md)** page — started solid, adapted as it
 goes). Generic
 language conventions live **only** on these pages — agent systems (the mill's
 implement/refine/review agents) point here rather than carrying their own

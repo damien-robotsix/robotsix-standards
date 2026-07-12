@@ -84,7 +84,12 @@ newsfragments, compiled by the shared auto-release workflow.**
   changes with nothing to record). Fragments are per-PR files, so parallel
   PRs never conflict on the changelog.
 - **`CHANGELOG.md` is written only by the release workflow** — never by hand.
-  It stays in [Keep a Changelog](https://keepachangelog.com) form.
+  It stays in [Keep a Changelog](https://keepachangelog.com) form. The one
+  exception: a programmatic tool that fixes a bug in `CHANGELOG.md` itself
+  (e.g., an append/insert bug that would otherwise lose history) may write
+  to it directly, and only for that fix. The tool must not become a
+  general-purpose changelog writer — `changelog.d/` fragments remain the
+  single source of truth for content.
 - **Releases are automated.** The shared auto-release workflow (in
   [robotsix-github-workflows](https://github.com/damien-robotsix/robotsix-github-workflows);
   runs weekly plus on demand) does nothing when `changelog.d/` is empty;

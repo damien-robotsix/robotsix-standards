@@ -1,5 +1,6 @@
 ## 0.0.0 (unreleased)
 
+- Added explicit exception to the "CHANGELOG.md is written only by the release workflow" rule: a programmatic tool fixing a bug in CHANGELOG.md itself may write to it directly, and only for that fix.
 - Clarify the `claude-auth` mount target in the docker standard: `/home/app/.claude` is the only valid target for standard `app`-user containers; there is no `/root/.claude` variant (containers run as uid 1000 with home `/home/app`, so `/root` is neither accessible nor meaningful).
 - Removed all Python-specific `uv` references from the language-agnostic `repo-baseline.md`; consolidated `uv` Dependabot ecosystem and SHA-pin rules into `python.md`.
 - Add chat-access standard to the deployable components tables in README.md and docs/index.md.

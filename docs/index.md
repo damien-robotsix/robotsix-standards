@@ -28,6 +28,8 @@ everywhere.
   lint/type/security gates, test layout, pre-commit hooks.
 - **[JavaScript practices](javascript.md)** — vanilla frontend JS as static
   assets, lockfile discipline, vitest coverage floor, eslint/stylelint.
+- **[ROS 2 practices](ros2.md)** — workspace-skeleton layout, vcs2l manifest,
+  devcontainer, colcon/rosdep build, lint gates.
 
 ### Deployable components (additionally)
 

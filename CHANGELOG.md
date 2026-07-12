@@ -1,5 +1,6 @@
 ## 0.0.0 (unreleased)
 
+- Filled in the ROS 2 practices page (`docs/ros2.md`): workspace-skeleton layout, vcs2l manifest, devcontainer conventions, supported distros, build & test pipeline, CI expectations, code style & linting, and interface design guidelines — all derived from `robotsix-mill-ros2`.
 - Added explicit exception to the "CHANGELOG.md is written only by the release workflow" rule: a programmatic tool fixing a bug in CHANGELOG.md itself may write to it directly, and only for that fix.
 - Clarify the `claude-auth` mount target in the docker standard: `/home/app/.claude` is the only valid target for standard `app`-user containers; there is no `/root/.claude` variant (containers run as uid 1000 with home `/home/app`, so `/root` is neither accessible nor meaningful).
 - Removed all Python-specific `uv` references from the language-agnostic `repo-baseline.md`; consolidated `uv` Dependabot ecosystem and SHA-pin rules into `python.md`.

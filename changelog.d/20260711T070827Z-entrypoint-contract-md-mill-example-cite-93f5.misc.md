@@ -1,1 +1,0 @@
-entrypoint-contract.md: mill example cites outdated root rationale (socket-group-join, not volume reconciliation)

@@ -1,1 +1,0 @@
-docs: add exception for programmatic CHANGELOG.md fixes (changelog-bugfix carve-out)

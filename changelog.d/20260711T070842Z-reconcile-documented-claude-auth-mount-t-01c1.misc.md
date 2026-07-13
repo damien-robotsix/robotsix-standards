@@ -1,1 +1,0 @@
-Reconcile documented claude-auth mount target (/home/app/.claude) vs central-deploy's actual injection (/root/.claude)

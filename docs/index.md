@@ -24,6 +24,9 @@ everywhere.
 
 - **[Repo baseline](repo-baseline.md)** — distribution tiers, changelog and
   module-registration hygiene, CI and security gates, licensing.
+- **[Security posture](security-posture.md)** — self-enforcing security gates
+  (SAST, dependency review, Dependabot, workflow hardening, secret protection,
+  SBOM), auditable per repo.
 - **[Python practices](python.md)** — uv, hatchling, `requires-python` policy,
   lint/type/security gates, test layout, pre-commit hooks.
 - **[JavaScript practices](javascript.md)** — vanilla frontend JS as static

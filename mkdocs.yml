@@ -45,6 +45,7 @@ nav:
   - The fleet: fleet.md
   - Every repo:
       - Repo baseline: repo-baseline.md
+      - Security posture: security-posture.md
       - Python practices: python.md
       - JavaScript practices: javascript.md
       - ROS 2 practices: ros2.md

@@ -2,6 +2,7 @@
 
 ## 0.0.0 (unreleased)
 
+- Add `.robotsix-mill/config.yaml` with `languages: [markdown]` to activate the periodic mill agents for this docs repo.
 - Fixed 17 broken external URLs across the fleet table, deploy-contract page, integrating-a-service guide, and ROS 2 practices page; replaced unresolvable docs-site links and custom-domain URLs with GitHub repository links that resolve correctly.
 - Add `mkdocs-htmlproofer-plugin` to validate external links during the docs build. Broken external URLs now fail the build (via `--strict`), with `localhost` and GitHub raw URLs excluded from checking.
 - CHANGELOG.md: remove stale duplicated '0.0.0 (unreleased)' block between 0.1.3 and 0.1.2 sections; add towncrier `start_string` marker to prevent recurrence. (20260717T173132Z-changelog-md-remove-stale-0-0-0-unreleas-8151)

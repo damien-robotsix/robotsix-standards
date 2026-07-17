@@ -10,13 +10,13 @@
       
       
       
-        <link rel="canonical" href="https://damien-robotsix.github.io/robotsix-standards/python/">
+        <link rel="canonical" href="https://damien-robotsix.github.io/robotsix-standards/security-posture/">
       
       
-        <link rel="prev" href="../security-posture/">
+        <link rel="prev" href="../repo-baseline/">
       
       
-        <link rel="next" href="../javascript/">
+        <link rel="next" href="../python/">
       
       
         
@@ -27,7 +27,7 @@
     
     
       
-        <title>Python practices - Robotsix Standards</title>
+        <title>Security posture - Robotsix Standards</title>
       
     
     
@@ -78,7 +78,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#python-practices" class="md-skip">
+        <a href="#security-posture" class="md-skip">
           Skip to content
         </a>
       
@@ -114,7 +114,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Python practices
+              Security posture
             
           </span>
         </div>
@@ -393,34 +393,6 @@
                 
   
   
-  
-  
-    <li class="md-nav__item">
-      <a href="../security-posture/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Security posture
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
     
   
   
@@ -440,7 +412,7 @@
   <span class="md-ellipsis">
     
   
-    Python practices
+    Security posture
   
 
     
@@ -458,7 +430,7 @@
   <span class="md-ellipsis">
     
   
-    Python practices
+    Security posture
   
 
     
@@ -484,10 +456,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#project-layout" class="md-nav__link">
+  <a href="#why-a-dedicated-security-standard" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Project layout
+        Why a dedicated security standard
       
     </span>
   </a>
@@ -495,44 +467,116 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#tooling-uv" class="md-nav__link">
+  <a href="#the-gates" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Tooling: uv
+        The gates
       
     </span>
   </a>
   
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#packaging" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Packaging
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#requires-python" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        requires-python
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="requires-python">
+    <nav class="md-nav" aria-label="The gates">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#314-syntax-notes" class="md-nav__link">
+  <a href="#1-sast-codeql" class="md-nav__link">
     <span class="md-ellipsis">
       
-        3.14 syntax notes
+        1. SAST — CodeQL
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-dependency-review-pr-gate" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Dependency review — PR gate
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-automated-dependency-updates-dependabot" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Automated dependency updates — Dependabot
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-workflow-hardening" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Workflow hardening
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. Workflow hardening">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#4a-actions-pinned-to-commit-shas" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4a. Actions pinned to commit SHAs
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4b-workflow-linting-actionlint-zizmor" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4b. Workflow linting — actionlint + zizmor
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4c-least-privilege-permissions-blocks" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4c. Least-privilege permissions: blocks
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5-secret-push-protection" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Secret push protection
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#6-sbom-vulnerability-audit" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. SBOM &amp; vulnerability audit
       
     </span>
   </a>
@@ -545,10 +589,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#datetimes" class="md-nav__link">
+  <a href="#how-the-gates-are-delivered" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Datetimes
+        How the gates are delivered
       
     </span>
   </a>
@@ -556,10 +600,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#console-scripts" class="md-nav__link">
+  <a href="#audit" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Console scripts
+        Audit
       
     </span>
   </a>
@@ -567,43 +611,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#lint-types-and-security-lint" class="md-nav__link">
+  <a href="#see-also" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Lint, types, and security lint
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#tests" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Tests
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#pre-commit-hooks" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Pre-commit hooks
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#docs" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Docs
+        See also
       
     </span>
   </a>
@@ -614,6 +625,34 @@
   
 </nav>
       
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../python/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Python practices
+  
+
+    
+  </span>
+  
+  
+
+      </a>
     </li>
   
 
@@ -1055,10 +1094,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#project-layout" class="md-nav__link">
+  <a href="#why-a-dedicated-security-standard" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Project layout
+        Why a dedicated security standard
       
     </span>
   </a>
@@ -1066,44 +1105,116 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#tooling-uv" class="md-nav__link">
+  <a href="#the-gates" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Tooling: uv
+        The gates
       
     </span>
   </a>
   
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#packaging" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Packaging
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#requires-python" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        requires-python
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="requires-python">
+    <nav class="md-nav" aria-label="The gates">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#314-syntax-notes" class="md-nav__link">
+  <a href="#1-sast-codeql" class="md-nav__link">
     <span class="md-ellipsis">
       
-        3.14 syntax notes
+        1. SAST — CodeQL
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-dependency-review-pr-gate" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Dependency review — PR gate
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-automated-dependency-updates-dependabot" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Automated dependency updates — Dependabot
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-workflow-hardening" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Workflow hardening
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. Workflow hardening">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#4a-actions-pinned-to-commit-shas" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4a. Actions pinned to commit SHAs
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4b-workflow-linting-actionlint-zizmor" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4b. Workflow linting — actionlint + zizmor
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4c-least-privilege-permissions-blocks" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4c. Least-privilege permissions: blocks
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5-secret-push-protection" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Secret push protection
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#6-sbom-vulnerability-audit" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. SBOM &amp; vulnerability audit
       
     </span>
   </a>
@@ -1116,10 +1227,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#datetimes" class="md-nav__link">
+  <a href="#how-the-gates-are-delivered" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Datetimes
+        How the gates are delivered
       
     </span>
   </a>
@@ -1127,10 +1238,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#console-scripts" class="md-nav__link">
+  <a href="#audit" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Console scripts
+        Audit
       
     </span>
   </a>
@@ -1138,43 +1249,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#lint-types-and-security-lint" class="md-nav__link">
+  <a href="#see-also" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Lint, types, and security lint
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#tests" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Tests
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#pre-commit-hooks" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Pre-commit hooks
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#docs" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Docs
+        See also
       
     </span>
   </a>
@@ -1201,194 +1279,253 @@
   
 
 
-<h1 id="python-practices">Python practices<a class="headerlink" href="#python-practices" title="Permanent link">&para;</a></h1>
+<h1 id="security-posture">Security posture<a class="headerlink" href="#security-posture" title="Permanent link">&para;</a></h1>
 <blockquote>
-<p><strong>Scope: every Python repository.</strong> These are the language-specific
-practices; the language-agnostic rules (tiers, hygiene, CI philosophy) live
-in the <a href="../repo-baseline/">repo baseline</a>.</p>
+<p><strong>Scope: every robotsix repository</strong> — libraries and deployable components
+alike. This is <em>in addition to</em> the <a href="../repo-baseline/">repo baseline</a>, which
+every repo follows.</p>
 </blockquote>
-<h2 id="project-layout">Project layout<a class="headerlink" href="#project-layout" title="Permanent link">&para;</a></h2>
+<p>The fleet's security requirements are organizational policy, not repo-specific
+technical gaps. They are defined once here, checked at repo onboarding and
+on-demand via audit, rather than re-audited weekly per repo by a periodic agent.
+Every gate is <strong>self-enforcing</strong> — implemented in CI or GitHub settings, not
+dependent on human review or dashboard monitoring — so an audit pass can verify
+compliance mechanically.</p>
+<h2 id="why-a-dedicated-security-standard">Why a dedicated security standard<a class="headerlink" href="#why-a-dedicated-security-standard" title="Permanent link">&para;</a></h2>
+<p>Before this page, security gates lived scattered across several standards
+(<a href="../repo-baseline/">repo baseline</a>, <a href="../python/">Python practices</a>,
+<a href="../docker-standard/">Docker build &amp; release</a>) and the shared-workflow
+implementation. That made a compliance audit a multi-document hunt. A single,
+checklist-shaped standard gives auditors one page to read and gives repo authors
+one page to confirm during onboarding.</p>
+<h2 id="the-gates">The gates<a class="headerlink" href="#the-gates" title="Permanent link">&para;</a></h2>
+<p>Each gate below is a <strong>required, self-enforcing</strong> control. A repo that ships a
+container image additionally meets the <strong>container-image</strong> gates.</p>
+<h3 id="1-sast-codeql">1. SAST — CodeQL<a class="headerlink" href="#1-sast-codeql" title="Permanent link">&para;</a></h3>
+<p>CodeQL analysis runs on every PR and every push to <code>main</code>, via the shared
+security workflow from robotsix-github-workflows. Results are uploaded as SARIF
+to GitHub Code Scanning.</p>
 <ul>
-<li><strong>src layout, one primary package:</strong> code lives in <code>src/robotsix_&lt;name&gt;/</code>,
-  the snake_case of the repo name. Every package ships <strong><code>py.typed</code></strong> — any
-  package may be imported by tests or tooling, and downstream type-checking
-  must see the annotations.</li>
-<li><strong>Modules are subdirectories</strong> of the package, mirrored by
-  <code>tests/&lt;module&gt;/</code> and <code>docs/&lt;module&gt;/</code> — the same convention
-  <code>docs/modules.yaml</code>'s default globs assume (see the
-  <a href="../repo-baseline/#repo-hygiene">repo baseline</a>).</li>
-<li><strong>Secondary packages are deliberate</strong>, for one named reason: a client
-  library siblings can import without pulling the service's dependencies
-  (<code>robotsix_board_client</code> next to <code>robotsix_board_agent</code> is the exemplar).
-  Each extra package registers in <code>modules.yaml</code> like anything else.</li>
+<li><strong>How to verify:</strong> the repo's CI workflow calls the shared CodeQL workflow.
+  The Code Scanning tab shows recent analyses for the default branch.</li>
+<li><strong>Failure prevented:</strong> a vulnerability that a static-analysis rule would
+  catch (SQL injection, path traversal, hardcoded credentials) merges and
+  ships.</li>
+<li><strong>Alignment:</strong> <a href="https://owasp.org/www-community/Source_Code_Analysis_Tools">OWASP SAST</a>,
+  OpenSSF Scorecard <em>SAST</em> check.</li>
 </ul>
-<h2 id="tooling-uv">Tooling: uv<a class="headerlink" href="#tooling-uv" title="Permanent link">&para;</a></h2>
-<p><strong>uv is the standard tool</strong> for installing, running, and building robotsix
-packages — <code>uv sync</code>, <code>uv add</code>, <code>uv run</code>, <code>uvx</code>, <code>uv build</code>. pip is not a
-supported install path (it ignores <code>[tool.uv.sources]</code>, so first-party git
-dependencies won't resolve). <strong>Do not advertise a <code>pip install</code> path.</strong></p>
-<p><strong>First-party dependencies are pinned to commit SHAs</strong> in <code>[tool.uv.sources]</code>, never
-branch refs — a branch ref drifts silently when <code>uv lock</code> re-resolves.
-See the <a href="../repo-baseline/#pin-to-a-commit-sha-not-a-branch">repo baseline</a>
-for the pin rule and the auto-bump workflow. <strong>Third-party dependencies</strong>
-go through Dependabot's <code>uv</code> ecosystem; <code>.github/dependabot.yml</code> must
-declare it in every Python repo (the baseline-check gate verifies this).</p>
-<h2 id="packaging">Packaging<a class="headerlink" href="#packaging" title="Permanent link">&para;</a></h2>
+<h3 id="2-dependency-review-pr-gate">2. Dependency review — PR gate<a class="headerlink" href="#2-dependency-review-pr-gate" title="Permanent link">&para;</a></h3>
+<p>The <code>dependency-review</code> action gates every PR, failing on <code>moderate</code>-severity
+or higher findings. It catches a dependency change that introduces a known
+vulnerable package before the PR merges.</p>
 <ul>
-<li><strong>Build backend: <code>hatchling</code>.</strong> <code>[tool.hatch.metadata]
-  allow-direct-references = true</code> is only needed when <code>[project.dependencies]</code>
-  itself contains direct URL references (<code>pkg @ git+https://…</code>). The standard
-  pattern — plain dependency names resolved through <code>[tool.uv.sources]</code> — does
-  not need it, because the git pin lives in uv's config, not in the project
-  metadata hatchling validates.</li>
-<li><strong>No PyPI.</strong> Nothing is published to a package index (see the
-  <a href="../repo-baseline/#no-package-index-consume-libraries-from-git">repo baseline</a>).
-  Repos carry <strong>no index-publish workflow</strong> — no <code>pypi-publish</code>, no
-  release-please, no PyPI token. (The shared auto-release workflow tags
-  versions and compiles the changelog — see
-  <a href="../repo-baseline/#changelog-releases">changelog &amp; releases</a> — but publishes
-  nothing to any index.)</li>
-<li><strong>Libraries</strong> are consumed straight from git via uv <code>[tool.uv.sources]</code>
-  (<code>{ git = "…", rev = "…" }</code>), pinned by revision. They still ship <code>py.typed</code>
-  for downstream type-checking.</li>
-<li><strong>Deployable components</strong> ship a container image; the from-checkout path is
-  <code>uv sync</code> (uv honours <code>[tool.uv.sources]</code>).</li>
-<li>Dev tooling goes in a PEP 735 <code>[dependency-groups] dev</code> group, pulled in by
-  default via <code>[tool.uv] default-groups</code>.</li>
+<li><strong>Prerequisite:</strong> the repo's <strong>Dependency graph</strong> must be enabled (a GitHub
+  setting, not a workflow — enable Dependabot alerts or automated security
+  fixes, which turn it on). Without it the action errors and the gate can
+  never go green.</li>
+<li><strong>How to verify:</strong> the repo's PR CI calls the shared <code>dependency-review</code>
+  workflow. Opening a PR that adds a vulnerable dependency fails the check.</li>
+<li><strong>Failure prevented:</strong> a lockfile bump silently pulls in a package with a
+  published CVE.</li>
+<li><strong>Alignment:</strong> OpenSSF Scorecard <em>Dependency-Update-Tool</em> and
+  <em>Vulnerabilities</em> checks.</li>
 </ul>
-<h2 id="requires-python"><code>requires-python</code><a class="headerlink" href="#requires-python" title="Permanent link">&para;</a></h2>
+<h3 id="3-automated-dependency-updates-dependabot">3. Automated dependency updates — Dependabot<a class="headerlink" href="#3-automated-dependency-updates-dependabot" title="Permanent link">&para;</a></h3>
+<p>Every pin the standards mandate has exactly one named bumper. Dependabot covers
+third-party packages, GitHub Actions SHAs, base-image digests, pre-commit hook
+versions, and npm packages. <code>.github/dependabot.yml</code> declares the required
+ecosystems, and the baseline-check gate verifies it is present and complete.
+Dependabot PRs auto-merge once required checks pass.</p>
 <ul>
-<li><strong>Every repo — libraries and deployable components alike — targets the
-  stack runtime baseline: <code>requires-python = "&gt;=3.14"</code>.</strong> The stack has no
-  external consumers (no package index; first-party deps come from git), so a
-  lower library floor buys nothing and costs real things: three years of
-  language features forgone, and either a CI matrix for versions nothing
-  runs, or a support claim CI never tests.</li>
-<li><strong>Lowering the floor is the exception, made deliberately</strong> — when a library
-  gains a genuine consumer on an older runtime. Like PyPI publishing: added
-  back on purpose, never the default.</li>
-<li><strong>No upper bound.</strong> <code>&gt;=3.14</code>, never <code>&gt;=3.14,&lt;3.15</code>: a cap poisons
-  resolution for every dependent (uv must satisfy the intersection of all
-  bounds, so one capped package caps the whole tree) and encodes a breakage
-  that hasn't happened. Cap only for a known, linked incompatibility, and
-  remove the cap when it's fixed.</li>
-<li><strong>Metadata is authoritative — keep prose in sync.</strong> A README claiming a
-  Python floor different from <code>pyproject.toml</code> hard-blocks users the docs
-  invite. Fix the prose, not the metadata.</li>
+<li><strong>How to verify:</strong> <code>.github/dependabot.yml</code> exists and covers
+  <code>github-actions</code> and <code>pre-commit</code> in every repo, plus <code>docker</code> in
+  image-shipping repos and <code>npm</code> in repos with <code>package.json</code>. The Dependabot
+  tab shows recent update PRs.</li>
+<li><strong>Failure prevented:</strong> a pinned digest (base image, action SHA) rots silently
+  — the image stops receiving base-OS security patches, an action runs an
+  unmaintained version — with no alert.</li>
+<li><strong>Alignment:</strong> OpenSSF Scorecard <em>Dependency-Update-Tool</em> check.</li>
+<li><strong>Detail:</strong> <a href="../repo-baseline/#automated-dependency-updates">repo baseline — automated dependency updates</a>.</li>
 </ul>
-<h3 id="314-syntax-notes">3.14 syntax notes<a class="headerlink" href="#314-syntax-notes" title="Permanent link">&para;</a></h3>
+<h3 id="4-workflow-hardening">4. Workflow hardening<a class="headerlink" href="#4-workflow-hardening" title="Permanent link">&para;</a></h3>
+<h4 id="4a-actions-pinned-to-commit-shas">4a. Actions pinned to commit SHAs<a class="headerlink" href="#4a-actions-pinned-to-commit-shas" title="Permanent link">&para;</a></h4>
+<p>Every third-party action (<code>uses:</code> referencing an action outside the
+robotsix-github-workflows org) is pinned to its full 40-character commit SHA,
+with a trailing <code># vX.Y.Z</code> version comment. A tag or branch ref drifts silently
+when the publisher moves it; a SHA is immutable.</p>
 <ul>
-<li><strong>PEP 758: parentheses around multiple exception types are optional.</strong>
-  <code>except ValueError, KeyError:</code> is valid 3.14 syntax, exactly equivalent to
-  <code>except (ValueError, KeyError):</code> — and <code>ruff format</code> on a <code>&gt;=3.14</code> target
-  normalises to the parens-free form, making it the tool-enforced style.
-  Don't misread it as the legacy Python-2 <code>except E, var:</code> bind-as form, and
-  don't "fix" it back to parentheses.</li>
+<li><strong>How to verify:</strong> <code>grep -r 'uses:' .github/workflows/</code> produces no
+  <code>@main</code>, <code>@master</code>, <code>@v1</code>, or other mutable refs on third-party actions.
+  (Reusable workflows from robotsix-github-workflows use the full commit SHA
+  of that repo's HEAD.)</li>
+<li><strong>Failure prevented:</strong> a compromised or broken action release replaces a
+  trusted tag, and every CI run pulls the replacement with no review.</li>
+<li><strong>Alignment:</strong> OpenSSF Scorecard <em>Pinned-Dependencies</em> check, SLSA
+  <em>Build L3</em> requirement.</li>
 </ul>
-<h2 id="datetimes">Datetimes<a class="headerlink" href="#datetimes" title="Permanent link">&para;</a></h2>
-<p><strong>UTC everywhere; naive datetimes are forbidden in stored or emitted data.</strong>
-<code>datetime.now(tz=UTC)</code>, never bare <code>now()</code>/<code>utcnow()</code> — a naive datetime
-means "whatever timezone the host happens to run" (the deploy host runs
-CEST). Serialize ISO-8601 with explicit offset. Rendering local time is a UI
-concern (see the <a href="../component-standard/#logging">component standard</a>).</p>
-<h2 id="console-scripts">Console scripts<a class="headerlink" href="#console-scripts" title="Permanent link">&para;</a></h2>
+<h4 id="4b-workflow-linting-actionlint-zizmor">4b. Workflow linting — actionlint + zizmor<a class="headerlink" href="#4b-workflow-linting-actionlint-zizmor" title="Permanent link">&para;</a></h4>
+<p>Every workflow file is linted at commit time (<code>actionlint</code> in
+<code>.pre-commit-config.yaml</code>) and at CI time (<code>actionlint</code> in the shared CI
+workflow). <code>zizmor</code> audits workflow definitions for security anti-patterns
+(script injection via <code>${{ }}</code> in <code>run:</code> steps, overly broad <code>permissions:</code>,
+untrusted checkout of <code>pull_request_target</code> events) and gates in CI.</p>
 <ul>
-<li>One primary entry point per package: <code>robotsix-&lt;name&gt;</code>.</li>
-<li><strong>Host-side ops tooling does not belong in <code>[project.scripts]</code>.</strong> Update/deploy
-  helpers (git-pull + <code>docker compose up</code>, etc.) aren't part of the shipped
-  package and aren't copied into a runtime image — keep them in <code>scripts/</code>.</li>
+<li><strong>How to verify:</strong> <code>.pre-commit-config.yaml</code> includes <code>actionlint</code>. CI
+  calls the shared workflow that runs <code>zizmor</code> on <code>.github/workflows/</code>.</li>
+<li><strong>Failure prevented:</strong> a workflow with a shell-injection vector (a
+  <code>${{ github.event.issue.title }}</code> interpolated into a <code>run:</code> script) merges
+  and executes attacker-controlled code in the CI context.</li>
+<li><strong>Alignment:</strong> OpenSSF Scorecard <em>Token-Permissions</em> and
+  <em>Dangerous-Workflow</em> checks.</li>
 </ul>
-<h2 id="lint-types-and-security-lint">Lint, types, and security lint<a class="headerlink" href="#lint-types-and-security-lint" title="Permanent link">&para;</a></h2>
-<p>Run via the shared <code>python-ci.yml</code> reusable workflow:</p>
+<h4 id="4c-least-privilege-permissions-blocks">4c. Least-privilege <code>permissions:</code> blocks<a class="headerlink" href="#4c-least-privilege-permissions-blocks" title="Permanent link">&para;</a></h4>
+<p>Every workflow declares a top-level <code>permissions:</code> block that grants only the
+permissions that workflow genuinely needs. The default (<code>write-all</code> for every
+scope) gives a compromised action or workflow step full run of the repo; a
+<code>read-all</code> top-level default with job-level write grants where needed limits
+blast radius to the minimum.</p>
 <ul>
-<li><code>ruff check</code> + <code>ruff format --check</code></li>
-<li><code>mypy --strict</code></li>
-<li><code>deptry</code> (dependency hygiene)</li>
-<li><code>bandit</code> (security SAST) and a dependency CVE audit (<code>uv audit</code>)</li>
+<li><strong>The shared caller pattern achieves this automatically</strong> — the reusable
+  workflow declares its own <code>permissions:</code>, and the caller workflow needs
+  only <code>contents: read</code> (or <code>contents: write</code> when the workflow creates
+  releases). A hand-rolled workflow must declare its own <code>permissions:</code> block
+  and justify every <code>write</code> scope.</li>
+<li><strong>How to verify:</strong> <code>grep -A5 'permissions:' .github/workflows/*.yml</code> —
+  every file has one, and no file uses <code>write-all</code>. <code>zizmor</code> flags missing or
+  overly broad blocks.</li>
+<li><strong>Failure prevented:</strong> a compromised third-party action in a workflow with
+  <code>write-all</code> can push to <code>main</code>, exfiltrate secrets, or modify releases with
+  no audit trail.</li>
+<li><strong>Alignment:</strong> OpenSSF Scorecard <em>Token-Permissions</em> check, SLSA
+  <em>Build L3</em> requirement, <a href="https://docs.github.com/en/actions/security-for-github-actions/security-guides/automatic-token-authentication#permissions-for-the-github_token">GitHub's own guidance</a>.</li>
 </ul>
-<p>The shared <code>python-security.yml</code> workflow is a separate gate that additionally
-runs <code>pip-audit</code> (a second CVE audit pass), TruffleHog for secret scanning
-(PR-diff and full-repo), and generates a CycloneDX SBOM uploaded as a workflow
-artifact.</p>
-<p><strong>Security lint convention:</strong> enable ruff's bandit rules in <code>pyproject.toml</code>
-(<code>[tool.ruff.lint] extend-select = ["S"]</code>). Suppressions are per-file ignores,
-and <strong>every ignore carries a comment justifying it</strong> — a reviewer should never
-have to guess why <code>S105</code> is off for a file:</p>
-<div class="highlight"><pre><span></span><code><span class="k">[tool.ruff.lint]</span>
-<span class="n">extend-select</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;S&quot;</span><span class="p">]</span>
-
-<span class="k">[tool.ruff.lint.per-file-ignores]</span>
-<span class="c1"># S105: &quot;secrets.key&quot; is a filename, not a hardcoded credential.</span>
-<span class="s2">&quot;src/&lt;pkg&gt;/config.py&quot;</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;S105&quot;</span><span class="p">]</span>
-<span class="c1"># Test files routinely use hard-coded sentinel strings and asserts.</span>
-<span class="s2">&quot;tests/**/*.py&quot;</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;S101&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;S105&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;S106&quot;</span><span class="p">]</span>
-</code></pre></div>
-<p><strong>deptry and CLI-tool dependencies:</strong> a package installed as a <em>tool</em> but
-never imported (a linter or formatter in an optional group) gets flagged as
-unused by deptry and fails CI. Register it under <code>DEP002</code> in
-<code>[tool.deptry.per_rule_ignores]</code>, with a comment — same convention as the
-ruff suppressions above.</p>
-<h2 id="tests">Tests<a class="headerlink" href="#tests" title="Permanent link">&para;</a></h2>
+<h3 id="5-secret-push-protection">5. Secret push protection<a class="headerlink" href="#5-secret-push-protection" title="Permanent link">&para;</a></h3>
+<p>GitHub secret scanning with <strong>push protection</strong> is enabled on every repo. Push
+protection blocks a commit that contains a detected secret <em>before</em> it reaches
+the remote — the secret never lands in the commit history. This is complemented
+by:</p>
 <ul>
-<li><code>pytest</code>, with coverage gated at <strong>one fleet-wide floor: 80%</strong>, the same in
-  every repo. The floor is enforced by the shared <code>python-ci.yml</code> workflow —
-  it lives in one place, so no repo can slide under it — and
-  <code>[tool.coverage.report] fail_under = 80</code> in each repo keeps local runs
-  honest. No per-repo thresholds, no ratchet to maintain: coverage above the
-  floor is welcome, but the gate stops caring beyond 80.</li>
-<li><strong>The floor moves only fleet-wide.</strong> When every repo measures above a
-  higher value, the floor in the shared workflow is raised for everyone at
-  once — one PR in robotsix-github-workflows, a deliberate decision. It never
-  rises above what the weakest repo clears, and it never moves per-repo.</li>
-<li><strong>Test layout mirrors the package:</strong> tests for module X live under
-  <code>tests/X/</code>, never at the <code>tests/</code> root. New modules get a matching test
-  directory.</li>
-<li><strong>The default test run is offline and credential-free</strong>: declare
-  <code>addopts = ["-m", "not live", "--strict-markers", "--strict-config"]</code>.
-  Tests that genuinely need the network or real credentials carry the
-  <strong><code>live</code> marker</strong> and run only by explicit opt-in (<code>pytest -m live</code>),
-  never in the standard CI gate — in mill sandboxes (egress-proxied) and CI,
-  an accidental network call is a hang or a paid flake. <code>--strict-markers</code>
-  makes a misspelled marker an error instead of an always-running test.
-  <code>tests/.env.example</code> lists exactly the live-suite credentials — nothing
-  else.</li>
-<li><strong>Shared fixtures live in <code>conftest.py</code>:</strong> when two test files under the
-  same <code>tests/&lt;module&gt;/</code> define the same fixture, extract it to
-  <code>tests/&lt;module&gt;/conftest.py</code> — pytest discovers it for all sibling tests.
-  Duplicated fixtures drift apart; this recurs especially in agent-written
-  PRs.</li>
+<li><strong><code>detect-secrets</code> pre-commit hook</strong> with a committed <code>.secrets.baseline</code> —
+  catches credentials at commit time, before the push.</li>
+<li>
+<p><strong>TruffleHog</strong> in the shared security workflow — scans the PR diff and the
+  full repo history for secrets that slipped past push protection (e.g. a
+  custom pattern GitHub doesn't recognize).</p>
+</li>
+<li>
+<p><strong>How to verify:</strong> the repo's Security / Secret scanning settings show "Push
+  protection" as enabled. <code>.pre-commit-config.yaml</code> includes <code>detect-secrets</code>.
+  CI calls the shared TruffleHog workflow.</p>
+</li>
+<li><strong>Failure prevented:</strong> a credential (API key, token, private key) is
+  committed and pushed; even if the commit is later reverted or force-pushed,
+  the secret existed in the history and must be assumed compromised.</li>
+<li><strong>Alignment:</strong> OpenSSF Scorecard <em>Token-Permissions</em> check, OWASP
+  <em>Secret Management</em>.</li>
 </ul>
-<h2 id="pre-commit-hooks">Pre-commit hooks<a class="headerlink" href="#pre-commit-hooks" title="Permanent link">&para;</a></h2>
-<p>Every repo ships <code>.pre-commit-config.yaml</code> with the standard set (this is the
-fleet's converged practice, not a minimum to improvise beyond):</p>
+<h3 id="6-sbom-vulnerability-audit">6. SBOM &amp; vulnerability audit<a class="headerlink" href="#6-sbom-vulnerability-audit" title="Permanent link">&para;</a></h3>
+<p>Every repo produces a machine-readable software bill of materials and runs a
+dependency vulnerability audit on every CI run.</p>
 <ul>
-<li><strong>File checks:</strong> <code>end-of-file-fixer</code>, <code>trailing-whitespace</code>,
-  <code>check-merge-conflict</code>, <code>check-added-large-files</code>, <code>check-yaml</code>,
-  <code>check-toml</code>, <code>check-json</code>, <code>detect-private-key</code>.</li>
-<li><strong>Code:</strong> <code>ruff</code> (with <code>--fix</code>), <code>ruff-format</code>, <code>mypy</code>.</li>
-<li><strong>Secrets:</strong> <code>detect-secrets</code> (with a committed <code>.secrets.baseline</code>) —
-  catches credentials <em>before</em> the commit exists, complementing CI's push
-  protection; this matters more when agents author most commits.</li>
-<li><strong>Workflows:</strong> <code>actionlint</code> — catches broken workflow/caller YAML at commit
-  time.</li>
-<li><strong>Dead code:</strong> <code>vulture</code> — agent-written changes are prone to orphaned
-  helpers.</li>
-<li><strong>Image-shipping repos additionally:</strong> <code>hadolint</code> — the
-  <a href="../docker-standard/">Dockerfile pattern</a> is a standard; hadolint keeps it
-  one.</li>
+<li><strong>CycloneDX SBOM</strong> generated and uploaded as a workflow artifact (via the
+  shared security workflow). The upload step uses <code>if: always()</code> so a failed
+  scan never silently drops the artifact.</li>
+<li><strong>Dependency CVE audit</strong> — <code>uv audit</code> (or <code>pip-audit</code>) gates in CI, blocking
+  on known vulnerabilities in the dependency tree.</li>
+<li>
+<p><strong>Container image scan</strong> <em>(image-shipping repos only)</em> — Trivy scans the
+  built image on every PR and on every publish, blocking on fixable
+  CRITICAL/HIGH findings. A <code>.trivyignore</code> with commented entries suppresses
+  findings that genuinely don't apply. A weekly scheduled rescan of the
+  published <code>:main</code> image catches CVEs disclosed after the image was built.</p>
+</li>
+<li>
+<p><strong>How to verify:</strong> CI uploads a CycloneDX SBOM artifact. <code>uv audit</code> (or
+  <code>pip-audit</code>) passes in the latest CI run. Image-shipping repos: the PR-scan
+  and publish workflows both call the Trivy reusable workflow.</p>
+</li>
+<li><strong>Failure prevented:</strong> a dependency with a published, fixable CVE ships in
+  production with no one aware.</li>
+<li><strong>Alignment:</strong> OpenSSF Scorecard <em>SBOM</em> and <em>Vulnerabilities</em> checks,
+  <a href="https://slsa.dev/spec/v1.0/requirements">SLSA <em>Build L2+</em></a> provenance
+  requirement.</li>
+<li><strong>Detail:</strong> <a href="../docker-standard/#ci-time-image-scan">Docker build &amp; release — CI-time image scan</a>.</li>
 </ul>
-<p>Deliberately not in the set: <code>bandit</code> as a hook (it already gates in CI via
-the shared workflow, and ruff's <code>S</code> rules cover the commit-time subset — a
-slow duplicate hook buys little). Dev setup is:</p>
-<div class="highlight"><pre><span></span><code>uv<span class="w"> </span>sync
-pre-commit<span class="w"> </span>install
-</code></pre></div>
-<p>CI runs <code>pre-commit run --all-files</code> so the hooks and the gates can't drift.</p>
-<h2 id="docs">Docs<a class="headerlink" href="#docs" title="Permanent link">&para;</a></h2>
-<p><strong>Every repo publishes its docs site</strong>: <code>mkdocs</code> (material theme), built and
-deployed to GitHub Pages by the shared <code>python-docs.yml</code> reusable workflow,
-gated in CI by <code>mkdocs build --strict</code>. The fleet's sites are indexed on the
-standards' <a href="../fleet/">fleet page</a>.</p>
+<h2 id="how-the-gates-are-delivered">How the gates are delivered<a class="headerlink" href="#how-the-gates-are-delivered" title="Permanent link">&para;</a></h2>
+<p>The gates are <strong>not implemented per-repo</strong> — they are delivered through shared
+reusable workflows in
+<a href="https://github.com/damien-robotsix/robotsix-github-workflows">robotsix-github-workflows</a>.
+A repo calls the shared workflow for each gate; adding a new gate to the fleet
+is one PR in robotsix-github-workflows, not N PRs across every repo. The
+copy-paste caller template for each workflow lives in that repo's README.</p>
+<p>The <a href="../repo-baseline/#ci-and-security-gates">repo baseline</a> lists the standard
+gate set; this page adds the <em>why</em> for each security-specific gate and the audit
+criteria.</p>
+<h2 id="audit">Audit<a class="headerlink" href="#audit" title="Permanent link">&para;</a></h2>
+<p>An audit pass verifies every gate mechanically — no manual review, no
+dashboard-watching:</p>
+<table>
+<thead>
+<tr>
+<th>Gate</th>
+<th>Check</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>CodeQL</td>
+<td>CI calls shared CodeQL workflow; Code Scanning tab has recent analyses</td>
+</tr>
+<tr>
+<td>Dependency review</td>
+<td>CI calls shared <code>dependency-review</code> workflow; Dependency graph enabled</td>
+</tr>
+<tr>
+<td>Dependabot</td>
+<td><code>.github/dependabot.yml</code> covers required ecosystems; recent update PRs</td>
+</tr>
+<tr>
+<td>SHA-pinned actions</td>
+<td><code>grep -r 'uses:' .github/workflows/</code> — no mutable refs on third-party actions</td>
+</tr>
+<tr>
+<td>Workflow linting</td>
+<td><code>.pre-commit-config.yaml</code> includes <code>actionlint</code>; CI runs <code>zizmor</code></td>
+</tr>
+<tr>
+<td>Least-privilege permissions</td>
+<td>Every workflow has <code>permissions:</code> block; <code>zizmor</code> reports clean</td>
+</tr>
+<tr>
+<td>Secret push protection</td>
+<td>Push protection enabled in repo Security settings; <code>detect-secrets</code> in pre-commit; CI runs TruffleHog</td>
+</tr>
+<tr>
+<td>SBOM</td>
+<td>CI uploads CycloneDX artifact</td>
+</tr>
+<tr>
+<td>CVE audit</td>
+<td><code>uv audit</code> / <code>pip-audit</code> passes in CI</td>
+</tr>
+<tr>
+<td>Container image scan</td>
+<td>Trivy PR-scan and publish workflows present and passing (image-shipping repos only)</td>
+</tr>
+</tbody>
+</table>
+<p>A repo that fails any gate is non-compliant; the fix is always the same — call
+the shared workflow, or enable the GitHub setting.</p>
+<h2 id="see-also">See also<a class="headerlink" href="#see-also" title="Permanent link">&para;</a></h2>
+<ul>
+<li><a href="../repo-baseline/#ci-and-security-gates">Repo baseline — CI and security gates</a></li>
+<li><a href="../repo-baseline/#automated-dependency-updates">Repo baseline — automated dependency updates</a></li>
+<li><a href="../python/#lint-types-and-security-lint">Python practices — lint, types, and security lint</a></li>
+<li><a href="../docker-standard/#ci-time-image-scan">Docker build &amp; release — CI-time image scan</a></li>
+<li><a href="https://securityscorecards.dev/">OpenSSF Scorecard</a></li>
+<li><a href="https://slsa.dev/">SLSA Supply-chain Levels for Software Artifacts</a></li>
+<li><a href="https://owasp.org/www-project-top-10-ci-cd-security-risks/">OWASP Top 10 CI/CD Security Risks</a></li>
+</ul>
 
 
 

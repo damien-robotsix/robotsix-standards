@@ -10,13 +10,11 @@
       
       
       
-        <link rel="canonical" href="https://damien-robotsix.github.io/robotsix-standards/chat-access-standard/">
+        <link rel="canonical" href="https://damien-robotsix.github.io/robotsix-standards/mill-agents/">
       
       
-        <link rel="prev" href="../integrating-a-service/">
+        <link rel="prev" href="../deployment-system/">
       
-      
-        <link rel="next" href="../deployment-system/">
       
       
         
@@ -27,7 +25,7 @@
     
     
       
-        <title>Chat access - Robotsix Standards</title>
+        <title>Mill agents - Robotsix Standards</title>
       
     
     
@@ -78,7 +76,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#chat-access-standard" class="md-skip">
+        <a href="#mill-agents-on-this-repo" class="md-skip">
           Skip to content
         </a>
       
@@ -114,7 +112,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Chat access
+              Mill agents
             
           </span>
         </div>
@@ -512,8 +510,6 @@
       
   
   
-    
-  
   
   
     
@@ -526,11 +522,13 @@
       
     
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4" >
         
           
           <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
@@ -551,7 +549,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_4">
             <span class="md-nav__icon md-icon"></span>
             
@@ -734,37 +732,10 @@
                 
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Chat access
-  
-
-    
-  </span>
-  
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../chat-access-standard/" class="md-nav__link">
         
   
   
@@ -780,98 +751,6 @@
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#1-skill-endpoint-get-chat-skill" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        1. Skill endpoint (GET /chat-skill)
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="1. Skill endpoint (GET /chat-skill)">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#minimal-example" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Minimal example
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#2-compose-label" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        2. Compose label
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#3-roster-not-discovery" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        3. Roster, not discovery
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#4-trust-model" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        4. Trust model
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#reference" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Reference
-      
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -977,8 +856,10 @@
       
   
   
+    
   
   
+  
     
     
     
@@ -989,13 +870,11 @@
       
     
     
-    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
       
         
         
-          
-        
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_6" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" checked>
         
           
           <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="">
@@ -1016,7 +895,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_6">
             <span class="md-nav__icon md-icon"></span>
             
@@ -1031,10 +910,37 @@
                 
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="../mill-agents/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Mill agents
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   
@@ -1050,6 +956,37 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#security-posture-audit-security-posture-audit" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Security posture audit (security-posture-audit)
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -1089,71 +1026,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#1-skill-endpoint-get-chat-skill" class="md-nav__link">
+  <a href="#security-posture-audit-security-posture-audit" class="md-nav__link">
     <span class="md-ellipsis">
       
-        1. Skill endpoint (GET /chat-skill)
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="1. Skill endpoint (GET /chat-skill)">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#minimal-example" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Minimal example
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#2-compose-label" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        2. Compose label
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#3-roster-not-discovery" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        3. Roster, not discovery
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#4-trust-model" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        4. Trust model
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#reference" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Reference
+        Security posture audit (security-posture-audit)
       
     </span>
   </a>
@@ -1180,162 +1056,68 @@
   
 
 
-<h1 id="chat-access-standard">Chat access standard<a class="headerlink" href="#chat-access-standard" title="Permanent link">&para;</a></h1>
-<blockquote>
-<p><strong>Scope: any deployable component that wants to be operable by the chat agent
-(robotsix-chat).</strong> Chat access is <strong>opt-in</strong> — a component that does not
-expose the endpoints and labels below is invisible to chat, and that is a
-valid choice for components with no chat-operable surface.</p>
-</blockquote>
-<p>The chat agent (<code>robotsix-chat</code>) can invoke operations on fleet components
-through a generic <code>component_request</code> tool. This page defines what a component
-must do to make itself available through that tool — a standard skill endpoint
-and a deploy compose label. Components that opt in are listed by the roster
-endpoint below, never discovered by scanning.</p>
-<hr />
-<h2 id="1-skill-endpoint-get-chat-skill">1. Skill endpoint (<code>GET /chat-skill</code>)<a class="headerlink" href="#1-skill-endpoint-get-chat-skill" title="Permanent link">&para;</a></h2>
-<p>A component that wants chat access serves <strong><code>GET /chat-skill</code></strong> on its primary
-port. The endpoint returns <strong><code>text/markdown</code></strong> with HTTP 200 in the shape of a
-Claude SKILL.md file:</p>
-<ul>
-<li><strong>YAML frontmatter</strong> (delimited by <code>---</code> lines) containing at minimum:</li>
-</ul>
-<table>
-<thead>
-<tr>
-<th>Key</th>
-<th>Required</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>name</code></td>
-<td><strong>Yes</strong></td>
-<td>Short kebab-case name for the skill, matching the component id</td>
-</tr>
-<tr>
-<td><code>description</code></td>
-<td><strong>Yes</strong></td>
-<td>One sentence describing what the skill lets the chat agent do</td>
-</tr>
-</tbody>
-</table>
+<h1 id="mill-agents-on-this-repo">Mill agents on this repo<a class="headerlink" href="#mill-agents-on-this-repo" title="Permanent link">&para;</a></h1>
+<p>robotsix-standards is a mill-managed repo — the
+<a href="https://github.com/damien-robotsix/robotsix-mill">robotsix-mill</a> runs periodic
+agents against it to keep the standards themselves healthy. These agents are
+defined in <code>.robotsix-mill/agents/</code> and are picked up automatically by the mill
+as bespoke per-repo passes.</p>
+<h2 id="security-posture-audit-security-posture-audit">Security posture audit (<code>security-posture-audit</code>)<a class="headerlink" href="#security-posture-audit-security-posture-audit" title="Permanent link">&para;</a></h2>
+<p><strong>Purpose:</strong> Audit the security-related standards definitions for completeness,
+internal consistency, currency against upstream best practices, and
+enforceability.</p>
+<p><strong>Scope:</strong> The <strong>standard definitions</strong> themselves — the pages under <code>docs/</code>
+and the config files under <code>.github/</code> that define what the fleet must do.
+Downstream repos' compliance with these standards is the job of the general
+audit process; this agent checks whether the standard is well-formed enough to
+be auditable.</p>
+<p><strong>What it checks:</strong></p>
 <ul>
 <li>
-<p><strong>Body</strong> (the Markdown after the closing <code>---</code>) covering:</p>
+<p><strong>Completeness.</strong> Every security area relevant to the fleet (CodeQL, secret
+  scanning, push protection, dependency-review, SBOM, Dependabot ecosystems,
+  SHA-pinned actions, least-privilege permissions, image scanning, etc.) must
+  have a named, discoverable requirement in the standards.</p>
 </li>
 <li>
-<p><strong>What the service does</strong> — a concise overview the chat agent reads to
-     decide whether this component is relevant to the user's request.</p>
+<p><strong>Internal consistency.</strong> Two standards pages must not conflict — a rule
+  stated twice must agree both times.</p>
 </li>
-<li><strong>How to drive its HTTP API</strong> — endpoints the agent may call, request and
-     response shapes, error conventions. Enough detail that the agent can form
-     correct requests without guessing.</li>
-<li><strong>Safety rules</strong> — an explicit list of operations or data classes that
-     <strong>require the chat agent to get explicit user confirmation</strong> before
-     proceeding. This is the primary guardrail: the skill author decides which
-     operations are safe for the agent to perform unprompted and which need a
-     human in the loop.</li>
+<li>
+<p><strong>Currency.</strong> Each requirement should reflect current OWASP, OpenSSF
+  Scorecard / Best Practices Badge, and SLSA guidance at the tier appropriate
+  to the fleet.</p>
+</li>
+<li>
+<p><strong>Enforceability.</strong> Every SHOULD/MUST requirement must be either
+  machine-checkable (a CI gate, a Dependabot ecosystem, a reusable workflow)
+  or covered by a periodic agent that verifies it. Requirements described as
+  "report-only" with no automated check are aspirations, not standards.</p>
+</li>
 </ul>
-<p>The endpoint is served by the running container so the skill document always
-matches the deployed version. No separate SKILL.md file in the repo is
-required — though committing the content as a source-of-truth Markdown file
-that the endpoint reads at startup is a reasonable implementation pattern.</p>
-<h3 id="minimal-example">Minimal example<a class="headerlink" href="#minimal-example" title="Permanent link">&para;</a></h3>
-<div class="highlight"><pre><span></span><code>---
-name: robotsix-mill
-<span class="gu">description: Manage the robotsix ticket board — create, read, update tickets.</span>
-<span class="gu">---</span>
-
-<span class="gu">## Overview</span>
-
-robotsix-mill is the ticket-board service. It manages work items (tickets)
-with states draft → todo → in-progress → done. The chat agent uses it to
-create, read, update, and list tickets on behalf of the operator.
-
-<span class="gu">## HTTP API</span>
-
-All endpoints are under <span class="sb">`/api/v1/`</span>. JSON request and response bodies.
-
-<span class="gu">### `GET /api/v1/tickets`</span>
-List tickets. Optional query params: <span class="sb">`state`</span>, <span class="sb">`assignee`</span>.
-
-<span class="gu">### `POST /api/v1/tickets`</span>
-Create a ticket. Body: <span class="sb">`{&quot;title&quot;: &quot;...&quot;, &quot;body&quot;: &quot;...&quot;}`</span>.
-
-<span class="gu">### `PATCH /api/v1/tickets/&lt;id&gt;`</span>
-Update ticket fields. Body may include <span class="sb">`state`</span>, <span class="sb">`assignee`</span>, <span class="sb">`title`</span>, <span class="sb">`body`</span>.
-
-<span class="gu">## Safety rules</span>
-
-<span class="k">-</span><span class="w"> </span><span class="gs">**Reading tickets and listing the board**</span> is safe without confirmation.
-<span class="k">-</span><span class="w"> </span><span class="gs">**Creating, updating, or closing tickets**</span> requires explicit user
-  confirmation — state mutations on the board must not be driven by the
-  agent unprompted.
-</code></pre></div>
-<hr />
-<h2 id="2-compose-label">2. Compose label<a class="headerlink" href="#2-compose-label" title="Permanent link">&para;</a></h2>
-<p>In the component's <code>deploy/docker-compose.yml</code>, add the label on the primary
-service:</p>
-<div class="highlight"><pre><span></span><code><span class="nt">labels</span><span class="p">:</span>
-<span class="w">  </span><span class="nt">robotsix.deploy.chat-access</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;true&quot;</span>
-</code></pre></div>
-<p>This label hints the deployer to <strong>default the component's chat-access
-checkbox to on</strong> in the central-deploy UI. The operator checkbox
-(<code>robotsix-central-deploy</code>'s per-component toggle) remains the actual
-authorization switch — the label only sets the initial state. An operator can
-disable chat access for any component regardless of the label.</p>
-<hr />
-<h2 id="3-roster-not-discovery">3. Roster, not discovery<a class="headerlink" href="#3-roster-not-discovery" title="Permanent link">&para;</a></h2>
-<p>The chat agent learns which components it may talk to from
-<strong><code>robotsix-central-deploy</code>'s roster endpoint</strong>, never by network scanning or
-DNS enumeration:</p>
+<p><strong>What it does NOT audit:</strong></p>
 <ul>
-<li><strong><code>GET /chat/components</code></strong> — returns the list of components whose operator
-  has enabled chat access (the per-component checkbox is on). Each entry
-  includes the component's base URL and the skill metadata parsed from its
-  <code>/chat-skill</code> endpoint.</li>
-<li>The chat agent reaches central-deploy via explicit configuration fields:
-  <code>central_deploy.url</code> (a <code>str</code>) and <code>central_deploy.api_token</code> (a
-  <code>pydantic.SecretStr</code>), following the same <code>&lt;name&gt;_url</code> + <code>SecretStr</code>
-  pattern in the <a href="../config-standard/#5-calling-another-service-a-name_url-config-field">config standard section 5</a>.
-  No injected addresses, no service discovery — plain config fields are the
-  whole mechanism. This standard does not change section 5; it uses the
-  existing pattern.</li>
+<li>Downstream repos' compliance with these standards.</li>
+<li>The implementation of security tooling (robotsix-github-workflows,
+  robotsix-mill agents) — those are separate repos.</li>
+<li>Non-security repo hygiene (changelog format, README skeleton, towncrier).</li>
 </ul>
-<hr />
-<h2 id="4-trust-model">4. Trust model<a class="headerlink" href="#4-trust-model" title="Permanent link">&para;</a></h2>
-<p>The trust model is a direct restatement of the
-<a href="../component-standard/">component standard</a>'s authentication section, applied
-to chat operations:</p>
-<ul>
-<li><strong>The gateway authenticates once.</strong> <code>robotsix-central-deploy</code> validates the
-  operator's session on every proxied request before traffic reaches a
-  component.</li>
-<li><strong>The internal network is trusted.</strong> Components behind the gateway receive
-  only authenticated requests and do not ship per-component auth.</li>
-<li><strong>The per-component chat-access checkbox is the authorization boundary for
-  chat operations.</strong> An operator grants or revokes chat access per component
-  in the central-deploy UI. The skill endpoint's safety rules (user
-  confirmation for specific operations) are a second layer — the checkbox
-  controls whether the agent can reach the component at all; the safety rules
-  control what the agent may do once connected.</li>
-<li><strong>A component must never be exposed directly to an untrusted network</strong> on
-  the assumption that it protects itself. Chat access does not change this —
-  the skill endpoint is an internal HTTP route behind the gateway, not a
-  public API.</li>
-</ul>
-<hr />
-<h2 id="reference">Reference<a class="headerlink" href="#reference" title="Permanent link">&para;</a></h2>
-<ul>
-<li><a href="../component-standard/">Component standard</a> — the three deploy modes, auth model,
-  health endpoint.</li>
-<li><a href="../config-standard/#5-calling-another-service-a-name_url-config-field">Config standard §5</a> —
-  the <code>&lt;name&gt;_url</code> + <code>SecretStr</code> pattern for service-to-service calls.</li>
-<li><a href="../integrating-a-service/">Integrating a service</a> — the end-to-end onboarding
-  guide (chat-access checklist items).</li>
-</ul>
+<p><strong>Output:</strong> Draft tickets filed on the robotsix-standards board for gaps or
+outdated requirements it finds. A clean pass with no findings is a valid
+result — the agent does not invent gaps to fill a quota.</p>
+<p><strong>Cadence:</strong> Weekly (604800 seconds). The agent carries a memory ledger across
+passes so it doesn't re-audit unchanged content and can defer long-running
+investigations.</p>
+<p><strong>Capability level:</strong> 2 (intermediate reasoning). The audit requires comparing
+standards text against upstream best-practice documents and cross-referencing
+multiple standards pages — a level-1 agent doesn't have the context window or
+reasoning depth for that.</p>
+<p><strong>Web knowledge:</strong> Enabled. The agent uses <code>ask_web_knowledge</code> to query current
+OWASP Top 10, OpenSSF Scorecard checks, and SLSA level requirements when it
+needs to verify currency.</p>
+<p><strong>Tools:</strong> Read-only — <code>read_file</code>, <code>list_dir</code>. The agent cannot modify
+standards content; all findings go through the normal ticket pipeline so an
+operator reviews every proposed change.</p>
 
 
 

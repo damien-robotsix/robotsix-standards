@@ -12,9 +12,8 @@
 
 ## Where to read it
 
-- **Rendered:** <https://robotsix.net/central-deploy/DEPLOY_CONTRACT/>
 - **Source:**
-  [`docs/DEPLOY_CONTRACT.md`](https://github.com/damien-robotsix/robotsix-central-deploy/blob/main/docs/DEPLOY_CONTRACT.md)
+  [`docs/ui/DEPLOY_CONTRACT.md`](https://github.com/damien-robotsix/robotsix-central-deploy/blob/main/docs/ui/DEPLOY_CONTRACT.md)
   in the central-deploy repo
 - **From the running server:** `GET /help/deploy-contract` on the deploy
   dashboard (the server ships the same file inside its image)

@@ -59,7 +59,7 @@ the [component standard](component-standard.md) for its deploy modes.
   workspace repo.
 - **The workspace manifest (`repos.yaml`) is the single source of truth**
   for which packages belong in the workspace. It uses the
-  [vcs2l](https://github.com/smithy-astro/vcs2l) format.
+  [vcstool](https://github.com/dirk-thomas/vcstool) format.
 - **Branch refs in `repos.yaml` are acceptable** — unlike first-party git
   dependencies in Python repos (which are pinned to commit SHAs per the
   [repo baseline](repo-baseline.md#pin-to-a-commit-sha-not-a-branch)),

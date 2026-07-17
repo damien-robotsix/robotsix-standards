@@ -3,6 +3,10 @@
 ## 0.0.0 (unreleased)
 
 - Added [security posture](docs/security-posture.md) standard — a consolidated, auditable checklist of self-enforcing security gates (CodeQL, dependency review, Dependabot, workflow hardening, secret push protection, SBOM) replacing the per-repo periodic security audit agent.
+- Add bespoke security-posture-audit mill agent that audits the standards'
+  security definitions for completeness, internal consistency, currency
+  against OWASP/OpenSSF/SLSA, and enforceability. Document the agent in
+  `docs/mill-agents.md`.
 - Add `.robotsix-mill/config.yaml` with `languages: [markdown]` to activate the periodic mill agents for this docs repo.
 - Fixed 17 broken external URLs across the fleet table, deploy-contract page, integrating-a-service guide, and ROS 2 practices page; replaced unresolvable docs-site links and custom-domain URLs with GitHub repository links that resolve correctly.
 - Add `mkdocs-htmlproofer-plugin` to validate external links during the docs build. Broken external URLs now fail the build (via `--strict`), with `localhost` and GitHub raw URLs excluded from checking.

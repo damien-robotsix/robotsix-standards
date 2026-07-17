@@ -103,3 +103,10 @@ The standards change through the mill, like everything else:
   shims, no aliases; data moves by hand, case by case.
 - **Supersession is normal.** When reality reverses a decision, the new text
   references what it replaces — openly, not by silent rewrite.
+
+## Mill agents
+
+This repo carries its own [mill agents](mill-agents.md) — bespoke periodic
+passes that keep the standards themselves healthy. The security-posture-audit
+agent checks the security pages for completeness, consistency, currency, and
+enforceability, filing draft tickets for gaps it finds.

@@ -13,6 +13,8 @@ implements the config standard lives in
 `config_schema_json`), the `ROBOTSIX_CONFIG_FILE` convention, and the `0600`
 writer. One library, not two.
 
+Published at [damien-robotsix.github.io/robotsix-standards](https://damien-robotsix.github.io/robotsix-standards/).
+
 ## Why this exists
 
 As a stack grows, each repository tends to solve the same recurring problems —

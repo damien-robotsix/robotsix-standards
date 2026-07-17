@@ -32,6 +32,14 @@ markdown_extensions:
   - toc:
       permalink: true
 
+plugins:
+  - search
+  - htmlproofer:
+      raise_error_after_finish: true
+      ignore_urls:
+        - "http://localhost*"
+        - "https://raw.githubusercontent.com/*"
+
 nav:
   - Home: index.md
   - The fleet: fleet.md

@@ -1,0 +1,1 @@
+CI: add an external link checker to the docs build gate

@@ -1,0 +1,1 @@
+CHANGELOG.md: remove stale `0.0.0 (unreleased)` block duplicated below 0.1.3

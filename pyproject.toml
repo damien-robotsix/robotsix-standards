@@ -14,6 +14,7 @@ docs = ["mkdocs-material"]
 directory = "changelog.d"
 filename = "CHANGELOG.md"
 name = "robotsix-standards"
+start_string = "<!-- towncrier release notes start -->\n"
 # .gitkeep keeps changelog.d/ present after a release consumes every
 # fragment (git drops empty dirs; baseline-check requires the dir).
 ignore = [".gitkeep"]

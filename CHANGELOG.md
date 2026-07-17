@@ -3,6 +3,7 @@
 ## 0.0.0 (unreleased)
 
 - CHANGELOG.md: remove stale duplicated '0.0.0 (unreleased)' block between 0.1.3 and 0.1.2 sections; add towncrier `start_string` marker to prevent recurrence. (20260717T173132Z-changelog-md-remove-stale-0-0-0-unreleas-8151)
+- README: add direct link to the published docs site (`damien-robotsix.github.io/robotsix-standards`). (20260717T173132Z-readme-add-the-required-docs-site-link-p-164f)
 
 # robotsix-standards 0.1.3 (2026-07-13)
 
@@ -16,6 +17,7 @@
 - Remove Python-specific uv references from repo-baseline.md (uv belongs only in python.md); verify 'uv audit' is a real CVE gate (20260711T070846Z-remove-python-specific-uv-references-fro-30a6)
 - docs: add exception for programmatic CHANGELOG.md fixes (changelog-bugfix carve-out) (20260712T175522Z-docs-add-exception-for-programmatic-chan-85f0)
 - Derive a ROS 2 practices page for robotsix-standards from mill-ros2 (20260712T232045Z-derive-a-ros-2-practices-page-for-robots-d71c)
+
 
 
 # robotsix-standards 0.1.2 (2026-07-06)

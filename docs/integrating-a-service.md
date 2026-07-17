@@ -4,7 +4,7 @@
 > [component standard](component-standard.md).
 
 This is the **how-to guide** for adding a service repository to the
-[central-deploy](https://deploy.robotsix.net) system. It walks you from an
+[central-deploy](https://github.com/damien-robotsix/robotsix-central-deploy) system. It walks you from an
 existing repo to a one-click deploy in the dashboard.
 
 For the exhaustive field-by-field rules, error classification, and the

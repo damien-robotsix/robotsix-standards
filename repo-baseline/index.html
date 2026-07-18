@@ -1564,10 +1564,17 @@ bypass every gate, the changelog check never runs):</p>
   Exemptions (e.g. Dependabot PRs auto-approved by the auto-merge workflow)
   are declared and justified.</li>
 <li><strong>Squash merge</strong>, force-push disabled.</li>
+<li><strong>Include administrators</strong> — the rules above apply to everyone, including
+  repo admins. No bypass.</li>
 </ul>
 <p>GitHub settings can't live in the repo, so uniformity comes from the
 idempotent apply-script in robotsix-github-workflows (<code>gh api</code> loop over the
-fleet) — run it when a repo is created or the required-check set changes.</p>
+fleet, setting <code>enforce_admins: true</code> on every protected branch) — run it when
+a repo is created or the required-check set changes.</p>
+<p>If an operational emergency requires admin bypass (e.g. a hotfix during CI
+outage), temporarily disable branch protection with a reason recorded,
+apply the fix, and re-enable immediately afterward. The bypass must be
+transient, not a standing exemption.</p>
 <h2 id="starting-a-new-repo">Starting a new repo<a class="headerlink" href="#starting-a-new-repo" title="Permanent link">&para;</a></h2>
 <p>New repos start from the language's template repository —
 <strong><code>robotsix-template-python</code></strong> (a GitHub template) carries the full baseline

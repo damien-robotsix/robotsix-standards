@@ -6,8 +6,12 @@
 
 **Content-only repos** — repos that contain only documentation, standards, or
 static content (no `src/` directory, no container image) — are exempt from
-code-analysis gates (CodeQL, dependency-review, SBOM, CVE audit). They must
-still meet the workflow-hardening, secret-protection, and Dependabot gates.
+code-analysis gates (CodeQL, dependency-review, SBOM, CVE audit) and from the
+zizmor workflow audit (gate 4b). The zizmor checks (script injection via
+`${{ }}`, untrusted `pull_request_target` checkout, overly broad permissions)
+are lower-risk for a repo with no deployable artifacts and few, simple
+workflows. Content-only repos must still meet SHA-pinning (4a), least-privilege
+permissions (4c), secret-protection, and Dependabot gates.
 
 The fleet's security requirements are organizational policy, not repo-specific
 technical gaps. They are defined once here, checked at repo onboarding and

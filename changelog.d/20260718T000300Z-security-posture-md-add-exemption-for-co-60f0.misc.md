@@ -1,0 +1,1 @@
+security-posture.md: add exemption for content-only / docs-only repos

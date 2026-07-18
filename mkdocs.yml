@@ -39,6 +39,7 @@ plugins:
       ignore_urls:
         - "http://localhost*"
         - "https://raw.githubusercontent.com/*"
+        - "https://owasp.org/*"
 
 nav:
   - Home: index.md

@@ -27,6 +27,8 @@ everywhere.
 - **[Security posture](security-posture.md)** — self-enforcing security gates
   (SAST, dependency review, Dependabot, workflow hardening, secret protection,
   SBOM), auditable per repo.
+- **[Docstring convention](docstrings.md)** — Python docstring style and coverage
+  rules for all public modules, classes, and functions.
 - **[Python practices](python.md)** — uv, hatchling, `requires-python` policy,
   lint/type/security gates, test layout, pre-commit hooks.
 - **[JavaScript practices](javascript.md)** — vanilla frontend JS as static

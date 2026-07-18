@@ -2,6 +2,9 @@
 
 ## 0.0.0 (unreleased)
 
+- Amend config standard with management-surface secret-handling rules:
+  redact `writeOnly` fields on read, merge-on-write for partial updates,
+  and masked UI inputs with set/unset badge.
 - Gate 3 verification text in `security-posture.md` now references the
   language-specific Dependabot ecosystem (`uv` for Python repos) alongside
   `npm`, matching the `repo-baseline.md` table.

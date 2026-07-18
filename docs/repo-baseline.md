@@ -172,7 +172,7 @@ gate set:
   every repo already clears the new value (see [Tests](python.md#tests)).
 - **Docs:** a strict docs build (`mkdocs build --strict`) when the repo
   publishes a docs site.
-- **Security:** CodeQL (SAST), GitHub secret scanning + push protection
+- **Security:** CodeQL (SAST), zizmor workflow audit, GitHub secret scanning + push protection
   (complemented by TruffleHog for PR-diff and full-repo scans in the shared
   security workflow), a dependency CVE audit (`pip-audit` in the security
   workflow), `dependency-review` on PRs (`fail-on-severity:

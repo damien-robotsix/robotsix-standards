@@ -1,0 +1,1 @@
+repo-baseline.md: add zizmor to the canonical security gate list

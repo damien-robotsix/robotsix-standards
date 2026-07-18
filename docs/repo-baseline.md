@@ -210,6 +210,9 @@ bypass every gate, the changelog check never runs):
 
 - **PRs only** — no direct pushes to `main`.
 - **Required status checks** — the shared-workflow gates above.
+- **Required approving review** — at least one approving review before merge.
+  Exemptions (e.g. Dependabot PRs auto-approved by the auto-merge workflow)
+  are declared and justified.
 - **Squash merge**, force-push disabled.
 
 GitHub settings can't live in the repo, so uniformity comes from the

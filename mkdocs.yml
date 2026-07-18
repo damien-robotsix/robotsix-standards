@@ -40,6 +40,7 @@ plugins:
         - "http://localhost*"
         - "https://raw.githubusercontent.com/*"
         - "https://owasp.org/*"
+        - "https://damien-robotsix.github.io/*"
 
 nav:
   - Home: index.md

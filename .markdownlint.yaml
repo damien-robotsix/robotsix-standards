@@ -1,0 +1,19 @@
+# markdownlint configuration — relaxed to match existing doc conventions.
+
+# MD013/line-length: disabled — docs contain long URLs, tables, and
+# inline references that routinely exceed 80 characters.
+MD013: false
+
+# MD060/table-column-style: disabled — compact tables (|a|b|) are a
+# consistent style choice across these docs.
+MD060: false
+
+# MD004/ul-style: disabled — one false positive where "+" appears as
+# part of inline text "(model + timestamp)" at a continuation indent.
+MD004: false
+
+# MD046/code-block-style: disabled — MkDocs admonitions (!!! note,
+# ??? question, etc.) use 4-space indented content that markdownlint
+# misidentifies as indented code blocks.  Fenced blocks are also used
+# throughout; neither style can be mandated without false positives.
+MD046: false

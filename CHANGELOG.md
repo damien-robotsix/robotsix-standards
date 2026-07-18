@@ -2,6 +2,8 @@
 
 ## 0.0.0 (unreleased)
 
+- Add `.markdownlint.yaml` config and fix pre-existing markdownlint
+  violations in docs (MD028, MD031, MD040, MD051) — CI lint passes clean.
 - Add Docstring convention and Security posture to the README "Every repository" table,
   and Docstring convention to the docs/index.md TOC.
 - Ignore self-referencing `damien-robotsix.github.io/*` URLs in htmlproofer to prevent CI failures from 504 responses during docs build.

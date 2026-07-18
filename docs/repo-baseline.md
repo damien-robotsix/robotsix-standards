@@ -36,7 +36,7 @@ release-please, or index token). A library that later needs genuine public
 distribution can add publishing back deliberately — but that is the exception,
 not the default. (Repos *do* release — versions, tags, a compiled changelog —
 via the shared auto-release workflow; see
-[changelog & releases](#changelog-releases). A release publishes nothing to
+[changelog & releases](#changelog--releases). A release publishes nothing to
 any package index.)
 
 #### Pin to a commit SHA, not a branch

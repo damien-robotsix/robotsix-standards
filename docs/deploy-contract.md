@@ -2,7 +2,7 @@
 
 > **Scope: deployable components only.** See the
 > [component standard](component-standard.md).
-
+>
 > **Canonical home:
 > [`robotsix-central-deploy`](https://github.com/damien-robotsix/robotsix-central-deploy).**
 > The contract is implemented by central-deploy's parser and served by the

@@ -45,14 +45,43 @@ implements it: a component defines one pydantic model and calls `load_config`.
 
 ### 3. One secret convention
 
+**Model layer — component code**
+
 - A secret field is declared with **`pydantic.SecretStr`**: **masked on read**
   (`repr`/`str` show `**********`, never the value), and rendered in the JSON
   Schema as `{"type": "string", "format": "password", "writeOnly": true}` — so
   the deploy UI knows to mask the input and never echo it back. Secrets are
   **typed**, not guessed from an empty slot.
+- Secrets live in the **same `config.json`** as ordinary settings — no
+  separate secrets file, no `EnvStore` or env-var injection for component
+  config. The one-file rule applies to secrets too: `ROBOTSIX_CONFIG_FILE`
+  only locates the file, and the file is the only source of config values.
 - Any config file written with real secrets is created **`0600` in a `0700`
   directory**, enforced in shared loader code (`dump_config`) — not per-repo,
   not docstring-only. No real credentials are committed anywhere.
+
+**Management-surface layer — central-deploy config API + Configure UI**
+
+These rules apply to any surface that reads, writes, or displays component
+config. They are **not** library concerns (`robotsix-config` does not
+implement redaction or merge); they are the deploy system's responsibility.
+
+- **Redact on read.** Any GET endpoint, config version history, audit log,
+  or UI that reads component config MUST redact every field marked
+  `writeOnly` in the committed `config.schema.json`. The secret value is
+  never echoed — only the key name and its set/unset status may be exposed.
+- **Merge on write.** Partial-update semantics: a write that omits a secret
+  field (or submits it blank / with an unchanged sentinel value) MUST
+  preserve the stored value. Only an explicitly submitted, non-blank,
+  non-sentinel secret key overwrites the stored secret. Secret values MUST
+  NOT be stored in config version history — history records that a secret
+  key changed (e.g. "secret `password` updated"), never its content.
+- **UI rendering.** Forms are generated from the committed
+  `config.schema.json`. Every `writeOnly` field renders as a blank masked
+  (password) input with a set/unset badge — the badge is the only
+  indication of whether a value exists, since the value itself is never
+  echoed. The operator types a new value to set or change the secret;
+  leaving it blank preserves the existing value.
 
 ### 4. What `environment:` is for
 

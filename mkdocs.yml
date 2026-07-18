@@ -48,6 +48,7 @@ nav:
       - Repo baseline: repo-baseline.md
       - Security posture: security-posture.md
       - Python practices: python.md
+      - Docstring convention: docstrings.md
       - JavaScript practices: javascript.md
       - ROS 2 practices: ros2.md
   - Deployable components:

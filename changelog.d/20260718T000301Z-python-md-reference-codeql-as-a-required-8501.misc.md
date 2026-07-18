@@ -1,0 +1,1 @@
+python.md: reference CodeQL as a required security gate

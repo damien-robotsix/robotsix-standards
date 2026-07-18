@@ -16,7 +16,7 @@
         <link rel="prev" href="../security-posture/">
       
       
-        <link rel="next" href="../javascript/">
+        <link rel="next" href="../docstrings/">
       
       
         
@@ -614,6 +614,34 @@
   
 </nav>
       
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../docstrings/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Docstring convention
+  
+
+    
+  </span>
+  
+  
+
+      </a>
     </li>
   
 
@@ -1395,6 +1423,9 @@ concern (see the <a href="../component-standard/#logging">component standard</a>
 <li><code>deptry</code> (dependency hygiene)</li>
 <li><code>bandit</code> (security SAST) and a dependency CVE audit (<code>uv audit</code>)</li>
 </ul>
+<p>Ruff's pydocstyle rules (<code>D</code>) enforce the fleet <a href="../docstrings/">docstring convention</a>
+at lint time — every repo enables the standard rule set so that API docs
+built by mkdocstrings don't silently drop parameter descriptions.</p>
 <p>The shared <code>python-security.yml</code> workflow is a separate gate that additionally
 runs <code>pip-audit</code> (a second CVE audit pass), TruffleHog for secret scanning
 (PR-diff and full-repo), and generates a CycloneDX SBOM uploaded as a workflow

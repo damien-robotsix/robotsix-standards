@@ -1325,12 +1325,14 @@ environment is reproducible:</p>
 <ul>
 <li><code>remoteUser: ros</code> — run as the non-root user.</li>
 <li>Workspace mounted at <code>/home/ws</code>.</li>
-<li>ROS discovery scoped to localhost:
-  <div class="highlight"><pre><span></span><code><span class="nt">&quot;containerEnv&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<li>ROS discovery scoped to localhost:</li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="nt">&quot;containerEnv&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
 <span class="w">  </span><span class="nt">&quot;ROS_DOMAIN_ID&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;42&quot;</span><span class="p">,</span>
 <span class="w">  </span><span class="nt">&quot;ROS_AUTOMATIC_DISCOVERY_RANGE&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;LOCALHOST&quot;</span>
 <span class="p">}</span>
-</code></pre></div></li>
+</code></pre></div>
+<ul>
 <li><code>--net=host</code> and <code>--ipc=host</code> for DDS networking.</li>
 <li><code>postCreateCommand</code> runs <code>vcs import</code>, <code>rosdep update</code>, and
   <code>rosdep install</code> so the workspace is ready on first open.</li>

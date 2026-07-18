@@ -114,6 +114,9 @@ runs `pip-audit` (a second CVE audit pass), TruffleHog for secret scanning
 (PR-diff and full-repo), and generates a CycloneDX SBOM uploaded as a workflow
 artifact.
 
+**CodeQL** runs as a separate SAST gate via the shared security workflow —
+see the [security posture](security-posture.md#1-sast-codeql) for details.
+
 **Security lint convention:** enable ruff's bandit rules in `pyproject.toml`
 (`[tool.ruff.lint] extend-select = ["S"]`). Suppressions are per-file ignores,
 and **every ignore carries a comment justifying it** — a reviewer should never

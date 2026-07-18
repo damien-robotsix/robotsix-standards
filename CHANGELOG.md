@@ -2,6 +2,9 @@
 
 ## 0.0.0 (unreleased)
 
+- Gate 3 verification text in `security-posture.md` now references the
+  language-specific Dependabot ecosystem (`uv` for Python repos) alongside
+  `npm`, matching the `repo-baseline.md` table.
 - Add `.markdownlint.yaml` config relaxing MD013 (line-length), MD060
   (compact tables), MD004 (ul-style false-positive), and MD046
   (code-block-style vs MkDocs admonitions) to match existing doc conventions,

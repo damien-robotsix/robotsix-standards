@@ -1463,8 +1463,9 @@ ecosystems, and the baseline-check gate verifies it is present and complete.
 Dependabot PRs auto-merge once required checks pass.</p>
 <ul>
 <li><strong>How to verify:</strong> <code>.github/dependabot.yml</code> exists and covers
-  <code>github-actions</code> and <code>pre-commit</code> in every repo, plus <code>docker</code> in
-  image-shipping repos and <code>npm</code> in repos with <code>package.json</code>. The Dependabot
+  <code>github-actions</code> and <code>pre-commit</code> in every repo, plus the
+  language-specific ecosystem (<code>uv</code> in Python repos, <code>npm</code> in repos
+  with <code>package.json</code>), and <code>docker</code> in image-shipping repos. The Dependabot
   tab shows recent update PRs.</li>
 <li><strong>Failure prevented:</strong> a pinned digest (base image, action SHA) rots silently
   — the image stops receiving base-OS security patches, an action runs an

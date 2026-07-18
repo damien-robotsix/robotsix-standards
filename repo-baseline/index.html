@@ -1560,6 +1560,9 @@ bypass every gate, the changelog check never runs):</p>
 <ul>
 <li><strong>PRs only</strong> — no direct pushes to <code>main</code>.</li>
 <li><strong>Required status checks</strong> — the shared-workflow gates above.</li>
+<li><strong>Required approving review</strong> — at least one approving review before merge.
+  Exemptions (e.g. Dependabot PRs auto-approved by the auto-merge workflow)
+  are declared and justified.</li>
 <li><strong>Squash merge</strong>, force-push disabled.</li>
 </ul>
 <p>GitHub settings can't live in the repo, so uniformity comes from the

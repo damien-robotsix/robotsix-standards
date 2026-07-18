@@ -201,4 +201,3 @@ applies:
 
 These rules will be refined once the fleet has more than one ROS 2
 package repo to observe consistency across.
-s.

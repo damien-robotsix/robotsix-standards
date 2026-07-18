@@ -2,6 +2,7 @@
 
 ## 0.0.0 (unreleased)
 
+- Add docstring convention standard (`docs/docstrings.md`) mandating Google-style docstrings fleet-wide, with ruff pydocstyle rule list (`D100`, `D101`, `D103`, `D400`, `D412`, `D413`, `D414`, `D417`) and `convention = "google"`, backed by a rationale documenting mkdocstrings' silent-drop failure mode on NumPy-style docstrings.
 - Add `https://owasp.org/*` to htmlproofer ignore_urls in mkdocs.yml to
   prevent transient OWASP server timeouts from failing CI builds.
 - Add "Required approving review" to the branch-protection baseline in `docs/repo-baseline.md`.

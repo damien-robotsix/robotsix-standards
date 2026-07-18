@@ -109,6 +109,10 @@ Run via the shared `python-ci.yml` reusable workflow:
 - `deptry` (dependency hygiene)
 - `bandit` (security SAST) and a dependency CVE audit (`uv audit`)
 
+Ruff's pydocstyle rules (`D`) enforce the fleet [docstring convention](docstrings.md)
+at lint time — every repo enables the standard rule set so that API docs
+built by mkdocstrings don't silently drop parameter descriptions.
+
 The shared `python-security.yml` workflow is a separate gate that additionally
 runs `pip-audit` (a second CVE audit pass), TruffleHog for secret scanning
 (PR-diff and full-repo), and generates a CycloneDX SBOM uploaded as a workflow

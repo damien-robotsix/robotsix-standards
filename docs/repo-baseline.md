@@ -177,7 +177,7 @@ gate set:
   publishes a docs site.
 - **Security:** CodeQL (SAST), zizmor workflow audit, GitHub secret scanning + push protection
   (complemented by TruffleHog for PR-diff and full-repo scans in the shared
-  security workflow), a dependency CVE audit (`pip-audit` in the security
+  security workflow), a dependency CVE audit (`uv audit` in the CI gate, plus `pip-audit` in the security
   workflow), `dependency-review` on PRs (`fail-on-severity:
   moderate`), and a CycloneDX SBOM generated and uploaded as a workflow
   artifact.

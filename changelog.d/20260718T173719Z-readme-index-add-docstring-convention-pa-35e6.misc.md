@@ -1,0 +1,1 @@
+README + index: add Docstring convention page to the 'Every repo' TOC listings

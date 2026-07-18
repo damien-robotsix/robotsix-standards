@@ -2,6 +2,8 @@
 
 ## 0.0.0 (unreleased)
 
+- Add `https://owasp.org/*` to htmlproofer ignore_urls in mkdocs.yml to
+  prevent transient OWASP server timeouts from failing CI builds.
 - Add "Required approving review" to the branch-protection baseline in `docs/repo-baseline.md`.
 - Branch protection standard now requires **Include administrators** (`enforce_admins: true`) and documents the emergency bypass process.
 - `repo-baseline.md`: mention `uv audit` alongside `pip-audit` in the CVE audit bullet, matching the two-pass description in `python.md`.

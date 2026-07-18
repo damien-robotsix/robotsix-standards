@@ -1374,6 +1374,10 @@
 alike. This is <em>in addition to</em> the <a href="../repo-baseline/">repo baseline</a>, which
 every repo follows.</p>
 </blockquote>
+<p><strong>Content-only repos</strong> — repos that contain only documentation, standards, or
+static content (no <code>src/</code> directory, no container image) — are exempt from
+code-analysis gates (CodeQL, dependency-review, SBOM, CVE audit). They must
+still meet the workflow-hardening, secret-protection, and Dependabot gates.</p>
 <p>The fleet's security requirements are organizational policy, not repo-specific
 technical gaps. They are defined once here, checked at repo onboarding and
 on-demand via audit, rather than re-audited weekly per repo by a periodic agent.

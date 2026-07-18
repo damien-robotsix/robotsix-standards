@@ -1,0 +1,1 @@
+repo-baseline.md: require approving PR review before merge (OpenSSF Scorecard Code-Review)

@@ -32,6 +32,10 @@ jobs:
           python-version: "3.14"
       - name: Build docs (strict)
         run: uv run --group docs mkdocs build --strict
+      - name: Lint markdown
+        run: npx --yes markdownlint-cli2 'docs/**/*.md' README.md
+      - name: Spell check
+        run: uv run --with codespell codespell
 
   changelog:
     # skip-changelog label handling lives inside the shared workflow.

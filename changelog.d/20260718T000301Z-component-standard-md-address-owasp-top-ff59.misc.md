@@ -1,0 +1,1 @@
+component-standard.md: address OWASP Top 10 for LLM Applications

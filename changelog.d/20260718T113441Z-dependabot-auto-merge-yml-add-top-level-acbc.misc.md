@@ -1,0 +1,1 @@
+dependabot-auto-merge.yml: add top-level `permissions:` block (gate 4c)

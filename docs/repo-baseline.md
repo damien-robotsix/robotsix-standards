@@ -130,6 +130,9 @@ newsfragments, compiled by the shared auto-release workflow.**
   [`robotsix-standards`](https://github.com/damien-robotsix/robotsix-standards)
   so contributors find the shared conventions from any repo.
 - **License.** MIT, as a `LICENSE` file at the repo root.
+- **Vulnerability disclosure.** Every repo ships a `SECURITY.md` at the root
+  with at minimum: a contact method for vulnerability reports, a
+  response-time expectation, and a statement on coordinated disclosure.
 
 ## AGENT.md
 

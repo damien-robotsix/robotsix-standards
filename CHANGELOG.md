@@ -2,6 +2,7 @@
 
 ## 0.0.0 (unreleased)
 
+- Require `SECURITY.md` in the repo baseline with vulnerability disclosure policy (contact method, response time, coordinated disclosure). Add a reference implementation to this repo and an audit row to the security posture table.
 - Add OWASP Top 10 for LLM Applications security guidance to the LLM usage section in `component-standard.md`: prompt injection defences (LLM01), excessive-agency least-privilege rules (LLM06), output sanitisation requirements (LLM02), and forward guidance for LLM08/LLM09.
 - Added zizmor workflow audit to the canonical security gate list in `repo-baseline.md`.
 - `security-posture.md`: add exemption for content-only repos (no `src/`, no container image) from code-analysis gates (CodeQL, dependency-review, SBOM, CVE audit). Workflow-hardening, secret-protection, and Dependabot gates still apply.

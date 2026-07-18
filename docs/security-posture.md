@@ -213,6 +213,7 @@ dashboard-watching:
 | SBOM | CI uploads CycloneDX artifact |
 | CVE audit | `uv audit` / `pip-audit` passes in CI |
 | Container image scan | Trivy PR-scan and publish workflows present and passing (image-shipping repos only) |
+| Vulnerability disclosure | `SECURITY.md` present at repo root with contact method, response-time expectation, and coordinated-disclosure statement |
 
 A repo that fails any gate is non-compliant; the fix is always the same — call
 the shared workflow, or enable the GitHub setting.

@@ -1,0 +1,1 @@
+security-posture.md: clarify whether zizmor (gate 4b) applies to content-only repos

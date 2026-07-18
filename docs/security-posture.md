@@ -11,7 +11,11 @@ zizmor workflow audit (gate 4b). The zizmor checks (script injection via
 `${{ }}`, untrusted `pull_request_target` checkout, overly broad permissions)
 are lower-risk for a repo with no deployable artifacts and few, simple
 workflows. Content-only repos must still meet SHA-pinning (4a), least-privilege
-permissions (4c), secret-protection, and Dependabot gates.
+permissions (4c), push-protection + detect-secrets (the commit-time and
+push-time parts of gate 5), and Dependabot gates. The TruffleHog full-history
+scan is exempt — a docs-only repo with no deployable artifacts and few
+contributors has minimal secret-exposure surface beyond what push protection
+and detect-secrets already catch.
 
 The fleet's security requirements are organizational policy, not repo-specific
 technical gaps. They are defined once here, checked at repo onboarding and

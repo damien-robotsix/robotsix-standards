@@ -2,6 +2,7 @@
 
 ## 0.0.0 (unreleased)
 
+- `security-posture.md`: add exemption for content-only repos (no `src/`, no container image) from code-analysis gates (CodeQL, dependency-review, SBOM, CVE audit). Workflow-hardening, secret-protection, and Dependabot gates still apply.
 - Added [security posture](docs/security-posture.md) standard — a consolidated, auditable checklist of self-enforcing security gates (CodeQL, dependency review, Dependabot, workflow hardening, secret push protection, SBOM) replacing the per-repo periodic security audit agent.
 - Add bespoke security-posture-audit mill agent that audits the standards'
   security definitions for completeness, internal consistency, currency

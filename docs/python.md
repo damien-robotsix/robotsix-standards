@@ -172,7 +172,12 @@ ruff suppressions above.
 ## Pre-commit hooks
 
 Every repo ships `.pre-commit-config.yaml` with the standard set (this is the
-fleet's converged practice, not a minimum to improvise beyond):
+fleet's converged practice, not a minimum to improvise beyond).
+**Content-only repos** (as defined in the [security posture](security-posture.md))
+— repos with no `src/` directory and no container image — may omit `ruff`,
+`ruff-format`, `mypy`, `vulture`, and `hadolint`. The "standard set" is the
+full set for repos that ship Python packages; content-only repos use the subset
+documented in the template's `.pre-commit-config.yaml`.
 
 - **File checks:** `end-of-file-fixer`, `trailing-whitespace`,
   `check-merge-conflict`, `check-added-large-files`, `check-yaml`,

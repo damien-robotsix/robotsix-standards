@@ -1,0 +1,1 @@
+python.md: acknowledge content-only pre-commit subset or cross-reference exemption

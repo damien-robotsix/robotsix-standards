@@ -3,6 +3,7 @@
 ## 0.0.0 (unreleased)
 
 - Add "Required approving review" to the branch-protection baseline in `docs/repo-baseline.md`.
+- Branch protection standard now requires **Include administrators** (`enforce_admins: true`) and documents the emergency bypass process.
 - `repo-baseline.md`: mention `uv audit` alongside `pip-audit` in the CVE audit bullet, matching the two-pass description in `python.md`.
 - Content-only repos are now exempt from the zizmor workflow audit (gate 4b), in addition to the existing code-analysis exemptions. SHA-pinning and least-privilege permissions still apply.
 - Acknowledge content-only repo pre-commit hook subset in `docs/python.md`. Content-only repos may omit ruff, ruff-format, mypy, vulture, and hadolint; the standard set is for repos that ship Python packages.

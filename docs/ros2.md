@@ -36,7 +36,7 @@ the [component standard](component-standard.md) for its deploy modes.
 
 ## Workspace layout
 
-```
+```text
 ├── repos.yaml              ← vcs2l manifest: downstream package repos
 ├── src/                    ← git-ignored; populated by `vcs import`
 ├── .devcontainer/
@@ -94,12 +94,14 @@ RUN echo "source /opt/ros/$ROS_DISTRO/setup.bash" >> ~/.bashrc
 - `remoteUser: ros` — run as the non-root user.
 - Workspace mounted at `/home/ws`.
 - ROS discovery scoped to localhost:
+
   ```json
   "containerEnv": {
     "ROS_DOMAIN_ID": "42",
     "ROS_AUTOMATIC_DISCOVERY_RANGE": "LOCALHOST"
   }
   ```
+
 - `--net=host` and `--ipc=host` for DDS networking.
 - `postCreateCommand` runs `vcs import`, `rosdep update`, and
   `rosdep install` so the workspace is ready on first open.
@@ -178,7 +180,7 @@ ROS 2 interface files (`.msg`, `.srv`, `.action`) live in the downstream
 package repos, not in the workspace skeleton. Standard ROS 2 layout
 applies:
 
-```
+```text
 <package>/
 ├── msg/        ← .msg files (message definitions)
 ├── srv/        ← .srv files (service definitions)

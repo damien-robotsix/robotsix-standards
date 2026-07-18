@@ -2,6 +2,12 @@
 
 ## 0.0.0 (unreleased)
 
+- Add `.markdownlint.yaml` config relaxing MD013 (line-length), MD060
+  (compact tables), MD004 (ul-style false-positive), and MD046
+  (code-block-style vs MkDocs admonitions) to match existing doc conventions,
+  plus fix 7 true violations: MD028 (blank line inside blockquote) in
+  `deploy-contract.md`, MD051 (link fragment) in `repo-baseline.md`, and
+  MD031/MD040 (fence language / trailing content) in `ros2.md`.
 - Add Docstring convention and Security posture to the README "Every repository" table,
   and Docstring convention to the docs/index.md TOC.
 - Ignore self-referencing `damien-robotsix.github.io/*` URLs in htmlproofer to prevent CI failures from 504 responses during docs build.

@@ -1,0 +1,1 @@
+README: add missing Hypothesis testing and HTTP error envelope to TOC tables

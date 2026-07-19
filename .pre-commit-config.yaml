@@ -29,3 +29,13 @@ repos:
     rev: v1.7.12
     hooks:
       - id: actionlint-docker
+  - repo: https://github.com/igorshubovych/markdownlint-cli2
+    rev: v0.17.2
+    hooks:
+      - id: markdownlint-cli2
+        args: ["--config", ".markdownlint-cli2.yaml"]
+  - repo: https://github.com/codespell-project/codespell
+    rev: v2.4.3
+    hooks:
+      - id: codespell
+        args: ["--config", "pyproject.toml"]

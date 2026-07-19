@@ -19,6 +19,8 @@
   MD031/MD040 (fence language / trailing content) in `ros2.md`.
 - Add Docstring convention and Security posture to the README "Every repository" table,
   and Docstring convention to the docs/index.md TOC.
+- Add `markdownlint-cli2` and `codespell` pre-commit hooks and CI gates to
+  lint and spell-check all Markdown documentation.
 - Ignore self-referencing `damien-robotsix.github.io/*` URLs in htmlproofer to prevent CI failures from 504 responses during docs build.
 - Add docstring convention standard (`docs/docstrings.md`) mandating Google-style docstrings fleet-wide, with ruff pydocstyle rule list (`D100`, `D101`, `D103`, `D400`, `D412`, `D413`, `D414`, `D417`) and `convention = "google"`, backed by a rationale documenting mkdocstrings' silent-drop failure mode on NumPy-style docstrings.
 - Add `https://owasp.org/*` to htmlproofer ignore_urls in mkdocs.yml to

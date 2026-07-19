@@ -578,6 +578,34 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#ci-uv-setup-caching" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        CI: uv setup caching
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="CI: uv setup caching">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#pre-commit-jobs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Pre-commit jobs
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#tests" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1266,6 +1294,34 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#ci-uv-setup-caching" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        CI: uv setup caching
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="CI: uv setup caching">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#pre-commit-jobs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Pre-commit jobs
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#tests" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1450,6 +1506,32 @@ never imported (a linter or formatter in an optional group) gets flagged as
 unused by deptry and fails CI. Register it under <code>DEP002</code> in
 <code>[tool.deptry.per_rule_ignores]</code>, with a comment — same convention as the
 ruff suppressions above.</p>
+<h2 id="ci-uv-setup-caching">CI: uv setup caching<a class="headerlink" href="#ci-uv-setup-caching" title="Permanent link">&para;</a></h2>
+<p><strong>Every CI job that calls <code>astral-sh/setup-uv</code> MUST enable caching.</strong>
+Set <code>enable-cache: true</code> with a <code>cache-dependency-glob</code> that covers
+<code>pyproject.toml</code> and <code>uv.lock</code> (the minimalset — no broader globs that
+would invalidate the cache on unrelated changes). The action version must
+be <strong>v6 or later</strong> (v5 and earlier do not support <code>enable-cache</code>).</p>
+<p><strong>Rationale:</strong> without caching, every CI run re-downloads the full
+dependency set from PyPI — <code>uv sync --frozen</code> cold is ~30–60 s; from a
+hot cache it is ~2–5 s.  That saving multiplies across every Python-repo
+CI run in the fleet.  The tight <code>cache-dependency-glob</code> ensures the cache
+is invalidated only when dependencies actually change, not on every
+source-file edit.  This is the industry-standard pattern (used by
+FastAPI, pydantic, pandas).</p>
+<p><strong>Release/deploy workflows MAY disable caching</strong> (<code>enable-cache: false</code>)
+as a security hardening measure — avoiding potential cache-poisoning risk
+on sensitive publish steps.</p>
+<h3 id="pre-commit-jobs">Pre-commit jobs<a class="headerlink" href="#pre-commit-jobs" title="Permanent link">&para;</a></h3>
+<p><strong>CI jobs that run pre-commit via <code>tox-dev/action-pre-commit-uv</code> add an
+explicit <code>astral-sh/setup-uv</code> step before the pre-commit action</strong> to
+control cache settings (the action's internal setup-uv call does not
+expose cache configuration).  Cache <code>~/.cache/pre-commit</code> separately via
+<code>actions/cache@v4</code>, keyed on the hash of <code>.pre-commit-config.yaml</code>.</p>
+<p><strong>Rationale:</strong> rebuilding pre-commit environments from scratch takes
+20–40 s per run; caching them cuts that to near-zero on cache hits.  The
+explicit setup-uv step ensures the uv package cache is also warm when
+pre-commit hooks install Python tools.</p>
 <h2 id="tests">Tests<a class="headerlink" href="#tests" title="Permanent link">&para;</a></h2>
 <ul>
 <li><code>pytest</code>, with coverage gated at <strong>one fleet-wide floor: 80%</strong>, the same in

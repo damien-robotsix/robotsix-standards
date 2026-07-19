@@ -143,6 +143,39 @@ unused by deptry and fails CI. Register it under `DEP002` in
 `[tool.deptry.per_rule_ignores]`, with a comment — same convention as the
 ruff suppressions above.
 
+## CI: uv setup caching
+
+**Every CI job that calls `astral-sh/setup-uv` MUST enable caching.**
+Set `enable-cache: true` with a `cache-dependency-glob` that covers
+`pyproject.toml` and `uv.lock` (the minimalset — no broader globs that
+would invalidate the cache on unrelated changes). The action version must
+be **v6 or later** (v5 and earlier do not support `enable-cache`).
+
+**Rationale:** without caching, every CI run re-downloads the full
+dependency set from PyPI — `uv sync --frozen` cold is ~30–60 s; from a
+hot cache it is ~2–5 s.  That saving multiplies across every Python-repo
+CI run in the fleet.  The tight `cache-dependency-glob` ensures the cache
+is invalidated only when dependencies actually change, not on every
+source-file edit.  This is the industry-standard pattern (used by
+FastAPI, pydantic, pandas).
+
+**Release/deploy workflows MAY disable caching** (`enable-cache: false`)
+as a security hardening measure — avoiding potential cache-poisoning risk
+on sensitive publish steps.
+
+### Pre-commit jobs
+
+**CI jobs that run pre-commit via `tox-dev/action-pre-commit-uv` add an
+explicit `astral-sh/setup-uv` step before the pre-commit action** to
+control cache settings (the action's internal setup-uv call does not
+expose cache configuration).  Cache `~/.cache/pre-commit` separately via
+`actions/cache@v4`, keyed on the hash of `.pre-commit-config.yaml`.
+
+**Rationale:** rebuilding pre-commit environments from scratch takes
+20–40 s per run; caching them cuts that to near-zero on cache hits.  The
+explicit setup-uv step ensures the uv package cache is also warm when
+pre-commit hooks install Python tools.
+
 ## Tests
 
 - `pytest`, with coverage gated at **one fleet-wide floor: 80%**, the same in

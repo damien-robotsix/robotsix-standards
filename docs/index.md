@@ -55,6 +55,9 @@ integrates with the deployment system. Beyond the baseline it follows:
 - **[Integrating a service](integrating-a-service.md)** — the end-to-end how-to.
 - **[Chat access](chat-access-standard.md)** — a standard skill endpoint so the
   chat agent can invoke operations on the component.
+- **[HTTP error envelope](http-error-envelope.md)** — one consistent RFC 9457
+  `application/problem+json` envelope for every error response, registered via
+  centralized exception handlers.
 
 ### The deployment system (bootstrap tier)
 

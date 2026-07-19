@@ -1,0 +1,1 @@
+Standardize: consistent JSON error envelope (RFC 9457 problem+json) for HTTP services

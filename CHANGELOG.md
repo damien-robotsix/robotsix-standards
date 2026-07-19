@@ -2,6 +2,7 @@
 
 ## 0.0.0 (unreleased)
 
+- Add missing Hypothesis testing and HTTP error envelope entries to the README tables so they stay in sync with the `mkdocs.yml` nav and `docs/index.md` TOC.
 - New [Hypothesis testing](docs/hypothesis.md) standard — property-based testing
   profiles (CI vs dev), shared strategies module, and CI workflow integration
   for fleet repos that use Hypothesis.

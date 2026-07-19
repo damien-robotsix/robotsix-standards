@@ -589,6 +589,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#slsa-source-track" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        SLSA Source Track
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#how-the-gates-are-delivered" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1400,6 +1411,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#slsa-source-track" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        SLSA Source Track
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#how-the-gates-are-delivered" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1633,9 +1655,28 @@ dependency vulnerability audit on every CI run.</p>
 <li><strong>Failure prevented:</strong> a dependency with a published, fixable CVE ships in
   production with no one aware.</li>
 <li><strong>Alignment:</strong> OpenSSF Scorecard <em>SBOM</em> and <em>Vulnerabilities</em> checks,
-  <a href="https://slsa.dev/spec/v1.0/requirements">SLSA <em>Build L2+</em></a> provenance
+  <a href="https://slsa.dev/spec/v1.2/requirements">SLSA <em>Build L2+</em></a> provenance
   requirement.</li>
 <li><strong>Detail:</strong> <a href="../docker-standard/#ci-time-image-scan">Docker build &amp; release — CI-time image scan</a>.</li>
+</ul>
+<h2 id="slsa-source-track">SLSA Source Track<a class="headerlink" href="#slsa-source-track" title="Permanent link">&para;</a></h2>
+<p><a href="https://slsa.dev/spec/v1.2/">SLSA v1.2</a> introduces a <strong>Source Track</strong>
+(Source L1–L4) alongside the existing Build Track. The fleet's posture against
+each Source level:</p>
+<ul>
+<li><strong>Source L1 (version-controlled source):</strong> met — all source lives in GitHub,
+  and every dependency is referenced by an immutable commit SHA.</li>
+<li><strong>Source L2 (signed source provenance):</strong> gap — releases do not yet produce
+  signed source provenance attestations. Adoption is deferred pending tooling
+  maturity and upstream ecosystem support.</li>
+<li><strong>Source L3 (continuous enforcement of branch protection):</strong> met — branch
+  protection with <code>include_admins: true</code> enforces required status checks on
+  every commit to <code>main</code>. No commit merges without passing CI.</li>
+<li><strong>Source L4 (two-person review):</strong> deferred — SLSA Source L4 requires an
+  informed two-person review on every change. The fleet's branch-protection
+  rule mandates one required approving review. Requiring two reviewers on
+  every PR is impractical for a small team and is a deliberate, documented
+  tradeoff.</li>
 </ul>
 <h2 id="how-the-gates-are-delivered">How the gates are delivered<a class="headerlink" href="#how-the-gates-are-delivered" title="Permanent link">&para;</a></h2>
 <p>The gates are <strong>not implemented per-repo</strong> — they are delivered through shared

@@ -50,6 +50,7 @@ nav:
       - Security posture: security-posture.md
       - Python practices: python.md
       - Docstring convention: docstrings.md
+      - Hypothesis testing: hypothesis.md
       - JavaScript practices: javascript.md
       - ROS 2 practices: ros2.md
   - Deployable components:

@@ -2,6 +2,7 @@
 
 ## 0.0.0 (unreleased)
 
+- **Python CI:** require `enable-cache: true` and `cache-dependency-glob` on `astral-sh/setup-uv` v6+ in every CI job that calls it.  Release/deploy workflows may opt out.  Pre-commit jobs additionally cache `~/.cache/pre-commit` via `actions/cache@v4`.
 - Amend config standard with management-surface secret-handling rules:
   redact `writeOnly` fields on read, merge-on-write for partial updates,
   and masked UI inputs with set/unset badge.

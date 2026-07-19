@@ -60,6 +60,7 @@ nav:
       - Entrypoint contract: entrypoint-contract.md
       - Integrating a service: integrating-a-service.md
       - Chat access: chat-access-standard.md
+      - HTTP error envelope: http-error-envelope.md
   - Deployment system:
       - Bootstrap tier: deployment-system.md
   - Meta:

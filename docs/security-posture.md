@@ -188,9 +188,29 @@ dependency vulnerability audit on every CI run.
 - **Failure prevented:** a dependency with a published, fixable CVE ships in
   production with no one aware.
 - **Alignment:** OpenSSF Scorecard *SBOM* and *Vulnerabilities* checks,
-  [SLSA *Build L2+*](https://slsa.dev/spec/v1.0/requirements) provenance
+  [SLSA *Build L2+*](https://slsa.dev/spec/v1.2/requirements) provenance
   requirement.
 - **Detail:** [Docker build & release — CI-time image scan](docker-standard.md#ci-time-image-scan).
+
+## SLSA Source Track
+
+[SLSA v1.2](https://slsa.dev/spec/v1.2/) introduces a **Source Track**
+(Source L1–L4) alongside the existing Build Track. The fleet's posture against
+each Source level:
+
+- **Source L1 (version-controlled source):** met — all source lives in GitHub,
+  and every dependency is referenced by an immutable commit SHA.
+- **Source L2 (signed source provenance):** gap — releases do not yet produce
+  signed source provenance attestations. Adoption is deferred pending tooling
+  maturity and upstream ecosystem support.
+- **Source L3 (continuous enforcement of branch protection):** met — branch
+  protection with `include_admins: true` enforces required status checks on
+  every commit to `main`. No commit merges without passing CI.
+- **Source L4 (two-person review):** deferred — SLSA Source L4 requires an
+  informed two-person review on every change. The fleet's branch-protection
+  rule mandates one required approving review. Requiring two reviewers on
+  every PR is impractical for a small team and is a deliberate, documented
+  tradeoff.
 
 ## How the gates are delivered
 

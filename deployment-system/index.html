@@ -1020,6 +1020,67 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#deployment-engine-code-must-be-repo-agnostic" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Deployment engine code must be repo-agnostic
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Deployment engine code must be repo-agnostic">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#where-service-definitions-live" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Where service definitions live
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#implementation-patterns" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Implementation patterns
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#acceptance-criteria" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Acceptance criteria
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#reference" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Reference
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#rule-of-thumb" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1212,6 +1273,67 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#deployment-engine-code-must-be-repo-agnostic" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Deployment engine code must be repo-agnostic
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Deployment engine code must be repo-agnostic">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#where-service-definitions-live" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Where service definitions live
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#implementation-patterns" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Implementation patterns
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#acceptance-criteria" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Acceptance criteria
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#reference" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Reference
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#rule-of-thumb" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1299,6 +1421,83 @@ component that writes every other service's <code>config.json</code> takes its o
 configuration from the layer below it; a config file would add a volume and a
 bootstrap step to the thing that exists to remove those steps. Its env-var
 table lives in its own docs, not here.</p>
+<h2 id="deployment-engine-code-must-be-repo-agnostic">Deployment engine code must be repo-agnostic<a class="headerlink" href="#deployment-engine-code-must-be-repo-agnostic" title="Permanent link">&para;</a></h2>
+<p>A deployment engine is a <strong>generic control plane</strong>, not a registry of
+services. Its source code (<code>src/</code>) MUST NOT carry per-service or per-repo
+definitions — those belong in declarative data, never in engine code.</p>
+<p><strong>Rule:</strong> The engine source code MUST NOT contain:</p>
+<ul>
+<li>Hard-coded service names (<code>if service == "chat"</code>, <code>frozenset({"svc1",
+  "svc2"})</code> allowlists)</li>
+<li>Per-service routing, TLS, or hostname rules</li>
+<li>Per-service image-pull config or registry references</li>
+<li>Service-specific project aliases for observability backends</li>
+</ul>
+<p><strong>Failure mode it prevents:</strong> Hard-coding service definitions in engine code
+makes the engine a bottleneck. Every new service, every renamed service, and
+every changed observability project requires a code change, a PR, and a
+redeploy of the engine itself — the opposite of the self-service onboarding
+the engine exists to provide. Over time the engine accumulates a graveyard of
+special cases, and the operator's first question becomes "which branch has the
+latest service list?" rather than "what does the onboarding API show?"</p>
+<h3 id="where-service-definitions-live">Where service definitions live<a class="headerlink" href="#where-service-definitions-live" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Concern</th>
+<th>Location</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Per-service specs (name, repo URL, deploy mode, compose label flags)</td>
+<td>Persisted component config store, populated via the onboarding API</td>
+</tr>
+<tr>
+<td>Virtual component definitions</td>
+<td>Config file (<code>config.json</code>) under a <code>virtual_components</code> key</td>
+</tr>
+<tr>
+<td>Observability project credentials</td>
+<td>Config dict (<code>langfuse_projects: {alias: {public_key, secret_key}}</code>)</td>
+</tr>
+<tr>
+<td>Mutation / capability permissions</td>
+<td>Per-component boolean flags (e.g. <code>chat_agent_mutatable: bool</code>), set at onboard time via compose labels</td>
+</tr>
+</tbody>
+</table>
+<h3 id="implementation-patterns">Implementation patterns<a class="headerlink" href="#implementation-patterns" title="Permanent link">&para;</a></h3>
+<p><strong>Allowlists → permission flags.</strong> Replace a module-level <code>_ALLOWED_SERVICES =
+frozenset({"a", "b"})</code> with a boolean field on the component config model
+(e.g. <code>chat_agent_mutatable: bool</code>), set via a compose label
+(<code>robotsix.deploy.chat-agent-mutatable: "true"</code>) at onboard time. The engine
+checks the flag on the component, not the name against a hard-coded set.</p>
+<p><strong>Project aliases → config dict.</strong> Replace hard-coded <code>_PROJECT_CONFIG_KEYS =
+{"project-a": {...}}</code> with a <code>langfuse_projects: dict[str, {public_key,
+secret_key}]</code> config field read from the deployment engine's own config.
+Backward compatibility can be handled with a legacy fallback map that the
+operator can deprecate on their own schedule.</p>
+<p><strong>Default values → empty.</strong> Config defaults that embed specific hostnames or
+component ids (e.g. <code>langfuse_base_url = "https://langfuse.robotsix.net"</code>,
+<code>mill_component_id = "mill"</code>) MUST be empty strings or absent — the operator
+sets them per deployment. A default that names a specific fleet resource is a
+hard-coded service definition by another name.</p>
+<h3 id="acceptance-criteria">Acceptance criteria<a class="headerlink" href="#acceptance-criteria" title="Permanent link">&para;</a></h3>
+<p>A deployment engine that satisfies this rule passes these checks:</p>
+<ul>
+<li><code>grep</code> for individual service names in <code>src/</code> returns nothing except
+  backward-compat fallback maps and documentation strings.</li>
+<li>Adding a new managed service is achievable via the onboarding API or
+  declarative config — never by editing engine code.</li>
+<li>Every hard-coded allowlist, project alias, and named default has been
+  migrated to the component config store, a config dict, or a per-component
+  boolean flag.</li>
+</ul>
+<h3 id="reference">Reference<a class="headerlink" href="#reference" title="Permanent link">&para;</a></h3>
+<p>The <code>robotsix-central-deploy</code> repo completed this migration in
+<code>20260719T181243Z-make-central-deploy-repo-agnostic-remove-f13a</code>, removing all
+service-specific code in favour of the patterns above.</p>
 <h2 id="rule-of-thumb">Rule of thumb<a class="headerlink" href="#rule-of-thumb" title="Permanent link">&para;</a></h2>
 <p>If central-deploy needs a capability, ask whether a component could get it
 through the deploy contract instead. Only what genuinely cannot be expressed

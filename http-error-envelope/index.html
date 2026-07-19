@@ -10,13 +10,13 @@
       
       
       
-        <link rel="canonical" href="https://damien-robotsix.github.io/robotsix-standards/ros2/">
+        <link rel="canonical" href="https://damien-robotsix.github.io/robotsix-standards/http-error-envelope/">
       
       
-        <link rel="prev" href="../javascript/">
+        <link rel="prev" href="../chat-access-standard/">
       
       
-        <link rel="next" href="../component-standard/">
+        <link rel="next" href="../deployment-system/">
       
       
         
@@ -27,7 +27,7 @@
     
     
       
-        <title>ROS 2 practices - Robotsix Standards</title>
+        <title>HTTP error envelope - Robotsix Standards</title>
       
     
     
@@ -78,7 +78,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#ros-2-practices" class="md-skip">
+        <a href="#http-error-envelope" class="md-skip">
           Skip to content
         </a>
       
@@ -114,7 +114,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              ROS 2 practices
+              HTTP error envelope
             
           </span>
         </div>
@@ -311,8 +311,6 @@
       
   
   
-    
-  
   
   
     
@@ -325,11 +323,13 @@
       
     
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3" >
         
           
           <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
@@ -350,7 +350,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_3">
             <span class="md-nav__icon md-icon"></span>
             
@@ -505,37 +505,10 @@
                 
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    ROS 2 practices
-  
-
-    
-  </span>
-  
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../ros2/" class="md-nav__link">
         
   
   
@@ -551,114 +524,6 @@
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#what-kind-of-repo" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        What kind of repo?
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#supported-ros-2-distros" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Supported ROS 2 distros
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#workspace-layout" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Workspace layout
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#devcontainer" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Devcontainer
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#build-test" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Build &amp; test
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#ci-expectations" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        CI expectations
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#code-style-linting" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Code style &amp; linting
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#interface-design" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Interface design
-      
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -675,8 +540,10 @@
       
   
   
+    
   
   
+  
     
     
     
@@ -687,13 +554,11 @@
       
     
     
-    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
       
         
         
-          
-        
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
         
           
           <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
@@ -714,7 +579,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_4">
             <span class="md-nav__icon md-icon"></span>
             
@@ -925,10 +790,37 @@
                 
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="../http-error-envelope/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    HTTP error envelope
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   
@@ -944,6 +836,98 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#the-rule" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The rule
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="The rule">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-one-error-envelope-rfc-9457-problemjson" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. One error envelope: RFC 9457 problem+json
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-centralized-registration-every-handler-in-one-place" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Centralized registration — every handler in one place
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-routes-never-emit-ad-hoc-error-json" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Routes never emit ad-hoc error JSON
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-content-type-applicationproblemjson" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Content-Type: application/problem+json
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#failure-modes-this-prevents" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Failure modes this prevents
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -1161,87 +1145,71 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#what-kind-of-repo" class="md-nav__link">
+  <a href="#the-rule" class="md-nav__link">
     <span class="md-ellipsis">
       
-        What kind of repo?
+        The rule
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="The rule">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-one-error-envelope-rfc-9457-problemjson" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. One error envelope: RFC 9457 problem+json
       
     </span>
   </a>
   
 </li>
-      
-        <li class="md-nav__item">
-  <a href="#supported-ros-2-distros" class="md-nav__link">
+        
+          <li class="md-nav__item">
+  <a href="#2-centralized-registration-every-handler-in-one-place" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Supported ROS 2 distros
+        2. Centralized registration — every handler in one place
       
     </span>
   </a>
   
 </li>
-      
-        <li class="md-nav__item">
-  <a href="#workspace-layout" class="md-nav__link">
+        
+          <li class="md-nav__item">
+  <a href="#3-routes-never-emit-ad-hoc-error-json" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Workspace layout
+        3. Routes never emit ad-hoc error JSON
       
     </span>
   </a>
   
 </li>
-      
-        <li class="md-nav__item">
-  <a href="#devcontainer" class="md-nav__link">
+        
+          <li class="md-nav__item">
+  <a href="#4-content-type-applicationproblemjson" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Devcontainer
+        4. Content-Type: application/problem+json
       
     </span>
   </a>
   
 </li>
-      
-        <li class="md-nav__item">
-  <a href="#build-test" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Build &amp; test
-      
-    </span>
-  </a>
+        
+      </ul>
+    </nav>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#ci-expectations" class="md-nav__link">
+  <a href="#failure-modes-this-prevents" class="md-nav__link">
     <span class="md-ellipsis">
       
-        CI expectations
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#code-style-linting" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Code style &amp; linting
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#interface-design" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Interface design
+        Failure modes this prevents
       
     </span>
   </a>
@@ -1268,214 +1236,177 @@
   
 
 
-<h1 id="ros-2-practices">ROS 2 practices<a class="headerlink" href="#ros-2-practices" title="Permanent link">&para;</a></h1>
+<h1 id="http-error-envelope">HTTP error envelope<a class="headerlink" href="#http-error-envelope" title="Permanent link">&para;</a></h1>
 <blockquote>
-<p><strong>Scope: every ROS 2 repository.</strong> These are the language-specific
-practices for ROS 2 packages; the language-agnostic rules (tiers, hygiene,
-CI philosophy) live in the <a href="../repo-baseline/">repo baseline</a>.</p>
+<p><strong>Scope: deployable components that expose an HTTP API.</strong> A component whose
+only HTTP surface is the mandatory <code>/health</code> endpoint (see the
+<a href="../component-standard/">component standard</a>) does not need this — the
+health check is a binary alive/not-alive signal that carries no error body.
+This applies <em>in addition to</em> the <a href="../repo-baseline/">repo baseline</a> and
+<a href="../component-standard/">component standard</a>.</p>
 </blockquote>
-<div class="admonition note">
-<p class="admonition-title">Status: derived from robotsix-mill-ros2</p>
-<p>The <code>robotsix-mill-ros2</code> repo predates this standards page; the
-conventions below are extracted from that repo's actual working
-practices. This page will expand as more ROS 2 repos land in the fleet
-and as existing patterns are documented.</p>
-</div>
-<h2 id="what-kind-of-repo">What kind of repo?<a class="headerlink" href="#what-kind-of-repo" title="Permanent link">&para;</a></h2>
-<p>ROS 2 repos in the fleet follow a <strong>workspace-skeleton</strong> model: the repo
-is an orchestrator that declares downstream package repos, not a bag of
-ROS 2 packages itself. Actual ROS 2 packages (with <code>package.xml</code> and
-<code>CMakeLists.txt</code>) live in the downstream repos listed in the workspace
-manifest.</p>
-<p>The workspace repo is a <strong>deployable component</strong> — it ships a container
-image (via the <a href="../docker-standard/">Docker build &amp; release</a> pattern) and follows
-the <a href="../component-standard/">component standard</a> for its deploy modes.</p>
-<h2 id="supported-ros-2-distros">Supported ROS 2 distros<a class="headerlink" href="#supported-ros-2-distros" title="Permanent link">&para;</a></h2>
-<ul>
-<li><strong>Rolling is the default.</strong> The devcontainer Dockerfile uses
-  <code>ros:rolling-ros-base</code> and CI gates against Rolling.</li>
-<li><strong>The Dockerfile is parametric</strong> — <code>ROS_DISTRO</code> is a build arg (default
-  <code>rolling</code>), so any distro with an official <code>ros:$DISTRO-ros-base</code> image
-  (Humble, Jazzy, Lyrical) works. Switch the build arg to change distros.</li>
-<li><strong>No multi-distro CI matrix yet.</strong> The single CI job gates against one
-  distro at a time. A matrix across distros is expected once the fleet has
-  multiple ROS 2 repos that need it.</li>
-</ul>
-<h2 id="workspace-layout">Workspace layout<a class="headerlink" href="#workspace-layout" title="Permanent link">&para;</a></h2>
-<div class="highlight"><pre><span></span><code>├── repos.yaml              ← vcs2l manifest: downstream package repos
-├── src/                    ← git-ignored; populated by `vcs import`
-├── .devcontainer/
-│   ├── Dockerfile          ← FROM ros:$ROS_DISTRO-ros-base
-│   └── devcontainer.json
-├── justfile                ← local lint/validate orchestrator
-├── scripts/
-│   └── update_workspace.sh ← vcs import + rosdep wrapper
-├── .robotsix-mill/
-│   └── config.yaml         ← mill config: languages, test gate
-└── .github/
-    └── workflows/
-        └── ci.yaml         ← CI gate (justfile recipes)
-</code></pre></div>
-<p><strong>Key rules:</strong></p>
-<ul>
-<li><strong><code>src/</code> is always git-ignored.</strong> Source packages come from downstream
-  repos via <code>vcs import &lt; repos.yaml</code> — they are never committed into the
-  workspace repo.</li>
-<li><strong>The workspace manifest (<code>repos.yaml</code>) is the single source of truth</strong>
-  for which packages belong in the workspace. It uses the
-  <a href="https://github.com/dirk-thomas/vcstool">vcstool</a> format.</li>
-<li><strong>Branch refs in <code>repos.yaml</code> are acceptable</strong> — unlike first-party git
-  dependencies in Python repos (which are pinned to commit SHAs per the
-  <a href="../repo-baseline/#pin-to-a-commit-sha-not-a-branch">repo baseline</a>),
-  workspace manifests track development branches so <code>vcs import</code> pulls the
-  latest. CI gates against the branch head, so drift is visible and
-  intentional.</li>
-</ul>
-<h2 id="devcontainer">Devcontainer<a class="headerlink" href="#devcontainer" title="Permanent link">&para;</a></h2>
-<p>Every ROS 2 workspace repo ships a <code>.devcontainer/</code> so the development
-environment is reproducible:</p>
-<div class="highlight"><pre><span></span><code><span class="k">FROM</span><span class="w"> </span><span class="s">ros:$ROS_DISTRO-ros-base</span>
-
-<span class="c"># System dependencies for building and tooling</span>
-<span class="k">RUN</span><span class="w"> </span>apt-get<span class="w"> </span>update<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>apt-get<span class="w"> </span>install<span class="w"> </span>-y<span class="w"> </span>--no-install-recommends<span class="w"> </span><span class="se">\</span>
-<span class="w">    </span>build-essential<span class="w"> </span>cmake<span class="w"> </span>git<span class="w"> </span><span class="se">\</span>
-<span class="w">    </span>python3-pip<span class="w"> </span>python3-vcstool<span class="w"> </span>python3-colcon-common-extensions<span class="w"> </span><span class="se">\</span>
-<span class="w">    </span><span class="o">&amp;&amp;</span><span class="w"> </span>rm<span class="w"> </span>-rf<span class="w"> </span>/var/lib/apt/lists/*
-
-<span class="c"># Non-root user with passwordless sudo</span>
-<span class="k">RUN</span><span class="w"> </span>useradd<span class="w"> </span>-m<span class="w"> </span>-s<span class="w"> </span>/bin/bash<span class="w"> </span>ros<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;ros ALL=(ALL) NOPASSWD:ALL&quot;</span><span class="w"> </span>&gt;&gt;<span class="w"> </span>/etc/sudoers
-<span class="k">USER</span><span class="w"> </span><span class="s">ros</span>
-
-<span class="c"># Source ROS setup on login</span>
-<span class="k">RUN</span><span class="w"> </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;source /opt/ros/</span><span class="nv">$ROS_DISTRO</span><span class="s2">/setup.bash&quot;</span><span class="w"> </span>&gt;&gt;<span class="w"> </span>~/.bashrc
-</code></pre></div>
-<p><strong><code>devcontainer.json</code> conventions:</strong></p>
-<ul>
-<li><code>remoteUser: ros</code> — run as the non-root user.</li>
-<li>Workspace mounted at <code>/home/ws</code>.</li>
-<li>ROS discovery scoped to localhost:</li>
-</ul>
-<div class="highlight"><pre><span></span><code><span class="nt">&quot;containerEnv&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">  </span><span class="nt">&quot;ROS_DOMAIN_ID&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;42&quot;</span><span class="p">,</span>
-<span class="w">  </span><span class="nt">&quot;ROS_AUTOMATIC_DISCOVERY_RANGE&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;LOCALHOST&quot;</span>
-<span class="p">}</span>
-</code></pre></div>
-<ul>
-<li><code>--net=host</code> and <code>--ipc=host</code> for DDS networking.</li>
-<li><code>postCreateCommand</code> runs <code>vcs import</code>, <code>rosdep update</code>, and
-  <code>rosdep install</code> so the workspace is ready on first open.</li>
-</ul>
-<h2 id="build-test">Build &amp; test<a class="headerlink" href="#build-test" title="Permanent link">&para;</a></h2>
-<p>The standard build pipeline:</p>
-<div class="highlight"><pre><span></span><code><span class="c1"># 1. Pull in downstream packages</span>
-vcs<span class="w"> </span>import<span class="w"> </span>src<span class="w"> </span>&lt;<span class="w"> </span>repos.yaml
-
-<span class="c1"># 2. Resolve system dependencies</span>
-rosdep<span class="w"> </span>update
-rosdep<span class="w"> </span>install<span class="w"> </span>--from-paths<span class="w"> </span>src<span class="w"> </span>--ignore-src<span class="w"> </span>-y
-
-<span class="c1"># 3. Build the workspace</span>
-colcon<span class="w"> </span>build<span class="w"> </span>--symlink-install
-
-<span class="c1"># 4. Run tests</span>
-colcon<span class="w"> </span><span class="nb">test</span>
-</code></pre></div>
-<ul>
-<li><strong><code>colcon build --symlink-install</code></strong> is the default — Python packages
-  are symlinked so edits take effect without re-building.</li>
-<li><strong><code>rosdep</code> resolves system-level dependencies</strong> (apt packages) declared
-  in each downstream package's <code>package.xml</code>.</li>
-<li><strong><code>vcs import</code> is the standard tool</strong> for cloning downstream repos from
-  the workspace manifest.</li>
-</ul>
-<h2 id="ci-expectations">CI expectations<a class="headerlink" href="#ci-expectations" title="Permanent link">&para;</a></h2>
-<p>ROS 2 workspace repos gate on a single <code>ci.yaml</code> workflow. The gate
-covers linting and validation — build and test run in the devcontainer
-during development; CI is the hygiene gate.</p>
-<p><strong>Lint recipes</strong> (run via <code>just check</code>, the justfile default):</p>
+<p>Every HTTP service in the fleet returns errors through a <strong>single, consistent
+JSON envelope</strong> registered via centralized exception handlers — never a mix of
+ad-hoc shapes per route or per error kind. A shared envelope means every client
+and integration — the chat agent, the deploy dashboard, the mill's own API
+calls — parses errors the same way, without branching on the response shape.</p>
+<h2 id="the-rule">The rule<a class="headerlink" href="#the-rule" title="Permanent link">&para;</a></h2>
+<h3 id="1-one-error-envelope-rfc-9457-problemjson">1. One error envelope: RFC 9457 problem+json<a class="headerlink" href="#1-one-error-envelope-rfc-9457-problemjson" title="Permanent link">&para;</a></h3>
+<p>All error responses use the <strong>RFC 9457 <code>application/problem+json</code></strong> shape:</p>
 <table>
 <thead>
 <tr>
-<th>Recipe</th>
-<th>What it checks</th>
+<th>Key</th>
+<th>Type</th>
+<th>Required</th>
+<th>Meaning</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td><code>lint-yaml</code></td>
-<td><code>yamllint --strict</code> on all YAML files</td>
+<td><code>type</code></td>
+<td>URI string</td>
+<td><strong>Yes</strong></td>
+<td>A URI identifying the problem kind (may be a fixed tag URI like <code>tag:robotsix,2026:validation-error</code>).</td>
 </tr>
 <tr>
-<td><code>lint-shell</code></td>
-<td><code>shellcheck</code> on workspace scripts</td>
+<td><code>title</code></td>
+<td>string</td>
+<td><strong>Yes</strong></td>
+<td>A short, human-readable summary of the problem (stable across instances of the same <code>type</code>).</td>
 </tr>
 <tr>
-<td><code>lint-spelling</code></td>
-<td><code>codespell</code> across the repo</td>
+<td><code>status</code></td>
+<td>integer</td>
+<td><strong>Yes</strong></td>
+<td>The HTTP status code (mirrors the response status line).</td>
 </tr>
 <tr>
-<td><code>lint-markdown</code></td>
-<td><code>markdownlint</code> on docs</td>
+<td><code>detail</code></td>
+<td>string</td>
+<td>No</td>
+<td>A human-readable explanation specific to this <em>occurrence</em> — may vary per request.</td>
 </tr>
 <tr>
-<td><code>validate-manifest</code></td>
-<td><code>vcs validate --input repos.yaml</code></td>
-</tr>
-<tr>
-<td><code>lint-actions</code></td>
-<td><code>actionlint</code> on <code>.github/workflows/</code></td>
-</tr>
-<tr>
-<td><code>lint-security</code></td>
-<td><code>zizmor</code> on CI workflows</td>
+<td><code>instance</code></td>
+<td>URI string</td>
+<td>No</td>
+<td>A URI identifying the specific occurrence (e.g. <code>tag:robotsix,2026:req/0193a…</code>).</td>
 </tr>
 </tbody>
 </table>
-<p>Additionally, the fleet-wide <code>pre-commit</code> hooks (see the
-<a href="../python/#pre-commit-hooks">Python practices</a> — the set is the same for all
-repos) apply — the CI job runs <code>pre-commit run --all-files --verbose</code>.</p>
-<p><strong>No build or test in CI yet.</strong> The current CI gate is lint/validate only;
-<code>colcon build</code> and <code>colcon test</code> run locally in the devcontainer. This
-will change as the ROS 2 fleet grows and a shared build-and-test workflow
-is factored out (the pattern: one CI job per distro in a matrix, gate on
-build + test passing across all supported distros).</p>
-<h2 id="code-style-linting">Code style &amp; linting<a class="headerlink" href="#code-style-linting" title="Permanent link">&para;</a></h2>
-<ul>
-<li><strong>Python packages</strong> (inside downstream ROS 2 packages) follow the fleet
-  <a href="../python/">Python practices</a>: ruff, mypy, deptry, bandit.</li>
-<li><strong>C++ packages</strong> follow ROS 2 community conventions: <code>ament_lint</code> for
-  linting (<code>ament_cpplint</code>, <code>ament_clang_format</code>), <code>clang-tidy</code> for static
-  analysis. Specific tool configs live in each downstream repo.</li>
-<li><strong>Shell</strong> (workspace scripts): <code>shellcheck</code> via the justfile.</li>
-<li><strong>YAML</strong>: <code>yamllint --strict</code> — no warnings tolerated.</li>
-<li><strong>Markdown</strong>: <code>markdownlint</code> on all <code>.md</code> files.</li>
-<li><strong>Spelling</strong>: <code>codespell</code> — catches typos across the entire repo.</li>
-<li><strong>Workflows</strong>: <code>actionlint</code> for CI YAML correctness; <code>zizmor</code> for
-  workflow security (excessive permissions, injection vectors).</li>
-</ul>
-<h2 id="interface-design">Interface design<a class="headerlink" href="#interface-design" title="Permanent link">&para;</a></h2>
-<p>ROS 2 interface files (<code>.msg</code>, <code>.srv</code>, <code>.action</code>) live in the downstream
-package repos, not in the workspace skeleton. Standard ROS 2 layout
-applies:</p>
-<div class="highlight"><pre><span></span><code>&lt;package&gt;/
-├── msg/        ← .msg files (message definitions)
-├── srv/        ← .srv files (service definitions)
-├── action/     ← .action files (action definitions)
-├── CMakeLists.txt   ← registers the interface files for codegen
-└── package.xml      ← declares build dependencies on rosidl
+<p><strong>Extension:</strong> every problem response carries a <code>correlation_id</code> field (string)
+matching the <code>X-Correlation-ID</code> (or <code>x-correlation-id</code>) header propagated by
+<code>asgi-correlation-id</code> through the fleet. This ties every error to the original
+request in logs and traces, even when the error is returned to a client that
+didn't set the header.</p>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;tag:robotsix,2026:not-found&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Resource not found&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;status&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">404</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;detail&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;No ticket with id 0193af04…&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;instance&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;tag:robotsix,2026:req/0193af04…&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;correlation_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;abc123-def456&quot;</span>
+<span class="p">}</span>
 </code></pre></div>
-<p><strong>Rules (provisional — to be hardened as more ROS 2 repos land):</strong></p>
+<p>FastAPI's default <code>{"detail": "…"}</code> shape (even with the experimental
+<code>problem_details=True</code> flag) is <strong>not acceptable</strong> — it cannot carry an error
+code, validation arrays, a correlation id, or a type URI, and enabling it
+changes the shape only for <code>HTTPException</code>, not for validation errors or
+unhandled exceptions.</p>
+<h3 id="2-centralized-registration-every-handler-in-one-place">2. Centralized registration — every handler in one place<a class="headerlink" href="#2-centralized-registration-every-handler-in-one-place" title="Permanent link">&para;</a></h3>
+<p>All error responses come from <strong>a single registration function</strong> called once at
+startup. Routes never produce error JSON themselves. The registration covers
+every error class the framework can surface:</p>
 <ul>
-<li><strong>Interfaces are versioned with their package</strong> — no separate
-  interface-only package unless the interface is genuinely shared across
-  multiple consumers from different repos.</li>
-<li><strong><code>rosidl_default_generators</code></strong> in <code>package.xml</code> for message generation;
-  C++ packages additionally depend on <code>rosidl_default_runtime</code>.</li>
-<li><strong>Interface files use the standard ROS 2 field types</strong> — no custom
-  primitive wrappers.</li>
+<li><strong><code>StarletteHTTPException</code></strong> (including FastAPI's <code>HTTPException</code>) — mapped to
+  an RFC 9457 response with the exception's <code>status_code</code> and <code>detail</code>.</li>
+<li><strong><code>RequestValidationError</code></strong> (FastAPI's validation failure from pydantic) —
+  mapped to a <strong>422</strong> problem with <code>type</code> indicating a validation error and
+  <code>detail</code> carrying the structured validation errors (the list of <code>{loc, msg,
+  type}</code> from pydantic).</li>
+<li><strong>Domain exceptions</strong> the component defines — mapped to appropriate status
+  codes with descriptive <code>type</code> URIs.</li>
+<li><strong>Catch-all <code>Exception</code></strong> — mapped to a <strong>500</strong> problem with a fixed
+  <code>"Internal server error"</code> title and no <code>detail</code> in production (the raw
+  exception is logged server-side, never leaked to the client).</li>
 </ul>
-<p>These rules will be refined once the fleet has more than one ROS 2
-package repo to observe consistency across.</p>
+<p>In FastAPI/Starlette this is done with <code>app.add_exception_handler()</code>:</p>
+<div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">register_error_handlers</span><span class="p">(</span><span class="n">app</span><span class="p">:</span> <span class="n">FastAPI</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Register the one error envelope for every error class.&quot;&quot;&quot;</span>
+
+    <span class="nd">@app</span><span class="o">.</span><span class="n">exception_handler</span><span class="p">(</span><span class="n">StarletteHTTPException</span><span class="p">)</span>
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">http_exception_handler</span><span class="p">(</span><span class="n">request</span><span class="p">:</span> <span class="n">Request</span><span class="p">,</span> <span class="n">exc</span><span class="p">:</span> <span class="n">StarletteHTTPException</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">JSONResponse</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">_problem_response</span><span class="p">(</span>
+            <span class="n">status</span><span class="o">=</span><span class="n">exc</span><span class="o">.</span><span class="n">status_code</span><span class="p">,</span>
+            <span class="n">title</span><span class="o">=</span><span class="n">_http_status_title</span><span class="p">(</span><span class="n">exc</span><span class="o">.</span><span class="n">status_code</span><span class="p">),</span>
+            <span class="n">detail</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">exc</span><span class="o">.</span><span class="n">detail</span><span class="p">),</span>
+            <span class="n">type_uri</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;tag:robotsix,2026:http/</span><span class="si">{</span><span class="n">exc</span><span class="o">.</span><span class="n">status_code</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+            <span class="n">request</span><span class="o">=</span><span class="n">request</span><span class="p">,</span>
+        <span class="p">)</span>
+
+    <span class="nd">@app</span><span class="o">.</span><span class="n">exception_handler</span><span class="p">(</span><span class="n">RequestValidationError</span><span class="p">)</span>
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">validation_handler</span><span class="p">(</span><span class="n">request</span><span class="p">:</span> <span class="n">Request</span><span class="p">,</span> <span class="n">exc</span><span class="p">:</span> <span class="n">RequestValidationError</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">JSONResponse</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">_problem_response</span><span class="p">(</span>
+            <span class="n">status</span><span class="o">=</span><span class="mi">422</span><span class="p">,</span>
+            <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Validation error&quot;</span><span class="p">,</span>
+            <span class="n">detail</span><span class="o">=</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">exc</span><span class="o">.</span><span class="n">errors</span><span class="p">()),</span>
+            <span class="n">type_uri</span><span class="o">=</span><span class="s2">&quot;tag:robotsix,2026:validation-error&quot;</span><span class="p">,</span>
+            <span class="n">request</span><span class="o">=</span><span class="n">request</span><span class="p">,</span>
+        <span class="p">)</span>
+
+    <span class="nd">@app</span><span class="o">.</span><span class="n">exception_handler</span><span class="p">(</span><span class="ne">Exception</span><span class="p">)</span>
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">catch_all_handler</span><span class="p">(</span><span class="n">request</span><span class="p">:</span> <span class="n">Request</span><span class="p">,</span> <span class="n">exc</span><span class="p">:</span> <span class="ne">Exception</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">JSONResponse</span><span class="p">:</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="s2">&quot;Unhandled exception&quot;</span><span class="p">)</span>  <span class="c1"># log the full traceback server-side</span>
+        <span class="k">return</span> <span class="n">_problem_response</span><span class="p">(</span>
+            <span class="n">status</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span>
+            <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Internal server error&quot;</span><span class="p">,</span>
+            <span class="n">detail</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>  <span class="c1"># never leak raw exceptions to the client</span>
+            <span class="n">type_uri</span><span class="o">=</span><span class="s2">&quot;tag:robotsix,2026:internal-error&quot;</span><span class="p">,</span>
+            <span class="n">request</span><span class="o">=</span><span class="n">request</span><span class="p">,</span>
+        <span class="p">)</span>
+</code></pre></div>
+<p>The exact shape of the helper (<code>_problem_response</code>) is implementation detail —
+the fleet's shared libraries may provide one — but every handler must call the
+same helper so the envelope is truly uniform.</p>
+<h3 id="3-routes-never-emit-ad-hoc-error-json">3. Routes never emit ad-hoc error JSON<a class="headerlink" href="#3-routes-never-emit-ad-hoc-error-json" title="Permanent link">&para;</a></h3>
+<p>A route that returns error JSON directly — <code>return {"error": "bad request"}</code>,
+<code>raise HTTPException(status_code=400, detail="nope")</code> and relying on the
+default handler — breaks the contract. Every client that has written a parser
+for the one envelope now hits a different shape and either crashes or silently
+misclassifies the error.</p>
+<p>Routes signal errors by <strong>raising an exception</strong> — an <code>HTTPException</code>, a domain
+exception the centralized handler knows about, or (for unhandled cases) letting
+the exception propagate to the catch-all. The centralized handlers produce the
+JSON.</p>
+<h3 id="4-content-type-applicationproblemjson">4. Content-Type: <code>application/problem+json</code><a class="headerlink" href="#4-content-type-applicationproblemjson" title="Permanent link">&para;</a></h3>
+<p>Error responses carry <code>Content-Type: application/problem+json</code>. This lets
+clients detect the RFC 9457 shape from the response headers without inspecting
+the body, and it distinguishes the error stream from the success stream
+(<code>application/json</code>). The centralized handler sets it on every error response.</p>
+<h2 id="failure-modes-this-prevents">Failure modes this prevents<a class="headerlink" href="#failure-modes-this-prevents" title="Permanent link">&para;</a></h2>
+<ul>
+<li><strong>Client-side shape branching.</strong> Without a shared envelope, every client that
+  calls more than one service must <code>if "detail" in body … elif "error" in body
+  … elif "message" in body …</code>. One shape removes that code from every
+  integration.</li>
+<li><strong>Error-code blindness.</strong> A plain <code>{"detail": "Something went wrong"}</code> with a
+  400 status carries no machine-readable error code. The caller must parse the
+  human-readable string or guess from the status code alone. An RFC 9457 <code>type</code>
+  URI gives every error a stable, parseable identifier.</li>
+<li><strong>Validation-array loss.</strong> FastAPI's default <code>RequestValidationError</code> handler
+  returns <code>{"detail": [{"loc": […], "msg": "…", "type": "…"}]}</code>, which looks
+  like a problem detail but is <em>not</em> the same shape as <code>HTTPException</code> errors.
+  A single envelope normalizes both.</li>
+<li><strong>Traceability gap.</strong> Without <code>correlation_id</code> in the error body, matching a
+  client-side error to a server-side log line requires timestamps and guesswork.
+  Carrying the correlation id in every error response ties the two together
+  directly.</li>
+<li><strong>Exception leakage.</strong> A catch-all that returns <code>str(exc)</code> in production
+  leaks stack traces, file paths, and sometimes credentials to the client. The
+  centralized catch-all logs the traceback server-side and returns a fixed,
+  safe title.</li>
+</ul>
 
 
 

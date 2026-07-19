@@ -1,0 +1,1 @@
+security-posture.md: update SLSA reference from v1.0 to v1.2 and address Source Track

@@ -2,6 +2,7 @@
 
 ## 0.0.0 (unreleased)
 
+- Add SLSA v1.2 Source Track posture to `docs/security-posture.md`: Source L1 and L3 are met, L2 (signed source provenance) is a gap, L4 (two-person review) is deferred. Also updates the gate-6 SLSA link from v1.0 to v1.2.
 - Codify "deployment engine code must be repo-agnostic" in `docs/deployment-system.md`:
   service definitions belong in declarative data (onboarding API, config dicts,
   per-component flags), never in engine code. Updated `AGENT.md` with the rule.

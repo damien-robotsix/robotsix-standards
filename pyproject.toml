@@ -43,5 +43,5 @@ showcontent = true
 # implements the config standard lives in `robotsix-config`, not here.
 
 [tool.codespell]
-skip = "*.lock,*.json,*.svg,*.png,.git,*.secrets.baseline"
+skip = "*.lock,*.json,*.svg,*.png,.git,*.secrets.baseline,site"
 ignore-words-list = "bu,ro,te,ser,fo,tha,thru,coo,ans"

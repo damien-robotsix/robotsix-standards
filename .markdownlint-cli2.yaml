@@ -24,3 +24,7 @@ config:
   # misidentifies as indented code blocks.  Fenced blocks are also used
   # throughout; neither style can be mandated without false positives.
   MD046: false
+  # MD036/no-emphasis-as-heading: disabled — bold emphasis is used
+  # intentionally as informal sub-headings within numbered sections
+  # (e.g. "**Model layer — component code**" in config-standard.md).
+  MD036: false

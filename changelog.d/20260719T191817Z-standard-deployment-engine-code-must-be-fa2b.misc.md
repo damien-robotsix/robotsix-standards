@@ -1,0 +1,1 @@
+Standard: deployment engine code must be repo-agnostic; service definitions are declarative data

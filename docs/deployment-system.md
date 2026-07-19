@@ -67,6 +67,7 @@ services. Its source code (`src/`) MUST NOT carry per-service or per-repo
 definitions — those belong in declarative data, never in engine code.
 
 **Rule:** The engine source code MUST NOT contain:
+
 - Hard-coded service names (`if service == "chat"`, `frozenset({"svc1",
   "svc2"})` allowlists)
 - Per-service routing, TLS, or hostname rules

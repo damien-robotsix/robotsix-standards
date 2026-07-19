@@ -176,11 +176,43 @@ must operate under a **least-privilege** model:
 secrets to an attacker-controlled repo — the token lacks the scope and the
 dry-run gate blocks the push.
 
-**LLM02 — Insecure output handling.** Model output that is rendered to a
+**LLM02 — Sensitive Information Disclosure.** Prompts and model context must
+not carry PII or secrets.  Credentials are already protected by the
+`SecretStr` config convention (see [the config standard](config-standard.md))
+— that same discipline extends to any sensitive data that could reach a
+model: scrub or tokenise PII before it enters a prompt, and never log raw
+model context.  *Failure prevented:* a ticket body containing a customer API
+key is passed to a model; the key appears in tracing output and persists in
+the provider's logs — the PII scrub layer strips it before prompt assembly.
+
+**LLM03 — Supply Chain.** The fleet trusts third-party model providers
+(OpenRouter) and `robotsix-llmio` as the sole LLM abstraction layer.
+`robotsix-llmio` must be pinned to a **commit SHA** (not a branch or tag) in
+`pyproject.toml`, exactly like any first-party dependency — unpinned LLM
+dependencies are a supply-chain risk.  Model selection (provider + model ID)
+is configuration, not code, and must be explicit in the component's config
+file so that model changes are reviewable.  *Failure prevented:* a
+compromised `robotsix-llmio` release or a silently-rolled model introduces
+unreviewed behaviour; the commit pin and explicit model config make both
+changes visible in diff review.
+
+**LLM05 — Improper Output Handling.** Model output that is rendered to a
 user or fed into an automated action (code write, ticket filing, shell
 command) must be **validated or sanitised** before use — treat model output
 as untrusted data.  *Failure prevented:* a model hallucinates a shell command
 that deletes data; the sanitisation layer rejects it before execution.
+
+**LLM07 — System Prompt Leakage.** System prompts are sensitive configuration
+— they encode operational instructions and must not be treated as inert text.
+Never embed operational secrets (API keys, tokens, internal hostnames) in
+system prompts; store them in the config file instead, using `SecretStr`
+where the prompt itself carries secrets.  Prompts that do not contain secrets
+may live in the config file as plain strings; the key point is that prompts
+are **config, not code**, and are subject to the same access-control and
+review discipline as any other configuration.  *Failure prevented:* an agent
+prompt containing an internal service hostname is exfiltrated via prompt
+injection; the hostname was in a `SecretStr`-backed config key, so the
+standard `__repr__` / log redaction already masks it.
 
 ### LLM08 and LLM09
 

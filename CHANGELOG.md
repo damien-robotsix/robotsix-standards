@@ -2,6 +2,9 @@
 
 ## 0.0.0 (unreleased)
 
+- Codify "deployment engine code must be repo-agnostic" in `docs/deployment-system.md`:
+  service definitions belong in declarative data (onboarding API, config dicts,
+  per-component flags), never in engine code. Updated `AGENT.md` with the rule.
 - Add missing Hypothesis testing and HTTP error envelope entries to the README tables so they stay in sync with the `mkdocs.yml` nav and `docs/index.md` TOC.
 - New [Hypothesis testing](docs/hypothesis.md) standard — property-based testing
   profiles (CI vs dev), shared strategies module, and CI workflow integration

@@ -60,6 +60,74 @@ configuration from the layer below it; a config file would add a volume and a
 bootstrap step to the thing that exists to remove those steps. Its env-var
 table lives in its own docs, not here.
 
+## Deployment engine code must be repo-agnostic
+
+A deployment engine is a **generic control plane**, not a registry of
+services. Its source code (`src/`) MUST NOT carry per-service or per-repo
+definitions — those belong in declarative data, never in engine code.
+
+**Rule:** The engine source code MUST NOT contain:
+- Hard-coded service names (`if service == "chat"`, `frozenset({"svc1",
+  "svc2"})` allowlists)
+- Per-service routing, TLS, or hostname rules
+- Per-service image-pull config or registry references
+- Service-specific project aliases for observability backends
+
+**Failure mode it prevents:** Hard-coding service definitions in engine code
+makes the engine a bottleneck. Every new service, every renamed service, and
+every changed observability project requires a code change, a PR, and a
+redeploy of the engine itself — the opposite of the self-service onboarding
+the engine exists to provide. Over time the engine accumulates a graveyard of
+special cases, and the operator's first question becomes "which branch has the
+latest service list?" rather than "what does the onboarding API show?"
+
+### Where service definitions live
+
+| Concern | Location |
+|---|---|
+| Per-service specs (name, repo URL, deploy mode, compose label flags) | Persisted component config store, populated via the onboarding API |
+| Virtual component definitions | Config file (`config.json`) under a `virtual_components` key |
+| Observability project credentials | Config dict (`langfuse_projects: {alias: {public_key, secret_key}}`) |
+| Mutation / capability permissions | Per-component boolean flags (e.g. `chat_agent_mutatable: bool`), set at onboard time via compose labels |
+
+### Implementation patterns
+
+**Allowlists → permission flags.** Replace a module-level `_ALLOWED_SERVICES =
+frozenset({"a", "b"})` with a boolean field on the component config model
+(e.g. `chat_agent_mutatable: bool`), set via a compose label
+(`robotsix.deploy.chat-agent-mutatable: "true"`) at onboard time. The engine
+checks the flag on the component, not the name against a hard-coded set.
+
+**Project aliases → config dict.** Replace hard-coded `_PROJECT_CONFIG_KEYS =
+{"project-a": {...}}` with a `langfuse_projects: dict[str, {public_key,
+secret_key}]` config field read from the deployment engine's own config.
+Backward compatibility can be handled with a legacy fallback map that the
+operator can deprecate on their own schedule.
+
+**Default values → empty.** Config defaults that embed specific hostnames or
+component ids (e.g. `langfuse_base_url = "https://langfuse.robotsix.net"`,
+`mill_component_id = "mill"`) MUST be empty strings or absent — the operator
+sets them per deployment. A default that names a specific fleet resource is a
+hard-coded service definition by another name.
+
+### Acceptance criteria
+
+A deployment engine that satisfies this rule passes these checks:
+
+- `grep` for individual service names in `src/` returns nothing except
+  backward-compat fallback maps and documentation strings.
+- Adding a new managed service is achievable via the onboarding API or
+  declarative config — never by editing engine code.
+- Every hard-coded allowlist, project alias, and named default has been
+  migrated to the component config store, a config dict, or a per-component
+  boolean flag.
+
+### Reference
+
+The `robotsix-central-deploy` repo completed this migration in
+`20260719T181243Z-make-central-deploy-repo-agnostic-remove-f13a`, removing all
+service-specific code in favour of the patterns above.
+
 ## Rule of thumb
 
 If central-deploy needs a capability, ask whether a component could get it

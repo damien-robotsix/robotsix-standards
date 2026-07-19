@@ -34,3 +34,14 @@ whether the rule still applies.
 a copy — never inline contract content into this repo.
 **Rationale:** an earlier copy kept here drifted from the implementation and
 had to be removed.
+
+**Rule:** When editing or creating deployment-engine guidance (especially
+`docs/deployment-system.md`), the deployment engine is a **generic control
+plane** — it must not carry per-service or per-repo definitions in its source
+code. Service definitions belong in the persisted component config store
+(onboarding API), a `virtual_components` config key, a `langfuse_projects`
+config dict, or per-component boolean flags. If a proposed rule change would
+require hard-coding a service name, project alias, or hostname in engine code,
+reject it — the pattern is declarative data, never engine code.
+**Rationale:** hard-coding service definitions in engine code makes the engine
+a bottleneck (2026-07 standards review).

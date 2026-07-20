@@ -48,6 +48,7 @@
 ## 0.0.0 (unreleased)
 
 - Remove archived `robotsix-board-agent` from the fleet Deployable components table in `docs/fleet.md`.
+- Add content-only repo exemption notes to the security-posture audit table, so readers who consult only the table see which gates apply to docs-only repos.
 - Add **Error handling** section to the component standard, addressing OWASP A10:2025 (Mishandling of Exceptional Conditions). Requires a `debug` boolean config flag (default `false`) to control verbose error output, mandates framework debug mode be driven from config, and requires exception-message sanitisation for both HTTP responses and LLM model prompts.
 - Standardise Python coverage configuration: codify the full `[tool.coverage]` block (`source = ["src"]`, `branch = true`, `relative_files = true`, `parallel = true`, `fail_under = 80`, `show_missing = true`, `[tool.coverage.paths]`) in `docs/python.md`.  Codecov upload is documented as an optional enhancement; the fleet default is terminal + artifact reporting.
 - Add SLSA v1.2 Source Track posture to `docs/security-posture.md`: Source L1 and L3 are met, L2 (signed source provenance) is a gap, L4 (two-person review) is deferred. Also updates the gate-6 SLSA link from v1.0 to v1.2.

@@ -1,0 +1,1 @@
+fleet.md: remove archived `robotsix-board-agent` row from the fleet table

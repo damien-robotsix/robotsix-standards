@@ -1,0 +1,1 @@
+Standardize: Python coverage CI configuration

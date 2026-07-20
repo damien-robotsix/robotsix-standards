@@ -10,13 +10,13 @@
       
       
       
-        <link rel="canonical" href="https://damien-robotsix.github.io/robotsix-standards/ros2/">
+        <link rel="canonical" href="https://damien-robotsix.github.io/robotsix-standards/markdown-linting/">
       
       
-        <link rel="prev" href="../javascript/">
+        <link rel="prev" href="../hypothesis/">
       
       
-        <link rel="next" href="../component-standard/">
+        <link rel="next" href="../javascript/">
       
       
         
@@ -27,7 +27,7 @@
     
     
       
-        <title>ROS 2 practices - Robotsix Standards</title>
+        <title>Markdown linting - Robotsix Standards</title>
       
     
     
@@ -78,7 +78,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#ros-2-practices" class="md-skip">
+        <a href="#markdown-linting" class="md-skip">
           Skip to content
         </a>
       
@@ -114,7 +114,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              ROS 2 practices
+              Markdown linting
             
           </span>
         </div>
@@ -505,10 +505,37 @@
                 
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="../markdown-linting/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Markdown linting
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   
@@ -524,6 +551,126 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#why-this-exists" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why this exists
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pre-commit-hooks" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Pre-commit hooks
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Pre-commit hooks">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#markdownlint-cli2-markdown-style-enforcement" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        markdownlint-cli2 — Markdown style enforcement
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#codespell-spell-checking-for-prose" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        codespell — spell-checking for prose
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#recommended-config-files" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Recommended config files
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Recommended config files">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#markdownlint-cli2yaml" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        .markdownlint-cli2.yaml
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#toolcodespell-in-pyprojecttoml" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        [tool.codespell] in pyproject.toml
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#fleet-precedent" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Fleet precedent
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -561,37 +708,10 @@
                 
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    ROS 2 practices
-  
-
-    
-  </span>
-  
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../ros2/" class="md-nav__link">
         
   
   
@@ -607,114 +727,6 @@
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#what-kind-of-repo" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        What kind of repo?
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#supported-ros-2-distros" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Supported ROS 2 distros
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#workspace-layout" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Workspace layout
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#devcontainer" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Devcontainer
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#build-test" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Build &amp; test
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#ci-expectations" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        CI expectations
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#code-style-linting" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Code style &amp; linting
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#interface-design" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Interface design
-      
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -1217,10 +1229,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#what-kind-of-repo" class="md-nav__link">
+  <a href="#why-this-exists" class="md-nav__link">
     <span class="md-ellipsis">
       
-        What kind of repo?
+        Why this exists
       
     </span>
   </a>
@@ -1228,76 +1240,88 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#supported-ros-2-distros" class="md-nav__link">
+  <a href="#pre-commit-hooks" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Supported ROS 2 distros
+        Pre-commit hooks
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Pre-commit hooks">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#markdownlint-cli2-markdown-style-enforcement" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        markdownlint-cli2 — Markdown style enforcement
       
     </span>
   </a>
   
 </li>
-      
-        <li class="md-nav__item">
-  <a href="#workspace-layout" class="md-nav__link">
+        
+          <li class="md-nav__item">
+  <a href="#codespell-spell-checking-for-prose" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Workspace layout
+        codespell — spell-checking for prose
       
     </span>
   </a>
   
 </li>
+        
+      </ul>
+    </nav>
+  
+</li>
       
         <li class="md-nav__item">
-  <a href="#devcontainer" class="md-nav__link">
+  <a href="#recommended-config-files" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Devcontainer
+        Recommended config files
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Recommended config files">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#markdownlint-cli2yaml" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        .markdownlint-cli2.yaml
       
     </span>
   </a>
   
 </li>
-      
-        <li class="md-nav__item">
-  <a href="#build-test" class="md-nav__link">
+        
+          <li class="md-nav__item">
+  <a href="#toolcodespell-in-pyprojecttoml" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Build &amp; test
+        [tool.codespell] in pyproject.toml
       
     </span>
   </a>
   
 </li>
-      
-        <li class="md-nav__item">
-  <a href="#ci-expectations" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        CI expectations
-      
-    </span>
-  </a>
+        
+      </ul>
+    </nav>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#code-style-linting" class="md-nav__link">
+  <a href="#fleet-precedent" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Code style &amp; linting
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#interface-design" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Interface design
+        Fleet precedent
       
     </span>
   </a>
@@ -1324,214 +1348,98 @@
   
 
 
-<h1 id="ros-2-practices">ROS 2 practices<a class="headerlink" href="#ros-2-practices" title="Permanent link">&para;</a></h1>
+<h1 id="markdown-linting">Markdown linting<a class="headerlink" href="#markdown-linting" title="Permanent link">&para;</a></h1>
 <blockquote>
-<p><strong>Scope: every ROS 2 repository.</strong> These are the language-specific
-practices for ROS 2 packages; the language-agnostic rules (tiers, hygiene,
-CI philosophy) live in the <a href="../repo-baseline/">repo baseline</a>.</p>
+<p><strong>Scope: every Python repository that publishes MkDocs documentation.</strong>
+Repos without MkDocs (content-only repos, ROS 2 workspaces, deployment-only
+repos) are exempt.</p>
 </blockquote>
-<div class="admonition note">
-<p class="admonition-title">Status: derived from robotsix-mill-ros2</p>
-<p>The <code>robotsix-mill-ros2</code> repo predates this standards page; the
-conventions below are extracted from that repo's actual working
-practices. This page will expand as more ROS 2 repos land in the fleet
-and as existing patterns are documented.</p>
-</div>
-<h2 id="what-kind-of-repo">What kind of repo?<a class="headerlink" href="#what-kind-of-repo" title="Permanent link">&para;</a></h2>
-<p>ROS 2 repos in the fleet follow a <strong>workspace-skeleton</strong> model: the repo
-is an orchestrator that declares downstream package repos, not a bag of
-ROS 2 packages itself. Actual ROS 2 packages (with <code>package.xml</code> and
-<code>CMakeLists.txt</code>) live in the downstream repos listed in the workspace
-manifest.</p>
-<p>The workspace repo is a <strong>deployable component</strong> — it ships a container
-image (via the <a href="../docker-standard/">Docker build &amp; release</a> pattern) and follows
-the <a href="../component-standard/">component standard</a> for its deploy modes.</p>
-<h2 id="supported-ros-2-distros">Supported ROS 2 distros<a class="headerlink" href="#supported-ros-2-distros" title="Permanent link">&para;</a></h2>
-<ul>
-<li><strong>Rolling is the default.</strong> The devcontainer Dockerfile uses
-  <code>ros:rolling-ros-base</code> and CI gates against Rolling.</li>
-<li><strong>The Dockerfile is parametric</strong> — <code>ROS_DISTRO</code> is a build arg (default
-  <code>rolling</code>), so any distro with an official <code>ros:$DISTRO-ros-base</code> image
-  (Humble, Jazzy, Lyrical) works. Switch the build arg to change distros.</li>
-<li><strong>No multi-distro CI matrix yet.</strong> The single CI job gates against one
-  distro at a time. A matrix across distros is expected once the fleet has
-  multiple ROS 2 repos that need it.</li>
-</ul>
-<h2 id="workspace-layout">Workspace layout<a class="headerlink" href="#workspace-layout" title="Permanent link">&para;</a></h2>
-<div class="highlight"><pre><span></span><code>├── repos.yaml              ← vcs2l manifest: downstream package repos
-├── src/                    ← git-ignored; populated by `vcs import`
-├── .devcontainer/
-│   ├── Dockerfile          ← FROM ros:$ROS_DISTRO-ros-base
-│   └── devcontainer.json
-├── justfile                ← local lint/validate orchestrator
-├── scripts/
-│   └── update_workspace.sh ← vcs import + rosdep wrapper
-├── .robotsix-mill/
-│   └── config.yaml         ← mill config: languages, test gate
-└── .github/
-    └── workflows/
-        └── ci.yaml         ← CI gate (justfile recipes)
+<h2 id="why-this-exists">Why this exists<a class="headerlink" href="#why-this-exists" title="Permanent link">&para;</a></h2>
+<p>Without automated Markdown quality gates, each repo's documentation drifts
+independently: broken internal links, inconsistent heading styles, spelling
+errors, and deprecated inline-HTML patterns accumulate over time. The
+fleet publishes docs sites with <code>mkdocs build --strict</code> (see
+<a href="../python/#docs">Python practices</a>), which catches structural MkDocs errors
+but does not enforce prose style, heading consistency, or spelling — those
+gaps are filled by the two hooks below.</p>
+<h2 id="pre-commit-hooks">Pre-commit hooks<a class="headerlink" href="#pre-commit-hooks" title="Permanent link">&para;</a></h2>
+<p>Add both hooks to <code>.pre-commit-config.yaml</code>. The <code>markdownlint-cli2</code> hook
+runs on every <code>.md</code> file; <code>codespell</code> runs across the entire repo.</p>
+<h3 id="markdownlint-cli2-markdown-style-enforcement"><code>markdownlint-cli2</code> — Markdown style enforcement<a class="headerlink" href="#markdownlint-cli2-markdown-style-enforcement" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">repo</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://github.com/DavidAnson/markdownlint-cli2</span>
+<span class="w">    </span><span class="nt">rev</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">v0.17.2</span>
+<span class="w">    </span><span class="nt">hooks</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">id</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">markdownlint-cli2</span>
+<span class="w">        </span><span class="nt">args</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&quot;#fix&quot;</span><span class="p p-Indicator">]</span>
 </code></pre></div>
-<p><strong>Key rules:</strong></p>
-<ul>
-<li><strong><code>src/</code> is always git-ignored.</strong> Source packages come from downstream
-  repos via <code>vcs import &lt; repos.yaml</code> — they are never committed into the
-  workspace repo.</li>
-<li><strong>The workspace manifest (<code>repos.yaml</code>) is the single source of truth</strong>
-  for which packages belong in the workspace. It uses the
-  <a href="https://github.com/dirk-thomas/vcstool">vcstool</a> format.</li>
-<li><strong>Branch refs in <code>repos.yaml</code> are acceptable</strong> — unlike first-party git
-  dependencies in Python repos (which are pinned to commit SHAs per the
-  <a href="../repo-baseline/#pin-to-a-commit-sha-not-a-branch">repo baseline</a>),
-  workspace manifests track development branches so <code>vcs import</code> pulls the
-  latest. CI gates against the branch head, so drift is visible and
-  intentional.</li>
-</ul>
-<h2 id="devcontainer">Devcontainer<a class="headerlink" href="#devcontainer" title="Permanent link">&para;</a></h2>
-<p>Every ROS 2 workspace repo ships a <code>.devcontainer/</code> so the development
-environment is reproducible:</p>
-<div class="highlight"><pre><span></span><code><span class="k">FROM</span><span class="w"> </span><span class="s">ros:$ROS_DISTRO-ros-base</span>
-
-<span class="c"># System dependencies for building and tooling</span>
-<span class="k">RUN</span><span class="w"> </span>apt-get<span class="w"> </span>update<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>apt-get<span class="w"> </span>install<span class="w"> </span>-y<span class="w"> </span>--no-install-recommends<span class="w"> </span><span class="se">\</span>
-<span class="w">    </span>build-essential<span class="w"> </span>cmake<span class="w"> </span>git<span class="w"> </span><span class="se">\</span>
-<span class="w">    </span>python3-pip<span class="w"> </span>python3-vcstool<span class="w"> </span>python3-colcon-common-extensions<span class="w"> </span><span class="se">\</span>
-<span class="w">    </span><span class="o">&amp;&amp;</span><span class="w"> </span>rm<span class="w"> </span>-rf<span class="w"> </span>/var/lib/apt/lists/*
-
-<span class="c"># Non-root user with passwordless sudo</span>
-<span class="k">RUN</span><span class="w"> </span>useradd<span class="w"> </span>-m<span class="w"> </span>-s<span class="w"> </span>/bin/bash<span class="w"> </span>ros<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;ros ALL=(ALL) NOPASSWD:ALL&quot;</span><span class="w"> </span>&gt;&gt;<span class="w"> </span>/etc/sudoers
-<span class="k">USER</span><span class="w"> </span><span class="s">ros</span>
-
-<span class="c"># Source ROS setup on login</span>
-<span class="k">RUN</span><span class="w"> </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;source /opt/ros/</span><span class="nv">$ROS_DISTRO</span><span class="s2">/setup.bash&quot;</span><span class="w"> </span>&gt;&gt;<span class="w"> </span>~/.bashrc
+<p><strong>The <code>#fix</code> arg is optional.</strong> When present it auto-fixes fixable violations
+on commit. Remove it if you prefer to fix manually — the CI job still runs
+the check and fails on any violation.</p>
+<h3 id="codespell-spell-checking-for-prose"><code>codespell</code> — spell-checking for prose<a class="headerlink" href="#codespell-spell-checking-for-prose" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">repo</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://github.com/codespell-project/codespell</span>
+<span class="w">    </span><span class="nt">rev</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">v2.4.1</span>
+<span class="w">    </span><span class="nt">hooks</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">id</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">codespell</span>
+<span class="w">        </span><span class="nt">args</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&quot;--ignore-words-list&quot;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&quot;hist,ist,te,nd&quot;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&quot;--skip&quot;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&quot;*.lock,uv.lock,*.css,*.map,*.min.*,.git/,node_modules/,site/,vendor/&quot;</span><span class="p p-Indicator">]</span>
 </code></pre></div>
-<p><strong><code>devcontainer.json</code> conventions:</strong></p>
-<ul>
-<li><code>remoteUser: ros</code> — run as the non-root user.</li>
-<li>Workspace mounted at <code>/home/ws</code>.</li>
-<li>ROS discovery scoped to localhost:</li>
-</ul>
-<div class="highlight"><pre><span></span><code><span class="nt">&quot;containerEnv&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">  </span><span class="nt">&quot;ROS_DOMAIN_ID&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;42&quot;</span><span class="p">,</span>
-<span class="w">  </span><span class="nt">&quot;ROS_AUTOMATIC_DISCOVERY_RANGE&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;LOCALHOST&quot;</span>
-<span class="p">}</span>
-</code></pre></div>
-<ul>
-<li><code>--net=host</code> and <code>--ipc=host</code> for DDS networking.</li>
-<li><code>postCreateCommand</code> runs <code>vcs import</code>, <code>rosdep update</code>, and
-  <code>rosdep install</code> so the workspace is ready on first open.</li>
-</ul>
-<h2 id="build-test">Build &amp; test<a class="headerlink" href="#build-test" title="Permanent link">&para;</a></h2>
-<p>The standard build pipeline:</p>
-<div class="highlight"><pre><span></span><code><span class="c1"># 1. Pull in downstream packages</span>
-vcs<span class="w"> </span>import<span class="w"> </span>src<span class="w"> </span>&lt;<span class="w"> </span>repos.yaml
+<p><strong>Failure mode prevented:</strong> misspelled words in documentation and comments
+that survive review because reviewers read for meaning, not spelling.</p>
+<h2 id="recommended-config-files">Recommended config files<a class="headerlink" href="#recommended-config-files" title="Permanent link">&para;</a></h2>
+<h3 id="markdownlint-cli2yaml"><code>.markdownlint-cli2.yaml</code><a class="headerlink" href="#markdownlint-cli2yaml" title="Permanent link">&para;</a></h3>
+<p>Create this file at the repo root:</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># .markdownlint-cli2.yaml</span>
+<span class="nt">default</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
 
-<span class="c1"># 2. Resolve system dependencies</span>
-rosdep<span class="w"> </span>update
-rosdep<span class="w"> </span>install<span class="w"> </span>--from-paths<span class="w"> </span>src<span class="w"> </span>--ignore-src<span class="w"> </span>-y
+<span class="nt">MD013</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">line_length</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">120</span>
+<span class="w">  </span><span class="nt">code_blocks</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span><span class="w">      </span><span class="c1"># long code lines in docs</span>
+<span class="w">  </span><span class="nt">tables</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span><span class="w">           </span><span class="c1"># table cells exceed line length</span>
 
-<span class="c1"># 3. Build the workspace</span>
-colcon<span class="w"> </span>build<span class="w"> </span>--symlink-install
+<span class="nt">MD024</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">allow_different_nesting</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span><span class="w">   </span><span class="c1"># repeated headings under different parents</span>
 
-<span class="c1"># 4. Run tests</span>
-colcon<span class="w"> </span><span class="nb">test</span>
+<span class="nt">MD033</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span><span class="w">              </span><span class="c1"># inline HTML for mkdocs-material admonitions, image sizing</span>
+
+<span class="nt">MD041</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span><span class="w">              </span><span class="c1"># docs pages start with frontmatter, not H1</span>
+
+<span class="nt">MD046</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">style</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;fenced&quot;</span><span class="w">         </span><span class="c1"># enforce fenced code blocks, not indented</span>
 </code></pre></div>
+<p>Each rule override states the failure it prevents:</p>
 <ul>
-<li><strong><code>colcon build --symlink-install</code></strong> is the default — Python packages
-  are symlinked so edits take effect without re-building.</li>
-<li><strong><code>rosdep</code> resolves system-level dependencies</strong> (apt packages) declared
-  in each downstream package's <code>package.xml</code>.</li>
-<li><strong><code>vcs import</code> is the standard tool</strong> for cloning downstream repos from
-  the workspace manifest.</li>
+<li><strong>MD013 (line length):</strong> code blocks and tables routinely exceed 80 or 120
+  characters; silencing them avoids noise without losing heading/paragraph
+  line-length enforcement.</li>
+<li><strong>MD024 (duplicate headings):</strong> MkDocs generates anchor slugs from heading
+  text; identical headings under different parent sections are valid and
+  common (e.g. "Usage" under both "CLI" and "Library").</li>
+<li><strong>MD033 (no inline HTML):</strong> mkdocs-material admonitions (<code>!!! note</code>) and
+  image-sizing attributes require inline HTML; a blanket ban breaks the
+  theme.</li>
+<li><strong>MD041 (first line is H1):</strong> docs pages in MkDocs Material repos
+  frequently start with YAML frontmatter (<code>---</code>), not an H1.</li>
+<li><strong>MD046 (code block style):</strong> fenced blocks (<code>```</code>) are the fleet
+  convention; indented blocks are ambiguous with list items.</li>
 </ul>
-<h2 id="ci-expectations">CI expectations<a class="headerlink" href="#ci-expectations" title="Permanent link">&para;</a></h2>
-<p>ROS 2 workspace repos gate on a single <code>ci.yaml</code> workflow. The gate
-covers linting and validation — build and test run in the devcontainer
-during development; CI is the hygiene gate.</p>
-<p><strong>Lint recipes</strong> (run via <code>just check</code>, the justfile default):</p>
-<table>
-<thead>
-<tr>
-<th>Recipe</th>
-<th>What it checks</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>lint-yaml</code></td>
-<td><code>yamllint --strict</code> on all YAML files</td>
-</tr>
-<tr>
-<td><code>lint-shell</code></td>
-<td><code>shellcheck</code> on workspace scripts</td>
-</tr>
-<tr>
-<td><code>lint-spelling</code></td>
-<td><code>codespell</code> across the repo</td>
-</tr>
-<tr>
-<td><code>lint-markdown</code></td>
-<td><code>markdownlint</code> on docs</td>
-</tr>
-<tr>
-<td><code>validate-manifest</code></td>
-<td><code>vcs validate --input repos.yaml</code></td>
-</tr>
-<tr>
-<td><code>lint-actions</code></td>
-<td><code>actionlint</code> on <code>.github/workflows/</code></td>
-</tr>
-<tr>
-<td><code>lint-security</code></td>
-<td><code>zizmor</code> on CI workflows</td>
-</tr>
-</tbody>
-</table>
-<p>Additionally, the fleet-wide <code>pre-commit</code> hooks (see the
-<a href="../python/#pre-commit-hooks">Python practices</a> — the set is the same for all
-repos) apply — the CI job runs <code>pre-commit run --all-files --verbose</code>.</p>
-<p><strong>No build or test in CI yet.</strong> The current CI gate is lint/validate only;
-<code>colcon build</code> and <code>colcon test</code> run locally in the devcontainer. This
-will change as the ROS 2 fleet grows and a shared build-and-test workflow
-is factored out (the pattern: one CI job per distro in a matrix, gate on
-build + test passing across all supported distros).</p>
-<h2 id="code-style-linting">Code style &amp; linting<a class="headerlink" href="#code-style-linting" title="Permanent link">&para;</a></h2>
-<ul>
-<li><strong>Python packages</strong> (inside downstream ROS 2 packages) follow the fleet
-  <a href="../python/">Python practices</a>: ruff, mypy, deptry, bandit.</li>
-<li><strong>C++ packages</strong> follow ROS 2 community conventions: <code>ament_lint</code> for
-  linting (<code>ament_cpplint</code>, <code>ament_clang_format</code>), <code>clang-tidy</code> for static
-  analysis. Specific tool configs live in each downstream repo.</li>
-<li><strong>Shell</strong> (workspace scripts): <code>shellcheck</code> via the justfile.</li>
-<li><strong>YAML</strong>: <code>yamllint --strict</code> — no warnings tolerated.</li>
-<li><strong>Markdown</strong>: <code>markdownlint</code> on all <code>.md</code> files.</li>
-<li><strong>Spelling</strong>: <code>codespell</code> — catches typos across the entire repo.</li>
-<li><strong>Workflows</strong>: <code>actionlint</code> for CI YAML correctness; <code>zizmor</code> for
-  workflow security (excessive permissions, injection vectors).</li>
-</ul>
-<h2 id="interface-design">Interface design<a class="headerlink" href="#interface-design" title="Permanent link">&para;</a></h2>
-<p>ROS 2 interface files (<code>.msg</code>, <code>.srv</code>, <code>.action</code>) live in the downstream
-package repos, not in the workspace skeleton. Standard ROS 2 layout
-applies:</p>
-<div class="highlight"><pre><span></span><code>&lt;package&gt;/
-├── msg/        ← .msg files (message definitions)
-├── srv/        ← .srv files (service definitions)
-├── action/     ← .action files (action definitions)
-├── CMakeLists.txt   ← registers the interface files for codegen
-└── package.xml      ← declares build dependencies on rosidl
+<h3 id="toolcodespell-in-pyprojecttoml"><code>[tool.codespell]</code> in <code>pyproject.toml</code><a class="headerlink" href="#toolcodespell-in-pyprojecttoml" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="k">[tool.codespell]</span>
+<span class="n">skip</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;*.lock,*.css,*.map,*.min.*,.git/,node_modules/,uv.lock,LICENSE,site/,vendor/&quot;</span>
+<span class="n">ignore-words-list</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;hist,ist,te,nd&quot;</span>
+<span class="n">check-filenames</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">true</span>
 </code></pre></div>
-<p><strong>Rules (provisional — to be hardened as more ROS 2 repos land):</strong></p>
+<p><strong>Failure mode prevented:</strong> <code>codespell</code> without skip patterns scans lock
+files, minified JS/CSS, and vendored code — producing false-positive noise
+that trains contributors to ignore the hook.</p>
+<h2 id="fleet-precedent">Fleet precedent<a class="headerlink" href="#fleet-precedent" title="Permanent link">&para;</a></h2>
 <ul>
-<li><strong>Interfaces are versioned with their package</strong> — no separate
-  interface-only package unless the interface is genuinely shared across
-  multiple consumers from different repos.</li>
-<li><strong><code>rosidl_default_generators</code></strong> in <code>package.xml</code> for message generation;
-  C++ packages additionally depend on <code>rosidl_default_runtime</code>.</li>
-<li><strong>Interface files use the standard ROS 2 field types</strong> — no custom
-  primitive wrappers.</li>
+<li><strong>pydantic/pydantic</strong> (the leading Python validation library in the
+  FastAPI ecosystem) uses both <code>markdownlint-cli2</code> and <code>codespell</code> in its
+  <code>.pre-commit-config.yaml</code> — this is a proven, battle-tested combination.</li>
+<li>The ROS 2 fleet already runs <code>markdownlint</code> and <code>codespell</code> via a justfile;
+  this standard brings the same gates to every Python repo via the shared
+  pre-commit mechanism (see <a href="../ros2/">ROS 2 practices</a> for the ROS 2
+  fleet's equivalent).</li>
 </ul>
-<p>These rules will be refined once the fleet has more than one ROS 2
-package repo to observe consistency across.</p>
 
 
 

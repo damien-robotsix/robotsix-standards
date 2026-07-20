@@ -294,6 +294,8 @@ documented in the template's `.pre-commit-config.yaml`.
 - **Image-shipping repos additionally:** `hadolint` — the
   [Dockerfile pattern](docker-standard.md) is a standard; hadolint keeps it
   one.
+- **Docs repos additionally:** `markdownlint-cli2` and `codespell` — see the
+  [Markdown linting](markdown-linting.md) standard for the full config.
 
 Deliberately not in the set: `bandit` as a hook (it already gates in CI via
 the shared workflow, and ruff's `S` rules cover the commit-time subset — a

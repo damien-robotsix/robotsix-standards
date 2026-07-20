@@ -740,6 +740,67 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#error-handling" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Error handling
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Error handling">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#error-envelope" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Error envelope
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#debug-mode" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Debug mode
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#exception-message-sanitisation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exception message sanitisation
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#production-defaults" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Production defaults
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#llm-usage" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1294,6 +1355,67 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#error-handling" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Error handling
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Error handling">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#error-envelope" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Error envelope
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#debug-mode" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Debug mode
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#exception-message-sanitisation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exception message sanitisation
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#production-defaults" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Production defaults
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#llm-usage" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1512,6 +1634,51 @@ siblings routinely restart, so:</p>
 <p>Nothing more is standardized on purpose — no structured-JSON mandate, no
 metrics/collector requirement. Either gets added deliberately when something
 in the fleet needs it.</p>
+<h2 id="error-handling">Error handling<a class="headerlink" href="#error-handling" title="Permanent link">&para;</a></h2>
+<p>Every deployable component serves HTTP endpoints, and error responses must
+never leak internals — stack traces, hostnames, file paths, database error
+messages, or framework debug output — to callers.</p>
+<h3 id="error-envelope">Error envelope<a class="headerlink" href="#error-envelope" title="Permanent link">&para;</a></h3>
+<p>HTTP error responses use the fleet's single RFC 9457 <code>application/problem+json</code>
+envelope, registered via centralized exception handlers. The catch-all handler
+logs the full traceback server-side and returns a fixed, sanitised body in
+production. Full detail: <a href="../http-error-envelope/">HTTP error envelope</a>.</p>
+<h3 id="debug-mode">Debug mode<a class="headerlink" href="#debug-mode" title="Permanent link">&para;</a></h3>
+<ul>
+<li>The config model includes a <strong><code>debug: bool</code> field, default <code>false</code></strong>. When
+  <code>true</code>, error responses may include full tracebacks and exception messages
+  for local development. When <code>false</code> (production), error responses are
+  sanitised — no stack traces, no internal exception messages, no framework
+  debug output.</li>
+<li>The web framework's own debug mode (e.g. FastAPI's <code>debug=True</code>, Starlette's
+  <code>debug=True</code>) must be driven from this config field, not hard-coded or left
+  to the operator to remember. <em>Failure prevented:</em> an operator deploys with
+  framework debug mode on; every 500 response leaks a traceback and local
+  variable dump to the caller.</li>
+</ul>
+<h3 id="exception-message-sanitisation">Exception message sanitisation<a class="headerlink" href="#exception-message-sanitisation" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Exception messages that contain <strong>internal identifiers</strong> — hostnames, file
+  paths, database table names, SQL fragments, internal IP addresses — must be
+  <strong>wrapped or replaced</strong> before they reach an HTTP response body or a model
+  prompt. The raw exception is logged server-side; the caller or prompt sees
+  only a sanitised message.</li>
+<li>This applies to <strong>every path</strong> an exception message can take: HTTP error
+  responses (covered by the centralized catch-all handler), WebSocket close
+  reasons, and <strong>LLM model prompts</strong> (where an un-sanitised exception message
+  carrying a file path or hostname is both a prompt-injection risk and an
+  information disclosure). <em>Failure prevented:</em> a database connection error
+  carrying the hostname and table name is caught and fed into a model prompt
+  as context — the model now knows the internal topology.</li>
+</ul>
+<h3 id="production-defaults">Production defaults<a class="headerlink" href="#production-defaults" title="Permanent link">&para;</a></h3>
+<ul>
+<li><code>debug</code> defaults to <code>false</code>. The operator must explicitly enable it for
+  development — a missing config file means production-safe behaviour.</li>
+<li>The centralized exception handler's catch-all returns <code>detail: null</code> (or
+  omits <code>detail</code> entirely) when <code>debug</code> is <code>false</code>, so the raw exception
+  string never reaches the client even if a handler is misconfigured.</li>
+</ul>
 <h2 id="llm-usage">LLM usage<a class="headerlink" href="#llm-usage" title="Permanent link">&para;</a></h2>
 <blockquote>
 <p>Only for components that call LLMs — most repos never need this section.</p>

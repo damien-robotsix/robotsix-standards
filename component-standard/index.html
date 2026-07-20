@@ -1584,11 +1584,40 @@ must operate under a <strong>least-privilege</strong> model:</p>
 <p><em>Failure prevented:</em> a compromised agent cannot push to <code>main</code> or exfiltrate
 secrets to an attacker-controlled repo — the token lacks the scope and the
 dry-run gate blocks the push.</p>
-<p><strong>LLM02 — Insecure output handling.</strong> Model output that is rendered to a
+<p><strong>LLM02 — Sensitive Information Disclosure.</strong> Prompts and model context must
+not carry PII or secrets.  Credentials are already protected by the
+<code>SecretStr</code> config convention (see <a href="../config-standard/">the config standard</a>)
+— that same discipline extends to any sensitive data that could reach a
+model: scrub or tokenise PII before it enters a prompt, and never log raw
+model context.  <em>Failure prevented:</em> a ticket body containing a customer API
+key is passed to a model; the key appears in tracing output and persists in
+the provider's logs — the PII scrub layer strips it before prompt assembly.</p>
+<p><strong>LLM03 — Supply Chain.</strong> The fleet trusts third-party model providers
+(OpenRouter) and <code>robotsix-llmio</code> as the sole LLM abstraction layer.
+<code>robotsix-llmio</code> must be pinned to a <strong>commit SHA</strong> (not a branch or tag) in
+<code>pyproject.toml</code>, exactly like any first-party dependency — unpinned LLM
+dependencies are a supply-chain risk.  Model selection (provider + model ID)
+is configuration, not code, and must be explicit in the component's config
+file so that model changes are reviewable.  <em>Failure prevented:</em> a
+compromised <code>robotsix-llmio</code> release or a silently-rolled model introduces
+unreviewed behaviour; the commit pin and explicit model config make both
+changes visible in diff review.</p>
+<p><strong>LLM05 — Improper Output Handling.</strong> Model output that is rendered to a
 user or fed into an automated action (code write, ticket filing, shell
 command) must be <strong>validated or sanitised</strong> before use — treat model output
 as untrusted data.  <em>Failure prevented:</em> a model hallucinates a shell command
 that deletes data; the sanitisation layer rejects it before execution.</p>
+<p><strong>LLM07 — System Prompt Leakage.</strong> System prompts are sensitive configuration
+— they encode operational instructions and must not be treated as inert text.
+Never embed operational secrets (API keys, tokens, internal hostnames) in
+system prompts; store them in the config file instead, using <code>SecretStr</code>
+where the prompt itself carries secrets.  Prompts that do not contain secrets
+may live in the config file as plain strings; the key point is that prompts
+are <strong>config, not code</strong>, and are subject to the same access-control and
+review discipline as any other configuration.  <em>Failure prevented:</em> an agent
+prompt containing an internal service hostname is exfiltrated via prompt
+injection; the hostname was in a <code>SecretStr</code>-backed config key, so the
+standard <code>__repr__</code> / log redaction already masks it.</p>
 <h3 id="llm08-and-llm09">LLM08 and LLM09<a class="headerlink" href="#llm08-and-llm09" title="Permanent link">&para;</a></h3>
 <ul>
 <li><strong>LLM08 (Vector &amp; embedding weaknesses):</strong> apply when the fleet adopts

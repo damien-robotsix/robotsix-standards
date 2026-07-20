@@ -24,6 +24,5 @@ created; remove it when one is archived.
 | [robotsix-chat](https://github.com/damien-robotsix/robotsix-chat) | Browser + SSE chat server exposing an LLM agent to human users. | [repo](https://github.com/damien-robotsix/robotsix-chat) |
 | [robotsix-auto-mail](https://github.com/damien-robotsix/robotsix-auto-mail) | Mail automation service. | [repo](https://github.com/damien-robotsix/robotsix-auto-mail) |
 | [robotsix-calendar-agent](https://github.com/damien-robotsix/robotsix-calendar-agent) | Calendar agent service. | [repo](https://github.com/damien-robotsix/robotsix-calendar-agent) |
-| [robotsix-board-agent](https://github.com/damien-robotsix/robotsix-board-agent) | Board agent (+ `robotsix_board_client` client library). | [repo](https://github.com/damien-robotsix/robotsix-board-agent) |
 | [robotsix-cost-monitor](https://github.com/damien-robotsix/robotsix-cost-monitor) | Cost dashboard. | [repo](https://github.com/damien-robotsix/robotsix-cost-monitor) |
 | [robotsix-mill-ros2](https://github.com/damien-robotsix/robotsix-mill-ros2) | ROS 2 companion to the mill. | [repo](https://github.com/damien-robotsix/robotsix-mill-ros2) |

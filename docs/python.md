@@ -188,6 +188,70 @@ pre-commit hooks install Python tools.
   higher value, the floor in the shared workflow is raised for everyone at
   once — one PR in robotsix-github-workflows, a deliberate decision. It never
   rises above what the weakest repo clears, and it never moves per-repo.
+- **Standard coverage configuration.** Every Python repo carries this
+  `[tool.coverage]` block in `pyproject.toml`.  The shared `python-ci.yml`
+  workflow runs `pytest --cov --cov-report=term-missing --cov-report=xml`;
+  the config below ensures the run is correctly scoped and the reports are
+  mergeable and portable.
+
+  ```toml
+  [tool.coverage.run]
+  source = ["src"]
+  branch = true
+  relative_files = true
+  parallel = true
+  command_line = "-m pytest"
+
+  [tool.coverage.report]
+  fail_under = 80
+  show_missing = true
+  skip_covered = false
+
+  [tool.coverage.paths]
+  source = ["src", "**/site-packages"]
+  ```
+
+  **Why each setting:**
+
+  - **`source = ["src"]`** — measures only the package under `src/`, not test
+    files or virtualenvs.  Bare `--cov` (no source argument) dilutes coverage
+    percentages with test-file lines and can silently include site-packages.
+  - **`branch = true`** — shows which conditional paths are untested; industry
+    standard (used by pytest, FastAPI, Django).  Without it, a line with an
+    untaken `else` branch reports as fully covered.
+  - **`relative_files = true`** — stores paths relative to the repo root
+    instead of absolute paths, making reports portable between CI runners and
+    local dev.  Without it, `coverage.xml` paths differ per machine and
+    coverage-combine merges break.
+  - **`parallel = true`** — appends a machine-id suffix to each data file
+    (`.coverage.<hostname>.<pid>`).  Required for matrix CI runs whose
+    coverage files must be combined with `coverage combine` before reporting.
+  - **`command_line = "-m pytest"`** — tells `coverage` how the test suite is
+    invoked so `coverage run` can re-execute the same command.
+  - **`fail_under = 80`** — the fleet-wide floor; `coverage report` exits
+    non-zero below it.  Individual repos may raise this but never lower it.
+  - **`show_missing = true`** — lists uncovered lines in the terminal report,
+    so developers see exactly what to write tests for without opening HTML.
+  - **`[tool.coverage.paths]`** — maps paths that differ between the local
+    checkout and the CI/installed environment back to `src`, so that
+    `coverage combine` can merge data files from different runners correctly.
+
+- **Codecov (optional).** Repos that want trend tracking and PR-level patch
+  gating may add a Codecov upload step after the coverage XML is produced:
+
+  ```yaml
+  - name: Upload coverage to Codecov
+    uses: codecov/codecov-action@v4
+    with:
+      files: coverage.xml
+      fail_ci_if_error: false
+  ```
+
+  The fleet default is **terminal + artifact** reporting (the shared workflow
+  uploads `coverage.xml` as a workflow artifact).  Codecov is an opt-in
+  enhancement — repos that add it are responsible for the Codecov token and
+  the `codecov.yml` configuration.
+
 - **Test layout mirrors the package:** tests for module X live under
   `tests/X/`, never at the `tests/` root. New modules get a matching test
   directory.

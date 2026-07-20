@@ -2,6 +2,7 @@
 
 ## 0.0.0 (unreleased)
 
+- Standardise Python coverage configuration: codify the full `[tool.coverage]` block (`source = ["src"]`, `branch = true`, `relative_files = true`, `parallel = true`, `fail_under = 80`, `show_missing = true`, `[tool.coverage.paths]`) in `docs/python.md`.  Codecov upload is documented as an optional enhancement; the fleet default is terminal + artifact reporting.
 - Add SLSA v1.2 Source Track posture to `docs/security-posture.md`: Source L1 and L3 are met, L2 (signed source provenance) is a gap, L4 (two-person review) is deferred. Also updates the gate-6 SLSA link from v1.0 to v1.2.
 - Codify "deployment engine code must be repo-agnostic" in `docs/deployment-system.md`:
   service definitions belong in declarative data (onboarding API, config dicts,

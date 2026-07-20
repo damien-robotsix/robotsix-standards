@@ -33,6 +33,37 @@ implementation. That made a compliance audit a multi-document hunt. A single,
 checklist-shaped standard gives auditors one page to read and gives repo authors
 one page to confirm during onboarding.
 
+## Tooling policy: open-source preferred
+
+The fleet actively prefers open-source security tooling over proprietary or
+licensed solutions. This is an intentional policy choice, not a default or
+cost-saving measure:
+
+- **Auditability.** Open-source tools ship their detection rules in the clear.
+  A false positive can be traced to a specific rule and suppressed or fixed; a
+  missed pattern can be contributed upstream. Proprietary scanners are a black
+  box — the fleet depends on the vendor's rule-writing priorities and
+  release cadence, with no recourse.
+- **No license keys in CI.** A licensed tool requires a license key provisioned
+  in every repo's secrets, rotated on expiry, and gated on billing. Every key
+  is a secret that must itself be protected — a self-referential failure mode.
+  An OSS tool needs no key and has no expiry.
+- **Reproducibility.** A contributor can run the same scan locally (pre-commit
+  or a one-shot CLI invocation) that CI runs — same version, same rules, same
+  result. Licensed scanners that gate features behind a key break this: CI sees
+  rules the developer cannot reproduce, so a CI-only failure is a mystery.
+- **Fleet consistency.** An OSS scanner rolls out by updating one shared
+  workflow and one pre-commit config. A licensed scanner gatekeeps fleet-wide
+  rollout behind procurement, license provisioning, and per-repo secret
+  management — the opposite of the self-enforcing principle.
+
+This policy applies to every security gate: SAST (CodeQL, itself open-source),
+secret scanning (detect-secrets + TruffleHog, see gate 5), dependency auditing
+(`uv audit`, `pip-audit`), and container image scanning (Trivy). A future gate
+that genuinely requires a proprietary tool must justify the exception in the
+standard that introduces it — stating what an OSS alternative was evaluated
+and why it was insufficient.
+
 ## The gates
 
 Each gate below is a **required, self-enforcing** control. A repo that ships a
@@ -149,13 +180,49 @@ blast radius to the minimum.
 GitHub secret scanning with **push protection** is enabled on every repo. Push
 protection blocks a commit that contains a detected secret *before* it reaches
 the remote — the secret never lands in the commit history. This is complemented
-by:
+by an open-source, layered secret-scanning stack:
 
-- **`detect-secrets` pre-commit hook** with a committed `.secrets.baseline` —
-  catches credentials at commit time, before the push.
-- **TruffleHog** in the shared security workflow — scans the PR diff and the
-  full repo history for secrets that slipped past push protection (e.g. a
-  custom pattern GitHub doesn't recognize).
+- **`detect-secrets` pre-commit hook** ([Yelp/detect-secrets](https://github.com/Yelp/detect-secrets),
+  Apache-2.0) with a committed `.secrets.baseline` — catches credentials at
+  commit time, before the push.
+- **TruffleHog** ([trufflesecurity/trufflehog](https://github.com/trufflesecurity/trufflehog),
+  AGPL-3.0) in the shared security workflow — scans the PR diff and the full
+  repo history for secrets that slipped past push protection (e.g. a custom
+  pattern GitHub doesn't recognize, or a secret committed before push
+  protection was enabled).
+
+#### Why this stack
+
+The fleet evaluated three open-source secret scanners for fleet-wide adoption:
+
+| Scanner | License | Strengths | Why chosen / not |
+|---|---|---|---|
+| **detect-secrets** | Apache-2.0 | Pre-commit native; plugin architecture; committed baseline suppresses known false positives; mature (Yelp, 2017–present). | **Chosen** for the pre-commit layer. No license key needed; the baseline file is version-controlled and reviewable. |
+| **TruffleHog** | AGPL-3.0 | Full git-history scanning; verifies detected credentials against live APIs; high-entropy string detection; PR-diff mode for CI. | **Chosen** for the CI layer. Complements detect-secrets by catching secrets that predate the pre-commit hook or bypass it. |
+| **Gitleaks CLI** | MIT | Fast; simple rule set; single-binary deployment. | **Not chosen.** The CLI itself is MIT and unencumbered, but the fleet's evaluation (ticket 1740) found that the features needed for CI integration (action, enterprise rule packs) require a license key — the very pattern this standard rejects (see [tooling policy](#tooling-policy-open-source-preferred)). The unlicensed CLI alone cannot match the combined coverage of detect-secrets + TruffleHog. |
+
+**Rationale for two tools over one.** A single scanner cannot cover both the
+pre-commit and CI surfaces equally well:
+
+- A pre-commit hook must be fast (sub-second on changed files) and must not
+  require network access. TruffleHog's live credential verification is
+  powerful in CI but too slow and network-dependent for a pre-commit hook.
+- A CI scanner must cover the full git history — commits that predate the
+  pre-commit hook, force-push artifacts, merge-commit blobs.
+  `detect-secrets` only sees the working tree at commit time; it cannot
+  retroactively scan history.
+
+The two tools are not redundant — they are complementary layers in a defense
+that spans commit-time, push-time, and CI-time.
+
+#### No licensed secret scanner
+
+No standard mandates or recommends a licensed or proprietary secret-scanning
+tool. The Gitleaks Enterprise/licensed path was evaluated and explicitly
+rejected (ticket 1740) — provisioning a `GITLEAKS_LICENSE` key across the
+fleet would violate the [open-source preferred policy](#tooling-policy-open-source-preferred)
+and add a self-referential secret-management burden. The OSS stack above
+(detect-secrets + TruffleHog) is the single fleet-wide secret-scanning path.
 
 - **How to verify:** the repo's Security / Secret scanning settings show "Push
   protection" as enabled. `.pre-commit-config.yaml` includes `detect-secrets`.

@@ -47,6 +47,8 @@
 
 ## 0.0.0 (unreleased)
 
+- Codified open-source-preferred tooling policy in security posture standard — fleet actively prefers OSS security tools (auditability, no license keys, reproducibility) over proprietary alternatives.
+  Selected `detect-secrets` (pre-commit) + `TruffleHog` (CI) as the fleet-wide secret-scanning stack with documented rationale; Gitleaks Enterprise/licensed path explicitly rejected.
 - Add [Markdown linting](docs/markdown-linting.md) standard: markdownlint-cli2 and codespell
   pre-commit hooks for every Python repo that publishes MkDocs documentation,
   with recommended `.markdownlint-cli2.yaml` and `[tool.codespell]` configs.

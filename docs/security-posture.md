@@ -232,17 +232,19 @@ dashboard-watching:
 
 | Gate | Check |
 |---|---|
-| CodeQL | CI calls shared CodeQL workflow; Code Scanning tab has recent analyses |
-| Dependency review | CI calls shared `dependency-review` workflow; Dependency graph enabled |
+| CodeQL* | CI calls shared CodeQL workflow; Code Scanning tab has recent analyses |
+| Dependency review* | CI calls shared `dependency-review` workflow; Dependency graph enabled |
 | Dependabot | `.github/dependabot.yml` covers required ecosystems; recent update PRs |
 | SHA-pinned actions | `grep -r 'uses:' .github/workflows/` — no mutable refs on third-party actions |
-| Workflow linting | `.pre-commit-config.yaml` includes `actionlint`; CI runs `zizmor` |
+| Workflow linting | `.pre-commit-config.yaml` includes `actionlint`; CI runs `zizmor` (content-only repos exempt from `zizmor`) |
 | Least-privilege permissions | Every workflow has `permissions:` block; `zizmor` reports clean |
-| Secret push protection | Push protection enabled in repo Security settings; `detect-secrets` in pre-commit; CI runs TruffleHog |
-| SBOM | CI uploads CycloneDX artifact |
-| CVE audit | `uv audit` / `pip-audit` passes in CI |
+| Secret push protection | Push protection enabled in repo Security settings; `detect-secrets` in pre-commit; CI runs TruffleHog (content-only repos exempt from TruffleHog) |
+| SBOM* | CI uploads CycloneDX artifact |
+| CVE audit* | `uv audit` / `pip-audit` passes in CI |
 | Container image scan | Trivy PR-scan and publish workflows present and passing (image-shipping repos only) |
 | Vulnerability disclosure | `SECURITY.md` present at repo root with contact method, response-time expectation, and coordinated-disclosure statement |
+
+*Content-only repos are exempt per the preamble above.
 
 A repo that fails any gate is non-compliant; the fix is always the same — call
 the shared workflow, or enable the GitHub setting.

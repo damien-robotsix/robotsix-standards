@@ -44,4 +44,4 @@ showcontent = true
 
 [tool.codespell]
 skip = "*.lock,*.json,*.svg,*.png,.git,*.secrets.baseline,site"
-ignore-words-list = "bu,ro,te,ser,fo,tha,thru,coo,ans"
+ignore-words-list = "bu,ro,te,ser,fo,tha,thru,coo,ans,ist,nd"

@@ -175,7 +175,7 @@ gate set:
   every repo already clears the new value (see [Tests](python.md#tests)).
 - **Docs:** a strict docs build (`mkdocs build --strict`) when the repo
   publishes a docs site.
-- **Security:** CodeQL (SAST), zizmor workflow audit, GitHub secret scanning + push protection
+- **Security:** Semgrep (SAST), zizmor workflow audit, GitHub secret scanning + push protection
   (complemented by TruffleHog for PR-diff and full-repo scans in the shared
   security workflow), a dependency CVE audit (`uv audit` in the CI gate, plus `pip-audit` in the security
   workflow), `dependency-review` on PRs (`fail-on-severity:
@@ -199,7 +199,7 @@ gate set:
 **Completeness principle:** a gate in this list exists as (part of) a shared
 reusable workflow — if it can't be called from robotsix-github-workflows, it
 isn't a standard gate yet. Gates adopted à la carte drift à la carte: before
-this rule, CodeQL ran in 4 of 13 repos and the weekly image rescan in 3 of 8,
+this rule, Semgrep ran in 4 of 13 repos and the weekly image rescan in 3 of 8,
 each a hand-copied workflow file.
 
 ## Branch protection

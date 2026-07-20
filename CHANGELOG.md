@@ -47,6 +47,7 @@
 
 ## 0.0.0 (unreleased)
 
+- Replace GitHub Code Scanning (proprietary CodeQL) with open-source Semgrep as the fleet SAST standard. Findings are published as workflow artifacts and surfaced through the fleet dashboard — no dependency on the GitHub Security tab or `security-events: write` permission. Updates docs/security-posture.md, docs/docker-standard.md, docs/python.md, docs/repo-baseline.md, docs/mill-agents.md, and the security-posture-audit agent.
 - Codified open-source-preferred tooling policy in security posture standard — fleet actively prefers OSS security tools (auditability, no license keys, reproducibility) over proprietary alternatives.
   Selected `detect-secrets` (pre-commit) + `TruffleHog` (CI) as the fleet-wide secret-scanning stack with documented rationale; Gitleaks Enterprise/licensed path explicitly rejected.
 - Add [Markdown linting](docs/markdown-linting.md) standard: markdownlint-cli2 and codespell

@@ -103,6 +103,55 @@ Nothing more is standardized on purpose — no structured-JSON mandate, no
 metrics/collector requirement. Either gets added deliberately when something
 in the fleet needs it.
 
+## Error handling
+
+Every deployable component serves HTTP endpoints, and error responses must
+never leak internals — stack traces, hostnames, file paths, database error
+messages, or framework debug output — to callers.
+
+### Error envelope
+
+HTTP error responses use the fleet's single RFC 9457 `application/problem+json`
+envelope, registered via centralized exception handlers. The catch-all handler
+logs the full traceback server-side and returns a fixed, sanitised body in
+production. Full detail: [HTTP error envelope](http-error-envelope.md).
+
+### Debug mode
+
+- The config model includes a **`debug: bool` field, default `false`**. When
+  `true`, error responses may include full tracebacks and exception messages
+  for local development. When `false` (production), error responses are
+  sanitised — no stack traces, no internal exception messages, no framework
+  debug output.
+- The web framework's own debug mode (e.g. FastAPI's `debug=True`, Starlette's
+  `debug=True`) must be driven from this config field, not hard-coded or left
+  to the operator to remember. *Failure prevented:* an operator deploys with
+  framework debug mode on; every 500 response leaks a traceback and local
+  variable dump to the caller.
+
+### Exception message sanitisation
+
+- Exception messages that contain **internal identifiers** — hostnames, file
+  paths, database table names, SQL fragments, internal IP addresses — must be
+  **wrapped or replaced** before they reach an HTTP response body or a model
+  prompt. The raw exception is logged server-side; the caller or prompt sees
+  only a sanitised message.
+- This applies to **every path** an exception message can take: HTTP error
+  responses (covered by the centralized catch-all handler), WebSocket close
+  reasons, and **LLM model prompts** (where an un-sanitised exception message
+  carrying a file path or hostname is both a prompt-injection risk and an
+  information disclosure). *Failure prevented:* a database connection error
+  carrying the hostname and table name is caught and fed into a model prompt
+  as context — the model now knows the internal topology.
+
+### Production defaults
+
+- `debug` defaults to `false`. The operator must explicitly enable it for
+  development — a missing config file means production-safe behaviour.
+- The centralized exception handler's catch-all returns `detail: null` (or
+  omits `detail` entirely) when `debug` is `false`, so the raw exception
+  string never reaches the client even if a handler is misconfigured.
+
 ## LLM usage
 
 > Only for components that call LLMs — most repos never need this section.

@@ -1,1 +1,0 @@
-Define security posture requirements as an auditable standard

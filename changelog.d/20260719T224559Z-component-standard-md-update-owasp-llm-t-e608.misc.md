@@ -1,1 +1,0 @@
-component-standard.md: update OWASP LLM Top 10 numbering to v2.0 and address new entries

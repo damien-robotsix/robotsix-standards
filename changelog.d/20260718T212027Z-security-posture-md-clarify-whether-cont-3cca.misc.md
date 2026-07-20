@@ -1,1 +1,0 @@
-security-posture.md: clarify whether content-only repos must run TruffleHog

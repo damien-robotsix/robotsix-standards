@@ -1,1 +1,0 @@
-ci_fix: out-of-scope CI failure — htmlproofer (mkdocs build --strict) in Either add the OWASP URL to the ignore_urls list in mkdocs.yml under the htmlproofer plugin config, or replace the link with a working alternative.

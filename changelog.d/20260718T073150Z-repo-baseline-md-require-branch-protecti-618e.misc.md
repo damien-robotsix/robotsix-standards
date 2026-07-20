@@ -1,1 +1,0 @@
-repo-baseline.md: require branch protection to include administrators (OpenSSF Scorecard Branch-Protection)

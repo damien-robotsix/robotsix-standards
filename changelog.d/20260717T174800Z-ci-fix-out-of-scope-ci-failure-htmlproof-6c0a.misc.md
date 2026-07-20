@@ -1,1 +1,0 @@
-ci_fix: out-of-scope CI failure — htmlproofer (external link checker in mkdocs build) in docs/deploy-contract.md, docs/fleet.md, docs/integrating-a-service.md, docs/ros2.md — fix or remove the 13 broken external URLs

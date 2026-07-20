@@ -1,1 +1,0 @@
-pre-commit: add markdownlint and codespell for the docs-only repo

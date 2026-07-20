@@ -1,4 +1,49 @@
+
+
 <!-- towncrier release notes start -->
+
+# robotsix-standards 0.1.4 (2026-07-20)
+
+## Changed
+
+- security-posture.md: add exemption for content-only / docs-only repos (20260718T000300Z-security-posture-md-add-exemption-for-co-60f0)
+- component-standard.md: address OWASP Top 10 for LLM Applications (20260718T000301Z-component-standard-md-address-owasp-top-ff59)
+- python.md: reference CodeQL as a required security gate (20260718T000301Z-python-md-reference-codeql-as-a-required-8501)
+- repo-baseline.md: add zizmor to the canonical security gate list (20260718T000301Z-repo-baseline-md-add-zizmor-to-the-canon-20d0)
+- Standards: require a vulnerability disclosure policy (SECURITY.md) (20260718T000301Z-standards-require-a-vulnerability-disclo-a0bb)
+- Standardize: Python coverage CI configuration (20260720T004009Z-standardize-python-coverage-ci-configura-6da8)
+- python.md: acknowledge content-only pre-commit subset or cross-reference exemption (20260718T070514Z-python-md-acknowledge-content-only-pre-c-4450)
+- repo-baseline.md: mention `uv audit` alongside `pip-audit` in the CVE audit line (20260718T070514Z-repo-baseline-md-mention-uv-audit-alongs-bdbd)
+- security-posture.md: clarify whether zizmor (gate 4b) applies to content-only repos (20260718T070514Z-security-posture-md-clarify-whether-zizm-f0ff)
+- repo-baseline.md: require approving PR review before merge (OpenSSF Scorecard Code-Review) (20260718T073149Z-repo-baseline-md-require-approving-pr-re-3beb)
+- repo-baseline.md: require branch protection to include administrators (OpenSSF Scorecard Branch-Protection) (20260718T073150Z-repo-baseline-md-require-branch-protecti-618e)
+- component-standard.md: address OWASP Top 10:2025 A10 — Mishandling of Exceptional Conditions (20260720T084744Z-component-standard-md-address-owasp-top-47a6)
+- dependabot-auto-merge.yml: add top-level `permissions:` block (gate 4c) (20260718T113441Z-dependabot-auto-merge-yml-add-top-level-acbc)
+- Standardize: consistent JSON error envelope (RFC 9457 problem+json) for HTTP services (20260719T140417Z-standardize-consistent-json-error-envelo-25c1)
+- Codify Google-style docstrings + pydocstyle ruff enforcement as a fleet standard (20260718T144633Z-codify-google-style-docstrings-pydocstyl-6008)
+- ci_fix: out-of-scope CI failure — htmlproofer (mkdocs build --strict) in Either add the OWASP URL to the ignore_urls list in mkdocs.yml under the htmlproofer plugin config, or replace the link with a working alternative. (20260718T145428Z-ci-fix-out-of-scope-ci-failure-htmlproof-4015)
+- CI failure: CI on main (20260718T154018Z-ci-failure-ci-on-main-e8d2)
+- Standardize: Hypothesis property-based testing profile convention (20260719T161521Z-standardize-hypothesis-property-based-te-bfaf)
+- Enable weekly mill periodics: audit, copy_paste, repo_description_sync (20260717T172503Z-enable-weekly-mill-periodics-audit-copy-cbec)
+- CHANGELOG.md: remove stale `0.0.0 (unreleased)` block duplicated below 0.1.3 (20260717T173132Z-changelog-md-remove-stale-0-0-0-unreleas-8151)
+- CI: add an external link checker to the docs build gate (20260717T173132Z-ci-add-an-external-link-checker-to-the-d-7d54)
+- README: add the required docs-site link per the repo-baseline README skeleton (20260717T173132Z-readme-add-the-required-docs-site-link-p-164f)
+- pre-commit: add markdownlint and codespell for the docs-only repo (20260718T173718Z-pre-commit-add-markdownlint-and-codespel-07ef)
+- README + index: add Docstring convention page to the 'Every repo' TOC listings (20260718T173719Z-readme-index-add-docstring-convention-pa-35e6)
+- README: add missing Hypothesis testing and HTTP error envelope to TOC tables (20260719T174239Z-readme-add-missing-hypothesis-testing-an-be2a)
+- ci_fix: out-of-scope CI failure — docs / Lint markdown (markdownlint-cli2) in docs/*.md and README.md — fix pre-existing markdownlint violations or adjust .markdownlint.yaml to match existing doc conventions (20260718T174618Z-ci-fix-out-of-scope-ci-failure-docs-lint-2806)
+- ci_fix: out-of-scope CI failure — htmlproofer (external link checker in mkdocs build) in docs/deploy-contract.md, docs/fleet.md, docs/integrating-a-service.md, docs/ros2.md — fix or remove the 13 broken external URLs (20260717T174800Z-ci-fix-out-of-scope-ci-failure-htmlproof-6c0a)
+- robotsix-standards: Create .robotsix-mill/config.yaml to activate existing periodic agents (20260717T191557Z-robotsix-standards-create-robotsix-mill-ce12)
+- Standard: deployment engine code must be repo-agnostic; service definitions are declarative data (20260719T191817Z-standard-deployment-engine-code-must-be-fa2b)
+- security-posture.md: clarify whether content-only repos must run TruffleHog (20260718T212027Z-security-posture-md-clarify-whether-cont-3cca)
+- security-posture.md: gate 3 verification text omits `uv` ecosystem (20260718T212027Z-security-posture-md-gate-3-verification-d480)
+- Amend config-standard.md: secrets as SecretStr in single config.json with redact-on-read / merge-on-write semantics (20260718T213116Z-amend-config-standard-md-secrets-as-secr-3f9f)
+- component-standard.md: update OWASP LLM Top 10 numbering to v2.0 and address new entries (20260719T224559Z-component-standard-md-update-owasp-llm-t-e608)
+- security-posture.md: update SLSA reference from v1.0 to v1.2 and address Source Track (20260719T224559Z-security-posture-md-update-slsa-referenc-d9bf)
+- Define security posture requirements as an auditable standard (20260717T233031Z-define-security-posture-requirements-as-590f)
+- Add custom audit agent for security aspects of the standards definitions (20260717T233343Z-add-custom-audit-agent-for-security-aspe-7ef2)
+- Standardize: enable uv cache in all CI jobs using astral-sh/setup-uv (20260718T235556Z-standardize-enable-uv-cache-in-all-ci-jo-9993)
+
 
 ## 0.0.0 (unreleased)
 

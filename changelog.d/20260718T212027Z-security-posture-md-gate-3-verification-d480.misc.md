@@ -1,1 +1,0 @@
-security-posture.md: gate 3 verification text omits `uv` ecosystem

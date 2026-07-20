@@ -1,1 +1,0 @@
-repo-baseline.md: mention `uv audit` alongside `pip-audit` in the CVE audit line

@@ -1,1 +1,0 @@
-Amend config-standard.md: secrets as SecretStr in single config.json with redact-on-read / merge-on-write semantics

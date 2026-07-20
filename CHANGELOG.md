@@ -47,6 +47,9 @@
 
 ## 0.0.0 (unreleased)
 
+- Add [Markdown linting](docs/markdown-linting.md) standard: markdownlint-cli2 and codespell
+  pre-commit hooks for every Python repo that publishes MkDocs documentation,
+  with recommended `.markdownlint-cli2.yaml` and `[tool.codespell]` configs.
 - Remove archived `robotsix-board-agent` from the fleet Deployable components table in `docs/fleet.md`.
 - Add content-only repo exemption notes to the security-posture audit table, so readers who consult only the table see which gates apply to docs-only repos.
 - Add **Error handling** section to the component standard, addressing OWASP A10:2025 (Mishandling of Exceptional Conditions). Requires a `debug` boolean config flag (default `false`) to control verbose error output, mandates framework debug mode be driven from config, and requires exception-message sanitisation for both HTTP responses and LLM model prompts.

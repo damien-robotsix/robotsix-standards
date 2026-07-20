@@ -51,6 +51,7 @@ nav:
       - Python practices: python.md
       - Docstring convention: docstrings.md
       - Hypothesis testing: hypothesis.md
+      - Markdown linting: markdown-linting.md
       - JavaScript practices: javascript.md
       - ROS 2 practices: ros2.md
   - Deployable components:

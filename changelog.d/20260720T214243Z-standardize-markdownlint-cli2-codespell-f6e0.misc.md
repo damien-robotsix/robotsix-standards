@@ -1,0 +1,1 @@
+Standardize: markdownlint-cli2 + codespell in pre-commit for fleet MkDocs repos

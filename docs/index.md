@@ -31,6 +31,8 @@ everywhere.
   rules for all public modules, classes, and functions.
 - **[Hypothesis testing](hypothesis.md)** — property-based testing profiles,
   shared strategies, and CI integration for repos that use Hypothesis.
+- **[Markdown linting](markdown-linting.md)** — markdownlint-cli2 and codespell
+  pre-commit hooks for every repo that publishes MkDocs documentation.
 - **[Python practices](python.md)** — uv, hatchling, `requires-python` policy,
   lint/type/security gates, test layout, pre-commit hooks.
 - **[JavaScript practices](javascript.md)** — vanilla frontend JS as static

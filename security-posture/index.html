@@ -1700,11 +1700,11 @@ dashboard-watching:</p>
 </thead>
 <tbody>
 <tr>
-<td>CodeQL</td>
+<td>CodeQL*</td>
 <td>CI calls shared CodeQL workflow; Code Scanning tab has recent analyses</td>
 </tr>
 <tr>
-<td>Dependency review</td>
+<td>Dependency review*</td>
 <td>CI calls shared <code>dependency-review</code> workflow; Dependency graph enabled</td>
 </tr>
 <tr>
@@ -1717,7 +1717,7 @@ dashboard-watching:</p>
 </tr>
 <tr>
 <td>Workflow linting</td>
-<td><code>.pre-commit-config.yaml</code> includes <code>actionlint</code>; CI runs <code>zizmor</code></td>
+<td><code>.pre-commit-config.yaml</code> includes <code>actionlint</code>; CI runs <code>zizmor</code> (content-only repos exempt from <code>zizmor</code>)</td>
 </tr>
 <tr>
 <td>Least-privilege permissions</td>
@@ -1725,14 +1725,14 @@ dashboard-watching:</p>
 </tr>
 <tr>
 <td>Secret push protection</td>
-<td>Push protection enabled in repo Security settings; <code>detect-secrets</code> in pre-commit; CI runs TruffleHog</td>
+<td>Push protection enabled in repo Security settings; <code>detect-secrets</code> in pre-commit; CI runs TruffleHog (content-only repos exempt from TruffleHog)</td>
 </tr>
 <tr>
-<td>SBOM</td>
+<td>SBOM*</td>
 <td>CI uploads CycloneDX artifact</td>
 </tr>
 <tr>
-<td>CVE audit</td>
+<td>CVE audit*</td>
 <td><code>uv audit</code> / <code>pip-audit</code> passes in CI</td>
 </tr>
 <tr>
@@ -1745,6 +1745,7 @@ dashboard-watching:</p>
 </tr>
 </tbody>
 </table>
+<p>*Content-only repos are exempt per the preamble above.</p>
 <p>A repo that fails any gate is non-compliant; the fix is always the same — call
 the shared workflow, or enable the GitHub setting.</p>
 <h2 id="see-also">See also<a class="headerlink" href="#see-also" title="Permanent link">&para;</a></h2>

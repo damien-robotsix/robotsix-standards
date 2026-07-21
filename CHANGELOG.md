@@ -47,6 +47,10 @@
 
 ## 0.0.0 (unreleased)
 
+- Add `advanced` boolean flag to the config schema standard — a per-setting annotation
+  (default `false`) that lets the deploy UI hide rarely-changed settings behind a
+  "Show advanced settings" toggle. The flag is purely presentational and backward
+  compatible: schemas without it render identically to before.
 - Updated [docstring convention](docs/docstrings.md) enforcement section to use `extend-select = ["D"]` (full pydocstyle rule set), added standard ignore list (`D105`, `D107`, `D205`, `D415`), and added per-file-ignores for `tests/` and `docs/` — matching the pattern already proven in pydantic.
 - .github/dependabot.yml: removed duplicate old Dependabot entries so the file contains only the three standardized grouped configurations
 - Added **Agentic Applications** security subsection to `docs/component-standard.md`, mapping the fleet's existing controls to the [OWASP Top 10 for Agentic Applications 2026](https://genai.owasp.org/resource/owasp-top-10-for-agentic-applications-for-2026/) and explicitly addressing agent-to-agent propagation, unbounded agentic consumption, and over-reliance on agentic decisions.

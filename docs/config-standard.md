@@ -83,7 +83,79 @@ implement redaction or merge); they are the deploy system's responsibility.
   echoed. The operator types a new value to set or change the secret;
   leaving it blank preserves the existing value.
 
-### 4. What `environment:` is for
+### 4. Advanced settings flag
+
+A per-setting **`advanced`** annotation (boolean, default `false`) lets the
+deploy UI hide rarely-changed or expert-only settings behind a "Show advanced
+settings" toggle — off by default. It is **purely presentational**: marking a
+field `advanced: true` does not change validation, serialization, or runtime
+behavior in any way. The application never sees the flag; only the deploy UI
+consumes it from the committed `config/config.schema.json`.
+
+**Model layer — component code**
+
+Annotate a field as advanced with pydantic's `Field(json_schema_extra=…)`:
+
+```python
+from pydantic import BaseModel, Field
+
+class MailConfig(BaseModel):
+    log_level: LogLevel = LogLevel.info
+    connection_pool_size: int = Field(
+        default=10,
+        json_schema_extra={"advanced": True},
+    )
+```
+
+The library emits this into the JSON Schema as a top-level property on the
+field's schema object:
+
+```json
+{
+  "properties": {
+    "log_level": {"type": "string", "enum": ["info", "debug"], "default": "info"},
+    "connection_pool_size": {
+      "type": "integer",
+      "default": 10,
+      "advanced": true
+    }
+  }
+}
+```
+
+**Deploy-UI layer — central-deploy Configure screen**
+
+- **Hidden by default.** Every field with `"advanced": true` is hidden when the
+  "Show advanced settings" toggle is off. Fields without the flag (or with
+  `"advanced": false`) are always visible — schemas without the flag behave
+  exactly as today (all settings visible).
+- **Fully editable when revealed.** Toggling "Show advanced settings" on reveals
+  the advanced fields inline with their typed inputs (number, bool, dropdown,
+  etc.). There is no separate "advanced mode" form — the toggle only controls
+  visibility; once visible, advanced fields are first-class settings.
+- **Backward compatible.** Omitting `advanced` from a field's schema is
+  equivalent to `"advanced": false`. Existing schemas require no changes and
+  render identically to before.
+
+**Classifying settings (guidance for fleet repos)**
+
+These heuristics help decide which fields to mark `advanced: true`:
+
+- **Rarely changed.** A setting the operator sets once at onboarding and never
+  touches again (e.g. a worker thread count, a database pool size) is a good
+  candidate.
+- **Expert-only.** Settings whose meaning requires deep knowledge of the
+  component's internals (e.g. a GC tuning knob, a buffer size in bytes).
+- **Safe default exists.** If the default is sensible for nearly all deployments
+  and changing it is purely an optimisation, mark it advanced. If the operator
+  *must* set it for the component to work, keep it visible.
+- **Conversely, keep visible:** anything the operator must set for the component
+  to function (e.g. a hostname, an external URL), anything they will
+  deliberately change day-to-day (e.g. a log level), and anything that is a
+  security boundary (e.g. a secret field — `SecretStr` is already masked, and
+  hiding it behind a second toggle risks the operator missing it).
+
+### 5. What `environment:` is for
 
 The one-file rule means `environment:` in a compose file is **never** a config
 channel for first-party code. Three cases:
@@ -102,7 +174,7 @@ channel for first-party code. Three cases:
   channels for the same value is precisely the "why is this value what it is"
   ambiguity the one-file rule exists to kill.
 
-### 5. Calling another service: a `<name>_url` config field
+### 6. Calling another service: a `<name>_url` config field
 
 A component that calls another service declares its dependency's base URL as
 an **ordinary config field** — `<name>_url`, typed in the model, with a
@@ -204,3 +276,25 @@ cutover** — no deprecated aliases or compatibility shims.
 
 Each component migrates in one step — there's no dual-config transition to
 manage.
+
+### Advanced-flag rollout
+
+The `advanced` flag is backward-compatible by design — schemas without it
+behave exactly as before (all fields visible). Fleet repos can adopt it
+incrementally:
+
+1. The flag is defined here and available in the library's JSON Schema
+   output immediately (any `Field(json_schema_extra={"advanced": True})` on a
+   pydantic model is passed through to `config.schema.json`).
+2. **central-deploy** implements the toggle in its Configure screen (separate
+   ticket). Until that toggle ships, `"advanced": true` annotations in
+   schemas are harmless — they are an unrecognised JSON Schema keyword that
+   existing deploy-UI versions ignore.
+3. **Fleet repos** classify their settings per the heuristics in §4. Each
+   repo adds `json_schema_extra={"advanced": True}` to the relevant fields,
+   regenerates `config/config.schema.json`, and the CI drift check confirms
+   the schema is in sync. This is per-repo follow-up work — the flag is
+   optional and repos can adopt it on their own schedule.
+4. There is no data migration, no breaking change, and no flag day. An
+   unmarked field is visible; a marked field is hidden behind the toggle
+   once central-deploy supports it; nothing else changes.

@@ -357,6 +357,7 @@ CI runs `pre-commit run --all-files` so the hooks and the gates can't drift.
 ## Docs
 
 **Every repo publishes its docs site**: `mkdocs` (material theme), built and
-deployed to GitHub Pages by the shared `python-docs.yml` reusable workflow,
-gated in CI by `mkdocs build --strict`. The fleet's sites are indexed on the
-standards' [fleet page](fleet.md).
+deployed to GitHub Pages by the shared `python-docs.yml` reusable workflow.
+The build is gated by the [MkDocs build integrity](mkdocs-build.md) standard
+(`--strict` mode and a `validation:` block). The fleet's sites are indexed on
+the standards' [fleet page](fleet.md).

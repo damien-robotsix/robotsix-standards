@@ -1353,7 +1353,7 @@ Enable them in every Python repo's <code>pyproject.toml</code>:</p>
 
 <span class="k">[tool.ruff.lint.per-file-ignores]</span>
 <span class="s2">&quot;tests/**&quot;</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;D&quot;</span><span class="p">]</span>
-<span class="s2">&quot;docs/**&quot;</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;D&quot;</span><span class="p">]</span>
+<span class="s2">&quot;*__init__.py&quot;</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;D104&quot;</span><span class="p">]</span>
 </code></pre></div>
 <ul>
 <li><strong><code>extend-select = ["D"]</code></strong> enables the full pydocstyle rule set on top of
@@ -1373,11 +1373,11 @@ Enable them in every Python repo's <code>pyproject.toml</code>:</p>
 <tbody>
 <tr>
 <td><code>D105</code></td>
-<td><code>__init__</code> methods are self-documenting by their parameters</td>
+<td>Magic methods (<code>__str__</code>, <code>__eq__</code>, etc.) are too noisy to require docstrings</td>
 </tr>
 <tr>
 <td><code>D107</code></td>
-<td>Already covered by the class docstring</td>
+<td><code>__init__</code> is redundant when the class docstring covers its behaviour</td>
 </tr>
 <tr>
 <td><code>D205</code></td>
@@ -1385,13 +1385,14 @@ Enable them in every Python repo's <code>pyproject.toml</code>:</p>
 </tr>
 <tr>
 <td><code>D415</code></td>
-<td>Google style allows non-imperative first lines for some sections</td>
+<td>Overly pedantic — Google style allows short docstrings without a period</td>
 </tr>
 </tbody>
 </table>
 <ul>
-<li><strong><code>per-file-ignores</code></strong> exempts <code>tests/</code> and <code>docs/</code> from docstring
-  enforcement — tests are self-documenting, and docs are prose.</li>
+<li><strong><code>per-file-ignores</code></strong> exempts <code>tests/</code> (test helpers are
+  self-documenting) and <code>__init__.py</code> files (D104 fires on every
+  package; package docstrings are optional).</li>
 </ul>
 <p>The <code>convention = "google"</code> setting tells pydocstyle to expect <code>Args:</code>,
 <code>Returns:</code>, and <code>Raises:</code> section headers (not NumPy-style <code>Parameters</code>

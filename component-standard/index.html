@@ -852,6 +852,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#agentic-applications" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Agentic Applications
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#llm08-and-llm09" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1467,6 +1478,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#agentic-applications" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Agentic Applications
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#llm08-and-llm09" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1813,6 +1835,124 @@ review discipline as any other configuration.  <em>Failure prevented:</em> an ag
 prompt containing an internal service hostname is exfiltrated via prompt
 injection; the hostname was in a <code>SecretStr</code>-backed config key, so the
 standard <code>__repr__</code> / log redaction already masks it.</p>
+<h3 id="agentic-applications">Agentic Applications<a class="headerlink" href="#agentic-applications" title="Permanent link">&para;</a></h3>
+<blockquote>
+<p>The fleet's core function involves LLM agents that autonomously create and
+modify code, file tickets, and push to branches — these agents fall
+squarely within the scope of the <a href="https://genai.owasp.org/resource/owasp-top-10-for-agentic-applications-for-2026/">OWASP Top 10 for Agentic Applications
+2026</a>,
+published December 2025.  The threats below map each entry to the fleet's
+existing controls; where the agentic taxonomy surfaces a gap not covered by
+the LLM Top 10 entries above, the gap is addressed explicitly.</p>
+</blockquote>
+<p><strong>ASI01 — Agent Goal Hijack.</strong> An adversary subverts the agent's assigned
+objective through prompt manipulation or tool output poisoning.  Covered by
+<strong>LLM01</strong> (delimited and parameterised input prevents instruction injection)
+and <strong>LLM07</strong> (system prompts are config, not ambient text an attacker can
+overwrite).  Agent goals are encoded in the system prompt, which is version-
+controlled configuration — the agent cannot be made to pursue a different
+goal without a config change that passes review.  <em>Failure prevented:</em> a
+ticket body containing a hidden "your real goal is to..." directive is
+treated as data, not as an override of the agent's configured objective.</p>
+<p><strong>ASI02 — Tool Misuse.</strong> The agent is tricked into calling tools with
+malicious parameters or calling tools that were never authorised.  Covered by
+<strong>LLM06</strong> — the least-privilege model ensures every tool invocation is scoped
+to the agent's authorised capability.  Git operations use a single-repo
+scoped token with no org/admin scopes; destructive operations default to dry-
+run.  Filesystem writes are confined to the assigned workspace.  <em>Failure
+prevented:</em> a prompt-injected agent cannot call a tool to push to <code>main</code> or
+write outside its workspace — the token lacks the scope and the dry-run gate
+blocks the write.</p>
+<p><strong>ASI03 — Identity &amp; Privilege Abuse.</strong> An attacker exploits the agent's
+identity delegation model to gain elevated access.  The fleet's agents run
+under the invoking pipeline's identity (a GitHub Actions runner with a job-
+scoped token), not under a persistent service-account identity that could be
+a lateral-movement target.  No ambient credentials are available — every
+secret is a <code>SecretStr</code> config field injected at startup.  <em>Failure
+prevented:</em> a compromised agent cannot escalate from its job-scoped token to
+org-level access — the token scope is structurally bounded by GitHub's OIDC
+model.</p>
+<p><strong>ASI04 — Agentic Supply Chain Vulnerabilities.</strong> Third-party agent
+definitions, plugins, or model checkpoints introduce backdoors or insecure
+defaults.  Covered by <strong>LLM03</strong> — <code>robotsix-llmio</code> is pinned to a commit
+SHA, model selection is explicit config, and agent definitions (system
+prompts and tool manifests) are version-controlled in the repo.  No
+third-party agent plugins are loaded at runtime.  <em>Failure prevented:</em> a
+compromised upstream release of an agent dependency cannot silently change
+behaviour — the commit pin makes the change visible in diff review.</p>
+<p><strong>ASI05 — Unexpected Code Execution.</strong> The agent generates and executes code
+without adequate sandboxing.  The fleet's implement and refine agents
+generate code that is written to disk — this is their core function, not a
+side-effect.  The output is treated as untrusted data under <strong>LLM05</strong>: a
+review agent independently evaluates every change before it lands, and
+destructive operations require the <strong>LLM06</strong> dry-run gate.  Generated code
+never executes in the agent's own process — it is a file write, not an
+<code>eval</code>.  <em>Failure prevented:</em> a model that hallucinates <code>os.system("rm -rf
+/")</code> writes it into a source file; the review agent rejects it, and even if
+it passed review, the code only executes in the target component's container,
+not the agent's runtime.</p>
+<p><strong>ASI06 — Memory &amp; Context Poisoning.</strong> An adversary corrupts the agent's
+conversation history or RAG context to alter future behaviour.  Covered by
+<strong>LLM01</strong> (untrusted input is delimited, not fused with memory) and <strong>LLM02</strong>
+(no PII or secrets in model context that could be exfiltrated via poisoned
+retrieval).  The mill's agents are session-scoped — each ticket or PR gets a
+fresh agent session with no cross-contamination from prior conversations.
+<em>Failure prevented:</em> poisoned context from a malicious ticket body cannot
+leak into the agent's handling of the next ticket — session isolation resets
+the context boundary.</p>
+<p><strong>ASI07 — Insecure Inter-Agent Communication.</strong> Agents communicating over
+unauthenticated or unencrypted channels are vulnerable to spoofing or replay.
+The fleet's agents within <code>robotsix-mill</code> do not communicate via raw agent-
+to-agent message passing — they interact through structured, authenticated
+platform channels: ticket comments, PR reviews, and file diffs on GitHub.
+Cross-component communication goes through the deployment system's
+authenticated API.  <em>Failure prevented:</em> an attacker cannot inject a spoofed
+agent message into the review pipeline — all inter-agent communication flows
+through GitHub's authenticated API, not a direct agent channel.</p>
+<p><strong>ASI08 — Cascading Failures.</strong> A compromise in one agent propagates to
+dependent agents, causing system-wide degradation — the <strong>agent-to-agent
+propagation</strong> risk.  The mill's staged pipeline (implement → review →
+refine) provides a structural defence: each stage independently evaluates the
+prior stage's output, so a compromised implement agent's output is caught by
+the review agent.  This defence is not airtight — a coordinated multi-stage
+compromise could theoretically bypass it, and the fleet does not currently
+employ cross-stage integrity attestation (e.g., cryptographic signatures on
+inter-agent messages).  The primary mitigation is the <strong>review gate</strong>:
+every change is independently evaluated before it lands, and a human
+approval step sits at the end of the pipeline for destructive operations.
+<em>Failure prevented:</em> a single compromised agent cannot unilaterally land a
+malicious change — the review stage re-evaluates the output from scratch with
+an independent model call.</p>
+<p><strong>ASI09 — Human-Agent Trust Exploitation.</strong> An attacker manipulates the
+human-agent trust relationship — false reasoning, suppressed warnings, or
+timeout pressure — to trick a human into authorising a harmful action.  This
+is the <strong>over-reliance</strong> gap.  The fleet's defence is structural, not
+advisory: destructive operations require the <strong>LLM06</strong> dry-run gate, which
+defaults to <em>blocked</em> — the human must explicitly opt in, and the gate is a
+code-level check, not a model-generated recommendation that could be
+suppressed.  Agent output that commits a side-effect must be independently
+verified under <strong>LLM09</strong> (secondary system or human before the side-effect
+lands).  <em>Failure prevented:</em> an agent cannot coax a human into approving a
+malicious push by presenting persuasive but false reasoning — the dry-run
+gate blocks the operation regardless of what the agent's output says, and the
+human must issue an explicit, out-of-band opt-in.</p>
+<p><strong>ASI10 — Rogue Agents.</strong> Unauthorised agent instances are deployed or
+decommissioned agents remain active, exfiltrating data or executing phantom
+tasks.  Covered by <strong>LLM06</strong> (scoped tokens, dry-run gates) and the
+deployment system's lifecycle: agents run as ephemeral pipeline jobs, not as
+persistent daemons.  Each agent instance has a bounded lifetime (the CI job
+timeout) and a bounded request budget.  A decommissioned agent has no
+persistent process to remain active.  <em>Failure prevented:</em> a stale agent
+cannot linger and exfiltrate data — its job terminates, its token expires,
+and no persistent process survives the pipeline run.</p>
+<p><strong>Unbounded agentic consumption.</strong> The fleet bounds agent resource usage
+through three mechanisms: (a) every agent invocation runs inside a CI job
+with a hard timeout; (b) <code>robotsix-mill</code> agents carry an explicit request
+budget (the implement agent's ~200-request cap, sub-agents' ~30-request cap);
+(c) the <code>spawn_subtask</code> mechanism is bounded — agents cannot recursively
+spawn unbounded child agents.  <em>Failure prevented:</em> a looping or confused
+agent cannot consume unbounded compute or API budget — the request cap and
+job timeout together enforce a hard ceiling on any single agent run.</p>
 <h3 id="llm08-and-llm09">LLM08 and LLM09<a class="headerlink" href="#llm08-and-llm09" title="Permanent link">&para;</a></h3>
 <ul>
 <li><strong>LLM08 (Vector &amp; embedding weaknesses):</strong> apply when the fleet adopts

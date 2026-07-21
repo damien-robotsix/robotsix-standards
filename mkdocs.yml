@@ -32,6 +32,16 @@ markdown_extensions:
   - toc:
       permalink: true
 
+validation:
+  nav:
+    not_found: warn
+    omitted_files: info
+  links:
+    not_found: warn
+    anchors: warn
+    absolute_links: warn
+    unrecognized_links: warn
+
 plugins:
   - search
   - htmlproofer:
@@ -52,6 +62,7 @@ nav:
       - Docstring convention: docstrings.md
       - Hypothesis testing: hypothesis.md
       - Markdown linting: markdown-linting.md
+      - MkDocs build integrity: mkdocs-build.md
       - JavaScript practices: javascript.md
       - ROS 2 practices: ros2.md
   - Deployable components:

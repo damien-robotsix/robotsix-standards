@@ -47,6 +47,7 @@
 
 ## 0.0.0 (unreleased)
 
+- New [MkDocs build integrity](docs/mkdocs-build.md) standard: every fleet repo that publishes an MkDocs site must build with `--strict` and include a `validation:` block that promotes link and anchor checks to errors. Documents the known limitation with mkdocstrings autorefs.
 - Add `advanced` boolean flag to the config schema standard — a per-setting annotation
   (default `false`) that lets the deploy UI hide rarely-changed settings behind a
   "Show advanced settings" toggle. The flag is purely presentational and backward

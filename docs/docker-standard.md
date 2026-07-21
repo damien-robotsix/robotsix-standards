@@ -131,7 +131,7 @@ component:
   `sha-<short>`.
 - **Attestations:** SBOM + build provenance (`provenance: mode=max`,
   `sbom: true`), signed via OIDC.
-- **Scan:** a Trivy vulnerability scan with SARIF uploaded to Code Scanning.
+- **Scan:** a Trivy vulnerability scan with findings uploaded as a workflow artifact.
 
 ## Registry & tags
 
@@ -158,16 +158,17 @@ workflow enforces:
   loss well before the gigabyte mark. Only add `cache-from`/`cache-to` after
   timing both paths on the actual image.
 - **Gate policy: block on fixable findings only** (`severity: CRITICAL,HIGH`,
-  `ignore-unfixed: true`, `exit-code: 1`, SARIF uploaded to Code Scanning). A
+  `ignore-unfixed: true`, `exit-code: 1`, findings uploaded as a workflow
+  artifact). A
   red gate then always means "a fixed version exists, take it". Base-image
   CVEs with **no released fix** are unactionable by a PR author (the package
   can be neither upgraded nor removed) and must not block merges; they stay
-  visible through the SARIF upload and the weekly rescan.
+  visible through the findings artifact and the weekly rescan.
 - A finding that **has** a fix but genuinely doesn't apply is suppressed via a
   **curated `.trivyignore`** — every entry carries a comment saying why it
   doesn't apply. Never blanket-ignore; the file is the audit trail.
 - A **weekly scheduled rescan** of the published `:main` image (report-only,
-  SARIF to Code Scanning) complements the PR gate — it catches CVEs disclosed
+  artifact) complements the PR gate — it catches CVEs disclosed
   after the image was built.
 
 ## Deploy — updates are deliberate

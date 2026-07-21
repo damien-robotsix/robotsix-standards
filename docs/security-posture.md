@@ -6,7 +6,7 @@
 
 **Content-only repos** — repos that contain only documentation, standards, or
 static content (no `src/` directory, no container image) — are exempt from
-code-analysis gates (CodeQL, dependency-review, SBOM, CVE audit) and from the
+code-analysis gates (Semgrep, dependency-review, SBOM, CVE audit) and from the
 zizmor workflow audit (gate 4b). The zizmor checks (script injection via
 `${{ }}`, untrusted `pull_request_target` checkout, overly broad permissions)
 are lower-risk for a repo with no deployable artifacts and few, simple
@@ -69,14 +69,15 @@ and why it was insufficient.
 Each gate below is a **required, self-enforcing** control. A repo that ships a
 container image additionally meets the **container-image** gates.
 
-### 1. SAST — CodeQL
+### 1. SAST — Semgrep
 
-CodeQL analysis runs on every PR and every push to `main`, via the shared
-security workflow from robotsix-github-workflows. Results are uploaded as SARIF
-to GitHub Code Scanning.
+Semgrep analysis runs on every PR and every push to `main`, via the shared
+security workflow from robotsix-github-workflows. Findings are published as a
+workflow artifact and surfaced through the fleet dashboard — there is no
+dependency on GitHub Code Scanning or the GitHub Security tab.
 
-- **How to verify:** the repo's CI workflow calls the shared CodeQL workflow.
-  The Code Scanning tab shows recent analyses for the default branch.
+- **How to verify:** the repo's CI workflow calls the shared Semgrep workflow.
+  The latest CI run on the default branch uploads a Semgrep findings artifact.
 - **Failure prevented:** a vulnerability that a static-analysis rule would
   catch (SQL injection, path traversal, hardcoded credentials) merges and
   ships.
@@ -299,7 +300,7 @@ dashboard-watching:
 
 | Gate | Check |
 |---|---|
-| CodeQL* | CI calls shared CodeQL workflow; Code Scanning tab has recent analyses |
+| Semgrep* | CI calls shared Semgrep workflow; latest CI run uploads Semgrep findings artifact |
 | Dependency review* | CI calls shared `dependency-review` workflow; Dependency graph enabled |
 | Dependabot | `.github/dependabot.yml` covers required ecosystems; recent update PRs |
 | SHA-pinned actions | `grep -r 'uses:' .github/workflows/` — no mutable refs on third-party actions |

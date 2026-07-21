@@ -20,7 +20,7 @@ be auditable.
 
 **What it checks:**
 
-- **Completeness.** Every security area relevant to the fleet (CodeQL, secret
+- **Completeness.** Every security area relevant to the fleet (Semgrep, secret
   scanning, push protection, dependency-review, SBOM, Dependabot ecosystems,
   SHA-pinned actions, least-privilege permissions, image scanning, etc.) must
   have a named, discoverable requirement in the standards.

@@ -47,6 +47,7 @@
 
 ## 0.0.0 (unreleased)
 
+- .github/dependabot.yml: removed duplicate old Dependabot entries so the file contains only the three standardized grouped configurations
 - Added **Agentic Applications** security subsection to `docs/component-standard.md`, mapping the fleet's existing controls to the [OWASP Top 10 for Agentic Applications 2026](https://genai.owasp.org/resource/owasp-top-10-for-agentic-applications-for-2026/) and explicitly addressing agent-to-agent propagation, unbounded agentic consumption, and over-reliance on agentic decisions.
 - Add "Exception hierarchy" convention to Python standard: every package
   defines a root `<Package>Error` base class, all domain exceptions

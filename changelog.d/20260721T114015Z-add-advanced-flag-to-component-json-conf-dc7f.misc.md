@@ -1,0 +1,1 @@
+Add "advanced" flag to component JSON config schema to hide advanced settings behind a UI toggle

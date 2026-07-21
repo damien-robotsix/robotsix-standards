@@ -534,6 +534,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#requirements" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Requirements
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#enforcement" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1184,6 +1195,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#requirements" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Requirements
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#enforcement" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1250,25 +1272,71 @@ sections render as empty or are omitted entirely with no build warning.</p>
 failure mode is invisible until someone reads the docs site and notices
 missing content.  Standardising on Google style prevents the silent-drop
 failure across the fleet.</p>
+<h2 id="requirements">Requirements<a class="headerlink" href="#requirements" title="Permanent link">&para;</a></h2>
+<ul>
+<li>Every <strong>public module</strong>, <strong>public class</strong>, and <strong>public function</strong> MUST
+  have a docstring.</li>
+<li>Public functions that accept parameters MUST include an <code>Args:</code> section
+  documenting every parameter.</li>
+<li>Public functions that return a value MUST include a <code>Returns:</code> section.</li>
+<li>Sections MUST follow the Google style: <code>Args:</code>, <code>Returns:</code>, <code>Raises:</code> (not
+  NumPy-style <code>Parameters</code>, <code>Returns</code>, <code>Raises</code>).</li>
+</ul>
+<p><em>Failure prevented:</em> a public function with a <code>timeout</code> parameter but no
+<code>Args:</code> block renders with a blank parameter table on the docs site; mkdocstrings
+cannot generate documentation for a parameter it cannot find in the docstring.</p>
 <h2 id="enforcement">Enforcement<a class="headerlink" href="#enforcement" title="Permanent link">&para;</a></h2>
 <p>Ruff's pydocstyle rules (<code>D</code>) enforce the convention at lint time.
-Enable the following rules in every Python repo's <code>pyproject.toml</code>:</p>
+Enable them in every Python repo's <code>pyproject.toml</code>:</p>
 <div class="highlight"><pre><span></span><code><span class="k">[tool.ruff.lint]</span>
-<span class="n">select</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span>
-<span class="w">    </span><span class="c1"># ... existing rules ...</span>
-<span class="w">    </span><span class="s2">&quot;D100&quot;</span><span class="p">,</span><span class="w">   </span><span class="c1"># public module missing docstring</span>
-<span class="w">    </span><span class="s2">&quot;D101&quot;</span><span class="p">,</span><span class="w">   </span><span class="c1"># public class missing docstring</span>
-<span class="w">    </span><span class="s2">&quot;D103&quot;</span><span class="p">,</span><span class="w">   </span><span class="c1"># public function missing docstring</span>
-<span class="w">    </span><span class="s2">&quot;D400&quot;</span><span class="p">,</span><span class="w">   </span><span class="c1"># first line must end with a period</span>
-<span class="w">    </span><span class="s2">&quot;D412&quot;</span><span class="p">,</span><span class="w">   </span><span class="c1"># no blank line between section header and content</span>
-<span class="w">    </span><span class="s2">&quot;D413&quot;</span><span class="p">,</span><span class="w">   </span><span class="c1"># missing blank line after last section</span>
-<span class="w">    </span><span class="s2">&quot;D414&quot;</span><span class="p">,</span><span class="w">   </span><span class="c1"># section has no content</span>
-<span class="w">    </span><span class="s2">&quot;D417&quot;</span><span class="p">,</span><span class="w">   </span><span class="c1"># missing argument description</span>
-<span class="p">]</span>
+<span class="n">extend-select</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;D&quot;</span><span class="p">]</span>
+<span class="n">ignore</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;D105&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;D107&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;D205&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;D415&quot;</span><span class="p">]</span>
 
 <span class="k">[tool.ruff.lint.pydocstyle]</span>
 <span class="n">convention</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;google&quot;</span>
+
+<span class="k">[tool.ruff.lint.per-file-ignores]</span>
+<span class="s2">&quot;tests/**&quot;</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;D&quot;</span><span class="p">]</span>
+<span class="s2">&quot;docs/**&quot;</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;D&quot;</span><span class="p">]</span>
 </code></pre></div>
+<ul>
+<li><strong><code>extend-select = ["D"]</code></strong> enables the full pydocstyle rule set on top of
+  whatever rules the repo already selects.  This is preferred over <code>select
+  = ["...", "D100", "D101", ...]</code> because the <code>D</code> prefix pulls in every
+  pydocstyle rule now and any future rules ruff adds under <code>D</code> —
+  no manual update needed.</li>
+<li><strong><code>ignore</code></strong> suppresses four noisy rules:</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>Rule</th>
+<th>Reason</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>D105</code></td>
+<td><code>__init__</code> methods are self-documenting by their parameters</td>
+</tr>
+<tr>
+<td><code>D107</code></td>
+<td>Already covered by the class docstring</td>
+</tr>
+<tr>
+<td><code>D205</code></td>
+<td>Conflicts with <code>D400</code> (first-line period); <code>D400</code> takes precedence</td>
+</tr>
+<tr>
+<td><code>D415</code></td>
+<td>Google style allows non-imperative first lines for some sections</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><strong><code>per-file-ignores</code></strong> exempts <code>tests/</code> and <code>docs/</code> from docstring
+  enforcement — tests are self-documenting, and docs are prose.</li>
+</ul>
 <p>The <code>convention = "google"</code> setting tells pydocstyle to expect <code>Args:</code>,
 <code>Returns:</code>, and <code>Raises:</code> section headers (not NumPy-style <code>Parameters</code>
 etc.), so rule D417 checks for argument documentation in the correct

@@ -1,0 +1,1 @@
+component-standard.md: address OWASP Top 10 for Agentic Applications 2026

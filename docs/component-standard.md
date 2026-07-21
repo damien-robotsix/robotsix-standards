@@ -263,6 +263,135 @@ prompt containing an internal service hostname is exfiltrated via prompt
 injection; the hostname was in a `SecretStr`-backed config key, so the
 standard `__repr__` / log redaction already masks it.
 
+### Agentic Applications
+
+> The fleet's core function involves LLM agents that autonomously create and
+> modify code, file tickets, and push to branches — these agents fall
+> squarely within the scope of the [OWASP Top 10 for Agentic Applications
+> 2026](https://genai.owasp.org/resource/owasp-top-10-for-agentic-applications-for-2026/),
+> published December 2025.  The threats below map each entry to the fleet's
+> existing controls; where the agentic taxonomy surfaces a gap not covered by
+> the LLM Top 10 entries above, the gap is addressed explicitly.
+
+**ASI01 — Agent Goal Hijack.** An adversary subverts the agent's assigned
+objective through prompt manipulation or tool output poisoning.  Covered by
+**LLM01** (delimited and parameterised input prevents instruction injection)
+and **LLM07** (system prompts are config, not ambient text an attacker can
+overwrite).  Agent goals are encoded in the system prompt, which is version-
+controlled configuration — the agent cannot be made to pursue a different
+goal without a config change that passes review.  *Failure prevented:* a
+ticket body containing a hidden "your real goal is to..." directive is
+treated as data, not as an override of the agent's configured objective.
+
+**ASI02 — Tool Misuse.** The agent is tricked into calling tools with
+malicious parameters or calling tools that were never authorised.  Covered by
+**LLM06** — the least-privilege model ensures every tool invocation is scoped
+to the agent's authorised capability.  Git operations use a single-repo
+scoped token with no org/admin scopes; destructive operations default to dry-
+run.  Filesystem writes are confined to the assigned workspace.  *Failure
+prevented:* a prompt-injected agent cannot call a tool to push to `main` or
+write outside its workspace — the token lacks the scope and the dry-run gate
+blocks the write.
+
+**ASI03 — Identity & Privilege Abuse.** An attacker exploits the agent's
+identity delegation model to gain elevated access.  The fleet's agents run
+under the invoking pipeline's identity (a GitHub Actions runner with a job-
+scoped token), not under a persistent service-account identity that could be
+a lateral-movement target.  No ambient credentials are available — every
+secret is a `SecretStr` config field injected at startup.  *Failure
+prevented:* a compromised agent cannot escalate from its job-scoped token to
+org-level access — the token scope is structurally bounded by GitHub's OIDC
+model.
+
+**ASI04 — Agentic Supply Chain Vulnerabilities.** Third-party agent
+definitions, plugins, or model checkpoints introduce backdoors or insecure
+defaults.  Covered by **LLM03** — `robotsix-llmio` is pinned to a commit
+SHA, model selection is explicit config, and agent definitions (system
+prompts and tool manifests) are version-controlled in the repo.  No
+third-party agent plugins are loaded at runtime.  *Failure prevented:* a
+compromised upstream release of an agent dependency cannot silently change
+behaviour — the commit pin makes the change visible in diff review.
+
+**ASI05 — Unexpected Code Execution.** The agent generates and executes code
+without adequate sandboxing.  The fleet's implement and refine agents
+generate code that is written to disk — this is their core function, not a
+side-effect.  The output is treated as untrusted data under **LLM05**: a
+review agent independently evaluates every change before it lands, and
+destructive operations require the **LLM06** dry-run gate.  Generated code
+never executes in the agent's own process — it is a file write, not an
+`eval`.  *Failure prevented:* a model that hallucinates `os.system("rm -rf
+/")` writes it into a source file; the review agent rejects it, and even if
+it passed review, the code only executes in the target component's container,
+not the agent's runtime.
+
+**ASI06 — Memory & Context Poisoning.** An adversary corrupts the agent's
+conversation history or RAG context to alter future behaviour.  Covered by
+**LLM01** (untrusted input is delimited, not fused with memory) and **LLM02**
+(no PII or secrets in model context that could be exfiltrated via poisoned
+retrieval).  The mill's agents are session-scoped — each ticket or PR gets a
+fresh agent session with no cross-contamination from prior conversations.
+*Failure prevented:* poisoned context from a malicious ticket body cannot
+leak into the agent's handling of the next ticket — session isolation resets
+the context boundary.
+
+**ASI07 — Insecure Inter-Agent Communication.** Agents communicating over
+unauthenticated or unencrypted channels are vulnerable to spoofing or replay.
+The fleet's agents within `robotsix-mill` do not communicate via raw agent-
+to-agent message passing — they interact through structured, authenticated
+platform channels: ticket comments, PR reviews, and file diffs on GitHub.
+Cross-component communication goes through the deployment system's
+authenticated API.  *Failure prevented:* an attacker cannot inject a spoofed
+agent message into the review pipeline — all inter-agent communication flows
+through GitHub's authenticated API, not a direct agent channel.
+
+**ASI08 — Cascading Failures.** A compromise in one agent propagates to
+dependent agents, causing system-wide degradation — the **agent-to-agent
+propagation** risk.  The mill's staged pipeline (implement → review →
+refine) provides a structural defence: each stage independently evaluates the
+prior stage's output, so a compromised implement agent's output is caught by
+the review agent.  This defence is not airtight — a coordinated multi-stage
+compromise could theoretically bypass it, and the fleet does not currently
+employ cross-stage integrity attestation (e.g., cryptographic signatures on
+inter-agent messages).  The primary mitigation is the **review gate**:
+every change is independently evaluated before it lands, and a human
+approval step sits at the end of the pipeline for destructive operations.
+*Failure prevented:* a single compromised agent cannot unilaterally land a
+malicious change — the review stage re-evaluates the output from scratch with
+an independent model call.
+
+**ASI09 — Human-Agent Trust Exploitation.** An attacker manipulates the
+human-agent trust relationship — false reasoning, suppressed warnings, or
+timeout pressure — to trick a human into authorising a harmful action.  This
+is the **over-reliance** gap.  The fleet's defence is structural, not
+advisory: destructive operations require the **LLM06** dry-run gate, which
+defaults to *blocked* — the human must explicitly opt in, and the gate is a
+code-level check, not a model-generated recommendation that could be
+suppressed.  Agent output that commits a side-effect must be independently
+verified under **LLM09** (secondary system or human before the side-effect
+lands).  *Failure prevented:* an agent cannot coax a human into approving a
+malicious push by presenting persuasive but false reasoning — the dry-run
+gate blocks the operation regardless of what the agent's output says, and the
+human must issue an explicit, out-of-band opt-in.
+
+**ASI10 — Rogue Agents.** Unauthorised agent instances are deployed or
+decommissioned agents remain active, exfiltrating data or executing phantom
+tasks.  Covered by **LLM06** (scoped tokens, dry-run gates) and the
+deployment system's lifecycle: agents run as ephemeral pipeline jobs, not as
+persistent daemons.  Each agent instance has a bounded lifetime (the CI job
+timeout) and a bounded request budget.  A decommissioned agent has no
+persistent process to remain active.  *Failure prevented:* a stale agent
+cannot linger and exfiltrate data — its job terminates, its token expires,
+and no persistent process survives the pipeline run.
+
+**Unbounded agentic consumption.** The fleet bounds agent resource usage
+through three mechanisms: (a) every agent invocation runs inside a CI job
+with a hard timeout; (b) `robotsix-mill` agents carry an explicit request
+budget (the implement agent's ~200-request cap, sub-agents' ~30-request cap);
+(c) the `spawn_subtask` mechanism is bounded — agents cannot recursively
+spawn unbounded child agents.  *Failure prevented:* a looping or confused
+agent cannot consume unbounded compute or API budget — the request cap and
+job timeout together enforce a hard ceiling on any single agent run.
+
 ### LLM08 and LLM09
 
 - **LLM08 (Vector & embedding weaknesses):** apply when the fleet adopts

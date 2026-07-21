@@ -495,6 +495,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#exception-hierarchy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exception hierarchy
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#tooling-uv" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1295,6 +1306,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#exception-hierarchy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exception hierarchy
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#tooling-uv" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1479,6 +1501,45 @@ in the <a href="../repo-baseline/">repo baseline</a>.</p>
   (<code>robotsix_board_client</code> next to <code>robotsix_board_agent</code> is the exemplar).
   Each extra package registers in <code>modules.yaml</code> like anything else.</li>
 </ul>
+<h2 id="exception-hierarchy">Exception hierarchy<a class="headerlink" href="#exception-hierarchy" title="Permanent link">&para;</a></h2>
+<ul>
+<li><strong>Every package MUST define a single public root exception class</strong>
+  <code>&lt;Package&gt;Error(Exception)</code>. All package-defined exceptions MUST subclass
+  it, directly or transitively. The root MUST be importable from the
+  package's top-level namespace — <code>&lt;package&gt;/errors.py</code> or the package
+  <code>__init__</code>.</li>
+<li><strong>Subsystem sub-roots</strong> (e.g. <code>ImapError</code>, <code>SmtpError</code>) are encouraged
+  where a package has distinct subsystems, and they MUST themselves subclass
+  the package root.</li>
+<li><code>__init__</code> signature is not prescribed — follow the domain's natural shape
+  (a transport error carries a status code; a timeout error carries a
+  duration). The only invariant is the root ancestor.</li>
+</ul>
+<p><strong>Example</strong> for a package <code>robotsix_foo</code>:</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># src/robotsix_foo/errors.py</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">RobotsixFooError</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Base for every robotsix_foo exception.&quot;&quot;&quot;</span>
+
+<span class="k">class</span><span class="w"> </span><span class="nc">ConnectionError</span><span class="p">(</span><span class="n">RobotsixFooError</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Failed to reach the backend.&quot;&quot;&quot;</span>
+
+<span class="k">class</span><span class="w"> </span><span class="nc">TimeoutError</span><span class="p">(</span><span class="n">RobotsixFooError</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Operation exceeded its deadline.&quot;&quot;&quot;</span>
+
+<span class="c1"># src/robotsix_foo/__init__.py</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">robotsix_foo.errors</span><span class="w"> </span><span class="kn">import</span> <span class="n">RobotsixFooError</span>  <span class="c1"># one clean catch-all</span>
+</code></pre></div>
+<p>Callers can then write a single boundary:</p>
+<div class="highlight"><pre><span></span><code><span class="k">try</span><span class="p">:</span>
+    <span class="n">foo</span><span class="o">.</span><span class="n">do_work</span><span class="p">()</span>
+<span class="k">except</span> <span class="n">RobotsixFooError</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;robotsix-foo known error&quot;</span><span class="p">,</span> <span class="n">exc_info</span><span class="o">=</span><span class="n">exc</span><span class="p">)</span>
+</code></pre></div>
+<p><em>Failure prevented:</em> a package with nine domain exceptions each inheriting
+  directly from plain <code>Exception</code> forces every caller to enumerate them
+  (incomplete → uncaught exception) or fall back to a bare <code>except
+  Exception</code>, which swallows unrelated bugs — a caller cannot cleanly
+  separate "a known subsystem error" from "an unexpected failure."</p>
 <h2 id="tooling-uv">Tooling: uv<a class="headerlink" href="#tooling-uv" title="Permanent link">&para;</a></h2>
 <p><strong>uv is the standard tool</strong> for installing, running, and building robotsix
 packages — <code>uv sync</code>, <code>uv add</code>, <code>uv run</code>, <code>uvx</code>, <code>uv build</code>. pip is not a

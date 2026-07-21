@@ -786,10 +786,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#4-what-environment-is-for" class="md-nav__link">
+  <a href="#4-advanced-settings-flag" class="md-nav__link">
     <span class="md-ellipsis">
       
-        4. What environment: is for
+        4. Advanced settings flag
       
     </span>
   </a>
@@ -797,10 +797,21 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#5-calling-another-service-a-name_url-config-field" class="md-nav__link">
+  <a href="#5-what-environment-is-for" class="md-nav__link">
     <span class="md-ellipsis">
       
-        5. Calling another service: a &lt;name&gt;_url config field
+        5. What environment: is for
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#6-calling-another-service-a-name_url-config-field" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. Calling another service: a &lt;name&gt;_url config field
       
     </span>
   </a>
@@ -842,6 +853,23 @@
       
     </span>
   </a>
+  
+    <nav class="md-nav" aria-label="Rollout (incremental, clean cutover)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#advanced-flag-rollout" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Advanced-flag rollout
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -1279,10 +1307,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#4-what-environment-is-for" class="md-nav__link">
+  <a href="#4-advanced-settings-flag" class="md-nav__link">
     <span class="md-ellipsis">
       
-        4. What environment: is for
+        4. Advanced settings flag
       
     </span>
   </a>
@@ -1290,10 +1318,21 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#5-calling-another-service-a-name_url-config-field" class="md-nav__link">
+  <a href="#5-what-environment-is-for" class="md-nav__link">
     <span class="md-ellipsis">
       
-        5. Calling another service: a &lt;name&gt;_url config field
+        5. What environment: is for
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#6-calling-another-service-a-name_url-config-field" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. Calling another service: a &lt;name&gt;_url config field
       
     </span>
   </a>
@@ -1335,6 +1374,23 @@
       
     </span>
   </a>
+  
+    <nav class="md-nav" aria-label="Rollout (incremental, clean cutover)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#advanced-flag-rollout" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Advanced-flag rollout
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -1439,7 +1495,69 @@ implement redaction or merge); they are the deploy system's responsibility.</p>
   echoed. The operator types a new value to set or change the secret;
   leaving it blank preserves the existing value.</li>
 </ul>
-<h3 id="4-what-environment-is-for">4. What <code>environment:</code> is for<a class="headerlink" href="#4-what-environment-is-for" title="Permanent link">&para;</a></h3>
+<h3 id="4-advanced-settings-flag">4. Advanced settings flag<a class="headerlink" href="#4-advanced-settings-flag" title="Permanent link">&para;</a></h3>
+<p>A per-setting <strong><code>advanced</code></strong> annotation (boolean, default <code>false</code>) lets the
+deploy UI hide rarely-changed or expert-only settings behind a "Show advanced
+settings" toggle — off by default. It is <strong>purely presentational</strong>: marking a
+field <code>advanced: true</code> does not change validation, serialization, or runtime
+behavior in any way. The application never sees the flag; only the deploy UI
+consumes it from the committed <code>config/config.schema.json</code>.</p>
+<p><strong>Model layer — component code</strong></p>
+<p>Annotate a field as advanced with pydantic's <code>Field(json_schema_extra=…)</code>:</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">pydantic</span><span class="w"> </span><span class="kn">import</span> <span class="n">BaseModel</span><span class="p">,</span> <span class="n">Field</span>
+
+<span class="k">class</span><span class="w"> </span><span class="nc">MailConfig</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+    <span class="n">log_level</span><span class="p">:</span> <span class="n">LogLevel</span> <span class="o">=</span> <span class="n">LogLevel</span><span class="o">.</span><span class="n">info</span>
+    <span class="n">connection_pool_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">default</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+        <span class="n">json_schema_extra</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;advanced&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">},</span>
+    <span class="p">)</span>
+</code></pre></div>
+<p>The library emits this into the JSON Schema as a top-level property on the
+field's schema object:</p>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;properties&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;log_level&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;string&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;enum&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;info&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;debug&quot;</span><span class="p">],</span><span class="w"> </span><span class="nt">&quot;default&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;info&quot;</span><span class="p">},</span>
+<span class="w">    </span><span class="nt">&quot;connection_pool_size&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;integer&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;default&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">10</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;advanced&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+<p><strong>Deploy-UI layer — central-deploy Configure screen</strong></p>
+<ul>
+<li><strong>Hidden by default.</strong> Every field with <code>"advanced": true</code> is hidden when the
+  "Show advanced settings" toggle is off. Fields without the flag (or with
+  <code>"advanced": false</code>) are always visible — schemas without the flag behave
+  exactly as today (all settings visible).</li>
+<li><strong>Fully editable when revealed.</strong> Toggling "Show advanced settings" on reveals
+  the advanced fields inline with their typed inputs (number, bool, dropdown,
+  etc.). There is no separate "advanced mode" form — the toggle only controls
+  visibility; once visible, advanced fields are first-class settings.</li>
+<li><strong>Backward compatible.</strong> Omitting <code>advanced</code> from a field's schema is
+  equivalent to <code>"advanced": false</code>. Existing schemas require no changes and
+  render identically to before.</li>
+</ul>
+<p><strong>Classifying settings (guidance for fleet repos)</strong></p>
+<p>These heuristics help decide which fields to mark <code>advanced: true</code>:</p>
+<ul>
+<li><strong>Rarely changed.</strong> A setting the operator sets once at onboarding and never
+  touches again (e.g. a worker thread count, a database pool size) is a good
+  candidate.</li>
+<li><strong>Expert-only.</strong> Settings whose meaning requires deep knowledge of the
+  component's internals (e.g. a GC tuning knob, a buffer size in bytes).</li>
+<li><strong>Safe default exists.</strong> If the default is sensible for nearly all deployments
+  and changing it is purely an optimisation, mark it advanced. If the operator
+  <em>must</em> set it for the component to work, keep it visible.</li>
+<li><strong>Conversely, keep visible:</strong> anything the operator must set for the component
+  to function (e.g. a hostname, an external URL), anything they will
+  deliberately change day-to-day (e.g. a log level), and anything that is a
+  security boundary (e.g. a secret field — <code>SecretStr</code> is already masked, and
+  hiding it behind a second toggle risks the operator missing it).</li>
+</ul>
+<h3 id="5-what-environment-is-for">5. What <code>environment:</code> is for<a class="headerlink" href="#5-what-environment-is-for" title="Permanent link">&para;</a></h3>
 <p>The one-file rule means <code>environment:</code> in a compose file is <strong>never</strong> a config
 channel for first-party code. Three cases:</p>
 <ul>
@@ -1457,7 +1575,7 @@ channel for first-party code. Three cases:</p>
   channels for the same value is precisely the "why is this value what it is"
   ambiguity the one-file rule exists to kill.</li>
 </ul>
-<h3 id="5-calling-another-service-a-name_url-config-field">5. Calling another service: a <code>&lt;name&gt;_url</code> config field<a class="headerlink" href="#5-calling-another-service-a-name_url-config-field" title="Permanent link">&para;</a></h3>
+<h3 id="6-calling-another-service-a-name_url-config-field">6. Calling another service: a <code>&lt;name&gt;_url</code> config field<a class="headerlink" href="#6-calling-another-service-a-name_url-config-field" title="Permanent link">&para;</a></h3>
 <p>A component that calls another service declares its dependency's base URL as
 an <strong>ordinary config field</strong> — <code>&lt;name&gt;_url</code>, typed in the model, with a
 sensible localhost default for dev — and the operator sets the real value in
@@ -1578,6 +1696,27 @@ cutover</strong> — no deprecated aliases or compatibility shims.</p>
 </ol>
 <p>Each component migrates in one step — there's no dual-config transition to
 manage.</p>
+<h3 id="advanced-flag-rollout">Advanced-flag rollout<a class="headerlink" href="#advanced-flag-rollout" title="Permanent link">&para;</a></h3>
+<p>The <code>advanced</code> flag is backward-compatible by design — schemas without it
+behave exactly as before (all fields visible). Fleet repos can adopt it
+incrementally:</p>
+<ol>
+<li>The flag is defined here and available in the library's JSON Schema
+   output immediately (any <code>Field(json_schema_extra={"advanced": True})</code> on a
+   pydantic model is passed through to <code>config.schema.json</code>).</li>
+<li><strong>central-deploy</strong> implements the toggle in its Configure screen (separate
+   ticket). Until that toggle ships, <code>"advanced": true</code> annotations in
+   schemas are harmless — they are an unrecognised JSON Schema keyword that
+   existing deploy-UI versions ignore.</li>
+<li><strong>Fleet repos</strong> classify their settings per the heuristics in §4. Each
+   repo adds <code>json_schema_extra={"advanced": True}</code> to the relevant fields,
+   regenerates <code>config/config.schema.json</code>, and the CI drift check confirms
+   the schema is in sync. This is per-repo follow-up work — the flag is
+   optional and repos can adopt it on their own schedule.</li>
+<li>There is no data migration, no breaking change, and no flag day. An
+   unmarked field is visible; a marked field is hidden behind the toggle
+   once central-deploy supports it; nothing else changes.</li>
+</ol>
 
 
 

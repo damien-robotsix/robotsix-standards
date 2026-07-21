@@ -1769,7 +1769,7 @@ production. Full detail: <a href="../http-error-envelope/">HTTP error envelope</
   any other secret; at startup the app exports them to the <code>LANGFUSE_*</code>
   process environment the SDK expects, <em>before</em> the SDK initializes. No
   tracing credentials in compose <code>environment:</code> (see the config standard's
-  <a href="../config-standard/#4-what-environment-is-for"><code>environment:</code> rule</a>).
+  <a href="../config-standard/#5-what-environment-is-for"><code>environment:</code> rule</a>).
   A subsystem's project gets its <strong>own</strong> credential fields — it must not
   reuse the component's main <code>LANGFUSE_*</code> credentials, or its traffic
   lands in the main project and silently defeats the per-function split.</li>

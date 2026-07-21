@@ -1411,7 +1411,7 @@ DNS enumeration:</p>
 <li>The chat agent reaches central-deploy via explicit configuration fields:
   <code>central_deploy.url</code> (a <code>str</code>) and <code>central_deploy.api_token</code> (a
   <code>pydantic.SecretStr</code>), following the same <code>&lt;name&gt;_url</code> + <code>SecretStr</code>
-  pattern in the <a href="../config-standard/#5-calling-another-service-a-name_url-config-field">config standard section 5</a>.
+  pattern in the <a href="../config-standard/#6-calling-another-service-a-name_url-config-field">config standard section 5</a>.
   No injected addresses, no service discovery — plain config fields are the
   whole mechanism. This standard does not change section 5; it uses the
   existing pattern.</li>
@@ -1443,7 +1443,7 @@ to chat operations:</p>
 <ul>
 <li><a href="../component-standard/">Component standard</a> — the three deploy modes, auth model,
   health endpoint.</li>
-<li><a href="../config-standard/#5-calling-another-service-a-name_url-config-field">Config standard §5</a> —
+<li><a href="../config-standard/#6-calling-another-service-a-name_url-config-field">Config standard §5</a> —
   the <code>&lt;name&gt;_url</code> + <code>SecretStr</code> pattern for service-to-service calls.</li>
 <li><a href="../integrating-a-service/">Integrating a service</a> — the end-to-end onboarding
   guide (chat-access checklist items).</li>

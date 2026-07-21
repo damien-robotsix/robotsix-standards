@@ -19,6 +19,52 @@
   (`robotsix_board_client` next to `robotsix_board_agent` is the exemplar).
   Each extra package registers in `modules.yaml` like anything else.
 
+## Exception hierarchy
+
+- **Every package MUST define a single public root exception class**
+  `<Package>Error(Exception)`. All package-defined exceptions MUST subclass
+  it, directly or transitively. The root MUST be importable from the
+  package's top-level namespace — `<package>/errors.py` or the package
+  `__init__`.
+- **Subsystem sub-roots** (e.g. `ImapError`, `SmtpError`) are encouraged
+  where a package has distinct subsystems, and they MUST themselves subclass
+  the package root.
+- `__init__` signature is not prescribed — follow the domain's natural shape
+  (a transport error carries a status code; a timeout error carries a
+  duration). The only invariant is the root ancestor.
+
+  **Example** for a package `robotsix_foo`:
+
+  ```python
+  # src/robotsix_foo/errors.py
+  class RobotsixFooError(Exception):
+      """Base for every robotsix_foo exception."""
+
+  class ConnectionError(RobotsixFooError):
+      """Failed to reach the backend."""
+
+  class TimeoutError(RobotsixFooError):
+      """Operation exceeded its deadline."""
+
+  # src/robotsix_foo/__init__.py
+  from robotsix_foo.errors import RobotsixFooError  # one clean catch-all
+  ```
+
+  Callers can then write a single boundary:
+
+  ```python
+  try:
+      foo.do_work()
+  except RobotsixFooError as exc:
+      logger.warning("robotsix-foo known error", exc_info=exc)
+  ```
+
+  *Failure prevented:* a package with nine domain exceptions each inheriting
+  directly from plain `Exception` forces every caller to enumerate them
+  (incomplete → uncaught exception) or fall back to a bare `except
+  Exception`, which swallows unrelated bugs — a caller cannot cleanly
+  separate "a known subsystem error" from "an unexpected failure."
+
 ## Tooling: uv
 
 **uv is the standard tool** for installing, running, and building robotsix

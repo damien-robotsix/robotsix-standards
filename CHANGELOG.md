@@ -47,6 +47,7 @@
 
 ## 0.0.0 (unreleased)
 
+- **Docstring convention:** corrected the D105/D107 suppression rationales (D105 is magic methods, D107 is `__init__`), and replaced the `docs/**` per-file-ignore with `*__init__.py` = ["D104"] so package docstrings are per-file suppressed instead of blanket-ignoring docs prose.
 - OpenSSF Scorecard standard: every deployable component must publish a
   Scorecard workflow (weekly cron + push-to-main, SARIF upload, minimal
   permissions), targeting ≥ 7/10. Closes the gap between per-gate security

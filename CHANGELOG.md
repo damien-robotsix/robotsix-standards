@@ -47,6 +47,10 @@
 
 ## 0.0.0 (unreleased)
 
+- OpenSSF Scorecard standard: every deployable component must publish a
+  Scorecard workflow (weekly cron + push-to-main, SARIF upload, minimal
+  permissions), targeting ≥ 7/10. Closes the gap between per-gate security
+  posture checks and an independent outside-in supply-chain audit.
 - README "Every repository" table: added rows for Markdown linting and MkDocs build integrity standards, bringing the table into sync with `mkdocs.yml` and `docs/index.md`.
 - New [MkDocs build integrity](docs/mkdocs-build.md) standard: every fleet repo that publishes an MkDocs site must build with `--strict` and include a `validation:` block that promotes link and anchor checks to errors. Documents the known limitation with mkdocstrings autorefs.
 - Add `advanced` boolean flag to the config schema standard — a per-setting annotation

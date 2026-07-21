@@ -1,0 +1,1 @@
+Propose new rule: deployable components must publish an OpenSSF Scorecard

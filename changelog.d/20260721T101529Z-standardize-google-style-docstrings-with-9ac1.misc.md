@@ -1,0 +1,1 @@
+Standardize: Google-style docstrings with ruff D (pydocstyle) rule enforcement

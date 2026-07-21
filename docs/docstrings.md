@@ -41,28 +41,54 @@ failure mode is invisible until someone reads the docs site and notices
 missing content.  Standardising on Google style prevents the silent-drop
 failure across the fleet.
 
+## Requirements
+
+- Every **public module**, **public class**, and **public function** MUST
+  have a docstring.
+- Public functions that accept parameters MUST include an `Args:` section
+  documenting every parameter.
+- Public functions that return a value MUST include a `Returns:` section.
+- Sections MUST follow the Google style: `Args:`, `Returns:`, `Raises:` (not
+  NumPy-style `Parameters`, `Returns`, `Raises`).
+
+*Failure prevented:* a public function with a `timeout` parameter but no
+`Args:` block renders with a blank parameter table on the docs site; mkdocstrings
+cannot generate documentation for a parameter it cannot find in the docstring.
+
 ## Enforcement
 
 Ruff's pydocstyle rules (`D`) enforce the convention at lint time.
-Enable the following rules in every Python repo's `pyproject.toml`:
+Enable them in every Python repo's `pyproject.toml`:
 
 ```toml
 [tool.ruff.lint]
-select = [
-    # ... existing rules ...
-    "D100",   # public module missing docstring
-    "D101",   # public class missing docstring
-    "D103",   # public function missing docstring
-    "D400",   # first line must end with a period
-    "D412",   # no blank line between section header and content
-    "D413",   # missing blank line after last section
-    "D414",   # section has no content
-    "D417",   # missing argument description
-]
+extend-select = ["D"]
+ignore = ["D105", "D107", "D205", "D415"]
 
 [tool.ruff.lint.pydocstyle]
 convention = "google"
+
+[tool.ruff.lint.per-file-ignores]
+"tests/**" = ["D"]
+"docs/**" = ["D"]
 ```
+
+- **`extend-select = ["D"]`** enables the full pydocstyle rule set on top of
+  whatever rules the repo already selects.  This is preferred over `select
+  = ["...", "D100", "D101", ...]` because the `D` prefix pulls in every
+  pydocstyle rule now and any future rules ruff adds under `D` —
+  no manual update needed.
+- **`ignore`** suppresses four noisy rules:
+
+  | Rule | Reason |
+  |------|--------|
+  | `D105` | `__init__` methods are self-documenting by their parameters |
+  | `D107` | Already covered by the class docstring |
+  | `D205` | Conflicts with `D400` (first-line period); `D400` takes precedence |
+  | `D415` | Google style allows non-imperative first lines for some sections |
+
+- **`per-file-ignores`** exempts `tests/` and `docs/` from docstring
+  enforcement — tests are self-documenting, and docs are prose.
 
 The `convention = "google"` setting tells pydocstyle to expect `Args:`,
 `Returns:`, and `Raises:` section headers (not NumPy-style `Parameters`

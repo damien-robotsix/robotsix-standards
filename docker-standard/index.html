@@ -1404,7 +1404,7 @@ component:</p>
   <code>sha-&lt;short&gt;</code>.</li>
 <li><strong>Attestations:</strong> SBOM + build provenance (<code>provenance: mode=max</code>,
   <code>sbom: true</code>), signed via OIDC.</li>
-<li><strong>Scan:</strong> a Trivy vulnerability scan with SARIF uploaded to Code Scanning.</li>
+<li><strong>Scan:</strong> a Trivy vulnerability scan with findings uploaded as a workflow artifact.</li>
 </ul>
 <h2 id="registry-tags">Registry &amp; tags<a class="headerlink" href="#registry-tags" title="Permanent link">&para;</a></h2>
 <ul>
@@ -1430,16 +1430,17 @@ workflow enforces:</p>
   loss well before the gigabyte mark. Only add <code>cache-from</code>/<code>cache-to</code> after
   timing both paths on the actual image.</li>
 <li><strong>Gate policy: block on fixable findings only</strong> (<code>severity: CRITICAL,HIGH</code>,
-  <code>ignore-unfixed: true</code>, <code>exit-code: 1</code>, SARIF uploaded to Code Scanning). A
+  <code>ignore-unfixed: true</code>, <code>exit-code: 1</code>, findings uploaded as a workflow
+  artifact). A
   red gate then always means "a fixed version exists, take it". Base-image
   CVEs with <strong>no released fix</strong> are unactionable by a PR author (the package
   can be neither upgraded nor removed) and must not block merges; they stay
-  visible through the SARIF upload and the weekly rescan.</li>
+  visible through the findings artifact and the weekly rescan.</li>
 <li>A finding that <strong>has</strong> a fix but genuinely doesn't apply is suppressed via a
   <strong>curated <code>.trivyignore</code></strong> — every entry carries a comment saying why it
   doesn't apply. Never blanket-ignore; the file is the audit trail.</li>
 <li>A <strong>weekly scheduled rescan</strong> of the published <code>:main</code> image (report-only,
-  SARIF to Code Scanning) complements the PR gate — it catches CVEs disclosed
+  artifact) complements the PR gate — it catches CVEs disclosed
   after the image was built.</li>
 </ul>
 <h2 id="deploy-updates-are-deliberate">Deploy — updates are deliberate<a class="headerlink" href="#deploy-updates-are-deliberate" title="Permanent link">&para;</a></h2>

@@ -1570,8 +1570,8 @@ built by mkdocstrings don't silently drop parameter descriptions.</p>
 runs <code>pip-audit</code> (a second CVE audit pass), TruffleHog for secret scanning
 (PR-diff and full-repo), and generates a CycloneDX SBOM uploaded as a workflow
 artifact.</p>
-<p><strong>CodeQL</strong> runs as a separate SAST gate via the shared security workflow —
-see the <a href="../security-posture/#1-sast-codeql">security posture</a> for details.</p>
+<p><strong>Semgrep</strong> runs as a separate SAST gate via the shared security workflow —
+see the <a href="../security-posture/#1-sast-semgrep">security posture</a> for details.</p>
 <p><strong>Security lint convention:</strong> enable ruff's bandit rules in <code>pyproject.toml</code>
 (<code>[tool.ruff.lint] extend-select = ["S"]</code>). Suppressions are per-file ignores,
 and <strong>every ignore carries a comment justifying it</strong> — a reviewer should never

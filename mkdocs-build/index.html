@@ -10,13 +10,13 @@
       
       
       
-        <link rel="canonical" href="https://damien-robotsix.github.io/robotsix-standards/deploy-contract/">
+        <link rel="canonical" href="https://damien-robotsix.github.io/robotsix-standards/mkdocs-build/">
       
       
-        <link rel="prev" href="../docker-standard/">
+        <link rel="prev" href="../markdown-linting/">
       
       
-        <link rel="next" href="../entrypoint-contract/">
+        <link rel="next" href="../javascript/">
       
       
         
@@ -27,7 +27,7 @@
     
     
       
-        <title>Deploy contract - Robotsix Standards</title>
+        <title>MkDocs build integrity - Robotsix Standards</title>
       
     
     
@@ -78,7 +78,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#central-deploy-docker-compose-contract" class="md-skip">
+        <a href="#mkdocs-build-integrity" class="md-skip">
           Skip to content
         </a>
       
@@ -114,7 +114,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Deploy contract
+              MkDocs build integrity
             
           </span>
         </div>
@@ -311,8 +311,10 @@
       
   
   
+    
   
   
+  
     
     
     
@@ -323,13 +325,11 @@
       
     
     
-    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
       
         
         
-          
-        
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
         
           
           <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
@@ -350,7 +350,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_3">
             <span class="md-nav__icon md-icon"></span>
             
@@ -533,10 +533,37 @@
                 
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="../mkdocs-build/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    MkDocs build integrity
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   
@@ -552,6 +579,98 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#why-this-exists" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why this exists
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#rules" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Rules
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Rules">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-build-with-strict" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Build with --strict
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-add-a-validation-block-to-mkdocsyml" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Add a validation: block to mkdocs.yml
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#what-strict-does-not-catch" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What --strict does not catch
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#precedent" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Precedent
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -624,8 +743,6 @@
       
   
   
-    
-  
   
   
     
@@ -638,11 +755,13 @@
       
     
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4" >
         
           
           <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
@@ -663,7 +782,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_4">
             <span class="md-nav__icon md-icon"></span>
             
@@ -762,37 +881,10 @@
                 
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Deploy contract
-  
-
-    
-  </span>
-  
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../deploy-contract/" class="md-nav__link">
         
   
   
@@ -808,76 +900,6 @@
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#where-to-read-it" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Where to read it
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#what-it-covers" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        What it covers
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#volumes-only-no-host-path-bind-mounts" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Volumes only — no host-path bind mounts
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Volumes only — no host-path bind mounts">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#volume-ownership-deployer-guarantee-component-obligation" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Volume ownership (deployer guarantee + component obligation)
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -1207,10 +1229,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#where-to-read-it" class="md-nav__link">
+  <a href="#why-this-exists" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Where to read it
+        Why this exists
       
     </span>
   </a>
@@ -1218,33 +1240,33 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#what-it-covers" class="md-nav__link">
+  <a href="#rules" class="md-nav__link">
     <span class="md-ellipsis">
       
-        What it covers
+        Rules
       
     </span>
   </a>
   
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#volumes-only-no-host-path-bind-mounts" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Volumes only — no host-path bind mounts
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Volumes only — no host-path bind mounts">
+    <nav class="md-nav" aria-label="Rules">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#volume-ownership-deployer-guarantee-component-obligation" class="md-nav__link">
+  <a href="#1-build-with-strict" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Volume ownership (deployer guarantee + component obligation)
+        1. Build with --strict
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-add-a-validation-block-to-mkdocsyml" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Add a validation: block to mkdocs.yml
       
     </span>
   </a>
@@ -1253,6 +1275,28 @@
         
       </ul>
     </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#what-strict-does-not-catch" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What --strict does not catch
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#precedent" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Precedent
+      
+    </span>
+  </a>
   
 </li>
       
@@ -1276,80 +1320,106 @@
   
 
 
-<h1 id="central-deploy-docker-compose-contract">central-deploy Docker Compose Contract<a class="headerlink" href="#central-deploy-docker-compose-contract" title="Permanent link">&para;</a></h1>
+<h1 id="mkdocs-build-integrity">MkDocs build integrity<a class="headerlink" href="#mkdocs-build-integrity" title="Permanent link">&para;</a></h1>
 <blockquote>
-<p><strong>Scope: deployable components only.</strong> See the
-<a href="../component-standard/">component standard</a>.</p>
-<p><strong>Canonical home:
-<a href="https://github.com/damien-robotsix/robotsix-central-deploy"><code>robotsix-central-deploy</code></a>.</strong>
-The contract is implemented by central-deploy's parser and served by the
-running server, so the authoritative copy lives — and versions — with the
-code. This page is a pointer, not a copy; an earlier copy kept here drifted
-from the implementation (gateway routing, § 8 config) and was removed.</p>
+<p><strong>Scope: every repository that publishes an MkDocs documentation site.</strong>
+Repos without MkDocs (content-only repos, ROS 2 workspaces, deployment-only
+repos) are exempt.</p>
 </blockquote>
-<h2 id="where-to-read-it">Where to read it<a class="headerlink" href="#where-to-read-it" title="Permanent link">&para;</a></h2>
+<h2 id="why-this-exists">Why this exists<a class="headerlink" href="#why-this-exists" title="Permanent link">&para;</a></h2>
+<p>MkDocs is the fleet's documentation engine (Material theme, mkdocstrings).
+Without a strict build gate, broken internal links, missing nav pages,
+unresolved anchors, and malformed frontmatter silently degrade the published
+site. The two rules below catch every class of build-time error MkDocs can
+surface.</p>
+<h2 id="rules">Rules<a class="headerlink" href="#rules" title="Permanent link">&para;</a></h2>
+<h3 id="1-build-with-strict">1. Build with <code>--strict</code><a class="headerlink" href="#1-build-with-strict" title="Permanent link">&para;</a></h3>
+<p>In CI, the docs build command must be <code>uv run --group docs mkdocs build
+--strict</code>. The <code>--strict</code> flag promotes MkDocs warnings (missing nav pages,
+unresolved template variables, broken <code>extra_javascript</code> / <code>extra_css</code>
+paths, malformed frontmatter) to hard errors — so a broken link fails CI, not
+just the published site.</p>
+<p><strong>Failure mode prevented:</strong> a PR adds a page but forgets to register it in
+<code>mkdocs.yml</code>'s <code>nav</code>. Without <code>--strict</code>, MkDocs emits a single log line at
+<code>WARNING</code> level, CI passes, and the page is invisible on the published site
+— broken navigation the author and reviewer never see.</p>
+<p>The shared <code>python-docs.yml</code> reusable workflow in
+<a href="https://github.com/damien-robotsix/robotsix-github-workflows">robotsix-github-workflows</a>
+runs <code>mkdocs build --strict</code> by default — repos that call the shared workflow
+get this gate automatically.</p>
+<h3 id="2-add-a-validation-block-to-mkdocsyml">2. Add a <code>validation:</code> block to <code>mkdocs.yml</code><a class="headerlink" href="#2-add-a-validation-block-to-mkdocsyml" title="Permanent link">&para;</a></h3>
+<p>The most important link checks default to <em>info</em> level in MkDocs (≥ 1.5) and
+are <strong>not</strong> promoted by <code>--strict</code> alone. A <code>validation:</code> block raises them
+to <code>warn</code>, where <code>--strict</code> then promotes them to errors:</p>
+<div class="highlight"><pre><span></span><code><span class="nt">validation</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">nav</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">not_found</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">warn</span>
+<span class="w">    </span><span class="nt">omitted_files</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">info</span>
+<span class="w">  </span><span class="nt">links</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">not_found</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">warn</span>
+<span class="w">    </span><span class="nt">anchors</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">warn</span>
+<span class="w">    </span><span class="nt">absolute_links</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">warn</span>
+<span class="w">    </span><span class="nt">unrecognized_links</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">warn</span>
+</code></pre></div>
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>What it catches</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>nav.not_found</code></td>
+<td>A page listed in <code>nav</code> that doesn't exist on disk</td>
+</tr>
+<tr>
+<td><code>nav.omitted_files</code></td>
+<td>A <code>.md</code> file on disk that isn't in the <code>nav</code> (info; noise in large repos)</td>
+</tr>
+<tr>
+<td><code>links.not_found</code></td>
+<td>A cross-page markdown link whose target <code>.md</code> file doesn't exist</td>
+</tr>
+<tr>
+<td><code>links.anchors</code></td>
+<td>A link to a heading anchor (<code>#some-heading</code>) that doesn't exist on the target page</td>
+</tr>
+<tr>
+<td><code>links.absolute_links</code></td>
+<td>An absolute URL that should probably be relative</td>
+</tr>
+<tr>
+<td><code>links.unrecognized_links</code></td>
+<td>A link MkDocs can't classify — often a typo or a bare fragment</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Failure mode prevented:</strong> a PR renames a heading but the cross-page links
+pointing to it still reference the old anchor. Without the <code>validation:</code>
+block, MkDocs logs at <code>INFO</code> level, <code>--strict</code> doesn't see it, and the
+published site has dead anchor links.</p>
+<h2 id="what-strict-does-not-catch">What <code>--strict</code> does <strong>not</strong> catch<a class="headerlink" href="#what-strict-does-not-catch" title="Permanent link">&para;</a></h2>
+<p><code>--strict</code> and the <code>validation:</code> block together cover every warning MkDocs
+itself can surface, but they do <strong>not</strong> catch broken <strong>mkdocstrings
+cross-references</strong> (unresolved <code>autorefs</code>). The <code>autorefs</code> plugin emits
+warnings through Python's logging, which MkDocs does not treat as build
+warnings. Pydantic addresses this with a custom post-build hook
+(<a href="https://github.com/pydantic/pydantic/pull/10203">pydantic/pydantic#10203</a>).
+This standard does <strong>not</strong> require that hook — it is an optional add-on for
+repos that want autoref integrity. The convention here is: ship the hook if
+<code>autorefs</code> drift has bitten you, but don't gate on it fleet-wide until the
+pattern is proven in more than one repo.</p>
+<h2 id="precedent">Precedent<a class="headerlink" href="#precedent" title="Permanent link">&para;</a></h2>
 <ul>
-<li><strong>Source:</strong>
-  <a href="https://github.com/damien-robotsix/robotsix-central-deploy/blob/main/docs/ui/DEPLOY_CONTRACT.md"><code>docs/ui/DEPLOY_CONTRACT.md</code></a>
-  in the central-deploy repo</li>
-<li><strong>From the running server:</strong> <code>GET /help/deploy-contract</code> on the deploy
-  dashboard (the server ships the same file inside its image)</li>
+<li>MkDocs ≥ 1.5 release notes recommend the <code>validation:</code> block + <code>--strict</code>
+  for link integrity.</li>
+<li><a href="https://github.com/mkdocs/mkdocs/issues/1570">MkDocs issue #1570</a> documents
+  why info-level link checks need explicit promotion — they were kept at
+  <code>INFO</code> for backward compatibility.</li>
+<li>Pydantic and FastAPI both gate docs builds in CI; Pydantic additionally
+  uses the post-build autoref hook described above.</li>
 </ul>
-<h2 id="what-it-covers">What it covers<a class="headerlink" href="#what-it-covers" title="Permanent link">&para;</a></h2>
-<p>The contract is the authoritative specification for the
-<code>deploy/docker-compose.yml</code> a service repo must ship before central-deploy's
-onboarding flow accepts it:</p>
-<ul>
-<li>the machine-readable version header (<code># central-deploy-contract-version: 1</code>)
-  and its breaking-change semantics;</li>
-<li>structural rules — service keys, primary/sibling designation, container
-  naming;</li>
-<li>required and optional fields (image, ports, named volumes, environment
-  secret slots, healthcheck);</li>
-<li>the <code>robotsix.deploy.*</code> extension labels (primary, claude-mount,
-  host-docker-sock, config-target, config-assist);</li>
-<li>volume declarations;</li>
-<li>ignored vs. prohibited compose fields (error classification);</li>
-<li>runtime configuration via the repo's config template (§ 8 —
-  <code>config/config.json</code> + <code>config/config.schema.json</code> per the
-  <a href="../config-standard/">config standard</a>) and the field → <code>ComponentConfig</code>
-  mapping.</li>
-</ul>
-<h2 id="volumes-only-no-host-path-bind-mounts">Volumes only — no host-path bind mounts<a class="headerlink" href="#volumes-only-no-host-path-bind-mounts" title="Permanent link">&para;</a></h2>
-<p>Deployed components <strong>never bind-mount host paths</strong>; all persistent or shared
-state goes through <strong>named volumes</strong> (declared in the compose, or injected by
-central-deploy — e.g. the managed <code>claude-auth</code> volume behind the
-claude-mount label). Coupling a component to host filesystem layout caused a
-real outage (2026-07-03, robotsix-chat: host-uid-dependent credential
-readability plus a containerized <code>~</code> expansion silently auto-creating empty
-root-owned host directories). The <strong>single sanctioned exception</strong> is the
-Docker socket, read-only, on a hardened non-primary socket-proxy sibling
-(<code>host-docker-sock</code> label). central-deploy's own infra mounts are the
-deployment system itself (<a href="../deployment-system/">bootstrap tier</a>), not a
-managed component.</p>
-<p>Resource limits follow the same shape: compose resource fields are ignored —
-central-deploy applies a <strong>default memory limit</strong> to every managed container
-(overridable per component in the dashboard), so one leaking service OOMs and
-restarts alone instead of taking the host with it.</p>
-<h3 id="volume-ownership-deployer-guarantee-component-obligation">Volume ownership (deployer guarantee + component obligation)<a class="headerlink" href="#volume-ownership-deployer-guarantee-component-obligation" title="Permanent link">&para;</a></h3>
-<p>Docker's copy-up only fixes named-volume ownership when the image already
-contains the mount path. When a component uses a path the image never prepared
-(e.g. <code>/data</code>, <code>/home/app/.claude</code>), freshly created volumes stay root-owned
-and the component silently fails every write while reporting healthy — chat
-lost all conversations in production (2026-07-04).</p>
-<p><strong>Deployer guarantee.</strong> When the deployment system creates a named volume (first
-creation only — existing volume data is <strong>never touched</strong>), it makes the volume
-root writable by the component's runtime uid: either the uid declared via
-<code>user:</code> in the compose service, or the platform-forced uid when no <code>user:</code> is
-set.</p>
-<p><strong>Component obligation.</strong> Components <strong>MUST NOT</strong> rely on image-side directory
-preparation (Dockerfile <code>mkdir</code> / <code>chown</code>) for volume mount paths, and
-<strong>SHOULD</strong> log resolved persistence paths at startup. The startup log line was
-the single diagnostic that made the root-owned-volume outage diagnosable in
-seconds rather than hours — without it, a component that cannot write its data
-directory reports healthy and the failure is invisible.</p>
-<p>For the task-oriented walkthrough of making a repo deployable, see
-<a href="../integrating-a-service/">Integrating a service</a>.</p>
 
 
 

@@ -749,6 +749,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../mkdocs-build/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    MkDocs build integrity
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../javascript/" class="md-nav__link">
         
   
@@ -1805,9 +1833,10 @@ pre-commit<span class="w"> </span>install
 <p>CI runs <code>pre-commit run --all-files</code> so the hooks and the gates can't drift.</p>
 <h2 id="docs">Docs<a class="headerlink" href="#docs" title="Permanent link">&para;</a></h2>
 <p><strong>Every repo publishes its docs site</strong>: <code>mkdocs</code> (material theme), built and
-deployed to GitHub Pages by the shared <code>python-docs.yml</code> reusable workflow,
-gated in CI by <code>mkdocs build --strict</code>. The fleet's sites are indexed on the
-standards' <a href="../fleet/">fleet page</a>.</p>
+deployed to GitHub Pages by the shared <code>python-docs.yml</code> reusable workflow.
+The build is gated by the <a href="../mkdocs-build/">MkDocs build integrity</a> standard
+(<code>--strict</code> mode and a <code>validation:</code> block). The fleet's sites are indexed on
+the standards' <a href="../fleet/">fleet page</a>.</p>
 
 
 

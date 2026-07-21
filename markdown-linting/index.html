@@ -16,7 +16,7 @@
         <link rel="prev" href="../hypothesis/">
       
       
-        <link rel="next" href="../javascript/">
+        <link rel="next" href="../mkdocs-build/">
       
       
         
@@ -671,6 +671,34 @@
   
 </nav>
       
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../mkdocs-build/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    MkDocs build integrity
+  
+
+    
+  </span>
+  
+  
+
+      </a>
     </li>
   
 
@@ -1359,9 +1387,9 @@ repos) are exempt.</p>
 independently: broken internal links, inconsistent heading styles, spelling
 errors, and deprecated inline-HTML patterns accumulate over time. The
 fleet publishes docs sites with <code>mkdocs build --strict</code> (see
-<a href="../python/#docs">Python practices</a>), which catches structural MkDocs errors
-but does not enforce prose style, heading consistency, or spelling — those
-gaps are filled by the two hooks below.</p>
+<a href="../mkdocs-build/">MkDocs build integrity</a>), which catches structural MkDocs
+errors but does not enforce prose style, heading consistency, or spelling —
+those gaps are filled by the two hooks below.</p>
 <h2 id="pre-commit-hooks">Pre-commit hooks<a class="headerlink" href="#pre-commit-hooks" title="Permanent link">&para;</a></h2>
 <p>Add both hooks to <code>.pre-commit-config.yaml</code>. The <code>markdownlint-cli2</code> hook
 runs on every <code>.md</code> file; <code>codespell</code> runs across the entire repo.</p>

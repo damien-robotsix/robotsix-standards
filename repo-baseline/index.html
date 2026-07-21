@@ -738,6 +738,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../mkdocs-build/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    MkDocs build integrity
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../javascript/" class="md-nav__link">
         
   
@@ -1637,8 +1665,10 @@ gate set:</p>
   (80%)</strong>, enforced by the shared workflow so it lives in exactly one place.
   No per-repo thresholds; the floor is raised fleet-wide, deliberately, when
   every repo already clears the new value (see <a href="../python/#tests">Tests</a>).</li>
-<li><strong>Docs:</strong> a strict docs build (<code>mkdocs build --strict</code>) when the repo
-  publishes a docs site.</li>
+<li><strong>Docs:</strong> repos that publish an MkDocs site follow the
+  <a href="../mkdocs-build/">MkDocs build integrity</a> standard — <code>--strict</code> build
+  mode and a <code>validation:</code> block that catches broken links and dead
+  anchors.</li>
 <li><strong>Security:</strong> Semgrep (SAST), zizmor workflow audit, GitHub secret scanning + push protection
   (complemented by TruffleHog for PR-diff and full-repo scans in the shared
   security workflow), a dependency CVE audit (<code>uv audit</code> in the CI gate, plus <code>pip-audit</code> in the security

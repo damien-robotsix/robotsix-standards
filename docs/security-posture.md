@@ -57,7 +57,7 @@ cost-saving measure:
   rollout behind procurement, license provisioning, and per-repo secret
   management — the opposite of the self-enforcing principle.
 
-This policy applies to every security gate: SAST (CodeQL, itself open-source),
+This policy applies to every security gate: SAST (Semgrep, itself open-source),
 secret scanning (detect-secrets + TruffleHog, see gate 5), dependency auditing
 (`uv audit`, `pip-audit`), and container image scanning (Trivy). A future gate
 that genuinely requires a proprietary tool must justify the exception in the

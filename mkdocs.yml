@@ -74,6 +74,7 @@ nav:
       - Integrating a service: integrating-a-service.md
       - Chat access: chat-access-standard.md
       - HTTP error envelope: http-error-envelope.md
+      - OpenSSF Scorecard: scorecard.md
   - Deployment system:
       - Bootstrap tier: deployment-system.md
   - Meta:

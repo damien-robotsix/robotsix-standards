@@ -70,7 +70,7 @@ convention = "google"
 
 [tool.ruff.lint.per-file-ignores]
 "tests/**" = ["D"]
-"docs/**" = ["D"]
+"*__init__.py" = ["D104"]
 ```
 
 - **`extend-select = ["D"]`** enables the full pydocstyle rule set on top of
@@ -82,13 +82,14 @@ convention = "google"
 
   | Rule | Reason |
   |------|--------|
-  | `D105` | `__init__` methods are self-documenting by their parameters |
-  | `D107` | Already covered by the class docstring |
+  | `D105` | Magic methods (`__str__`, `__eq__`, etc.) are too noisy to require docstrings |
+  | `D107` | `__init__` is redundant when the class docstring covers its behaviour |
   | `D205` | Conflicts with `D400` (first-line period); `D400` takes precedence |
-  | `D415` | Google style allows non-imperative first lines for some sections |
+  | `D415` | Overly pedantic — Google style allows short docstrings without a period |
 
-- **`per-file-ignores`** exempts `tests/` and `docs/` from docstring
-  enforcement — tests are self-documenting, and docs are prose.
+- **`per-file-ignores`** exempts `tests/` (test helpers are
+  self-documenting) and `__init__.py` files (D104 fires on every
+  package; package docstrings are optional).
 
 The `convention = "google"` setting tells pydocstyle to expect `Args:`,
 `Returns:`, and `Raises:` section headers (not NumPy-style `Parameters`

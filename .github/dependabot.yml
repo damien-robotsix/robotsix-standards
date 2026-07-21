@@ -1,7 +1,7 @@
 # Standard ecosystems per the repo baseline (automated dependency updates).
 version: 2
 updates:
-  - package-ecosystem: "pip"
+  - package-ecosystem: "uv"
     directory: "/"
     schedule:
       interval: "weekly"

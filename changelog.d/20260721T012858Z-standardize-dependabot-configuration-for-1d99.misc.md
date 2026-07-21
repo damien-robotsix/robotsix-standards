@@ -1,0 +1,1 @@
+Standardize: Dependabot configuration for Python/uv repos

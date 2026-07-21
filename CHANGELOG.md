@@ -48,6 +48,9 @@
 ## 0.0.0 (unreleased)
 
 - Added **Agentic Applications** security subsection to `docs/component-standard.md`, mapping the fleet's existing controls to the [OWASP Top 10 for Agentic Applications 2026](https://genai.owasp.org/resource/owasp-top-10-for-agentic-applications-for-2026/) and explicitly addressing agent-to-agent propagation, unbounded agentic consumption, and over-reliance on agentic decisions.
+- Add "Exception hierarchy" convention to Python standard: every package
+  defines a root `<Package>Error` base class, all domain exceptions
+  subclass it, and the root is importable from the top-level namespace.
 - Updated SAST tooling example in `docs/security-posture.md` from CodeQL to Semgrep to match the fleet's current standard (PR #83).
 - Replace GitHub Code Scanning (proprietary CodeQL) with open-source Semgrep as the fleet SAST standard. Findings are published as workflow artifacts and surfaced through the fleet dashboard — no dependency on the GitHub Security tab or `security-events: write` permission. Updates docs/security-posture.md, docs/docker-standard.md, docs/python.md, docs/repo-baseline.md, docs/mill-agents.md, and the security-posture-audit agent.
 - Codified open-source-preferred tooling policy in security posture standard — fleet actively prefers OSS security tools (auditability, no license keys, reproducibility) over proprietary alternatives.

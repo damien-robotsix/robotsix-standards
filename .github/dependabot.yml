@@ -24,15 +24,3 @@ updates:
     groups:
       pre-commit-hooks:
         patterns: ["*"]
-  - package-ecosystem: uv
-    directory: /
-    schedule:
-      interval: weekly
-  - package-ecosystem: github-actions
-    directory: /
-    schedule:
-      interval: weekly
-  - package-ecosystem: pre-commit
-    directory: /
-    schedule:
-      interval: weekly

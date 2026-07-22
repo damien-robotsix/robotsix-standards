@@ -654,6 +654,23 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="What --strict does not catch">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#3-surface-the-changelog-in-the-docs-nav" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Surface the changelog in the docs nav
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -1230,6 +1247,33 @@
   
 
     
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../CHANGELOG/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Changelog
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
   </ul>
 </nav>
                   </div>
@@ -1314,6 +1358,23 @@
       
     </span>
   </a>
+  
+    <nav class="md-nav" aria-label="What --strict does not catch">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#3-surface-the-changelog-in-the-docs-nav" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Surface the changelog in the docs nav
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -1438,8 +1499,49 @@ This standard does <strong>not</strong> require that hook — it is an optional 
 repos that want autoref integrity. The convention here is: ship the hook if
 <code>autorefs</code> drift has bitten you, but don't gate on it fleet-wide until the
 pattern is proven in more than one repo.</p>
+<h3 id="3-surface-the-changelog-in-the-docs-nav">3. Surface the changelog in the docs nav<a class="headerlink" href="#3-surface-the-changelog-in-the-docs-nav" title="Permanent link">&para;</a></h3>
+<p>Every repo that publishes an MkDocs docs site and maintains a root
+<code>CHANGELOG.md</code> must include it in the docs <code>nav</code> so it is discoverable to
+users browsing the published site. A changelog that lives only in the repo
+root is invisible to readers of the docs.</p>
+<div class="highlight"><pre><span></span><code><span class="nt">nav</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">Changelog</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">CHANGELOG.md</span>
+</code></pre></div>
+<p><strong>Mechanics.</strong> The root <code>CHANGELOG.md</code> is outside <code>docs_dir</code> by default and
+won't resolve. The repo must make it resolvable <em>without</em> committing a
+duplicate copy into <code>docs/</code>. Two patterns are acceptable:</p>
+<table>
+<thead>
+<tr>
+<th>Pattern</th>
+<th>How</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Symlink</strong></td>
+<td><code>ln -s ../CHANGELOG.md docs/CHANGELOG.md</code>. Git tracks the symlink as a file — every clone and CI run resolves it. Simple, zero-build-step.</td>
+</tr>
+<tr>
+<td><strong>Build-time copy</strong></td>
+<td>An <code>on_pre_build</code> MkDocs hook that copies <code>CHANGELOG.md</code> into <code>docs/</code> before the site builds. Preferable when the target platform does not support symlinks (Windows CI runners without Developer Mode).</td>
+</tr>
+</tbody>
+</table>
+<p>Either way, the file referenced in <code>nav</code> must be the canonical root
+<code>CHANGELOG.md</code> — not a manually-maintained copy that can drift.</p>
+<p><strong>Failure mode prevented:</strong> a repo has a well-maintained changelog (towncrier,
+Keep a Changelog format) but users browsing the docs site never see it because
+it isn't in the nav. Release notes that require navigating away from the docs
+to the GitHub repo are functionally hidden from most readers.</p>
 <h2 id="precedent">Precedent<a class="headerlink" href="#precedent" title="Permanent link">&para;</a></h2>
 <ul>
+<li><a href="https://github.com/pydantic/pydantic">Pydantic</a>,
+  <a href="https://github.com/fastapi/fastapi">FastAPI</a>, and
+  <a href="https://github.com/fastapi/sqlmodel">SQLModel</a> all surface their root
+  <code>CHANGELOG.md</code> as a docs nav page via a <code>docs/</code>-tree copy or symlink.
+  MkDocs-material has no built-in changelog plugin; this nav entry plus a
+  resolution mechanism is the established convention.</li>
 <li>MkDocs ≥ 1.5 release notes recommend the <code>validation:</code> block + <code>--strict</code>
   for link integrity.</li>
 <li><a href="https://github.com/mkdocs/mkdocs/issues/1570">MkDocs issue #1570</a> documents

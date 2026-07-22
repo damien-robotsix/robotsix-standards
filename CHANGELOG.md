@@ -47,6 +47,8 @@
 
 ## 0.0.0 (unreleased)
 
+- Added **Changelog nav page** rule to [MkDocs build integrity](docs/mkdocs-build.md): every fleet repo that publishes an MkDocs site and maintains a `CHANGELOG.md` must surface it in the docs `nav` via a symlink or build-time copy hook — no committed duplicate copy.
+  This repo now follows the rule: `docs/hooks.py` copies and link-rewrites the root `CHANGELOG.md` at build time, and `mkdocs.yml` lists it under a top-level **Changelog** nav entry.
 - **Docstring convention:** corrected the D105/D107 suppression rationales (D105 is magic methods, D107 is `__init__`), and replaced the `docs/**` per-file-ignore with `*__init__.py` = ["D104"] so package docstrings are per-file suppressed instead of blanket-ignoring docs prose.
 - OpenSSF Scorecard standard: every deployable component must publish a
   Scorecard workflow (weekly cron + push-to-main, SARIF upload, minimal

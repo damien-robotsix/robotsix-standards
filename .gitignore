@@ -13,6 +13,7 @@ dist/
 
 # mkdocs
 site/
+docs/CHANGELOG.md
 
 # editor / OS
 .vscode/

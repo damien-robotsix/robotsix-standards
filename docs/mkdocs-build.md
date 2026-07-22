@@ -77,8 +77,43 @@ repos that want autoref integrity. The convention here is: ship the hook if
 `autorefs` drift has bitten you, but don't gate on it fleet-wide until the
 pattern is proven in more than one repo.
 
+### 3. Surface the changelog in the docs nav
+
+Every repo that publishes an MkDocs docs site and maintains a root
+`CHANGELOG.md` must include it in the docs `nav` so it is discoverable to
+users browsing the published site. A changelog that lives only in the repo
+root is invisible to readers of the docs.
+
+```yaml
+nav:
+  - Changelog: CHANGELOG.md
+```
+
+**Mechanics.** The root `CHANGELOG.md` is outside `docs_dir` by default and
+won't resolve. The repo must make it resolvable *without* committing a
+duplicate copy into `docs/`. Two patterns are acceptable:
+
+| Pattern | How |
+|---|---|
+| **Symlink** | `ln -s ../CHANGELOG.md docs/CHANGELOG.md`. Git tracks the symlink as a file — every clone and CI run resolves it. Simple, zero-build-step. |
+| **Build-time copy** | An `on_pre_build` MkDocs hook that copies `CHANGELOG.md` into `docs/` before the site builds. Preferable when the target platform does not support symlinks (Windows CI runners without Developer Mode). |
+
+Either way, the file referenced in `nav` must be the canonical root
+`CHANGELOG.md` — not a manually-maintained copy that can drift.
+
+**Failure mode prevented:** a repo has a well-maintained changelog (towncrier,
+Keep a Changelog format) but users browsing the docs site never see it because
+it isn't in the nav. Release notes that require navigating away from the docs
+to the GitHub repo are functionally hidden from most readers.
+
 ## Precedent
 
+- [Pydantic](https://github.com/pydantic/pydantic),
+  [FastAPI](https://github.com/fastapi/fastapi), and
+  [SQLModel](https://github.com/fastapi/sqlmodel) all surface their root
+  `CHANGELOG.md` as a docs nav page via a `docs/`-tree copy or symlink.
+  MkDocs-material has no built-in changelog plugin; this nav entry plus a
+  resolution mechanism is the established convention.
 - MkDocs ≥ 1.5 release notes recommend the `validation:` block + `--strict`
   for link integrity.
 - [MkDocs issue #1570](https://github.com/mkdocs/mkdocs/issues/1570) documents

@@ -1319,6 +1319,8 @@
 </ul>
 <h2 id="000-unreleased">0.0.0 (unreleased)<a class="headerlink" href="#000-unreleased" title="Permanent link">&para;</a></h2>
 <ul>
+<li>Add CI gate (<code>scripts/check-toc-sync.py</code>) that verifies mkdocs.yml nav pages
+  appear in README.md and docs/index.md, preventing TOC drift.</li>
 <li>Added <strong>Changelog nav page</strong> rule to <a href="../mkdocs-build/">MkDocs build integrity</a>: every fleet repo that publishes an MkDocs site and maintains a <code>CHANGELOG.md</code> must surface it in the docs <code>nav</code> via a symlink or build-time copy hook — no committed duplicate copy.
   This repo now follows the rule: <code>docs/hooks.py</code> copies and link-rewrites the root <code>CHANGELOG.md</code> at build time, and <code>mkdocs.yml</code> lists it under a top-level <strong>Changelog</strong> nav entry.</li>
 <li><strong>Docstring convention:</strong> corrected the D105/D107 suppression rationales (D105 is magic methods, D107 is <code>__init__</code>), and replaced the <code>docs/**</code> per-file-ignore with <code>*__init__.py</code> = ["D104"] so package docstrings are per-file suppressed instead of blanket-ignoring docs prose.</li>

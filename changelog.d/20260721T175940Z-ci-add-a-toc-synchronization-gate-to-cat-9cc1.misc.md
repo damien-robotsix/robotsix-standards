@@ -1,0 +1,1 @@
+CI: add a TOC synchronization gate to catch README/index drift from mkdocs.yml nav

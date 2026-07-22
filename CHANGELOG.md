@@ -1,6 +1,5 @@
-
-
 <!-- towncrier release notes start -->
+<!-- markdownlint-disable MD013 MD025 MD024 -->
 
 # robotsix-standards 0.1.4 (2026-07-20)
 
@@ -43,7 +42,6 @@
 - Define security posture requirements as an auditable standard (20260717T233031Z-define-security-posture-requirements-as-590f)
 - Add custom audit agent for security aspects of the standards definitions (20260717T233343Z-add-custom-audit-agent-for-security-aspe-7ef2)
 - Standardize: enable uv cache in all CI jobs using astral-sh/setup-uv (20260718T235556Z-standardize-enable-uv-cache-in-all-ci-jo-9993)
-
 
 ## 0.0.0 (unreleased)
 
@@ -143,8 +141,6 @@
 - docs: add exception for programmatic CHANGELOG.md fixes (changelog-bugfix carve-out) (20260712T175522Z-docs-add-exception-for-programmatic-chan-85f0)
 - Derive a ROS 2 practices page for robotsix-standards from mill-ros2 (20260712T232045Z-derive-a-ros-2-practices-page-for-robots-d71c)
 
-
-
 # robotsix-standards 0.1.2 (2026-07-06)
 
 ## Changed
@@ -166,7 +162,6 @@
 - deploy contract: specify named-volume ownership guarantee (deployer chowns to runtime uid on creation) (20260704T131022Z-deploy-contract-specify-named-volume-own-2def)
 - CI failure: Auto Release on main (20260703T234004Z-ci-failure-auto-release-on-main-2aa9)
 
-
 # robotsix-standards 0.1.1 (2026-07-03)
 
 ## Changed
@@ -179,5 +174,3 @@
 - Document python-security.yml's actual gate contents (SBOM, TruffleHog) in the security gate list (20260703T223709Z-document-python-security-yml-s-actual-ga-5938)
 - Wire this repo to its own release standard: call the shared auto-release
   workflow (weekly + on-demand) and the shared changelog-check gate in CI. (20260703T231741Z-wire-auto-release-and-changelog-gate)
-
-

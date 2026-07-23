@@ -8,8 +8,8 @@ The [OpenSSF Scorecard](https://securityscorecards.dev/) independently audits
 ~20 supply-chain health checks — Dangerous-Workflow patterns, token permissions,
 Branch-Protection, Code-Review, Signed-Releases, dependency update cadence,
 fuzzing, and more — producing a single numeric score. Several of these checks
-are not covered by the fleet's existing security stack (CodeQL, Bandit,
-gitleaks, Trivy, trufflehog, pip-audit, dependency-review, zizmor, SBOM), so
+are not covered by the fleet's existing per-gate CI controls (Semgrep, Bandit,
+Trivy, TruffleHog, pip-audit, dependency-review, zizmor, SBOM), so
 Scorecard closes the last common gap in a mid-2025 Python security stack.
 
 The fleet's other security gates (Semgrep, dependency-review, Dependabot,

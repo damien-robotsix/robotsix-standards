@@ -52,6 +52,9 @@ integrates with the deployment system. Beyond the baseline it follows:
   two compose files.
 - **[Config standard](config-standard.md)** — one config model that resolves the
   same way across all deploy modes.
+- **[Config ownership](config-ownership.md)** — the hard line between
+  deploy-plane config (central-deploy UI) and component-owned config
+  (the component's own HTTP surface and Settings panel).
 - **[Docker build & release](docker-standard.md)** — one Dockerfile pattern and
   one publish workflow to a single registry.
 - **[Deploy contract](deploy-contract.md)** — the `deploy/docker-compose.yml`

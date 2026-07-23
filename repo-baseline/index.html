@@ -536,6 +536,23 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="CI and security gates">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#coverage-artifact-upload" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Coverage artifact upload
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -1475,6 +1492,23 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="CI and security gates">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#coverage-artifact-upload" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Coverage artifact upload
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -1745,6 +1779,40 @@ gate set:</p>
   <code>if: always()</code> and <code>if-no-files-found: error</code>, so a failed scan step never
   silently drops the SBOM artifact.</li>
 </ul>
+<h3 id="coverage-artifact-upload">Coverage artifact upload<a class="headerlink" href="#coverage-artifact-upload" title="Permanent link">&para;</a></h3>
+<p>Any reusable workflow that runs pytest with <code>--cov=&lt;package&gt;</code> <strong>MUST</strong> — after
+the test step — upload <code>coverage.xml</code> and <code>.coverage</code> as a single artifact
+named <code>coverage-data</code>. The two files are always present when <code>--cov</code> is active
+(<code>--cov-report=xml:coverage.xml</code> generates the XML report; coverage.py writes
+<code>.coverage</code> implicitly). The upload step:</p>
+<div class="highlight"><pre><span></span><code><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Upload coverage data</span>
+<span class="w">  </span><span class="nt">uses</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">actions/upload-artifact@&lt;sha&gt;</span><span class="w">  </span><span class="c1"># pinned to a commit SHA</span>
+<span class="w">  </span><span class="nt">with</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">coverage-data</span>
+<span class="w">    </span><span class="nt">path</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|</span>
+<span class="w">      </span><span class="no">coverage.xml</span>
+<span class="w">      </span><span class="no">.coverage</span>
+<span class="w">    </span><span class="nt">if-no-files-found</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">error</span>
+</code></pre></div>
+<ul>
+<li><strong>The artifact is scoped to the workflow run</strong> (the default for
+  <code>actions/upload-artifact</code>) — no retention beyond the run is needed, since
+  downstream jobs in the same workflow consume it immediately.</li>
+<li><strong>Consuming workflows SHOULD use <code>actions/download-artifact</code> with
+  <code>needs: [&lt;reusable-job&gt;]</code></strong> to retrieve the artifact, then feed
+  <code>coverage.xml</code> to coverage-diff tools (e.g.
+  <code>py-cov-action/python-coverage-comment-action</code>, which auto-discovers
+  <code>coverage.xml</code> from the working directory) rather than re-running the full
+  test suite. Re-running tests to get coverage data duplicates CI time and
+  compute for no benefit.</li>
+</ul>
+<blockquote>
+<p><strong>Failure mode.</strong> Without this rule, every consuming workflow that wants
+per-PR coverage diff commentary or an HTML coverage report must re-run the
+full test suite in its own job — duplicating CI time and resources. The
+alternative (a third-party service like Codecov/Coveralls) adds an external
+dependency that may conflict with self-hosted infrastructure.</p>
+</blockquote>
 <p><strong>Completeness principle:</strong> a gate in this list exists as (part of) a shared
 reusable workflow — if it can't be called from robotsix-github-workflows, it
 isn't a standard gate yet. Gates adopted à la carte drift à la carte: before

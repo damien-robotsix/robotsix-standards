@@ -431,6 +431,7 @@ optional — components with no chat-operable surface skip it. Full detail:
 ## Detailed contracts
 
 - [Config standard](config-standard.md) — one config model across all deploy modes.
+- [Config ownership](config-ownership.md) — the hard line between deploy-plane and component-owned config.
 - [Docker build & release](docker-standard.md) — the single build + publish method.
 - [Deploy contract](deploy-contract.md) — the `deploy/docker-compose.yml` shape.
 - [Entrypoint contract](entrypoint-contract.md) — container startup behavior.

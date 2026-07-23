@@ -4,6 +4,12 @@
 > file). A library takes its configuration through its own API — constructor
 > arguments or an explicit config object — not a config file. See the
 > [repo baseline](repo-baseline.md) and [component standard](component-standard.md).
+>
+> **Which config key goes where?** This page defines *how* component config is
+> modeled, loaded, and persisted. The boundary between deploy-plane settings
+> (central-deploy UI) and component-owned settings (the component's own HTTP
+> surface) is defined in the companion [config ownership](config-ownership.md)
+> page.
 
 **One config schema per component, defined once as a pydantic model, loaded from
 one JSON file, and reflected as a typed JSON Schema the deploy UI can render.**

@@ -198,6 +198,42 @@ gate set:
   `if: always()` and `if-no-files-found: error`, so a failed scan step never
   silently drops the SBOM artifact.
 
+### Coverage artifact upload
+
+Any reusable workflow that runs pytest with `--cov=<package>` **MUST** — after
+the test step — upload `coverage.xml` and `.coverage` as a single artifact
+named `coverage-data`. The two files are always present when `--cov` is active
+(`--cov-report=xml:coverage.xml` generates the XML report; coverage.py writes
+`.coverage` implicitly). The upload step:
+
+```yaml
+- name: Upload coverage data
+  uses: actions/upload-artifact@<sha>  # pinned to a commit SHA
+  with:
+    name: coverage-data
+    path: |
+      coverage.xml
+      .coverage
+    if-no-files-found: error
+```
+
+- **The artifact is scoped to the workflow run** (the default for
+  `actions/upload-artifact`) — no retention beyond the run is needed, since
+  downstream jobs in the same workflow consume it immediately.
+- **Consuming workflows SHOULD use `actions/download-artifact` with
+  `needs: [<reusable-job>]`** to retrieve the artifact, then feed
+  `coverage.xml` to coverage-diff tools (e.g.
+  `py-cov-action/python-coverage-comment-action`, which auto-discovers
+  `coverage.xml` from the working directory) rather than re-running the full
+  test suite. Re-running tests to get coverage data duplicates CI time and
+  compute for no benefit.
+
+> **Failure mode.** Without this rule, every consuming workflow that wants
+> per-PR coverage diff commentary or an HTML coverage report must re-run the
+> full test suite in its own job — duplicating CI time and resources. The
+> alternative (a third-party service like Codecov/Coveralls) adds an external
+> dependency that may conflict with self-hosted infrastructure.
+
 **Completeness principle:** a gate in this list exists as (part of) a shared
 reusable workflow — if it can't be called from robotsix-github-workflows, it
 isn't a standard gate yet. Gates adopted à la carte drift à la carte: before

@@ -589,6 +589,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#mypy-type-check-tests" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Mypy: type-check tests
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#ci-uv-setup-caching" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1483,6 +1494,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#mypy-type-check-tests" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Mypy: type-check tests
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#ci-uv-setup-caching" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1734,6 +1756,58 @@ never imported (a linter or formatter in an optional group) gets flagged as
 unused by deptry and fails CI. Register it under <code>DEP002</code> in
 <code>[tool.deptry.per_rule_ignores]</code>, with a comment — same convention as the
 ruff suppressions above.</p>
+<h2 id="mypy-type-check-tests">Mypy: type-check tests<a class="headerlink" href="#mypy-type-check-tests" title="Permanent link">&para;</a></h2>
+<p><strong>CI must run mypy on both <code>src/</code> and <code>tests/</code></strong> — not just the production
+package.  Tests are the most exercised consumer of the public API, and a type
+mismatch between a production function and its test call-sites is a latent bug
+that only surfaces at runtime.</p>
+<p><strong>Every Python repo with a <code>tests/</code> directory adds this per-module override</strong>
+in <code>pyproject.toml</code>:</p>
+<div class="highlight"><pre><span></span><code><span class="k">[[tool.mypy.overrides]]</span>
+<span class="n">module</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;tests.*&quot;</span>
+<span class="n">disallow_untyped_defs</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">false</span>
+<span class="n">check_untyped_defs</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">true</span>
+</code></pre></div>
+<p><strong>Why each setting:</strong></p>
+<ul>
+<li><strong><code>module = "tests.*"</code></strong> — scopes the relaxation to test files only; the
+  production package under <code>src/</code> stays fully strict.</li>
+<li><strong><code>disallow_untyped_defs = false</code></strong> — test functions (<code>def test_…</code>) may
+  omit type annotations without causing a mypy error.  Requiring annotations
+  on every <code>@pytest.mark.parametrize</code>-decorated helper is a productivity tax
+  that buys nothing — the framework doesn't inspect them.</li>
+<li><strong><code>check_untyped_defs = true</code></strong> — mypy still inspects the bodies of
+  unannotated functions, catching real bugs (wrong argument counts, attribute
+  typos, incompatible operand types) even when the signature is bare.</li>
+</ul>
+<p><strong>The test directory must contain a <code>tests/__init__.py</code></strong> (it can be empty).
+Without it, the <code>module = "tests.*"</code> glob does not match — Python treats
+<code>tests/</code> as a namespace directory and mypy's module-level overrides have
+nothing to anchor to.</p>
+<p><strong>Test type-checking is a hard CI gate.</strong>  The shared <code>python-ci.yml</code> workflow
+runs <code>uv run mypy src/ tests/</code> (not <code>src/</code> alone), and a mypy error in a test
+fails the build — same as an error in production code.  The override above
+makes this gate practical: it suppresses the noise (missing annotations) while
+keeping the signal (type errors in test bodies).</p>
+<p><strong>Failure modes this prevents:</strong></p>
+<ul>
+<li><strong>Interface drift.</strong>  A production function gains a required parameter, but
+  no test is updated because the call site is not type-checked.  The test
+  suite passes (the old signature still runs) but coverage is dead weight —
+  the next developer to touch the function discovers the gap at runtime.</li>
+<li><strong>Stale test factories.</strong>  A fixture or helper changes its return type;
+  callers that destructure the old shape break silently because the test file
+  was never checked.</li>
+<li><strong>Copy-paste errors across parametrized cases.</strong>  <code>@pytest.mark.parametrize</code>
+  with dozens of id/input tuples is a common source of shape mismatches;
+  <code>check_untyped_defs</code> catches them without requiring annotations on every
+  tuple.</li>
+</ul>
+<p><strong>Industry precedent:</strong> FastAPI, pytest, and httpx all type-check their test
+suites with this exact pattern — <code>strict = true</code> globally with a
+<code>module = "tests.*"</code> override that relaxes <code>disallow_untyped_defs</code> while
+keeping <code>check_untyped_defs</code>.  It is the de facto standard for mature Python
+OSS projects.</p>
 <h2 id="ci-uv-setup-caching">CI: uv setup caching<a class="headerlink" href="#ci-uv-setup-caching" title="Permanent link">&para;</a></h2>
 <p><strong>Every CI job that calls <code>astral-sh/setup-uv</code> MUST enable caching.</strong>
 Set <code>enable-cache: true</code> with a <code>cache-dependency-glob</code> that covers

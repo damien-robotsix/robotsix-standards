@@ -1,0 +1,1704 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Cross-cutting config and deployment standards for the robotsix stack">
+      
+      
+      
+        <link rel="canonical" href="https://damien-robotsix.github.io/robotsix-standards/config-ownership/">
+      
+      
+      
+      
+        
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>Config ownership — deploy-plane vs component-owned - Robotsix Standards</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#config-ownership-deploy-plane-vs-component-owned" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="Robotsix Standards" class="md-header__button md-logo" aria-label="Robotsix Standards" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Robotsix Standards
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Config ownership — deploy-plane vs component-owned
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/damien-robotsix/robotsix-standards" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="Robotsix Standards" class="md-nav__button md-logo" aria-label="Robotsix Standards" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Robotsix Standards
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/damien-robotsix/robotsix-standards" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../fleet/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    The fleet
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Every repo
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Every repo
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../repo-baseline/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Repo baseline
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../security-posture/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Security posture
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../python/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Python practices
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../docstrings/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Docstring convention
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../hypothesis/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Hypothesis testing
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../markdown-linting/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Markdown linting
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../mkdocs-build/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    MkDocs build integrity
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../javascript/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    JavaScript practices
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ros2/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ROS 2 practices
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Deployable components
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Deployable components
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../component-standard/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Component standard
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../config-standard/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Config standard
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../docker-standard/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Docker build & release
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../deploy-contract/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Deploy contract
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../entrypoint-contract/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Entrypoint contract
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../integrating-a-service/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Integrating a service
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../chat-access-standard/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chat access
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../http-error-envelope/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    HTTP error envelope
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../scorecard/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    OpenSSF Scorecard
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Deployment system
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Deployment system
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../deployment-system/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Bootstrap tier
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Meta
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Meta
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../mill-agents/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Mill agents
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../CHANGELOG/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Changelog
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#the-rule" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The rule
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#deploy-plane-config-explicit-allowlist" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Deploy-plane config — explicit allowlist
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#component-owned-config" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Component-owned config
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Component-owned config">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#standard-http-config-surface" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Standard HTTP config surface
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Standard HTTP config surface">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#get-config" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        GET /config
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#put-config" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        PUT /config
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#get-configversions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        GET /config/versions
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#post-configrollback" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        POST /config/rollback
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#standard-ui-affordance" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Standard UI affordance
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#secret-handling" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Secret handling
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#migration-guidance" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Migration guidance
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Migration guidance">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#deprecation-path" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Deprecation path
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#what-not-to-move" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What not to move
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#per-component-adoption" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Per-component adoption
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="config-ownership-deploy-plane-vs-component-owned">Config ownership — deploy-plane vs component-owned<a class="headerlink" href="#config-ownership-deploy-plane-vs-component-owned" title="Permanent link">&para;</a></h1>
+<blockquote>
+<p><strong>Scope: deployable components.</strong> Every deployable component carries
+configuration that must live in exactly one of two places: the
+<strong>deploy plane</strong> (central-deploy UI) or the <strong>component's own config
+surface</strong>. This page draws the hard line between them so that an operator
+never has to guess where a setting belongs — and so that no setting lives
+in both places. See the <a href="../component-standard/">component standard</a> and
+<a href="../config-standard/">config standard</a> for the surrounding contracts.</p>
+</blockquote>
+<h2 id="the-rule">The rule<a class="headerlink" href="#the-rule" title="Permanent link">&para;</a></h2>
+<p>One question decides:</p>
+<p><strong>Can the service apply this setting at runtime from its own config file?</strong></p>
+<p>If yes, it does <strong>NOT</strong> belong in the deploy UI. It belongs in the
+component's own <code>config/config.json</code> and MUST be exposed through the
+component's standard HTTP config surface. The deploy plane is for
+instantiation and wiring — nothing else.</p>
+<p><em>Failure prevented:</em> an operator changes a feature-flag value in the deploy
+UI, redeploys the container, and waits for the restart cycle when the
+component could have applied the change live; or worse, the same setting
+drifts between the deploy UI and the component's own config because both
+channels are open.</p>
+<h2 id="deploy-plane-config-explicit-allowlist">Deploy-plane config — explicit allowlist<a class="headerlink" href="#deploy-plane-config-explicit-allowlist" title="Permanent link">&para;</a></h2>
+<p>Only these categories belong in the central-deploy UI. Anything not listed
+here MUST live in the component's own config surface.</p>
+<table>
+<thead>
+<tr>
+<th>Category</th>
+<th>What it covers</th>
+<th>Examples</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Image and tag</strong></td>
+<td>What container image to run</td>
+<td><code>ghcr.io/org/repo:v1.2.3</code></td>
+</tr>
+<tr>
+<td><strong>Volume mounts</strong></td>
+<td>Persistent storage and credential/agent mounting</td>
+<td>Named volumes, the managed <code>claude-auth</code> volume</td>
+</tr>
+<tr>
+<td><strong>Ports and network</strong></td>
+<td>How the container is reachable</td>
+<td>Published ports, network attachments</td>
+</tr>
+<tr>
+<td><strong>Secret/env injection</strong></td>
+<td>Credentials injected as environment variables</td>
+<td><code>EnvStore</code> slots — API keys, tokens, passwords</td>
+</tr>
+<tr>
+<td><strong>Restart policy</strong></td>
+<td>Container restart behavior</td>
+<td><code>unless-stopped</code>, <code>on-failure</code></td>
+</tr>
+<tr>
+<td><strong><code>ROBOTSIX_CONFIG_FILE</code></strong></td>
+<td>Where the component finds its config file</td>
+<td>Default <code>config/config.json</code>, or a custom path</td>
+</tr>
+<tr>
+<td><strong>Resource limits</strong></td>
+<td>Memory and CPU bounds</td>
+<td><code>memory: 512m</code>, <code>cpus: 1.0</code></td>
+</tr>
+</tbody>
+</table>
+<p>The deploy plane MUST NOT carry any setting that the component can apply at
+runtime or that could live in <code>config/config.json</code>. Feature flags, intervals,
+model selection, limits, behavior toggles, log levels, timeouts, and sibling
+service URLs are all component-owned — they never appear in the deploy UI.</p>
+<p><em>Failure prevented:</em> a component's retry interval is set in the deploy UI;
+tuning it requires a full redeploy instead of a live config update. The
+setting drifts between the deploy UI (stale) and what the operator believes
+is active.</p>
+<h2 id="component-owned-config">Component-owned config<a class="headerlink" href="#component-owned-config" title="Permanent link">&para;</a></h2>
+<p>Everything not in the allowlist above is component-owned. These settings
+live in the component's single <code>config/config.json</code>, located by
+<code>ROBOTSIX_CONFIG_FILE</code>, per the <a href="../config-standard/">config standard</a>. The
+component's pydantic model is the schema; <code>config/config.schema.json</code> is the
+typed reflection the deploy UI consumes for its initial render.</p>
+<p>Beyond the file, every component MUST expose its config through a <strong>standard
+HTTP surface</strong> so the operator can view and edit settings at runtime without
+a redeploy. Every UI-bearing component MUST additionally provide a
+<strong>Settings/Config panel</strong> built on that surface.</p>
+<h3 id="standard-http-config-surface">Standard HTTP config surface<a class="headerlink" href="#standard-http-config-surface" title="Permanent link">&para;</a></h3>
+<p>Every deployable component MUST implement these endpoints on its service
+port. Headless components (no browser UI) expose the HTTP surface only and
+skip the panel requirement.</p>
+<h4 id="get-config"><code>GET /config</code><a class="headerlink" href="#get-config" title="Permanent link">&para;</a></h4>
+<p>Returns the effective config — the values the component is currently using.</p>
+<p><strong>Response</strong> (200):</p>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;config&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;log_level&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;info&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;retry_interval_s&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">30</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;model_level&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;level2&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;api_key&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;**********&quot;</span>
+<span class="w">  </span><span class="p">},</span>
+<span class="w">  </span><span class="nt">&quot;schema&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nt">&quot;...&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;JSON Schema for the config model&quot;</span><span class="w"> </span><span class="p">},</span>
+<span class="w">  </span><span class="nt">&quot;version&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">7</span>
+<span class="p">}</span>
+</code></pre></div>
+<ul>
+<li><code>config</code> — every config field with its current effective value. Secret
+  fields (declared as <code>SecretStr</code> in the pydantic model) are masked as
+  <code>"**********"</code> — the actual secret value is <strong>never</strong> returned.</li>
+<li><code>schema</code> — the JSON Schema for the config model (the same
+  <code>config/config.schema.json</code> the deploy UI consumes). Clients use it to
+  render typed inputs.</li>
+<li><code>version</code> — a monotonic integer. Increments on every successful write.</li>
+</ul>
+<h4 id="put-config"><code>PUT /config</code><a class="headerlink" href="#put-config" title="Permanent link">&para;</a></h4>
+<p>Accepts a partial config update. The component MUST validate the update
+against its pydantic model before applying it.</p>
+<p><strong>Request</strong> (JSON body):</p>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;log_level&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;debug&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;retry_interval_s&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">60</span>
+<span class="p">}</span>
+</code></pre></div>
+<ul>
+<li>Only the keys the operator wants to change are sent — omitted keys keep
+  their current values.</li>
+<li>Secret keys MUST NOT be accepted through this endpoint. Submitting a
+  secret field in the request body MUST return <code>422 Unprocessable Entity</code>
+  with an error indicating that secrets are managed through the deploy
+  plane.</li>
+</ul>
+<p><strong>Response</strong> (200):</p>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;config&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nt">&quot;...&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;full effective config, secrets masked&quot;</span><span class="w"> </span><span class="p">},</span>
+<span class="w">  </span><span class="nt">&quot;version&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">8</span>
+<span class="p">}</span>
+</code></pre></div>
+<p><strong>Error</strong> (422):</p>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;urn:robotsix:error:config-validation&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Config validation failed&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;detail&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;retry_interval_s: value must be &gt;= 1&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;instance&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;/config&quot;</span>
+<span class="p">}</span>
+</code></pre></div>
+<ul>
+<li>Validation errors use the fleet's standard
+  <a href="../http-error-envelope/">HTTP error envelope</a> (<code>application/problem+json</code>).</li>
+<li>The component MUST NOT apply a partial update that fails validation — the
+  config stays at its last valid state.</li>
+</ul>
+<h4 id="get-configversions"><code>GET /config/versions</code><a class="headerlink" href="#get-configversions" title="Permanent link">&para;</a></h4>
+<p>Returns a list of recent config versions with timestamps.</p>
+<p><strong>Response</strong> (200):</p>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;versions&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">    </span><span class="p">{</span><span class="nt">&quot;version&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">7</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;timestamp&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2026-07-22T14:30:00Z&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;changed_keys&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;log_level&quot;</span><span class="p">]},</span>
+<span class="w">    </span><span class="p">{</span><span class="nt">&quot;version&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">6</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;timestamp&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2026-07-22T10:15:00Z&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;changed_keys&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;retry_interval_s&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;model_level&quot;</span><span class="p">]}</span>
+<span class="w">  </span><span class="p">]</span>
+<span class="p">}</span>
+</code></pre></div>
+<ul>
+<li><code>changed_keys</code> lists which top-level keys changed in that version.
+  Secret-key changes are recorded as <code>"&lt;key_name&gt; (secret)"</code> — the key name
+  is logged, the value is never stored in version history.</li>
+<li>The component SHOULD retain at least the last 20 versions. The retention
+  policy is a component decision; there is no fleet-wide minimum.</li>
+</ul>
+<h4 id="post-configrollback"><code>POST /config/rollback</code><a class="headerlink" href="#post-configrollback" title="Permanent link">&para;</a></h4>
+<p>Reverts the component's effective config to a previous version. The
+component MUST validate the rolled-back config before applying it.</p>
+<p><strong>Request</strong> (JSON body):</p>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;version&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">6</span>
+<span class="p">}</span>
+</code></pre></div>
+<p><strong>Response</strong> (200):</p>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;config&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nt">&quot;...&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;full effective config after rollback, secrets masked&quot;</span><span class="w"> </span><span class="p">},</span>
+<span class="w">  </span><span class="nt">&quot;version&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">9</span>
+<span class="p">}</span>
+</code></pre></div>
+<ul>
+<li>Rollback is itself a versioned write — it creates a new version (<code>9</code> in
+  the example above), it does not delete the intervening versions.</li>
+<li>If the target version's config fails validation against the current
+  pydantic model (e.g. a field was added since that version was written),
+  the component MUST return <code>422</code> and MUST NOT apply the rollback.</li>
+</ul>
+<h3 id="standard-ui-affordance">Standard UI affordance<a class="headerlink" href="#standard-ui-affordance" title="Permanent link">&para;</a></h3>
+<p>Every UI-bearing component MUST provide a <strong>Settings</strong> or <strong>Config</strong> panel,
+reachable from the component's primary navigation. The panel:</p>
+<ul>
+<li><strong>Reads from <code>GET /config</code>.</strong> The panel renders every non-secret field
+  with a typed input driven by the <code>schema</code> — a number input for an <code>int</code>,
+  a checkbox for a <code>bool</code>, a dropdown for an enum, a disabled text field
+  with a set/unset badge for a secret.</li>
+<li><strong>Writes through <code>PUT /config</code>.</strong> The operator edits fields and saves;
+  the panel sends only the changed keys. Validation errors from the server
+  are displayed inline on the offending field.</li>
+<li><strong>Shows version history.</strong> A "History" tab or collapsible section lists
+  recent versions from <code>GET /config/versions</code> with timestamps and changed
+  keys. The operator can select a previous version and trigger a rollback
+  from the panel.</li>
+<li><strong>Never echoes secrets.</strong> Secret fields are always rendered as masked
+  (<code>**********</code>) with a set/unset badge. The operator cannot view, edit, or
+  set secrets through the component UI — secrets are managed exclusively
+  through the deploy plane's <code>EnvStore</code>.</li>
+</ul>
+<p>Headless components (no browser UI) skip the panel but MUST still implement
+the full HTTP surface (<code>GET /config</code>, <code>PUT /config</code>, <code>GET /config/versions</code>,
+<code>POST /config/rollback</code>).</p>
+<h2 id="secret-handling">Secret handling<a class="headerlink" href="#secret-handling" title="Permanent link">&para;</a></h2>
+<p>Secrets (API keys, tokens, passwords, credentials of any kind) follow a
+strict channel discipline:</p>
+<ul>
+<li><strong>Secrets are injected by the deploy plane.</strong> The deploy plane's
+  <code>EnvStore</code> injects secrets as environment variables into the container at
+  startup. The component reads them from the environment — they are never
+  written into <code>config/config.json</code> and never appear in the component's HTTP
+  config surface.</li>
+<li><strong><code>GET /config</code> masks all secret fields.</strong> The response shows
+  <code>"**********"</code> for every <code>SecretStr</code> field — the actual value is never
+  returned, not even to authenticated operators.</li>
+<li><strong><code>PUT /config</code> rejects secret keys.</strong> Attempting to set a secret through
+  the component's config endpoint returns <code>422</code>. Secrets have one channel
+  only: the deploy plane.</li>
+<li><strong>Version history never stores secret values.</strong> When a secret changes
+  (through the deploy plane), the version record notes that the key changed
+  but stores nothing about the value.</li>
+<li><strong>The deploy-plane UI masks secrets server-side.</strong> The central-deploy
+  <code>EnvStore</code> form uses masked (password) inputs and never echoes stored
+  secret values back to the browser. An operator can set or change a secret
+  but cannot view an existing one.</li>
+</ul>
+<p><em>Failure prevented:</em> a secret leaks through the component's config UI
+because the operator assumes the Settings panel is read-only to
+non-admins — but the secret field was rendered in the JSON response. One
+channel for secrets (deploy plane <code>EnvStore</code>) removes the ambiguity.</p>
+<h2 id="migration-guidance">Migration guidance<a class="headerlink" href="#migration-guidance" title="Permanent link">&para;</a></h2>
+<p>Moving a setting from the deploy UI into the component's own config surface
+is a per-component, incremental migration — no big-bang, no flag day.</p>
+<h3 id="deprecation-path">Deprecation path<a class="headerlink" href="#deprecation-path" title="Permanent link">&para;</a></h3>
+<ol>
+<li>
+<p><strong>Add the key to the component's pydantic model</strong> with a sensible
+   default. The default MUST be safe for production — the component will
+   use this value until the operator explicitly sets it.</p>
+</li>
+<li>
+<p><strong>Deploy.</strong> The new key takes its default from the model. The deploy-UI
+   value for the old key is still present and still applied (the component's
+   startup code reads both, preferring the new config key when present).</p>
+</li>
+<li>
+<p><strong>Move the value.</strong> The operator sets the new key through the component's
+   <code>PUT /config</code> endpoint (or the Settings panel). The component now uses
+   the component-owned value.</p>
+</li>
+<li>
+<p><strong>Remove the deploy-UI key.</strong> Once the component-owned value is
+   confirmed, the deploy-UI entry is removed. The component's startup code
+   drops the fallback read of the old deploy-UI key in the same deploy.</p>
+</li>
+<li>
+<p><strong>No dual-channel window.</strong> Steps 3 and 4 SHOULD happen in the same
+   deploy cycle. The operator sets the component-owned value, confirms it is
+   active, then removes the deploy-UI key and redeploys. The component MUST
+   NOT read the same setting from two places indefinitely — the fallback
+   read exists only during the migration window.</p>
+</li>
+</ol>
+<h3 id="what-not-to-move">What not to move<a class="headerlink" href="#what-not-to-move" title="Permanent link">&para;</a></h3>
+<p>Some settings are inherently deploy-plane and MUST NOT be moved:</p>
+<ul>
+<li><strong>Image and tag</strong> — the component cannot change what image it runs as.</li>
+<li><strong>Volume mounts</strong> — the component cannot remount its own filesystem.</li>
+<li><strong>Ports and network</strong> — the component cannot rebind its own ports.</li>
+<li><strong><code>ROBOTSIX_CONFIG_FILE</code></strong> — the component cannot relocate its own config
+  file at runtime (it has already loaded it).</li>
+<li><strong>Resource limits</strong> — the component cannot change its own cgroup limits.</li>
+</ul>
+<p>These are the allowlist categories from the deploy-plane section above. If a
+setting falls into one of those categories, it stays in the deploy UI — the
+migration path does not apply.</p>
+<h3 id="per-component-adoption">Per-component adoption<a class="headerlink" href="#per-component-adoption" title="Permanent link">&para;</a></h3>
+<p>This standard defines the target state. Per-component adoption is filed as
+follow-up tickets against each fleet repo once this standard is merged. A
+component that today carries application settings in the deploy UI follows
+the deprecation path above, one setting at a time, until the deploy UI
+contains only allowlist categories.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.sections", "navigation.expand", "content.code.copy"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+    
+  </body>
+</html>

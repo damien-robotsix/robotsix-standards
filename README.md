@@ -52,6 +52,7 @@ the default.
 | [Integrating a service](docs/integrating-a-service.md) | Task-oriented how-to: zero to a one-click deploy. |
 | [Chat access](docs/chat-access-standard.md) | A standard skill endpoint so the chat agent (`robotsix-chat`) can invoke operations on the component. |
 | [HTTP error envelope](docs/http-error-envelope.md) | One consistent RFC 9457 `application/problem+json` envelope for every error response, registered via centralized exception handlers. |
+| [HTTP security headers](docs/http-security-headers.md) | Standard OWASP security response headers (CSP, HSTS, X-Frame-Options, etc.) via a single shared `secure` middleware — no hand-rolled per-service headers. |
 | [OpenSSF Scorecard](docs/scorecard.md) | Independent supply-chain audit (~20 checks) producing a single numeric score; closes the gap the per-gate security stack doesn't cover. |
 
 **The deployment system** (central-deploy only):

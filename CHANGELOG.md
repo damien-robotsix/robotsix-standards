@@ -46,6 +46,7 @@
 ## 0.0.0 (unreleased)
 
 - New [config ownership](docs/config-ownership.md) standard: draws a hard line between deploy-plane config (central-deploy UI — image, volumes, ports, secrets, restart, resource limits, `ROBOTSIX_CONFIG_FILE`) and component-owned config (the component's own `config/config.json` and HTTP surface). Defines the standard config HTTP surface every component MUST implement: `GET /config`, `PUT /config`, `GET /config/versions`, `POST /config/rollback` — with typed request/response shapes, secret masking, and validation rules. UI-bearing components MUST additionally provide a Settings/Config panel built on that surface.
+- Added "Coverage artifact upload" rule to the CI and security gates section of the repo baseline: any reusable workflow that runs pytest with `--cov` must upload `coverage.xml` and `.coverage` as a `coverage-data` artifact, so consuming workflows can generate coverage diff commentary without re-running tests.
 - Add CI gate (`scripts/check-toc-sync.py`) that verifies mkdocs.yml nav pages
   appear in README.md and docs/index.md, preventing TOC drift.
 - Added **Changelog nav page** rule to [MkDocs build integrity](docs/mkdocs-build.md): every fleet repo that publishes an MkDocs site and maintains a `CHANGELOG.md` must surface it in the docs `nav` via a symlink or build-time copy hook — no committed duplicate copy.

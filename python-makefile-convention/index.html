@@ -10,13 +10,13 @@
       
       
       
-        <link rel="canonical" href="https://damien-robotsix.github.io/robotsix-standards/security-posture/">
+        <link rel="canonical" href="https://damien-robotsix.github.io/robotsix-standards/python-makefile-convention/">
       
       
-        <link rel="prev" href="../free-tier-only/">
+        <link rel="prev" href="../python/">
       
       
-        <link rel="next" href="../python/">
+        <link rel="next" href="../pytest/">
       
       
         
@@ -27,7 +27,7 @@
     
     
       
-        <title>Security posture - Robotsix Standards</title>
+        <title>Python Makefile convention - Robotsix Standards</title>
       
     
     
@@ -78,7 +78,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#security-posture" class="md-skip">
+        <a href="#python-makefile-convention" class="md-skip">
           Skip to content
         </a>
       
@@ -114,7 +114,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Security posture
+              Python Makefile convention
             
           </span>
         </div>
@@ -421,37 +421,10 @@
                 
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Security posture
-  
-
-    
-  </span>
-  
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../security-posture/" class="md-nav__link">
         
   
   
@@ -467,242 +440,6 @@
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#why-a-dedicated-security-standard" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Why a dedicated security standard
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#tooling-policy-open-source-preferred" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Tooling policy: open-source preferred
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#the-gates" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        The gates
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="The gates">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#1-sast-semgrep" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        1. SAST — Semgrep
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#2-dependency-review-pr-gate" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        2. Dependency review — PR gate
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#3-automated-dependency-updates-dependabot" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        3. Automated dependency updates — Dependabot
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#4-workflow-hardening" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        4. Workflow hardening
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="4. Workflow hardening">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#4a-actions-pinned-to-commit-shas" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        4a. Actions pinned to commit SHAs
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#4b-workflow-linting-actionlint-zizmor" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        4b. Workflow linting — actionlint + zizmor
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#4c-least-privilege-permissions-blocks" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        4c. Least-privilege permissions: blocks
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#5-secret-push-protection" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        5. Secret push protection
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="5. Secret push protection">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#why-this-stack" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Why this stack
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#no-licensed-secret-scanner" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        No licensed secret scanner
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#6-sbom-vulnerability-audit" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        6. SBOM &amp; vulnerability audit
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#slsa-source-track" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        SLSA Source Track
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#how-the-gates-are-delivered" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        How the gates are delivered
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#audit" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Audit
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#see-also" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        See also
-      
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -740,10 +477,37 @@
                 
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="../python-makefile-convention/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Python Makefile convention
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   
@@ -759,6 +523,247 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#why-this-exists" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why this exists
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#required-targets" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Required targets
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Required targets">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#install" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        install
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#lint" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        lint
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#typecheck" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        typecheck
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#test" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        test
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#test-unit" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        test-unit
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#test-integration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        test-integration
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#coverage" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        coverage
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#docs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        docs
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#lock-check" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        lock-check
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pre-commit" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        pre-commit
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#clean" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        clean
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#optional-targets" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Optional targets
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Optional targets">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#coverage-view" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        coverage-view
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#test-op" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        test-op
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#docs-serve" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        docs-serve
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-help-target" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The help target
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#full-example" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Full example
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -1652,10 +1657,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#why-a-dedicated-security-standard" class="md-nav__link">
+  <a href="#why-this-exists" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Why a dedicated security standard
+        Why this exists
       
     </span>
   </a>
@@ -1663,33 +1668,22 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#tooling-policy-open-source-preferred" class="md-nav__link">
+  <a href="#required-targets" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Tooling policy: open-source preferred
+        Required targets
       
     </span>
   </a>
   
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#the-gates" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        The gates
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="The gates">
+    <nav class="md-nav" aria-label="Required targets">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#1-sast-semgrep" class="md-nav__link">
+  <a href="#install" class="md-nav__link">
     <span class="md-ellipsis">
       
-        1. SAST — Semgrep
+        install
       
     </span>
   </a>
@@ -1697,10 +1691,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#2-dependency-review-pr-gate" class="md-nav__link">
+  <a href="#lint" class="md-nav__link">
     <span class="md-ellipsis">
       
-        2. Dependency review — PR gate
+        lint
       
     </span>
   </a>
@@ -1708,10 +1702,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#3-automated-dependency-updates-dependabot" class="md-nav__link">
+  <a href="#typecheck" class="md-nav__link">
     <span class="md-ellipsis">
       
-        3. Automated dependency updates — Dependabot
+        typecheck
       
     </span>
   </a>
@@ -1719,22 +1713,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#4-workflow-hardening" class="md-nav__link">
+  <a href="#test" class="md-nav__link">
     <span class="md-ellipsis">
       
-        4. Workflow hardening
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="4. Workflow hardening">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#4a-actions-pinned-to-commit-shas" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        4a. Actions pinned to commit SHAs
+        test
       
     </span>
   </a>
@@ -1742,10 +1724,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#4b-workflow-linting-actionlint-zizmor" class="md-nav__link">
+  <a href="#test-unit" class="md-nav__link">
     <span class="md-ellipsis">
       
-        4b. Workflow linting — actionlint + zizmor
+        test-unit
       
     </span>
   </a>
@@ -1753,38 +1735,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#4c-least-privilege-permissions-blocks" class="md-nav__link">
+  <a href="#test-integration" class="md-nav__link">
     <span class="md-ellipsis">
       
-        4c. Least-privilege permissions: blocks
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#5-secret-push-protection" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        5. Secret push protection
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="5. Secret push protection">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#why-this-stack" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Why this stack
+        test-integration
       
     </span>
   </a>
@@ -1792,26 +1746,54 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#no-licensed-secret-scanner" class="md-nav__link">
+  <a href="#coverage" class="md-nav__link">
     <span class="md-ellipsis">
       
-        No licensed secret scanner
+        coverage
       
     </span>
   </a>
   
 </li>
         
-      </ul>
-    </nav>
+          <li class="md-nav__item">
+  <a href="#docs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        docs
+      
+    </span>
+  </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#6-sbom-vulnerability-audit" class="md-nav__link">
+  <a href="#lock-check" class="md-nav__link">
     <span class="md-ellipsis">
       
-        6. SBOM &amp; vulnerability audit
+        lock-check
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pre-commit" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        pre-commit
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#clean" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        clean
       
     </span>
   </a>
@@ -1824,10 +1806,60 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#slsa-source-track" class="md-nav__link">
+  <a href="#optional-targets" class="md-nav__link">
     <span class="md-ellipsis">
       
-        SLSA Source Track
+        Optional targets
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Optional targets">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#coverage-view" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        coverage-view
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#test-op" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        test-op
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#docs-serve" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        docs-serve
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-help-target" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The help target
       
     </span>
   </a>
@@ -1835,32 +1867,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#how-the-gates-are-delivered" class="md-nav__link">
+  <a href="#full-example" class="md-nav__link">
     <span class="md-ellipsis">
       
-        How the gates are delivered
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#audit" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Audit
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#see-also" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        See also
+        Full example
       
     </span>
   </a>
@@ -1887,388 +1897,245 @@
   
 
 
-<h1 id="security-posture">Security posture<a class="headerlink" href="#security-posture" title="Permanent link">&para;</a></h1>
+<h1 id="python-makefile-convention">Python Makefile convention<a class="headerlink" href="#python-makefile-convention" title="Permanent link">&para;</a></h1>
 <blockquote>
-<p><strong>Scope: every robotsix repository</strong> — libraries and deployable components
-alike. This is <em>in addition to</em> the <a href="../repo-baseline/">repo baseline</a>, which
-every repo follows.</p>
+<p><strong>Scope: every Python repository using uv.</strong> The Makefile targets defined
+here give every repo the same self-documenting interface for common
+development tasks.</p>
 </blockquote>
-<p><strong>Content-only repos</strong> — repos that contain only documentation, standards, or
-static content (no <code>src/</code> directory, no container image) — are exempt from
-code-analysis gates (Semgrep, dependency-review, SBOM, CVE audit) and from the
-zizmor workflow audit (gate 4b). The zizmor checks (script injection via
-<code>${{ }}</code>, untrusted <code>pull_request_target</code> checkout, overly broad permissions)
-are lower-risk for a repo with no deployable artifacts and few, simple
-workflows. Content-only repos must still meet SHA-pinning (4a), least-privilege
-permissions (4c), push-protection + detect-secrets (the commit-time and
-push-time parts of gate 5), and Dependabot gates. The TruffleHog full-history
-scan is exempt — a docs-only repo with no deployable artifacts and few
-contributors has minimal secret-exposure surface beyond what push protection
-and detect-secrets already catch.</p>
-<p>The fleet's security requirements are organizational policy, not repo-specific
-technical gaps. They are defined once here, checked at repo onboarding and
-on-demand via audit, rather than re-audited weekly per repo by a periodic agent.
-Every gate is <strong>self-enforcing</strong> — implemented in CI or GitHub settings, not
-dependent on human review or dashboard monitoring — so an audit pass can verify
-compliance mechanically.</p>
-<h2 id="why-a-dedicated-security-standard">Why a dedicated security standard<a class="headerlink" href="#why-a-dedicated-security-standard" title="Permanent link">&para;</a></h2>
-<p>Before this page, security gates lived scattered across several standards
-(<a href="../repo-baseline/">repo baseline</a>, <a href="../python/">Python practices</a>,
-<a href="../docker-standard/">Docker build &amp; release</a>) and the shared-workflow
-implementation. That made a compliance audit a multi-document hunt. A single,
-checklist-shaped standard gives auditors one page to read and gives repo authors
-one page to confirm during onboarding.</p>
-<h2 id="tooling-policy-open-source-preferred">Tooling policy: open-source preferred<a class="headerlink" href="#tooling-policy-open-source-preferred" title="Permanent link">&para;</a></h2>
-<p>The fleet actively prefers open-source security tooling over proprietary or
-licensed solutions. This is an intentional policy choice, not a default or
-cost-saving measure:</p>
-<ul>
-<li><strong>Auditability.</strong> Open-source tools ship their detection rules in the clear.
-  A false positive can be traced to a specific rule and suppressed or fixed; a
-  missed pattern can be contributed upstream. Proprietary scanners are a black
-  box — the fleet depends on the vendor's rule-writing priorities and
-  release cadence, with no recourse.</li>
-<li><strong>No license keys in CI.</strong> A licensed tool requires a license key provisioned
-  in every repo's secrets, rotated on expiry, and gated on billing. Every key
-  is a secret that must itself be protected — a self-referential failure mode.
-  An OSS tool needs no key and has no expiry.</li>
-<li><strong>Reproducibility.</strong> A contributor can run the same scan locally (pre-commit
-  or a one-shot CLI invocation) that CI runs — same version, same rules, same
-  result. Licensed scanners that gate features behind a key break this: CI sees
-  rules the developer cannot reproduce, so a CI-only failure is a mystery.</li>
-<li><strong>Fleet consistency.</strong> An OSS scanner rolls out by updating one shared
-  workflow and one pre-commit config. A licensed scanner gatekeeps fleet-wide
-  rollout behind procurement, license provisioning, and per-repo secret
-  management — the opposite of the self-enforcing principle.</li>
-</ul>
-<p>This policy applies to every security gate: SAST (Semgrep, itself open-source),
-secret scanning (detect-secrets + TruffleHog, see gate 5), dependency auditing
-(<code>uv audit</code>, <code>pip-audit</code>), and container image scanning (Trivy). A future gate
-that genuinely requires a proprietary tool must justify the exception in the
-standard that introduces it — stating what an OSS alternative was evaluated
-and why it was insufficient.</p>
-<h2 id="the-gates">The gates<a class="headerlink" href="#the-gates" title="Permanent link">&para;</a></h2>
-<p>Each gate below is a <strong>required, self-enforcing</strong> control. A repo that ships a
-container image additionally meets the <strong>container-image</strong> gates.</p>
-<h3 id="1-sast-semgrep">1. SAST — Semgrep<a class="headerlink" href="#1-sast-semgrep" title="Permanent link">&para;</a></h3>
-<p>Semgrep analysis runs on every PR and every push to <code>main</code>, via the shared
-security workflow from robotsix-github-workflows. Findings are published as a
-workflow artifact and surfaced through the fleet dashboard — there is no
-dependency on GitHub Code Scanning or the GitHub Security tab.</p>
-<p>Bandit (Python-specific SAST) runs as a complementary layer via the shared
-<code>python-ci.yml</code> workflow in every Python repo — see
-<a href="../python/#lint-types-and-security-lint">Python practices</a>.</p>
-<ul>
-<li><strong>How to verify:</strong> the repo's CI workflow calls the shared Semgrep workflow.
-  The latest CI run on the default branch uploads a Semgrep findings artifact.</li>
-<li><strong>Failure prevented:</strong> a vulnerability that a static-analysis rule would
-  catch (SQL injection, path traversal, hardcoded credentials) merges and
-  ships.</li>
-<li><strong>Alignment:</strong> <a href="https://owasp.org/www-community/Source_Code_Analysis_Tools">OWASP SAST</a>,
-  OpenSSF Scorecard <em>SAST</em> check.</li>
-</ul>
-<h3 id="2-dependency-review-pr-gate">2. Dependency review — PR gate<a class="headerlink" href="#2-dependency-review-pr-gate" title="Permanent link">&para;</a></h3>
-<p>The <code>dependency-review</code> action gates every PR, failing on <code>moderate</code>-severity
-or higher findings. It catches a dependency change that introduces a known
-vulnerable package before the PR merges.</p>
-<ul>
-<li><strong>Prerequisite:</strong> the repo's <strong>Dependency graph</strong> must be enabled (a GitHub
-  setting, not a workflow — enable Dependabot alerts or automated security
-  fixes, which turn it on). Without it the action errors and the gate can
-  never go green.</li>
-<li><strong>How to verify:</strong> the repo's PR CI calls the shared <code>dependency-review</code>
-  workflow. Opening a PR that adds a vulnerable dependency fails the check.</li>
-<li><strong>Failure prevented:</strong> a lockfile bump silently pulls in a package with a
-  published CVE.</li>
-<li><strong>Alignment:</strong> OpenSSF Scorecard <em>Dependency-Update-Tool</em> and
-  <em>Vulnerabilities</em> checks.</li>
-</ul>
-<h3 id="3-automated-dependency-updates-dependabot">3. Automated dependency updates — Dependabot<a class="headerlink" href="#3-automated-dependency-updates-dependabot" title="Permanent link">&para;</a></h3>
-<p>Every pin the standards mandate has exactly one named bumper. Dependabot covers
-third-party packages, GitHub Actions SHAs, base-image digests, pre-commit hook
-versions, and npm packages. <code>.github/dependabot.yml</code> declares the required
-ecosystems, and the baseline-check gate verifies it is present and complete.
-Dependabot PRs auto-merge once required checks pass.</p>
-<ul>
-<li><strong>How to verify:</strong> <code>.github/dependabot.yml</code> exists and covers
-  <code>github-actions</code> and <code>pre-commit</code> in every repo, plus the
-  language-specific ecosystem (<code>uv</code> in Python repos, <code>npm</code> in repos
-  with <code>package.json</code>), and <code>docker</code> in image-shipping repos. The Dependabot
-  tab shows recent update PRs.</li>
-<li><strong>Failure prevented:</strong> a pinned digest (base image, action SHA) rots silently
-  — the image stops receiving base-OS security patches, an action runs an
-  unmaintained version — with no alert.</li>
-<li><strong>Alignment:</strong> OpenSSF Scorecard <em>Dependency-Update-Tool</em> check.</li>
-<li><strong>Detail:</strong> <a href="../repo-baseline/#automated-dependency-updates">repo baseline — automated dependency updates</a>.</li>
-</ul>
-<h3 id="4-workflow-hardening">4. Workflow hardening<a class="headerlink" href="#4-workflow-hardening" title="Permanent link">&para;</a></h3>
-<h4 id="4a-actions-pinned-to-commit-shas">4a. Actions pinned to commit SHAs<a class="headerlink" href="#4a-actions-pinned-to-commit-shas" title="Permanent link">&para;</a></h4>
-<p>Every third-party action (<code>uses:</code> referencing an action outside the
-robotsix-github-workflows org) is pinned to its full 40-character commit SHA,
-with a trailing <code># vX.Y.Z</code> version comment. A tag or branch ref drifts silently
-when the publisher moves it; a SHA is immutable.</p>
-<ul>
-<li><strong>How to verify:</strong> <code>grep -r 'uses:' .github/workflows/</code> produces no
-  <code>@main</code>, <code>@master</code>, <code>@v1</code>, or other mutable refs on third-party actions.
-  (Reusable workflows from robotsix-github-workflows use the full commit SHA
-  of that repo's HEAD.)</li>
-<li><strong>Failure prevented:</strong> a compromised or broken action release replaces a
-  trusted tag, and every CI run pulls the replacement with no review.</li>
-<li><strong>Alignment:</strong> OpenSSF Scorecard <em>Pinned-Dependencies</em> check, SLSA
-  <em>Build L3</em> requirement.</li>
-</ul>
-<h4 id="4b-workflow-linting-actionlint-zizmor">4b. Workflow linting — actionlint + zizmor<a class="headerlink" href="#4b-workflow-linting-actionlint-zizmor" title="Permanent link">&para;</a></h4>
-<p>Every workflow file is linted at commit time (<code>actionlint</code> in
-<code>.pre-commit-config.yaml</code>) and at CI time (<code>actionlint</code> in the shared CI
-workflow). <code>zizmor</code> audits workflow definitions for security anti-patterns
-(script injection via <code>${{ }}</code> in <code>run:</code> steps, overly broad <code>permissions:</code>,
-untrusted checkout of <code>pull_request_target</code> events) and gates in CI.</p>
-<ul>
-<li><strong>How to verify:</strong> <code>.pre-commit-config.yaml</code> includes <code>actionlint</code>. CI
-  calls the shared workflow that runs <code>zizmor</code> on <code>.github/workflows/</code>.</li>
-<li><strong>Failure prevented:</strong> a workflow with a shell-injection vector (a
-  <code>${{ github.event.issue.title }}</code> interpolated into a <code>run:</code> script) merges
-  and executes attacker-controlled code in the CI context.</li>
-<li><strong>Alignment:</strong> OpenSSF Scorecard <em>Token-Permissions</em> and
-  <em>Dangerous-Workflow</em> checks.</li>
-</ul>
-<h4 id="4c-least-privilege-permissions-blocks">4c. Least-privilege <code>permissions:</code> blocks<a class="headerlink" href="#4c-least-privilege-permissions-blocks" title="Permanent link">&para;</a></h4>
-<p>Every workflow declares a top-level <code>permissions:</code> block that grants only the
-permissions that workflow genuinely needs. The default (<code>write-all</code> for every
-scope) gives a compromised action or workflow step full run of the repo; a
-<code>read-all</code> top-level default with job-level write grants where needed limits
-blast radius to the minimum.</p>
-<ul>
-<li><strong>The shared caller pattern achieves this automatically</strong> — the reusable
-  workflow declares its own <code>permissions:</code>, and the caller workflow needs
-  only <code>contents: read</code> (or <code>contents: write</code> when the workflow creates
-  releases). A hand-rolled workflow must declare its own <code>permissions:</code> block
-  and justify every <code>write</code> scope.</li>
-<li><strong>How to verify:</strong> <code>grep -A5 'permissions:' .github/workflows/*.yml</code> —
-  every file has one, and no file uses <code>write-all</code>. <code>zizmor</code> flags missing or
-  overly broad blocks.</li>
-<li><strong>Failure prevented:</strong> a compromised third-party action in a workflow with
-  <code>write-all</code> can push to <code>main</code>, exfiltrate secrets, or modify releases with
-  no audit trail.</li>
-<li><strong>Alignment:</strong> OpenSSF Scorecard <em>Token-Permissions</em> check, SLSA
-  <em>Build L3</em> requirement, <a href="https://docs.github.com/en/actions/security-for-github-actions/security-guides/automatic-token-authentication#permissions-for-the-github_token">GitHub's own guidance</a>.</li>
-</ul>
-<h3 id="5-secret-push-protection">5. Secret push protection<a class="headerlink" href="#5-secret-push-protection" title="Permanent link">&para;</a></h3>
-<p>GitHub secret scanning with <strong>push protection</strong> is enabled on every repo. Push
-protection blocks a commit that contains a detected secret <em>before</em> it reaches
-the remote — the secret never lands in the commit history. This is complemented
-by an open-source, layered secret-scanning stack:</p>
-<ul>
-<li><strong><code>detect-secrets</code> pre-commit hook</strong> (<a href="https://github.com/Yelp/detect-secrets">Yelp/detect-secrets</a>,
-  Apache-2.0) with a committed <code>.secrets.baseline</code> — catches credentials at
-  commit time, before the push.</li>
-<li><strong>TruffleHog</strong> (<a href="https://github.com/trufflesecurity/trufflehog">trufflesecurity/trufflehog</a>,
-  AGPL-3.0) in the shared security workflow — scans the PR diff and the full
-  repo history for secrets that slipped past push protection (e.g. a custom
-  pattern GitHub doesn't recognize, or a secret committed before push
-  protection was enabled).</li>
-</ul>
-<h4 id="why-this-stack">Why this stack<a class="headerlink" href="#why-this-stack" title="Permanent link">&para;</a></h4>
-<p>The fleet evaluated three open-source secret scanners for fleet-wide adoption:</p>
+<h2 id="why-this-exists">Why this exists<a class="headerlink" href="#why-this-exists" title="Permanent link">&para;</a></h2>
+<p>Most fleet Python repos carry a <code>Makefile</code> with a handful of targets —
+install, lint, test, clean — but the naming is inconsistent: one repo uses
+<code>check-lock</code>, another uses <code>lock-check</code>; one has <code>test-unit</code>, another has
+<code>unit-test</code>. Contributors moving between repos must re-learn the target names
+each time. CI workflows that invoke <code>make &lt;target&gt;</code> break when the target
+doesn't exist or does something unexpected.</p>
+<p>A single documented convention eliminates that drift. Every repo that
+conforms has the same targets, the same <code>.PHONY</code> discipline, and the same
+<code>## Description</code> comments so a <code>help</code> target can self-document.</p>
+<p>The convention is based on existing fleet practice — several repos already
+follow most of it — so adoption is a rename, not a redesign.</p>
+<h2 id="required-targets">Required targets<a class="headerlink" href="#required-targets" title="Permanent link">&para;</a></h2>
+<p>All targets MUST be declared <code>.PHONY</code>. Every target MUST carry a <code>##
+Description</code> comment immediately before the target line.</p>
+<h3 id="install"><code>install</code><a class="headerlink" href="#install" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="nf">.PHONY</span><span class="o">:</span><span class="w"> </span><span class="n">install</span>
+<span class="nf">install</span><span class="o">:</span><span class="w"> </span><span class="c">## Install all dependencies (including dev)</span>
+<span class="w">    </span>uv<span class="w"> </span>sync<span class="w"> </span>--all-extras
+</code></pre></div>
+<h3 id="lint"><code>lint</code><a class="headerlink" href="#lint" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="nf">.PHONY</span><span class="o">:</span><span class="w"> </span><span class="n">lint</span>
+<span class="nf">lint</span><span class="o">:</span><span class="w"> </span><span class="c">## Lint and format check</span>
+<span class="w">    </span>uv<span class="w"> </span>run<span class="w"> </span>ruff<span class="w"> </span>check<span class="w"> </span>.
+<span class="w">    </span>uv<span class="w"> </span>run<span class="w"> </span>ruff<span class="w"> </span>format<span class="w"> </span>.<span class="w"> </span>--check
+</code></pre></div>
+<h3 id="typecheck"><code>typecheck</code><a class="headerlink" href="#typecheck" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="nf">.PHONY</span><span class="o">:</span><span class="w"> </span><span class="n">typecheck</span>
+<span class="nf">typecheck</span><span class="o">:</span><span class="w"> </span><span class="c">## Static type check</span>
+<span class="w">    </span>uv<span class="w"> </span>run<span class="w"> </span>mypy<span class="w"> </span>src/<span class="w"> </span>--strict<span class="w"> </span><span class="p">|</span><span class="w"> </span>uv<span class="w"> </span>run<span class="w"> </span>--with<span class="w"> </span>mypy-baseline<span class="w"> </span>mypy-baseline<span class="w"> </span>filter
+</code></pre></div>
+<h3 id="test"><code>test</code><a class="headerlink" href="#test" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="nf">.PHONY</span><span class="o">:</span><span class="w"> </span><span class="n">test</span>
+<span class="nf">test</span><span class="o">:</span><span class="w"> </span><span class="n">test</span>-<span class="n">unit</span> <span class="c">## Run unit tests (default)</span>
+</code></pre></div>
+<p>The default <code>test</code> target delegates to <code>test-unit</code>. CI and local <code>make test</code>
+must not run integration tests, which require external services and are
+unreliable in CI without setup.</p>
+<h3 id="test-unit"><code>test-unit</code><a class="headerlink" href="#test-unit" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="nf">.PHONY</span><span class="o">:</span><span class="w"> </span><span class="n">test</span>-<span class="n">unit</span>
+<span class="nf">test-unit</span><span class="o">:</span><span class="w"> </span><span class="c">## Run unit tests only (no integration)</span>
+<span class="w">    </span>uv<span class="w"> </span>run<span class="w"> </span>pytest<span class="w"> </span>-m<span class="w"> </span><span class="s1">&#39;not integration&#39;</span><span class="w"> </span>tests/
+</code></pre></div>
+<p>Runs tests that are not marked <code>@pytest.mark.integration</code>. See the
+<a href="../pytest/">pytest practices</a> page for marker registration and strictness
+rules.</p>
+<h3 id="test-integration"><code>test-integration</code><a class="headerlink" href="#test-integration" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="nf">.PHONY</span><span class="o">:</span><span class="w"> </span><span class="n">test</span>-<span class="n">integration</span>
+<span class="nf">test-integration</span><span class="o">:</span><span class="w"> </span><span class="c">## Run integration tests only</span>
+<span class="w">    </span>uv<span class="w"> </span>run<span class="w"> </span>pytest<span class="w"> </span>-m<span class="w"> </span>integration<span class="w"> </span>tests/
+</code></pre></div>
+<p>Runs only tests marked <code>@pytest.mark.integration</code>. These tests typically
+require external services (databases, APIs) and are not run during CI unless
+the workflow explicitly invokes <code>make test-integration</code>.</p>
+<h3 id="coverage"><code>coverage</code><a class="headerlink" href="#coverage" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="nf">.PHONY</span><span class="o">:</span><span class="w"> </span><span class="n">coverage</span>
+<span class="nf">coverage</span><span class="o">:</span><span class="w"> </span><span class="c">## Run tests with coverage report</span>
+<span class="w">    </span>uv<span class="w"> </span>run<span class="w"> </span>pytest<span class="w"> </span>--cov<span class="o">=</span>src<span class="w"> </span>--cov-report<span class="o">=</span>term-missing<span class="w"> </span>--cov-report<span class="o">=</span>html<span class="w"> </span>tests/<span class="w"> </span>-m<span class="w"> </span><span class="s1">&#39;not integration&#39;</span>
+</code></pre></div>
+<h3 id="docs"><code>docs</code><a class="headerlink" href="#docs" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="nf">.PHONY</span><span class="o">:</span><span class="w"> </span><span class="n">docs</span>
+<span class="nf">docs</span><span class="o">:</span><span class="w"> </span><span class="c">## Build documentation (strict mode)</span>
+<span class="w">    </span>uv<span class="w"> </span>run<span class="w"> </span>--group<span class="w"> </span>docs<span class="w"> </span>mkdocs<span class="w"> </span>build<span class="w"> </span>--strict
+</code></pre></div>
+<h3 id="lock-check"><code>lock-check</code><a class="headerlink" href="#lock-check" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="nf">.PHONY</span><span class="o">:</span><span class="w"> </span><span class="n">lock</span>-<span class="n">check</span>
+<span class="nf">lock-check</span><span class="o">:</span><span class="w"> </span><span class="c">## Verify uv.lock matches pyproject.toml</span>
+<span class="w">    </span>uv<span class="w"> </span>lock<span class="w"> </span>--check
+</code></pre></div>
+<p>Validates that <code>uv.lock</code> is consistent with <code>pyproject.toml</code> without
+re-resolving dependencies. This is a fast CI gate: a stale lockfile fails
+the check rather than silently resolving to different versions at build time.</p>
+<h3 id="pre-commit"><code>pre-commit</code><a class="headerlink" href="#pre-commit" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="nf">.PHONY</span><span class="o">:</span><span class="w"> </span><span class="n">pre</span>-<span class="n">commit</span>
+<span class="nf">pre-commit</span><span class="o">:</span><span class="w"> </span><span class="c">## Run all pre-commit hooks</span>
+<span class="w">    </span>uv<span class="w"> </span>run<span class="w"> </span>pre-commit<span class="w"> </span>run<span class="w"> </span>--all-files
+</code></pre></div>
+<p>Lets CI and developers run every pre-commit hook via a single <code>make</code>
+invocation without remembering the <code>pre-commit</code> subcommand.</p>
+<h3 id="clean"><code>clean</code><a class="headerlink" href="#clean" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="nf">.PHONY</span><span class="o">:</span><span class="w"> </span><span class="n">clean</span>
+<span class="nf">clean</span><span class="o">:</span><span class="w"> </span><span class="c">## Remove build artifacts and caches</span>
+<span class="w">    </span>rm<span class="w"> </span>-rf<span class="w"> </span>build/<span class="w"> </span>dist/<span class="w"> </span>*.egg-info/<span class="w"> </span>.eggs/
+<span class="w">    </span>rm<span class="w"> </span>-rf<span class="w"> </span>.pytest_cache/<span class="w"> </span>.ruff_cache/
+<span class="w">    </span>rm<span class="w"> </span>-rf<span class="w"> </span>.mypy_cache/<span class="w"> </span>.hypothesis/
+<span class="w">    </span>rm<span class="w"> </span>-rf<span class="w"> </span>site/<span class="w"> </span>htmlcov/<span class="w"> </span>.coverage*
+<span class="w">    </span>rm<span class="w"> </span>-rf<span class="w"> </span>__pycache__/<span class="w"> </span>**/__pycache__/
+<span class="w">    </span>find<span class="w"> </span>.<span class="w"> </span>-type<span class="w"> </span>d<span class="w"> </span>-name<span class="w"> </span>.hypothesis<span class="w"> </span>-exec<span class="w"> </span>rm<span class="w"> </span>-rf<span class="w"> </span><span class="o">{}</span><span class="w"> </span>+
+</code></pre></div>
+<p>Removes all generated artifacts, including:</p>
 <table>
 <thead>
 <tr>
-<th>Scanner</th>
-<th>License</th>
-<th>Strengths</th>
-<th>Why chosen / not</th>
+<th>Artifact</th>
+<th>Source</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td><strong>detect-secrets</strong></td>
-<td>Apache-2.0</td>
-<td>Pre-commit native; plugin architecture; committed baseline suppresses known false positives; mature (Yelp, 2017–present).</td>
-<td><strong>Chosen</strong> for the pre-commit layer. No license key needed; the baseline file is version-controlled and reviewable.</td>
+<td><code>build/</code>, <code>dist/</code>, <code>*.egg-info/</code>, <code>.eggs/</code></td>
+<td>setuptools/hatchling build</td>
 </tr>
 <tr>
-<td><strong>TruffleHog</strong></td>
-<td>AGPL-3.0</td>
-<td>Full git-history scanning; verifies detected credentials against live APIs; high-entropy string detection; PR-diff mode for CI.</td>
-<td><strong>Chosen</strong> for the CI layer. Complements detect-secrets by catching secrets that predate the pre-commit hook or bypass it.</td>
+<td><code>.pytest_cache/</code>, <code>.ruff_cache/</code></td>
+<td>linter and test caches</td>
 </tr>
 <tr>
-<td><strong>Gitleaks CLI</strong></td>
-<td>MIT</td>
-<td>Fast; simple rule set; single-binary deployment.</td>
-<td><strong>Not chosen.</strong> The CLI itself is MIT and unencumbered, but the fleet's evaluation (ticket 1740) found that the features needed for CI integration (action, enterprise rule packs) require a license key — the very pattern this standard rejects (see <a href="#tooling-policy-open-source-preferred">tooling policy</a>). The unlicensed CLI alone cannot match the combined coverage of detect-secrets + TruffleHog.</td>
+<td><code>.mypy_cache/</code></td>
+<td>mypy incremental type-check cache</td>
+</tr>
+<tr>
+<td><code>.hypothesis/</code></td>
+<td>Hypothesis example database</td>
+</tr>
+<tr>
+<td><code>site/</code></td>
+<td>mkdocs build output</td>
+</tr>
+<tr>
+<td><code>htmlcov/</code>, <code>.coverage*</code></td>
+<td>coverage reports</td>
+</tr>
+<tr>
+<td><code>__pycache__/</code></td>
+<td>Python bytecode cache</td>
 </tr>
 </tbody>
 </table>
-<p><strong>Rationale for two tools over one.</strong> A single scanner cannot cover both the
-pre-commit and CI surfaces equally well:</p>
-<ul>
-<li>A pre-commit hook must be fast (sub-second on changed files) and must not
-  require network access. TruffleHog's live credential verification is
-  powerful in CI but too slow and network-dependent for a pre-commit hook.</li>
-<li>A CI scanner must cover the full git history — commits that predate the
-  pre-commit hook, force-push artifacts, merge-commit blobs.
-  <code>detect-secrets</code> only sees the working tree at commit time; it cannot
-  retroactively scan history.</li>
-</ul>
-<p>The two tools are not redundant — they are complementary layers in a defense
-that spans commit-time, push-time, and CI-time.</p>
-<h4 id="no-licensed-secret-scanner">No licensed secret scanner<a class="headerlink" href="#no-licensed-secret-scanner" title="Permanent link">&para;</a></h4>
-<p>No standard mandates or recommends a licensed or proprietary secret-scanning
-tool. The Gitleaks Enterprise/licensed path was evaluated and explicitly
-rejected (ticket 1740) — provisioning a <code>GITLEAKS_LICENSE</code> key across the
-fleet would violate the <a href="#tooling-policy-open-source-preferred">open-source preferred policy</a>
-and add a self-referential secret-management burden. The OSS stack above
-(detect-secrets + TruffleHog) is the single fleet-wide secret-scanning path.</p>
-<ul>
-<li><strong>How to verify:</strong> the repo's Security / Secret scanning settings show "Push
-  protection" as enabled. <code>.pre-commit-config.yaml</code> includes <code>detect-secrets</code>.
-  CI calls the shared TruffleHog workflow.</li>
-<li><strong>Failure prevented:</strong> a credential (API key, token, private key) is
-  committed and pushed; even if the commit is later reverted or force-pushed,
-  the secret existed in the history and must be assumed compromised.</li>
-<li><strong>Alignment:</strong> OpenSSF Scorecard <em>Token-Permissions</em> check, OWASP
-  <em>Secret Management</em>.</li>
-</ul>
-<h3 id="6-sbom-vulnerability-audit">6. SBOM &amp; vulnerability audit<a class="headerlink" href="#6-sbom-vulnerability-audit" title="Permanent link">&para;</a></h3>
-<p>Every repo produces a machine-readable software bill of materials and runs a
-dependency vulnerability audit on every CI run.</p>
-<ul>
-<li><strong>CycloneDX SBOM</strong> generated and uploaded as a workflow artifact on every
-  CI run (via the shared security workflow). The upload step uses
-  <code>if: always()</code> so a failed scan never silently drops the artifact.</li>
-<li><strong>Release asset.</strong> The auto-release workflow MUST attach the CycloneDX SBOM
-  as a GitHub Release asset (filename <code>sbom.cyclonedx.json</code>, per the
-  <a href="https://github.com/ossf/scorecard/blob/main/docs/checks.md#sbom">OSSF "SBOM Everywhere" naming convention</a>).
-  A Sigstore attestation via <code>actions/attest</code> on the SBOM is recommended but
-  optional. The release-time asset is what raises the Scorecard <em>SBOM</em> check
-  from 5/10 (SBOM present somewhere in the pipeline) to 10/10 (SBOM published
-  as a release artifact).</li>
-<li><strong>Dependency CVE audit</strong> — <code>uv audit</code> (or <code>pip-audit</code>) gates in CI, blocking
-  on known vulnerabilities in the dependency tree.</li>
-<li>
-<p><strong>Container image scan</strong> <em>(image-shipping repos only)</em> — Trivy scans the
-  built image on every PR and on every publish, blocking on fixable
-  CRITICAL/HIGH findings. A <code>.trivyignore</code> with commented entries suppresses
-  findings that genuinely don't apply. A weekly scheduled rescan of the
-  published <code>:main</code> image catches CVEs disclosed after the image was built.</p>
-</li>
-<li>
-<p><strong>How to verify:</strong> CI uploads a CycloneDX SBOM artifact. The latest GitHub
-  Release includes <code>sbom.cyclonedx.json</code> as an asset (and optionally a
-  Sigstore attestation bundle). <code>uv audit</code> (or <code>pip-audit</code>) passes in the
-  latest CI run. Image-shipping repos: the PR-scan and publish workflows both
-  call the Trivy reusable workflow.</p>
-</li>
-<li><strong>Failure prevented:</strong> a dependency with a published, fixable CVE ships in
-  production with no one aware. An SBOM that exists only as a CI artifact is
-  invisible to downstream consumers and supply-chain auditors — the release
-  asset makes it discoverable.</li>
-<li><strong>Alignment:</strong> OpenSSF Scorecard <em>SBOM</em> (10/10 with release asset) and
-  <em>Vulnerabilities</em> checks,
-  <a href="https://slsa.dev/spec/v1.2/requirements">SLSA <em>Build L2+</em></a> provenance
-  requirement.</li>
-<li><strong>Detail:</strong> <a href="../docker-standard/#ci-time-image-scan">Docker build &amp; release — CI-time image scan</a>.</li>
-</ul>
-<h2 id="slsa-source-track">SLSA Source Track<a class="headerlink" href="#slsa-source-track" title="Permanent link">&para;</a></h2>
-<p><a href="https://slsa.dev/spec/v1.2/">SLSA v1.2</a> introduces a <strong>Source Track</strong>
-(Source L1–L4) alongside the existing Build Track. The fleet's posture against
-each Source level:</p>
-<ul>
-<li><strong>Source L1 (version-controlled source):</strong> met — all source lives in GitHub,
-  and every dependency is referenced by an immutable commit SHA.</li>
-<li><strong>Source L2 (signed source provenance):</strong> gap — releases do not yet produce
-  signed source provenance attestations. Adoption is deferred pending tooling
-  maturity and upstream ecosystem support.</li>
-<li><strong>Source L3 (continuous enforcement of branch protection):</strong> met — branch
-  protection with <code>include_admins: true</code> enforces required status checks on
-  every commit to <code>main</code>. No commit merges without passing CI.</li>
-<li><strong>Source L4 (two-person review):</strong> deferred — SLSA Source L4 requires an
-  informed two-person review on every change. The fleet's branch-protection
-  rule mandates one required approving review. Requiring two reviewers on
-  every PR is impractical for a small team and is a deliberate, documented
-  tradeoff.</li>
-</ul>
-<h2 id="how-the-gates-are-delivered">How the gates are delivered<a class="headerlink" href="#how-the-gates-are-delivered" title="Permanent link">&para;</a></h2>
-<p>The gates are <strong>not implemented per-repo</strong> — they are delivered through shared
-reusable workflows in
-<a href="https://github.com/damien-robotsix/robotsix-github-workflows">robotsix-github-workflows</a>.
-A repo calls the shared workflow for each gate; adding a new gate to the fleet
-is one PR in robotsix-github-workflows, not N PRs across every repo. The
-copy-paste caller template for each workflow lives in that repo's README.</p>
-<p>The <a href="../repo-baseline/#ci-and-security-gates">repo baseline</a> lists the standard
-gate set; this page adds the <em>why</em> for each security-specific gate and the audit
-criteria.</p>
-<h2 id="audit">Audit<a class="headerlink" href="#audit" title="Permanent link">&para;</a></h2>
-<p>An audit pass verifies every gate mechanically — no manual review, no
-dashboard-watching:</p>
-<table>
-<thead>
-<tr>
-<th>Gate</th>
-<th>Check</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Semgrep*</td>
-<td>CI calls shared Semgrep workflow; latest CI run uploads Semgrep findings artifact</td>
-</tr>
-<tr>
-<td>Dependency review*</td>
-<td>CI calls shared <code>dependency-review</code> workflow; Dependency graph enabled</td>
-</tr>
-<tr>
-<td>Dependabot</td>
-<td><code>.github/dependabot.yml</code> covers required ecosystems; recent update PRs</td>
-</tr>
-<tr>
-<td>SHA-pinned actions</td>
-<td><code>grep -r 'uses:' .github/workflows/</code> — no mutable refs on third-party actions</td>
-</tr>
-<tr>
-<td>Workflow linting</td>
-<td><code>.pre-commit-config.yaml</code> includes <code>actionlint</code>; CI runs <code>zizmor</code> (content-only repos exempt from <code>zizmor</code>)</td>
-</tr>
-<tr>
-<td>Least-privilege permissions</td>
-<td>Every workflow has <code>permissions:</code> block; <code>zizmor</code> reports clean</td>
-</tr>
-<tr>
-<td>Secret push protection</td>
-<td>Push protection enabled in repo Security settings; <code>detect-secrets</code> in pre-commit; CI runs TruffleHog (content-only repos exempt from TruffleHog)</td>
-</tr>
-<tr>
-<td>SBOM*</td>
-<td>CI uploads CycloneDX artifact</td>
-</tr>
-<tr>
-<td>CVE audit*</td>
-<td><code>uv audit</code> / <code>pip-audit</code> passes in CI</td>
-</tr>
-<tr>
-<td>Container image scan</td>
-<td>Trivy PR-scan and publish workflows present and passing (image-shipping repos only)</td>
-</tr>
-<tr>
-<td>Vulnerability disclosure</td>
-<td><code>SECURITY.md</code> present at repo root with contact method, response-time expectation, and coordinated-disclosure statement</td>
-</tr>
-</tbody>
-</table>
-<p>*Content-only repos are exempt per the preamble above.</p>
-<p>A repo that fails any gate is non-compliant; the fix is always the same — call
-the shared workflow, or enable the GitHub setting.</p>
-<h2 id="see-also">See also<a class="headerlink" href="#see-also" title="Permanent link">&para;</a></h2>
-<ul>
-<li><a href="../repo-baseline/#ci-and-security-gates">Repo baseline — CI and security gates</a></li>
-<li><a href="../repo-baseline/#automated-dependency-updates">Repo baseline — automated dependency updates</a></li>
-<li><a href="../python/#lint-types-and-security-lint">Python practices — lint, types, and security lint</a></li>
-<li><a href="../docker-standard/#ci-time-image-scan">Docker build &amp; release — CI-time image scan</a></li>
-<li><a href="https://securityscorecards.dev/">OpenSSF Scorecard</a></li>
-<li><a href="https://slsa.dev/">SLSA Supply-chain Levels for Software Artifacts</a></li>
-<li><a href="https://owasp.org/www-project-top-10-ci-cd-security-risks/">OWASP Top 10 CI/CD Security Risks</a></li>
-</ul>
+<h2 id="optional-targets">Optional targets<a class="headerlink" href="#optional-targets" title="Permanent link">&para;</a></h2>
+<h3 id="coverage-view"><code>coverage-view</code><a class="headerlink" href="#coverage-view" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="nf">.PHONY</span><span class="o">:</span><span class="w"> </span><span class="n">coverage</span>-<span class="n">view</span>
+<span class="nf">coverage-view</span><span class="o">:</span><span class="w"> </span><span class="c">## Open coverage HTML report in browser</span>
+<span class="w">    </span>xdg-open<span class="w"> </span>htmlcov/index.html<span class="w"> </span><span class="o">||</span><span class="w"> </span>open<span class="w"> </span>htmlcov/index.html
+</code></pre></div>
+<p>Opens the coverage HTML report. Falls back from <code>xdg-open</code> (Linux) to
+<code>open</code> (macOS).</p>
+<h3 id="test-op"><code>test-op</code><a class="headerlink" href="#test-op" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="nf">.PHONY</span><span class="o">:</span><span class="w"> </span><span class="n">test</span>-<span class="n">op</span>
+<span class="nf">test-op</span><span class="o">:</span><span class="w"> </span><span class="c">## Run a specific test path (usage: TEST_PATH=tests/test_foo.py make test-op)</span>
+<span class="w">    </span>uv<span class="w"> </span>run<span class="w"> </span>pytest<span class="w"> </span><span class="k">$(</span>TEST_PATH<span class="k">)</span>
+</code></pre></div>
+<p>A parameterized target for running specific test subsets. The caller sets
+<code>TEST_PATH</code> to the desired test file or directory.</p>
+<h3 id="docs-serve"><code>docs-serve</code><a class="headerlink" href="#docs-serve" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="nf">.PHONY</span><span class="o">:</span><span class="w"> </span><span class="n">docs</span>-<span class="n">serve</span>
+<span class="nf">docs-serve</span><span class="o">:</span><span class="w"> </span><span class="c">## Serve documentation locally with live reload</span>
+<span class="w">    </span>uv<span class="w"> </span>run<span class="w"> </span>--group<span class="w"> </span>docs<span class="w"> </span>mkdocs<span class="w"> </span>serve
+</code></pre></div>
+<h2 id="the-help-target">The <code>help</code> target<a class="headerlink" href="#the-help-target" title="Permanent link">&para;</a></h2>
+<p>Every Makefile SHOULD include a self-documenting <code>help</code> target so developers
+can discover available targets without reading the Makefile source:</p>
+<div class="highlight"><pre><span></span><code><span class="nf">.PHONY</span><span class="o">:</span><span class="w"> </span><span class="n">help</span>
+<span class="nf">help</span><span class="o">:</span><span class="w"> </span><span class="c">## Show this help message</span>
+<span class="w">    </span>@grep<span class="w"> </span>-E<span class="w"> </span><span class="s1">&#39;^[a-zA-Z_-]+:.*?## .*$$&#39;</span><span class="w"> </span><span class="k">$(</span>MAKEFILE_LIST<span class="k">)</span><span class="w"> </span><span class="se">\</span>
+<span class="w">      </span><span class="p">|</span><span class="w"> </span>sort<span class="w"> </span><span class="se">\</span>
+<span class="w">      </span><span class="p">|</span><span class="w"> </span>awk<span class="w"> </span><span class="s1">&#39;BEGIN {FS = &quot;:.*?## &quot;}; {printf &quot;\033[36m%-20s\033[0m %s\n&quot;, $$1, $$2}&#39;</span>
+</code></pre></div>
+<p>This grep-awk one-liner extracts every <code>## Description</code> comment and prints
+a formatted table. It has no dependencies beyond <code>grep</code> and <code>awk</code>, which are
+available on every runner.</p>
+<h2 id="full-example">Full example<a class="headerlink" href="#full-example" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code><span class="c"># ==========================================================================</span>
+<span class="c"># Makefile — robotsix fleet convention (Python / uv)</span>
+<span class="c"># ==========================================================================</span>
+<span class="c"># Run `make help` to list available targets with descriptions.</span>
+
+<span class="nf">.PHONY</span><span class="o">:</span><span class="w"> </span><span class="n">help</span>
+<span class="nf">help</span><span class="o">:</span><span class="w"> </span><span class="c">## Show this help message</span>
+<span class="w">    </span>@grep<span class="w"> </span>-E<span class="w"> </span><span class="s1">&#39;^[a-zA-Z_-]+:.*?## .*$$&#39;</span><span class="w"> </span><span class="k">$(</span>MAKEFILE_LIST<span class="k">)</span><span class="w"> </span><span class="se">\</span>
+<span class="w">      </span><span class="p">|</span><span class="w"> </span>sort<span class="w"> </span><span class="se">\</span>
+<span class="w">      </span><span class="p">|</span><span class="w"> </span>awk<span class="w"> </span><span class="s1">&#39;BEGIN {FS = &quot;:.*?## &quot;}; {printf &quot;\033[36m%-20s\033[0m %s\n&quot;, $$1, $$2}&#39;</span>
+
+<span class="nf">.PHONY</span><span class="o">:</span><span class="w"> </span><span class="n">install</span>
+<span class="nf">install</span><span class="o">:</span><span class="w"> </span><span class="c">## Install all dependencies (including dev)</span>
+<span class="w">    </span>uv<span class="w"> </span>sync<span class="w"> </span>--all-extras
+
+<span class="nf">.PHONY</span><span class="o">:</span><span class="w"> </span><span class="n">lint</span>
+<span class="nf">lint</span><span class="o">:</span><span class="w"> </span><span class="c">## Lint and format check</span>
+<span class="w">    </span>uv<span class="w"> </span>run<span class="w"> </span>ruff<span class="w"> </span>check<span class="w"> </span>.
+<span class="w">    </span>uv<span class="w"> </span>run<span class="w"> </span>ruff<span class="w"> </span>format<span class="w"> </span>.<span class="w"> </span>--check
+
+<span class="nf">.PHONY</span><span class="o">:</span><span class="w"> </span><span class="n">typecheck</span>
+<span class="nf">typecheck</span><span class="o">:</span><span class="w"> </span><span class="c">## Static type check</span>
+<span class="w">    </span>uv<span class="w"> </span>run<span class="w"> </span>mypy<span class="w"> </span>src/<span class="w"> </span>--strict<span class="w"> </span><span class="p">|</span><span class="w"> </span>uv<span class="w"> </span>run<span class="w"> </span>--with<span class="w"> </span>mypy-baseline<span class="w"> </span>mypy-baseline<span class="w"> </span>filter
+
+<span class="nf">.PHONY</span><span class="o">:</span><span class="w"> </span><span class="n">test</span>
+<span class="nf">test</span><span class="o">:</span><span class="w"> </span><span class="n">test</span>-<span class="n">unit</span> <span class="c">## Run unit tests (default)</span>
+
+<span class="nf">.PHONY</span><span class="o">:</span><span class="w"> </span><span class="n">test</span>-<span class="n">unit</span>
+<span class="nf">test-unit</span><span class="o">:</span><span class="w"> </span><span class="c">## Run unit tests only (no integration)</span>
+<span class="w">    </span>uv<span class="w"> </span>run<span class="w"> </span>pytest<span class="w"> </span>-m<span class="w"> </span><span class="s1">&#39;not integration&#39;</span><span class="w"> </span>tests/
+
+<span class="nf">.PHONY</span><span class="o">:</span><span class="w"> </span><span class="n">test</span>-<span class="n">integration</span>
+<span class="nf">test-integration</span><span class="o">:</span><span class="w"> </span><span class="c">## Run integration tests only</span>
+<span class="w">    </span>uv<span class="w"> </span>run<span class="w"> </span>pytest<span class="w"> </span>-m<span class="w"> </span>integration<span class="w"> </span>tests/
+
+<span class="nf">.PHONY</span><span class="o">:</span><span class="w"> </span><span class="n">coverage</span>
+<span class="nf">coverage</span><span class="o">:</span><span class="w"> </span><span class="c">## Run tests with coverage report</span>
+<span class="w">    </span>uv<span class="w"> </span>run<span class="w"> </span>pytest<span class="w"> </span>--cov<span class="o">=</span>src<span class="w"> </span>--cov-report<span class="o">=</span>term-missing<span class="w"> </span>--cov-report<span class="o">=</span>html<span class="w"> </span>tests/<span class="w"> </span>-m<span class="w"> </span><span class="s1">&#39;not integration&#39;</span>
+
+<span class="nf">.PHONY</span><span class="o">:</span><span class="w"> </span><span class="n">coverage</span>-<span class="n">view</span>
+<span class="nf">coverage-view</span><span class="o">:</span><span class="w"> </span><span class="c">## Open coverage HTML report in browser</span>
+<span class="w">    </span>xdg-open<span class="w"> </span>htmlcov/index.html<span class="w"> </span><span class="o">||</span><span class="w"> </span>open<span class="w"> </span>htmlcov/index.html
+
+<span class="nf">.PHONY</span><span class="o">:</span><span class="w"> </span><span class="n">test</span>-<span class="n">op</span>
+<span class="nf">test-op</span><span class="o">:</span><span class="w"> </span><span class="c">## Run a specific test path (usage: TEST_PATH=tests/test_foo.py make test-op)</span>
+<span class="w">    </span>uv<span class="w"> </span>run<span class="w"> </span>pytest<span class="w"> </span><span class="k">$(</span>TEST_PATH<span class="k">)</span>
+
+<span class="nf">.PHONY</span><span class="o">:</span><span class="w"> </span><span class="n">docs</span>
+<span class="nf">docs</span><span class="o">:</span><span class="w"> </span><span class="c">## Build documentation (strict mode)</span>
+<span class="w">    </span>uv<span class="w"> </span>run<span class="w"> </span>--group<span class="w"> </span>docs<span class="w"> </span>mkdocs<span class="w"> </span>build<span class="w"> </span>--strict
+
+<span class="nf">.PHONY</span><span class="o">:</span><span class="w"> </span><span class="n">docs</span>-<span class="n">serve</span>
+<span class="nf">docs-serve</span><span class="o">:</span><span class="w"> </span><span class="c">## Serve documentation locally with live reload</span>
+<span class="w">    </span>uv<span class="w"> </span>run<span class="w"> </span>--group<span class="w"> </span>docs<span class="w"> </span>mkdocs<span class="w"> </span>serve
+
+<span class="nf">.PHONY</span><span class="o">:</span><span class="w"> </span><span class="n">lock</span>-<span class="n">check</span>
+<span class="nf">lock-check</span><span class="o">:</span><span class="w"> </span><span class="c">## Verify uv.lock matches pyproject.toml</span>
+<span class="w">    </span>uv<span class="w"> </span>lock<span class="w"> </span>--check
+
+<span class="nf">.PHONY</span><span class="o">:</span><span class="w"> </span><span class="n">pre</span>-<span class="n">commit</span>
+<span class="nf">pre-commit</span><span class="o">:</span><span class="w"> </span><span class="c">## Run all pre-commit hooks</span>
+<span class="w">    </span>uv<span class="w"> </span>run<span class="w"> </span>pre-commit<span class="w"> </span>run<span class="w"> </span>--all-files
+
+<span class="nf">.PHONY</span><span class="o">:</span><span class="w"> </span><span class="n">clean</span>
+<span class="nf">clean</span><span class="o">:</span><span class="w"> </span><span class="c">## Remove build artifacts and caches</span>
+<span class="w">    </span>rm<span class="w"> </span>-rf<span class="w"> </span>build/<span class="w"> </span>dist/<span class="w"> </span>*.egg-info/<span class="w"> </span>.eggs/
+<span class="w">    </span>rm<span class="w"> </span>-rf<span class="w"> </span>.pytest_cache/<span class="w"> </span>.ruff_cache/
+<span class="w">    </span>rm<span class="w"> </span>-rf<span class="w"> </span>.mypy_cache/<span class="w"> </span>.hypothesis/
+<span class="w">    </span>rm<span class="w"> </span>-rf<span class="w"> </span>site/<span class="w"> </span>htmlcov/<span class="w"> </span>.coverage*
+<span class="w">    </span>rm<span class="w"> </span>-rf<span class="w"> </span>__pycache__/<span class="w"> </span>**/__pycache__/
+<span class="w">    </span>find<span class="w"> </span>.<span class="w"> </span>-type<span class="w"> </span>d<span class="w"> </span>-name<span class="w"> </span>.hypothesis<span class="w"> </span>-exec<span class="w"> </span>rm<span class="w"> </span>-rf<span class="w"> </span><span class="o">{}</span><span class="w"> </span>+
+</code></pre></div>
 
 
 

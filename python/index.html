@@ -900,6 +900,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../async-sqlalchemy-test-fixtures/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Async SQLAlchemy test fixtures
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../ros2/" class="md-nav__link">
         
   
@@ -1974,6 +2002,15 @@ expose cache configuration).  Cache <code>~/.cache/pre-commit</code> separately 
 20–40 s per run; caching them cuts that to near-zero on cache hits.  The
 explicit setup-uv step ensures the uv package cache is also warm when
 pre-commit hooks install Python tools.</p>
+<p><strong>CI jobs that use <code>tox-dev/action-pre-commit-uv</code> MUST pass
+<code>extra_args: --show-diff-on-failure --all-files</code></strong> via the action's
+<code>with:</code> block.  When <code>extra_args</code> is overridden it replaces the
+default (<code>--all-files</code>), so both flags must appear explicitly.</p>
+<p><strong>Rationale:</strong> without <code>--show-diff-on-failure</code>, a hook that modifies
+files fails with a non-zero exit but produces no diagnostic output —
+developers see "pre-commit failed" but not what changes would fix it.
+The <code>--show-diff-on-failure</code> flag prints the exact diff so the fix is
+visible directly in the CI log.</p>
 <h2 id="tests">Tests<a class="headerlink" href="#tests" title="Permanent link">&para;</a></h2>
 <ul>
 <li><code>pytest</code>, with coverage gated at <strong>one fleet-wide floor: 80%</strong>, the same in

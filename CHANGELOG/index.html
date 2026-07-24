@@ -674,6 +674,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../async-sqlalchemy-test-fixtures/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Async SQLAlchemy test fixtures
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../ros2/" class="md-nav__link">
         
   
@@ -1459,6 +1487,8 @@
 </ul>
 <h2 id="000-unreleased">0.0.0 (unreleased)<a class="headerlink" href="#000-unreleased" title="Permanent link">&para;</a></h2>
 <ul>
+<li>Add Async SQLAlchemy test fixtures standard — three-layer fixture pattern (session-scoped engine, function-scoped connection with rollback, function-scoped session with savepoints) for clean database test isolation without dropping tables.</li>
+<li>Pre-commit CI jobs must pass <code>--show-diff-on-failure</code> via <code>extra_args</code> so that hook-modification diffs appear in CI logs (Python practices).</li>
 <li>Enable <code>completeness_check</code> periodic workflow for robotsix-standards</li>
 <li><strong>Pytest strictness configuration</strong> — new standard page mandating <code>filterwarnings = ["error"]</code> and <code>xfail_strict = true</code> as baseline, with <code>--strict-markers</code> and <code>--strict-config</code> as the recommended tier, so every Python test suite fails loudly on deprecations, unregistered markers, and stale xfails.</li>
 <li>docs(security-posture): add Bandit to Gate 1 SAST section as complementary Python-specific SAST layer via <code>python-ci.yml</code></li>

@@ -10,13 +10,13 @@
       
       
       
-        <link rel="canonical" href="https://damien-robotsix.github.io/robotsix-standards/http-security-headers/">
+        <link rel="canonical" href="https://damien-robotsix.github.io/robotsix-standards/async-sqlalchemy-test-fixtures/">
       
       
-        <link rel="prev" href="../http-error-envelope/">
+        <link rel="prev" href="../javascript/">
       
       
-        <link rel="next" href="../scorecard/">
+        <link rel="next" href="../ros2/">
       
       
         
@@ -27,7 +27,7 @@
     
     
       
-        <title>HTTP security headers - Robotsix Standards</title>
+        <title>Async SQLAlchemy test fixtures - Robotsix Standards</title>
       
     
     
@@ -78,7 +78,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#http-security-response-headers" class="md-skip">
+        <a href="#async-sqlalchemy-test-fixtures" class="md-skip">
           Skip to content
         </a>
       
@@ -114,7 +114,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              HTTP security headers
+              Async SQLAlchemy test fixtures
             
           </span>
         </div>
@@ -311,8 +311,10 @@
       
   
   
+    
   
   
+  
     
     
     
@@ -323,13 +325,11 @@
       
     
     
-    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
       
         
         
-          
-        
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
         
           
           <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
@@ -350,7 +350,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_3">
             <span class="md-nav__icon md-icon"></span>
             
@@ -673,10 +673,37 @@
                 
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="../async-sqlalchemy-test-fixtures/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Async SQLAlchemy test fixtures
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   
@@ -692,6 +719,120 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#why-this-exists" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why this exists
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-three-layers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The three layers
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="The three layers">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-session-scoped-engine" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Session-scoped engine
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-function-scoped-connection-with-outer-transaction" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Function-scoped connection with outer transaction
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-function-scoped-async-session-bound-to-that-transaction" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Function-scoped async session bound to that transaction
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#usage-in-tests" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Usage in tests
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#overriding-fixtures-for-a-specific-test" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Overriding fixtures for a specific test
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#what-to-avoid" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What to avoid
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -736,8 +877,6 @@
       
   
   
-    
-  
   
   
     
@@ -750,11 +889,13 @@
       
     
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4" >
         
           
           <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
@@ -775,7 +916,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_4">
             <span class="md-nav__icon md-icon"></span>
             
@@ -1042,37 +1183,10 @@
                 
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    HTTP security headers
-  
-
-    
-  </span>
-  
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../http-security-headers/" class="md-nav__link">
         
   
   
@@ -1088,98 +1202,6 @@
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#the-rule" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        The rule
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="The rule">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#1-use-the-secure-library-with-presetbalanced-as-the-baseline" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        1. Use the secure library with Preset.BALANCED as the baseline
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#2-integration-one-middleware-registered-once" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        2. Integration: one middleware, registered once
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#3-csp-relaxation-is-explicit-and-auditable" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        3. CSP relaxation is explicit and auditable
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#4-hsts-is-conditional-on-tls" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        4. HSTS is conditional on TLS
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#failure-modes-this-prevents" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Failure modes this prevents
-      
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -1452,22 +1474,33 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#the-rule" class="md-nav__link">
+  <a href="#why-this-exists" class="md-nav__link">
     <span class="md-ellipsis">
       
-        The rule
+        Why this exists
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="The rule">
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-three-layers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The three layers
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="The three layers">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#1-use-the-secure-library-with-presetbalanced-as-the-baseline" class="md-nav__link">
+  <a href="#1-session-scoped-engine" class="md-nav__link">
     <span class="md-ellipsis">
       
-        1. Use the secure library with Preset.BALANCED as the baseline
+        1. Session-scoped engine
       
     </span>
   </a>
@@ -1475,10 +1508,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#2-integration-one-middleware-registered-once" class="md-nav__link">
+  <a href="#2-function-scoped-connection-with-outer-transaction" class="md-nav__link">
     <span class="md-ellipsis">
       
-        2. Integration: one middleware, registered once
+        2. Function-scoped connection with outer transaction
       
     </span>
   </a>
@@ -1486,21 +1519,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#3-csp-relaxation-is-explicit-and-auditable" class="md-nav__link">
+  <a href="#3-function-scoped-async-session-bound-to-that-transaction" class="md-nav__link">
     <span class="md-ellipsis">
       
-        3. CSP relaxation is explicit and auditable
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#4-hsts-is-conditional-on-tls" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        4. HSTS is conditional on TLS
+        3. Function-scoped async session bound to that transaction
       
     </span>
   </a>
@@ -1513,10 +1535,32 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#failure-modes-this-prevents" class="md-nav__link">
+  <a href="#usage-in-tests" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Failure modes this prevents
+        Usage in tests
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#overriding-fixtures-for-a-specific-test" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Overriding fixtures for a specific test
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#what-to-avoid" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What to avoid
       
     </span>
   </a>
@@ -1543,113 +1587,152 @@
   
 
 
-<h1 id="http-security-response-headers">HTTP security response headers<a class="headerlink" href="#http-security-response-headers" title="Permanent link">&para;</a></h1>
+<h1 id="async-sqlalchemy-test-fixtures">Async SQLAlchemy test fixtures<a class="headerlink" href="#async-sqlalchemy-test-fixtures" title="Permanent link">&para;</a></h1>
 <blockquote>
-<p><strong>Scope: deployable components that serve HTTP responses</strong> — especially those
-rendering an HTML web UI. This applies <em>in addition to</em> the
-<a href="../repo-baseline/">repo baseline</a> and <a href="../component-standard/">component standard</a>.</p>
+<p><strong>Scope: every Python repository using async SQLAlchemy.</strong> This convention
+applies fleet-wide so every test suite gets clean database isolation without
+dropping/recreating tables, and without ad-hoc module-level global-state
+management.</p>
 </blockquote>
-<p>Every fleet service that serves HTTP responses emits the standard OWASP security
-response headers via a single, shared middleware. Hand-rolling these headers per
-service — or leaving them unset — exposes every HTML surface to clickjacking,
-MIME-sniffing, and referrer-leak classes of issues.</p>
-<h2 id="the-rule">The rule<a class="headerlink" href="#the-rule" title="Permanent link">&para;</a></h2>
-<h3 id="1-use-the-secure-library-with-presetbalanced-as-the-baseline">1. Use the <code>secure</code> library with Preset.BALANCED as the baseline<a class="headerlink" href="#1-use-the-secure-library-with-presetbalanced-as-the-baseline" title="Permanent link">&para;</a></h3>
-<p>All services use the maintained <a href="https://pypi.org/project/secure/"><code>secure</code></a>
-Python library (≥2.0.1) to set security headers. A hand-rolled
-<code>BaseHTTPMiddleware</code> is only appropriate for a single custom header; for the
-OWASP suite, <code>secure</code> handles CSP construction, deduplication, and
-normalization.</p>
-<p>The default preset is <strong><code>Preset.BALANCED</code></strong> (importable as <code>Secure.with_default_headers()</code>),
-which provides a safe, low-friction baseline:</p>
-<table>
-<thead>
-<tr>
-<th>Header</th>
-<th>Value</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>X-Content-Type-Options</code></td>
-<td><code>nosniff</code></td>
-</tr>
-<tr>
-<td><code>X-Frame-Options</code></td>
-<td><code>SAMEORIGIN</code> (or <code>DENY</code> if the service is never framed)</td>
-</tr>
-<tr>
-<td><code>Referrer-Policy</code></td>
-<td><code>strict-origin-when-cross-origin</code></td>
-</tr>
-<tr>
-<td><code>Content-Security-Policy</code></td>
-<td><code>default-src 'self'</code> (relax per-app for inline assets)</td>
-</tr>
-<tr>
-<td><code>Permissions-Policy</code></td>
-<td><code>geolocation=(), microphone=(), camera=()</code></td>
-</tr>
-<tr>
-<td><code>Strict-Transport-Security</code></td>
-<td><code>max-age=31536000; includeSubDomains</code> (only behind TLS)</td>
-</tr>
-</tbody>
-</table>
-<p>Services that require a stricter posture — e.g. an admin dashboard that must
-never be framed and must restrict script sources tightly — use
-<code>Preset.STRICT</code> instead. Services that need to relax the CSP for inline styles
-or scripts do so by calling the <code>Secure</code> object's update methods rather than
-bypassing the middleware.</p>
-<h3 id="2-integration-one-middleware-registered-once">2. Integration: one middleware, registered once<a class="headerlink" href="#2-integration-one-middleware-registered-once" title="Permanent link">&para;</a></h3>
-<p>The <code>SecureASGIMiddleware</code> is added to the ASGI app once at startup. Routes
-never set security headers themselves — the middleware applies the same set to
-every response.</p>
-<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">secure</span><span class="w"> </span><span class="kn">import</span> <span class="n">Secure</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">secure.middleware</span><span class="w"> </span><span class="kn">import</span> <span class="n">SecureASGIMiddleware</span>
-
-<span class="n">secure_headers</span> <span class="o">=</span> <span class="n">Secure</span><span class="o">.</span><span class="n">with_default_headers</span><span class="p">()</span>
-<span class="n">app</span><span class="o">.</span><span class="n">add_middleware</span><span class="p">(</span><span class="n">SecureASGIMiddleware</span><span class="p">,</span> <span class="n">secure</span><span class="o">=</span><span class="n">secure_headers</span><span class="p">)</span>
-</code></pre></div>
-<p>For Starlette/FastAPI apps, this is the standard <code>app.add_middleware()</code> call
-during application construction. The middleware must be registered before any
-route handlers that could return a response.</p>
-<h3 id="3-csp-relaxation-is-explicit-and-auditable">3. CSP relaxation is explicit and auditable<a class="headerlink" href="#3-csp-relaxation-is-explicit-and-auditable" title="Permanent link">&para;</a></h3>
-<p>The <code>default-src 'self'</code> CSP blocks inline styles and scripts, which some
-frontend frameworks require. When a service needs to relax the CSP, it does so
-by calling methods on the <code>Secure</code> object — e.g.
-<code>secure_headers.csp.default_src = "'self' 'unsafe-inline'"</code> — rather than
-disabling the header or building a CSP string by hand. This keeps every CSP
-modification traceable to a single, grep-able location.</p>
-<h3 id="4-hsts-is-conditional-on-tls">4. HSTS is conditional on TLS<a class="headerlink" href="#4-hsts-is-conditional-on-tls" title="Permanent link">&para;</a></h3>
-<p>The <code>Strict-Transport-Security</code> header is only emitted when the service is
-behind TLS. The <code>secure</code> library detects this from the request scheme and
-suppresses the header on plain-HTTP requests automatically — the service does
-not need to branch on this itself.</p>
-<h2 id="failure-modes-this-prevents">Failure modes this prevents<a class="headerlink" href="#failure-modes-this-prevents" title="Permanent link">&para;</a></h2>
+<h2 id="why-this-exists">Why this exists<a class="headerlink" href="#why-this-exists" title="Permanent link">&para;</a></h2>
+<p>Every fleet repo that uses async SQLAlchemy eventually needs a test fixture that
+provides a database session for route-level code — and every repo invents its
+own.  Some use an autouse fixture that resets module-level globals; others spin
+up the engine inside a per-test helper and call <code>init_db()</code> manually in each
+test function.  These approaches work but they share two failure modes:</p>
 <ul>
-<li><strong>Clickjacking.</strong> Without <code>X-Frame-Options</code> or CSP <code>frame-ancestors</code>, an
-  attacker can embed the service's UI in an invisible iframe on a malicious
-  page and trick users into clicking UI elements they cannot see.</li>
-<li><strong>MIME-sniffing attacks.</strong> Without <code>X-Content-Type-Options: nosniff</code>, older
-  browsers may guess the content type of a response and execute a user-uploaded
-  text file as JavaScript if the server's <code>Content-Type</code> header is missing or
-  wrong.</li>
-<li><strong>Referrer leakage.</strong> Without <code>Referrer-Policy</code>, full URLs — including path
-  and query string — leak to third-party sites when a user clicks an external
-  link from the service's UI. Query strings often carry tokens, identifiers,
-  or search terms.</li>
-<li><strong>Permission abuse.</strong> Without <code>Permissions-Policy</code> denying sensitive APIs
-  (<code>geolocation</code>, <code>microphone</code>, <code>camera</code>), any JavaScript running in the
-  service's origin — including third-party scripts loaded via CDN — can request
-  these permissions without the user's meaningful consent.</li>
-<li><strong>Downgrade attacks.</strong> Without <code>Strict-Transport-Security</code>, a MITM attacker
-  can rewrite HTTPS links to HTTP and intercept traffic that the user believes
-  is encrypted.</li>
-<li><strong>Cross-service inconsistency.</strong> Hand-rolling headers per service produces
-  slightly different header sets, different header-name casing, and different
-  CSP syntax across the fleet. A single middleware — the same library, the same
-  preset, the same integration pattern — eliminates per-service drift.</li>
+<li><strong>Per-test table recreation is slow</strong> — creating and dropping the full schema
+  for every test function adds seconds per test, and the penalty compounds as
+  the schema grows.</li>
+<li><strong>Module-level global state is fragile</strong> — an autouse fixture that patches
+  globals couples test ordering to import-time state, and any mis-handled async
+  lifecycle (missed <code>await</code>, forgotten <code>close()</code>) leaks connections and state
+  across tests.</li>
+</ul>
+<p>The three-layer pattern below — session-scoped engine, function-scoped
+connection, function-scoped session — gives every test its own isolated
+transaction that is <strong>rolled back on teardown</strong>, so tables are created once and
+data never leaks between tests.  No global state, no per-test <code>init_db()</code>
+boilerplate, no ad-hoc <code>_reset_db_globals</code>.</p>
+<p>The pattern is drawn from the SQLAlchemy 2.x documentation
+(<a href="https://docs.sqlalchemy.org/en/21/orm/session_transaction.html#joining-a-session-into-an-external-transaction-such-as-for-test-suites">Joining a Session into an External Transaction</a>)
+and the Litestar SQLAlchemy template.</p>
+<h2 id="the-three-layers">The three layers<a class="headerlink" href="#the-three-layers" title="Permanent link">&para;</a></h2>
+<p>Place these three fixtures in a <code>tests/conftest.py</code> at the package root so
+every test module under <code>tests/</code> inherits them.</p>
+<h3 id="1-session-scoped-engine">1. Session-scoped engine<a class="headerlink" href="#1-session-scoped-engine" title="Permanent link">&para;</a></h3>
+<p>Creates the database tables <strong>once</strong> for the entire test session.</p>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">pytest</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sqlalchemy.ext.asyncio</span><span class="w"> </span><span class="kn">import</span> <span class="n">create_async_engine</span>
+
+
+<span class="nd">@pytest</span><span class="o">.</span><span class="n">fixture</span><span class="p">(</span><span class="n">scope</span><span class="o">=</span><span class="s2">&quot;session&quot;</span><span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">anyio_backend</span><span class="p">():</span>
+    <span class="k">return</span> <span class="s2">&quot;asyncio&quot;</span>
+
+
+<span class="nd">@pytest</span><span class="o">.</span><span class="n">fixture</span><span class="p">(</span><span class="n">scope</span><span class="o">=</span><span class="s2">&quot;session&quot;</span><span class="p">)</span>
+<span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">engine</span><span class="p">():</span>
+    <span class="n">engine</span> <span class="o">=</span> <span class="n">create_async_engine</span><span class="p">(</span><span class="s2">&quot;sqlite+aiosqlite:///:memory:&quot;</span><span class="p">,</span> <span class="n">echo</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="k">async</span> <span class="k">with</span> <span class="n">engine</span><span class="o">.</span><span class="n">begin</span><span class="p">()</span> <span class="k">as</span> <span class="n">conn</span><span class="p">:</span>
+        <span class="k">await</span> <span class="n">conn</span><span class="o">.</span><span class="n">run_sync</span><span class="p">(</span><span class="n">Base</span><span class="o">.</span><span class="n">metadata</span><span class="o">.</span><span class="n">create_all</span><span class="p">)</span>
+    <span class="k">yield</span> <span class="n">engine</span>
+    <span class="k">await</span> <span class="n">engine</span><span class="o">.</span><span class="n">dispose</span><span class="p">()</span>
+</code></pre></div>
+<ul>
+<li><code>anyio_backend</code> is required — pytest-asyncio alone cannot drive async
+  SQLAlchemy; the <code>anyio</code> plugin is the fleet-wide async test runner.</li>
+<li><code>sqlite+aiosqlite:///:memory:</code> gives a fast, isolated in-process database.
+  Each test session gets its own fresh in-memory database, so there is no
+  risk of cross-session contamination even when tests run in parallel.</li>
+<li><code>conn.run_sync(Base.metadata.create_all)</code> calls the synchronous DDL path
+  inside the async connection so the ORM metadata is created without a
+  blocking thread-switch.</li>
+<li><code>engine.dispose()</code> on teardown releases the connection pool cleanly.</li>
+</ul>
+<h3 id="2-function-scoped-connection-with-outer-transaction">2. Function-scoped connection with outer transaction<a class="headerlink" href="#2-function-scoped-connection-with-outer-transaction" title="Permanent link">&para;</a></h3>
+<p>Wraps every test function in an <strong>outer transaction</strong> that is never committed.</p>
+<div class="highlight"><pre><span></span><code><span class="nd">@pytest</span><span class="o">.</span><span class="n">fixture</span>
+<span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">connection</span><span class="p">(</span><span class="n">engine</span><span class="p">):</span>
+    <span class="k">async</span> <span class="k">with</span> <span class="n">engine</span><span class="o">.</span><span class="n">connect</span><span class="p">()</span> <span class="k">as</span> <span class="n">conn</span><span class="p">:</span>
+        <span class="k">async</span> <span class="k">with</span> <span class="n">conn</span><span class="o">.</span><span class="n">begin</span><span class="p">():</span>
+            <span class="k">yield</span> <span class="n">conn</span>
+        <span class="c1"># rollback happens when the context manager exits</span>
+</code></pre></div>
+<ul>
+<li><code>conn.begin()</code> starts an explicit transaction at the connection level.</li>
+<li>The yield hands the connection — with an active transaction — to the test.</li>
+<li>When the test function returns, the <code>async with conn.begin():</code> block exits
+  and the transaction is <strong>rolled back</strong>, discarding every row that was
+  inserted, updated, or deleted during the test.</li>
+<li>No table drops, no <code>TRUNCATE</code>, no <code>DELETE</code> — just a single rollback.</li>
+</ul>
+<h3 id="3-function-scoped-async-session-bound-to-that-transaction">3. Function-scoped async session bound to that transaction<a class="headerlink" href="#3-function-scoped-async-session-bound-to-that-transaction" title="Permanent link">&para;</a></h3>
+<p>Creates a SQLAlchemy <code>AsyncSession</code> that participates in the connection's
+outer transaction via savepoints.</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">sqlalchemy.ext.asyncio</span><span class="w"> </span><span class="kn">import</span> <span class="n">AsyncSession</span>
+
+
+<span class="nd">@pytest</span><span class="o">.</span><span class="n">fixture</span>
+<span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">db_session</span><span class="p">(</span><span class="n">connection</span><span class="p">):</span>
+    <span class="n">session</span> <span class="o">=</span> <span class="n">AsyncSession</span><span class="p">(</span>
+        <span class="n">bind</span><span class="o">=</span><span class="n">connection</span><span class="p">,</span>
+        <span class="n">expire_on_commit</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="n">join_transaction_mode</span><span class="o">=</span><span class="s2">&quot;create_savepoint&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">yield</span> <span class="n">session</span>
+    <span class="k">finally</span><span class="p">:</span>
+        <span class="k">await</span> <span class="n">session</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</code></pre></div>
+<ul>
+<li><strong><code>bind=connection</code></strong> wires the session to the function-scoped connection
+  with its outer transaction.</li>
+<li><strong><code>expire_on_commit=False</code></strong> prevents SQLAlchemy from expiring all loaded
+  objects after a <code>session.commit()</code>, which avoids lazy-load surprises inside
+  test assertions.</li>
+<li><strong><code>join_transaction_mode="create_savepoint"</code></strong> is the key behaviour: when
+  route code (or any code under test) calls <code>session.commit()</code>, SQLAlchemy
+  converts it into a <code>SAVEPOINT</code>/<code>RELEASE</code> pair <em>inside</em> the outer
+  transaction.  The outer transaction itself is never committed — it is always
+  rolled back on teardown, so the test's writes are always discarded.</li>
+</ul>
+<h2 id="usage-in-tests">Usage in tests<a class="headerlink" href="#usage-in-tests" title="Permanent link">&para;</a></h2>
+<p>Inject <code>db_session</code> into any async test function that needs a database:</p>
+<div class="highlight"><pre><span></span><code><span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">test_create_widget</span><span class="p">(</span><span class="n">db_session</span><span class="p">):</span>
+    <span class="n">repo</span> <span class="o">=</span> <span class="n">WidgetRepository</span><span class="p">(</span><span class="n">db_session</span><span class="p">)</span>
+    <span class="n">widget</span> <span class="o">=</span> <span class="k">await</span> <span class="n">repo</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;gizmo&quot;</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="n">widget</span><span class="o">.</span><span class="n">id</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+    <span class="c1"># The row is present inside this test&#39;s transaction ...</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">test_widgets_are_isolated</span><span class="p">(</span><span class="n">db_session</span><span class="p">):</span>
+    <span class="n">count</span> <span class="o">=</span> <span class="k">await</span> <span class="n">db_session</span><span class="o">.</span><span class="n">scalar</span><span class="p">(</span><span class="n">select</span><span class="p">(</span><span class="n">func</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="n">Widget</span><span class="o">.</span><span class="n">id</span><span class="p">)))</span>
+    <span class="k">assert</span> <span class="n">count</span> <span class="o">==</span> <span class="mi">0</span>  <span class="c1"># ... but invisible to the next test</span>
+</code></pre></div>
+<h2 id="overriding-fixtures-for-a-specific-test">Overriding fixtures for a specific test<a class="headerlink" href="#overriding-fixtures-for-a-specific-test" title="Permanent link">&para;</a></h2>
+<p>Sometimes a test needs a fixture override — for example, to seed data before
+the test runs.  The standard approach is to define a module-local helper that
+calls the parent fixture:</p>
+<div class="highlight"><pre><span></span><code><span class="nd">@pytest</span><span class="o">.</span><span class="n">fixture</span>
+<span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">seeded_session</span><span class="p">(</span><span class="n">db_session</span><span class="p">):</span>
+    <span class="n">db_session</span><span class="o">.</span><span class="n">add_all</span><span class="p">([</span><span class="n">Widget</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;a&quot;</span><span class="p">),</span> <span class="n">Widget</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;b&quot;</span><span class="p">)])</span>
+    <span class="k">await</span> <span class="n">db_session</span><span class="o">.</span><span class="n">flush</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">db_session</span>
+</code></pre></div>
+<p>This keeps the three-layer isolation intact — the seed data is inside the same
+outer transaction and will be rolled back at teardown.</p>
+<h2 id="what-to-avoid">What to avoid<a class="headerlink" href="#what-to-avoid" title="Permanent link">&para;</a></h2>
+<ul>
+<li><strong>Do not drop or recreate tables per test.</strong>  The session-scoped engine
+  creates the schema once; the function-scoped rollback handles isolation.</li>
+<li><strong>Do not use module-level globals</strong> to hold the engine or session factory.
+  Pytest fixtures already manage lifecycle at the correct scope.</li>
+<li><strong>Do not call <code>await db_session.commit()</code> in test code</strong> and expect the data
+  to persist to the next test — it is a savepoint release inside a
+  rollback-only outer transaction.</li>
+<li><strong>Do not use <code>expire_on_commit=True</code> (the default).</strong>  It causes
+  <code>DetachedInstanceError</code> when asserting on ORM objects after the code under
+  test has called <code>commit()</code>.</li>
 </ul>
 
 

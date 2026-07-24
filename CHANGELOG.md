@@ -45,6 +45,11 @@
 
 ## 0.0.0 (unreleased)
 
+- New **[Python Makefile convention](docs/python-makefile-convention.md)** — standard
+  `Makefile` targets for every Python/uv repo (`install`, `lint`, `typecheck`,
+  `test`, `test-unit`, `test-integration`, `coverage`, `docs`, `lock-check`,
+  `pre-commit`, `clean`, and optional `coverage-view`, `docs-serve`, `test-op`
+  targets), with a self-documenting `help` target.
 - **Python practices**: codified single-source version convention — `pyproject.toml [project].version` is authoritative; `__version__` MUST be derived from `importlib.metadata.version()` instead of hard-coded. Prevents silent version drift between the auto-release bumper (which updates only `pyproject.toml`) and the hand-maintained `__init__.py` literal.
 - robotsix-standards: Remove `docstring_coverage` periodic agent — repo is Markdown-only and has no Python source modules to scan.
 - Add `config-ownership.md` to the MkDocs navigation sidebar under "Deployable components" (it was the only docs page missing from the nav).

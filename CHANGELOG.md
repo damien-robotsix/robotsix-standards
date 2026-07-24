@@ -45,6 +45,7 @@
 
 ## 0.0.0 (unreleased)
 
+- Enable `health` periodic workflow for inspecting repository health across eight dimensions (staleness, label hygiene, CI health, dependency freshness, etc.)
 - Add `docstring_coverage` periodic workflow to scan Python source modules for missing docstrings and propose draft tickets.
 - **Resolved secret-handling contradiction** between `config-standard.md` and `config-ownership.md`. Secrets follow the one-file convention (`SecretStr` in `config.json`) defined in the config standard; `config-ownership.md` now defers to it with an explicit cross-reference.
 - Fix capitalization of "TruffleHog" in `docs/scorecard.md` intro paragraph.

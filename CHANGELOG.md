@@ -45,6 +45,11 @@
 
 ## 0.0.0 (unreleased)
 
+- Standardize release-time SBOM publishing: every fleet repo MUST attach its
+  CycloneDX SBOM (`sbom.cyclonedx.json`) as a GitHub Release asset, raising the
+  OpenSSF Scorecard SBOM check from 5/10 to 10/10. Optional Sigstore attestation
+  via `actions/attest`. Documented in security posture gate 6 and repo baseline
+  releases section.
 - Enable `health` periodic workflow for inspecting repository health across eight dimensions (staleness, label hygiene, CI health, dependency freshness, etc.)
 - Add `docstring_coverage` periodic workflow to scan Python source modules for missing docstrings and propose draft tickets.
 - **Resolved secret-handling contradiction** between `config-standard.md` and `config-ownership.md`. Secrets follow the one-file convention (`SecretStr` in `config.json`) defined in the config standard; `config-ownership.md` now defers to it with an explicit cross-reference.

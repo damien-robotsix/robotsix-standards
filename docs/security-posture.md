@@ -239,9 +239,16 @@ and add a self-referential secret-management burden. The OSS stack above
 Every repo produces a machine-readable software bill of materials and runs a
 dependency vulnerability audit on every CI run.
 
-- **CycloneDX SBOM** generated and uploaded as a workflow artifact (via the
-  shared security workflow). The upload step uses `if: always()` so a failed
-  scan never silently drops the artifact.
+- **CycloneDX SBOM** generated and uploaded as a workflow artifact on every
+  CI run (via the shared security workflow). The upload step uses
+  `if: always()` so a failed scan never silently drops the artifact.
+- **Release asset.** The auto-release workflow MUST attach the CycloneDX SBOM
+  as a GitHub Release asset (filename `sbom.cyclonedx.json`, per the
+  [OSSF "SBOM Everywhere" naming convention](https://github.com/ossf/scorecard/blob/main/docs/checks.md#sbom)).
+  A Sigstore attestation via `actions/attest` on the SBOM is recommended but
+  optional. The release-time asset is what raises the Scorecard *SBOM* check
+  from 5/10 (SBOM present somewhere in the pipeline) to 10/10 (SBOM published
+  as a release artifact).
 - **Dependency CVE audit** — `uv audit` (or `pip-audit`) gates in CI, blocking
   on known vulnerabilities in the dependency tree.
 - **Container image scan** *(image-shipping repos only)* — Trivy scans the
@@ -250,12 +257,17 @@ dependency vulnerability audit on every CI run.
   findings that genuinely don't apply. A weekly scheduled rescan of the
   published `:main` image catches CVEs disclosed after the image was built.
 
-- **How to verify:** CI uploads a CycloneDX SBOM artifact. `uv audit` (or
-  `pip-audit`) passes in the latest CI run. Image-shipping repos: the PR-scan
-  and publish workflows both call the Trivy reusable workflow.
+- **How to verify:** CI uploads a CycloneDX SBOM artifact. The latest GitHub
+  Release includes `sbom.cyclonedx.json` as an asset (and optionally a
+  Sigstore attestation bundle). `uv audit` (or `pip-audit`) passes in the
+  latest CI run. Image-shipping repos: the PR-scan and publish workflows both
+  call the Trivy reusable workflow.
 - **Failure prevented:** a dependency with a published, fixable CVE ships in
-  production with no one aware.
-- **Alignment:** OpenSSF Scorecard *SBOM* and *Vulnerabilities* checks,
+  production with no one aware. An SBOM that exists only as a CI artifact is
+  invisible to downstream consumers and supply-chain auditors — the release
+  asset makes it discoverable.
+- **Alignment:** OpenSSF Scorecard *SBOM* (10/10 with release asset) and
+  *Vulnerabilities* checks,
   [SLSA *Build L2+*](https://slsa.dev/spec/v1.2/requirements) provenance
   requirement.
 - **Detail:** [Docker build & release — CI-time image scan](docker-standard.md#ci-time-image-scan).

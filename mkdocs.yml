@@ -63,6 +63,7 @@ nav:
       - Repo baseline: repo-baseline.md
       - Security posture: security-posture.md
       - Python practices: python.md
+      - Pytest practices: pytest.md
       - Ruff lint rules: ruff-lint-rules.md
       - Docstring convention: docstrings.md
       - Hypothesis testing: hypothesis.md

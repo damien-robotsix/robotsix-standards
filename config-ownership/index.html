@@ -1459,8 +1459,8 @@ here MUST live in the component's own config surface.</p>
 </tr>
 <tr>
 <td><strong>Secret/env injection</strong></td>
-<td>Credentials injected as environment variables</td>
-<td><code>EnvStore</code> slots — API keys, tokens, passwords</td>
+<td>Credentials for third-party images injected as environment variables</td>
+<td><code>EnvStore</code> slots for databases, proxies — not first-party components</td>
 </tr>
 <tr>
 <td><strong>Restart policy</strong></td>
@@ -1536,10 +1536,10 @@ against its pydantic model before applying it.</p>
 <ul>
 <li>Only the keys the operator wants to change are sent — omitted keys keep
   their current values.</li>
-<li>Secret keys MUST NOT be accepted through this endpoint. Submitting a
-  secret field in the request body MUST return <code>422 Unprocessable Entity</code>
-  with an error indicating that secrets are managed through the deploy
-  plane.</li>
+<li>Secret keys follow merge-on-write semantics per the
+  <a href="../config-standard/">config standard</a> §3: omitting a secret field (or
+  submitting it blank) preserves the stored value. Only an explicitly
+  submitted, non-blank secret key overwrites the stored secret.</li>
 </ul>
 <p><strong>Response</strong> (200):</p>
 <div class="highlight"><pre><span></span><code><span class="p">{</span>
@@ -1615,40 +1615,51 @@ reachable from the component's primary navigation. The panel:</p>
   keys. The operator can select a previous version and trigger a rollback
   from the panel.</li>
 <li><strong>Never echoes secrets.</strong> Secret fields are always rendered as masked
-  (<code>**********</code>) with a set/unset badge. The operator cannot view, edit, or
-  set secrets through the component UI — secrets are managed exclusively
-  through the deploy plane's <code>EnvStore</code>.</li>
+  (<code>**********</code>) with a set/unset badge. The operator cannot view existing
+  secret values but can set or change them — the field follows the
+  <a href="../config-standard/">config standard</a> §3 merge-on-write convention
+  (blank input preserves the stored value).</li>
 </ul>
 <p>Headless components (no browser UI) skip the panel but MUST still implement
 the full HTTP surface (<code>GET /config</code>, <code>PUT /config</code>, <code>GET /config/versions</code>,
 <code>POST /config/rollback</code>).</p>
 <h2 id="secret-handling">Secret handling<a class="headerlink" href="#secret-handling" title="Permanent link">&para;</a></h2>
-<p>Secrets (API keys, tokens, passwords, credentials of any kind) follow a
-strict channel discipline:</p>
+<p>Secrets (API keys, tokens, passwords, credentials of any kind) follow the
+<strong>one-file secret convention</strong> defined in the <a href="../config-standard/">config standard</a> §3.
+The config standard is the authoritative source for secret handling; this
+section summarises the rules as they affect the component's HTTP surface and
+the deploy-plane UI.</p>
 <ul>
-<li><strong>Secrets are injected by the deploy plane.</strong> The deploy plane's
-  <code>EnvStore</code> injects secrets as environment variables into the container at
-  startup. The component reads them from the environment — they are never
-  written into <code>config/config.json</code> and never appear in the component's HTTP
-  config surface.</li>
+<li><strong>Secrets live in <code>config/config.json</code>.</strong> Secret fields are declared with
+  <code>pydantic.SecretStr</code> in the component's config model. They are stored in
+  the same single JSON config file as ordinary settings — no separate
+  secrets file, no <code>EnvStore</code> or env-var injection for first-party component
+  secrets. (Third-party images — databases, proxies — receive secrets
+  through the deploy plane's <code>EnvStore</code> slots per the
+  <a href="../config-standard/">config standard</a> §5; that is the only exception to
+  the one-file rule.)</li>
 <li><strong><code>GET /config</code> masks all secret fields.</strong> The response shows
   <code>"**********"</code> for every <code>SecretStr</code> field — the actual value is never
   returned, not even to authenticated operators.</li>
-<li><strong><code>PUT /config</code> rejects secret keys.</strong> Attempting to set a secret through
-  the component's config endpoint returns <code>422</code>. Secrets have one channel
-  only: the deploy plane.</li>
-<li><strong>Version history never stores secret values.</strong> When a secret changes
-  (through the deploy plane), the version record notes that the key changed
-  but stores nothing about the value.</li>
+<li><strong><code>PUT /config</code> uses merge-on-write for secrets.</strong> Omitting a secret field
+  (or submitting it blank) preserves the stored value. Only an explicitly
+  submitted, non-blank secret key overwrites the stored secret. This is the
+  same partial-update semantics as for all other fields, per the
+  <a href="../config-standard/">config standard</a> §3.</li>
+<li><strong>Version history never stores secret values.</strong> When a secret changes, the
+  version record notes that the key changed but stores nothing about the
+  value.</li>
 <li><strong>The deploy-plane UI masks secrets server-side.</strong> The central-deploy
-  <code>EnvStore</code> form uses masked (password) inputs and never echoes stored
-  secret values back to the browser. An operator can set or change a secret
-  but cannot view an existing one.</li>
+  config form renders <code>writeOnly</code> fields as masked (password) inputs with a
+  set/unset badge and never echoes stored secret values back to the browser.
+  An operator can set or change a secret but cannot view an existing one.</li>
 </ul>
 <p><em>Failure prevented:</em> a secret leaks through the component's config UI
 because the operator assumes the Settings panel is read-only to
-non-admins — but the secret field was rendered in the JSON response. One
-channel for secrets (deploy plane <code>EnvStore</code>) removes the ambiguity.</p>
+non-admins — but the secret field was rendered in the JSON response. The
+config standard's <code>SecretStr</code> / <code>writeOnly</code> convention (typed masking at
+the schema level, redact-on-read at the surface level, merge-on-write)
+prevents this without requiring a separate secret channel.</p>
 <h2 id="migration-guidance">Migration guidance<a class="headerlink" href="#migration-guidance" title="Permanent link">&para;</a></h2>
 <p>Moving a setting from the deploy UI into the component's own config surface
 is a per-component, incremental migration — no big-bang, no flag day.</p>

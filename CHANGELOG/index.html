@@ -1375,6 +1375,7 @@
 </ul>
 <h2 id="000-unreleased">0.0.0 (unreleased)<a class="headerlink" href="#000-unreleased" title="Permanent link">&para;</a></h2>
 <ul>
+<li><strong>Resolved secret-handling contradiction</strong> between <code>config-standard.md</code> and <code>config-ownership.md</code>. Secrets follow the one-file convention (<code>SecretStr</code> in <code>config.json</code>) defined in the config standard; <code>config-ownership.md</code> now defers to it with an explicit cross-reference.</li>
 <li>Fix capitalization of "TruffleHog" in <code>docs/scorecard.md</code> intro paragraph.</li>
 <li>Updated <code>docs/scorecard.md</code> to replace stale security-tool references: "CodeQL" → "Semgrep" (fleet SAST standard) and "gitleaks" → "detect-secrets" (fleet secret-scanning pre-commit), and reworded the SARIF-upload sentence to avoid implying CodeQL is an active fleet tool.</li>
 <li>Add <code>@pytest.mark.parametrize</code> standard to <code>docs/python.md</code> Tests section: prefer parametrized tests over N separate test functions when testing a single function with multiple input/output variants.</li>

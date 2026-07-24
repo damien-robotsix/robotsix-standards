@@ -45,6 +45,7 @@
 
 ## 0.0.0 (unreleased)
 
+- **Resolved secret-handling contradiction** between `config-standard.md` and `config-ownership.md`. Secrets follow the one-file convention (`SecretStr` in `config.json`) defined in the config standard; `config-ownership.md` now defers to it with an explicit cross-reference.
 - Fix capitalization of "TruffleHog" in `docs/scorecard.md` intro paragraph.
 - Updated `docs/scorecard.md` to replace stale security-tool references: "CodeQL" → "Semgrep" (fleet SAST standard) and "gitleaks" → "detect-secrets" (fleet secret-scanning pre-commit), and reworded the SARIF-upload sentence to avoid implying CodeQL is an active fleet tool.
 - Add `@pytest.mark.parametrize` standard to `docs/python.md` Tests section: prefer parametrized tests over N separate test functions when testing a single function with multiple input/output variants.

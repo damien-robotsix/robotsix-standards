@@ -35,7 +35,7 @@ here MUST live in the component's own config surface.
 | **Image and tag** | What container image to run | `ghcr.io/org/repo:v1.2.3` |
 | **Volume mounts** | Persistent storage and credential/agent mounting | Named volumes, the managed `claude-auth` volume |
 | **Ports and network** | How the container is reachable | Published ports, network attachments |
-| **Secret/env injection** | Credentials injected as environment variables | `EnvStore` slots — API keys, tokens, passwords |
+| **Secret/env injection** | Credentials for third-party images injected as environment variables | `EnvStore` slots for databases, proxies — not first-party components |
 | **Restart policy** | Container restart behavior | `unless-stopped`, `on-failure` |
 | **`ROBOTSIX_CONFIG_FILE`** | Where the component finds its config file | Default `config/config.json`, or a custom path |
 | **Resource limits** | Memory and CPU bounds | `memory: 512m`, `cpus: 1.0` |
@@ -112,10 +112,10 @@ against its pydantic model before applying it.
 
 - Only the keys the operator wants to change are sent — omitted keys keep
   their current values.
-- Secret keys MUST NOT be accepted through this endpoint. Submitting a
-  secret field in the request body MUST return `422 Unprocessable Entity`
-  with an error indicating that secrets are managed through the deploy
-  plane.
+- Secret keys follow merge-on-write semantics per the
+  [config standard](config-standard.md) §3: omitting a secret field (or
+  submitting it blank) preserves the stored value. Only an explicitly
+  submitted, non-blank secret key overwrites the stored secret.
 
 **Response** (200):
 
@@ -208,9 +208,10 @@ reachable from the component's primary navigation. The panel:
   keys. The operator can select a previous version and trigger a rollback
   from the panel.
 - **Never echoes secrets.** Secret fields are always rendered as masked
-  (`**********`) with a set/unset badge. The operator cannot view, edit, or
-  set secrets through the component UI — secrets are managed exclusively
-  through the deploy plane's `EnvStore`.
+  (`**********`) with a set/unset badge. The operator cannot view existing
+  secret values but can set or change them — the field follows the
+  [config standard](config-standard.md) §3 merge-on-write convention
+  (blank input preserves the stored value).
 
 Headless components (no browser UI) skip the panel but MUST still implement
 the full HTTP surface (`GET /config`, `PUT /config`, `GET /config/versions`,
@@ -218,32 +219,42 @@ the full HTTP surface (`GET /config`, `PUT /config`, `GET /config/versions`,
 
 ## Secret handling
 
-Secrets (API keys, tokens, passwords, credentials of any kind) follow a
-strict channel discipline:
+Secrets (API keys, tokens, passwords, credentials of any kind) follow the
+**one-file secret convention** defined in the [config standard](config-standard.md) §3.
+The config standard is the authoritative source for secret handling; this
+section summarises the rules as they affect the component's HTTP surface and
+the deploy-plane UI.
 
-- **Secrets are injected by the deploy plane.** The deploy plane's
-  `EnvStore` injects secrets as environment variables into the container at
-  startup. The component reads them from the environment — they are never
-  written into `config/config.json` and never appear in the component's HTTP
-  config surface.
+- **Secrets live in `config/config.json`.** Secret fields are declared with
+  `pydantic.SecretStr` in the component's config model. They are stored in
+  the same single JSON config file as ordinary settings — no separate
+  secrets file, no `EnvStore` or env-var injection for first-party component
+  secrets. (Third-party images — databases, proxies — receive secrets
+  through the deploy plane's `EnvStore` slots per the
+  [config standard](config-standard.md) §5; that is the only exception to
+  the one-file rule.)
 - **`GET /config` masks all secret fields.** The response shows
   `"**********"` for every `SecretStr` field — the actual value is never
   returned, not even to authenticated operators.
-- **`PUT /config` rejects secret keys.** Attempting to set a secret through
-  the component's config endpoint returns `422`. Secrets have one channel
-  only: the deploy plane.
-- **Version history never stores secret values.** When a secret changes
-  (through the deploy plane), the version record notes that the key changed
-  but stores nothing about the value.
+- **`PUT /config` uses merge-on-write for secrets.** Omitting a secret field
+  (or submitting it blank) preserves the stored value. Only an explicitly
+  submitted, non-blank secret key overwrites the stored secret. This is the
+  same partial-update semantics as for all other fields, per the
+  [config standard](config-standard.md) §3.
+- **Version history never stores secret values.** When a secret changes, the
+  version record notes that the key changed but stores nothing about the
+  value.
 - **The deploy-plane UI masks secrets server-side.** The central-deploy
-  `EnvStore` form uses masked (password) inputs and never echoes stored
-  secret values back to the browser. An operator can set or change a secret
-  but cannot view an existing one.
+  config form renders `writeOnly` fields as masked (password) inputs with a
+  set/unset badge and never echoes stored secret values back to the browser.
+  An operator can set or change a secret but cannot view an existing one.
 
 *Failure prevented:* a secret leaks through the component's config UI
 because the operator assumes the Settings panel is read-only to
-non-admins — but the secret field was rendered in the JSON response. One
-channel for secrets (deploy plane `EnvStore`) removes the ambiguity.
+non-admins — but the secret field was rendered in the JSON response. The
+config standard's `SecretStr` / `writeOnly` convention (typed masking at
+the schema level, redact-on-read at the surface level, merge-on-write)
+prevents this without requiring a separate secret channel.
 
 ## Migration guidance
 

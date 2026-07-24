@@ -87,6 +87,29 @@ declare it in every Python repo (the baseline-check gate verifies this).
   pattern — plain dependency names resolved through `[tool.uv.sources]` — does
   not need it, because the git pin lives in uv's config, not in the project
   metadata hatchling validates.
+- **Single-source the version: `pyproject.toml [project].version` is the
+  authoritative version.** Packages MUST NOT hard-code `__version__` as a
+  literal in `__init__.py`.  Instead, derive it at import time from the
+  installed distribution metadata:
+
+  ```python
+  from importlib.metadata import PackageNotFoundError, version
+
+  try:
+      __version__ = version("robotsix-chat")  # distribution name from pyproject
+  except PackageNotFoundError:  # pragma: no cover - source checkout without install
+      __version__ = "0.0.0+unknown"
+  ```
+
+  `importlib.metadata` is stdlib (fleet targets `requires-python >=3.14`), so
+  no new dependency.  The shared auto-release workflow bumps exactly one file
+  (`pyproject.toml`), and `__version__` stays in sync automatically.
+
+  *Failure prevented:* when `__version__` is a hand-maintained literal in
+  `__init__.py`, the auto-release bumper updates only `pyproject.toml` —
+  the two sources drift silently.  Runtime version checks (e.g. comparing
+  `__version__` against the latest GitHub release tag) then permanently
+  report the deployment as out of date, even immediately after a release.
 - **No PyPI.** Nothing is published to a package index (see the
   [repo baseline](repo-baseline.md#no-package-index-consume-libraries-from-git)).
   Repos carry **no index-publish workflow** — no `pypi-publish`, no

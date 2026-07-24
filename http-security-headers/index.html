@@ -10,13 +10,13 @@
       
       
       
-        <link rel="canonical" href="https://damien-robotsix.github.io/robotsix-standards/fleet/">
+        <link rel="canonical" href="https://damien-robotsix.github.io/robotsix-standards/http-security-headers/">
       
       
-        <link rel="prev" href="..">
+        <link rel="prev" href="../http-error-envelope/">
       
       
-        <link rel="next" href="../repo-baseline/">
+        <link rel="next" href="../scorecard/">
       
       
         
@@ -27,7 +27,7 @@
     
     
       
-        <title>The fleet - Robotsix Standards</title>
+        <title>HTTP security headers - Robotsix Standards</title>
       
     
     
@@ -78,7 +78,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#the-fleet" class="md-skip">
+        <a href="#http-security-response-headers" class="md-skip">
           Skip to content
         </a>
       
@@ -114,7 +114,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              The fleet
+              HTTP security headers
             
           </span>
         </div>
@@ -284,37 +284,10 @@
       
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    The fleet
-  
-
-    
-  </span>
-  
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../fleet/" class="md-nav__link">
         
   
   
@@ -330,48 +303,6 @@
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#shared-libraries-tooling-every-repo-tier" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Shared libraries &amp; tooling (every-repo tier)
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#deployable-components" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Deployable components
-      
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -693,8 +624,10 @@
       
   
   
+    
   
   
+  
     
     
     
@@ -705,13 +638,11 @@
       
     
     
-    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
       
         
         
-          
-        
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
         
           
           <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
@@ -732,7 +663,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_4">
             <span class="md-nav__icon md-icon"></span>
             
@@ -971,10 +902,37 @@
                 
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="../http-security-headers/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    HTTP security headers
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   
@@ -990,6 +948,98 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#the-rule" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The rule
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="The rule">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-use-the-secure-library-with-presetbalanced-as-the-baseline" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Use the secure library with Preset.BALANCED as the baseline
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-integration-one-middleware-registered-once" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Integration: one middleware, registered once
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-csp-relaxation-is-explicit-and-auditable" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. CSP relaxation is explicit and auditable
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-hsts-is-conditional-on-tls" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. HSTS is conditional on TLS
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#failure-modes-this-prevents" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Failure modes this prevents
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -1262,21 +1312,71 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#shared-libraries-tooling-every-repo-tier" class="md-nav__link">
+  <a href="#the-rule" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Shared libraries &amp; tooling (every-repo tier)
+        The rule
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="The rule">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-use-the-secure-library-with-presetbalanced-as-the-baseline" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Use the secure library with Preset.BALANCED as the baseline
       
     </span>
   </a>
   
 </li>
-      
-        <li class="md-nav__item">
-  <a href="#deployable-components" class="md-nav__link">
+        
+          <li class="md-nav__item">
+  <a href="#2-integration-one-middleware-registered-once" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Deployable components
+        2. Integration: one middleware, registered once
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-csp-relaxation-is-explicit-and-auditable" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. CSP relaxation is explicit and auditable
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-hsts-is-conditional-on-tls" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. HSTS is conditional on TLS
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#failure-modes-this-prevents" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Failure modes this prevents
       
     </span>
   </a>
@@ -1303,99 +1403,114 @@
   
 
 
-<h1 id="the-fleet">The fleet<a class="headerlink" href="#the-fleet" title="Permanent link">&para;</a></h1>
-<p>Every robotsix repo, what it is, and where its docs live. (Every repo
-publishes a docs site — see <a href="../python/#docs">Docs</a>.) Add a row when a repo is
-created; remove it when one is archived.</p>
-<h2 id="shared-libraries-tooling-every-repo-tier">Shared libraries &amp; tooling (every-repo tier)<a class="headerlink" href="#shared-libraries-tooling-every-repo-tier" title="Permanent link">&para;</a></h2>
+<h1 id="http-security-response-headers">HTTP security response headers<a class="headerlink" href="#http-security-response-headers" title="Permanent link">&para;</a></h1>
+<blockquote>
+<p><strong>Scope: deployable components that serve HTTP responses</strong> — especially those
+rendering an HTML web UI. This applies <em>in addition to</em> the
+<a href="../repo-baseline/">repo baseline</a> and <a href="../component-standard/">component standard</a>.</p>
+</blockquote>
+<p>Every fleet service that serves HTTP responses emits the standard OWASP security
+response headers via a single, shared middleware. Hand-rolling these headers per
+service — or leaving them unset — exposes every HTML surface to clickjacking,
+MIME-sniffing, and referrer-leak classes of issues.</p>
+<h2 id="the-rule">The rule<a class="headerlink" href="#the-rule" title="Permanent link">&para;</a></h2>
+<h3 id="1-use-the-secure-library-with-presetbalanced-as-the-baseline">1. Use the <code>secure</code> library with Preset.BALANCED as the baseline<a class="headerlink" href="#1-use-the-secure-library-with-presetbalanced-as-the-baseline" title="Permanent link">&para;</a></h3>
+<p>All services use the maintained <a href="https://pypi.org/project/secure/"><code>secure</code></a>
+Python library (≥2.0.1) to set security headers. A hand-rolled
+<code>BaseHTTPMiddleware</code> is only appropriate for a single custom header; for the
+OWASP suite, <code>secure</code> handles CSP construction, deduplication, and
+normalization.</p>
+<p>The default preset is <strong><code>Preset.BALANCED</code></strong> (importable as <code>Secure.with_default_headers()</code>),
+which provides a safe, low-friction baseline:</p>
 <table>
 <thead>
 <tr>
-<th>Repo</th>
-<th>What it is</th>
-<th>Docs</th>
+<th>Header</th>
+<th>Value</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td><a href="https://github.com/damien-robotsix/robotsix-standards">robotsix-standards</a></td>
-<td>This site — the fleet's shared conventions.</td>
-<td><a href="https://damien-robotsix.github.io/robotsix-standards/">site</a></td>
+<td><code>X-Content-Type-Options</code></td>
+<td><code>nosniff</code></td>
 </tr>
 <tr>
-<td><a href="https://github.com/damien-robotsix/robotsix-config">robotsix-config</a></td>
-<td>The shared configuration library implementing the <a href="../config-standard/">config standard</a>.</td>
-<td><a href="https://github.com/damien-robotsix/robotsix-config">repo</a></td>
+<td><code>X-Frame-Options</code></td>
+<td><code>SAMEORIGIN</code> (or <code>DENY</code> if the service is never framed)</td>
 </tr>
 <tr>
-<td><a href="https://github.com/damien-robotsix/robotsix-llmio">robotsix-llmio</a></td>
-<td>LLM provider abstraction — capability levels, cost tracking, tracing.</td>
-<td><a href="https://github.com/damien-robotsix/robotsix-llmio">repo</a></td>
+<td><code>Referrer-Policy</code></td>
+<td><code>strict-origin-when-cross-origin</code></td>
 </tr>
 <tr>
-<td><a href="https://github.com/damien-robotsix/robotsix-modules">robotsix-modules</a></td>
-<td><code>docs/modules.yaml</code> tooling — module map, drift gate.</td>
-<td><a href="https://github.com/damien-robotsix/robotsix-modules">repo</a></td>
+<td><code>Content-Security-Policy</code></td>
+<td><code>default-src 'self'</code> (relax per-app for inline assets)</td>
 </tr>
 <tr>
-<td><a href="https://github.com/damien-robotsix/robotsix-github-workflows">robotsix-github-workflows</a></td>
-<td>The shared reusable workflows (the fleet's CI gates).</td>
-<td><a href="https://github.com/damien-robotsix/robotsix-github-workflows">repo</a></td>
+<td><code>Permissions-Policy</code></td>
+<td><code>geolocation=(), microphone=(), camera=()</code></td>
 </tr>
 <tr>
-<td><a href="https://github.com/damien-robotsix/robotsix-board">robotsix-board</a></td>
-<td>Ticket-board UI library.</td>
-<td><a href="https://github.com/damien-robotsix/robotsix-board">repo</a></td>
+<td><code>Strict-Transport-Security</code></td>
+<td><code>max-age=31536000; includeSubDomains</code> (only behind TLS)</td>
 </tr>
 </tbody>
 </table>
-<h2 id="deployable-components">Deployable components<a class="headerlink" href="#deployable-components" title="Permanent link">&para;</a></h2>
-<table>
-<thead>
-<tr>
-<th>Repo</th>
-<th>What it is</th>
-<th>Docs</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><a href="https://github.com/damien-robotsix/robotsix-central-deploy">robotsix-central-deploy</a></td>
-<td>The deployment system (<a href="../deployment-system/">bootstrap tier</a>).</td>
-<td><a href="https://github.com/damien-robotsix/robotsix-central-deploy">repo</a></td>
-</tr>
-<tr>
-<td><a href="https://github.com/damien-robotsix/robotsix-mill">robotsix-mill</a></td>
-<td>The agent-driven ticket pipeline (draft → implement → review → deliver).</td>
-<td><a href="https://github.com/damien-robotsix/robotsix-mill">repo</a></td>
-</tr>
-<tr>
-<td><a href="https://github.com/damien-robotsix/robotsix-chat">robotsix-chat</a></td>
-<td>Browser + SSE chat server exposing an LLM agent to human users.</td>
-<td><a href="https://github.com/damien-robotsix/robotsix-chat">repo</a></td>
-</tr>
-<tr>
-<td><a href="https://github.com/damien-robotsix/robotsix-auto-mail">robotsix-auto-mail</a></td>
-<td>Mail automation service.</td>
-<td><a href="https://github.com/damien-robotsix/robotsix-auto-mail">repo</a></td>
-</tr>
-<tr>
-<td><a href="https://github.com/damien-robotsix/robotsix-calendar-agent">robotsix-calendar-agent</a></td>
-<td>Calendar agent service.</td>
-<td><a href="https://github.com/damien-robotsix/robotsix-calendar-agent">repo</a></td>
-</tr>
-<tr>
-<td><a href="https://github.com/damien-robotsix/robotsix-cost-monitor">robotsix-cost-monitor</a></td>
-<td>Cost dashboard.</td>
-<td><a href="https://github.com/damien-robotsix/robotsix-cost-monitor">repo</a></td>
-</tr>
-<tr>
-<td><a href="https://github.com/damien-robotsix/robotsix-mill-ros2">robotsix-mill-ros2</a></td>
-<td>ROS 2 companion to the mill.</td>
-<td><a href="https://github.com/damien-robotsix/robotsix-mill-ros2">repo</a></td>
-</tr>
-</tbody>
-</table>
+<p>Services that require a stricter posture — e.g. an admin dashboard that must
+never be framed and must restrict script sources tightly — use
+<code>Preset.STRICT</code> instead. Services that need to relax the CSP for inline styles
+or scripts do so by calling the <code>Secure</code> object's update methods rather than
+bypassing the middleware.</p>
+<h3 id="2-integration-one-middleware-registered-once">2. Integration: one middleware, registered once<a class="headerlink" href="#2-integration-one-middleware-registered-once" title="Permanent link">&para;</a></h3>
+<p>The <code>SecureASGIMiddleware</code> is added to the ASGI app once at startup. Routes
+never set security headers themselves — the middleware applies the same set to
+every response.</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">secure</span><span class="w"> </span><span class="kn">import</span> <span class="n">Secure</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">secure.middleware</span><span class="w"> </span><span class="kn">import</span> <span class="n">SecureASGIMiddleware</span>
+
+<span class="n">secure_headers</span> <span class="o">=</span> <span class="n">Secure</span><span class="o">.</span><span class="n">with_default_headers</span><span class="p">()</span>
+<span class="n">app</span><span class="o">.</span><span class="n">add_middleware</span><span class="p">(</span><span class="n">SecureASGIMiddleware</span><span class="p">,</span> <span class="n">secure</span><span class="o">=</span><span class="n">secure_headers</span><span class="p">)</span>
+</code></pre></div>
+<p>For Starlette/FastAPI apps, this is the standard <code>app.add_middleware()</code> call
+during application construction. The middleware must be registered before any
+route handlers that could return a response.</p>
+<h3 id="3-csp-relaxation-is-explicit-and-auditable">3. CSP relaxation is explicit and auditable<a class="headerlink" href="#3-csp-relaxation-is-explicit-and-auditable" title="Permanent link">&para;</a></h3>
+<p>The <code>default-src 'self'</code> CSP blocks inline styles and scripts, which some
+frontend frameworks require. When a service needs to relax the CSP, it does so
+by calling methods on the <code>Secure</code> object — e.g.
+<code>secure_headers.csp.default_src = "'self' 'unsafe-inline'"</code> — rather than
+disabling the header or building a CSP string by hand. This keeps every CSP
+modification traceable to a single, grep-able location.</p>
+<h3 id="4-hsts-is-conditional-on-tls">4. HSTS is conditional on TLS<a class="headerlink" href="#4-hsts-is-conditional-on-tls" title="Permanent link">&para;</a></h3>
+<p>The <code>Strict-Transport-Security</code> header is only emitted when the service is
+behind TLS. The <code>secure</code> library detects this from the request scheme and
+suppresses the header on plain-HTTP requests automatically — the service does
+not need to branch on this itself.</p>
+<h2 id="failure-modes-this-prevents">Failure modes this prevents<a class="headerlink" href="#failure-modes-this-prevents" title="Permanent link">&para;</a></h2>
+<ul>
+<li><strong>Clickjacking.</strong> Without <code>X-Frame-Options</code> or CSP <code>frame-ancestors</code>, an
+  attacker can embed the service's UI in an invisible iframe on a malicious
+  page and trick users into clicking UI elements they cannot see.</li>
+<li><strong>MIME-sniffing attacks.</strong> Without <code>X-Content-Type-Options: nosniff</code>, older
+  browsers may guess the content type of a response and execute a user-uploaded
+  text file as JavaScript if the server's <code>Content-Type</code> header is missing or
+  wrong.</li>
+<li><strong>Referrer leakage.</strong> Without <code>Referrer-Policy</code>, full URLs — including path
+  and query string — leak to third-party sites when a user clicks an external
+  link from the service's UI. Query strings often carry tokens, identifiers,
+  or search terms.</li>
+<li><strong>Permission abuse.</strong> Without <code>Permissions-Policy</code> denying sensitive APIs
+  (<code>geolocation</code>, <code>microphone</code>, <code>camera</code>), any JavaScript running in the
+  service's origin — including third-party scripts loaded via CDN — can request
+  these permissions without the user's meaningful consent.</li>
+<li><strong>Downgrade attacks.</strong> Without <code>Strict-Transport-Security</code>, a MITM attacker
+  can rewrite HTTPS links to HTTP and intercept traffic that the user believes
+  is encrypted.</li>
+<li><strong>Cross-service inconsistency.</strong> Hand-rolling headers per service produces
+  slightly different header sets, different header-name casing, and different
+  CSP syntax across the fleet. A single middleware — the same library, the same
+  preset, the same integration pattern — eliminates per-service drift.</li>
+</ul>
 
 
 

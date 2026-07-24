@@ -97,7 +97,10 @@ newsfragments, compiled by the shared auto-release workflow.**
   `feature` → minor, else patch), runs `towncrier build`, bumps the version in
   `pyproject.toml`, commits, and tags `v0.X.Y`. For deployable components the
   `v*` tag in turn publishes the `X.Y.Z` image tag (see
-  [Docker build & release](docker-standard.md)).
+  [Docker build & release](docker-standard.md)). The release workflow also
+  attaches a CycloneDX SBOM (`sbom.cyclonedx.json`) as a release asset,
+  optionally with a Sigstore attestation — see
+  [SBOM & vulnerability audit](security-posture.md#6-sbom-vulnerability-audit).
 - **Versions stay `0.x`** until a repo deliberately declares `1.0.0` — that is
   a human statement about stability, never automated. Under semver 0.x there
   is no compatibility promise, which matches the stack's pre-release,

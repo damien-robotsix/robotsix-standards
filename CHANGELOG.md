@@ -45,6 +45,7 @@
 
 ## 0.0.0 (unreleased)
 
+- **Python practices**: codified single-source version convention — `pyproject.toml [project].version` is authoritative; `__version__` MUST be derived from `importlib.metadata.version()` instead of hard-coded. Prevents silent version drift between the auto-release bumper (which updates only `pyproject.toml`) and the hand-maintained `__init__.py` literal.
 - robotsix-standards: Remove `docstring_coverage` periodic agent — repo is Markdown-only and has no Python source modules to scan.
 - Add `config-ownership.md` to the MkDocs navigation sidebar under "Deployable components" (it was the only docs page missing from the nav).
 - Ignore `https://github.com/*` and `https://docs.github.com/*` in htmlproofer to prevent transient GitHub 504 errors from failing CI builds.

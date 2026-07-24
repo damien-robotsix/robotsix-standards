@@ -10,13 +10,13 @@
       
       
       
-        <link rel="canonical" href="https://damien-robotsix.github.io/robotsix-standards/mkdocs-build/">
+        <link rel="canonical" href="https://damien-robotsix.github.io/robotsix-standards/pytest/">
       
       
-        <link rel="prev" href="../markdown-linting/">
+        <link rel="prev" href="../python/">
       
       
-        <link rel="next" href="../javascript/">
+        <link rel="next" href="../ruff-lint-rules/">
       
       
         
@@ -27,7 +27,7 @@
     
     
       
-        <title>MkDocs build integrity - Robotsix Standards</title>
+        <title>Pytest practices - Robotsix Standards</title>
       
     
     
@@ -78,7 +78,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#mkdocs-build-integrity" class="md-skip">
+        <a href="#pytest-strictness-configuration" class="md-skip">
           Skip to content
         </a>
       
@@ -114,7 +114,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              MkDocs build integrity
+              Pytest practices
             
           </span>
         </div>
@@ -449,10 +449,37 @@
                 
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="../pytest/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Pytest practices
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   
@@ -468,6 +495,81 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#why-this-exists" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why this exists
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#baseline-settings-mandatory" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Baseline settings (mandatory)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#targeted-warning-ignores" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Targeted warning ignores
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#recommended-tier-strict-markers-and-config" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Recommended tier: strict markers and config
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#full-example" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Full example
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -589,37 +691,10 @@
                 
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    MkDocs build integrity
-  
-
-    
-  </span>
-  
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../mkdocs-build/" class="md-nav__link">
         
   
   
@@ -635,115 +710,6 @@
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#why-this-exists" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Why this exists
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#rules" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Rules
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Rules">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#1-build-with-strict" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        1. Build with --strict
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#2-add-a-validation-block-to-mkdocsyml" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        2. Add a validation: block to mkdocs.yml
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#what-strict-does-not-catch" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        What --strict does not catch
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="What --strict does not catch">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#3-surface-the-changelog-in-the-docs-nav" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        3. Surface the changelog in the docs nav
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#precedent" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Precedent
-      
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -1424,77 +1390,43 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#rules" class="md-nav__link">
+  <a href="#baseline-settings-mandatory" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Rules
+        Baseline settings (mandatory)
       
     </span>
   </a>
-  
-    <nav class="md-nav" aria-label="Rules">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#1-build-with-strict" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        1. Build with --strict
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#2-add-a-validation-block-to-mkdocsyml" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        2. Add a validation: block to mkdocs.yml
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#what-strict-does-not-catch" class="md-nav__link">
+  <a href="#targeted-warning-ignores" class="md-nav__link">
     <span class="md-ellipsis">
       
-        What --strict does not catch
+        Targeted warning ignores
       
     </span>
   </a>
-  
-    <nav class="md-nav" aria-label="What --strict does not catch">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#3-surface-the-changelog-in-the-docs-nav" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        3. Surface the changelog in the docs nav
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#precedent" class="md-nav__link">
+  <a href="#recommended-tier-strict-markers-and-config" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Precedent
+        Recommended tier: strict markers and config
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#full-example" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Full example
       
     </span>
   </a>
@@ -1521,147 +1453,93 @@
   
 
 
-<h1 id="mkdocs-build-integrity">MkDocs build integrity<a class="headerlink" href="#mkdocs-build-integrity" title="Permanent link">&para;</a></h1>
+<h1 id="pytest-strictness-configuration">Pytest strictness configuration<a class="headerlink" href="#pytest-strictness-configuration" title="Permanent link">&para;</a></h1>
 <blockquote>
-<p><strong>Scope: every repository that publishes an MkDocs documentation site.</strong>
-Repos without MkDocs (content-only repos, ROS 2 workspaces, deployment-only
-repos) are exempt.</p>
+<p><strong>Scope: every Python repository.</strong> These settings apply fleet-wide so
+every test suite fails loudly on deprecation warnings, unregistered markers,
+and unexpectedly-passing xfails.</p>
 </blockquote>
 <h2 id="why-this-exists">Why this exists<a class="headerlink" href="#why-this-exists" title="Permanent link">&para;</a></h2>
-<p>MkDocs is the fleet's documentation engine (Material theme, mkdocstrings).
-Without a strict build gate, broken internal links, missing nav pages,
-unresolved anchors, and malformed frontmatter silently degrade the published
-site. The two rules below catch every class of build-time error MkDocs can
-surface.</p>
-<h2 id="rules">Rules<a class="headerlink" href="#rules" title="Permanent link">&para;</a></h2>
-<h3 id="1-build-with-strict">1. Build with <code>--strict</code><a class="headerlink" href="#1-build-with-strict" title="Permanent link">&para;</a></h3>
-<p>In CI, the docs build command must be <code>uv run --group docs mkdocs build
---strict</code>. The <code>--strict</code> flag promotes MkDocs warnings (missing nav pages,
-unresolved template variables, broken <code>extra_javascript</code> / <code>extra_css</code>
-paths, malformed frontmatter) to hard errors — so a broken link fails CI, not
-just the published site.</p>
-<p><strong>Failure mode prevented:</strong> a PR adds a page but forgets to register it in
-<code>mkdocs.yml</code>'s <code>nav</code>. Without <code>--strict</code>, MkDocs emits a single log line at
-<code>WARNING</code> level, CI passes, and the page is invisible on the published site
-— broken navigation the author and reviewer never see.</p>
-<p>The shared <code>python-docs.yml</code> reusable workflow in
-<a href="https://github.com/damien-robotsix/robotsix-github-workflows">robotsix-github-workflows</a>
-runs <code>mkdocs build --strict</code> by default — repos that call the shared workflow
-get this gate automatically.</p>
-<h3 id="2-add-a-validation-block-to-mkdocsyml">2. Add a <code>validation:</code> block to <code>mkdocs.yml</code><a class="headerlink" href="#2-add-a-validation-block-to-mkdocsyml" title="Permanent link">&para;</a></h3>
-<p>The most important link checks default to <em>info</em> level in MkDocs (≥ 1.5) and
-are <strong>not</strong> promoted by <code>--strict</code> alone. A <code>validation:</code> block raises them
-to <code>warn</code>, where <code>--strict</code> then promotes them to errors:</p>
-<div class="highlight"><pre><span></span><code><span class="nt">validation</span><span class="p">:</span>
-<span class="w">  </span><span class="nt">nav</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">not_found</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">warn</span>
-<span class="w">    </span><span class="nt">omitted_files</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">info</span>
-<span class="w">  </span><span class="nt">links</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">not_found</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">warn</span>
-<span class="w">    </span><span class="nt">anchors</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">warn</span>
-<span class="w">    </span><span class="nt">absolute_links</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">warn</span>
-<span class="w">    </span><span class="nt">unrecognized_links</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">warn</span>
-</code></pre></div>
-<table>
-<thead>
-<tr>
-<th>Key</th>
-<th>What it catches</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>nav.not_found</code></td>
-<td>A page listed in <code>nav</code> that doesn't exist on disk</td>
-</tr>
-<tr>
-<td><code>nav.omitted_files</code></td>
-<td>A <code>.md</code> file on disk that isn't in the <code>nav</code> (info; noise in large repos)</td>
-</tr>
-<tr>
-<td><code>links.not_found</code></td>
-<td>A cross-page markdown link whose target <code>.md</code> file doesn't exist</td>
-</tr>
-<tr>
-<td><code>links.anchors</code></td>
-<td>A link to a heading anchor (<code>#some-heading</code>) that doesn't exist on the target page</td>
-</tr>
-<tr>
-<td><code>links.absolute_links</code></td>
-<td>An absolute URL that should probably be relative</td>
-</tr>
-<tr>
-<td><code>links.unrecognized_links</code></td>
-<td>A link MkDocs can't classify — often a typo or a bare fragment</td>
-</tr>
-</tbody>
-</table>
-<p><strong>Failure mode prevented:</strong> a PR renames a heading but the cross-page links
-pointing to it still reference the old anchor. Without the <code>validation:</code>
-block, MkDocs logs at <code>INFO</code> level, <code>--strict</code> doesn't see it, and the
-published site has dead anchor links.</p>
-<h2 id="what-strict-does-not-catch">What <code>--strict</code> does <strong>not</strong> catch<a class="headerlink" href="#what-strict-does-not-catch" title="Permanent link">&para;</a></h2>
-<p><code>--strict</code> and the <code>validation:</code> block together cover every warning MkDocs
-itself can surface, but they do <strong>not</strong> catch broken <strong>mkdocstrings
-cross-references</strong> (unresolved <code>autorefs</code>). The <code>autorefs</code> plugin emits
-warnings through Python's logging, which MkDocs does not treat as build
-warnings. Pydantic addresses this with a custom post-build hook
-(<a href="https://github.com/pydantic/pydantic/pull/10203">pydantic/pydantic#10203</a>).
-This standard does <strong>not</strong> require that hook — it is an optional add-on for
-repos that want autoref integrity. The convention here is: ship the hook if
-<code>autorefs</code> drift has bitten you, but don't gate on it fleet-wide until the
-pattern is proven in more than one repo.</p>
-<h3 id="3-surface-the-changelog-in-the-docs-nav">3. Surface the changelog in the docs nav<a class="headerlink" href="#3-surface-the-changelog-in-the-docs-nav" title="Permanent link">&para;</a></h3>
-<p>Every repo that publishes an MkDocs docs site and maintains a root
-<code>CHANGELOG.md</code> must include it in the docs <code>nav</code> so it is discoverable to
-users browsing the published site. A changelog that lives only in the repo
-root is invisible to readers of the docs.</p>
-<div class="highlight"><pre><span></span><code><span class="nt">nav</span><span class="p">:</span>
-<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">Changelog</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">CHANGELOG.md</span>
-</code></pre></div>
-<p><strong>Mechanics.</strong> The root <code>CHANGELOG.md</code> is outside <code>docs_dir</code> by default and
-won't resolve. The repo must make it resolvable <em>without</em> committing a
-duplicate copy into <code>docs/</code>. Two patterns are acceptable:</p>
-<table>
-<thead>
-<tr>
-<th>Pattern</th>
-<th>How</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><strong>Symlink</strong></td>
-<td><code>ln -s ../CHANGELOG.md docs/CHANGELOG.md</code>. Git tracks the symlink as a file — every clone and CI run resolves it. Simple, zero-build-step.</td>
-</tr>
-<tr>
-<td><strong>Build-time copy</strong></td>
-<td>An <code>on_pre_build</code> MkDocs hook that copies <code>CHANGELOG.md</code> into <code>docs/</code> before the site builds. Preferable when the target platform does not support symlinks (Windows CI runners without Developer Mode).</td>
-</tr>
-</tbody>
-</table>
-<p>Either way, the file referenced in <code>nav</code> must be the canonical root
-<code>CHANGELOG.md</code> — not a manually-maintained copy that can drift.</p>
-<p><strong>Failure mode prevented:</strong> a repo has a well-maintained changelog (towncrier,
-Keep a Changelog format) but users browsing the docs site never see it because
-it isn't in the nav. Release notes that require navigating away from the docs
-to the GitHub repo are functionally hidden from most readers.</p>
-<h2 id="precedent">Precedent<a class="headerlink" href="#precedent" title="Permanent link">&para;</a></h2>
+<p>Without strictness settings, pytest silently ignores several classes of
+problem that matter in CI:</p>
 <ul>
-<li><a href="https://github.com/pydantic/pydantic">Pydantic</a>,
-  <a href="https://github.com/fastapi/fastapi">FastAPI</a>, and
-  <a href="https://github.com/fastapi/sqlmodel">SQLModel</a> all surface their root
-  <code>CHANGELOG.md</code> as a docs nav page via a <code>docs/</code>-tree copy or symlink.
-  MkDocs-material has no built-in changelog plugin; this nav entry plus a
-  resolution mechanism is the established convention.</li>
-<li>MkDocs ≥ 1.5 release notes recommend the <code>validation:</code> block + <code>--strict</code>
-  for link integrity.</li>
-<li><a href="https://github.com/mkdocs/mkdocs/issues/1570">MkDocs issue #1570</a> documents
-  why info-level link checks need explicit promotion — they were kept at
-  <code>INFO</code> for backward compatibility.</li>
-<li>Pydantic and FastAPI both gate docs builds in CI; Pydantic additionally
-  uses the post-build autoref hook described above.</li>
+<li><strong>Deprecation warnings from dependencies scroll past invisibly</strong> — the
+  first a team learns of a removed API is the upgrade that breaks at runtime.</li>
+<li><strong>Typos in <code>@pytest.mark.xxx</code> decorators are silently tolerated</strong> — the
+  marker is registered as an ad-hoc string, the test runs without it, and the
+  intended filtering or skipping never happens.</li>
+<li><strong><code>@pytest.mark.xfail</code> tests that start passing</strong> (because the bug was
+  fixed) continue to report as "expected failure" — the test suite never
+  signals that the fix landed, so the xfail marker rots indefinitely.</li>
 </ul>
+<p>Four mature ASGI/data projects — FastAPI, Starlette, Pydantic, and httpx —
+all ship <code>filterwarnings = ["error"]</code> in their <code>pyproject.toml</code>. FastAPI and
+Starlette additionally enable <code>--strict-markers</code> and <code>--strict-config</code>.
+Codifying the convention here means every fleet repo inherits the same
+discipline rather than each re-deriving it.</p>
+<h2 id="baseline-settings-mandatory">Baseline settings (mandatory)<a class="headerlink" href="#baseline-settings-mandatory" title="Permanent link">&para;</a></h2>
+<p>Every Python repository <strong>must</strong> include these two settings in
+<code>[tool.pytest.ini_options]</code>:</p>
+<div class="highlight"><pre><span></span><code><span class="k">[tool.pytest.ini_options]</span>
+<span class="n">filterwarnings</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;error&quot;</span><span class="p">]</span>
+<span class="n">xfail_strict</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">true</span>
+</code></pre></div>
+<ul>
+<li><strong><code>filterwarnings = ["error"]</code></strong> — turn every warning into an exception.
+  This is the universal baseline across all four surveyed projects.</li>
+<li><strong><code>xfail_strict = true</code></strong> — an <code>@pytest.mark.xfail</code> test that unexpectedly
+  passes is reported as a failure (<code>XPASS(strict)</code>), flagging the stale
+  marker so it can be removed.</li>
+</ul>
+<p><strong>Failure mode:</strong> without <code>filterwarnings = ["error"]</code>, dependency
+deprecation warnings are invisible in CI output — the upgrade that removes
+the deprecated API lands as a surprise breakage. Without <code>xfail_strict</code>,
+fixed bugs stay marked as expected failures forever, and the test suite
+never signals that the fix is real.</p>
+<h2 id="targeted-warning-ignores">Targeted warning ignores<a class="headerlink" href="#targeted-warning-ignores" title="Permanent link">&para;</a></h2>
+<p>Repos <strong>may</strong> add narrowly-scoped <code>ignore:</code> entries for third-party
+<code>DeprecationWarning</code>s that are out of their control:</p>
+<div class="highlight"><pre><span></span><code><span class="n">filterwarnings</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span>
+<span class="w">    </span><span class="s2">&quot;error&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="s2">&quot;ignore::DeprecationWarning:third_party_package.*:&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="s2">&quot;ignore::DeprecationWarning:another_package.module:&quot;</span><span class="p">,</span>
+<span class="p">]</span>
+</code></pre></div>
+<p>Each <code>ignore:</code> entry <strong>must</strong> include a <code>message</code> and/or <code>module</code> qualifier
+so it silences only the specific warning it targets — never a bare
+<code>"ignore::DeprecationWarning"</code>. Starlette, Pydantic, and httpx all follow
+this pattern.</p>
+<p><strong>Failure mode:</strong> a bare <code>ignore::DeprecationWarning</code> suppresses every
+deprecation in the entire test suite, including the project's own — the
+setting becomes self-defeating.</p>
+<h2 id="recommended-tier-strict-markers-and-config">Recommended tier: strict markers and config<a class="headerlink" href="#recommended-tier-strict-markers-and-config" title="Permanent link">&para;</a></h2>
+<p>Repos <strong>should</strong> additionally enable marker and config strictness:</p>
+<div class="highlight"><pre><span></span><code><span class="n">addopts</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;--strict-markers&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;--strict-config&quot;</span><span class="p">]</span>
+</code></pre></div>
+<ul>
+<li><strong><code>--strict-markers</code></strong> — any <code>@pytest.mark.xxx</code> decorator whose marker
+  name is not registered (via <code>markers</code> in <code>pyproject.toml</code> or a
+  <code>pytest_configure</code> hook) raises an error instead of silently adding an
+  ad-hoc marker.</li>
+<li><strong><code>--strict-config</code></strong> — any unrecognised <code>[tool.pytest.ini_options]</code> key
+  raises an error, catching typos in config.</li>
+</ul>
+<p>FastAPI and Starlette both ship these settings.</p>
+<p><strong>Failure mode:</strong> without <code>--strict-markers</code>, a typo like
+<code>@pytest.mark.smoke</code> (intended <code>smoke</code>) becomes a silently-registered ad-hoc
+marker that no <code>-m</code> filter ever selects — the test is never run in the
+targeted suite, and the mistake is invisible until a human notices the test
+is missing from CI results.</p>
+<h2 id="full-example">Full example<a class="headerlink" href="#full-example" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code><span class="k">[tool.pytest.ini_options]</span>
+<span class="n">addopts</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;--strict-markers&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;--strict-config&quot;</span><span class="p">]</span>
+<span class="n">xfail_strict</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">true</span>
+<span class="n">filterwarnings</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span>
+<span class="w">    </span><span class="s2">&quot;error&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="c1"># Third-party deprecation warnings that the project cannot fix:</span>
+<span class="w">    </span><span class="c1"># &quot;ignore::DeprecationWarning:some_library.*:&quot;,</span>
+<span class="p">]</span>
+</code></pre></div>
 
 
 

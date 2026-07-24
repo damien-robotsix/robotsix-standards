@@ -1968,25 +1968,46 @@ pre-commit hooks install Python tools.</p>
 <li><strong>Test layout mirrors the package:</strong> tests for module X live under
   <code>tests/X/</code>, never at the <code>tests/</code> root. New modules get a matching test
   directory.</li>
-<li><strong>The default test run is offline and credential-free</strong>: declare
-  <code>addopts = ["-m", "not live", "--strict-markers", "--strict-config"]</code>.
-  Tests that genuinely need the network or real credentials carry the
-  <strong><code>live</code> marker</strong> and run only by explicit opt-in (<code>pytest -m live</code>),
-  never in the standard CI gate — in mill sandboxes (egress-proxied) and CI,
-  an accidental network call is a hang or a paid flake. <code>--strict-markers</code>
-  makes a misspelled marker an error instead of an always-running test.
-  <code>tests/.env.example</code> lists exactly the live-suite credentials — nothing
-  else.</li>
-<li><strong>Shared fixtures live in <code>conftest.py</code>:</strong> when two test files under the
+<li>
+<p><strong>The default test run is offline and credential-free</strong>: declare
+  <code>addopts = ["-m", "not live", "--strict-config"]</code> and enable
+  <code>strict_markers = true</code> in <code>[tool.pytest.ini_options]</code>.  Tests that
+  genuinely need the network or real credentials carry the <strong><code>live</code> marker</strong>
+  and run only by explicit opt-in (<code>pytest -m live</code>), never in the standard
+  CI gate — in mill sandboxes (egress-proxied) and CI, an accidental network
+  call is a hang or a paid flake.  <code>tests/.env.example</code> lists exactly the
+  live-suite credentials — nothing else.</p>
+</li>
+<li>
+<p><strong><code>strict_markers = true</code> is mandatory.</strong>  Every Python repo MUST set
+  <code>strict_markers = true</code> in <code>[tool.pytest.ini_options]</code> in
+  <code>pyproject.toml</code>.  This is the canonical boolean config key (equivalent
+  to the <code>--strict-markers</code> CLI flag) and avoids string-parsing pitfalls
+  of <code>addopts = "--strict-markers"</code>.</p>
+</li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="k">[tool.pytest.ini_options]</span>
+<span class="n">strict_markers</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">true</span>
+</code></pre></div>
+<p><strong>Why:</strong>
+  - <strong>Catches silent no-ops:</strong> a misspelled <code>@pytest.mark.skipif</code> won't
+    accidentally run a flaky integration test in CI — it becomes a hard
+    error.
+  - <strong>Forces explicit marker registration:</strong> markers must be declared in
+    config (<code>markers = ["slow: description", …]</code>), creating living
+    documentation viewable via <code>pytest --markers</code>.
+  - <strong>Errors fail the build:</strong> <code>PytestUnknownMarkWarning</code> is easily buried
+    in CI logs; strict-markers makes typos a hard error.
+  - <strong>Single source of truth:</strong> all valid markers are listed in one place.
+- <strong>Shared fixtures live in <code>conftest.py</code>:</strong> when two test files under the
   same <code>tests/&lt;module&gt;/</code> define the same fixture, extract it to
   <code>tests/&lt;module&gt;/conftest.py</code> — pytest discovers it for all sibling tests.
   Duplicated fixtures drift apart; this recurs especially in agent-written
-  PRs.</li>
-<li><strong>Prefer <code>@pytest.mark.parametrize</code> over N separate test functions</strong> when
+  PRs.
+- <strong>Prefer <code>@pytest.mark.parametrize</code> over N separate test functions</strong> when
   testing a single function with multiple input/output variants. A group of
   3+ test functions that differ only in their input values and expected
-  outputs SHALL be consolidated into one parametrized test.</li>
-</ul>
+  outputs SHALL be consolidated into one parametrized test.</p>
 <p><strong>Rationale:</strong>
   - <strong>Readability:</strong> A single <code>@pytest.mark.parametrize</code> call with a table of
     <code>(input, expected)</code> pairs is more compact and scannable than N

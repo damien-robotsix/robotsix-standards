@@ -76,6 +76,10 @@ security workflow from robotsix-github-workflows. Findings are published as a
 workflow artifact and surfaced through the fleet dashboard — there is no
 dependency on GitHub Code Scanning or the GitHub Security tab.
 
+Bandit (Python-specific SAST) runs as a complementary layer via the shared
+`python-ci.yml` workflow in every Python repo — see
+[Python practices](python.md#lint-types-and-security-lint).
+
 - **How to verify:** the repo's CI workflow calls the shared Semgrep workflow.
   The latest CI run on the default branch uploads a Semgrep findings artifact.
 - **Failure prevented:** a vulnerability that a static-analysis rule would

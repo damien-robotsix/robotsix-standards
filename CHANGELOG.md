@@ -45,6 +45,7 @@
 
 ## 0.0.0 (unreleased)
 
+- docs(security-posture): add Bandit to Gate 1 SAST section as complementary Python-specific SAST layer via `python-ci.yml`
 - Added [default config location](docs/default-config-location.md) standard: canonical in-repo location (`config/config.json`) for the shipped default config that seeds the deploy-side config on first registration; cross-references central-deploy ticket b159 as the primary consumer.
 - Standardize release-time SBOM publishing: every fleet repo MUST attach its
   CycloneDX SBOM (`sbom.cyclonedx.json`) as a GitHub Release asset, raising the

@@ -53,6 +53,7 @@ plugins:
         - "http://localhost*"
         - "https://raw.githubusercontent.com/*"
         - "https://owasp.org/*"
+        - "https://genai.owasp.org/*"
         - "https://damien-robotsix.github.io/*"
 
 nav:

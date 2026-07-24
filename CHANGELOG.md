@@ -45,6 +45,7 @@
 
 ## 0.0.0 (unreleased)
 
+- Add `https://genai.owasp.org/*` to htmlproofer `ignore_urls` in `mkdocs.yml`, extending the existing OWASP timeout workaround to cover the `genai.owasp.org` subdomain (OWASP Top 10 for LLM & Agentic Applications pages).
 - New [config ownership](docs/config-ownership.md) standard: draws a hard line between deploy-plane config (central-deploy UI — image, volumes, ports, secrets, restart, resource limits, `ROBOTSIX_CONFIG_FILE`) and component-owned config (the component's own `config/config.json` and HTTP surface). Defines the standard config HTTP surface every component MUST implement: `GET /config`, `PUT /config`, `GET /config/versions`, `POST /config/rollback` — with typed request/response shapes, secret masking, and validation rules. UI-bearing components MUST additionally provide a Settings/Config panel built on that surface.
 - New standard: [HTTP security response headers](docs/http-security-headers.md) — every deployable component that serves HTTP must emit the OWASP security headers via the `secure` library's `SecureASGIMiddleware` (Preset.BALANCED baseline), replacing hand-rolled per-service headers.
 - Added "Coverage artifact upload" rule to the CI and security gates section of the repo baseline: any reusable workflow that runs pytest with `--cov` must upload `coverage.xml` and `.coverage` as a `coverage-data` artifact, so consuming workflows can generate coverage diff commentary without re-running tests.

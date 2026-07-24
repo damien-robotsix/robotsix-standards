@@ -10,13 +10,13 @@
       
       
       
-        <link rel="canonical" href="https://damien-robotsix.github.io/robotsix-standards/ros2/">
+        <link rel="canonical" href="https://damien-robotsix.github.io/robotsix-standards/default-config-location/">
       
       
-        <link rel="prev" href="../javascript/">
+        <link rel="prev" href="../config-standard/">
       
       
-        <link rel="next" href="../component-standard/">
+        <link rel="next" href="../docker-standard/">
       
       
         
@@ -27,7 +27,7 @@
     
     
       
-        <title>ROS 2 practices - Robotsix Standards</title>
+        <title>Default config location - Robotsix Standards</title>
       
     
     
@@ -78,7 +78,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#ros-2-practices" class="md-skip">
+        <a href="#default-config-location" class="md-skip">
           Skip to content
         </a>
       
@@ -114,7 +114,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              ROS 2 practices
+              Default config location
             
           </span>
         </div>
@@ -311,8 +311,6 @@
       
   
   
-    
-  
   
   
     
@@ -325,11 +323,13 @@
       
     
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3" >
         
           
           <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
@@ -350,7 +350,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_3">
             <span class="md-nav__icon md-icon"></span>
             
@@ -617,37 +617,10 @@
                 
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    ROS 2 practices
-  
-
-    
-  </span>
-  
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../ros2/" class="md-nav__link">
         
   
   
@@ -663,114 +636,6 @@
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#what-kind-of-repo" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        What kind of repo?
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#supported-ros-2-distros" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Supported ROS 2 distros
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#workspace-layout" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Workspace layout
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#devcontainer" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Devcontainer
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#build-test" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Build &amp; test
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#ci-expectations" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        CI expectations
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#code-style-linting" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Code style &amp; linting
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#interface-design" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Interface design
-      
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -787,8 +652,10 @@
       
   
   
+    
   
   
+  
     
     
     
@@ -799,13 +666,11 @@
       
     
     
-    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
       
         
         
-          
-        
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
         
           
           <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
@@ -826,7 +691,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_4">
             <span class="md-nav__icon md-icon"></span>
             
@@ -897,10 +762,37 @@
                 
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="../default-config-location/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Default config location
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   
@@ -916,6 +808,98 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#the-rule" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The rule
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="The rule">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-canonical-location-configconfigjson-at-the-repo-root" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Canonical location: config/config.json at the repo root
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-relationship-to-the-robotsixdeployconfig-target-compose-label" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Relationship to the robotsix.deploy.config-target compose label
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-validation-expectation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Validation expectation
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-consumer-guidance" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Consumer guidance
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#why-not-bake-the-default-into-the-image" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why not bake the default into the image?
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -1384,87 +1368,71 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#what-kind-of-repo" class="md-nav__link">
+  <a href="#the-rule" class="md-nav__link">
     <span class="md-ellipsis">
       
-        What kind of repo?
+        The rule
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="The rule">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-canonical-location-configconfigjson-at-the-repo-root" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Canonical location: config/config.json at the repo root
       
     </span>
   </a>
   
 </li>
-      
-        <li class="md-nav__item">
-  <a href="#supported-ros-2-distros" class="md-nav__link">
+        
+          <li class="md-nav__item">
+  <a href="#2-relationship-to-the-robotsixdeployconfig-target-compose-label" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Supported ROS 2 distros
+        2. Relationship to the robotsix.deploy.config-target compose label
       
     </span>
   </a>
   
 </li>
-      
-        <li class="md-nav__item">
-  <a href="#workspace-layout" class="md-nav__link">
+        
+          <li class="md-nav__item">
+  <a href="#3-validation-expectation" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Workspace layout
+        3. Validation expectation
       
     </span>
   </a>
   
 </li>
-      
-        <li class="md-nav__item">
-  <a href="#devcontainer" class="md-nav__link">
+        
+          <li class="md-nav__item">
+  <a href="#4-consumer-guidance" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Devcontainer
+        4. Consumer guidance
       
     </span>
   </a>
   
 </li>
-      
-        <li class="md-nav__item">
-  <a href="#build-test" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Build &amp; test
-      
-    </span>
-  </a>
+        
+      </ul>
+    </nav>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#ci-expectations" class="md-nav__link">
+  <a href="#why-not-bake-the-default-into-the-image" class="md-nav__link">
     <span class="md-ellipsis">
       
-        CI expectations
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#code-style-linting" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Code style &amp; linting
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#interface-design" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Interface design
+        Why not bake the default into the image?
       
     </span>
   </a>
@@ -1491,214 +1459,124 @@
   
 
 
-<h1 id="ros-2-practices">ROS 2 practices<a class="headerlink" href="#ros-2-practices" title="Permanent link">&para;</a></h1>
+<h1 id="default-config-location">Default config location<a class="headerlink" href="#default-config-location" title="Permanent link">&para;</a></h1>
 <blockquote>
-<p><strong>Scope: every ROS 2 repository.</strong> These are the language-specific
-practices for ROS 2 packages; the language-agnostic rules (tiers, hygiene,
-CI philosophy) live in the <a href="../repo-baseline/">repo baseline</a>.</p>
+<p><strong>Scope: deployable components only.</strong> See the
+<a href="../component-standard/">component standard</a>.</p>
 </blockquote>
-<div class="admonition note">
-<p class="admonition-title">Status: derived from robotsix-mill-ros2</p>
-<p>The <code>robotsix-mill-ros2</code> repo predates this standards page; the
-conventions below are extracted from that repo's actual working
-practices. This page will expand as more ROS 2 repos land in the fleet
-and as existing patterns are documented.</p>
-</div>
-<h2 id="what-kind-of-repo">What kind of repo?<a class="headerlink" href="#what-kind-of-repo" title="Permanent link">&para;</a></h2>
-<p>ROS 2 repos in the fleet follow a <strong>workspace-skeleton</strong> model: the repo
-is an orchestrator that declares downstream package repos, not a bag of
-ROS 2 packages itself. Actual ROS 2 packages (with <code>package.xml</code> and
-<code>CMakeLists.txt</code>) live in the downstream repos listed in the workspace
-manifest.</p>
-<p>The workspace repo is a <strong>deployable component</strong> — it ships a container
-image (via the <a href="../docker-standard/">Docker build &amp; release</a> pattern) and follows
-the <a href="../component-standard/">component standard</a> for its deploy modes.</p>
-<h2 id="supported-ros-2-distros">Supported ROS 2 distros<a class="headerlink" href="#supported-ros-2-distros" title="Permanent link">&para;</a></h2>
-<ul>
-<li><strong>Rolling is the default.</strong> The devcontainer Dockerfile uses
-  <code>ros:rolling-ros-base</code> and CI gates against Rolling.</li>
-<li><strong>The Dockerfile is parametric</strong> — <code>ROS_DISTRO</code> is a build arg (default
-  <code>rolling</code>), so any distro with an official <code>ros:$DISTRO-ros-base</code> image
-  (Humble, Jazzy, Lyrical) works. Switch the build arg to change distros.</li>
-<li><strong>No multi-distro CI matrix yet.</strong> The single CI job gates against one
-  distro at a time. A matrix across distros is expected once the fleet has
-  multiple ROS 2 repos that need it.</li>
-</ul>
-<h2 id="workspace-layout">Workspace layout<a class="headerlink" href="#workspace-layout" title="Permanent link">&para;</a></h2>
-<div class="highlight"><pre><span></span><code>├── repos.yaml              ← vcs2l manifest: downstream package repos
-├── src/                    ← git-ignored; populated by `vcs import`
-├── .devcontainer/
-│   ├── Dockerfile          ← FROM ros:$ROS_DISTRO-ros-base
-│   └── devcontainer.json
-├── justfile                ← local lint/validate orchestrator
-├── scripts/
-│   └── update_workspace.sh ← vcs import + rosdep wrapper
-├── .robotsix-mill/
-│   └── config.yaml         ← mill config: languages, test gate
-└── .github/
-    └── workflows/
-        └── ci.yaml         ← CI gate (justfile recipes)
-</code></pre></div>
-<p><strong>Key rules:</strong></p>
-<ul>
-<li><strong><code>src/</code> is always git-ignored.</strong> Source packages come from downstream
-  repos via <code>vcs import &lt; repos.yaml</code> — they are never committed into the
-  workspace repo.</li>
-<li><strong>The workspace manifest (<code>repos.yaml</code>) is the single source of truth</strong>
-  for which packages belong in the workspace. It uses the
-  <a href="https://github.com/dirk-thomas/vcstool">vcstool</a> format.</li>
-<li><strong>Branch refs in <code>repos.yaml</code> are acceptable</strong> — unlike first-party git
-  dependencies in Python repos (which are pinned to commit SHAs per the
-  <a href="../repo-baseline/#pin-to-a-commit-sha-not-a-branch">repo baseline</a>),
-  workspace manifests track development branches so <code>vcs import</code> pulls the
-  latest. CI gates against the branch head, so drift is visible and
-  intentional.</li>
-</ul>
-<h2 id="devcontainer">Devcontainer<a class="headerlink" href="#devcontainer" title="Permanent link">&para;</a></h2>
-<p>Every ROS 2 workspace repo ships a <code>.devcontainer/</code> so the development
-environment is reproducible:</p>
-<div class="highlight"><pre><span></span><code><span class="k">FROM</span><span class="w"> </span><span class="s">ros:$ROS_DISTRO-ros-base</span>
-
-<span class="c"># System dependencies for building and tooling</span>
-<span class="k">RUN</span><span class="w"> </span>apt-get<span class="w"> </span>update<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>apt-get<span class="w"> </span>install<span class="w"> </span>-y<span class="w"> </span>--no-install-recommends<span class="w"> </span><span class="se">\</span>
-<span class="w">    </span>build-essential<span class="w"> </span>cmake<span class="w"> </span>git<span class="w"> </span><span class="se">\</span>
-<span class="w">    </span>python3-pip<span class="w"> </span>python3-vcstool<span class="w"> </span>python3-colcon-common-extensions<span class="w"> </span><span class="se">\</span>
-<span class="w">    </span><span class="o">&amp;&amp;</span><span class="w"> </span>rm<span class="w"> </span>-rf<span class="w"> </span>/var/lib/apt/lists/*
-
-<span class="c"># Non-root user with passwordless sudo</span>
-<span class="k">RUN</span><span class="w"> </span>useradd<span class="w"> </span>-m<span class="w"> </span>-s<span class="w"> </span>/bin/bash<span class="w"> </span>ros<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;ros ALL=(ALL) NOPASSWD:ALL&quot;</span><span class="w"> </span>&gt;&gt;<span class="w"> </span>/etc/sudoers
-<span class="k">USER</span><span class="w"> </span><span class="s">ros</span>
-
-<span class="c"># Source ROS setup on login</span>
-<span class="k">RUN</span><span class="w"> </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;source /opt/ros/</span><span class="nv">$ROS_DISTRO</span><span class="s2">/setup.bash&quot;</span><span class="w"> </span>&gt;&gt;<span class="w"> </span>~/.bashrc
-</code></pre></div>
-<p><strong><code>devcontainer.json</code> conventions:</strong></p>
-<ul>
-<li><code>remoteUser: ros</code> — run as the non-root user.</li>
-<li>Workspace mounted at <code>/home/ws</code>.</li>
-<li>ROS discovery scoped to localhost:</li>
-</ul>
-<div class="highlight"><pre><span></span><code><span class="nt">&quot;containerEnv&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">  </span><span class="nt">&quot;ROS_DOMAIN_ID&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;42&quot;</span><span class="p">,</span>
-<span class="w">  </span><span class="nt">&quot;ROS_AUTOMATIC_DISCOVERY_RANGE&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;LOCALHOST&quot;</span>
-<span class="p">}</span>
-</code></pre></div>
-<ul>
-<li><code>--net=host</code> and <code>--ipc=host</code> for DDS networking.</li>
-<li><code>postCreateCommand</code> runs <code>vcs import</code>, <code>rosdep update</code>, and
-  <code>rosdep install</code> so the workspace is ready on first open.</li>
-</ul>
-<h2 id="build-test">Build &amp; test<a class="headerlink" href="#build-test" title="Permanent link">&para;</a></h2>
-<p>The standard build pipeline:</p>
-<div class="highlight"><pre><span></span><code><span class="c1"># 1. Pull in downstream packages</span>
-vcs<span class="w"> </span>import<span class="w"> </span>src<span class="w"> </span>&lt;<span class="w"> </span>repos.yaml
-
-<span class="c1"># 2. Resolve system dependencies</span>
-rosdep<span class="w"> </span>update
-rosdep<span class="w"> </span>install<span class="w"> </span>--from-paths<span class="w"> </span>src<span class="w"> </span>--ignore-src<span class="w"> </span>-y
-
-<span class="c1"># 3. Build the workspace</span>
-colcon<span class="w"> </span>build<span class="w"> </span>--symlink-install
-
-<span class="c1"># 4. Run tests</span>
-colcon<span class="w"> </span><span class="nb">test</span>
-</code></pre></div>
-<ul>
-<li><strong><code>colcon build --symlink-install</code></strong> is the default — Python packages
-  are symlinked so edits take effect without re-building.</li>
-<li><strong><code>rosdep</code> resolves system-level dependencies</strong> (apt packages) declared
-  in each downstream package's <code>package.xml</code>.</li>
-<li><strong><code>vcs import</code> is the standard tool</strong> for cloning downstream repos from
-  the workspace manifest.</li>
-</ul>
-<h2 id="ci-expectations">CI expectations<a class="headerlink" href="#ci-expectations" title="Permanent link">&para;</a></h2>
-<p>ROS 2 workspace repos gate on a single <code>ci.yaml</code> workflow. The gate
-covers linting and validation — build and test run in the devcontainer
-during development; CI is the hygiene gate.</p>
-<p><strong>Lint recipes</strong> (run via <code>just check</code>, the justfile default):</p>
+<p>Every deployable component ships a <strong>default config file</strong> at a standardized
+in-repo location. The deployment system reads this file exactly once — when the
+repo is first registered — to seed the deploy-side config. After seeding, the
+deploy-side config is the operator's to edit; the shipped default is never
+consulted again.</p>
+<h2 id="the-rule">The rule<a class="headerlink" href="#the-rule" title="Permanent link">&para;</a></h2>
+<h3 id="1-canonical-location-configconfigjson-at-the-repo-root">1. Canonical location: <code>config/config.json</code> at the repo root<a class="headerlink" href="#1-canonical-location-configconfigjson-at-the-repo-root" title="Permanent link">&para;</a></h3>
+<p>The shipped default config lives at <strong><code>config/config.json</code></strong> at the repository
+root — the same path the component reads at runtime per the
+<a href="../config-standard/">config standard</a> (located by <code>ROBOTSIX_CONFIG_FILE</code>, which
+defaults to that path). The file is a valid instance of the component's config
+model: every required field has a value, every optional field carries its
+sensible default, and no field is left dangling.</p>
+<p><em>Failure prevented:</em> central-deploy registers a new repo and starts the
+component with an empty deploy-side config. The component fails at startup
+with a validation error (e.g. <code>'agents': [] should be non-empty</code>) because the
+deploy-side config shadows the repo's shipped default — but the deploy-side
+config was never seeded.</p>
+<h3 id="2-relationship-to-the-robotsixdeployconfig-target-compose-label">2. Relationship to the <code>robotsix.deploy.config-target</code> compose label<a class="headerlink" href="#2-relationship-to-the-robotsixdeployconfig-target-compose-label" title="Permanent link">&para;</a></h3>
+<p>The <code>robotsix.deploy.config-target</code> label on the primary service in
+<code>deploy/docker-compose.yml</code> declares <strong>where the config file is injected
+inside the container</strong> at runtime (e.g. <code>/home/app/config/config.json</code>).
+That label is part of the <a href="../deploy-contract/">deploy contract</a> and is
+consumed by central-deploy at every config save — the deployment system
+writes the deploy-side config into the mounted volume at that path before
+the container starts.</p>
+<p>The shipped default at <code>config/config.json</code> is the <strong>seed value</strong> for that
+deploy-side config. On first registration of a repo, central-deploy copies
+the shipped default into the deploy-side config store. The
+<code>config-target</code> label is the <em>target</em>; the shipped default is the <em>source</em>.
+They are separate concerns:</p>
 <table>
 <thead>
 <tr>
-<th>Recipe</th>
-<th>What it checks</th>
+<th>Concern</th>
+<th>Where defined</th>
+<th>Consumed by</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td><code>lint-yaml</code></td>
-<td><code>yamllint --strict</code> on all YAML files</td>
+<td>Where the config goes inside the container</td>
+<td><code>robotsix.deploy.config-target</code> label in <code>deploy/docker-compose.yml</code></td>
+<td>central-deploy (every config save)</td>
 </tr>
 <tr>
-<td><code>lint-shell</code></td>
-<td><code>shellcheck</code> on workspace scripts</td>
-</tr>
-<tr>
-<td><code>lint-spelling</code></td>
-<td><code>codespell</code> across the repo</td>
-</tr>
-<tr>
-<td><code>lint-markdown</code></td>
-<td><code>markdownlint</code> on docs</td>
-</tr>
-<tr>
-<td><code>validate-manifest</code></td>
-<td><code>vcs validate --input repos.yaml</code></td>
-</tr>
-<tr>
-<td><code>lint-actions</code></td>
-<td><code>actionlint</code> on <code>.github/workflows/</code></td>
-</tr>
-<tr>
-<td><code>lint-security</code></td>
-<td><code>zizmor</code> on CI workflows</td>
+<td>The seed value for the deploy-side config</td>
+<td><code>config/config.json</code> at the repo root</td>
+<td>central-deploy (once, on first registration)</td>
 </tr>
 </tbody>
 </table>
-<p>Additionally, the fleet-wide <code>pre-commit</code> hooks (see the
-<a href="../python/#pre-commit-hooks">Python practices</a> — the set is the same for all
-repos) apply — the CI job runs <code>pre-commit run --all-files --verbose</code>.</p>
-<p><strong>No build or test in CI yet.</strong> The current CI gate is lint/validate only;
-<code>colcon build</code> and <code>colcon test</code> run locally in the devcontainer. This
-will change as the ROS 2 fleet grows and a shared build-and-test workflow
-is factored out (the pattern: one CI job per distro in a matrix, gate on
-build + test passing across all supported distros).</p>
-<h2 id="code-style-linting">Code style &amp; linting<a class="headerlink" href="#code-style-linting" title="Permanent link">&para;</a></h2>
+<p><em>Failure prevented:</em> a repo ships a valid default config but central-deploy
+never reads it because the convention for <em>where</em> to find it was never
+standardized — the deployment system hard-codes a path guess that differs
+from what the repo actually ships.</p>
+<h3 id="3-validation-expectation">3. Validation expectation<a class="headerlink" href="#3-validation-expectation" title="Permanent link">&para;</a></h3>
+<p>When a repo ships a <code>config/config.schema.json</code> alongside the default config
+(per the <a href="../config-standard/">config standard</a> §2 — the typed schema emitted
+from the pydantic model), the shipped <code>config/config.json</code> <strong>MUST validate</strong>
+against that schema. A repo that ships a default config that fails its own
+schema is shipping a broken seed.</p>
+<p>The validation is enforced by a <strong>CI check</strong> in every deployable repo:
+regenerate the schema from the model, then validate <code>config/config.json</code>
+against it. The check catches:</p>
 <ul>
-<li><strong>Python packages</strong> (inside downstream ROS 2 packages) follow the fleet
-  <a href="../python/">Python practices</a>: ruff, mypy, deptry, bandit.</li>
-<li><strong>C++ packages</strong> follow ROS 2 community conventions: <code>ament_lint</code> for
-  linting (<code>ament_cpplint</code>, <code>ament_clang_format</code>), <code>clang-tidy</code> for static
-  analysis. Specific tool configs live in each downstream repo.</li>
-<li><strong>Shell</strong> (workspace scripts): <code>shellcheck</code> via the justfile.</li>
-<li><strong>YAML</strong>: <code>yamllint --strict</code> — no warnings tolerated.</li>
-<li><strong>Markdown</strong>: <code>markdownlint</code> on all <code>.md</code> files.</li>
-<li><strong>Spelling</strong>: <code>codespell</code> — catches typos across the entire repo.</li>
-<li><strong>Workflows</strong>: <code>actionlint</code> for CI YAML correctness; <code>zizmor</code> for
-  workflow security (excessive permissions, injection vectors).</li>
+<li>A field added to the model whose default config entry is missing or mistyped.</li>
+<li>A field removed from the model whose default config entry is stale.</li>
+<li>An enum value renamed in the model but not updated in the default config.</li>
 </ul>
-<h2 id="interface-design">Interface design<a class="headerlink" href="#interface-design" title="Permanent link">&para;</a></h2>
-<p>ROS 2 interface files (<code>.msg</code>, <code>.srv</code>, <code>.action</code>) live in the downstream
-package repos, not in the workspace skeleton. Standard ROS 2 layout
-applies:</p>
-<div class="highlight"><pre><span></span><code>&lt;package&gt;/
-├── msg/        ← .msg files (message definitions)
-├── srv/        ← .srv files (service definitions)
-├── action/     ← .action files (action definitions)
-├── CMakeLists.txt   ← registers the interface files for codegen
-└── package.xml      ← declares build dependencies on rosidl
-</code></pre></div>
-<p><strong>Rules (provisional — to be hardened as more ROS 2 repos land):</strong></p>
+<p><em>Failure prevented:</em> an operator onboards a repo whose shipped default config
+is out of sync with its own schema. central-deploy seeds the deploy-side
+config with the broken default; the component fails at startup, and the
+operator has no indication that the repo itself is the root cause — the error
+looks like a deploy misconfiguration.</p>
+<h3 id="4-consumer-guidance">4. Consumer guidance<a class="headerlink" href="#4-consumer-guidance" title="Permanent link">&para;</a></h3>
+<p><strong>central-deploy</strong> (and any future tooling that manages deploy-side config) is
+the primary consumer of this convention. The rules for the consumer:</p>
 <ul>
-<li><strong>Interfaces are versioned with their package</strong> — no separate
-  interface-only package unless the interface is genuinely shared across
-  multiple consumers from different repos.</li>
-<li><strong><code>rosidl_default_generators</code></strong> in <code>package.xml</code> for message generation;
-  C++ packages additionally depend on <code>rosidl_default_runtime</code>.</li>
-<li><strong>Interface files use the standard ROS 2 field types</strong> — no custom
-  primitive wrappers.</li>
+<li><strong>Seed once.</strong> On first registration of a repo, resolve the shipped default
+  from <code>config/config.json</code> at the repo root and use it to populate the
+  deploy-side config store. This is the only time the shipped default is read.</li>
+<li><strong>Never overwrite.</strong> Once the deploy-side config exists — whether seeded or
+  operator-edited — the shipped default is never consulted again. An operator
+  edit to the deploy-side config (through the Configure UI or the config API)
+  is the source of truth; re-seeding would silently revert operator work.</li>
+<li><strong>Detect absence.</strong> If a repo ships no <code>config/config.json</code>, central-deploy
+  seeds an empty config — the component starts with its model defaults (per the
+  config standard's field-default-fill rule). This is a valid state for
+  components whose defaults are production-safe; it is not an error.</li>
+<li><strong>Detect invalidity.</strong> If the shipped default fails validation against
+  <code>config/config.schema.json</code> (when one exists), central-deploy MUST reject the
+  onboarding with a clear error naming the offending field — not silently seed
+  a broken config.</li>
 </ul>
-<p>These rules will be refined once the fleet has more than one ROS 2
-package repo to observe consistency across.</p>
+<p>The central-deploy ticket that implements this seeding behavior is
+<code>20260724T132650Z-seed-deploy-side-config-from-repo-defaul-b159</code> on the
+robotsix-central-deploy board. That ticket is the primary consumer of this
+standard; this standard exists so the location convention is defined here
+rather than hard-coded ad-hoc inside central-deploy.</p>
+<p><em>Failure prevented:</em> central-deploy implements seeding but resolves the
+shipped default from a hard-coded path that differs from what one repo
+actually ships — the convention was never written down, so each consumer
+guesses.</p>
+<h2 id="why-not-bake-the-default-into-the-image">Why not bake the default into the image?<a class="headerlink" href="#why-not-bake-the-default-into-the-image" title="Permanent link">&para;</a></h2>
+<p>The config file is a volume mount, not a baked-in image layer, because the
+deployment system must be able to write operator edits into it at runtime.
+If the default were baked into the image at <code>/home/app/config/config.json</code>,
+the volume mount would shadow it on first deploy — and because the volume
+is empty, the component would start with no config at all. The shipped
+default at the repo root exists precisely to prevent that empty-volume
+window: central-deploy reads it, writes it into the volume, and the
+component starts with a valid config from the first deploy.</p>
 
 
 

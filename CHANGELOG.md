@@ -45,6 +45,7 @@
 
 ## 0.0.0 (unreleased)
 
+- Ignore `https://github.com/*` and `https://docs.github.com/*` in htmlproofer to prevent transient GitHub 504 errors from failing CI builds.
 - Add Async SQLAlchemy test fixtures standard — three-layer fixture pattern (session-scoped engine, function-scoped connection with rollback, function-scoped session with savepoints) for clean database test isolation without dropping tables.
 - Pre-commit CI jobs must pass `--show-diff-on-failure` via `extra_args` so that hook-modification diffs appear in CI logs (Python practices).
 - Enable `completeness_check` periodic workflow for robotsix-standards

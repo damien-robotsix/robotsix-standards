@@ -52,6 +52,8 @@ plugins:
       ignore_urls:
         - "http://localhost*"
         - "https://raw.githubusercontent.com/*"
+        - "https://github.com/*"
+        - "https://docs.github.com/*"
         - "https://owasp.org/*"
         - "https://genai.owasp.org/*"
         - "https://damien-robotsix.github.io/*"

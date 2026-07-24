@@ -28,3 +28,7 @@ config:
   # intentionally as informal sub-headings within numbered sections
   # (e.g. "**Model layer — component code**" in config-standard.md).
   MD036: false
+  MD010:
+    # Allow hard tabs in code blocks — Makefile examples require literal
+    # tabs for recipe lines (a Make requirement, not a style choice).
+    code_blocks: false

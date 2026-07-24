@@ -45,6 +45,7 @@
 
 ## 0.0.0 (unreleased)
 
+- Re-create `.robotsix-mill/periodic/docstring_coverage.yaml` periodic workflow that was merged but missing from the tree.
 - New **[Python Makefile convention](docs/python-makefile-convention.md)** — standard
   `Makefile` targets for every Python/uv repo (`install`, `lint`, `typecheck`,
   `test`, `test-unit`, `test-integration`, `coverage`, `docs`, `lock-check`,

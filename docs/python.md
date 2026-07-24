@@ -362,14 +362,35 @@ pre-commit hooks install Python tools.
   `tests/X/`, never at the `tests/` root. New modules get a matching test
   directory.
 - **The default test run is offline and credential-free**: declare
-  `addopts = ["-m", "not live", "--strict-markers", "--strict-config"]`.
-  Tests that genuinely need the network or real credentials carry the
-  **`live` marker** and run only by explicit opt-in (`pytest -m live`),
-  never in the standard CI gate — in mill sandboxes (egress-proxied) and CI,
-  an accidental network call is a hang or a paid flake. `--strict-markers`
-  makes a misspelled marker an error instead of an always-running test.
-  `tests/.env.example` lists exactly the live-suite credentials — nothing
-  else.
+  `addopts = ["-m", "not live", "--strict-config"]` and enable
+  `strict_markers = true` in `[tool.pytest.ini_options]`.  Tests that
+  genuinely need the network or real credentials carry the **`live` marker**
+  and run only by explicit opt-in (`pytest -m live`), never in the standard
+  CI gate — in mill sandboxes (egress-proxied) and CI, an accidental network
+  call is a hang or a paid flake.  `tests/.env.example` lists exactly the
+  live-suite credentials — nothing else.
+
+- **`strict_markers = true` is mandatory.**  Every Python repo MUST set
+  `strict_markers = true` in `[tool.pytest.ini_options]` in
+  `pyproject.toml`.  This is the canonical boolean config key (equivalent
+  to the `--strict-markers` CLI flag) and avoids string-parsing pitfalls
+  of `addopts = "--strict-markers"`.
+
+  ```toml
+  [tool.pytest.ini_options]
+  strict_markers = true
+  ```
+
+  **Why:**
+  - **Catches silent no-ops:** a misspelled `@pytest.mark.skipif` won't
+    accidentally run a flaky integration test in CI — it becomes a hard
+    error.
+  - **Forces explicit marker registration:** markers must be declared in
+    config (`markers = ["slow: description", …]`), creating living
+    documentation viewable via `pytest --markers`.
+  - **Errors fail the build:** `PytestUnknownMarkWarning` is easily buried
+    in CI logs; strict-markers makes typos a hard error.
+  - **Single source of truth:** all valid markers are listed in one place.
 - **Shared fixtures live in `conftest.py`:** when two test files under the
   same `tests/<module>/` define the same fixture, extract it to
   `tests/<module>/conftest.py` — pytest discovers it for all sibling tests.

@@ -9,7 +9,7 @@ The [OpenSSF Scorecard](https://securityscorecards.dev/) independently audits
 Branch-Protection, Code-Review, Signed-Releases, dependency update cadence,
 fuzzing, and more — producing a single numeric score. Several of these checks
 are not covered by the fleet's existing security stack (Semgrep, Bandit,
-detect-secrets, Trivy, trufflehog, pip-audit, dependency-review, zizmor, SBOM), so
+detect-secrets, Trivy, TruffleHog, pip-audit, dependency-review, zizmor, SBOM), so
 Scorecard closes the last common gap in a mid-2025 Python security stack.
 
 The fleet's other security gates (Semgrep, dependency-review, Dependabot,

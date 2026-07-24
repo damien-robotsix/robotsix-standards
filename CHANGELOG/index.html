@@ -450,6 +450,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../ruff-lint-rules/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Ruff lint rules
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../docstrings/" class="md-nav__link">
         
   
@@ -1353,6 +1381,7 @@
 <li>Added "Coverage artifact upload" rule to the CI and security gates section of the repo baseline: any reusable workflow that runs pytest with <code>--cov</code> must upload <code>coverage.xml</code> and <code>.coverage</code> as a <code>coverage-data</code> artifact, so consuming workflows can generate coverage diff commentary without re-running tests.</li>
 <li>Add "Mypy: type-check tests" section to the Python practices standard, requiring CI to run mypy on both <code>src/</code> and <code>tests/</code> with a <code>module = "tests.*"</code> override that relaxes <code>disallow_untyped_defs</code> while keeping <code>check_untyped_defs</code>, and mandating <code>tests/__init__.py</code> so the override matches.</li>
 <li>Fixed <code>docs/scorecard.md</code> intro paragraph: replaced CodeQL with Semgrep and removed gitleaks from the parenthetical tool list, matching the actual fleet security stack documented in <code>security-posture.md</code>.</li>
+<li>New <a href="../ruff-lint-rules/">Ruff lint rules</a> standard: Tier 2 rule families (ARG, C4, PERF, PT) for every Python repo, with per-file ignores and the PT006 exclusion.</li>
 <li>Add CI gate (<code>scripts/check-toc-sync.py</code>) that verifies mkdocs.yml nav pages
   appear in README.md and docs/index.md, preventing TOC drift.</li>
 <li>Added <strong>Changelog nav page</strong> rule to <a href="../mkdocs-build/">MkDocs build integrity</a>: every fleet repo that publishes an MkDocs site and maintains a <code>CHANGELOG.md</code> must surface it in the docs <code>nav</code> via a symlink or build-time copy hook — no committed duplicate copy.

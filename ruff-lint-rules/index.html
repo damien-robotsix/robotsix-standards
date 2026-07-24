@@ -10,13 +10,13 @@
       
       
       
-        <link rel="canonical" href="https://damien-robotsix.github.io/robotsix-standards/scorecard/">
+        <link rel="canonical" href="https://damien-robotsix.github.io/robotsix-standards/ruff-lint-rules/">
       
       
-        <link rel="prev" href="../http-security-headers/">
+        <link rel="prev" href="../python/">
       
       
-        <link rel="next" href="../deployment-system/">
+        <link rel="next" href="../docstrings/">
       
       
         
@@ -27,7 +27,7 @@
     
     
       
-        <title>OpenSSF Scorecard - Robotsix Standards</title>
+        <title>Ruff lint rules - Robotsix Standards</title>
       
     
     
@@ -78,7 +78,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#openssf-scorecard" class="md-skip">
+        <a href="#ruff-lint-rules" class="md-skip">
           Skip to content
         </a>
       
@@ -114,7 +114,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              OpenSSF Scorecard
+              Ruff lint rules
             
           </span>
         </div>
@@ -311,8 +311,10 @@
       
   
   
+    
   
   
+  
     
     
     
@@ -323,13 +325,11 @@
       
     
     
-    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
       
         
         
-          
-        
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
         
           
           <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
@@ -350,7 +350,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_3">
             <span class="md-nav__icon md-icon"></span>
             
@@ -449,10 +449,37 @@
                 
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="../ruff-lint-rules/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Ruff lint rules
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   
@@ -468,6 +495,159 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#why-this-exists" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why this exists
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#rule-families" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Rule families
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Rule families">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#arg-flake8-unused-arguments" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ARG — flake8-unused-arguments
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#c4-flake8-comprehensions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        C4 — flake8-comprehensions
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#perf-perflint" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        PERF — perflint
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pt-flake8-pytest-style" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        PT — flake8-pytest-style
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Configuration
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Configuration">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#pt006-exclusion" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        PT006 exclusion
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#combining-with-the-baseline" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Combining with the baseline
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#migration-path" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Migration path
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#source-references" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Source references
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -652,8 +832,6 @@
       
   
   
-    
-  
   
   
     
@@ -666,11 +844,13 @@
       
     
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4" >
         
           
           <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
@@ -691,7 +871,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_4">
             <span class="md-nav__icon md-icon"></span>
             
@@ -958,37 +1138,10 @@
                 
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    OpenSSF Scorecard
-  
-
-    
-  </span>
-  
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../scorecard/" class="md-nav__link">
         
   
   
@@ -1004,142 +1157,6 @@
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#the-workflow" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        The workflow
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="The workflow">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#schedule-and-trigger" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Schedule and trigger
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#action-pinning" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Action pinning
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#sarif-upload" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        SARIF upload
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#permissions" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Permissions
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#score-target" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Score target
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#how-it-fits-with-the-security-posture-standard" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        How it fits with the security posture standard
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#how-to-verify" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        How to verify
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#failure-prevented" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Failure prevented
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#see-also" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        See also
-      
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -1384,22 +1401,33 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#the-workflow" class="md-nav__link">
+  <a href="#why-this-exists" class="md-nav__link">
     <span class="md-ellipsis">
       
-        The workflow
+        Why this exists
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="The workflow">
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#rule-families" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Rule families
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Rule families">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#schedule-and-trigger" class="md-nav__link">
+  <a href="#arg-flake8-unused-arguments" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Schedule and trigger
+        ARG — flake8-unused-arguments
       
     </span>
   </a>
@@ -1407,10 +1435,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#action-pinning" class="md-nav__link">
+  <a href="#c4-flake8-comprehensions" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Action pinning
+        C4 — flake8-comprehensions
       
     </span>
   </a>
@@ -1418,10 +1446,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#sarif-upload" class="md-nav__link">
+  <a href="#perf-perflint" class="md-nav__link">
     <span class="md-ellipsis">
       
-        SARIF upload
+        PERF — perflint
       
     </span>
   </a>
@@ -1429,10 +1457,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#permissions" class="md-nav__link">
+  <a href="#pt-flake8-pytest-style" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Permissions
+        PT — flake8-pytest-style
       
     </span>
   </a>
@@ -1445,10 +1473,49 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#score-target" class="md-nav__link">
+  <a href="#configuration" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Score target
+        Configuration
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Configuration">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#pt006-exclusion" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        PT006 exclusion
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#combining-with-the-baseline" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Combining with the baseline
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#migration-path" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Migration path
       
     </span>
   </a>
@@ -1456,43 +1523,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#how-it-fits-with-the-security-posture-standard" class="md-nav__link">
+  <a href="#source-references" class="md-nav__link">
     <span class="md-ellipsis">
       
-        How it fits with the security posture standard
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#how-to-verify" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        How to verify
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#failure-prevented" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Failure prevented
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#see-also" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        See also
+        Source references
       
     </span>
   </a>
@@ -1519,120 +1553,109 @@
   
 
 
-<h1 id="openssf-scorecard">OpenSSF Scorecard<a class="headerlink" href="#openssf-scorecard" title="Permanent link">&para;</a></h1>
+<h1 id="ruff-lint-rules">Ruff lint rules<a class="headerlink" href="#ruff-lint-rules" title="Permanent link">&para;</a></h1>
 <blockquote>
-<p><strong>Scope: deployable components only.</strong> This is <em>in addition to</em> the
-<a href="../repo-baseline/">repo baseline</a> and <a href="../security-posture/">security posture</a>,
-which every repo follows.</p>
+<p><strong>Scope: every Python repository.</strong> These rules extend the baseline ruff
+configuration (see <a href="../python/#lint-types-and-security-lint">Python practices</a>)
+with a shared set of Tier 2 rule families. Every Python repo SHOULD adopt
+them; the per-file ignores and the PT006 exclusion are the recommended
+defaults.</p>
 </blockquote>
-<p>The <a href="https://securityscorecards.dev/">OpenSSF Scorecard</a> independently audits
-~20 supply-chain health checks — Dangerous-Workflow patterns, token permissions,
-Branch-Protection, Code-Review, Signed-Releases, dependency update cadence,
-fuzzing, and more — producing a single numeric score. Several of these checks
-are not covered by the fleet's existing per-gate CI controls (Semgrep, Bandit,
-Trivy, TruffleHog, pip-audit, dependency-review, zizmor, SBOM), so
-Scorecard closes the last common gap in a mid-2025 Python security stack.</p>
-<p>The fleet's other security gates (Semgrep, dependency-review, Dependabot,
-workflow hardening, secret scanning, SBOM) are each verified independently by
-the <a href="../security-posture/">security posture</a> standard. Scorecard adds an
-<strong>independent, cross-check audit</strong> — it verifies those gates from outside the
-fleet's own tooling, catching drift that a per-gate self-audit would miss.</p>
-<h2 id="the-workflow">The workflow<a class="headerlink" href="#the-workflow" title="Permanent link">&para;</a></h2>
-<p>Every deployable component MUST include <code>.github/workflows/scorecard.yml</code> with
-these properties:</p>
-<h3 id="schedule-and-trigger">Schedule and trigger<a class="headerlink" href="#schedule-and-trigger" title="Permanent link">&para;</a></h3>
-<ul>
-<li><strong>Weekly cron</strong> (e.g. <code>0 0 * * 0</code> — midnight Sunday UTC). The Scorecard
-  checks evolve; a weekly run catches regressions without the noise of a
-  per-commit gate.</li>
-<li><strong>Push to the default branch</strong> (<code>push: branches: [main]</code>). A push to main
-  re-runs the analysis immediately, so a fix or config change is reflected
-  without waiting for the cron.</li>
-</ul>
-<h3 id="action-pinning">Action pinning<a class="headerlink" href="#action-pinning" title="Permanent link">&para;</a></h3>
-<p>The <code>ossf/scorecard-action</code> MUST be pinned to a full 40-character commit SHA,
-with a trailing <code># vX.Y.Z</code> version comment. This is the same SHA-pinning rule
-that <a href="../security-posture/#4a-actions-pinned-to-commit-shas">security posture gate 4a</a>
-requires for every third-party action.</p>
-<h3 id="sarif-upload">SARIF upload<a class="headerlink" href="#sarif-upload" title="Permanent link">&para;</a></h3>
-<p>Results MUST be published to the repo's GitHub Security tab via
-<code>github/codeql-action/upload-sarif</code>, also pinned to a full commit SHA. The
-SARIF file is the Scorecard action's output; the upload makes results visible
-in the repository's Security tab alongside CodeQL and secret-scanning findings.</p>
-<h3 id="permissions">Permissions<a class="headerlink" href="#permissions" title="Permanent link">&para;</a></h3>
-<p>The workflow MUST declare a top-level <code>permissions:</code> block with exactly these
-scopes:</p>
-<div class="highlight"><pre><span></span><code><span class="nt">permissions</span><span class="p">:</span>
-<span class="w">  </span><span class="nt">security-events</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">write</span><span class="w">   </span><span class="c1"># for uploading SARIF results</span>
-<span class="w">  </span><span class="nt">id-token</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">write</span><span class="w">          </span><span class="c1"># for publishing results to the OpenSSF REST API (optional but recommended)</span>
-<span class="w">  </span><span class="nt">contents</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">read</span><span class="w">           </span><span class="c1"># for checking out the repo</span>
+<h2 id="why-this-exists">Why this exists<a class="headerlink" href="#why-this-exists" title="Permanent link">&para;</a></h2>
+<p>The fleet's baseline ruff configuration — E, F, I, W, S — catches
+correctness errors, import order, and basic security anti-patterns.
+But repos that also enable Tier 2 rule families (Pydantic, FastAPI, httpx)
+catch more: dead parameters, non-idiomatic comprehensions, performance
+anti-patterns, and inconsistent pytest style. Without a shared convention,
+each repo independently discovers and configures these rules, leading to
+inconsistent code quality enforcement across projects.</p>
+<p>This standard defines one recommended Tier 2 set — ARG, C4, PERF, PT —
+with per-file ignores and one deliberate exclusion (PT006), so every repo
+gets the same coverage without reinventing the decision.</p>
+<h2 id="rule-families">Rule families<a class="headerlink" href="#rule-families" title="Permanent link">&para;</a></h2>
+<h3 id="arg-flake8-unused-arguments">ARG — flake8-unused-arguments<a class="headerlink" href="#arg-flake8-unused-arguments" title="Permanent link">&para;</a></h3>
+<p>Catches unused function parameters that confuse readers and accumulate
+cruft. Near-zero false positives in production code when suppressed in
+tests.</p>
+<p><strong>Failure prevented:</strong> a parameter that was once used, then the logic
+that consumed it was removed, but the signature was never cleaned up.
+Every caller still passes it, every reader still studies it, and nobody
+knows it's dead.</p>
+<h3 id="c4-flake8-comprehensions">C4 — flake8-comprehensions<a class="headerlink" href="#c4-flake8-comprehensions" title="Permanent link">&para;</a></h3>
+<p>Encourages idiomatic comprehensions — e.g. <code>list(x for x in ...)</code> →
+<code>[x for x in ...]</code>, <code>dict((k, v) for k, v in ...)</code> → <code>{k: v for k, v
+in ...}</code>.</p>
+<p><strong>Failure prevented:</strong> generator expressions fed to type constructors
+(<code>list(...)</code>, <code>dict(...)</code>, <code>set(...)</code>) add a function-call frame and are
+slower than the equivalent comprehension syntax. The comprehension form
+is also the standard idiom readers expect.</p>
+<h3 id="perf-perflint">PERF — perflint<a class="headerlink" href="#perf-perflint" title="Permanent link">&para;</a></h3>
+<p>Catches micro-performance issues like redundant <code>.keys()</code> calls on dicts
+(<code>d.keys() | other.keys()</code> can be <code>d | other</code>), unnecessary <code>.copy()</code>
+calls, and inefficient membership tests.</p>
+<p><strong>Failure prevented:</strong> performance anti-patterns that are individually
+cheap but accumulate across hot paths — a <code>.keys()</code> call in a loop that
+runs thousands of times, or an <code>O(n)</code> list membership test where a set
+would be <code>O(1)</code>.</p>
+<h3 id="pt-flake8-pytest-style">PT — flake8-pytest-style<a class="headerlink" href="#pt-flake8-pytest-style" title="Permanent link">&para;</a></h3>
+<p>Enforces consistent pytest patterns: <code>@pytest.fixture()</code> over
+<code>@pytest.fixture</code>, <code>@pytest.mark.xfail</code> over <code>@pytest.mark.xfail()</code>,
+assertions over <code>assert True</code>/<code>assert False</code>, and so on.</p>
+<p><strong>Failure prevented:</strong> inconsistent test style that makes the test suite
+harder to read and review — two adjacent test files using different
+spellings of the same concept, or a bare <code>@pytest.fixture</code> that silently
+differs from <code>@pytest.fixture()</code> in a way that matters.</p>
+<h2 id="configuration">Configuration<a class="headerlink" href="#configuration" title="Permanent link">&para;</a></h2>
+<p>Add to <code>pyproject.toml</code>:</p>
+<div class="highlight"><pre><span></span><code><span class="k">[tool.ruff.lint]</span>
+<span class="n">extend-select</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span>
+<span class="w">    </span><span class="s2">&quot;ARG&quot;</span><span class="p">,</span><span class="w">   </span><span class="c1"># flake8-unused-arguments</span>
+<span class="w">    </span><span class="s2">&quot;C4&quot;</span><span class="p">,</span><span class="w">    </span><span class="c1"># flake8-comprehensions</span>
+<span class="w">    </span><span class="s2">&quot;PERF&quot;</span><span class="p">,</span><span class="w">  </span><span class="c1"># perflint</span>
+<span class="w">    </span><span class="s2">&quot;PT&quot;</span><span class="p">,</span><span class="w">    </span><span class="c1"># flake8-pytest-style</span>
+<span class="p">]</span>
+<span class="n">ignore</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;PT006&quot;</span><span class="p">]</span>
+
+<span class="k">[tool.ruff.lint.per-file-ignores]</span>
+<span class="s2">&quot;tests/**&quot;</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;ARG&quot;</span><span class="p">]</span><span class="w">     </span><span class="c1"># test helpers often have unused signature-matching args</span>
+<span class="s2">&quot;__init__.py&quot;</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;ARG&quot;</span><span class="p">]</span><span class="w">  </span><span class="c1"># re-exports may have unused args</span>
 </code></pre></div>
-<p>No other permissions. This follows the least-privilege rule in
-<a href="../security-posture/#4c-least-privilege-permissions-blocks">security posture gate 4c</a>.</p>
-<h2 id="score-target">Score target<a class="headerlink" href="#score-target" title="Permanent link">&para;</a></h2>
-<p>The fleet targets a Scorecard score of <strong>≥ 7/10</strong> (out of 10). This is an
-aspirational target, not a hard CI gate — Scorecard runs as an audit, not a
-blocking check. A repo below 7/10 is non-compliant and must be remediated, but
-the Scorecard workflow itself does not fail the build.</p>
-<p>Individual checks that commonly drag the score below 7 in the fleet:</p>
+<h3 id="pt006-exclusion">PT006 exclusion<a class="headerlink" href="#pt006-exclusion" title="Permanent link">&para;</a></h3>
+<p>PT006 (parametrize argument style) is deliberately excluded via
+<code>ignore = ["PT006"]</code>. The rule enforces <code>pytest.param(...)</code> wrapping
+in <code>@pytest.mark.parametrize</code>, but the list-of-tuples style is widely
+preferred in the Python ecosystem and is considered an acceptable
+convention:</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># Preferred — list-of-tuples, no pytest.param() wrapping:</span>
+<span class="nd">@pytest</span><span class="o">.</span><span class="n">mark</span><span class="o">.</span><span class="n">parametrize</span><span class="p">(</span>
+    <span class="p">(</span><span class="s2">&quot;input&quot;</span><span class="p">,</span> <span class="s2">&quot;expected&quot;</span><span class="p">),</span>
+    <span class="p">[(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span> <span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">)],</span>
+<span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">test_add</span><span class="p">(</span><span class="nb">input</span><span class="p">,</span> <span class="n">expected</span><span class="p">):</span>
+    <span class="k">assert</span> <span class="nb">input</span> <span class="o">+</span> <span class="mi">1</span> <span class="o">==</span> <span class="n">expected</span>
+</code></pre></div>
+<h3 id="combining-with-the-baseline">Combining with the baseline<a class="headerlink" href="#combining-with-the-baseline" title="Permanent link">&para;</a></h3>
+<p>These rules are additive — repos that already enable the baseline
+rule set (E, F, I, W, S) add <code>extend-select</code> for the Tier 2 families.
+The per-file ignores for <code>tests/**</code> and <code>__init__.py</code> are compatible
+with the existing <code>S</code>-rule ignores documented in <a href="../python/#lint-types-and-security-lint">Python
+practices</a>.</p>
+<h2 id="migration-path">Migration path<a class="headerlink" href="#migration-path" title="Permanent link">&para;</a></h2>
+<ol>
+<li>Add <code>extend-select = ["ARG", "C4", "PERF", "PT"]</code> and
+   <code>ignore = ["PT006"]</code> to <code>[tool.ruff.lint]</code> in <code>pyproject.toml</code>.</li>
+<li>Add the per-file ignores for <code>tests/**</code> and <code>__init__.py</code>.</li>
+<li>Run <code>ruff check</code> and fix or whitelist any violations. Fleet
+   experience shows typically zero to a handful of violations across
+   all four rule families.</li>
+</ol>
+<h2 id="source-references">Source references<a class="headerlink" href="#source-references" title="Permanent link">&para;</a></h2>
 <ul>
-<li><strong>Branch-Protection</strong> — requires <code>include_admins: true</code> and required status
-  checks (already met by the <a href="../repo-baseline/">repo baseline</a>).</li>
-<li><strong>Code-Review</strong> — requires at least one approving review before merge
-  (already met).</li>
-<li><strong>Token-Permissions</strong> — requires <code>permissions: read-all</code> at the top level
-  of every workflow (already met by gate 4c).</li>
-<li><strong>Dangerous-Workflow</strong> — flagging untrusted <code>pull_request_target</code> usage
-  (already caught by zizmor in gate 4b).</li>
-<li><strong>Signed-Releases</strong> — requires signed release artifacts. Deferred: the
-  fleet does not currently sign releases.</li>
-</ul>
-<p>Checks that are <em>not</em> covered by existing fleet gates and represent new
-surface:</p>
-<ul>
-<li><strong>Fuzzing</strong> — the fleet does not currently require fuzzing. This is a known
-  gap; the Scorecard result documents it without creating a per-repo mandate.</li>
-<li><strong>CII-Best-Practices</strong> — the fleet does not currently require an OpenSSF
-  Best Practices badge. Like fuzzing, this is documented by Scorecard but not
-  mandated by this standard.</li>
-</ul>
-<h2 id="how-it-fits-with-the-security-posture-standard">How it fits with the security posture standard<a class="headerlink" href="#how-it-fits-with-the-security-posture-standard" title="Permanent link">&para;</a></h2>
-<p>The <a href="../security-posture/">security posture</a> standard defines self-enforcing,
-per-gate CI controls. Scorecard is an <strong>independent audit</strong> — it re-verifies
-those controls from the outside:</p>
-<ul>
-<li>Gate 1 (Semgrep SAST) → Scorecard <em>SAST</em> check</li>
-<li>Gate 2 (dependency-review) → Scorecard <em>Dependency-Update-Tool</em> and <em>Vulnerabilities</em> checks</li>
-<li>Gate 3 (Dependabot) → Scorecard <em>Dependency-Update-Tool</em> check</li>
-<li>Gate 4a (SHA-pinned actions) → Scorecard <em>Pinned-Dependencies</em> check</li>
-<li>Gate 4b (workflow linting) → Scorecard <em>Token-Permissions</em> and <em>Dangerous-Workflow</em> checks</li>
-<li>Gate 4c (least-privilege permissions) → Scorecard <em>Token-Permissions</em> check</li>
-<li>Gate 6 (SBOM &amp; vulnerability audit) → Scorecard <em>SBOM</em> and <em>Vulnerabilities</em> checks</li>
-</ul>
-<p>A repo that passes every security-posture gate should score ≥ 7 on Scorecard.
-If it doesn't, either a gate has drifted or Scorecard is checking something the
-fleet doesn't yet cover — both are actionable findings.</p>
-<h2 id="how-to-verify">How to verify<a class="headerlink" href="#how-to-verify" title="Permanent link">&para;</a></h2>
-<ul>
-<li><code>.github/workflows/scorecard.yml</code> exists and matches the schedule, trigger,
-  action pinning, SARIF upload, and permissions requirements above.</li>
-<li>The repo's Security tab shows Scorecard results under "Code scanning."</li>
-<li>The Scorecard badge in the repo README shows ≥ 7/10 (or an open ticket
-  tracks the remediation).</li>
-</ul>
-<h2 id="failure-prevented">Failure prevented<a class="headerlink" href="#failure-prevented" title="Permanent link">&para;</a></h2>
-<p>A supply-chain weakness that every other fleet security gate misses — e.g. a
-workflow that passes zizmor but still triggers a Scorecard <em>Dangerous-Workflow</em>
-finding, or a dependency-update gap that Dependabot's config doesn't cover —
-goes undetected indefinitely. Scorecard's outside-in audit catches the gaps
-that self-audit inevitably misses.</p>
-<h2 id="see-also">See also<a class="headerlink" href="#see-also" title="Permanent link">&para;</a></h2>
-<ul>
-<li><a href="../security-posture/">Security posture</a> — the per-gate security controls
-  Scorecard cross-checks.</li>
-<li><a href="../repo-baseline/#ci-and-security-gates">Repo baseline — CI and security gates</a></li>
-<li><a href="https://securityscorecards.dev/">OpenSSF Scorecard</a></li>
-<li><a href="https://github.com/ossf/scorecard-action">OpenSSF Scorecard GitHub Action</a></li>
+<li><strong>Pydantic</strong> enables ARG, C4, PERF alongside E, F, I, N, UP, B, SIM,
+  RUF, PIE, T10 in its <code>pyproject.toml</code>.</li>
+<li><strong>FastAPI</strong> enables ARG, C4, PT alongside E, F, I, N, UP, B, SIM, RUF, S.</li>
+<li><strong>httpx</strong> takes the <code>select = ["ALL"]</code> approach and ignores specific
+  rules — demonstrating that broad rule coverage is the industry direction.</li>
 </ul>
 
 

@@ -45,6 +45,7 @@
 
 ## 0.0.0 (unreleased)
 
+- New standard page: [Pre-commit baseline](docs/pre-commit-baseline.md) — five zero-config file-hygiene hooks (`trailing-whitespace`, `end-of-file-fixer`, `check-yaml`, `check-toml`, `check-added-large-files`) for every Python repo.
 - Re-create `.robotsix-mill/periodic/docstring_coverage.yaml` periodic workflow that was merged but missing from the tree.
 - New **[Python Makefile convention](docs/python-makefile-convention.md)** — standard
   `Makefile` targets for every Python/uv repo (`install`, `lint`, `typecheck`,

@@ -61,6 +61,7 @@ nav:
   - The fleet: fleet.md
   - Every repo:
       - Repo baseline: repo-baseline.md
+      - Free-tier only: free-tier-only.md
       - Security posture: security-posture.md
       - Python practices: python.md
       - Ruff lint rules: ruff-lint-rules.md

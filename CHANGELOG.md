@@ -45,6 +45,7 @@
 
 ## 0.0.0 (unreleased)
 
+- Add `docstring_coverage` periodic workflow to scan Python source modules for missing docstrings and propose draft tickets.
 - **Resolved secret-handling contradiction** between `config-standard.md` and `config-ownership.md`. Secrets follow the one-file convention (`SecretStr` in `config.json`) defined in the config standard; `config-ownership.md` now defers to it with an explicit cross-reference.
 - Fix capitalization of "TruffleHog" in `docs/scorecard.md` intro paragraph.
 - Updated `docs/scorecard.md` to replace stale security-tool references: "CodeQL" → "Semgrep" (fleet SAST standard) and "gitleaks" → "detect-secrets" (fleet secret-scanning pre-commit), and reworded the SARIF-upload sentence to avoid implying CodeQL is an active fleet tool.

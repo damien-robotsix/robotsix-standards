@@ -52,7 +52,7 @@ syntax. Catches indentation errors, duplicated keys, and tab characters before
 they reach CI or deploy.
 
 **Failure mode prevented:** broken CI workflows, invalid `docker-compose.yml`
-files, and unparseable config that fails at runtime rather than at commit time.
+files, and unparsable config that fails at runtime rather than at commit time.
 
 ### check-toml
 

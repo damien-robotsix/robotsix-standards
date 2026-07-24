@@ -30,6 +30,10 @@ everywhere.
 - **[Security posture](security-posture.md)** — self-enforcing security gates
   (SAST, dependency review, Dependabot, workflow hardening, secret protection,
   SBOM), auditable per repo.
+- **[Async SQLAlchemy test fixtures](async-sqlalchemy-test-fixtures.md)** — three-layer database
+  test fixture pattern (session-scoped engine, function-scoped connection with
+  rollback, function-scoped session with savepoints) for clean test isolation
+  without dropping tables.
 - **[Docstring convention](docstrings.md)** — Python docstring style and coverage
   rules for all public modules, classes, and functions.
 - **[Hypothesis testing](hypothesis.md)** — property-based testing profiles,

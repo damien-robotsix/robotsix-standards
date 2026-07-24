@@ -71,6 +71,7 @@ nav:
       - Markdown linting: markdown-linting.md
       - MkDocs build integrity: mkdocs-build.md
       - JavaScript practices: javascript.md
+      - Async SQLAlchemy test fixtures: async-sqlalchemy-test-fixtures.md
       - ROS 2 practices: ros2.md
   - Deployable components:
       - Component standard: component-standard.md

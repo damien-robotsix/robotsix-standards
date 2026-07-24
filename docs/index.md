@@ -67,6 +67,9 @@ integrates with the deployment system. Beyond the baseline it follows:
 - **[HTTP error envelope](http-error-envelope.md)** — one consistent RFC 9457
   `application/problem+json` envelope for every error response, registered via
   centralized exception handlers.
+- **[HTTP security headers](http-security-headers.md)** — standard OWASP security
+  response headers (CSP, HSTS, X-Frame-Options, etc.) via a single shared
+  `secure` middleware, so no service hand-rolls its own headers.
 - **[OpenSSF Scorecard](scorecard.md)** — independent supply-chain audit
   (~20 checks) producing a single numeric score; closes the gap the per-gate
   security stack doesn't cover.

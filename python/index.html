@@ -1982,7 +1982,33 @@ pre-commit hooks install Python tools.</p>
   <code>tests/&lt;module&gt;/conftest.py</code> — pytest discovers it for all sibling tests.
   Duplicated fixtures drift apart; this recurs especially in agent-written
   PRs.</li>
+<li><strong>Prefer <code>@pytest.mark.parametrize</code> over N separate test functions</strong> when
+  testing a single function with multiple input/output variants. A group of
+  3+ test functions that differ only in their input values and expected
+  outputs SHALL be consolidated into one parametrized test.</li>
 </ul>
+<p><strong>Rationale:</strong>
+  - <strong>Readability:</strong> A single <code>@pytest.mark.parametrize</code> call with a table of
+    <code>(input, expected)</code> pairs is more compact and scannable than N
+    nearly-identical function bodies.
+  - <strong>Maintainability:</strong> Adding a new case is a one-line tuple addition rather
+    than a new function. Removing or changing a case doesn't require deleting
+    or editing an entire function.
+  - <strong>Failure reporting:</strong> pytest's parametrize renders each case as a
+    separate sub-test in the report (e.g. <code>test_parse_timestamp[z-suffix]</code>,
+    <code>test_parse_timestamp[offset-suffix]</code>), preserving the same diagnostic
+    granularity as separate functions.
+  - <strong>Precedent:</strong> httpx, FastAPI, and other mature Python projects use this
+    pattern consistently — the httpx test suite has zero separate functions
+    for input-variant testing of a single function (source: httpx
+    <code>tests/test_utils.py</code> <code>test_url_matches</code> with 11 parametrized cases).</p>
+<p><strong>Exceptions — keep a test function separate when:</strong>
+  - It tests a <strong>different method or code path</strong> (not just different inputs to
+    the same method).
+  - The test setup (mocks, fixtures, monkeypatches) differs materially between
+    cases and cannot be extracted into a shared fixture.
+  - The test is a <strong>live/integration test</strong> that exercises actual network
+    calls rather than the unit-under-test with varied inputs.</p>
 <h2 id="pre-commit-hooks">Pre-commit hooks<a class="headerlink" href="#pre-commit-hooks" title="Permanent link">&para;</a></h2>
 <p>Every repo ships <code>.pre-commit-config.yaml</code> with the standard set (this is the
 fleet's converged practice, not a minimum to improvise beyond).

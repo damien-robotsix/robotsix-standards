@@ -54,6 +54,9 @@ integrates with the deployment system. Beyond the baseline it follows:
   two compose files.
 - **[Config standard](config-standard.md)** — one config model that resolves the
   same way across all deploy modes.
+- **[Default config location](default-config-location.md)** — canonical in-repo
+  location for the shipped default config that seeds the deploy-side config on
+  first registration.
 - **[Config ownership](config-ownership.md)** — the hard line between
   deploy-plane config (central-deploy UI) and component-owned config
   (the component's own HTTP surface and Settings panel).

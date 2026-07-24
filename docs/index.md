@@ -37,6 +37,8 @@ everywhere.
   and link-validation configuration for every MkDocs site.
 - **[Python practices](python.md)** — uv, hatchling, `requires-python` policy,
   lint/type/security gates, test layout, pre-commit hooks.
+- **[Ruff lint rules](ruff-lint-rules.md)** — Tier 2 ruff rule families (ARG,
+  C4, PERF, PT) with per-file ignores and the PT006 exclusion.
 - **[JavaScript practices](javascript.md)** — vanilla frontend JS as static
   assets, lockfile discipline, vitest coverage floor, eslint/stylelint.
 - **[ROS 2 practices](ros2.md)** — workspace-skeleton layout, vcs2l manifest,

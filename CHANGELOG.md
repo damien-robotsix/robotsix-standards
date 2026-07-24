@@ -51,6 +51,7 @@
 - Added "Coverage artifact upload" rule to the CI and security gates section of the repo baseline: any reusable workflow that runs pytest with `--cov` must upload `coverage.xml` and `.coverage` as a `coverage-data` artifact, so consuming workflows can generate coverage diff commentary without re-running tests.
 - Add "Mypy: type-check tests" section to the Python practices standard, requiring CI to run mypy on both `src/` and `tests/` with a `module = "tests.*"` override that relaxes `disallow_untyped_defs` while keeping `check_untyped_defs`, and mandating `tests/__init__.py` so the override matches.
 - Fixed `docs/scorecard.md` intro paragraph: replaced CodeQL with Semgrep and removed gitleaks from the parenthetical tool list, matching the actual fleet security stack documented in `security-posture.md`.
+- New [Ruff lint rules](docs/ruff-lint-rules.md) standard: Tier 2 rule families (ARG, C4, PERF, PT) for every Python repo, with per-file ignores and the PT006 exclusion.
 - Add CI gate (`scripts/check-toc-sync.py`) that verifies mkdocs.yml nav pages
   appear in README.md and docs/index.md, preventing TOC drift.
 - Added **Changelog nav page** rule to [MkDocs build integrity](docs/mkdocs-build.md): every fleet repo that publishes an MkDocs site and maintains a `CHANGELOG.md` must surface it in the docs `nav` via a symlink or build-time copy hook — no committed duplicate copy.

@@ -875,6 +875,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../config-ownership/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Config ownership
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../docker-standard/" class="md-nav__link">
         
   
@@ -1487,6 +1515,7 @@
 </ul>
 <h2 id="000-unreleased">0.0.0 (unreleased)<a class="headerlink" href="#000-unreleased" title="Permanent link">&para;</a></h2>
 <ul>
+<li>Add <code>config-ownership.md</code> to the MkDocs navigation sidebar under "Deployable components" (it was the only docs page missing from the nav).</li>
 <li>Ignore <code>https://github.com/*</code> and <code>https://docs.github.com/*</code> in htmlproofer to prevent transient GitHub 504 errors from failing CI builds.</li>
 <li>Add Async SQLAlchemy test fixtures standard — three-layer fixture pattern (session-scoped engine, function-scoped connection with rollback, function-scoped session with savepoints) for clean database test isolation without dropping tables.</li>
 <li>Pre-commit CI jobs must pass <code>--show-diff-on-failure</code> via <code>extra_args</code> so that hook-modification diffs appear in CI logs (Python practices).</li>

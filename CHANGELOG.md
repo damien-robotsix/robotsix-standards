@@ -45,6 +45,7 @@
 
 ## 0.0.0 (unreleased)
 
+- Add Async SQLAlchemy test fixtures standard — three-layer fixture pattern (session-scoped engine, function-scoped connection with rollback, function-scoped session with savepoints) for clean database test isolation without dropping tables.
 - Pre-commit CI jobs must pass `--show-diff-on-failure` via `extra_args` so that hook-modification diffs appear in CI logs (Python practices).
 - Enable `completeness_check` periodic workflow for robotsix-standards
 - **Pytest strictness configuration** — new standard page mandating `filterwarnings = ["error"]` and `xfail_strict = true` as baseline, with `--strict-markers` and `--strict-config` as the recommended tier, so every Python test suite fails loudly on deprecations, unregistered markers, and stale xfails.

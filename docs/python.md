@@ -282,6 +282,17 @@ expose cache configuration).  Cache `~/.cache/pre-commit` separately via
 explicit setup-uv step ensures the uv package cache is also warm when
 pre-commit hooks install Python tools.
 
+**CI jobs that use `tox-dev/action-pre-commit-uv` MUST pass
+`extra_args: --show-diff-on-failure --all-files`** via the action's
+`with:` block.  When `extra_args` is overridden it replaces the
+default (`--all-files`), so both flags must appear explicitly.
+
+**Rationale:** without `--show-diff-on-failure`, a hook that modifies
+files fails with a non-zero exit but produces no diagnostic output —
+developers see "pre-commit failed" but not what changes would fix it.
+The `--show-diff-on-failure` flag prints the exact diff so the fix is
+visible directly in the CI log.
+
 ## Tests
 
 - `pytest`, with coverage gated at **one fleet-wide floor: 80%**, the same in

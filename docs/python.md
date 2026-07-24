@@ -375,6 +375,34 @@ pre-commit hooks install Python tools.
   `tests/<module>/conftest.py` — pytest discovers it for all sibling tests.
   Duplicated fixtures drift apart; this recurs especially in agent-written
   PRs.
+- **Prefer `@pytest.mark.parametrize` over N separate test functions** when
+  testing a single function with multiple input/output variants. A group of
+  3+ test functions that differ only in their input values and expected
+  outputs SHALL be consolidated into one parametrized test.
+
+  **Rationale:**
+  - **Readability:** A single `@pytest.mark.parametrize` call with a table of
+    `(input, expected)` pairs is more compact and scannable than N
+    nearly-identical function bodies.
+  - **Maintainability:** Adding a new case is a one-line tuple addition rather
+    than a new function. Removing or changing a case doesn't require deleting
+    or editing an entire function.
+  - **Failure reporting:** pytest's parametrize renders each case as a
+    separate sub-test in the report (e.g. `test_parse_timestamp[z-suffix]`,
+    `test_parse_timestamp[offset-suffix]`), preserving the same diagnostic
+    granularity as separate functions.
+  - **Precedent:** httpx, FastAPI, and other mature Python projects use this
+    pattern consistently — the httpx test suite has zero separate functions
+    for input-variant testing of a single function (source: httpx
+    `tests/test_utils.py` `test_url_matches` with 11 parametrized cases).
+
+  **Exceptions — keep a test function separate when:**
+  - It tests a **different method or code path** (not just different inputs to
+    the same method).
+  - The test setup (mocks, fixtures, monkeypatches) differs materially between
+    cases and cannot be extracted into a shared fixture.
+  - The test is a **live/integration test** that exercises actual network
+    calls rather than the unit-under-test with varied inputs.
 
 ## Pre-commit hooks
 

@@ -1,0 +1,1 @@
+ci_fix: out-of-scope CI failure — htmlproofer external URL check (HTTP 504) in docs/fleet.md, docs/repo-baseline.md, docs/security-posture.md (or htmlproofer config in mkdocs.yml) — all outside this ticket's diff

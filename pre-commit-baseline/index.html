@@ -10,13 +10,13 @@
       
       
       
-        <link rel="canonical" href="https://damien-robotsix.github.io/robotsix-standards/deploy-contract/">
+        <link rel="canonical" href="https://damien-robotsix.github.io/robotsix-standards/pre-commit-baseline/">
       
       
-        <link rel="prev" href="../docker-standard/">
+        <link rel="prev" href="../ros2/">
       
       
-        <link rel="next" href="../entrypoint-contract/">
+        <link rel="next" href="../component-standard/">
       
       
         
@@ -27,7 +27,7 @@
     
     
       
-        <title>Deploy contract - Robotsix Standards</title>
+        <title>Pre-commit baseline - Robotsix Standards</title>
       
     
     
@@ -78,7 +78,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#central-deploy-docker-compose-contract" class="md-skip">
+        <a href="#pre-commit-baseline" class="md-skip">
           Skip to content
         </a>
       
@@ -114,7 +114,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Deploy contract
+              Pre-commit baseline
             
           </span>
         </div>
@@ -311,8 +311,10 @@
       
   
   
+    
   
   
+  
     
     
     
@@ -323,13 +325,11 @@
       
     
     
-    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
       
         
         
-          
-        
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
         
           
           <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
@@ -350,7 +350,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_3">
             <span class="md-nav__icon md-icon"></span>
             
@@ -757,10 +757,37 @@
                 
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="../pre-commit-baseline/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Pre-commit baseline
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   
@@ -776,6 +803,109 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#hooks" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Hooks
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Hooks">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#trailing-whitespace" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        trailing-whitespace
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#end-of-file-fixer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        end-of-file-fixer
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#check-yaml" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        check-yaml
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#check-toml" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        check-toml
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#check-added-large-files" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        check-added-large-files
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#relationship-to-the-full-hook-set" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Relationship to the full hook set
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -792,8 +922,6 @@
       
   
   
-    
-  
   
   
     
@@ -806,11 +934,13 @@
       
     
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4" >
         
           
           <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
@@ -831,7 +961,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_4">
             <span class="md-nav__icon md-icon"></span>
             
@@ -986,37 +1116,10 @@
                 
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Deploy contract
-  
-
-    
-  </span>
-  
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../deploy-contract/" class="md-nav__link">
         
   
   
@@ -1032,76 +1135,6 @@
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#where-to-read-it" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Where to read it
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#what-it-covers" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        What it covers
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#volumes-only-no-host-path-bind-mounts" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Volumes only — no host-path bind mounts
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Volumes only — no host-path bind mounts">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#volume-ownership-deployer-guarantee-component-obligation" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Volume ownership (deployer guarantee + component obligation)
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -1514,44 +1547,66 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#where-to-read-it" class="md-nav__link">
+  <a href="#hooks" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Where to read it
+        Hooks
       
     </span>
   </a>
   
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#what-it-covers" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        What it covers
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#volumes-only-no-host-path-bind-mounts" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Volumes only — no host-path bind mounts
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Volumes only — no host-path bind mounts">
+    <nav class="md-nav" aria-label="Hooks">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#volume-ownership-deployer-guarantee-component-obligation" class="md-nav__link">
+  <a href="#trailing-whitespace" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Volume ownership (deployer guarantee + component obligation)
+        trailing-whitespace
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#end-of-file-fixer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        end-of-file-fixer
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#check-yaml" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        check-yaml
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#check-toml" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        check-toml
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#check-added-large-files" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        check-added-large-files
       
     </span>
   </a>
@@ -1560,6 +1615,17 @@
         
       </ul>
     </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#relationship-to-the-full-hook-set" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Relationship to the full hook set
+      
+    </span>
+  </a>
   
 </li>
       
@@ -1583,80 +1649,74 @@
   
 
 
-<h1 id="central-deploy-docker-compose-contract">central-deploy Docker Compose Contract<a class="headerlink" href="#central-deploy-docker-compose-contract" title="Permanent link">&para;</a></h1>
+<h1 id="pre-commit-baseline">Pre-commit baseline<a class="headerlink" href="#pre-commit-baseline" title="Permanent link">&para;</a></h1>
 <blockquote>
-<p><strong>Scope: deployable components only.</strong> See the
-<a href="../component-standard/">component standard</a>.</p>
-<p><strong>Canonical home:
-<a href="https://github.com/damien-robotsix/robotsix-central-deploy"><code>robotsix-central-deploy</code></a>.</strong>
-The contract is implemented by central-deploy's parser and served by the
-running server, so the authoritative copy lives — and versions — with the
-code. This page is a pointer, not a copy; an earlier copy kept here drifted
-from the implementation (gateway routing, § 8 config) and was removed.</p>
+<p><strong>Scope: every Python repository.</strong> These are the file-hygiene hooks every
+Python repo runs at commit time — language-agnostic checks that complement
+the code-quality hooks documented in <a href="../python/#pre-commit-hooks">Python practices</a>.</p>
 </blockquote>
-<h2 id="where-to-read-it">Where to read it<a class="headerlink" href="#where-to-read-it" title="Permanent link">&para;</a></h2>
-<ul>
-<li><strong>Source:</strong>
-  <a href="https://github.com/damien-robotsix/robotsix-central-deploy/blob/main/docs/ui/DEPLOY_CONTRACT.md"><code>docs/ui/DEPLOY_CONTRACT.md</code></a>
-  in the central-deploy repo</li>
-<li><strong>From the running server:</strong> <code>GET /help/deploy-contract</code> on the deploy
-  dashboard (the server ships the same file inside its image)</li>
-</ul>
-<h2 id="what-it-covers">What it covers<a class="headerlink" href="#what-it-covers" title="Permanent link">&para;</a></h2>
-<p>The contract is the authoritative specification for the
-<code>deploy/docker-compose.yml</code> a service repo must ship before central-deploy's
-onboarding flow accepts it:</p>
-<ul>
-<li>the machine-readable version header (<code># central-deploy-contract-version: 1</code>)
-  and its breaking-change semantics;</li>
-<li>structural rules — service keys, primary/sibling designation, container
-  naming;</li>
-<li>required and optional fields (image, ports, named volumes, environment
-  secret slots, healthcheck);</li>
-<li>the <code>robotsix.deploy.*</code> extension labels (primary, claude-mount,
-  host-docker-sock, config-target, config-assist);</li>
-<li>volume declarations;</li>
-<li>ignored vs. prohibited compose fields (error classification);</li>
-<li>runtime configuration via the repo's config template (§ 8 —
-  <code>config/config.json</code> + <code>config/config.schema.json</code> per the
-  <a href="../config-standard/">config standard</a>) and the field → <code>ComponentConfig</code>
-  mapping.</li>
-</ul>
-<h2 id="volumes-only-no-host-path-bind-mounts">Volumes only — no host-path bind mounts<a class="headerlink" href="#volumes-only-no-host-path-bind-mounts" title="Permanent link">&para;</a></h2>
-<p>Deployed components <strong>never bind-mount host paths</strong>; all persistent or shared
-state goes through <strong>named volumes</strong> (declared in the compose, or injected by
-central-deploy — e.g. the managed <code>claude-auth</code> volume behind the
-claude-mount label). Coupling a component to host filesystem layout caused a
-real outage (2026-07-03, robotsix-chat: host-uid-dependent credential
-readability plus a containerized <code>~</code> expansion silently auto-creating empty
-root-owned host directories). The <strong>single sanctioned exception</strong> is the
-Docker socket, read-only, on a hardened non-primary socket-proxy sibling
-(<code>host-docker-sock</code> label). central-deploy's own infra mounts are the
-deployment system itself (<a href="../deployment-system/">bootstrap tier</a>), not a
-managed component.</p>
-<p>Resource limits follow the same shape: compose resource fields are ignored —
-central-deploy applies a <strong>default memory limit</strong> to every managed container
-(overridable per component in the dashboard), so one leaking service OOMs and
-restarts alone instead of taking the host with it.</p>
-<h3 id="volume-ownership-deployer-guarantee-component-obligation">Volume ownership (deployer guarantee + component obligation)<a class="headerlink" href="#volume-ownership-deployer-guarantee-component-obligation" title="Permanent link">&para;</a></h3>
-<p>Docker's copy-up only fixes named-volume ownership when the image already
-contains the mount path. When a component uses a path the image never prepared
-(e.g. <code>/data</code>, <code>/home/app/.claude</code>), freshly created volumes stay root-owned
-and the component silently fails every write while reporting healthy — chat
-lost all conversations in production (2026-07-04).</p>
-<p><strong>Deployer guarantee.</strong> When the deployment system creates a named volume (first
-creation only — existing volume data is <strong>never touched</strong>), it makes the volume
-root writable by the component's runtime uid: either the uid declared via
-<code>user:</code> in the compose service, or the platform-forced uid when no <code>user:</code> is
-set.</p>
-<p><strong>Component obligation.</strong> Components <strong>MUST NOT</strong> rely on image-side directory
-preparation (Dockerfile <code>mkdir</code> / <code>chown</code>) for volume mount paths, and
-<strong>SHOULD</strong> log resolved persistence paths at startup. The startup log line was
-the single diagnostic that made the root-owned-volume outage diagnosable in
-seconds rather than hours — without it, a component that cannot write its data
-directory reports healthy and the failure is invisible.</p>
-<p>For the task-oriented walkthrough of making a repo deployable, see
-<a href="../integrating-a-service/">Integrating a service</a>.</p>
+<p>Every Python repo's <code>.pre-commit-config.yaml</code> includes a baseline of hooks
+from <a href="https://github.com/pre-commit/pre-commit-hooks"><code>pre-commit/pre-commit-hooks</code></a>
+that catch common hygiene failures before they reach CI or the commit log.
+These hooks have no language runtime, run in milliseconds, and require zero
+configuration for Python repos.</p>
+<h2 id="hooks">Hooks<a class="headerlink" href="#hooks" title="Permanent link">&para;</a></h2>
+<p>The baseline is five hooks from the official <code>pre-commit/pre-commit-hooks</code>
+repo, each endorsed as "universally recommended" or "strongly recommended" by
+the project itself:</p>
+<div class="highlight"><pre><span></span><code><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">repo</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://github.com/pre-commit/pre-commit-hooks</span>
+<span class="w">    </span><span class="nt">rev</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">v5.0.0</span>
+<span class="w">    </span><span class="nt">hooks</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">id</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">trailing-whitespace</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">id</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">end-of-file-fixer</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">id</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">check-yaml</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">id</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">check-toml</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">id</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">check-added-large-files</span>
+</code></pre></div>
+<h3 id="trailing-whitespace">trailing-whitespace<a class="headerlink" href="#trailing-whitespace" title="Permanent link">&para;</a></h3>
+<p>Removes trailing whitespace from every line. Without this, editors with
+<code>trim_trailing_whitespace</code> off produce noisy diffs that obscure the real
+change. The hook fixes the file in place — no manual cleanup needed.</p>
+<p><strong>Failure mode prevented:</strong> commits carry trailing-whitespace-only lines that
+pollute diffs, waste reviewer attention, and create merge-conflict noise.</p>
+<h3 id="end-of-file-fixer">end-of-file-fixer<a class="headerlink" href="#end-of-file-fixer" title="Permanent link">&para;</a></h3>
+<p>Ensures every file ends with exactly one newline, and trims extra trailing
+newlines. POSIX tools (and GitHub's diff viewer) behave poorly when the final
+newline is missing — <code>\ No newline at end of file</code> annotations clutter diffs.</p>
+<p><strong>Failure mode prevented:</strong> missing-final-newline annotations in GitHub diffs
+and inconsistent EOF handling across editors and tooling.</p>
+<h3 id="check-yaml">check-yaml<a class="headerlink" href="#check-yaml" title="Permanent link">&para;</a></h3>
+<p>Parses every <code>.yml</code> and <code>.yaml</code> file (recursively) and fails on invalid YAML
+syntax. Catches indentation errors, duplicated keys, and tab characters before
+they reach CI or deploy.</p>
+<p><strong>Failure mode prevented:</strong> broken CI workflows, invalid <code>docker-compose.yml</code>
+files, and unparsable config that fails at runtime rather than at commit time.</p>
+<h3 id="check-toml">check-toml<a class="headerlink" href="#check-toml" title="Permanent link">&para;</a></h3>
+<p>Parses every <code>.toml</code> file (recursively) and fails on invalid TOML syntax.
+Python repos use TOML for <code>pyproject.toml</code>; a stray unescaped character can
+silently break a build or publish.</p>
+<p><strong>Failure mode prevented:</strong> broken <code>pyproject.toml</code> that prevents <code>uv sync</code>,
+<code>pip install</code>, or PyPI publishing — detected at commit time instead of in CI.</p>
+<h3 id="check-added-large-files">check-added-large-files<a class="headerlink" href="#check-added-large-files" title="Permanent link">&para;</a></h3>
+<p>Fails if a staged file exceeds 750 KB (the default threshold). Large binaries
+accidentally committed bloat the repo forever (Git stores them in every clone
+forever). The hook can be overridden per-file with <code>--enforce-all</code> or a
+<code>.pre-commit-config.yaml</code> <code>exclude</code> pattern for intentional exceptions (e.g.
+test fixtures).</p>
+<p><strong>Failure mode prevented:</strong> accidental commits of large binaries (logs, dumps,
+datasets, model weights) that permanently inflate the repo and slow every
+clone.</p>
+<h2 id="relationship-to-the-full-hook-set">Relationship to the full hook set<a class="headerlink" href="#relationship-to-the-full-hook-set" title="Permanent link">&para;</a></h2>
+<p>These five hooks are a <strong>subset</strong> of the standard pre-commit configuration
+defined in <a href="../python/#pre-commit-hooks">Python practices</a>. That page documents
+the full fleet-standard set — including <code>ruff</code>, <code>mypy</code>, <code>detect-secrets</code>,
+<code>actionlint</code>, <code>vulture</code>, and the content-only-repo subset. This page isolates
+the <strong>file-hygiene baseline</strong> so repos that are not yet at the full standard
+can adopt a minimal, uncontroversial starting point that catches the most
+common commit-time mistakes.</p>
+<p>The <code>rev</code> field follows the fleet pinning rule: a tagged release, bumped
+deliberately when the fleet standard updates, never floating (<code>main</code> or
+<code>latest</code>).</p>
 
 
 

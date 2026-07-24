@@ -79,6 +79,7 @@ nav:
       - Component standard: component-standard.md
       - Config standard: config-standard.md
       - Default config location: default-config-location.md
+      - Config ownership: config-ownership.md
       - Docker build & release: docker-standard.md
       - Deploy contract: deploy-contract.md
       - Entrypoint contract: entrypoint-contract.md

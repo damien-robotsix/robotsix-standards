@@ -45,6 +45,7 @@
 
 ## 0.0.0 (unreleased)
 
+- Pre-commit CI jobs must pass `--show-diff-on-failure` via `extra_args` so that hook-modification diffs appear in CI logs (Python practices).
 - Enable `completeness_check` periodic workflow for robotsix-standards
 - **Pytest strictness configuration** — new standard page mandating `filterwarnings = ["error"]` and `xfail_strict = true` as baseline, with `--strict-markers` and `--strict-config` as the recommended tier, so every Python test suite fails loudly on deprecations, unregistered markers, and stale xfails.
 - docs(security-posture): add Bandit to Gate 1 SAST section as complementary Python-specific SAST layer via `python-ci.yml`

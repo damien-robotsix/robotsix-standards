@@ -45,6 +45,7 @@
 
 ## 0.0.0 (unreleased)
 
+- Fix capitalization of "TruffleHog" in `docs/scorecard.md` intro paragraph.
 - Updated `docs/scorecard.md` to replace stale security-tool references: "CodeQL" → "Semgrep" (fleet SAST standard) and "gitleaks" → "detect-secrets" (fleet secret-scanning pre-commit), and reworded the SARIF-upload sentence to avoid implying CodeQL is an active fleet tool.
 - Add `@pytest.mark.parametrize` standard to `docs/python.md` Tests section: prefer parametrized tests over N separate test functions when testing a single function with multiple input/output variants.
 - Add `https://genai.owasp.org/*` to htmlproofer `ignore_urls` in `mkdocs.yml`, extending the existing OWASP timeout workaround to cover the `genai.owasp.org` subdomain (OWASP Top 10 for LLM & Agentic Applications pages).

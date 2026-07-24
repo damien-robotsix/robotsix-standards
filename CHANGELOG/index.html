@@ -1515,6 +1515,7 @@
 </ul>
 <h2 id="000-unreleased">0.0.0 (unreleased)<a class="headerlink" href="#000-unreleased" title="Permanent link">&para;</a></h2>
 <ul>
+<li><strong>Python practices</strong>: codified single-source version convention — <code>pyproject.toml [project].version</code> is authoritative; <code>__version__</code> MUST be derived from <code>importlib.metadata.version()</code> instead of hard-coded. Prevents silent version drift between the auto-release bumper (which updates only <code>pyproject.toml</code>) and the hand-maintained <code>__init__.py</code> literal.</li>
 <li>robotsix-standards: Remove <code>docstring_coverage</code> periodic agent — repo is Markdown-only and has no Python source modules to scan.</li>
 <li>Add <code>config-ownership.md</code> to the MkDocs navigation sidebar under "Deployable components" (it was the only docs page missing from the nav).</li>
 <li>Ignore <code>https://github.com/*</code> and <code>https://docs.github.com/*</code> in htmlproofer to prevent transient GitHub 504 errors from failing CI builds.</li>

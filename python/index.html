@@ -1860,21 +1860,40 @@ declare it in every Python repo (the baseline-check gate verifies this).</p>
   pattern — plain dependency names resolved through <code>[tool.uv.sources]</code> — does
   not need it, because the git pin lives in uv's config, not in the project
   metadata hatchling validates.</li>
-<li><strong>No PyPI.</strong> Nothing is published to a package index (see the
+<li><strong>Single-source the version: <code>pyproject.toml [project].version</code> is the
+  authoritative version.</strong> Packages MUST NOT hard-code <code>__version__</code> as a
+  literal in <code>__init__.py</code>.  Instead, derive it at import time from the
+  installed distribution metadata:</li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">importlib.metadata</span><span class="w"> </span><span class="kn">import</span> <span class="n">PackageNotFoundError</span><span class="p">,</span> <span class="n">version</span>
+
+<span class="k">try</span><span class="p">:</span>
+    <span class="n">__version__</span> <span class="o">=</span> <span class="n">version</span><span class="p">(</span><span class="s2">&quot;robotsix-chat&quot;</span><span class="p">)</span>  <span class="c1"># distribution name from pyproject</span>
+<span class="k">except</span> <span class="n">PackageNotFoundError</span><span class="p">:</span>  <span class="c1"># pragma: no cover - source checkout without install</span>
+    <span class="n">__version__</span> <span class="o">=</span> <span class="s2">&quot;0.0.0+unknown&quot;</span>
+</code></pre></div>
+<p><code>importlib.metadata</code> is stdlib (fleet targets <code>requires-python &gt;=3.14</code>), so
+  no new dependency.  The shared auto-release workflow bumps exactly one file
+  (<code>pyproject.toml</code>), and <code>__version__</code> stays in sync automatically.</p>
+<p><em>Failure prevented:</em> when <code>__version__</code> is a hand-maintained literal in
+  <code>__init__.py</code>, the auto-release bumper updates only <code>pyproject.toml</code> —
+  the two sources drift silently.  Runtime version checks (e.g. comparing
+  <code>__version__</code> against the latest GitHub release tag) then permanently
+  report the deployment as out of date, even immediately after a release.
+- <strong>No PyPI.</strong> Nothing is published to a package index (see the
   <a href="../repo-baseline/#no-package-index-consume-libraries-from-git">repo baseline</a>).
   Repos carry <strong>no index-publish workflow</strong> — no <code>pypi-publish</code>, no
   release-please, no PyPI token. (The shared auto-release workflow tags
   versions and compiles the changelog — see
   <a href="../repo-baseline/#changelog-releases">changelog &amp; releases</a> — but publishes
-  nothing to any index.)</li>
-<li><strong>Libraries</strong> are consumed straight from git via uv <code>[tool.uv.sources]</code>
+  nothing to any index.)
+- <strong>Libraries</strong> are consumed straight from git via uv <code>[tool.uv.sources]</code>
   (<code>{ git = "…", rev = "…" }</code>), pinned by revision. They still ship <code>py.typed</code>
-  for downstream type-checking.</li>
-<li><strong>Deployable components</strong> ship a container image; the from-checkout path is
-  <code>uv sync</code> (uv honours <code>[tool.uv.sources]</code>).</li>
-<li>Dev tooling goes in a PEP 735 <code>[dependency-groups] dev</code> group, pulled in by
-  default via <code>[tool.uv] default-groups</code>.</li>
-</ul>
+  for downstream type-checking.
+- <strong>Deployable components</strong> ship a container image; the from-checkout path is
+  <code>uv sync</code> (uv honours <code>[tool.uv.sources]</code>).
+- Dev tooling goes in a PEP 735 <code>[dependency-groups] dev</code> group, pulled in by
+  default via <code>[tool.uv] default-groups</code>.</p>
 <h2 id="requires-python"><code>requires-python</code><a class="headerlink" href="#requires-python" title="Permanent link">&para;</a></h2>
 <ul>
 <li><strong>Every repo — libraries and deployable components alike — targets the

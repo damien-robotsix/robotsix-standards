@@ -24,6 +24,9 @@ everywhere.
 
 - **[Repo baseline](repo-baseline.md)** — distribution tiers, changelog and
   module-registration hygiene, CI and security gates, licensing.
+- **[Free-tier only](free-tier-only.md)** — no paid services (LLM agent
+  inference excepted): free-tier CI (public repo or self-hosted runner),
+  public/self-hosted container images, permissive licences only.
 - **[Security posture](security-posture.md)** — self-enforcing security gates
   (SAST, dependency review, Dependabot, workflow hardening, secret protection,
   SBOM), auditable per repo.

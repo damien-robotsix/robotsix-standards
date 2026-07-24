@@ -44,6 +44,7 @@ the default.
 | [Ruff lint rules](docs/ruff-lint-rules.md) | Tier 2 ruff rule families (ARG, C4, PERF, PT) with per-file ignores and the PT006 exclusion. |
 | [JavaScript practices](docs/javascript.md) | Vanilla frontend JS as static assets, lockfile discipline, vitest coverage floor, eslint/stylelint. |
 | [ROS 2 practices](docs/ros2.md) | Workspace-skeleton layout, vcs2l manifest, devcontainer, colcon/rosdep build, lint gates. |
+| [Pre-commit baseline](docs/pre-commit-baseline.md) | Five zero-config file-hygiene hooks (trailing-whitespace, end-of-file-fixer, check-yaml, check-toml, check-added-large-files) for every Python repo. |
 
 **Deployable components** (additionally):
 

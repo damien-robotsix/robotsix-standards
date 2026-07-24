@@ -57,6 +57,9 @@ everywhere.
   assets, lockfile discipline, vitest coverage floor, eslint/stylelint.
 - **[ROS 2 practices](ros2.md)** — workspace-skeleton layout, vcs2l manifest,
   devcontainer, colcon/rosdep build, lint gates.
+- **[Pre-commit baseline](pre-commit-baseline.md)** — five zero-config
+  file-hygiene hooks (trailing-whitespace, end-of-file-fixer, check-yaml,
+  check-toml, check-added-large-files) for every Python repo.
 
 ### Deployable components (additionally)
 

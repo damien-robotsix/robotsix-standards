@@ -76,6 +76,7 @@ nav:
       - JavaScript practices: javascript.md
       - Async SQLAlchemy test fixtures: async-sqlalchemy-test-fixtures.md
       - ROS 2 practices: ros2.md
+      - Pre-commit baseline: pre-commit-baseline.md
   - Deployable components:
       - Component standard: component-standard.md
       - Config standard: config-standard.md

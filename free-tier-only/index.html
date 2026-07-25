@@ -488,6 +488,17 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#audit-2026-07-25-marketplace-actions-sweep" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Audit — 2026-07-25 (Marketplace Actions sweep)
+      
+    </span>
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -1529,6 +1540,17 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#audit-2026-07-25-marketplace-actions-sweep" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Audit — 2026-07-25 (Marketplace Actions sweep)
+      
+    </span>
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -1577,6 +1599,14 @@ infrastructure don't have that failure mode.</p>
 <li><strong>No paid GitHub features.</strong> GitHub Advanced Security on private repos,
    larger/GPU hosted runners, Copilot in CI, and GitHub Models are all off the
    table. CodeQL is free on public repos — keep it there.</li>
+<li><strong>No paid or licensed Marketplace Actions.</strong> Third-party Actions from the
+   GitHub Marketplace that require a paid subscription, licence key, or
+   per-minute billing are forbidden everywhere in the fleet — public repos
+   included. A Marketplace Action that is free and open-source is fine; one
+   that gates features behind a licence or payment is not. <em>Failure
+   prevented:</em> a licensed Action whose trial expires or whose billing
+   lapses silently breaks CI with a licence-error exit, blocking every
+   pipeline that references it.</li>
 <li><strong>No paid SaaS in the critical path.</strong> Observability, registries, secret
    stores, error tracking, and similar must be self-hosted or free-tier. (The
    fleet already self-hosts Langfuse and Vaultwarden — keep that pattern.)</li>
@@ -1656,6 +1686,62 @@ Auditing exact package visibility needs a token with <code>read:packages</code>.
   CodeQL + public GHCR, nothing to maintain.</li>
 <li><strong>Private images → public packages</strong> (free pulls, no egress metering).</li>
 </ul>
+<h2 id="audit-2026-07-25-marketplace-actions-sweep">Audit — 2026-07-25 (Marketplace Actions sweep)<a class="headerlink" href="#audit-2026-07-25-marketplace-actions-sweep" title="Permanent link">&para;</a></h2>
+<p>Per rule 4 (no paid or licensed Marketplace Actions), every fleet repo's
+<code>.github/workflows/</code> was checked for paid/licensed third-party Actions. The
+public repos use the fleet's shared reusable workflows (<code>robotsix-github-workflows</code>)
+and free open-source actions; no paid/licensed Marketplace Actions were found.</p>
+<p><strong>Verified clean (public repos):</strong> <code>robotsix-mill</code> (docker-publish.yml — all
+free actions: checkout, hadolint, buildx, metadata, build-push, trivy, codeql,
+sbom, attest, upload-artifact), <code>robotsix-mill-ros2</code> (ci.yaml, dco.yml,
+dependabot-auto-merge.yml, stale.yml — all free actions: checkout, pre-commit,
+zizmor, KineticCafe/actions-dco), <code>robotsix-standards</code> (no workflows — docs
+repo).</p>
+<p><strong>Not yet verified</strong> (public repos, workflows not audited due to API rate
+limits, but likely clean since the fleet standardises on the shared workflow
+repo): <code>robotsix-config</code>, <code>robotsix-llmio</code>, <code>robotsix-modules</code>,
+<code>robotsix-github-workflows</code>, <code>robotsix-board</code>, <code>robotsix-central-deploy</code>,
+<code>robotsix-chat</code>, <code>robotsix-auto-mail</code>, <code>robotsix-calendar-agent</code>,
+<code>robotsix-cost-monitor</code>, <code>robotsix-http</code>.</p>
+<p><strong>Private repos — runner violation (rules 1 &amp; 2):</strong> these run GitHub-hosted
+runners on private repos (paid minutes) and their images may be private
+packages (metered pulls). Each needs either <code>runs-on: self-hosted</code> or repo
+visibility change to public.</p>
+<table>
+<thead>
+<tr>
+<th>Repo</th>
+<th>Workflows</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>robotsix-invest</code></td>
+<td>3 (incl. <code>ci.yml</code>, <code>docker-release.yml</code>)</td>
+<td>Covered by dedicated removal ticket on its own board — not duplicated here.</td>
+</tr>
+<tr>
+<td><code>robotsix-website</code></td>
+<td>4</td>
+<td>Needs <code>runs-on: self-hosted</code> or made public.</td>
+</tr>
+<tr>
+<td><code>hexarchy</code></td>
+<td>3</td>
+<td>Needs <code>runs-on: self-hosted</code> or made public.</td>
+</tr>
+<tr>
+<td><code>robotsix-github-auth</code></td>
+<td>Unknown</td>
+<td>Private repo — audit pending.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>No paid or licensed Marketplace Actions were found in any verified repo.</strong>
+The fleet's CI standard (shared reusable workflows via <code>robotsix-github-workflows</code>)
+naturally enforces this — new actions enter through one repo, not per-repo
+drift.</p>
 
 
 

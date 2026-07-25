@@ -459,6 +459,123 @@ visible directly in the CI log.
   - The test is a **live/integration test** that exercises actual network
     calls rather than the unit-under-test with varied inputs.
 
+## Cross-platform filesystem I/O
+
+**Every Python repo that performs POSIX-specific filesystem I/O** —
+`os.replace` (atomic rename), `os.chmod` (e.g. `0o600` on secret files),
+`os.fsync`, or tempfile-then-rename atomic writes — MUST:
+
+### CI: OS matrix
+
+- **Run the test suite across `os: [ubuntu-latest, macos-latest,
+  windows-latest]`** with `strategy.fail-fast: false` so a transient Windows
+  file-lock failure does not cancel the POSIX runs.
+- The shared `python-ci.yml` reusable workflow exposes an **`os` input**
+  (list, default `['ubuntu-latest']`) that OS-sensitive repos set to the full
+  three-OS list. Repos that do no filesystem I/O keep the default.
+
+  **Failure mode:** without a Windows CI leg, POSIX-only assumptions ship
+  silently — `os.chmod(path, 0o600)` looks like a security guarantee but is a
+  near no-op on Windows, `os.replace(tmp, target)` raises `PermissionError`
+  when the target is held open (including by antivirus), and `os.fsync` on a
+  directory fd fails with `EINVAL`.  A test suite that only runs on Linux
+  never discovers these gaps.
+
+### Code guards
+
+**`os.chmod(path, 0o600)` is a near no-op on Windows** — it only toggles the
+read-only bit and does not enforce owner-only access.  Any code relying on
+`0o600` as a *security* guarantee (e.g. secret files) MUST:
+
+- Document that the restriction is POSIX-only.
+- Wrap the call in `try/except OSError` (Windows raises on some paths).
+
+```python
+# Security: 0o600 is a POSIX-only guarantee — it is a near no-op on Windows.
+try:
+    os.chmod(path, 0o600)
+except OSError:
+    pass
+```
+
+**`os.replace(tmp, target)` raises `PermissionError` on Windows** when the
+target file is held open by another process (including antivirus scanners).
+Wrap the call in a short retry loop (3–5 attempts, small sleep), as filelock,
+python-dotenv, and tomlkit do:
+
+```python
+import time
+
+for attempt in range(5):
+    try:
+        os.replace(tmp_path, target_path)
+        break
+    except PermissionError:
+        if attempt == 4:
+            raise
+        time.sleep(0.1 * (attempt + 1))
+```
+
+**Only `os.fsync` file descriptors, never directory fds** — `os.fsync` on a
+directory file descriptor fails with `EINVAL` on Windows.  Guard directory
+fsync behind a platform check (as filelock does):
+
+```python
+if sys.platform != "win32":
+    os.fsync(dir_fd)
+```
+
+**Use `tempfile.mkstemp()` or `NamedTemporaryFile(delete=False)`** for atomic
+writes — Windows' delete-on-close semantics block `os.replace` on a
+`NamedTemporaryFile` with `delete=True`.  Create the tempfile with
+`delete=False`, write and fsync it, then `os.replace` it onto the target
+(using the retry loop above), and finally `os.unlink` the tempfile if the
+rename succeeded (a no-op — the file was already moved).
+
+```python
+import os
+import tempfile
+
+fd, tmp_path = tempfile.mkstemp(dir=os.path.dirname(target_path))
+try:
+    with os.fdopen(fd, "w") as f:
+        f.write(content)
+        f.flush()
+        os.fsync(f.fileno())  # fd fsync, not directory — safe on Windows
+    # os.replace with retry (see above)
+    _atomic_replace(tmp_path, target_path)
+finally:
+    # If the replace succeeded the tempfile is already moved; unlink is a no-op.
+    try:
+        os.unlink(tmp_path)
+    except FileNotFoundError:
+        pass
+```
+
+**Failure mode:** without these guards, a Python package that works correctly
+on Linux and macOS fails at runtime on Windows with `PermissionError`
+(antivirus scanner opens the target during `os.replace`) or `OSError:
+[Errno 22] Invalid argument` (`os.fsync` on a directory fd).  A developer who
+does not have a Windows machine cannot debug these failures — the guards are
+the only defence.
+
+### Source projects
+
+These patterns are drawn from mature OSS projects that maintain full
+three-OS CI matrices:
+
+- **filelock** ([tox-dev/py-filelock](https://github.com/tox-dev/py-filelock)):
+  CI `os: [ubuntu-latest, macos-latest, windows-latest]`; wraps `os.replace`
+  in a Windows retry loop; guards directory fsync behind `sys.platform !=
+  'win32'`.
+- **python-dotenv** ([theskumar/python-dotenv](https://github.com/theskumar/python-dotenv)):
+  OS matrix; `set_key` has `os.replace` → `os.rename` fallback and
+  `PermissionError` handling.
+- **tomlkit** ([sdispater/tomlkit](https://github.com/sdispater/tomlkit)):
+  Windows in matrix; `_utils.py` atomic write retries on `PermissionError`.
+- **platformdirs** ([tox-dev/platformdirs](https://github.com/tox-dev/platformdirs)):
+  full three-OS matrix for platform-derived path validation.
+
 ## Pre-commit hooks
 
 Every repo ships `.pre-commit-config.yaml` with the standard set (this is the

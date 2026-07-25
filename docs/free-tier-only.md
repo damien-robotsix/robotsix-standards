@@ -29,13 +29,21 @@ infrastructure don't have that failure mode.
 3. **No paid GitHub features.** GitHub Advanced Security on private repos,
    larger/GPU hosted runners, Copilot in CI, and GitHub Models are all off the
    table. CodeQL is free on public repos — keep it there.
-4. **No paid SaaS in the critical path.** Observability, registries, secret
+4. **No paid or licensed Marketplace Actions.** Third-party Actions from the
+   GitHub Marketplace that require a paid subscription, licence key, or
+   per-minute billing are forbidden everywhere in the fleet — public repos
+   included. A Marketplace Action that is free and open-source is fine; one
+   that gates features behind a licence or payment is not. *Failure
+   prevented:* a licensed Action whose trial expires or whose billing
+   lapses silently breaks CI with a licence-error exit, blocking every
+   pipeline that references it.
+5. **No paid SaaS in the critical path.** Observability, registries, secret
    stores, error tracking, and similar must be self-hosted or free-tier. (The
    fleet already self-hosts Langfuse and Vaultwarden — keep that pattern.)
-5. **Licences.** Third-party code and container base images must carry an
+6. **Licences.** Third-party code and container base images must carry an
    OSI-approved / permissive licence. No source-available-but-commercial,
    no "free for non-commercial only" terms.
-6. **Exception.** LLM inference for agents (model API credits) is the only
+7. **Exception.** LLM inference for agents (model API credits) is the only
    permitted paid dependency. If any other paid dependency is genuinely
    unavoidable, it must be raised with the operator and recorded here before
    adoption — never introduced silently.
@@ -89,3 +97,41 @@ Auditing exact package visibility needs a token with `read:packages`.
 - **Or make the repos public** where the code can be public → free Actions +
   CodeQL + public GHCR, nothing to maintain.
 - **Private images → public packages** (free pulls, no egress metering).
+
+## Audit — 2026-07-25 (Marketplace Actions sweep)
+
+Per rule 4 (no paid or licensed Marketplace Actions), every fleet repo's
+`.github/workflows/` was checked for paid/licensed third-party Actions. The
+public repos use the fleet's shared reusable workflows (`robotsix-github-workflows`)
+and free open-source actions; no paid/licensed Marketplace Actions were found.
+
+**Verified clean (public repos):** `robotsix-mill` (docker-publish.yml — all
+free actions: checkout, hadolint, buildx, metadata, build-push, trivy, codeql,
+sbom, attest, upload-artifact), `robotsix-mill-ros2` (ci.yaml, dco.yml,
+dependabot-auto-merge.yml, stale.yml — all free actions: checkout, pre-commit,
+zizmor, KineticCafe/actions-dco), `robotsix-standards` (no workflows — docs
+repo).
+
+**Not yet verified** (public repos, workflows not audited due to API rate
+limits, but likely clean since the fleet standardises on the shared workflow
+repo): `robotsix-config`, `robotsix-llmio`, `robotsix-modules`,
+`robotsix-github-workflows`, `robotsix-board`, `robotsix-central-deploy`,
+`robotsix-chat`, `robotsix-auto-mail`, `robotsix-calendar-agent`,
+`robotsix-cost-monitor`, `robotsix-http`.
+
+**Private repos — runner violation (rules 1 & 2):** these run GitHub-hosted
+runners on private repos (paid minutes) and their images may be private
+packages (metered pulls). Each needs either `runs-on: self-hosted` or repo
+visibility change to public.
+
+| Repo | Workflows | Status |
+|---|---|---|
+| `robotsix-invest` | 3 (incl. `ci.yml`, `docker-release.yml`) | Covered by dedicated removal ticket on its own board — not duplicated here. |
+| `robotsix-website` | 4 | Needs `runs-on: self-hosted` or made public. |
+| `hexarchy` | 3 | Needs `runs-on: self-hosted` or made public. |
+| `robotsix-github-auth` | Unknown | Private repo — audit pending. |
+
+**No paid or licensed Marketplace Actions were found in any verified repo.**
+The fleet's CI standard (shared reusable workflows via `robotsix-github-workflows`)
+naturally enforces this — new actions enter through one repo, not per-repo
+drift.

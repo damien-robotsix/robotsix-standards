@@ -45,6 +45,7 @@
 
 ## 0.0.0 (unreleased)
 
+- Codified "no paid or licensed Marketplace Actions" rule in the free-tier-only standard, and added a 2026-07-25 fleet audit for Marketplace Action and private-repo runner violations.
 - Standardize: Ruff high-signal lint rules — replace ARG, C4, PERF, PT with
   SIM, C4, LOG, G, ERA, PGH, RUF, PT as the recommended Tier 2 rule set.
   Remove ARG-specific per-file ignores; new rule families need none.

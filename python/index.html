@@ -667,6 +667,56 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#cross-platform-filesystem-io" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Cross-platform filesystem I/O
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Cross-platform filesystem I/O">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#ci-os-matrix" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        CI: OS matrix
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#code-guards" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Code guards
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#source-projects" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Source projects
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#pre-commit-hooks" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1824,6 +1874,56 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#cross-platform-filesystem-io" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Cross-platform filesystem I/O
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Cross-platform filesystem I/O">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#ci-os-matrix" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        CI: OS matrix
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#code-guards" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Code guards
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#source-projects" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Source projects
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#pre-commit-hooks" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2282,6 +2382,106 @@ visible directly in the CI log.</p>
     cases and cannot be extracted into a shared fixture.
   - The test is a <strong>live/integration test</strong> that exercises actual network
     calls rather than the unit-under-test with varied inputs.</p>
+<h2 id="cross-platform-filesystem-io">Cross-platform filesystem I/O<a class="headerlink" href="#cross-platform-filesystem-io" title="Permanent link">&para;</a></h2>
+<p><strong>Every Python repo that performs POSIX-specific filesystem I/O</strong> —
+<code>os.replace</code> (atomic rename), <code>os.chmod</code> (e.g. <code>0o600</code> on secret files),
+<code>os.fsync</code>, or tempfile-then-rename atomic writes — MUST:</p>
+<h3 id="ci-os-matrix">CI: OS matrix<a class="headerlink" href="#ci-os-matrix" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>Run the test suite across <code>os: [ubuntu-latest, macos-latest,
+  windows-latest]</code></strong> with <code>strategy.fail-fast: false</code> so a transient Windows
+  file-lock failure does not cancel the POSIX runs.</li>
+<li>The shared <code>python-ci.yml</code> reusable workflow exposes an <strong><code>os</code> input</strong>
+  (list, default <code>['ubuntu-latest']</code>) that OS-sensitive repos set to the full
+  three-OS list. Repos that do no filesystem I/O keep the default.</li>
+</ul>
+<p><strong>Failure mode:</strong> without a Windows CI leg, POSIX-only assumptions ship
+  silently — <code>os.chmod(path, 0o600)</code> looks like a security guarantee but is a
+  near no-op on Windows, <code>os.replace(tmp, target)</code> raises <code>PermissionError</code>
+  when the target is held open (including by antivirus), and <code>os.fsync</code> on a
+  directory fd fails with <code>EINVAL</code>.  A test suite that only runs on Linux
+  never discovers these gaps.</p>
+<h3 id="code-guards">Code guards<a class="headerlink" href="#code-guards" title="Permanent link">&para;</a></h3>
+<p><strong><code>os.chmod(path, 0o600)</code> is a near no-op on Windows</strong> — it only toggles the
+read-only bit and does not enforce owner-only access.  Any code relying on
+<code>0o600</code> as a <em>security</em> guarantee (e.g. secret files) MUST:</p>
+<ul>
+<li>Document that the restriction is POSIX-only.</li>
+<li>Wrap the call in <code>try/except OSError</code> (Windows raises on some paths).</li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="c1"># Security: 0o600 is a POSIX-only guarantee — it is a near no-op on Windows.</span>
+<span class="k">try</span><span class="p">:</span>
+    <span class="n">os</span><span class="o">.</span><span class="n">chmod</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="mo">0o600</span><span class="p">)</span>
+<span class="k">except</span> <span class="ne">OSError</span><span class="p">:</span>
+    <span class="k">pass</span>
+</code></pre></div>
+<p><strong><code>os.replace(tmp, target)</code> raises <code>PermissionError</code> on Windows</strong> when the
+target file is held open by another process (including antivirus scanners).
+Wrap the call in a short retry loop (3–5 attempts, small sleep), as filelock,
+python-dotenv, and tomlkit do:</p>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">time</span>
+
+<span class="k">for</span> <span class="n">attempt</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">):</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">tmp_path</span><span class="p">,</span> <span class="n">target_path</span><span class="p">)</span>
+        <span class="k">break</span>
+    <span class="k">except</span> <span class="ne">PermissionError</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">attempt</span> <span class="o">==</span> <span class="mi">4</span><span class="p">:</span>
+            <span class="k">raise</span>
+        <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mf">0.1</span> <span class="o">*</span> <span class="p">(</span><span class="n">attempt</span> <span class="o">+</span> <span class="mi">1</span><span class="p">))</span>
+</code></pre></div>
+<p><strong>Only <code>os.fsync</code> file descriptors, never directory fds</strong> — <code>os.fsync</code> on a
+directory file descriptor fails with <code>EINVAL</code> on Windows.  Guard directory
+fsync behind a platform check (as filelock does):</p>
+<div class="highlight"><pre><span></span><code><span class="k">if</span> <span class="n">sys</span><span class="o">.</span><span class="n">platform</span> <span class="o">!=</span> <span class="s2">&quot;win32&quot;</span><span class="p">:</span>
+    <span class="n">os</span><span class="o">.</span><span class="n">fsync</span><span class="p">(</span><span class="n">dir_fd</span><span class="p">)</span>
+</code></pre></div>
+<p><strong>Use <code>tempfile.mkstemp()</code> or <code>NamedTemporaryFile(delete=False)</code></strong> for atomic
+writes — Windows' delete-on-close semantics block <code>os.replace</code> on a
+<code>NamedTemporaryFile</code> with <code>delete=True</code>.  Create the tempfile with
+<code>delete=False</code>, write and fsync it, then <code>os.replace</code> it onto the target
+(using the retry loop above), and finally <code>os.unlink</code> the tempfile if the
+rename succeeded (a no-op — the file was already moved).</p>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">tempfile</span>
+
+<span class="n">fd</span><span class="p">,</span> <span class="n">tmp_path</span> <span class="o">=</span> <span class="n">tempfile</span><span class="o">.</span><span class="n">mkstemp</span><span class="p">(</span><span class="nb">dir</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">target_path</span><span class="p">))</span>
+<span class="k">try</span><span class="p">:</span>
+    <span class="k">with</span> <span class="n">os</span><span class="o">.</span><span class="n">fdopen</span><span class="p">(</span><span class="n">fd</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+        <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">content</span><span class="p">)</span>
+        <span class="n">f</span><span class="o">.</span><span class="n">flush</span><span class="p">()</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">fsync</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">fileno</span><span class="p">())</span>  <span class="c1"># fd fsync, not directory — safe on Windows</span>
+    <span class="c1"># os.replace with retry (see above)</span>
+    <span class="n">_atomic_replace</span><span class="p">(</span><span class="n">tmp_path</span><span class="p">,</span> <span class="n">target_path</span><span class="p">)</span>
+<span class="k">finally</span><span class="p">:</span>
+    <span class="c1"># If the replace succeeded the tempfile is already moved; unlink is a no-op.</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">unlink</span><span class="p">(</span><span class="n">tmp_path</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">FileNotFoundError</span><span class="p">:</span>
+        <span class="k">pass</span>
+</code></pre></div>
+<p><strong>Failure mode:</strong> without these guards, a Python package that works correctly
+on Linux and macOS fails at runtime on Windows with <code>PermissionError</code>
+(antivirus scanner opens the target during <code>os.replace</code>) or <code>OSError:
+[Errno 22] Invalid argument</code> (<code>os.fsync</code> on a directory fd).  A developer who
+does not have a Windows machine cannot debug these failures — the guards are
+the only defence.</p>
+<h3 id="source-projects">Source projects<a class="headerlink" href="#source-projects" title="Permanent link">&para;</a></h3>
+<p>These patterns are drawn from mature OSS projects that maintain full
+three-OS CI matrices:</p>
+<ul>
+<li><strong>filelock</strong> (<a href="https://github.com/tox-dev/py-filelock">tox-dev/py-filelock</a>):
+  CI <code>os: [ubuntu-latest, macos-latest, windows-latest]</code>; wraps <code>os.replace</code>
+  in a Windows retry loop; guards directory fsync behind <code>sys.platform !=
+  'win32'</code>.</li>
+<li><strong>python-dotenv</strong> (<a href="https://github.com/theskumar/python-dotenv">theskumar/python-dotenv</a>):
+  OS matrix; <code>set_key</code> has <code>os.replace</code> → <code>os.rename</code> fallback and
+  <code>PermissionError</code> handling.</li>
+<li><strong>tomlkit</strong> (<a href="https://github.com/sdispater/tomlkit">sdispater/tomlkit</a>):
+  Windows in matrix; <code>_utils.py</code> atomic write retries on <code>PermissionError</code>.</li>
+<li><strong>platformdirs</strong> (<a href="https://github.com/tox-dev/platformdirs">tox-dev/platformdirs</a>):
+  full three-OS matrix for platform-derived path validation.</li>
+</ul>
 <h2 id="pre-commit-hooks">Pre-commit hooks<a class="headerlink" href="#pre-commit-hooks" title="Permanent link">&para;</a></h2>
 <p>Every repo ships <code>.pre-commit-config.yaml</code> with the standard set (this is the
 fleet's converged practice, not a minimum to improvise beyond).

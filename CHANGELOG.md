@@ -45,6 +45,7 @@
 
 ## 0.0.0 (unreleased)
 
+- Re-remove docstring_coverage periodic agent (accidentally re-created after correct removal in #20260724T181101Z).  The repo declares `languages: [markdown]` and has no Python source to scan, making the agent a perpetual no-op.
 - **Python practices:** add 'Cross-platform filesystem I/O' section — OS matrix CI (`ubuntu-latest`, `macos-latest`, `windows-latest` with `fail-fast: false`), code guards for POSIX-only semantics (`os.chmod`, `os.replace` retry loop, `os.fsync` fd-only, `tempfile.mkstemp` atomic writes), citing filelock, python-dotenv, tomlkit, and platformdirs as source projects.
 - Add Prose linting (`prose-linting.md`) to the mkdocs.yml nav under 'Every repo'.
 - pre-commit: add Vale prose-linting hooks after codespell (20260725T043020Z-add-vale-hooks-to-pre-commit-config-yaml-95fd)

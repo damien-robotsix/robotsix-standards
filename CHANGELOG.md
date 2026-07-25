@@ -45,6 +45,7 @@
 
 ## 0.0.0 (unreleased)
 
+- Add Prose linting (`prose-linting.md`) to the mkdocs.yml nav under 'Every repo'.
 - pre-commit: add Vale prose-linting hooks after codespell (20260725T043020Z-add-vale-hooks-to-pre-commit-config-yaml-95fd)
 - New standard page: [Prose linting](docs/prose-linting.md) — Vale prose linter for style, readability, and fleet-specific vocabulary consistency, integrated through the existing pre-commit pipeline.
 - Enable survey periodic workflow (`.robotsix-mill/periodic/survey.yaml`) to discover similar open-source standards projects and propose improvements.

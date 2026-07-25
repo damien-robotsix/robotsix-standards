@@ -12,7 +12,8 @@ errors, and deprecated inline-HTML patterns accumulate over time. The
 fleet publishes docs sites with `mkdocs build --strict` (see
 [MkDocs build integrity](mkdocs-build.md)), which catches structural MkDocs
 errors but does not enforce prose style, heading consistency, or spelling —
-those gaps are filled by the two hooks below.
+those gaps are filled by the two hooks below (and the prose-style gap
+is covered separately by [Vale prose linting](prose-linting.md)).
 
 ## Pre-commit hooks
 

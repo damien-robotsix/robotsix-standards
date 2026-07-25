@@ -37,6 +37,7 @@ the default.
 | [Docstring convention](docs/docstrings.md) | Python docstring style and coverage rules for all public modules, classes, and functions. |
 | [Hypothesis testing](docs/hypothesis.md) | Property-based testing profiles, shared strategies module, and CI integration for repos that use Hypothesis. |
 | [Markdown linting](docs/markdown-linting.md) | markdownlint-cli2 and codespell pre-commit hooks for every repo that publishes MkDocs documentation. |
+| [Prose linting](docs/prose-linting.md) | Vale prose linter for style, readability, and fleet-specific vocabulary consistency — integrated through the existing pre-commit pipeline. |
 | [MkDocs build integrity](docs/mkdocs-build.md) | Strict mode build gating and link-validation configuration for every MkDocs site. |
 | [Python practices](docs/python.md) | uv, hatchling, `requires-python`, lint/type/security gates, test layout, pre-commit hooks. |
 | [Pytest practices](docs/pytest.md) | Pytest strictness configuration — `filterwarnings`, `xfail_strict`, `--strict-markers`, and `--strict-config` — so every test suite fails loudly on deprecations, unregistered markers, and stale xfails. |

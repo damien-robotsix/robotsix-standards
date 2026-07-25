@@ -45,6 +45,7 @@
 
 ## 0.0.0 (unreleased)
 
+- New standard page: [Prose linting](docs/prose-linting.md) — Vale prose linter for style, readability, and fleet-specific vocabulary consistency, integrated through the existing pre-commit pipeline.
 - Enable survey periodic workflow (`.robotsix-mill/periodic/survey.yaml`) to discover similar open-source standards projects and propose improvements.
 - Codified "no paid or licensed Marketplace Actions" rule in the free-tier-only standard, and added a 2026-07-25 fleet audit for Marketplace Action and private-repo runner violations.
 - Standardize: Ruff high-signal lint rules — replace ARG, C4, PERF, PT with

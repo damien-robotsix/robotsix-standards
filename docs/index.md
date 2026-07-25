@@ -40,6 +40,9 @@ everywhere.
   shared strategies, and CI integration for repos that use Hypothesis.
 - **[Markdown linting](markdown-linting.md)** — markdownlint-cli2 and codespell
   pre-commit hooks for every repo that publishes MkDocs documentation.
+- **[Prose linting](prose-linting.md)** — Vale prose linter for style,
+  readability, and fleet-specific vocabulary consistency — integrated
+  through the existing pre-commit pipeline.
 - **[MkDocs build integrity](mkdocs-build.md)** — strict mode build gating
   and link-validation configuration for every MkDocs site.
 - **[Python practices](python.md)** — uv, hatchling, `requires-python` policy,

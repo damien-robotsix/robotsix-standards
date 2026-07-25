@@ -1571,6 +1571,9 @@
 </ul>
 <h2 id="000-unreleased">0.0.0 (unreleased)<a class="headerlink" href="#000-unreleased" title="Permanent link">&para;</a></h2>
 <ul>
+<li>Standardize: Ruff high-signal lint rules — replace ARG, C4, PERF, PT with
+  SIM, C4, LOG, G, ERA, PGH, RUF, PT as the recommended Tier 2 rule set.
+  Remove ARG-specific per-file ignores; new rule families need none.</li>
 <li>New standard page: <a href="../pre-commit-baseline/">Pre-commit baseline</a> — five zero-config file-hygiene hooks (<code>trailing-whitespace</code>, <code>end-of-file-fixer</code>, <code>check-yaml</code>, <code>check-toml</code>, <code>check-added-large-files</code>) for every Python repo.</li>
 <li>Re-create <code>.robotsix-mill/periodic/docstring_coverage.yaml</code> periodic workflow that was merged but missing from the tree.</li>
 <li>New <strong><a href="../python-makefile-convention/">Python Makefile convention</a></strong> — standard

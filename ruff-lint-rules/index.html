@@ -619,10 +619,10 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#arg-flake8-unused-arguments" class="md-nav__link">
+  <a href="#sim-flake8-simplify" class="md-nav__link">
     <span class="md-ellipsis">
       
-        ARG — flake8-unused-arguments
+        SIM — flake8-simplify
       
     </span>
   </a>
@@ -641,10 +641,54 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#perf-perflint" class="md-nav__link">
+  <a href="#log-flake8-logging" class="md-nav__link">
     <span class="md-ellipsis">
       
-        PERF — perflint
+        LOG — flake8-logging
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#g-flake8-logging-format" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        G — flake8-logging-format
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#era-eradicate" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ERA — eradicate
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pgh-pygrep-hooks" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        PGH — pygrep-hooks
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ruf-ruff-specific-rules" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        RUF — ruff-specific rules
       
     </span>
   </a>
@@ -1620,10 +1664,10 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#arg-flake8-unused-arguments" class="md-nav__link">
+  <a href="#sim-flake8-simplify" class="md-nav__link">
     <span class="md-ellipsis">
       
-        ARG — flake8-unused-arguments
+        SIM — flake8-simplify
       
     </span>
   </a>
@@ -1642,10 +1686,54 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#perf-perflint" class="md-nav__link">
+  <a href="#log-flake8-logging" class="md-nav__link">
     <span class="md-ellipsis">
       
-        PERF — perflint
+        LOG — flake8-logging
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#g-flake8-logging-format" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        G — flake8-logging-format
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#era-eradicate" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ERA — eradicate
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pgh-pygrep-hooks" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        PGH — pygrep-hooks
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ruf-ruff-specific-rules" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        RUF — ruff-specific rules
       
     </span>
   </a>
@@ -1754,29 +1842,30 @@
 <p><strong>Scope: every Python repository.</strong> These rules extend the baseline ruff
 configuration (see <a href="../python/#lint-types-and-security-lint">Python practices</a>)
 with a shared set of Tier 2 rule families. Every Python repo SHOULD adopt
-them; the per-file ignores and the PT006 exclusion are the recommended
-defaults.</p>
+them; the PT006 exclusion is the recommended default.</p>
 </blockquote>
 <h2 id="why-this-exists">Why this exists<a class="headerlink" href="#why-this-exists" title="Permanent link">&para;</a></h2>
 <p>The fleet's baseline ruff configuration — E, F, I, W, S — catches
 correctness errors, import order, and basic security anti-patterns.
 But repos that also enable Tier 2 rule families (Pydantic, FastAPI, httpx)
-catch more: dead parameters, non-idiomatic comprehensions, performance
-anti-patterns, and inconsistent pytest style. Without a shared convention,
+catch more: over-complicated code, non-idiomatic comprehensions, logging
+mistakes, commented-out dead code, and inconsistent pytest style. Without a shared convention,
 each repo independently discovers and configures these rules, leading to
 inconsistent code quality enforcement across projects.</p>
-<p>This standard defines one recommended Tier 2 set — ARG, C4, PERF, PT —
-with per-file ignores and one deliberate exclusion (PT006), so every repo
-gets the same coverage without reinventing the decision.</p>
+<p>This standard defines one recommended Tier 2 set — SIM, C4, LOG, G, ERA,
+PGH, RUF, PT — with one deliberate exclusion (PT006), so every repo gets
+the same coverage without reinventing the decision.</p>
 <h2 id="rule-families">Rule families<a class="headerlink" href="#rule-families" title="Permanent link">&para;</a></h2>
-<h3 id="arg-flake8-unused-arguments">ARG — flake8-unused-arguments<a class="headerlink" href="#arg-flake8-unused-arguments" title="Permanent link">&para;</a></h3>
-<p>Catches unused function parameters that confuse readers and accumulate
-cruft. Near-zero false positives in production code when suppressed in
-tests.</p>
-<p><strong>Failure prevented:</strong> a parameter that was once used, then the logic
-that consumed it was removed, but the signature was never cleaned up.
-Every caller still passes it, every reader still studies it, and nobody
-knows it's dead.</p>
+<h3 id="sim-flake8-simplify">SIM — flake8-simplify<a class="headerlink" href="#sim-flake8-simplify" title="Permanent link">&para;</a></h3>
+<p>Catches over-complicated code that can be expressed more simply —
+nested <code>if</code> blocks that collapse to a single condition, <code>yoda</code>
+conditions (<code>"value" == variable</code>), redundant <code>if-else</code> assignments,
+and verbose context-manager patterns.</p>
+<p><strong>Failure prevented:</strong> code that works but is harder to read and
+review than necessary — a triple-nested <code>if</code> where a single boolean
+expression is equivalent, or a <code>for</code>-loop accumulator that the
+stdlib already provides as a one-liner. Simplifications make
+intent clearer and reduce the surface for off-by-one errors.</p>
 <h3 id="c4-flake8-comprehensions">C4 — flake8-comprehensions<a class="headerlink" href="#c4-flake8-comprehensions" title="Permanent link">&para;</a></h3>
 <p>Encourages idiomatic comprehensions — e.g. <code>list(x for x in ...)</code> →
 <code>[x for x in ...]</code>, <code>dict((k, v) for k, v in ...)</code> → <code>{k: v for k, v
@@ -1785,14 +1874,47 @@ in ...}</code>.</p>
 (<code>list(...)</code>, <code>dict(...)</code>, <code>set(...)</code>) add a function-call frame and are
 slower than the equivalent comprehension syntax. The comprehension form
 is also the standard idiom readers expect.</p>
-<h3 id="perf-perflint">PERF — perflint<a class="headerlink" href="#perf-perflint" title="Permanent link">&para;</a></h3>
-<p>Catches micro-performance issues like redundant <code>.keys()</code> calls on dicts
-(<code>d.keys() | other.keys()</code> can be <code>d | other</code>), unnecessary <code>.copy()</code>
-calls, and inefficient membership tests.</p>
-<p><strong>Failure prevented:</strong> performance anti-patterns that are individually
-cheap but accumulate across hot paths — a <code>.keys()</code> call in a loop that
-runs thousands of times, or an <code>O(n)</code> list membership test where a set
-would be <code>O(1)</code>.</p>
+<h3 id="log-flake8-logging">LOG — flake8-logging<a class="headerlink" href="#log-flake8-logging" title="Permanent link">&para;</a></h3>
+<p>Catches misuse of the stdlib <code>logging</code> module — <code>logging.warn</code> (deprecated
+in favour of <code>logging.warning</code>), <code>warnings.warn</code> with a <code>logging</code>-style
+format string, and <code>logger.exception</code> used outside an exception handler.</p>
+<p><strong>Failure prevented:</strong> logging calls that silently degrade — <code>logging.warn</code>
+exists but is deprecated and may be removed; <code>logger.exception</code> outside an
+<code>except</code> block logs a traceback with no exception, confusing operators.</p>
+<h3 id="g-flake8-logging-format">G — flake8-logging-format<a class="headerlink" href="#g-flake8-logging-format" title="Permanent link">&para;</a></h3>
+<p>Checks logging statements for <code>printf</code>-style format strings that are
+error-prone — missing arguments, extra arguments, or <code>.format()</code> calls
+that defeat lazy evaluation.</p>
+<p><strong>Failure prevented:</strong> a logging call that raises <code>ValueError</code> at runtime
+because the format string and arguments don't match, or a logging call
+that eagerly evaluates an expensive string formatting even when the log
+level is disabled.</p>
+<h3 id="era-eradicate">ERA — eradicate<a class="headerlink" href="#era-eradicate" title="Permanent link">&para;</a></h3>
+<p>Finds commented-out code blocks. Commented-out code accumulates over time
+as developers comment out old implementations "just in case" and never
+remove them.</p>
+<p><strong>Failure prevented:</strong> a codebase where 20% of lines are commented-out
+dead code that every reader must parse and wonder about — is this
+commented out because it's broken, because it's stale, or because it's
+a future feature? Version control already keeps the history.</p>
+<h3 id="pgh-pygrep-hooks">PGH — pygrep-hooks<a class="headerlink" href="#pgh-pygrep-hooks" title="Permanent link">&para;</a></h3>
+<p>Catches Python-specific anti-patterns: <code>eval()</code> calls, blanket <code># noqa</code>
+suppressions without a specific error code, and <code>os.getenv</code> or
+<code>os.environ.get</code> with no default (returns <code>None</code>, which type-checkers
+catch but runtime code often doesn't guard against).</p>
+<p><strong>Failure prevented:</strong> <code>eval()</code> is a remote-code-execution vector when
+fed untrusted input; blanket <code># noqa</code> silences ALL lint rules on a line,
+hiding future violations; <code>os.getenv</code> without a default produces <code>None</code>
+that crashes downstream string operations.</p>
+<h3 id="ruf-ruff-specific-rules">RUF — ruff-specific rules<a class="headerlink" href="#ruf-ruff-specific-rules" title="Permanent link">&para;</a></h3>
+<p>Ruff's own rule set: ambiguous unicode characters, <code>asyncio.create_task</code>
+stored without a reference (the task is garbage-collected and cancelled),
+mutable dataclass defaults, and collection-iteration while mutating.</p>
+<p><strong>Failure prevented:</strong> a dataclass field defaulting to <code>[]</code> that shares
+state across all instances (classic Python gotcha); an <code>asyncio.create_task</code>
+call whose return value is discarded, silently cancelling the task; a
+zero-width unicode character in source that looks like nothing but changes
+semantics.</p>
 <h3 id="pt-flake8-pytest-style">PT — flake8-pytest-style<a class="headerlink" href="#pt-flake8-pytest-style" title="Permanent link">&para;</a></h3>
 <p>Enforces consistent pytest patterns: <code>@pytest.fixture()</code> over
 <code>@pytest.fixture</code>, <code>@pytest.mark.xfail</code> over <code>@pytest.mark.xfail()</code>,
@@ -1805,16 +1927,16 @@ differs from <code>@pytest.fixture()</code> in a way that matters.</p>
 <p>Add to <code>pyproject.toml</code>:</p>
 <div class="highlight"><pre><span></span><code><span class="k">[tool.ruff.lint]</span>
 <span class="n">extend-select</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span>
-<span class="w">    </span><span class="s2">&quot;ARG&quot;</span><span class="p">,</span><span class="w">   </span><span class="c1"># flake8-unused-arguments</span>
+<span class="w">    </span><span class="s2">&quot;SIM&quot;</span><span class="p">,</span><span class="w">   </span><span class="c1"># flake8-simplify</span>
 <span class="w">    </span><span class="s2">&quot;C4&quot;</span><span class="p">,</span><span class="w">    </span><span class="c1"># flake8-comprehensions</span>
-<span class="w">    </span><span class="s2">&quot;PERF&quot;</span><span class="p">,</span><span class="w">  </span><span class="c1"># perflint</span>
+<span class="w">    </span><span class="s2">&quot;LOG&quot;</span><span class="p">,</span><span class="w">   </span><span class="c1"># flake8-logging</span>
+<span class="w">    </span><span class="s2">&quot;G&quot;</span><span class="p">,</span><span class="w">     </span><span class="c1"># flake8-logging-format</span>
+<span class="w">    </span><span class="s2">&quot;ERA&quot;</span><span class="p">,</span><span class="w">   </span><span class="c1"># eradicate</span>
+<span class="w">    </span><span class="s2">&quot;PGH&quot;</span><span class="p">,</span><span class="w">   </span><span class="c1"># pygrep-hooks</span>
+<span class="w">    </span><span class="s2">&quot;RUF&quot;</span><span class="p">,</span><span class="w">   </span><span class="c1"># ruff-specific rules</span>
 <span class="w">    </span><span class="s2">&quot;PT&quot;</span><span class="p">,</span><span class="w">    </span><span class="c1"># flake8-pytest-style</span>
 <span class="p">]</span>
 <span class="n">ignore</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;PT006&quot;</span><span class="p">]</span>
-
-<span class="k">[tool.ruff.lint.per-file-ignores]</span>
-<span class="s2">&quot;tests/**&quot;</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;ARG&quot;</span><span class="p">]</span><span class="w">     </span><span class="c1"># test helpers often have unused signature-matching args</span>
-<span class="s2">&quot;__init__.py&quot;</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;ARG&quot;</span><span class="p">]</span><span class="w">  </span><span class="c1"># re-exports may have unused args</span>
 </code></pre></div>
 <h3 id="pt006-exclusion">PT006 exclusion<a class="headerlink" href="#pt006-exclusion" title="Permanent link">&para;</a></h3>
 <p>PT006 (parametrize argument style) is deliberately excluded via
@@ -1833,23 +1955,23 @@ convention:</p>
 <h3 id="combining-with-the-baseline">Combining with the baseline<a class="headerlink" href="#combining-with-the-baseline" title="Permanent link">&para;</a></h3>
 <p>These rules are additive — repos that already enable the baseline
 rule set (E, F, I, W, S) add <code>extend-select</code> for the Tier 2 families.
-The per-file ignores for <code>tests/**</code> and <code>__init__.py</code> are compatible
-with the existing <code>S</code>-rule ignores documented in <a href="../python/#lint-types-and-security-lint">Python
-practices</a>.</p>
+No per-file ignores are needed for this rule set; the Tier 2 families
+have low false-positive rates across all file types.</p>
 <h2 id="migration-path">Migration path<a class="headerlink" href="#migration-path" title="Permanent link">&para;</a></h2>
 <ol>
-<li>Add <code>extend-select = ["ARG", "C4", "PERF", "PT"]</code> and
+<li>Add <code>extend-select = ["SIM", "C4", "LOG", "G", "ERA", "PGH", "RUF", "PT"]</code> and
    <code>ignore = ["PT006"]</code> to <code>[tool.ruff.lint]</code> in <code>pyproject.toml</code>.</li>
-<li>Add the per-file ignores for <code>tests/**</code> and <code>__init__.py</code>.</li>
 <li>Run <code>ruff check</code> and fix or whitelist any violations. Fleet
    experience shows typically zero to a handful of violations across
-   all four rule families.</li>
+   all rule families — SIM may flag a few over-complicated conditionals,
+   ERA may find commented-out code, and RUF may catch a mutable default.</li>
 </ol>
 <h2 id="source-references">Source references<a class="headerlink" href="#source-references" title="Permanent link">&para;</a></h2>
 <ul>
-<li><strong>Pydantic</strong> enables ARG, C4, PERF alongside E, F, I, N, UP, B, SIM,
-  RUF, PIE, T10 in its <code>pyproject.toml</code>.</li>
-<li><strong>FastAPI</strong> enables ARG, C4, PT alongside E, F, I, N, UP, B, SIM, RUF, S.</li>
+<li><strong>Pydantic</strong> enables SIM, C4, RUF alongside E, F, I, N, UP, B, ARG,
+  PERF, PIE, T10 in its <code>pyproject.toml</code>.</li>
+<li><strong>FastAPI</strong> enables SIM, C4, RUF, PT alongside E, F, I, N, UP, B, ARG, S
+  in its <code>pyproject.toml</code>.</li>
 <li><strong>httpx</strong> takes the <code>select = ["ALL"]</code> approach and ignores specific
   rules — demonstrating that broad rule coverage is the industry direction.</li>
 </ul>

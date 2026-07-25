@@ -65,7 +65,7 @@ Create `config/vocabularies/robotsix/` with two files:
 
 #### `accept.txt` — fleet-specific terms that Vale should not flag
 
-```
+```text
 robotsix
 towncrier
 central-deploy
@@ -91,7 +91,7 @@ false positive across every doc page in the repo.
 
 #### `reject.txt` — terms that must never appear in fleet documentation
 
-```
+```text
 whitelist
 blacklist
 master

@@ -51,8 +51,8 @@ everywhere.
 - **[Pytest practices](pytest.md)** — `filterwarnings = ["error"]`,
   `xfail_strict = true`, and `--strict-markers`/`--strict-config` so every test
   suite fails loudly on deprecations, unregistered markers, and stale xfails.
-- **[Ruff lint rules](ruff-lint-rules.md)** — Tier 2 ruff rule families (ARG,
-  C4, PERF, PT) with per-file ignores and the PT006 exclusion.
+- **[Ruff lint rules](ruff-lint-rules.md)** — Tier 2 ruff rule families (SIM,
+  C4, LOG, G, ERA, PGH, RUF, PT) with the PT006 exclusion.
 - **[JavaScript practices](javascript.md)** — vanilla frontend JS as static
   assets, lockfile discipline, vitest coverage floor, eslint/stylelint.
 - **[ROS 2 practices](ros2.md)** — workspace-skeleton layout, vcs2l manifest,

@@ -28,7 +28,7 @@ central-deploy is **not** a builder and **not** a compose runner. It:
    config injection, secrets. Many compose fields you'd normally set are
    therefore ignored on purpose (§7).
 
-So "make my repo deployable" is really three tasks:
+Thus "make my repo deployable" is really three tasks:
 
 - **A.** Publish an image from CI.
 - **B.** Write a contract-compliant `deploy/docker-compose.yml`.
@@ -50,8 +50,8 @@ deploy fails at pull time even with a perfect compose file.
   matching the ref in your compose.
 - central-deploy **does honor** the compose `command:` (and `entrypoint:`) —
   it is parsed and applied to each container (see the
-  [deploy contract](deploy-contract.md) §7). So a single image can back
-  multiple services that each set their own `command:`.
+  [deploy contract](deploy-contract.md) §7). A single image can therefore
+  back multiple services that each set their own `command:`.
 - Either bake a sensible default `CMD` into the image **or** set `command:` per
   service in the deploy compose. If your image is `ENTRYPOINT`-only with no
   default `CMD`, you **must** set `command:` on each service, or the container

@@ -30,7 +30,7 @@ states exactly which standards it follows and which it is exempt from, and why.
 
 ### Deploy contract (`deploy/docker-compose.yml`)
 
-There is no central-deploy above central-deploy. Its **root
+Central-deploy does not sit above another central-deploy. Its **root
 `docker-compose.yml` is the production deploy** — the one sanctioned exception
 to "the root compose is dev-only". That compose:
 

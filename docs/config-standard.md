@@ -25,8 +25,9 @@ implements it: a component defines one pydantic model and calls `load_config`.
   located by **one** environment variable, **`ROBOTSIX_CONFIG_FILE`**. That
   variable only *locates* the file (for a mounted deploy) — **it never carries
   config values**.
-- **The file is the only source of config values.** There is **no environment
-  overlay and no CLI-merge.** Config does not come from `ROBOTSIX_*` value
+- **The file is the only source of config values.** Config uses **no
+  environment overlay and no CLI-merge.** Config does not come from
+  `ROBOTSIX_*` value
   variables, from `--flag` overrides, or from any second place — only the file.
   Multiple config entry points are the main source of "why is this value what it
   is" confusion and cross-mode drift; one file removes it.
@@ -137,7 +138,7 @@ field's schema object:
   exactly as today (all settings visible).
 - **Fully editable when revealed.** Toggling "Show advanced settings" on reveals
   the advanced fields inline with their typed inputs (number, bool, dropdown,
-  etc.). There is no separate "advanced mode" form — the toggle only controls
+  etc.). No separate "advanced mode" form exists — the toggle only controls
   visibility; once visible, advanced fields are first-class settings.
 - **Backward compatible.** Omitting `advanced` from a field's schema is
   equivalent to `"advanced": false`. Existing schemas require no changes and
@@ -301,6 +302,6 @@ incrementally:
    regenerates `config/config.schema.json`, and the CI drift check confirms
    the schema is in sync. This is per-repo follow-up work — the flag is
    optional and repos can adopt it on their own schedule.
-4. There is no data migration, no breaking change, and no flag day. An
+4. No data migration, breaking change, or flag day is required. An
    unmarked field is visible; a marked field is hidden behind the toggle
    once central-deploy supports it; nothing else changes.

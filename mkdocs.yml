@@ -72,6 +72,7 @@ nav:
       - Docstring convention: docstrings.md
       - Hypothesis testing: hypothesis.md
       - Markdown linting: markdown-linting.md
+      - Prose linting: prose-linting.md
       - MkDocs build integrity: mkdocs-build.md
       - JavaScript practices: javascript.md
       - Async SQLAlchemy test fixtures: async-sqlalchemy-test-fixtures.md

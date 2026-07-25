@@ -45,6 +45,9 @@
 
 ## 0.0.0 (unreleased)
 
+- Standardize: Ruff high-signal lint rules — replace ARG, C4, PERF, PT with
+  SIM, C4, LOG, G, ERA, PGH, RUF, PT as the recommended Tier 2 rule set.
+  Remove ARG-specific per-file ignores; new rule families need none.
 - New standard page: [Pre-commit baseline](docs/pre-commit-baseline.md) — five zero-config file-hygiene hooks (`trailing-whitespace`, `end-of-file-fixer`, `check-yaml`, `check-toml`, `check-added-large-files`) for every Python repo.
 - Re-create `.robotsix-mill/periodic/docstring_coverage.yaml` periodic workflow that was merged but missing from the tree.
 - New **[Python Makefile convention](docs/python-makefile-convention.md)** — standard

@@ -15,6 +15,12 @@ dist/
 site/
 docs/CHANGELOG.md
 
+# Vale (synced content, not version-controlled)
+styles/*
+!styles/config/
+styles/config/*
+!styles/config/vocabularies
+
 # editor / OS
 .vscode/
 .idea/

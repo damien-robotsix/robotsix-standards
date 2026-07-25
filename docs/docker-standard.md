@@ -139,9 +139,9 @@ component:
   Docker Hub or any other registry — one registry across the stack, no per-repo
   registry secret to manage.
 - **Tags:** `main` (latest default-branch build), `sha-<short>`
-  (immutable/reproducible), `X.Y.Z` (on release tags). There is **no `latest`
-  tag** — it would duplicate `main` under a second name and invite unpinned
-  pulls from outside the standard.
+  (immutable/reproducible), `X.Y.Z` (on release tags). No **`latest`
+  tag** exists — it would duplicate `main` under a second name and invite
+  unpinned pulls from outside the standard.
 
 ## CI-time image scan
 

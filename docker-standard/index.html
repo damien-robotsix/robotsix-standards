@@ -1747,9 +1747,9 @@ component:</p>
   Docker Hub or any other registry — one registry across the stack, no per-repo
   registry secret to manage.</li>
 <li><strong>Tags:</strong> <code>main</code> (latest default-branch build), <code>sha-&lt;short&gt;</code>
-  (immutable/reproducible), <code>X.Y.Z</code> (on release tags). There is <strong>no <code>latest</code>
-  tag</strong> — it would duplicate <code>main</code> under a second name and invite unpinned
-  pulls from outside the standard.</li>
+  (immutable/reproducible), <code>X.Y.Z</code> (on release tags). No <strong><code>latest</code>
+  tag</strong> exists — it would duplicate <code>main</code> under a second name and invite
+  unpinned pulls from outside the standard.</li>
 </ul>
 <h2 id="ci-time-image-scan">CI-time image scan<a class="headerlink" href="#ci-time-image-scan" title="Permanent link">&para;</a></h2>
 <p>The release workflow's Trivy gate runs only when an image is published. To

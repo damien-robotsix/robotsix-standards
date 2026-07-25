@@ -1773,8 +1773,9 @@ implements it: a component defines one pydantic model and calls <code>load_confi
   located by <strong>one</strong> environment variable, <strong><code>ROBOTSIX_CONFIG_FILE</code></strong>. That
   variable only <em>locates</em> the file (for a mounted deploy) — <strong>it never carries
   config values</strong>.</li>
-<li><strong>The file is the only source of config values.</strong> There is <strong>no environment
-  overlay and no CLI-merge.</strong> Config does not come from <code>ROBOTSIX_*</code> value
+<li><strong>The file is the only source of config values.</strong> Config uses <strong>no
+  environment overlay and no CLI-merge.</strong> Config does not come from
+  <code>ROBOTSIX_*</code> value
   variables, from <code>--flag</code> overrides, or from any second place — only the file.
   Multiple config entry points are the main source of "why is this value what it
   is" confusion and cross-mode drift; one file removes it.</li>
@@ -1874,7 +1875,7 @@ field's schema object:</p>
   exactly as today (all settings visible).</li>
 <li><strong>Fully editable when revealed.</strong> Toggling "Show advanced settings" on reveals
   the advanced fields inline with their typed inputs (number, bool, dropdown,
-  etc.). There is no separate "advanced mode" form — the toggle only controls
+  etc.). No separate "advanced mode" form exists — the toggle only controls
   visibility; once visible, advanced fields are first-class settings.</li>
 <li><strong>Backward compatible.</strong> Omitting <code>advanced</code> from a field's schema is
   equivalent to <code>"advanced": false</code>. Existing schemas require no changes and
@@ -2053,7 +2054,7 @@ incrementally:</p>
    regenerates <code>config/config.schema.json</code>, and the CI drift check confirms
    the schema is in sync. This is per-repo follow-up work — the flag is
    optional and repos can adopt it on their own schedule.</li>
-<li>There is no data migration, no breaking change, and no flag day. An
+<li>No data migration, breaking change, or flag day is required. An
    unmarked field is visible; a marked field is hidden behind the toggle
    once central-deploy supports it; nothing else changes.</li>
 </ol>

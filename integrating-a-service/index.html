@@ -1841,7 +1841,7 @@ wins.</p>
    config injection, secrets. Many compose fields you'd normally set are
    therefore ignored on purpose (§7).</li>
 </ol>
-<p>So "make my repo deployable" is really three tasks:</p>
+<p>Thus "make my repo deployable" is really three tasks:</p>
 <ul>
 <li><strong>A.</strong> Publish an image from CI.</li>
 <li><strong>B.</strong> Write a contract-compliant <code>deploy/docker-compose.yml</code>.</li>
@@ -1861,8 +1861,8 @@ deploy fails at pull time even with a perfect compose file.</p>
   matching the ref in your compose.</li>
 <li>central-deploy <strong>does honor</strong> the compose <code>command:</code> (and <code>entrypoint:</code>) —
   it is parsed and applied to each container (see the
-  <a href="../deploy-contract/">deploy contract</a> §7). So a single image can back
-  multiple services that each set their own <code>command:</code>.</li>
+  <a href="../deploy-contract/">deploy contract</a> §7). A single image can therefore
+  back multiple services that each set their own <code>command:</code>.</li>
 <li>Either bake a sensible default <code>CMD</code> into the image <strong>or</strong> set <code>command:</code> per
   service in the deploy compose. If your image is <code>ENTRYPOINT</code>-only with no
   default <code>CMD</code>, you <strong>must</strong> set <code>command:</code> on each service, or the container

@@ -10,13 +10,9 @@
       
       
       
-        <link rel="canonical" href="https://damien-robotsix.github.io/robotsix-standards/markdown-linting/">
+        <link rel="canonical" href="https://damien-robotsix.github.io/robotsix-standards/prose-linting/">
       
       
-        <link rel="prev" href="../hypothesis/">
-      
-      
-        <link rel="next" href="../mkdocs-build/">
       
       
         
@@ -27,7 +23,7 @@
     
     
       
-        <title>Markdown linting - Robotsix Standards</title>
+        <title>Prose linting - Robotsix Standards</title>
       
     
     
@@ -78,7 +74,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#markdown-linting" class="md-skip">
+        <a href="#prose-linting" class="md-skip">
           Skip to content
         </a>
       
@@ -114,7 +110,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Markdown linting
+              Prose linting
             
           </span>
         </div>
@@ -311,8 +307,6 @@
       
   
   
-    
-  
   
   
     
@@ -325,11 +319,13 @@
       
     
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3" >
         
           
           <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
@@ -350,7 +346,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_3">
             <span class="md-nav__icon md-icon"></span>
             
@@ -617,37 +613,10 @@
                 
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Markdown linting
-  
-
-    
-  </span>
-  
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../markdown-linting/" class="md-nav__link">
         
   
   
@@ -663,126 +632,6 @@
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#why-this-exists" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Why this exists
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#pre-commit-hooks" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Pre-commit hooks
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Pre-commit hooks">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#markdownlint-cli2-markdown-style-enforcement" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        markdownlint-cli2 — Markdown style enforcement
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#codespell-spell-checking-for-prose" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        codespell — spell-checking for prose
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#recommended-config-files" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Recommended config files
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Recommended config files">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#markdownlint-cli2yaml" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        .markdownlint-cli2.yaml
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#toolcodespell-in-pyprojecttoml" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        [tool.codespell] in pyproject.toml
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#fleet-precedent" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Fleet precedent
-      
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -1583,14 +1432,25 @@
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Pre-commit hooks">
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Configuration
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Configuration">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#markdownlint-cli2-markdown-style-enforcement" class="md-nav__link">
+  <a href="#valeini-at-repo-root" class="md-nav__link">
     <span class="md-ellipsis">
       
-        markdownlint-cli2 — Markdown style enforcement
+        .vale.ini at repo root
       
     </span>
   </a>
@@ -1598,13 +1458,41 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#codespell-spell-checking-for-prose" class="md-nav__link">
+  <a href="#fleet-vocabulary" class="md-nav__link">
     <span class="md-ellipsis">
       
-        codespell — spell-checking for prose
+        Fleet vocabulary
       
     </span>
   </a>
+  
+    <nav class="md-nav" aria-label="Fleet vocabulary">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#accepttxt-fleet-specific-terms-that-vale-should-not-flag" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        accept.txt — fleet-specific terms that Vale should not flag
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rejecttxt-terms-that-must-never-appear-in-fleet-documentation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        reject.txt — terms that must never appear in fleet documentation
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
         
@@ -1614,41 +1502,13 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#recommended-config-files" class="md-nav__link">
+  <a href="#ci-integration" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Recommended config files
+        CI integration
       
     </span>
   </a>
-  
-    <nav class="md-nav" aria-label="Recommended config files">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#markdownlint-cli2yaml" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        .markdownlint-cli2.yaml
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#toolcodespell-in-pyprojecttoml" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        [tool.codespell] in pyproject.toml
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
   
 </li>
       
@@ -1683,98 +1543,103 @@
   
 
 
-<h1 id="markdown-linting">Markdown linting<a class="headerlink" href="#markdown-linting" title="Permanent link">&para;</a></h1>
+<h1 id="prose-linting">Prose linting<a class="headerlink" href="#prose-linting" title="Permanent link">&para;</a></h1>
 <blockquote>
-<p><strong>Scope: every Python repository that publishes MkDocs documentation.</strong>
+<p><strong>Scope: every repository that publishes MkDocs documentation.</strong>
 Repos without MkDocs (content-only repos, ROS 2 workspaces, deployment-only
 repos) are exempt.</p>
 </blockquote>
 <h2 id="why-this-exists">Why this exists<a class="headerlink" href="#why-this-exists" title="Permanent link">&para;</a></h2>
-<p>Without automated Markdown quality gates, each repo's documentation drifts
-independently: broken internal links, inconsistent heading styles, spelling
-errors, and deprecated inline-HTML patterns accumulate over time. The
-fleet publishes docs sites with <code>mkdocs build --strict</code> (see
-<a href="../mkdocs-build/">MkDocs build integrity</a>), which catches structural MkDocs
-errors but does not enforce prose style, heading consistency, or spelling —
-those gaps are filled by the two hooks below (and the prose-style gap
-is covered separately by <a href="../prose-linting/">Vale prose linting</a>).</p>
+<p><a href="../markdown-linting/">Markdown linting</a> catches syntax, heading, and spelling
+errors — but it does not enforce prose style. Without an automated prose gate,
+passive voice, weasel words, non-inclusive terminology, and misspelled product
+names accumulate silently across the fleet's documentation sites. Reviewers
+read for meaning, not for readability metrics or fleet-specific vocabulary —
+the drift is only noticed when a human happens to spot it, and by then the
+same term is often misspelled in a dozen pages.</p>
+<p><a href="https://vale.sh/">Vale</a> (MIT-licensed, <code>github.com/errata-ai/vale</code>) fills
+this gap. It is a declarative prose linter that checks for style, readability,
+and vocabulary consistency — and it integrates into the fleet's existing
+pre-commit + CI pipeline with no separate workflow.</p>
 <h2 id="pre-commit-hooks">Pre-commit hooks<a class="headerlink" href="#pre-commit-hooks" title="Permanent link">&para;</a></h2>
-<p>Add both hooks to <code>.pre-commit-config.yaml</code>. The <code>markdownlint-cli2</code> hook
-runs on every <code>.md</code> file; <code>codespell</code> runs across the entire repo.</p>
-<h3 id="markdownlint-cli2-markdown-style-enforcement"><code>markdownlint-cli2</code> — Markdown style enforcement<a class="headerlink" href="#markdownlint-cli2-markdown-style-enforcement" title="Permanent link">&para;</a></h3>
-<div class="highlight"><pre><span></span><code><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">repo</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://github.com/DavidAnson/markdownlint-cli2</span>
-<span class="w">    </span><span class="nt">rev</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">v0.17.2</span>
+<p>Add both hooks to <code>.pre-commit-config.yaml</code>. The <code>sync</code> hook fetches bundled
+styles (no separate install); the lint hook runs on every Markdown file.</p>
+<div class="highlight"><pre><span></span><code><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">repo</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://github.com/errata-ai/vale</span>
+<span class="w">    </span><span class="nt">rev</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">v3.15.1</span>
 <span class="w">    </span><span class="nt">hooks</span><span class="p">:</span>
-<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">id</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">markdownlint-cli2</span>
-<span class="w">        </span><span class="nt">args</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&quot;#fix&quot;</span><span class="p p-Indicator">]</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">id</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">vale</span>
+<span class="w">        </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">vale sync</span>
+<span class="w">        </span><span class="nt">pass_filenames</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
+<span class="w">        </span><span class="nt">args</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">sync</span><span class="p p-Indicator">]</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">id</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">vale</span>
+<span class="w">        </span><span class="nt">args</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">--output=line</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">--minAlertLevel=error</span><span class="p p-Indicator">]</span>
 </code></pre></div>
-<p><strong>The <code>#fix</code> arg is optional.</strong> When present it auto-fixes fixable violations
-on commit. Remove it if you prefer to fix manually — the CI job still runs
-the check and fails on any violation.</p>
-<h3 id="codespell-spell-checking-for-prose"><code>codespell</code> — spell-checking for prose<a class="headerlink" href="#codespell-spell-checking-for-prose" title="Permanent link">&para;</a></h3>
-<div class="highlight"><pre><span></span><code><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">repo</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://github.com/codespell-project/codespell</span>
-<span class="w">    </span><span class="nt">rev</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">v2.4.1</span>
-<span class="w">    </span><span class="nt">hooks</span><span class="p">:</span>
-<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">id</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">codespell</span>
-<span class="w">        </span><span class="nt">args</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&quot;--ignore-words-list&quot;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&quot;hist,ist,te,nd&quot;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&quot;--skip&quot;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&quot;*.lock,uv.lock,*.css,*.map,*.min.*,.git/,node_modules/,site/,vendor/&quot;</span><span class="p p-Indicator">]</span>
+<p><strong>Failure mode prevented:</strong> docs-sites that pass <code>mkdocs build --strict</code> but
+ship with passive-voice walls, filler phrases ("easily", "just", "simply"),
+outdated terminology, and misspelled fleet product names — all of which
+degrade the reader's trust and the fleet's professional surface.</p>
+<h2 id="configuration">Configuration<a class="headerlink" href="#configuration" title="Permanent link">&para;</a></h2>
+<h3 id="valeini-at-repo-root"><code>.vale.ini</code> at repo root<a class="headerlink" href="#valeini-at-repo-root" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="na">StylesPath</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">styles</span>
+<span class="na">MinAlertLevel</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">error</span>
+
+<span class="na">Packages</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">write-good</span>
+
+<span class="k">[*.md]</span>
+<span class="na">BasedOnStyles</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">Vale, write-good, robotsix</span>
 </code></pre></div>
-<p><strong>Failure mode prevented:</strong> misspelled words in documentation and comments
-that survive review because reviewers read for meaning, not spelling.</p>
-<h2 id="recommended-config-files">Recommended config files<a class="headerlink" href="#recommended-config-files" title="Permanent link">&para;</a></h2>
-<h3 id="markdownlint-cli2yaml"><code>.markdownlint-cli2.yaml</code><a class="headerlink" href="#markdownlint-cli2yaml" title="Permanent link">&para;</a></h3>
-<p>Create this file at the repo root:</p>
-<div class="highlight"><pre><span></span><code><span class="c1"># .markdownlint-cli2.yaml</span>
-<span class="nt">default</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
-
-<span class="nt">MD013</span><span class="p">:</span>
-<span class="w">  </span><span class="nt">line_length</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">120</span>
-<span class="w">  </span><span class="nt">code_blocks</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span><span class="w">      </span><span class="c1"># long code lines in docs</span>
-<span class="w">  </span><span class="nt">tables</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span><span class="w">           </span><span class="c1"># table cells exceed line length</span>
-
-<span class="nt">MD024</span><span class="p">:</span>
-<span class="w">  </span><span class="nt">allow_different_nesting</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span><span class="w">   </span><span class="c1"># repeated headings under different parents</span>
-
-<span class="nt">MD033</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span><span class="w">              </span><span class="c1"># inline HTML for mkdocs-material admonitions, image sizing</span>
-
-<span class="nt">MD041</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span><span class="w">              </span><span class="c1"># docs pages start with frontmatter, not H1</span>
-
-<span class="nt">MD046</span><span class="p">:</span>
-<span class="w">  </span><span class="nt">style</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;fenced&quot;</span><span class="w">         </span><span class="c1"># enforce fenced code blocks, not indented</span>
+<p><strong>The <code>StylesPath</code> directory (<code>styles/</code>) is gitignored</strong> — <code>vale sync</code>
+regenerates it from the declared packages. Only the vocabulary files
+(in <code>config/vocabularies/</code>) are version-controlled.</p>
+<h3 id="fleet-vocabulary">Fleet vocabulary<a class="headerlink" href="#fleet-vocabulary" title="Permanent link">&para;</a></h3>
+<p>Create <code>config/vocabularies/robotsix/</code> with two files:</p>
+<h4 id="accepttxt-fleet-specific-terms-that-vale-should-not-flag"><code>accept.txt</code> — fleet-specific terms that Vale should not flag<a class="headerlink" href="#accepttxt-fleet-specific-terms-that-vale-should-not-flag" title="Permanent link">&para;</a></h4>
+<div class="highlight"><pre><span></span><code>robotsix
+towncrier
+central-deploy
+mkdocs
+langfuse
+llmio
+semgrep
+trufflehog
+dependabot
+pre-commit
+pydantic
+hatchling
+codespell
+markdownlint
+vitest
+rosdep
+colcon
 </code></pre></div>
-<p>Each rule override states the failure it prevents:</p>
-<ul>
-<li><strong>MD013 (line length):</strong> code blocks and tables routinely exceed 80 or 120
-  characters; silencing them avoids noise without losing heading/paragraph
-  line-length enforcement.</li>
-<li><strong>MD024 (duplicate headings):</strong> MkDocs generates anchor slugs from heading
-  text; identical headings under different parent sections are valid and
-  common (e.g. "Usage" under both "CLI" and "Library").</li>
-<li><strong>MD033 (no inline HTML):</strong> mkdocs-material admonitions (<code>!!! note</code>) and
-  image-sizing attributes require inline HTML; a blanket ban breaks the
-  theme.</li>
-<li><strong>MD041 (first line is H1):</strong> docs pages in MkDocs Material repos
-  frequently start with YAML frontmatter (<code>---</code>), not an H1.</li>
-<li><strong>MD046 (code block style):</strong> fenced blocks (<code>```</code>) are the fleet
-  convention; indented blocks are ambiguous with list items.</li>
-</ul>
-<h3 id="toolcodespell-in-pyprojecttoml"><code>[tool.codespell]</code> in <code>pyproject.toml</code><a class="headerlink" href="#toolcodespell-in-pyprojecttoml" title="Permanent link">&para;</a></h3>
-<div class="highlight"><pre><span></span><code><span class="k">[tool.codespell]</span>
-<span class="n">skip</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;*.lock,*.css,*.map,*.min.*,.git/,node_modules/,uv.lock,LICENSE,site/,vendor/&quot;</span>
-<span class="n">ignore-words-list</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;hist,ist,te,nd&quot;</span>
-<span class="n">check-filenames</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">true</span>
+<p>Each term is a fleet product, tool, or framework name that spell-check and
+style rules would otherwise flag as errors. Adding them here suppresses the
+false positive across every doc page in the repo.</p>
+<h4 id="rejecttxt-terms-that-must-never-appear-in-fleet-documentation"><code>reject.txt</code> — terms that must never appear in fleet documentation<a class="headerlink" href="#rejecttxt-terms-that-must-never-appear-in-fleet-documentation" title="Permanent link">&para;</a></h4>
+<div class="highlight"><pre><span></span><code>whitelist
+blacklist
+master
+slave
+sanity check
+dummy
 </code></pre></div>
-<p><strong>Failure mode prevented:</strong> <code>codespell</code> without skip patterns scans lock
-files, minified JS/CSS, and vendored code — producing false-positive noise
-that trains contributors to ignore the hook.</p>
+<p>These terms have well-established inclusive replacements (<code>allowlist</code>,
+<code>blocklist</code>, <code>primary</code>/<code>replica</code>, <code>consistency check</code>, <code>placeholder</code>). Vale
+flags every occurrence so they are caught before review.</p>
+<h2 id="ci-integration">CI integration<a class="headerlink" href="#ci-integration" title="Permanent link">&para;</a></h2>
+<p>No separate workflow is needed — <code>pre-commit run --all-files</code> executes Vale
+as part of the standard pre-commit CI gate (see
+<a href="../pre-commit-baseline/">Pre-commit baseline</a>). The <code>sync</code> hook runs first
+to pull the bundled styles, then the lint hook checks all Markdown files
+at the <code>error</code> severity level.</p>
 <h2 id="fleet-precedent">Fleet precedent<a class="headerlink" href="#fleet-precedent" title="Permanent link">&para;</a></h2>
 <ul>
-<li><strong>pydantic/pydantic</strong> (the leading Python validation library in the
-  FastAPI ecosystem) uses both <code>markdownlint-cli2</code> and <code>codespell</code> in its
-  <code>.pre-commit-config.yaml</code> — this is a proven, battle-tested combination.</li>
-<li>The ROS 2 fleet already runs <code>markdownlint</code> and <code>codespell</code> via a justfile;
-  this standard brings the same gates to every Python repo via the shared
-  pre-commit mechanism (see <a href="../ros2/">ROS 2 practices</a> for the ROS 2
-  fleet's equivalent).</li>
+<li>Major Python OSS documentation projects (including <code>pydantic/pydantic</code> and
+  <code>encode/httpx</code>) use Vale for prose consistency — the same declarative
+  style-checking pattern, integrated through pre-commit.</li>
+<li>The fleet's own <a href="../markdown-linting/">Markdown linting</a> standard already
+  acknowledges the prose-style gap — this standard fills it with an OSS tool
+  that slots into the existing pre-commit + CI pipeline.</li>
 </ul>
 
 

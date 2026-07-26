@@ -53,7 +53,9 @@ component could have applied the change live; or worse, the same setting
 drifts between the deploy UI and the component's own config because both
 channels are open.
 
-## Deploy-plane config — explicit allowlist {#deploy-plane-allowlist}
+<a id="deploy-plane-allowlist"></a>
+
+## Deploy-plane config — explicit allowlist
 
 Only these categories belong in the central-deploy UI. Anything not listed
 here MUST live in the component's own config surface.

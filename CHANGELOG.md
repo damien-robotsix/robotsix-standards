@@ -45,6 +45,7 @@
 
 ## 0.0.0 (unreleased)
 
+- Add explicit "Two invariants" section to config-ownership page: deploy-plane exclusivity (only non-internalisable settings in the deploy UI) and cross-UI uniformity (every UI presents identical component-owned fields from the one committed schema).
 - Re-remove docstring_coverage periodic agent (accidentally re-created after correct removal in #20260724T181101Z).  The repo declares `languages: [markdown]` and has no Python source to scan, making the agent a perpetual no-op.
 - **Python practices:** add 'Cross-platform filesystem I/O' section — OS matrix CI (`ubuntu-latest`, `macos-latest`, `windows-latest` with `fail-fast: false`), code guards for POSIX-only semantics (`os.chmod`, `os.replace` retry loop, `os.fsync` fd-only, `tempfile.mkstemp` atomic writes), citing filelock, python-dotenv, tomlkit, and platformdirs as source projects.
 - Add Prose linting (`prose-linting.md`) to the mkdocs.yml nav under 'Every repo'.

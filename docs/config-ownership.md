@@ -8,6 +8,34 @@
 > in both places. See the [component standard](component-standard.md) and
 > [config standard](config-standard.md) for the surrounding contracts.
 
+## Two invariants
+
+Two rules govern every setting's placement and presentation. They are
+non-negotiable — a component that violates either is out of compliance.
+The detailed sections that follow enforce both; this section names them
+so the contract is visible at a glance.
+
+### 1. Deploy-plane exclusivity
+
+Only settings the component **cannot** handle internally belong in the
+deploy UI — the explicit [deploy-plane allowlist](#deploy-plane-allowlist) (image/tag,
+volume mounts, ports, resource limits, `ROBOTSIX_CONFIG_FILE`, restart
+policy, and third-party `EnvStore` slots). Everything the component
+can apply at runtime from its own `config/config.json` is component-owned
+and MUST NOT appear in the deploy UI.
+
+### 2. Cross-UI uniformity
+
+Every UI associated with the component — the component's own
+[Settings panel](#standard-ui-affordance), the central-deploy Configure UI,
+and any future UI — MUST present and edit the identical set of
+component-owned fields from the one committed `config/config.schema.json`,
+with identical typed inputs, identical secret masking and merge-on-write
+semantics, and identical validation. No UI may expose a component-owned setting the others hide, and no UI may
+carry a setting outside the [deploy-plane allowlist](#deploy-plane-allowlist).
+The [standard HTTP config surface](#standard-http-config-surface) is the
+single integration point that makes this uniformity possible.
+
 ## The rule
 
 One question decides:
@@ -25,7 +53,7 @@ component could have applied the change live; or worse, the same setting
 drifts between the deploy UI and the component's own config because both
 channels are open.
 
-## Deploy-plane config — explicit allowlist
+## Deploy-plane config — explicit allowlist {#deploy-plane-allowlist}
 
 Only these categories belong in the central-deploy UI. Anything not listed
 here MUST live in the component's own config surface.

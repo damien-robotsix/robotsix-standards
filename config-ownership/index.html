@@ -1021,6 +1021,45 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
+  <a href="#two-invariants" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Two invariants
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Two invariants">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-deploy-plane-exclusivity" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Deploy-plane exclusivity
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-cross-ui-uniformity" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Cross-UI uniformity
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#the-rule" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1032,7 +1071,7 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#deploy-plane-config-explicit-allowlist" class="md-nav__link">
+  <a href="#deploy-plane-allowlist" class="md-nav__link">
     <span class="md-ellipsis">
       
         Deploy-plane config — explicit allowlist
@@ -1664,6 +1703,45 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
+  <a href="#two-invariants" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Two invariants
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Two invariants">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-deploy-plane-exclusivity" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Deploy-plane exclusivity
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-cross-ui-uniformity" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Cross-UI uniformity
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#the-rule" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1675,7 +1753,7 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#deploy-plane-config-explicit-allowlist" class="md-nav__link">
+  <a href="#deploy-plane-allowlist" class="md-nav__link">
     <span class="md-ellipsis">
       
         Deploy-plane config — explicit allowlist
@@ -1865,6 +1943,28 @@ never has to guess where a setting belongs — and so that no setting lives
 in both places. See the <a href="../component-standard/">component standard</a> and
 <a href="../config-standard/">config standard</a> for the surrounding contracts.</p>
 </blockquote>
+<h2 id="two-invariants">Two invariants<a class="headerlink" href="#two-invariants" title="Permanent link">&para;</a></h2>
+<p>Two rules govern every setting's placement and presentation. They are
+non-negotiable — a component that violates either is out of compliance.
+The detailed sections that follow enforce both; this section names them
+so the contract is visible at a glance.</p>
+<h3 id="1-deploy-plane-exclusivity">1. Deploy-plane exclusivity<a class="headerlink" href="#1-deploy-plane-exclusivity" title="Permanent link">&para;</a></h3>
+<p>Only settings the component <strong>cannot</strong> handle internally belong in the
+deploy UI — the explicit <a href="#deploy-plane-allowlist">deploy-plane allowlist</a> (image/tag,
+volume mounts, ports, resource limits, <code>ROBOTSIX_CONFIG_FILE</code>, restart
+policy, and third-party <code>EnvStore</code> slots). Everything the component
+can apply at runtime from its own <code>config/config.json</code> is component-owned
+and MUST NOT appear in the deploy UI.</p>
+<h3 id="2-cross-ui-uniformity">2. Cross-UI uniformity<a class="headerlink" href="#2-cross-ui-uniformity" title="Permanent link">&para;</a></h3>
+<p>Every UI associated with the component — the component's own
+<a href="#standard-ui-affordance">Settings panel</a>, the central-deploy Configure UI,
+and any future UI — MUST present and edit the identical set of
+component-owned fields from the one committed <code>config/config.schema.json</code>,
+with identical typed inputs, identical secret masking and merge-on-write
+semantics, and identical validation. No UI may expose a component-owned setting the others hide, and no UI may
+carry a setting outside the <a href="#deploy-plane-allowlist">deploy-plane allowlist</a>.
+The <a href="#standard-http-config-surface">standard HTTP config surface</a> is the
+single integration point that makes this uniformity possible.</p>
 <h2 id="the-rule">The rule<a class="headerlink" href="#the-rule" title="Permanent link">&para;</a></h2>
 <p>One question decides:</p>
 <p><strong>Can the service apply this setting at runtime from its own config file?</strong></p>
@@ -1877,7 +1977,7 @@ UI, redeploys the container, and waits for the restart cycle when the
 component could have applied the change live; or worse, the same setting
 drifts between the deploy UI and the component's own config because both
 channels are open.</p>
-<h2 id="deploy-plane-config-explicit-allowlist">Deploy-plane config — explicit allowlist<a class="headerlink" href="#deploy-plane-config-explicit-allowlist" title="Permanent link">&para;</a></h2>
+<h2 id="deploy-plane-allowlist">Deploy-plane config — explicit allowlist<a class="headerlink" href="#deploy-plane-allowlist" title="Permanent link">&para;</a></h2>
 <p>Only these categories belong in the central-deploy UI. Anything not listed
 here MUST live in the component's own config surface.</p>
 <table>

@@ -121,6 +121,7 @@
 
 ## 0.0.0 (unreleased)
 
+- Added "Workflow permissions" rule to repo-baseline: every `.github/workflows/*.yml` must use `permissions: {}` at the workflow level with scoped per-job `permissions:` blocks (least-privilege pattern).
 - Document `check-case-conflict` pre-commit hook in `docs/python.md` file-checks list, matching its presence in `.pre-commit-config.yaml`.
 - Fleet-wide config-ownership audit: classify every deployable component against the [config-ownership standard](docs/config-ownership.md), file remediation tickets for `robotsix-auto-mail` and `robotsix-cost-monitor`, and list `robotsix-chat` and `robotsix-calendar-agent` as compliant.
 - Add explicit "Two invariants" section to config-ownership page: deploy-plane exclusivity (only non-internalisable settings in the deploy UI) and cross-UI uniformity (every UI presents identical component-owned fields from the one committed schema).

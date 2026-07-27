@@ -1,12 +1,18 @@
 
-
 <!-- towncrier release notes start -->
 
 # robotsix-standards 0.2.0 (2026-07-27)
 
 ## Added
 
-- Add the **Free-tier-only (no paid services)** standard: the fleet runs on free/OSS tooling only — the sole permitted paid dependency is LLM agent inference. Codifies that Actions must run on a free tier (public repo or self-hosted runner, never private + GitHub-hosted paid minutes), container images must be public packages or self-hosted, and no paid GitHub features (Advanced Security on private, larger runners, Copilot, Models). Includes a 2026-07-24 audit: the core deployable fleet is compliant; private repos `robotsix-invest`/`robotsix-website`/`hexarchy` run paid Actions and need remediation. (20260724T152735Z-add-free-tier-only-standard)
+- Add the **Free-tier-only (no paid services)** standard: the fleet runs on free/OSS
+  tooling only — the sole permitted paid dependency is LLM agent inference. Codifies
+  that Actions must run on a free tier (public repo or self-hosted runner, never
+  private + GitHub-hosted paid minutes), container images must be public packages or
+  self-hosted, and no paid GitHub features (Advanced Security on private, larger
+  runners, Copilot, Models). Includes a 2026-07-24 audit: the core deployable fleet
+  is compliant; private repos `robotsix-invest`/`robotsix-website`/`hexarchy` run
+  paid Actions and need remediation. (20260724T152735Z-add-free-tier-only-standard)
 
 ## Changed
 
@@ -42,7 +48,10 @@
 - robotsix-standards: Enable completeness_check periodic workflow (20260724T144020Z-robotsix-standards-enable-completeness-c-2b7a)
 - Add config-ownership.md to mkdocs.yml navigation sidebar (20260724T160746Z-add-config-ownership-md-to-mkdocs-yml-na-9564)
 - Standardize: async SQLAlchemy three-layer test fixture pattern (engine → connection → db_session) (20260724T161109Z-standardize-async-sqlalchemy-three-layer-9f96)
-- ci_fix: out-of-scope CI failure — htmlproofer external URL check (HTTP 504) in docs/fleet.md, docs/repo-baseline.md, docs/security-posture.md (or htmlproofer config in mkdocs.yml) — all outside this ticket's diff (20260724T163347Z-ci-fix-out-of-scope-ci-failure-htmlproof-c9a1)
+- ci_fix: out-of-scope CI failure — htmlproofer external URL check (HTTP 504)
+  in docs/fleet.md, docs/repo-baseline.md, docs/security-posture.md
+  (or htmlproofer config in mkdocs.yml) — all outside this ticket's diff
+  (20260724T163347Z-ci-fix-out-of-scope-ci-failure-htmlproof-c9a1)
 - Standardize: MkDocs docs builds run in strict mode with a validation block across fleet repos (20260721T164456Z-standardize-mkdocs-docs-builds-run-in-st-c2eb)
 - fleet.md: remove archived `robotsix-board-agent` row from the fleet table (20260720T174834Z-fleet-md-remove-archived-robotsix-board-34ae)
 - security-posture.md: add content-only exemption notes to the audit table (20260720T174834Z-security-posture-md-add-content-only-exe-8b6e)
@@ -54,7 +63,7 @@
 - Re-remove docstring_coverage periodic agent after accidental re-creation (20260725T181536Z-re-remove-docstring-coverage-periodic-ag-4c0d)
 - Remove test_gap periodic agent from markdown-only repo (20260725T181536Z-remove-test-gap-periodic-agent-from-mark-1600)
 - Standardize: Enable pytest strict_markers = true across all Python repos (20260722T183017Z-standardize-enable-pytest-strict-markers-38ad)
-- Standardize: derive package __version__ from importlib.metadata (single version source, no hard-coded constant) (20260724T185848Z-standardize-derive-package-version-from-672d)
+- Standardize: derive package `__version__` from importlib.metadata (single version source, no hard-coded constant) (20260724T185848Z-standardize-derive-package-version-from-672d)
 - Standardize: Tier 2 ruff lint rules (ARG, C4, PERF, PT) for all Python repos (20260723T191839Z-standardize-tier-2-ruff-lint-rules-arg-c-7625)
 - Standardize: prefer @pytest.mark.parametrize for input/output variation tests (20260723T192932Z-standardize-prefer-pytest-mark-parametri-0c74)
 - Standardize: Python Makefile convention for uv projects (20260724T200729Z-standardize-python-makefile-convention-f-919d)
@@ -65,7 +74,6 @@
 - robotsix-standards: Enable changelog_autofill periodic workflow (20260723T232803Z-robotsix-standards-enable-changelog-auto-1e57)
 - Adopt open-source SAST standard; remove GitHub Code Scanning fleet-wide (20260720T233047Z-adopt-open-source-sast-standard-remove-g-65f3)
 - Adopt open-source secret scanning; codify OSS-preferred tooling policy (drop licensed Gitleaks) (20260720T234819Z-adopt-open-source-secret-scanning-codify-8ee9)
-
 
 <!-- markdownlint-disable MD013 MD025 MD024 -->
 

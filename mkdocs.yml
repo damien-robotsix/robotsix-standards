@@ -84,6 +84,7 @@ nav:
       - Config standard: config-standard.md
       - Default config location: default-config-location.md
       - Config ownership: config-ownership.md
+      - Config-ownership audit: config-ownership-audit.md
       - Docker build & release: docker-standard.md
       - Deploy contract: deploy-contract.md
       - Entrypoint contract: entrypoint-contract.md

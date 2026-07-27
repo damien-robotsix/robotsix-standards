@@ -10,8 +10,7 @@ on:
 # which returns "Deployment failed, try again later" for this repo regardless of
 # whether the workflow is self-contained or called through a reusable workflow.
 # Requires the repo's Pages source to be set to "Deploy from a branch" (branch: gh-pages).
-permissions:
-  contents: write  # needed for peaceiris/actions-gh-pages to push to gh-pages branch
+permissions: {}
 
 concurrency:
   group: pages
@@ -19,6 +18,8 @@ concurrency:
 
 jobs:
   build-and-deploy:
+    permissions:
+      contents: write  # needed for peaceiris/actions-gh-pages to push to gh-pages branch
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1

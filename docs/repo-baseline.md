@@ -243,6 +243,29 @@ isn't a standard gate yet. Gates adopted à la carte drift à la carte: before
 this rule, Semgrep ran in 4 of 13 repos and the weekly image rescan in 3 of 8,
 each a hand-copied workflow file.
 
+### Workflow permissions
+
+**Rule:** Every `.github/workflows/*.yml` workflow MUST declare
+`permissions: {}` at the workflow level with scoped per-job `permissions:`
+blocks rather than broad workflow-level permissions. The only exception
+is a workflow that genuinely needs the same permission across all jobs
+and extracting it to the job level adds no security benefit.
+
+**Rationale:** Ticket 20260727T161215Z fixed the last outlier (`docs.yml`)
+to follow the per-job permissions pattern already used by all four
+sibling workflows. Without an explicit rule, future workflows or
+regressions will diverge from the least-privilege pattern established
+across the fleet.
+
+> **Failure mode.** A workflow granted broad permissions at the top level
+> (e.g. `contents: write`) gives every job in that workflow — including
+> third-party actions and future jobs added by contributors unaware of
+> the security implication — those same elevated rights. An attacker who
+> compromises a single action or a low-trust job inherits the broad grant
+> and can push to protected branches, publish releases, or read secrets.
+> Per-job permissions contain the blast radius to only the jobs that
+> genuinely need the capability.
+
 ## Branch protection
 
 `main` is protected identically in every repo — several standards are

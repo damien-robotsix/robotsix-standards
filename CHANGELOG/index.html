@@ -987,6 +987,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../config-ownership-audit/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Config-ownership audit
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../docker-standard/" class="md-nav__link">
         
   
@@ -1599,6 +1627,7 @@
 </ul>
 <h2 id="000-unreleased">0.0.0 (unreleased)<a class="headerlink" href="#000-unreleased" title="Permanent link">&para;</a></h2>
 <ul>
+<li>Fleet-wide config-ownership audit: classify every deployable component against the <a href="../config-ownership/">config-ownership standard</a>, file remediation tickets for <code>robotsix-auto-mail</code> and <code>robotsix-cost-monitor</code>, and list <code>robotsix-chat</code> and <code>robotsix-calendar-agent</code> as compliant.</li>
 <li>Add explicit "Two invariants" section to config-ownership page: deploy-plane exclusivity (only non-internalisable settings in the deploy UI) and cross-UI uniformity (every UI presents identical component-owned fields from the one committed schema).</li>
 <li>Re-remove docstring_coverage periodic agent (accidentally re-created after correct removal in #20260724T181101Z).  The repo declares <code>languages: [markdown]</code> and has no Python source to scan, making the agent a perpetual no-op.</li>
 <li><strong>Python practices:</strong> add 'Cross-platform filesystem I/O' section — OS matrix CI (<code>ubuntu-latest</code>, <code>macos-latest</code>, <code>windows-latest</code> with <code>fail-fast: false</code>), code guards for POSIX-only semantics (<code>os.chmod</code>, <code>os.replace</code> retry loop, <code>os.fsync</code> fd-only, <code>tempfile.mkstemp</code> atomic writes), citing filelock, python-dotenv, tomlkit, and platformdirs as source projects.</li>

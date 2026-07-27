@@ -10,13 +10,13 @@
       
       
       
-        <link rel="canonical" href="https://damien-robotsix.github.io/robotsix-standards/entrypoint-contract/">
+        <link rel="canonical" href="https://damien-robotsix.github.io/robotsix-standards/config-ownership-audit/">
       
       
-        <link rel="prev" href="../deploy-contract/">
+        <link rel="prev" href="../config-ownership/">
       
       
-        <link rel="next" href="../integrating-a-service/">
+        <link rel="next" href="../docker-standard/">
       
       
         
@@ -27,7 +27,7 @@
     
     
       
-        <title>Entrypoint contract - Robotsix Standards</title>
+        <title>Config-ownership audit - Robotsix Standards</title>
       
     
     
@@ -78,7 +78,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#entrypoint-contract" class="md-skip">
+        <a href="#config-ownership-audit-fleet-wide-classification" class="md-skip">
           Skip to content
         </a>
       
@@ -114,7 +114,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Entrypoint contract
+              Config-ownership audit
             
           </span>
         </div>
@@ -986,10 +986,37 @@
                 
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="../config-ownership-audit/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Config-ownership audit
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   
@@ -1005,6 +1032,70 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#deployable-components" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Deployable components
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#shared-libraries-tooling-out-of-scope" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Shared libraries &amp; tooling (out of scope)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#remediation-tickets" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Remediation tickets
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#migration-path" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Migration path
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -1070,37 +1161,10 @@
                 
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Entrypoint contract
-  
-
-    
-  </span>
-  
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../entrypoint-contract/" class="md-nav__link">
         
   
   
@@ -1116,48 +1180,6 @@
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#the-standard-no-entrypoint-script" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        The standard: no entrypoint script
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#the-exception-genuine-startup-work" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        The exception: genuine startup work
-      
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -1542,10 +1564,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#the-standard-no-entrypoint-script" class="md-nav__link">
+  <a href="#deployable-components" class="md-nav__link">
     <span class="md-ellipsis">
       
-        The standard: no entrypoint script
+        Deployable components
       
     </span>
   </a>
@@ -1553,10 +1575,32 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#the-exception-genuine-startup-work" class="md-nav__link">
+  <a href="#shared-libraries-tooling-out-of-scope" class="md-nav__link">
     <span class="md-ellipsis">
       
-        The exception: genuine startup work
+        Shared libraries &amp; tooling (out of scope)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#remediation-tickets" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Remediation tickets
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#migration-path" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Migration path
       
     </span>
   </a>
@@ -1583,58 +1627,170 @@
   
 
 
-<h1 id="entrypoint-contract">Entrypoint contract<a class="headerlink" href="#entrypoint-contract" title="Permanent link">&para;</a></h1>
+<h1 id="config-ownership-audit-fleet-wide-classification">Config-ownership audit — fleet-wide classification<a class="headerlink" href="#config-ownership-audit-fleet-wide-classification" title="Permanent link">&para;</a></h1>
 <blockquote>
-<p><strong>Scope: deployable components only.</strong> See the
-<a href="../component-standard/">component standard</a>.</p>
+<p><strong>Audit date:</strong> 2026-07-27<br />
+<strong>Standard:</strong> <a href="../config-ownership/">Config ownership</a> — deploy-plane vs component-owned<br />
+<strong>Scope:</strong> Every deployable component listed in <a href="../fleet/">the fleet</a></p>
 </blockquote>
-<p>How a component's container starts. The rule is simple: <strong>the console script
-is PID 1.</strong></p>
-<h2 id="the-standard-no-entrypoint-script">The standard: no entrypoint script<a class="headerlink" href="#the-standard-no-entrypoint-script" title="Permanent link">&para;</a></h2>
-<p>The default — what most of the fleet ships — is a direct exec-form entrypoint
-in the Dockerfile:</p>
-<div class="highlight"><pre><span></span><code><span class="k">ENTRYPOINT</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;robotsix-&lt;name&gt;&quot;</span><span class="p">]</span>
-</code></pre></div>
-<p>Every duty an entrypoint script used to carry has a better home:</p>
-<ul>
-<li><strong>Signal delivery</strong> — exec form makes the console script PID 1, so SIGTERM
-  from <code>docker stop</code> reaches the Python process directly. A <code>--watch</code>/daemon
-  subcommand stops cleanly on SIGTERM (log a stop line, drain if mid-cycle,
-  exit 0) — the <strong>app</strong> implements the handler.</li>
-<li><strong>Config validation</strong> — <code>robotsix_config.load_config</code> already fails fast
-  with a clear <code>MissingConfigError</code>/<code>InvalidConfigError</code>; a shell pre-check
-  duplicates it with a worse message. Bootstrap commands that must run before
-  a config exists (<code>detect</code>, <code>--help</code>, <code>--version</code>) simply don't call
-  <code>load_config</code> — the app knows which of its commands need config, whereas a
-  shell-script allowlist of subcommand names rots the first time one is added.</li>
-<li><strong>Config file permissions</strong> — enforced by whoever <em>writes</em> the file:
-  <code>dump_config</code> writes <code>0600</code> in a <code>0700</code> directory, and central-deploy owns
-  the config volume it writes into. Not a per-container <code>chmod</code>.</li>
-</ul>
-<h2 id="the-exception-genuine-startup-work">The exception: genuine startup work<a class="headerlink" href="#the-exception-genuine-startup-work" title="Permanent link">&para;</a></h2>
-<p>A component ships an <code>entrypoint.sh</code> only when the container must do real work
-before the app can run that the app itself cannot do — the canonical example
-is robotsix-mill's privilege drop: start as root to reconcile config/data
-volume ownership (<code>chmod 600</code> secrets, <code>chown</code> to the runtime user) and raise
-the fd ulimit, then <code>runuser</code> down to the app user. The older
-socket-group-join pattern is the legacy direct-mount branch, which the deploy
-contract forbids for app containers. If you are not sure you need one, you
-don't.</p>
-<p>Rules for such a script:</p>
+<p>Every deployable component's settings are classified against the two invariants
+in <a href="../config-ownership/">config-ownership.md</a>:</p>
 <ol>
-<li><strong><code>exec</code> the application as the final step</strong> — never run the app as a child
-   of the shell, or <code>docker stop</code> can't deliver SIGTERM and the container is
-   SIGKILLed after the grace period with no clean shutdown.</li>
-<li><strong>Never gate bootstrap commands on config</strong> (<code>--help</code>, <code>detect</code>, …) — a
-   fresh operator must be able to run them before any config exists.</li>
-<li><strong>No config templating.</strong> Don't template with <code>envsubst</code>: per the
-   <a href="../config-standard/">config standard</a> the one config file is the only
-   source of values, so there is nothing to template — and <code>gettext-base</code>
-   isn't in the runtime image anyway, so the block silently does nothing (a
-   real bug found in the stack). Delete any <code>envsubst</code> block.</li>
-<li><strong>Keep it short, and comment why it exists</strong> — the script is an exception;
-   the comment is its justification.</li>
+<li><strong>Deploy-plane exclusivity</strong> — only settings the component cannot handle
+   internally (image/tag, volume mounts, ports, resource limits, restart policy,
+   <code>ROBOTSIX_CONFIG_FILE</code>, third-party <code>EnvStore</code> slots) belong in the deploy
+   plane.</li>
+<li><strong>Cross-UI uniformity</strong> — every UI presents the identical set of
+   component-owned fields from <code>config/config.schema.json</code>.</li>
 </ol>
+<p>The classification below answers one question for every setting the component
+carries in its deploy plane: <em>can the component apply this at runtime from its
+own config file?</em> If yes, the setting must migrate out of the deploy plane.</p>
+<h2 id="deployable-components">Deployable components<a class="headerlink" href="#deployable-components" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Component</th>
+<th>Config model</th>
+<th><code>config.schema.json</code></th>
+<th>Deploy-plane violations</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="https://github.com/damien-robotsix/robotsix-chat">robotsix-chat</a></td>
+<td>Pydantic (~30 top-level namespaces)</td>
+<td>Yes</td>
+<td>None — clean boundary. First-party secrets previously leaked into <code>environment:</code> (fixed, PR robotsix-chat#933).</td>
+<td>✅ Compliant</td>
+</tr>
+<tr>
+<td><a href="https://github.com/damien-robotsix/robotsix-mill">robotsix-mill</a></td>
+<td>Pydantic (YAML cascade: <code>mill.defaults.yaml</code> → <code>mill.local.yaml</code> → <code>mill.production.yaml</code> → <code>MILL_*</code> env vars)</td>
+<td>No (custom YAML loader)</td>
+<td>N/A — CI/CD service, no <code>deploy/docker-compose.yml</code>. Not a deployable component per <a href="../component-standard/">component standard</a>.</td>
+<td>— N/A</td>
+</tr>
+<tr>
+<td><a href="https://github.com/damien-robotsix/robotsix-auto-mail">robotsix-auto-mail</a></td>
+<td>Pydantic (accounts, llm, langfuse blocks)</td>
+<td>Yes</td>
+<td><strong>Yes</strong> — <code>command: ingest --watch --heartbeat-file /data/heartbeat</code> and <code>BOARD_PORT</code> env in <code>docker-compose.yml</code>. Both are component-internal operational settings (<code>--watch</code> mode, heartbeat path, board port) that belong in <code>config/config.json</code>, not the deploy plane.</td>
+<td>❌ Violation</td>
+</tr>
+<tr>
+<td><a href="https://github.com/damien-robotsix/robotsix-calendar-agent">robotsix-calendar-agent</a></td>
+<td>Pydantic (<code>Settings</code> class: caldav URL/creds, sync interval, lookahead, timezone, log level)</td>
+<td>Yes</td>
+<td>None — only <code>ROBOTSIX_CONFIG_FILE</code> env var (allowlist) and a healthcheck. Healthcheck CLI entrypoint is acceptably component-internal.</td>
+<td>✅ Compliant</td>
+</tr>
+<tr>
+<td><a href="https://github.com/damien-robotsix/robotsix-cost-monitor">robotsix-cost-monitor</a></td>
+<td>Pydantic (<code>BaseSettings</code>: langfuse keys, OpenRouter key, reconciliation interval, cost DB path, log level)</td>
+<td>Yes</td>
+<td><strong>Yes</strong> — <code>command: serve --host 0.0.0.0 --port 8080</code> and <code>MONITOR_PORT</code> env in <code>docker-compose.yml</code>. The serve command and port binding are component-internal; the env-var port override is a non-allowlist deploy-plane escape hatch.</td>
+<td>❌ Violation</td>
+</tr>
+<tr>
+<td><a href="https://github.com/damien-robotsix/robotsix-mill-ros2">robotsix-mill-ros2</a></td>
+<td><code>.robotsix-mill/config.yaml</code> + <code>repos.yaml</code> + <code>devcontainer.json</code></td>
+<td>No (ROS 2 workspace skeleton)</td>
+<td>N/A — workspace skeleton, no <code>deploy/docker-compose.yml</code>. Not a deployable component per <a href="../component-standard/">component standard</a>.</td>
+<td>— N/A</td>
+</tr>
+<tr>
+<td><a href="https://github.com/damien-robotsix/robotsix-central-deploy">robotsix-central-deploy</a></td>
+<td>Pydantic + env vars (7 <code>ROBOTSIX_LIFECYCLE_*</code> variables)</td>
+<td>Via <code>robotsix-config</code></td>
+<td><strong>Yes</strong> — deploy UI surfaces component-internal settings for sibling components (ticket <code>20260726T095134Z-remove-central-deploy-ui-machinery-that-0b7f</code>, in progress). Additionally: Docker socket-proxy ACL env vars, <code>/:/host_root:ro</code> host bind-mount, and custom network topology in <code>docker-compose.yml</code>. Some of these are architecturally inherent to central-deploy's role as the deploy orchestrator.</td>
+<td>⚠️ In remediation</td>
+</tr>
+</tbody>
+</table>
+<h2 id="shared-libraries-tooling-out-of-scope">Shared libraries &amp; tooling (out of scope)<a class="headerlink" href="#shared-libraries-tooling-out-of-scope" title="Permanent link">&para;</a></h2>
+<p>These repos are not deployable components — they carry no <code>deploy/docker-compose.yml</code>
+and are not subject to the deploy-plane config boundary. Listed for completeness.</p>
+<table>
+<thead>
+<tr>
+<th>Repo</th>
+<th>What it is</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="https://github.com/damien-robotsix/robotsix-standards">robotsix-standards</a></td>
+<td>This site — the fleet's shared conventions.</td>
+</tr>
+<tr>
+<td><a href="https://github.com/damien-robotsix/robotsix-config">robotsix-config</a></td>
+<td>The shared configuration library.</td>
+</tr>
+<tr>
+<td><a href="https://github.com/damien-robotsix/robotsix-llmio">robotsix-llmio</a></td>
+<td>LLM provider abstraction.</td>
+</tr>
+<tr>
+<td><a href="https://github.com/damien-robotsix/robotsix-modules">robotsix-modules</a></td>
+<td><code>docs/modules.yaml</code> tooling.</td>
+</tr>
+<tr>
+<td><a href="https://github.com/damien-robotsix/robotsix-github-workflows">robotsix-github-workflows</a></td>
+<td>Shared reusable CI workflows.</td>
+</tr>
+<tr>
+<td><a href="https://github.com/damien-robotsix/robotsix-board">robotsix-board</a></td>
+<td>Ticket-board UI library.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="remediation-tickets">Remediation tickets<a class="headerlink" href="#remediation-tickets" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Component</th>
+<th>Ticket</th>
+<th>Scope</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>robotsix-chat</td>
+<td>robotsix-chat#933 (closed)</td>
+<td>Removed first-party secrets from <code>environment:</code> in deploy plane.</td>
+</tr>
+<tr>
+<td>robotsix-central-deploy</td>
+<td><code>20260726T095134Z-remove-central-deploy-ui-machinery-that-0b7f</code> (blocked)</td>
+<td>Remove deploy-UI machinery that surfaces component-internal settings.</td>
+</tr>
+<tr>
+<td>robotsix-auto-mail</td>
+<td>Filed below</td>
+<td>Migrate <code>command:</code> and <code>BOARD_PORT</code> out of <code>docker-compose.yml</code> into <code>config/config.json</code>.</td>
+</tr>
+<tr>
+<td>robotsix-cost-monitor</td>
+<td>Filed below</td>
+<td>Migrate <code>command:</code> and <code>MONITOR_PORT</code> out of <code>docker-compose.yml</code> into <code>config/config.json</code>.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="migration-path">Migration path<a class="headerlink" href="#migration-path" title="Permanent link">&para;</a></h2>
+<p>Violating components follow the <a href="../config-ownership/#migration-guidance">migration guidance</a>
+in config-ownership.md:</p>
+<ol>
+<li>Add the migrated key to the component's pydantic model with a safe default.</li>
+<li>Deploy — the new key takes its default; old deploy-plane key still present.</li>
+<li>Operator sets the new key through <code>PUT /config</code> (or the Settings panel).</li>
+<li>Remove the deploy-plane key and drop the fallback read in the same deploy cycle.</li>
+</ol>
+<p>The <code>command:</code> overrides in auto-mail and cost-monitor are a special case:
+the entrypoint itself should bind to <code>0.0.0.0:$PORT</code> where <code>$PORT</code> is read from
+the config file at startup — the deploy plane supplies only the image and port
+mapping, not the internal bind address or CLI flags.</p>
 
 
 

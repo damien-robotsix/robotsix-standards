@@ -1,1 +1,0 @@
-Standardize: surface CHANGELOG.md as a Changelog page in the MkDocs docs nav

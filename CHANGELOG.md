@@ -1,4 +1,72 @@
+
+
 <!-- towncrier release notes start -->
+
+# robotsix-standards 0.2.0 (2026-07-27)
+
+## Added
+
+- Add the **Free-tier-only (no paid services)** standard: the fleet runs on free/OSS tooling only — the sole permitted paid dependency is LLM agent inference. Codifies that Actions must run on a free tier (public repo or self-hosted runner, never private + GitHub-hosted paid minutes), container images must be public packages or self-hosted, and no paid GitHub features (Advanced Security on private, larger runners, Copilot, Models). Includes a 2026-07-24 audit: the core deployable fleet is compliant; private repos `robotsix-invest`/`robotsix-website`/`hexarchy` run paid Actions and need remediation. (20260724T152735Z-add-free-tier-only-standard)
+
+## Changed
+
+- Standardize: Ruff high-signal lint rules (SIM, C4, LOG, G, ERA, PGH, RUF, selective PT) (20260725T001924Z-standardize-ruff-high-signal-lint-rules-9975)
+- docs/security-posture.md: update CodeQL→Semgrep in tooling-policy parenthetical (line 60) (20260721T002037Z-docs-security-posture-md-update-codeql-s-d6c9)
+- Standardize: each robotsix package exposes a single root exception base class (20260721T002604Z-standardize-each-robotsix-package-expose-aad0)
+- Fleet-wide config-ownership audit: classify every component's settings (deploy-plane vs component-owned) and file per-component remediation tickets (20260727T002909Z-fleet-wide-config-ownership-audit-classi-1494)
+- component-standard.md: address OWASP Top 10 for Agentic Applications 2026 (20260721T003222Z-component-standard-md-address-owasp-top-04df)
+- Standard + fleet audit: no paid/licensed or GitHub-billed CI workflows in the fleet (20260725T011049Z-standard-fleet-audit-no-paid-licensed-or-d15b)
+- Standardize: Dependabot configuration for Python/uv repos (20260721T012858Z-standardize-dependabot-configuration-for-1d99)
+- Standardize: reusable CI workflows MUST upload coverage artifacts for downstream consumption (20260723T013124Z-standardize-reusable-ci-workflows-must-u-94ad)
+- Standardize: surface CHANGELOG.md as a Changelog page in the MkDocs docs nav (20260722T020728Z-standardize-surface-changelog-md-as-a-ch-7a3b)
+- config-standard.md and config-ownership.md conflict on secret handling model (20260724T021917Z-config-standard-md-and-config-ownership-2afb)
+- robotsix-standards: Enable survey periodic workflow (20260725T022915Z-robotsix-standards-enable-survey-periodi-edac)
+- Standardize: type-check Python tests in CI with relaxed mypy per-module overrides (20260723T025656Z-standardize-type-check-python-tests-in-c-901c)
+- robotsix-standards: Enable health periodic workflow (20260724T031444Z-robotsix-standards-enable-health-periodi-35bd)
+- Adopt Vale prose linting with write-good style and custom robotsix vocabulary (20260725T040731Z-adopt-vale-prose-linting-in-robotsix-sta-4a1d)
+- Standardize: Prose linting with Vale for all MkDocs documentation repos (20260725T040731Z-standardize-prose-linting-with-vale-for-d8a7)
+- Add Prose linting to mkdocs.yml nav (20260725T041837Z-add-prose-linting-to-mkdocs-yml-nav-bc15)
+- Add Vale hooks to .pre-commit-config.yaml (20260725T043020Z-add-vale-hooks-to-pre-commit-config-yaml-95fd)
+- Standardize: pass --show-diff-on-failure to pre-commit in CI (20260724T044007Z-standardize-pass-show-diff-on-failure-to-4eef)
+- Make two settings-ownership rules explicit invariants in config-ownership.md (20260726T094105Z-make-two-settings-ownership-rules-explic-982a)
+- Standardize: Google-style docstrings with ruff D (pydocstyle) rule enforcement (20260721T101529Z-standardize-google-style-docstrings-with-9ac1)
+- Add "advanced" flag to component JSON config schema to hide advanced settings behind a UI toggle (20260721T114015Z-add-advanced-flag-to-component-json-conf-dc7f)
+- Standardize: generate and publish a CycloneDX SBOM on every fleet release (20260724T122420Z-standardize-generate-and-publish-a-cyclo-047e)
+- scorecard.md: intro paragraph misattributes CodeQL and gitleaks to fleet security stack (20260723T124003Z-scorecard-md-intro-paragraph-misattribut-b21d, 20260723T222550Z-scorecard-md-intro-paragraph-misattribut-8ba4)
+- Define config-ownership standard: deploy-plane vs component-owned configuration (20260723T125618Z-define-config-ownership-standard-deploy-e8df)
+- Standardize: OS test matrix + POSIX-call guards for fleet libraries doing filesystem I/O (20260725T130720Z-standardize-os-test-matrix-posix-call-gu-8472)
+- Standardize: HTTP security response headers for web/HTTP-serving services (20260723T131505Z-standardize-http-security-response-heade-9cf5)
+- Standardize the default-config location convention for deployable repos (20260724T132832Z-standardize-the-default-config-location-774c)
+- security-posture.md: Gate 1 (SAST) omits Bandit — the Python SAST layer (20260724T134050Z-security-posture-md-gate-1-sast-omits-ba-4b84)
+- Standardize: pytest strictness config (filterwarnings=error, --strict-markers/--strict-config, xfail_strict) for Python repos (20260724T142408Z-standardize-pytest-strictness-config-fil-0886)
+- robotsix-standards: Enable completeness_check periodic workflow (20260724T144020Z-robotsix-standards-enable-completeness-c-2b7a)
+- Add config-ownership.md to mkdocs.yml navigation sidebar (20260724T160746Z-add-config-ownership-md-to-mkdocs-yml-na-9564)
+- Standardize: async SQLAlchemy three-layer test fixture pattern (engine → connection → db_session) (20260724T161109Z-standardize-async-sqlalchemy-three-layer-9f96)
+- ci_fix: out-of-scope CI failure — htmlproofer external URL check (HTTP 504) in docs/fleet.md, docs/repo-baseline.md, docs/security-posture.md (or htmlproofer config in mkdocs.yml) — all outside this ticket's diff (20260724T163347Z-ci-fix-out-of-scope-ci-failure-htmlproof-c9a1)
+- Standardize: MkDocs docs builds run in strict mode with a validation block across fleet repos (20260721T164456Z-standardize-mkdocs-docs-builds-run-in-st-c2eb)
+- fleet.md: remove archived `robotsix-board-agent` row from the fleet table (20260720T174834Z-fleet-md-remove-archived-robotsix-board-34ae)
+- security-posture.md: add content-only exemption notes to the audit table (20260720T174834Z-security-posture-md-add-content-only-exe-8b6e)
+- README: add missing Markdown linting and MkDocs build integrity to 'Every repository' table (20260721T175939Z-readme-add-missing-markdown-linting-and-ddc5)
+- CI: add a TOC synchronization gate to catch README/index drift from mkdocs.yml nav (20260721T175940Z-ci-add-a-toc-synchronization-gate-to-cat-9cc1)
+- scorecard.md: update stale security-tool references (CodeQL → Semgrep, gitleaks → detect-secrets) (20260722T180054Z-scorecard-md-update-stale-security-tool-1032)
+- mkdocs.yml: add genai.owasp.org to htmlproofer ignore_urls to prevent transient OWASP subdomain timeouts from breaking CI (20260723T180844Z-mkdocs-yml-add-genai-owasp-org-to-htmlpr-f9b1)
+- Remove docstring_coverage periodic agent from markdown-only repo (20260724T181101Z-remove-docstring-coverage-periodic-agent-306a)
+- Re-remove docstring_coverage periodic agent after accidental re-creation (20260725T181536Z-re-remove-docstring-coverage-periodic-ag-4c0d)
+- Remove test_gap periodic agent from markdown-only repo (20260725T181536Z-remove-test-gap-periodic-agent-from-mark-1600)
+- Standardize: Enable pytest strict_markers = true across all Python repos (20260722T183017Z-standardize-enable-pytest-strict-markers-38ad)
+- Standardize: derive package __version__ from importlib.metadata (single version source, no hard-coded constant) (20260724T185848Z-standardize-derive-package-version-from-672d)
+- Standardize: Tier 2 ruff lint rules (ARG, C4, PERF, PT) for all Python repos (20260723T191839Z-standardize-tier-2-ruff-lint-rules-arg-c-7625)
+- Standardize: prefer @pytest.mark.parametrize for input/output variation tests (20260723T192932Z-standardize-prefer-pytest-mark-parametri-0c74)
+- Standardize: Python Makefile convention for uv projects (20260724T200729Z-standardize-python-makefile-convention-f-919d)
+- Propose new rule: deployable components must publish an OpenSSF Scorecard (20260721T210415Z-propose-new-rule-deployable-components-m-ea4b)
+- Standardize: pre-commit hook baseline for Python repos (20260724T213908Z-standardize-pre-commit-hook-baseline-for-bd41)
+- Standardize: markdownlint-cli2 + codespell in pre-commit for fleet MkDocs repos (20260720T214243Z-standardize-markdownlint-cli2-codespell-f6e0)
+- Standardize: Ruff D (pydocstyle) rules with Google convention for Python repos (20260721T220722Z-standardize-ruff-d-pydocstyle-rules-with-0c73)
+- robotsix-standards: Enable changelog_autofill periodic workflow (20260723T232803Z-robotsix-standards-enable-changelog-auto-1e57)
+- Adopt open-source SAST standard; remove GitHub Code Scanning fleet-wide (20260720T233047Z-adopt-open-source-sast-standard-remove-g-65f3)
+- Adopt open-source secret scanning; codify OSS-preferred tooling policy (drop licensed Gitleaks) (20260720T234819Z-adopt-open-source-secret-scanning-codify-8ee9)
+
+
 <!-- markdownlint-disable MD013 MD025 MD024 -->
 
 # robotsix-standards 0.1.4 (2026-07-20)

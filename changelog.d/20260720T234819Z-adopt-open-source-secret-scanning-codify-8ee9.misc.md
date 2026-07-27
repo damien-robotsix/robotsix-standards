@@ -1,1 +1,0 @@
-Adopt open-source secret scanning; codify OSS-preferred tooling policy (drop licensed Gitleaks)

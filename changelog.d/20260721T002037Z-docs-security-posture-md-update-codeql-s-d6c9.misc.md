@@ -1,1 +1,0 @@
-docs/security-posture.md: update CodeQL→Semgrep in tooling-policy parenthetical (line 60)

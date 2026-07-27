@@ -1,1 +1,0 @@
-Adopt open-source SAST standard; remove GitHub Code Scanning fleet-wide

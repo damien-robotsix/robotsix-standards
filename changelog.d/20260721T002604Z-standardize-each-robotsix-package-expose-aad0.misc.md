@@ -1,1 +1,0 @@
-Standardize: each robotsix package exposes a single root exception base class

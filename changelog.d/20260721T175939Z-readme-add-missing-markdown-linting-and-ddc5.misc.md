@@ -1,1 +1,0 @@
-README: add missing Markdown linting and MkDocs build integrity to 'Every repository' table

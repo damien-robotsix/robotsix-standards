@@ -1,1 +1,0 @@
-security-posture.md: add content-only exemption notes to the audit table

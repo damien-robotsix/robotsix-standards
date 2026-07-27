@@ -1,1 +1,0 @@
-Standardize: Ruff D (pydocstyle) rules with Google convention for Python repos

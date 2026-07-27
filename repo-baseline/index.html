@@ -550,6 +550,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#workflow-permissions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Workflow permissions
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -1814,6 +1825,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#workflow-permissions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Workflow permissions
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -2129,6 +2151,27 @@ reusable workflow — if it can't be called from robotsix-github-workflows, it
 isn't a standard gate yet. Gates adopted à la carte drift à la carte: before
 this rule, Semgrep ran in 4 of 13 repos and the weekly image rescan in 3 of 8,
 each a hand-copied workflow file.</p>
+<h3 id="workflow-permissions">Workflow permissions<a class="headerlink" href="#workflow-permissions" title="Permanent link">&para;</a></h3>
+<p><strong>Rule:</strong> Every <code>.github/workflows/*.yml</code> workflow MUST declare
+<code>permissions: {}</code> at the workflow level with scoped per-job <code>permissions:</code>
+blocks rather than broad workflow-level permissions. The only exception
+is a workflow that genuinely needs the same permission across all jobs
+and extracting it to the job level adds no security benefit.</p>
+<p><strong>Rationale:</strong> Ticket 20260727T161215Z fixed the last outlier (<code>docs.yml</code>)
+to follow the per-job permissions pattern already used by all four
+sibling workflows. Without an explicit rule, future workflows or
+regressions will diverge from the least-privilege pattern established
+across the fleet.</p>
+<blockquote>
+<p><strong>Failure mode.</strong> A workflow granted broad permissions at the top level
+(e.g. <code>contents: write</code>) gives every job in that workflow — including
+third-party actions and future jobs added by contributors unaware of
+the security implication — those same elevated rights. An attacker who
+compromises a single action or a low-trust job inherits the broad grant
+and can push to protected branches, publish releases, or read secrets.
+Per-job permissions contain the blast radius to only the jobs that
+genuinely need the capability.</p>
+</blockquote>
 <h2 id="branch-protection">Branch protection<a class="headerlink" href="#branch-protection" title="Permanent link">&para;</a></h2>
 <p><code>main</code> is protected identically in every repo — several standards are
 silently vacuous without it (auto-merge merges instantly, direct pushes

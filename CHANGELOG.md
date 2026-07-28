@@ -121,6 +121,7 @@
 
 ## 0.0.0 (unreleased)
 
+- Updated `docs/pre-commit-baseline.md`: bumped example `rev` from `v5.0.0` to `v6.0.0` to match the repo's actual `.pre-commit-config.yaml`, corrected `check-added-large-files` threshold from 750 KB to 1024 KB, and documented the `args` and `exclude` pattern (`uv.lock`, `.secrets.baseline`).
 - Added "Workflow permissions" rule to repo-baseline: every `.github/workflows/*.yml` must use `permissions: {}` at the workflow level with scoped per-job `permissions:` blocks (least-privilege pattern).
 - Document `check-case-conflict` pre-commit hook in `docs/python.md` file-checks list, matching its presence in `.pre-commit-config.yaml`.
 - Fleet-wide config-ownership audit: classify every deployable component against the [config-ownership standard](docs/config-ownership.md), file remediation tickets for `robotsix-auto-mail` and `robotsix-cost-monitor`, and list `robotsix-chat` and `robotsix-calendar-agent` as compliant.

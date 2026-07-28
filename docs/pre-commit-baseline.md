@@ -18,13 +18,19 @@ the project itself:
 
 ```yaml
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v5.0.0
+    rev: v6.0.0
     hooks:
       - id: trailing-whitespace
       - id: end-of-file-fixer
       - id: check-yaml
       - id: check-toml
       - id: check-added-large-files
+        args: ["--maxkb=1024"]
+        exclude: |
+          (?x)(
+            uv\.lock|
+            \.secrets\.baseline
+          )
 ```
 
 ### trailing-whitespace
@@ -65,11 +71,12 @@ silently break a build or publish.
 
 ### check-added-large-files
 
-Fails if a staged file exceeds 750 KB (the default threshold). Large binaries
-accidentally committed bloat the repo forever (Git stores them in every clone
-forever). The hook can be overridden per-file with `--enforce-all` or a
-`.pre-commit-config.yaml` `exclude` pattern for intentional exceptions (e.g.
-test fixtures).
+Fails if a staged file exceeds 1024 KB (overridden from the 750 KB default
+via `--maxkb=1024`). Large binaries accidentally committed bloat the repo
+forever (Git stores them in every clone forever). The `args` and `exclude`
+pattern shown above intentionally exempts `uv.lock` (lockfiles are
+legitimately large) and `.secrets.baseline` (a committed data file) from
+size enforcement.
 
 **Failure mode prevented:** accidental commits of large binaries (logs, dumps,
 datasets, model weights) that permanently inflate the repo and slow every

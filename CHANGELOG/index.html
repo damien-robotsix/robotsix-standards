@@ -1701,6 +1701,7 @@
 </ul>
 <h2 id="000-unreleased">0.0.0 (unreleased)<a class="headerlink" href="#000-unreleased" title="Permanent link">&para;</a></h2>
 <ul>
+<li>Updated <code>docs/pre-commit-baseline.md</code>: bumped example <code>rev</code> from <code>v5.0.0</code> to <code>v6.0.0</code> to match the repo's actual <code>.pre-commit-config.yaml</code>, corrected <code>check-added-large-files</code> threshold from 750 KB to 1024 KB, and documented the <code>args</code> and <code>exclude</code> pattern (<code>uv.lock</code>, <code>.secrets.baseline</code>).</li>
 <li>Added "Workflow permissions" rule to repo-baseline: every <code>.github/workflows/*.yml</code> must use <code>permissions: {}</code> at the workflow level with scoped per-job <code>permissions:</code> blocks (least-privilege pattern).</li>
 <li>Document <code>check-case-conflict</code> pre-commit hook in <code>docs/python.md</code> file-checks list, matching its presence in <code>.pre-commit-config.yaml</code>.</li>
 <li>Fleet-wide config-ownership audit: classify every deployable component against the <a href="../config-ownership/">config-ownership standard</a>, file remediation tickets for <code>robotsix-auto-mail</code> and <code>robotsix-cost-monitor</code>, and list <code>robotsix-chat</code> and <code>robotsix-calendar-agent</code> as compliant.</li>

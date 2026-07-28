@@ -1721,13 +1721,19 @@ configuration for Python repos.</p>
 repo, each endorsed as "universally recommended" or "strongly recommended" by
 the project itself:</p>
 <div class="highlight"><pre><span></span><code><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">repo</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://github.com/pre-commit/pre-commit-hooks</span>
-<span class="w">    </span><span class="nt">rev</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">v5.0.0</span>
+<span class="w">    </span><span class="nt">rev</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">v6.0.0</span>
 <span class="w">    </span><span class="nt">hooks</span><span class="p">:</span>
 <span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">id</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">trailing-whitespace</span>
 <span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">id</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">end-of-file-fixer</span>
 <span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">id</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">check-yaml</span>
 <span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">id</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">check-toml</span>
 <span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">id</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">check-added-large-files</span>
+<span class="w">        </span><span class="nt">args</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&quot;--maxkb=1024&quot;</span><span class="p p-Indicator">]</span>
+<span class="w">        </span><span class="nt">exclude</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|</span>
+<span class="w">          </span><span class="no">(?x)(</span>
+<span class="w">            </span><span class="no">uv\.lock|</span>
+<span class="w">            </span><span class="no">\.secrets\.baseline</span>
+<span class="w">          </span><span class="no">)</span>
 </code></pre></div>
 <h3 id="trailing-whitespace">trailing-whitespace<a class="headerlink" href="#trailing-whitespace" title="Permanent link">&para;</a></h3>
 <p>Removes trailing whitespace from every line. Without this, editors with
@@ -1754,11 +1760,12 @@ silently break a build or publish.</p>
 <p><strong>Failure mode prevented:</strong> broken <code>pyproject.toml</code> that prevents <code>uv sync</code>,
 <code>pip install</code>, or PyPI publishing — detected at commit time instead of in CI.</p>
 <h3 id="check-added-large-files">check-added-large-files<a class="headerlink" href="#check-added-large-files" title="Permanent link">&para;</a></h3>
-<p>Fails if a staged file exceeds 750 KB (the default threshold). Large binaries
-accidentally committed bloat the repo forever (Git stores them in every clone
-forever). The hook can be overridden per-file with <code>--enforce-all</code> or a
-<code>.pre-commit-config.yaml</code> <code>exclude</code> pattern for intentional exceptions (e.g.
-test fixtures).</p>
+<p>Fails if a staged file exceeds 1024 KB (overridden from the 750 KB default
+via <code>--maxkb=1024</code>). Large binaries accidentally committed bloat the repo
+forever (Git stores them in every clone forever). The <code>args</code> and <code>exclude</code>
+pattern shown above intentionally exempts <code>uv.lock</code> (lockfiles are
+legitimately large) and <code>.secrets.baseline</code> (a committed data file) from
+size enforcement.</p>
 <p><strong>Failure mode prevented:</strong> accidental commits of large binaries (logs, dumps,
 datasets, model weights) that permanently inflate the repo and slow every
 clone.</p>

@@ -48,11 +48,10 @@ degrade the reader's trust and the fleet's professional surface.
 ```ini
 StylesPath = styles
 MinAlertLevel = error
-
-Packages = write-good
-
+Vocab = robotsix
+Packages = errata-ai/write-good
 [*.md]
-BasedOnStyles = Vale, write-good, robotsix
+BasedOnStyles = write-good
 ```
 
 **The `StylesPath` directory (`styles/`) is gitignored** — `vale sync`
@@ -69,20 +68,38 @@ Create `config/vocabularies/robotsix/` with two files:
 robotsix
 towncrier
 central-deploy
-mkdocs
 langfuse
 llmio
 semgrep
 trufflehog
 dependabot
-pre-commit
+mkdocs
+mkdocstrings
+codespell
+hadolint
+actionlint
+ruff
+mypy
+deptry
 pydantic
 hatchling
-codespell
-markdownlint
-vitest
-rosdep
-colcon
+pre-commit
+pypi
+cyclonedx
+sbom
+trivy
+scorecard
+OpenSSF
+OWASP
+SLSA
+Sigstore
+backend
+frontend
+websocket
+lifecycle
+onboarding
+cutover
+supersession
 ```
 
 Each term is a fleet product, tool, or framework name that spell-check and
@@ -94,10 +111,9 @@ false positive across every doc page in the repo.
 ```text
 whitelist
 blacklist
-master
-slave
-sanity check
-dummy
+master/slave
+sanity.check
+crazy
 ```
 
 These terms have well-established inclusive replacements (`allowlist`,

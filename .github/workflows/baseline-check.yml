@@ -18,3 +18,17 @@ jobs:
       # module registry from it, so docs/modules.yaml is exempt per the
       # repo-baseline module-registration rule.
       has-board: false
+
+  readme-standards-link:
+    permissions:
+      contents: read
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683  # v4.2.2
+      - name: Verify README links to robotsix-standards
+        run: |
+          grep -q 'robotsix-standards' README.md || {
+            echo "::error::README.md does not link to robotsix-standards"
+            exit 1
+          }
+          echo "README.md standards link: OK"

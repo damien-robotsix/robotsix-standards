@@ -41,13 +41,13 @@ robotsix-llmio = { git = "https://github.com/damien-robotsix/robotsix-llmio.git"
 
 Or a PEP 508 git URL in `[project] dependencies`:
 
-```
+```text
 robotsix-llmio @ git+https://github.com/damien-robotsix/robotsix-llmio@abc123def456
 ```
 
 **npm consumers** use a git URL:
 
-```
+```text
 git+https://github.com/damien-robotsix/robotsix-ui#v0.4.0
 ```
 

@@ -121,6 +121,7 @@
 
 ## 0.0.0 (unreleased)
 
+- Updated `docs/free-tier-only.md` audit table: `robotsix-standards` entry now lists its five CI workflows instead of the stale "(no workflows — docs repo)" claim.
 - Sync `docs/prose-linting.md` vocabulary listings and `.vale.ini` example with the
   actual working config files — add missing `Vocab = robotsix`, update `accept.txt`
   from 18 to 34 terms, and correct `reject.txt` to match `config/vocabularies/robotsix/`.

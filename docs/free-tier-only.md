@@ -109,8 +109,7 @@ and free open-source actions; no paid/licensed Marketplace Actions were found.
 free actions: checkout, hadolint, buildx, metadata, build-push, trivy, codeql,
 sbom, attest, upload-artifact), `robotsix-mill-ros2` (ci.yaml, dco.yml,
 dependabot-auto-merge.yml, stale.yml — all free actions: checkout, pre-commit,
-zizmor, KineticCafe/actions-dco), `robotsix-standards` (no workflows — docs
-repo).
+zizmor, KineticCafe/actions-dco), `robotsix-standards` (ci.yml, docs.yml, baseline-check.yml, auto-release.yml, dependabot-auto-merge.yml — all free actions).
 
 **Not yet verified** (public repos, workflows not audited due to API rate
 limits, but likely clean since the fleet standardises on the shared workflow

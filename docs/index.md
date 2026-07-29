@@ -34,6 +34,8 @@ everywhere.
   test fixture pattern (session-scoped engine, function-scoped connection with
   rollback, function-scoped session with savepoints) for clean test isolation
   without dropping tables.
+- **[Distribution & Packaging](distribution-packaging.md)** — git-based consumption of
+  first-party libraries — no package index, no registry publish step.
 - **[Docstring convention](docstrings.md)** — Python docstring style and coverage
   rules for all public modules, classes, and functions.
 - **[Hypothesis testing](hypothesis.md)** — property-based testing profiles,

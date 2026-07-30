@@ -36,16 +36,16 @@ carry a setting outside the [deploy-plane allowlist](#deploy-plane-allowlist).
 The [standard HTTP config surface](#standard-http-config-surface) is the
 single integration point that makes this uniformity possible.
 
-## The rule
+## The boundary rule
 
-One question decides:
+Central-deploy retains ONLY lifecycle operations (start, stop, deploy,
+restart, health checks, log access, disk management) and Docker-boundary
+config that cannot be handled inside a running container — volume mounts,
+port mappings, image references, and boot-time environment injection
+(including boot-time secrets). Everything else belongs to the component.
 
-**Can the service apply this setting at runtime from its own config file?**
-
-If yes, it does **NOT** belong in the deploy UI. It belongs in the
-component's own `config/config.json` and MUST be exposed through the
-component's standard HTTP config surface. The deploy plane is for
-instantiation and wiring — nothing else.
+**Rule of thumb:** if changing it requires a container recreate, it belongs
+to deploy; otherwise it belongs to the component.
 
 *Failure prevented:* an operator changes a feature-flag value in the deploy
 UI, redeploys the container, and waits for the restart cycle when the
@@ -247,18 +247,29 @@ the full HTTP surface (`GET /config`, `PUT /config`, `GET /config/versions`,
 
 ## Secret handling
 
-Secrets (API keys, tokens, passwords, credentials of any kind) follow the
-**one-file secret convention** defined in the [config standard](config-standard.md) §3.
-The config standard is the authoritative source for secret handling; this
-section summarises the rules as they affect the component's HTTP surface and
-the deploy-plane UI.
+Secrets fall into two categories with different owners:
 
-- **Secrets live in `config/config.json`.** Secret fields are declared with
-  `pydantic.SecretStr` in the component's config model. They are stored in
-  the same single JSON config file as ordinary settings — no separate
-  secrets file, no `EnvStore` or env-var injection for first-party component
-  secrets. (Third-party images — databases, proxies — receive secrets
-  through the deploy plane's `EnvStore` slots per the
+- **Non-boot secrets** (runtime secrets the component needs after startup —
+  API keys for external services, tokens, internal credentials) are stored
+  and masked by the component itself. They live in the component's own
+  `config/config.json` and are never injected at boot time.
+- **Boot-time secrets** (secrets that must be present before the component
+  starts — database credentials for a third-party database image, Docker
+  socket-proxy credentials) remain with the deploy plane. The deploy plane
+  injects these through `environment:` slots in the compose file; the
+  component never sees or stores them.
+
+The **one-file secret convention** for non-boot secrets is defined in the
+[config standard](config-standard.md) §3. The config standard is the
+authoritative source for secret handling; this section summarises the rules
+as they affect the component's HTTP surface and the deploy-plane UI.
+
+- **Non-boot secrets live in `config/config.json`.** Secret fields are
+  declared with `pydantic.SecretStr` in the component's config model. They
+  are stored in the same single JSON config file as ordinary settings — no
+  separate secrets file, no `EnvStore` or env-var injection for first-party
+  component secrets. (Third-party images — databases, proxies — receive
+  secrets through the deploy plane's `EnvStore` slots per the
   [config standard](config-standard.md) §5; that is the only exception to
   the one-file rule.)
 - **`GET /config` masks all secret fields.** The response shows
@@ -284,38 +295,46 @@ config standard's `SecretStr` / `writeOnly` convention (typed masking at
 the schema level, redact-on-read at the surface level, merge-on-write)
 prevents this without requiring a separate secret channel.
 
-## Migration guidance
+## Migration contract
 
-Moving a setting from the deploy UI into the component's own config surface
-is a per-component, incremental migration — no big-bang, no flag day.
+Components adopt this standard through a one-time import, not an incremental
+migration. The central-deploy config store exports each component's existing
+config as a single JSON payload (see the config-export carve-out ticket in
+robotsix-central-deploy). At adoption time the component imports that export
+exactly once — seeding its own `config/config.json` with the operator's
+current settings — and then **never calls central-deploy `PUT /config`
+again**. From that point forward, all config changes go through the
+component's own `PUT /config` endpoint.
 
-### Deprecation path
+### Adoption sequence
 
-1. **Add the key to the component's pydantic model** with a sensible
-   default. The default MUST be safe for production — the component will
-   use this value until the operator explicitly sets it.
+1. **central-deploy exports** the component's current config as a JSON
+   payload matching the component's pydantic model shape.
 
-2. **Deploy.** The new key takes its default from the model. The deploy-UI
-   value for the old key is still present and still applied (the component's
-   startup code reads both, preferring the new config key when present).
+2. **The component imports** that payload into its own persistent store
+   (`config/config.json` in its volume). This is a one-shot operation —
+   the import path exists only during adoption, not as an ongoing sync.
 
-3. **Move the value.** The operator sets the new key through the component's
-   `PUT /config` endpoint (or the Settings panel). The component now uses
-   the component-owned value.
+3. **The component registers** its config schema
+   (`config/config.schema.json`) with central-deploy so the deploy UI can
+   link to the component's own Settings panel instead of rendering a
+   duplicative config form.
 
-4. **Remove the deploy-UI key.** Once the component-owned value is
-   confirmed, the deploy-UI entry is removed. The component's startup code
-   drops the fallback read of the old deploy-UI key in the same deploy.
+4. **The deploy-plane config is pruned** to the allowlist categories only.
+   Any deploy-plane setting that the component can now handle internally is
+   removed from central-deploy's UI for that component.
 
-5. **No dual-channel window.** Steps 3 and 4 SHOULD happen in the same
-   deploy cycle. The operator sets the component-owned value, confirms it is
-   active, then removes the deploy-UI key and redeploys. The component MUST
-   NOT read the same setting from two places indefinitely — the fallback
-   read exists only during the migration window.
+5. **The component never calls `PUT /config` on central-deploy again.**
+   All subsequent config changes — whether through the component's Settings
+   panel, its HTTP API, or direct file writes to its volume — are
+   component-owned. central-deploy retains only the allowlist categories
+   (image, mounts, ports, resource limits, restart policy,
+   `ROBOTSIX_CONFIG_FILE`, and boot-time env injection).
 
-### What not to move
+### What stays in the deploy plane
 
-Some settings are inherently deploy-plane and MUST NOT be moved:
+Some settings are inherently deploy-plane and MUST NOT move into the
+component:
 
 - **Image and tag** — the component cannot change what image it runs as.
 - **Volume mounts** — the component cannot remount its own filesystem.
@@ -323,15 +342,17 @@ Some settings are inherently deploy-plane and MUST NOT be moved:
 - **`ROBOTSIX_CONFIG_FILE`** — the component cannot relocate its own config
   file at runtime (it has already loaded it).
 - **Resource limits** — the component cannot change its own cgroup limits.
+- **Boot-time environment injection** — secrets or wiring that must be
+  present before the component starts (e.g. `DOCKER_HOST` for a
+  socket-proxy sibling, database credentials for a third-party image).
 
 These are the allowlist categories from the deploy-plane section above. If a
-setting falls into one of those categories, it stays in the deploy UI — the
-migration path does not apply.
+setting falls into one of those categories, it stays in the deploy plane —
+the migration contract does not apply to it.
 
 ### Per-component adoption
 
 This standard defines the target state. Per-component adoption is filed as
-follow-up tickets against each fleet repo once this standard is merged. A
-component that today carries application settings in the deploy UI follows
-the deprecation path above, one setting at a time, until the deploy UI
-contains only allowlist categories.
+follow-up tickets against each fleet repo once this standard is merged. Each
+component follows the adoption sequence above: one import, then never back.
+There is no incremental dual-channel window — the cutover is clean.

@@ -55,13 +55,10 @@ and are not subject to the deploy-plane config boundary. Listed for completeness
 
 ## Migration path
 
-Violating components follow the [migration guidance](config-ownership.md#migration-guidance)
-in config-ownership.md:
-
-1. Add the migrated key to the component's pydantic model with a safe default.
-2. Deploy — the new key takes its default; old deploy-plane key still present.
-3. Operator sets the new key through `PUT /config` (or the Settings panel).
-4. Remove the deploy-plane key and drop the fallback read in the same deploy cycle.
+Violating components follow the [migration contract](config-ownership.md#migration-contract)
+in config-ownership.md: import existing config from central-deploy's config
+export exactly once at adoption time, seed `config/config.json`, then never
+call central-deploy `PUT /config` again.
 
 The `command:` overrides in auto-mail and cost-monitor are a special case:
 the entrypoint itself should bind to `0.0.0.0:$PORT` where `$PORT` is read from

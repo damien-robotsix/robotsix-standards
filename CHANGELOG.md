@@ -121,6 +121,7 @@
 
 ## 0.0.0 (unreleased)
 
+- **Config ownership standard:** add the verbatim boundary rule (central-deploy retains only lifecycle and Docker-boundary config; rule of thumb: container-recreate → deploy, otherwise → component), replace incremental migration guidance with a one-time config-import adoption contract, and explicitly distinguish non-boot secrets (component-owned, masked by the component) from boot-time secrets (remain with deploy plane).
 - Added **Distribution & Packaging** standard: git-based consumption is the preferred path for first-party libraries; public package indexes (npm, PyPI) are disallowed; internal registry (GitHub Packages) is the only acceptable registry alternative; every library README must document its distribution method with exact pin syntax.
 - Updated `docs/pre-commit-baseline.md`: bumped example `rev` from `v5.0.0` to `v6.0.0` to match the repo's actual `.pre-commit-config.yaml`, corrected `check-added-large-files` threshold from 750 KB to 1024 KB, and documented the `args` and `exclude` pattern (`uv.lock`, `.secrets.baseline`).
 - Added "Workflow permissions" rule to repo-baseline: every `.github/workflows/*.yml` must use `permissions: {}` at the workflow level with scoped per-job `permissions:` blocks (least-privilege pattern).

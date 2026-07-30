@@ -1088,10 +1088,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#the-rule" class="md-nav__link">
+  <a href="#the-boundary-rule" class="md-nav__link">
     <span class="md-ellipsis">
       
-        The rule
+        The boundary rule
       
     </span>
   </a>
@@ -1210,22 +1210,22 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#migration-guidance" class="md-nav__link">
+  <a href="#migration-contract" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Migration guidance
+        Migration contract
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Migration guidance">
+    <nav class="md-nav" aria-label="Migration contract">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#deprecation-path" class="md-nav__link">
+  <a href="#adoption-sequence" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Deprecation path
+        Adoption sequence
       
     </span>
   </a>
@@ -1233,10 +1233,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#what-not-to-move" class="md-nav__link">
+  <a href="#what-stays-in-the-deploy-plane" class="md-nav__link">
     <span class="md-ellipsis">
       
-        What not to move
+        What stays in the deploy plane
       
     </span>
   </a>
@@ -1798,10 +1798,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#the-rule" class="md-nav__link">
+  <a href="#the-boundary-rule" class="md-nav__link">
     <span class="md-ellipsis">
       
-        The rule
+        The boundary rule
       
     </span>
   </a>
@@ -1920,22 +1920,22 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#migration-guidance" class="md-nav__link">
+  <a href="#migration-contract" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Migration guidance
+        Migration contract
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Migration guidance">
+    <nav class="md-nav" aria-label="Migration contract">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#deprecation-path" class="md-nav__link">
+  <a href="#adoption-sequence" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Deprecation path
+        Adoption sequence
       
     </span>
   </a>
@@ -1943,10 +1943,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#what-not-to-move" class="md-nav__link">
+  <a href="#what-stays-in-the-deploy-plane" class="md-nav__link">
     <span class="md-ellipsis">
       
-        What not to move
+        What stays in the deploy plane
       
     </span>
   </a>
@@ -2021,13 +2021,14 @@ semantics, and identical validation. No UI may expose a component-owned setting 
 carry a setting outside the <a href="#deploy-plane-allowlist">deploy-plane allowlist</a>.
 The <a href="#standard-http-config-surface">standard HTTP config surface</a> is the
 single integration point that makes this uniformity possible.</p>
-<h2 id="the-rule">The rule<a class="headerlink" href="#the-rule" title="Permanent link">&para;</a></h2>
-<p>One question decides:</p>
-<p><strong>Can the service apply this setting at runtime from its own config file?</strong></p>
-<p>If yes, it does <strong>NOT</strong> belong in the deploy UI. It belongs in the
-component's own <code>config/config.json</code> and MUST be exposed through the
-component's standard HTTP config surface. The deploy plane is for
-instantiation and wiring — nothing else.</p>
+<h2 id="the-boundary-rule">The boundary rule<a class="headerlink" href="#the-boundary-rule" title="Permanent link">&para;</a></h2>
+<p>Central-deploy retains ONLY lifecycle operations (start, stop, deploy,
+restart, health checks, log access, disk management) and Docker-boundary
+config that cannot be handled inside a running container — volume mounts,
+port mappings, image references, and boot-time environment injection
+(including boot-time secrets). Everything else belongs to the component.</p>
+<p><strong>Rule of thumb:</strong> if changing it requires a container recreate, it belongs
+to deploy; otherwise it belongs to the component.</p>
 <p><em>Failure prevented:</em> an operator changes a feature-flag value in the deploy
 UI, redeploys the container, and waits for the restart cycle when the
 component could have applied the change live; or worse, the same setting
@@ -2227,18 +2228,29 @@ reachable from the component's primary navigation. The panel:</p>
 the full HTTP surface (<code>GET /config</code>, <code>PUT /config</code>, <code>GET /config/versions</code>,
 <code>POST /config/rollback</code>).</p>
 <h2 id="secret-handling">Secret handling<a class="headerlink" href="#secret-handling" title="Permanent link">&para;</a></h2>
-<p>Secrets (API keys, tokens, passwords, credentials of any kind) follow the
-<strong>one-file secret convention</strong> defined in the <a href="../config-standard/">config standard</a> §3.
-The config standard is the authoritative source for secret handling; this
-section summarises the rules as they affect the component's HTTP surface and
-the deploy-plane UI.</p>
+<p>Secrets fall into two categories with different owners:</p>
 <ul>
-<li><strong>Secrets live in <code>config/config.json</code>.</strong> Secret fields are declared with
-  <code>pydantic.SecretStr</code> in the component's config model. They are stored in
-  the same single JSON config file as ordinary settings — no separate
-  secrets file, no <code>EnvStore</code> or env-var injection for first-party component
-  secrets. (Third-party images — databases, proxies — receive secrets
-  through the deploy plane's <code>EnvStore</code> slots per the
+<li><strong>Non-boot secrets</strong> (runtime secrets the component needs after startup —
+  API keys for external services, tokens, internal credentials) are stored
+  and masked by the component itself. They live in the component's own
+  <code>config/config.json</code> and are never injected at boot time.</li>
+<li><strong>Boot-time secrets</strong> (secrets that must be present before the component
+  starts — database credentials for a third-party database image, Docker
+  socket-proxy credentials) remain with the deploy plane. The deploy plane
+  injects these through <code>environment:</code> slots in the compose file; the
+  component never sees or stores them.</li>
+</ul>
+<p>The <strong>one-file secret convention</strong> for non-boot secrets is defined in the
+<a href="../config-standard/">config standard</a> §3. The config standard is the
+authoritative source for secret handling; this section summarises the rules
+as they affect the component's HTTP surface and the deploy-plane UI.</p>
+<ul>
+<li><strong>Non-boot secrets live in <code>config/config.json</code>.</strong> Secret fields are
+  declared with <code>pydantic.SecretStr</code> in the component's config model. They
+  are stored in the same single JSON config file as ordinary settings — no
+  separate secrets file, no <code>EnvStore</code> or env-var injection for first-party
+  component secrets. (Third-party images — databases, proxies — receive
+  secrets through the deploy plane's <code>EnvStore</code> slots per the
   <a href="../config-standard/">config standard</a> §5; that is the only exception to
   the one-file rule.)</li>
 <li><strong><code>GET /config</code> masks all secret fields.</strong> The response shows
@@ -2263,41 +2275,49 @@ non-admins — but the secret field was rendered in the JSON response. The
 config standard's <code>SecretStr</code> / <code>writeOnly</code> convention (typed masking at
 the schema level, redact-on-read at the surface level, merge-on-write)
 prevents this without requiring a separate secret channel.</p>
-<h2 id="migration-guidance">Migration guidance<a class="headerlink" href="#migration-guidance" title="Permanent link">&para;</a></h2>
-<p>Moving a setting from the deploy UI into the component's own config surface
-is a per-component, incremental migration — no big-bang, no flag day.</p>
-<h3 id="deprecation-path">Deprecation path<a class="headerlink" href="#deprecation-path" title="Permanent link">&para;</a></h3>
+<h2 id="migration-contract">Migration contract<a class="headerlink" href="#migration-contract" title="Permanent link">&para;</a></h2>
+<p>Components adopt this standard through a one-time import, not an incremental
+migration. The central-deploy config store exports each component's existing
+config as a single JSON payload (see the config-export carve-out ticket in
+robotsix-central-deploy). At adoption time the component imports that export
+exactly once — seeding its own <code>config/config.json</code> with the operator's
+current settings — and then <strong>never calls central-deploy <code>PUT /config</code>
+again</strong>. From that point forward, all config changes go through the
+component's own <code>PUT /config</code> endpoint.</p>
+<h3 id="adoption-sequence">Adoption sequence<a class="headerlink" href="#adoption-sequence" title="Permanent link">&para;</a></h3>
 <ol>
 <li>
-<p><strong>Add the key to the component's pydantic model</strong> with a sensible
-   default. The default MUST be safe for production — the component will
-   use this value until the operator explicitly sets it.</p>
+<p><strong>central-deploy exports</strong> the component's current config as a JSON
+   payload matching the component's pydantic model shape.</p>
 </li>
 <li>
-<p><strong>Deploy.</strong> The new key takes its default from the model. The deploy-UI
-   value for the old key is still present and still applied (the component's
-   startup code reads both, preferring the new config key when present).</p>
+<p><strong>The component imports</strong> that payload into its own persistent store
+   (<code>config/config.json</code> in its volume). This is a one-shot operation —
+   the import path exists only during adoption, not as an ongoing sync.</p>
 </li>
 <li>
-<p><strong>Move the value.</strong> The operator sets the new key through the component's
-   <code>PUT /config</code> endpoint (or the Settings panel). The component now uses
-   the component-owned value.</p>
+<p><strong>The component registers</strong> its config schema
+   (<code>config/config.schema.json</code>) with central-deploy so the deploy UI can
+   link to the component's own Settings panel instead of rendering a
+   duplicative config form.</p>
 </li>
 <li>
-<p><strong>Remove the deploy-UI key.</strong> Once the component-owned value is
-   confirmed, the deploy-UI entry is removed. The component's startup code
-   drops the fallback read of the old deploy-UI key in the same deploy.</p>
+<p><strong>The deploy-plane config is pruned</strong> to the allowlist categories only.
+   Any deploy-plane setting that the component can now handle internally is
+   removed from central-deploy's UI for that component.</p>
 </li>
 <li>
-<p><strong>No dual-channel window.</strong> Steps 3 and 4 SHOULD happen in the same
-   deploy cycle. The operator sets the component-owned value, confirms it is
-   active, then removes the deploy-UI key and redeploys. The component MUST
-   NOT read the same setting from two places indefinitely — the fallback
-   read exists only during the migration window.</p>
+<p><strong>The component never calls <code>PUT /config</code> on central-deploy again.</strong>
+   All subsequent config changes — whether through the component's Settings
+   panel, its HTTP API, or direct file writes to its volume — are
+   component-owned. central-deploy retains only the allowlist categories
+   (image, mounts, ports, resource limits, restart policy,
+   <code>ROBOTSIX_CONFIG_FILE</code>, and boot-time env injection).</p>
 </li>
 </ol>
-<h3 id="what-not-to-move">What not to move<a class="headerlink" href="#what-not-to-move" title="Permanent link">&para;</a></h3>
-<p>Some settings are inherently deploy-plane and MUST NOT be moved:</p>
+<h3 id="what-stays-in-the-deploy-plane">What stays in the deploy plane<a class="headerlink" href="#what-stays-in-the-deploy-plane" title="Permanent link">&para;</a></h3>
+<p>Some settings are inherently deploy-plane and MUST NOT move into the
+component:</p>
 <ul>
 <li><strong>Image and tag</strong> — the component cannot change what image it runs as.</li>
 <li><strong>Volume mounts</strong> — the component cannot remount its own filesystem.</li>
@@ -2305,16 +2325,18 @@ is a per-component, incremental migration — no big-bang, no flag day.</p>
 <li><strong><code>ROBOTSIX_CONFIG_FILE</code></strong> — the component cannot relocate its own config
   file at runtime (it has already loaded it).</li>
 <li><strong>Resource limits</strong> — the component cannot change its own cgroup limits.</li>
+<li><strong>Boot-time environment injection</strong> — secrets or wiring that must be
+  present before the component starts (e.g. <code>DOCKER_HOST</code> for a
+  socket-proxy sibling, database credentials for a third-party image).</li>
 </ul>
 <p>These are the allowlist categories from the deploy-plane section above. If a
-setting falls into one of those categories, it stays in the deploy UI — the
-migration path does not apply.</p>
+setting falls into one of those categories, it stays in the deploy plane —
+the migration contract does not apply to it.</p>
 <h3 id="per-component-adoption">Per-component adoption<a class="headerlink" href="#per-component-adoption" title="Permanent link">&para;</a></h3>
 <p>This standard defines the target state. Per-component adoption is filed as
-follow-up tickets against each fleet repo once this standard is merged. A
-component that today carries application settings in the deploy UI follows
-the deprecation path above, one setting at a time, until the deploy UI
-contains only allowlist categories.</p>
+follow-up tickets against each fleet repo once this standard is merged. Each
+component follows the adoption sequence above: one import, then never back.
+There is no incremental dual-channel window — the cutover is clean.</p>
 
 
 

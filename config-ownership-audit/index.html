@@ -1807,14 +1807,10 @@ and are not subject to the deploy-plane config boundary. Listed for completeness
 </tbody>
 </table>
 <h2 id="migration-path">Migration path<a class="headerlink" href="#migration-path" title="Permanent link">&para;</a></h2>
-<p>Violating components follow the <a href="../config-ownership/#migration-guidance">migration guidance</a>
-in config-ownership.md:</p>
-<ol>
-<li>Add the migrated key to the component's pydantic model with a safe default.</li>
-<li>Deploy — the new key takes its default; old deploy-plane key still present.</li>
-<li>Operator sets the new key through <code>PUT /config</code> (or the Settings panel).</li>
-<li>Remove the deploy-plane key and drop the fallback read in the same deploy cycle.</li>
-</ol>
+<p>Violating components follow the <a href="../config-ownership/#migration-contract">migration contract</a>
+in config-ownership.md: import existing config from central-deploy's config
+export exactly once at adoption time, seed <code>config/config.json</code>, then never
+call central-deploy <code>PUT /config</code> again.</p>
 <p>The <code>command:</code> overrides in auto-mail and cost-monitor are a special case:
 the entrypoint itself should bind to <code>0.0.0.0:$PORT</code> where <code>$PORT</code> is read from
 the config file at startup — the deploy plane supplies only the image and port

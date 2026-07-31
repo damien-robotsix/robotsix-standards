@@ -92,6 +92,7 @@ nav:
       - Docker build & release: docker-standard.md
       - Deploy contract: deploy-contract.md
       - Entrypoint contract: entrypoint-contract.md
+      - FastAPI Pydantic field descriptions: fastapi-pydantic-field-descriptions.md
       - Integrating a service: integrating-a-service.md
       - Chat access: chat-access-standard.md
       - HTTP error envelope: http-error-envelope.md

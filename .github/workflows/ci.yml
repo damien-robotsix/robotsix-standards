@@ -26,21 +26,24 @@ jobs:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
-          fetch-depth: 0
       - uses: astral-sh/setup-uv@c771a70e6277c0a99b617c7a806ffedaca235ff9 # v9.0.0
         with:
           enable-cache: true
           python-version: "3.14"
       - name: Build docs (strict)
         run: uv run --group docs mkdocs build --strict
-      - name: Lint markdown
-        run: npx --yes markdownlint-cli2 'docs/**/*.md' README.md
+      - name: Configure git for pre-commit (use token for GitHub)
+        env:
+          TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: git config --global url."https://x-access-token:${TOKEN}@github.com/".insteadOf "https://github.com/"
+      - name: Lint markdown (pinned pre-commit hook)
+        run: uv run --group docs pre-commit run markdownlint-cli2 --all-files
       - name: Check TOC synchronization
         run: uv run --group docs python scripts/check-toc-sync.py
       - name: Check for duplicate changelog fragments
         run: python3 scripts/check-changelog-duplicates.py
-      - name: Spell check
-        run: uv run --with codespell codespell
+      - name: Spell check (pinned pre-commit hook)
+        run: uv run --group docs pre-commit run codespell --all-files
       - name: Check changelog fragments for truncation
         run: |
           if grep -Pn '…\s*$' changelog.d/*.md | grep -v 'Field(description=…)' | grep -q .; then

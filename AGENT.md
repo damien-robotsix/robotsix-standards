@@ -35,6 +35,16 @@ a copy — never inline contract content into this repo.
 **Rationale:** an earlier copy kept here drifted from the implementation and
 had to be removed.
 
+**Rule:** When two standards pages would state the same rule, codify the rule
+once in a canonical page and cross-link from the other — never restate the
+rule text in multiple pages. Keep only the concrete per-topic example (e.g.
+the pre-commit commands) in the non-canonical page.
+**Rationale:** PR #159 and its siblings (PRs #154/#155) duplicated the
+pre-commit single-source-of-truth rule across docs/ci-lint-pinning.md and
+docs/markdown-linting.md with no cross-reference, recreating the exact drift
+risk the rule prevents. This generalizes the existing 'deploy contract is a
+pointer, not a copy' convention to all standards pages.
+
 **Rule:** When editing or creating deployment-engine guidance (especially
 `docs/deployment-system.md`), the deployment engine is a **generic control
 plane** — it must not carry per-service or per-repo definitions in its source

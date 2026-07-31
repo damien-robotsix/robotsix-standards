@@ -2072,7 +2072,9 @@ newsfragments, compiled by the shared auto-release workflow.</strong></p>
   don't let removed commands, renamed paths, or old version claims linger.</li>
 <li><strong>Point at the standards.</strong> Every repo's <code>README.md</code> and <code>AGENT.md</code> link to
   <a href="https://github.com/damien-robotsix/robotsix-standards"><code>robotsix-standards</code></a>
-  so contributors find the shared conventions from any repo.</li>
+  so contributors find the shared conventions from any repo. New repos
+  created from the language template ship this link by default; CI verifies
+  it is present and reachable on every PR.</li>
 <li><strong>License.</strong> MIT, as a <code>LICENSE</code> file at the repo root.</li>
 <li><strong>Vulnerability disclosure.</strong> Every repo ships a <code>SECURITY.md</code> at the root
   with at minimum: a contact method for vulnerability reports, a
@@ -2128,8 +2130,8 @@ gate set:</p>
 <li><strong>Container image:</strong> repos that ship an image also scan it in CI — see
   <a href="../docker-standard/">Docker build &amp; release</a>.</li>
 <li><strong>Baseline conformance:</strong> the shared baseline-check workflow verifies the
-  mechanical rules of this page — <code>AGENT.md</code> present and linking the
-  standards, <code>dependabot.yml</code> covering the
+  mechanical rules of this page — <code>README.md</code> and <code>AGENT.md</code> present and
+  linking the standards, <code>dependabot.yml</code> covering the
   <a href="#automated-dependency-updates">required ecosystems</a>.</li>
 <li><strong>Required-artifact uploads use <code>if: always()</code>.</strong> A step that uploads an
   artifact the gate depends on (SBOM, coverage report) must run even when an

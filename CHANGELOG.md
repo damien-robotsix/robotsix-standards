@@ -121,6 +121,7 @@
 
 ## 0.0.0 (unreleased)
 
+- Added Docker Compose smoke test requirement to the Docker build & release standard: every deployable component must run a CI job that validates `docker-compose up` succeeds (container starts, health check passes, core endpoint responds) on the `deploy/docker-compose.yml`. Catches compose-file breakage before deploy.
 - Added Rule 4 to the MkDocs build integrity standard: new standards pages
   must be registered in `mkdocs.yml` `nav` in the same change that adds the
   page — a `README.md`/`docs/index.md` TOC entry alone leaves the page

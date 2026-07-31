@@ -223,6 +223,45 @@ A reusable workflow for this gate lives in
 [robotsix-github-workflows](https://github.com/damien-robotsix/robotsix-github-workflows)
 so every component calls the same integration-test step, identically.
 
+## Docker Compose smoke test
+
+The image-level integration tests (entrypoint binary, import) verify the
+runtime image ships intact. They do **not** verify that the compose file
+which defines how the container runs — port mappings, volume mounts,
+environment variables, sibling service wiring — actually brings up a working
+stack. A valid image behind a broken compose file deploys a crashlooping
+container just as surely as a broken image.
+
+Every deployable component therefore runs a **Docker Compose smoke test** on
+every PR, after the image build. The test uses the component's
+`deploy/docker-compose.yml` — the same file central-deploy consumes — and
+validates three things:
+
+1. **Container starts.** `docker compose up --detach --wait` exits zero.
+2. **Health check passes.** The container's health check (the image
+   `HEALTHCHECK` or a compose-level `healthcheck`) reports healthy within a
+   timeout.
+3. **Core endpoint responds.** An HTTP request to the primary service's
+   health endpoint (`/health`) returns 200. For non-HTTP services, replace
+   with the equivalent liveness probe.
+
+The test runs in the same PR workflow as the image build and scan — after the
+build, before the scan. A failure blocks the PR, catching the regression
+before merge.
+
+**Failure mode prevented:** A compose file that references a wrong port, a
+missing volume, an invalid environment variable, or a misconfigured sibling
+service — any of which passes `docker compose config` validation but causes
+the stack to fail at runtime. These are the exact regressions a compose
+integration test catches: the compose file is structurally valid but the
+stack never becomes healthy, because of a port mismatch between the service
+and its health check, a volume path the image doesn't expect, or an
+environment variable the service requires but the compose file omits.
+
+A reusable workflow for this gate lives in
+[robotsix-github-workflows](https://github.com/damien-robotsix/robotsix-github-workflows)
+so every component calls the same compose smoke-test step, identically.
+
 ## Deploy — updates are deliberate
 
 The deployment system (central-deploy) **pulls** the published image via the

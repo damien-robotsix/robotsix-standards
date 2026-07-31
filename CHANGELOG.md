@@ -121,6 +121,7 @@
 
 ## 0.0.0 (unreleased)
 
+- Fix Dependabot pre-commit update failure: correct `markdownlint-cli2` repo URL from `igorshubovych/markdownlint-cli2` (404) to `DavidAnson/markdownlint-cli2`.
 - Make the TOC-sync gate bidirectional: `scripts/check-toc-sync.py` now also
   extracts page references from `README.md` and `docs/index.md` and asserts
   each one is present in the corresponding `mkdocs.yml` nav section. A page

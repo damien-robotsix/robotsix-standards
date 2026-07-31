@@ -478,6 +478,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../ci-lint-pinning/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    CI lint tool pinning
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../distribution-packaging/" class="md-nav__link">
         
   
@@ -1757,6 +1785,7 @@
 </ul>
 <h2 id="000-unreleased">0.0.0 (unreleased)<a class="headerlink" href="#000-unreleased" title="Permanent link">&para;</a></h2>
 <ul>
+<li>Standardize: CI lint jobs must run the same version-pinned tools as <code>.pre-commit-config.yaml</code> — the pre-commit <code>rev:</code> field is the single source of truth, never floating/latest installs. (20260731T134913Z-standardize-ci-runs-the-same-pinned-lint-c651)</li>
 <li>Add dedicated Changelog &amp; releases standard: towncrier fragment-driven releases, CI-enforced changelog fragments, and the shared auto-release workflow — no hand-edited changelog.</li>
 <li><strong>Docker standard:</strong> Added a CI integration tests section requiring every
   deployable component to build its image in CI, verify the entrypoint binary

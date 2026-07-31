@@ -10,13 +10,13 @@
       
       
       
-        <link rel="canonical" href="https://damien-robotsix.github.io/robotsix-standards/http-error-envelope/">
+        <link rel="canonical" href="https://damien-robotsix.github.io/robotsix-standards/ci-lint-pinning/">
       
       
-        <link rel="prev" href="../chat-access-standard/">
+        <link rel="prev" href="../changelog-driven-releases/">
       
       
-        <link rel="next" href="../http-security-headers/">
+        <link rel="next" href="../distribution-packaging/">
       
       
         
@@ -27,7 +27,7 @@
     
     
       
-        <title>HTTP error envelope - Robotsix Standards</title>
+        <title>CI lint tool pinning - Robotsix Standards</title>
       
     
     
@@ -78,7 +78,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#http-error-envelope" class="md-skip">
+        <a href="#ci-lint-tool-pinning" class="md-skip">
           Skip to content
         </a>
       
@@ -114,7 +114,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              HTTP error envelope
+              CI lint tool pinning
             
           </span>
         </div>
@@ -311,8 +311,10 @@
       
   
   
+    
   
   
+  
     
     
     
@@ -323,13 +325,11 @@
       
     
     
-    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
       
         
         
-          
-        
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
         
           
           <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
@@ -350,7 +350,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_3">
             <span class="md-nav__icon md-icon"></span>
             
@@ -477,10 +477,37 @@
                 
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="../ci-lint-pinning/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    CI lint tool pinning
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   
@@ -496,6 +523,131 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#the-rule" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The rule
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#why" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#how" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="How">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#approach-a-run-the-tool-through-pre-commit-preferred" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Approach A: run the tool through pre-commit (preferred)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#approach-b-pin-the-ci-install-to-the-pre-commit-rev-version" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Approach B: pin the CI install to the pre-commit rev: version
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#anti-patterns-never-install-from-floatinglatest-sources" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Anti-patterns: never install from floating/latest sources
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#exceptions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exceptions
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#failure-modes-prevented" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Failure modes prevented
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#relationship-to-other-standards" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Relationship to other standards
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -904,8 +1056,6 @@
       
   
   
-    
-  
   
   
     
@@ -918,11 +1068,13 @@
       
     
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4" >
         
           
           <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
@@ -943,7 +1095,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_4">
             <span class="md-nav__icon md-icon"></span>
             
@@ -1238,37 +1390,10 @@
                 
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    HTTP error envelope
-  
-
-    
-  </span>
-  
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../http-error-envelope/" class="md-nav__link">
         
   
   
@@ -1284,98 +1409,6 @@
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#the-rule" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        The rule
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="The rule">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#1-one-error-envelope-rfc-9457-problemjson" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        1. One error envelope: RFC 9457 problem+json
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#2-centralized-registration-every-handler-in-one-place" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        2. Centralized registration — every handler in one place
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#3-routes-never-emit-ad-hoc-error-json" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        3. Routes never emit ad-hoc error JSON
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#4-content-type-applicationproblemjson" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        4. Content-Type: application/problem+json
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#failure-modes-this-prevents" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Failure modes this prevents
-      
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -1684,14 +1717,36 @@
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="The rule">
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#why" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#how" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="How">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#1-one-error-envelope-rfc-9457-problemjson" class="md-nav__link">
+  <a href="#approach-a-run-the-tool-through-pre-commit-preferred" class="md-nav__link">
     <span class="md-ellipsis">
       
-        1. One error envelope: RFC 9457 problem+json
+        Approach A: run the tool through pre-commit (preferred)
       
     </span>
   </a>
@@ -1699,32 +1754,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#2-centralized-registration-every-handler-in-one-place" class="md-nav__link">
+  <a href="#approach-b-pin-the-ci-install-to-the-pre-commit-rev-version" class="md-nav__link">
     <span class="md-ellipsis">
       
-        2. Centralized registration — every handler in one place
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#3-routes-never-emit-ad-hoc-error-json" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        3. Routes never emit ad-hoc error JSON
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#4-content-type-applicationproblemjson" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        4. Content-Type: application/problem+json
+        Approach B: pin the CI install to the pre-commit rev: version
       
     </span>
   </a>
@@ -1737,10 +1770,43 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#failure-modes-this-prevents" class="md-nav__link">
+  <a href="#anti-patterns-never-install-from-floatinglatest-sources" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Failure modes this prevents
+        Anti-patterns: never install from floating/latest sources
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#exceptions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exceptions
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#failure-modes-prevented" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Failure modes prevented
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#relationship-to-other-standards" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Relationship to other standards
       
     </span>
   </a>
@@ -1767,176 +1833,149 @@
   
 
 
-<h1 id="http-error-envelope">HTTP error envelope<a class="headerlink" href="#http-error-envelope" title="Permanent link">&para;</a></h1>
+<h1 id="ci-lint-tool-pinning">CI lint tool pinning<a class="headerlink" href="#ci-lint-tool-pinning" title="Permanent link">&para;</a></h1>
 <blockquote>
-<p><strong>Scope: deployable components that expose an HTTP API.</strong> A component whose
-only HTTP surface is the mandatory <code>/health</code> endpoint (see the
-<a href="../component-standard/">component standard</a>) does not need this — the
-health check is a binary alive/not-alive signal that carries no error body.
-This applies <em>in addition to</em> the <a href="../repo-baseline/">repo baseline</a> and
-<a href="../component-standard/">component standard</a>.</p>
+<p><strong>Scope: every repository with a <code>.pre-commit-config.yaml</code>.</strong> The
+pre-commit config is the single source of truth for lint-tool versions;
+every CI lint job that runs a tool already covered by a pre-commit hook
+must consume that same pinned version.</p>
 </blockquote>
-<p>Every HTTP service in the fleet returns errors through a <strong>single, consistent
-JSON envelope</strong> registered via centralized exception handlers — never a mix of
-ad-hoc shapes per route or per error kind. A shared envelope means every client
-and integration — the chat agent, the deploy dashboard, the mill's own API
-calls — parses errors the same way, without branching on the response shape.</p>
 <h2 id="the-rule">The rule<a class="headerlink" href="#the-rule" title="Permanent link">&para;</a></h2>
-<h3 id="1-one-error-envelope-rfc-9457-problemjson">1. One error envelope: RFC 9457 problem+json<a class="headerlink" href="#1-one-error-envelope-rfc-9457-problemjson" title="Permanent link">&para;</a></h3>
-<p>All error responses use the <strong>RFC 9457 <code>application/problem+json</code></strong> shape:</p>
+<p><strong>CI lint jobs must run the same version-pinned tools as
+<code>.pre-commit-config.yaml</code>.</strong> The pre-commit <code>rev:</code> field is the single
+source of truth for every lint-tool version. A CI job that runs the same
+tool from a different source — floating, latest, unpinned — is a
+reproducibility bug: the gate validates against a <strong>different tool version</strong>
+than the one local developers and pre-commit run.</p>
+<p>This applies to every tool that appears in both places: yamllint,
+shellcheck, hadolint, actionlint, codespell, markdownlint-cli, ruff,
+mypy, and any future lint hook added to the standard pre-commit set.</p>
+<h2 id="why">Why<a class="headerlink" href="#why" title="Permanent link">&para;</a></h2>
+<p>When CI installs <code>yamllint</code> from <code>pip install yamllint</code> (latest) while
+<code>.pre-commit-config.yaml</code> pins <code>rev: v1.35.1</code>, the two runs use different
+versions. A check can pass in CI and fail locally — or vice versa — purely
+because of version skew. The developer sees a red X on their PR, runs the
+same tool locally, and gets a green pass, because their local version is
+pinned and CI's isn't. The debugging loop is: update the tool, re-learn the
+new rule set, and hope the versions converge. It never does for long.</p>
+<p>Dependabot already bumps pre-commit <code>rev:</code> tags (the <code>pre-commit</code> ecosystem
+block in <code>.github/dependabot.yml</code>). When CI consumes those same pins,
+Dependabot keeps <strong>both</strong> paths in lockstep — one PR updates the pre-commit
+config, and the next CI run automatically uses the new version.</p>
+<h2 id="how">How<a class="headerlink" href="#how" title="Permanent link">&para;</a></h2>
+<p>Two approaches are acceptable. Both satisfy the rule — choose the one
+that fits the repo's CI workflow shape:</p>
+<h3 id="approach-a-run-the-tool-through-pre-commit-preferred">Approach A: run the tool through pre-commit (preferred)<a class="headerlink" href="#approach-a-run-the-tool-through-pre-commit-preferred" title="Permanent link">&para;</a></h3>
+<p>Run <code>pre-commit run &lt;hook-id&gt; --all-files</code> in CI. This is the simplest
+path and the one the fleet's shared workflows use. The pre-commit runtime
+installs exactly the <code>rev:</code>-pinned version into its own isolated
+environment — CI and local dev are literally the same invocation.</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># In a CI job:</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">uses</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">astral-sh/setup-uv@v6</span>
+<span class="w">  </span><span class="nt">with</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">enable-cache</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">    </span><span class="nt">cache-dependency-glob</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;pyproject.toml&quot;</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">uses</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">tox-dev/action-pre-commit-uv@v1</span>
+<span class="w">  </span><span class="nt">with</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">extra_args</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">--show-diff-on-failure --all-files</span>
+</code></pre></div>
+<h3 id="approach-b-pin-the-ci-install-to-the-pre-commit-rev-version">Approach B: pin the CI install to the pre-commit <code>rev:</code> version<a class="headerlink" href="#approach-b-pin-the-ci-install-to-the-pre-commit-rev-version" title="Permanent link">&para;</a></h3>
+<p>When a tool must run outside pre-commit (e.g. as a standalone CI step for
+reporting reasons), pin its install command to the <strong>exact same version</strong>
+declared in <code>.pre-commit-config.yaml</code>. Extract the version from the
+pre-commit config — do not guess, do not round, do not default to latest:</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># Good — pinned to the pre-commit rev:</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">run</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">pip install yamllint==1.35.1</span>
+
+<span class="c1"># Good — action pinned to a release tag that matches the pre-commit rev:</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">uses</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">hadolint/hadolint-action@v3.1.0</span>
+</code></pre></div>
+<p>When the Dependabot PR bumps the pre-commit <code>rev:</code>, it must also bump
+any standalone CI install lines that reference the same tool. A CI job
+that references a version literal must carry a comment pointing back to
+the pre-commit config so the reviewer of the Dependabot PR knows to update
+both:</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># Keep in sync with .pre-commit-config.yaml → hadolint rev:</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">uses</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">hadolint/hadolint-action@v3.1.0</span>
+</code></pre></div>
+<h2 id="anti-patterns-never-install-from-floatinglatest-sources">Anti-patterns: never install from floating/latest sources<a class="headerlink" href="#anti-patterns-never-install-from-floatinglatest-sources" title="Permanent link">&para;</a></h2>
+<p>Every one of these patterns is forbidden in CI lint jobs for tools that
+also appear in <code>.pre-commit-config.yaml</code>:</p>
 <table>
 <thead>
 <tr>
-<th>Key</th>
-<th>Type</th>
-<th>Required</th>
-<th>Meaning</th>
+<th>Forbidden</th>
+<th>Why it drifts</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td><code>type</code></td>
-<td>URI string</td>
-<td><strong>Yes</strong></td>
-<td>A URI identifying the problem kind (may be a fixed tag URI like <code>tag:robotsix,2026:validation-error</code>).</td>
+<td><code>pip install &lt;tool&gt;</code></td>
+<td>Installs latest from PyPI — unrelated to the pre-commit <code>rev:</code>.</td>
 </tr>
 <tr>
-<td><code>title</code></td>
-<td>string</td>
-<td><strong>Yes</strong></td>
-<td>A short, human-readable summary of the problem (stable across instances of the same <code>type</code>).</td>
+<td><code>npm install -g &lt;tool&gt;</code></td>
+<td>Installs latest from npm — same problem.</td>
 </tr>
 <tr>
-<td><code>status</code></td>
-<td>integer</td>
-<td><strong>Yes</strong></td>
-<td>The HTTP status code (mirrors the response status line).</td>
+<td><code>apt-get install &lt;tool&gt;</code></td>
+<td>Installs whatever version the runner image ships — drifts across image updates.</td>
 </tr>
 <tr>
-<td><code>detail</code></td>
-<td>string</td>
-<td>No</td>
-<td>A human-readable explanation specific to this <em>occurrence</em> — may vary per request.</td>
+<td><code>curl .../releases/latest/download/...</code></td>
+<td>Always fetches the latest release — the opposite of pinned.</td>
 </tr>
 <tr>
-<td><code>instance</code></td>
-<td>URI string</td>
-<td>No</td>
-<td>A URI identifying the specific occurrence (e.g. <code>tag:robotsix,2026:req/0193a…</code>).</td>
+<td><code>bash &lt;(curl ...download-actionlint.bash)</code></td>
+<td>Unpinned download script — version is whatever the script resolves.</td>
+</tr>
+<tr>
+<td><code>docker run &lt;image&gt;:latest</code></td>
+<td>The <code>latest</code> tag moves — a moving target.</td>
 </tr>
 </tbody>
 </table>
-<p><strong>Extension:</strong> every problem response carries a <code>correlation_id</code> field (string)
-matching the <code>X-Correlation-ID</code> (or <code>x-correlation-id</code>) header propagated by
-<code>asgi-correlation-id</code> through the fleet. This ties every error to the original
-request in logs and traces, even when the error is returned to a client that
-didn't set the header.</p>
-<div class="highlight"><pre><span></span><code><span class="p">{</span>
-<span class="w">  </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;tag:robotsix,2026:not-found&quot;</span><span class="p">,</span>
-<span class="w">  </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Resource not found&quot;</span><span class="p">,</span>
-<span class="w">  </span><span class="nt">&quot;status&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">404</span><span class="p">,</span>
-<span class="w">  </span><span class="nt">&quot;detail&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;No ticket with id 0193af04…&quot;</span><span class="p">,</span>
-<span class="w">  </span><span class="nt">&quot;instance&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;tag:robotsix,2026:req/0193af04…&quot;</span><span class="p">,</span>
-<span class="w">  </span><span class="nt">&quot;correlation_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;abc123-def456&quot;</span>
-<span class="p">}</span>
-</code></pre></div>
-<p>FastAPI's default <code>{"detail": "…"}</code> shape (even with the experimental
-<code>problem_details=True</code> flag) is <strong>not acceptable</strong> — it cannot carry an error
-code, validation arrays, a correlation id, or a type URI, and enabling it
-changes the shape only for <code>HTTPException</code>, not for validation errors or
-unhandled exceptions.</p>
-<h3 id="2-centralized-registration-every-handler-in-one-place">2. Centralized registration — every handler in one place<a class="headerlink" href="#2-centralized-registration-every-handler-in-one-place" title="Permanent link">&para;</a></h3>
-<p>All error responses come from <strong>a single registration function</strong> called once at
-startup. Routes never produce error JSON themselves. The registration covers
-every error class the framework can surface:</p>
+<h2 id="exceptions">Exceptions<a class="headerlink" href="#exceptions" title="Permanent link">&para;</a></h2>
+<p>A CI job may deviate from the pre-commit pin when:</p>
 <ul>
-<li><strong><code>StarletteHTTPException</code></strong> (including FastAPI's <code>HTTPException</code>) — mapped to
-  an RFC 9457 response with the exception's <code>status_code</code> and <code>detail</code>.</li>
-<li><strong><code>RequestValidationError</code></strong> (FastAPI's validation failure from pydantic) —
-  mapped to a <strong>422</strong> problem with <code>type</code> indicating a validation error and
-  <code>detail</code> carrying the structured validation errors (the list of <code>{loc, msg,
-  type}</code> from pydantic).</li>
-<li><strong>Domain exceptions</strong> the component defines — mapped to appropriate status
-  codes with descriptive <code>type</code> URIs.</li>
-<li><strong>Catch-all <code>Exception</code></strong> — mapped to a <strong>500</strong> problem with a fixed
-  <code>"Internal server error"</code> title and no <code>detail</code> in production (the raw
-  exception is logged server-side, never leaked to the client).</li>
+<li><strong>The tool runs exclusively in CI and has no pre-commit hook.</strong> No
+  conflict exists — there is no pre-commit version to stay in sync with.
+  The tool must still be pinned (never <code>latest</code>), but the pin lives in the
+  CI workflow itself rather than in <code>.pre-commit-config.yaml</code>.</li>
+<li><strong>The tool version is determined by an external constraint</strong> (e.g. a
+  language runtime version that the pre-commit hook doesn't cover). Document
+  the constraint in a comment in the CI workflow.</li>
 </ul>
-<p>In FastAPI/Starlette this is done with <code>app.add_exception_handler()</code>:</p>
-<div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">register_error_handlers</span><span class="p">(</span><span class="n">app</span><span class="p">:</span> <span class="n">FastAPI</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Register the one error envelope for every error class.&quot;&quot;&quot;</span>
-
-    <span class="nd">@app</span><span class="o">.</span><span class="n">exception_handler</span><span class="p">(</span><span class="n">StarletteHTTPException</span><span class="p">)</span>
-    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">http_exception_handler</span><span class="p">(</span><span class="n">request</span><span class="p">:</span> <span class="n">Request</span><span class="p">,</span> <span class="n">exc</span><span class="p">:</span> <span class="n">StarletteHTTPException</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">JSONResponse</span><span class="p">:</span>
-        <span class="k">return</span> <span class="n">_problem_response</span><span class="p">(</span>
-            <span class="n">status</span><span class="o">=</span><span class="n">exc</span><span class="o">.</span><span class="n">status_code</span><span class="p">,</span>
-            <span class="n">title</span><span class="o">=</span><span class="n">_http_status_title</span><span class="p">(</span><span class="n">exc</span><span class="o">.</span><span class="n">status_code</span><span class="p">),</span>
-            <span class="n">detail</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">exc</span><span class="o">.</span><span class="n">detail</span><span class="p">),</span>
-            <span class="n">type_uri</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;tag:robotsix,2026:http/</span><span class="si">{</span><span class="n">exc</span><span class="o">.</span><span class="n">status_code</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
-            <span class="n">request</span><span class="o">=</span><span class="n">request</span><span class="p">,</span>
-        <span class="p">)</span>
-
-    <span class="nd">@app</span><span class="o">.</span><span class="n">exception_handler</span><span class="p">(</span><span class="n">RequestValidationError</span><span class="p">)</span>
-    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">validation_handler</span><span class="p">(</span><span class="n">request</span><span class="p">:</span> <span class="n">Request</span><span class="p">,</span> <span class="n">exc</span><span class="p">:</span> <span class="n">RequestValidationError</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">JSONResponse</span><span class="p">:</span>
-        <span class="k">return</span> <span class="n">_problem_response</span><span class="p">(</span>
-            <span class="n">status</span><span class="o">=</span><span class="mi">422</span><span class="p">,</span>
-            <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Validation error&quot;</span><span class="p">,</span>
-            <span class="n">detail</span><span class="o">=</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">exc</span><span class="o">.</span><span class="n">errors</span><span class="p">()),</span>
-            <span class="n">type_uri</span><span class="o">=</span><span class="s2">&quot;tag:robotsix,2026:validation-error&quot;</span><span class="p">,</span>
-            <span class="n">request</span><span class="o">=</span><span class="n">request</span><span class="p">,</span>
-        <span class="p">)</span>
-
-    <span class="nd">@app</span><span class="o">.</span><span class="n">exception_handler</span><span class="p">(</span><span class="ne">Exception</span><span class="p">)</span>
-    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">catch_all_handler</span><span class="p">(</span><span class="n">request</span><span class="p">:</span> <span class="n">Request</span><span class="p">,</span> <span class="n">exc</span><span class="p">:</span> <span class="ne">Exception</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">JSONResponse</span><span class="p">:</span>
-        <span class="n">logger</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="s2">&quot;Unhandled exception&quot;</span><span class="p">)</span>  <span class="c1"># log the full traceback server-side</span>
-        <span class="k">return</span> <span class="n">_problem_response</span><span class="p">(</span>
-            <span class="n">status</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span>
-            <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Internal server error&quot;</span><span class="p">,</span>
-            <span class="n">detail</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>  <span class="c1"># never leak raw exceptions to the client</span>
-            <span class="n">type_uri</span><span class="o">=</span><span class="s2">&quot;tag:robotsix,2026:internal-error&quot;</span><span class="p">,</span>
-            <span class="n">request</span><span class="o">=</span><span class="n">request</span><span class="p">,</span>
-        <span class="p">)</span>
-</code></pre></div>
-<p>The exact shape of the helper (<code>_problem_response</code>) is implementation detail —
-the fleet's shared libraries may provide one — but every handler must call the
-same helper so the envelope is truly uniform.</p>
-<h3 id="3-routes-never-emit-ad-hoc-error-json">3. Routes never emit ad-hoc error JSON<a class="headerlink" href="#3-routes-never-emit-ad-hoc-error-json" title="Permanent link">&para;</a></h3>
-<p>A route that returns error JSON directly — <code>return {"error": "bad request"}</code>,
-<code>raise HTTPException(status_code=400, detail="nope")</code> and relying on the
-default handler — breaks the contract. Every client that has written a parser
-for the one envelope now hits a different shape and either crashes or silently
-misclassifies the error.</p>
-<p>Routes signal errors by <strong>raising an exception</strong> — an <code>HTTPException</code>, a domain
-exception the centralized handler knows about, or (for unhandled cases) letting
-the exception propagate to the catch-all. The centralized handlers produce the
-JSON.</p>
-<h3 id="4-content-type-applicationproblemjson">4. Content-Type: <code>application/problem+json</code><a class="headerlink" href="#4-content-type-applicationproblemjson" title="Permanent link">&para;</a></h3>
-<p>Error responses carry <code>Content-Type: application/problem+json</code>. This lets
-clients detect the RFC 9457 shape from the response headers without inspecting
-the body, and it distinguishes the error stream from the success stream
-(<code>application/json</code>). The centralized handler sets it on every error response.</p>
-<h2 id="failure-modes-this-prevents">Failure modes this prevents<a class="headerlink" href="#failure-modes-this-prevents" title="Permanent link">&para;</a></h2>
+<p>Both exceptions are narrow and deliberate. The default is: if the tool has
+a pre-commit hook, CI runs that same version.</p>
+<h2 id="failure-modes-prevented">Failure modes prevented<a class="headerlink" href="#failure-modes-prevented" title="Permanent link">&para;</a></h2>
 <ul>
-<li><strong>Client-side shape branching.</strong> Without a shared envelope, every client that
-  calls more than one service must <code>if "detail" in body … elif "error" in body
-  … elif "message" in body …</code>. One shape removes that code from every
-  integration.</li>
-<li><strong>Error-code blindness.</strong> A plain <code>{"detail": "Something went wrong"}</code> with a
-  400 status carries no machine-readable error code. The caller must parse the
-  human-readable string or guess from the status code alone. An RFC 9457 <code>type</code>
-  URI gives every error a stable, parseable identifier.</li>
-<li><strong>Validation-array loss.</strong> FastAPI's default <code>RequestValidationError</code> handler
-  returns <code>{"detail": [{"loc": […], "msg": "…", "type": "…"}]}</code>, which looks
-  like a problem detail but is <em>not</em> the same shape as <code>HTTPException</code> errors.
-  A single envelope normalizes both.</li>
-<li><strong>Traceability gap.</strong> Without <code>correlation_id</code> in the error body, matching a
-  client-side error to a server-side log line requires timestamps and guesswork.
-  Carrying the correlation id in every error response ties the two together
-  directly.</li>
-<li><strong>Exception leakage.</strong> A catch-all that returns <code>str(exc)</code> in production
-  leaks stack traces, file paths, and sometimes credentials to the client. The
-  centralized catch-all logs the traceback server-side and returns a fixed,
-  safe title.</li>
+<li><strong>Version-skew debugging loops.</strong> Developer runs pre-commit locally
+  (pinned), CI runs latest (different). The PR fails with a lint error the
+  developer cannot reproduce — or passes a check that should have failed,
+  because CI's newer version hasn't yet learned the rule that the pinned
+  version enforces.</li>
+<li><strong>Dependabot drift.</strong> Dependabot bumps the pre-commit <code>rev:</code> but the CI
+  job still runs the old version. The local pre-commit hook enforces new
+  rules that CI never checks — a false sense of gate coverage.</li>
+<li><strong>Runner-image drift.</strong> <code>apt-get install shellcheck</code> on
+  <code>ubuntu-24.04</code> installs a different version than <code>ubuntu-22.04</code>. A repo
+  that upgrades its runner image gets a different lint tool — and
+  potentially different results — with no code change.</li>
+<li><strong>Silent rule changes.</strong> A tool's latest release adds a new check that
+  fails on existing code. The pre-commit hook (pinned, unchanged) passes
+  but CI (latest, freshly installed) fails — a broken build with no
+  apparent cause.</li>
+</ul>
+<h2 id="relationship-to-other-standards">Relationship to other standards<a class="headerlink" href="#relationship-to-other-standards" title="Permanent link">&para;</a></h2>
+<ul>
+<li>The pre-commit hook set is defined in <a href="../python/#pre-commit-hooks">Python practices</a>
+  and the <a href="../pre-commit-baseline/">pre-commit baseline</a>.</li>
+<li>The Dependabot <code>pre-commit</code> ecosystem block is referenced in
+  <a href="../python/#tooling-uv">Python practices</a> and the
+  <a href="../security-posture/">security posture</a>.</li>
+<li>CI workflow standards (shared workflows, caching) live in
+  <a href="../python/#ci-uv-setup-caching">Python practices</a>.</li>
 </ul>
 
 

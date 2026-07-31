@@ -121,6 +121,7 @@
 
 ## 0.0.0 (unreleased)
 
+- Standardize: CI lint jobs must run the same version-pinned tools as `.pre-commit-config.yaml` — the pre-commit `rev:` field is the single source of truth, never floating/latest installs. (20260731T134913Z-standardize-ci-runs-the-same-pinned-lint-c651)
 - Add dedicated Changelog & releases standard: towncrier fragment-driven releases, CI-enforced changelog fragments, and the shared auto-release workflow — no hand-edited changelog.
 - **Docker standard:** Added a CI integration tests section requiring every
   deployable component to build its image in CI, verify the entrypoint binary

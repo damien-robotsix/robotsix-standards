@@ -37,6 +37,9 @@ everywhere.
 - **[Changelog & releases](changelog-driven-releases.md)** — towncrier fragment-driven
   releases, CI-enforced changelog fragments, and the shared auto-release
   workflow — no hand-edited changelog.
+- **[CI lint tool pinning](ci-lint-pinning.md)** — CI lint jobs must run the same
+  version-pinned tools as `.pre-commit-config.yaml`, not floating/latest
+  sources — one version source, no skew.
 - **[Distribution & Packaging](distribution-packaging.md)** — git-based consumption of
   first-party libraries — no package index, no registry publish step.
 - **[Docstring convention](docstrings.md)** — Python docstring style and coverage

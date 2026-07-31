@@ -67,6 +67,7 @@ nav:
       - Free-tier only: free-tier-only.md
       - Security posture: security-posture.md
       - Changelog & releases: changelog-driven-releases.md
+      - CI lint tool pinning: ci-lint-pinning.md
       - Distribution & Packaging: distribution-packaging.md
       - Python practices: python.md
       - Python Makefile convention: python-makefile-convention.md

@@ -272,13 +272,13 @@ dependency vulnerability audit on every CI run.
   asset makes it discoverable.
 - **Alignment:** OpenSSF Scorecard *SBOM* (10/10 with release asset) and
   *Vulnerabilities* checks,
-  [SLSA *Build L2+ (v1.3)*](https://slsa.dev/spec/v1.3/requirements) provenance
+  [SLSA *Build L2+*](https://slsa.dev/spec/v1.2/requirements) provenance
   requirement.
 - **Detail:** [Docker build & release — CI-time image scan](docker-standard.md#ci-time-image-scan).
 
 ## SLSA Source Track
 
-[SLSA v1.3](https://slsa.dev/spec/v1.3/) introduces a **Source Track**
+[SLSA v1.2](https://slsa.dev/spec/v1.2/) introduces a **Source Track**
 (Source L1–L4) alongside the existing Build Track. The fleet's posture against
 each Source level:
 

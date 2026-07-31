@@ -1,0 +1,1 @@
+Add a local CI gate (`scripts/check-changelog-redundancy.py`) that rejects PRs which hand-edit the `## 0.0.0 (unreleased)` section of CHANGELOG.md while also adding a `changelog.d/` fragment for the same change.

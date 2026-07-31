@@ -38,6 +38,11 @@ jobs:
         run: uv run --group docs python scripts/check-toc-sync.py
       - name: Spell check
         run: uv run --with codespell codespell
+      - name: Check changelog redundancy
+        if: github.event_name == 'pull_request'
+        run: |
+          git fetch origin main
+          uv run python scripts/check-changelog-redundancy.py origin/main
 
   changelog:
     # skip-changelog label handling lives inside the shared workflow.

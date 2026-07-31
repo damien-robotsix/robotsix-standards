@@ -121,6 +121,7 @@
 
 ## 0.0.0 (unreleased)
 
+- Update SLSA specification references in `docs/security-posture.md` from v1.2 to v1.3 (current stable version).
 - Add mkdocs.yml nav registration rule to AGENT.md — new standards pages must be
   registered in the `mkdocs.yml` nav in the same change that adds them, not
   just in README/index TOC entries (the TOC-sync gate is one-directional).

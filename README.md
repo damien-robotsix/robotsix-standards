@@ -57,7 +57,7 @@ the default.
 | [Default config location](docs/default-config-location.md) | Canonical in-repo location for the shipped default config (`config/config.json`) that seeds the deploy-side config on first registration. |
 | [Config ownership](docs/config-ownership.md) | The hard line between deploy-plane config (central-deploy UI) and component-owned config (the component's own HTTP surface and Settings panel). |
 | [Config-ownership audit](docs/config-ownership-audit.md) | Fleet-wide classification of every deployable component against the config-ownership standard, with remediation tracking. |
-| [Docker build & release](docs/docker-standard.md) | One Dockerfile pattern + one shared publish workflow → GHCR, with attestation and scanning. |
+| [Docker build & release](docs/docker-standard.md) | One Dockerfile pattern + one shared publish workflow → GHCR, with attestation, scanning, and CI integration tests. |
 | [Deploy contract](docs/deploy-contract.md) | The `deploy/docker-compose.yml` shape the deployment system consumes (canonical copy lives in [central-deploy](https://github.com/damien-robotsix/robotsix-central-deploy/blob/main/docs/DEPLOY_CONTRACT.md)). |
 | [Entrypoint contract](docs/entrypoint-contract.md) | Console script as PID 1 (exec-form `ENTRYPOINT`); `entrypoint.sh` only for genuine startup work. |
 | [Integrating a service](docs/integrating-a-service.md) | Task-oriented how-to: zero to a one-click deploy. |

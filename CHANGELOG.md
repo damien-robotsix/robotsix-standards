@@ -121,6 +121,11 @@
 
 ## 0.0.0 (unreleased)
 
+- **Docker standard:** Added a CI integration tests section requiring every
+  deployable component to build its image in CI, verify the entrypoint binary
+  exists, and perform a Python import smoke test — catching the build-time
+  regressions (missing binaries, broken imports, packaging errors) that the
+  image scan alone doesn't catch.
 - Strengthened the README standards-link requirement in the repo-baseline standard:
   new repos from the template ship the link by default, and CI verifies it on
   every PR. Added a local `readme-standards-link` job to the baseline-check

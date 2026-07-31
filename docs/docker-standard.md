@@ -171,6 +171,58 @@ workflow enforces:
   artifact) complements the PR gate — it catches CVEs disclosed
   after the image was built.
 
+## CI integration tests
+
+The PR image scan catches vulnerable dependencies; it does **not** catch
+build-time packaging errors — a missing entrypoint binary, a broken Python
+import, a missing `config.json` — any of which crashloops the container in
+production. A Docker build can succeed (`RUN` stages pass) while the
+production layer is broken, because the build never exercises the runtime
+image. Every deployable component therefore runs a **Docker integration test**
+on every PR, immediately after the image build.
+
+The test does three things:
+
+1. **Build the image.** Use the same `docker/build-push-action` call the scan
+   workflow uses (`push: false`, `load: true`).
+2. **Verify the entrypoint binary.** Start a short-lived container and check
+   that the console script named in the Dockerfile's `ENTRYPOINT` exists at
+   its expected path and is executable:
+
+   ```sh
+   docker run --rm --entrypoint /bin/sh <image> -c \
+     'test -x /usr/local/bin/robotsix-<name>'
+   ```
+
+3. **Import smoke test.** In the same container, verify the service's
+   top-level package imports without error:
+
+   ```sh
+   docker run --rm --entrypoint python <image> -c \
+     'import robotsix_<name>'
+   ```
+
+   For non-Python services, replace with the equivalent smoke test — a
+   Node.js `require`, a ROS 2 node listing, or whatever verifies the runtime
+   ships intact.
+
+The two verification steps are fast (a few seconds each) and run in the same
+PR workflow as the image build and scan — after the build, before the scan.
+A failure blocks the PR, catching the regression before merge.
+
+**Failure mode prevented:** A container image that builds successfully but
+whose production layer is broken — because the runtime `COPY --from=builder`
+missed a binary, a `uv pip install` in the builder stage targeted a venv the
+runtime stage didn't copy, or a packaging change dropped a required file.
+These are the exact regressions that caused the invest service to crashloop
+after a routine update (missing entrypoint binary, ModuleNotFoundError,
+missing `config.json`) — all build-time defects CI didn't catch because
+nothing ran the image.
+
+A reusable workflow for this gate lives in
+[robotsix-github-workflows](https://github.com/damien-robotsix/robotsix-github-workflows)
+so every component calls the same integration-test step, identically.
+
 ## Deploy — updates are deliberate
 
 The deployment system (central-deploy) **pulls** the published image via the

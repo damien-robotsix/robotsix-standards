@@ -10,29 +10,27 @@
       
       
       
-        <link rel="canonical" href="https://damien-robotsix.github.io/robotsix-standards/">
+        <link rel="canonical" href="https://damien-robotsix.github.io/robotsix-standards/fastapi-pydantic-field-descriptions/">
       
       
-      
-        <link rel="next" href="fleet/">
       
       
         
       
       
-      <link rel="icon" href="assets/images/favicon.png">
+      <link rel="icon" href="../assets/images/favicon.png">
       <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
     
     
       
-        <title>Robotsix Standards</title>
+        <title>FastAPI Pydantic field descriptions - Robotsix Standards</title>
       
     
     
-      <link rel="stylesheet" href="assets/stylesheets/main.ec1eaa64.min.css">
+      <link rel="stylesheet" href="../assets/stylesheets/main.ec1eaa64.min.css">
       
         
-        <link rel="stylesheet" href="assets/stylesheets/palette.ab4e12ef.min.css">
+        <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
       
       
 
@@ -51,7 +49,7 @@
       
     
     
-    <script>__md_scope=new URL(".",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
 
@@ -76,7 +74,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#robotsix-stack-standards" class="md-skip">
+        <a href="#fastapi-pydantic-field-descriptions" class="md-skip">
           Skip to content
         </a>
       
@@ -92,7 +90,7 @@
 
 <header class="md-header md-header--shadow" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href="." title="Robotsix Standards" class="md-header__button md-logo" aria-label="Robotsix Standards" data-md-component="logo">
+    <a href=".." title="Robotsix Standards" class="md-header__button md-logo" aria-label="Robotsix Standards" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
@@ -112,7 +110,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Home
+              FastAPI Pydantic field descriptions
             
           </span>
         </div>
@@ -228,7 +226,7 @@
 
 <nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href="." title="Robotsix Standards" class="md-nav__button md-logo" aria-label="Robotsix Standards" data-md-component="logo">
+    <a href=".." title="Robotsix Standards" class="md-nav__button md-logo" aria-label="Robotsix Standards" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
@@ -255,37 +253,10 @@
       
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Home
-  
-
-    
-  </span>
-  
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="." class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
         
   
   
@@ -301,142 +272,6 @@
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#why-this-exists" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Why this exists
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#two-scopes" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Two scopes
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Two scopes">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#every-repository-libraries-and-deployable-components" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Every repository (libraries and deployable components)
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#deployable-components-additionally" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Deployable components (additionally)
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#the-deployment-system-bootstrap-tier" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        The deployment system (bootstrap tier)
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#which-am-i" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Which am I?
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#the-fleet" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        The fleet
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#reference-implementation" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Reference implementation
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#changing-the-standards" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Changing the standards
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#mill-agents" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Mill agents
-      
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -448,7 +283,7 @@
   
   
     <li class="md-nav__item">
-      <a href="fleet/" class="md-nav__link">
+      <a href="../fleet/" class="md-nav__link">
         
   
   
@@ -529,7 +364,7 @@
   
   
     <li class="md-nav__item">
-      <a href="repo-baseline/" class="md-nav__link">
+      <a href="../repo-baseline/" class="md-nav__link">
         
   
   
@@ -557,7 +392,7 @@
   
   
     <li class="md-nav__item">
-      <a href="free-tier-only/" class="md-nav__link">
+      <a href="../free-tier-only/" class="md-nav__link">
         
   
   
@@ -585,7 +420,7 @@
   
   
     <li class="md-nav__item">
-      <a href="security-posture/" class="md-nav__link">
+      <a href="../security-posture/" class="md-nav__link">
         
   
   
@@ -613,7 +448,7 @@
   
   
     <li class="md-nav__item">
-      <a href="changelog-driven-releases/" class="md-nav__link">
+      <a href="../changelog-driven-releases/" class="md-nav__link">
         
   
   
@@ -641,7 +476,7 @@
   
   
     <li class="md-nav__item">
-      <a href="ci-lint-pinning/" class="md-nav__link">
+      <a href="../ci-lint-pinning/" class="md-nav__link">
         
   
   
@@ -669,7 +504,7 @@
   
   
     <li class="md-nav__item">
-      <a href="distribution-packaging/" class="md-nav__link">
+      <a href="../distribution-packaging/" class="md-nav__link">
         
   
   
@@ -697,7 +532,7 @@
   
   
     <li class="md-nav__item">
-      <a href="python/" class="md-nav__link">
+      <a href="../python/" class="md-nav__link">
         
   
   
@@ -725,7 +560,7 @@
   
   
     <li class="md-nav__item">
-      <a href="python-makefile-convention/" class="md-nav__link">
+      <a href="../python-makefile-convention/" class="md-nav__link">
         
   
   
@@ -753,7 +588,7 @@
   
   
     <li class="md-nav__item">
-      <a href="pytest/" class="md-nav__link">
+      <a href="../pytest/" class="md-nav__link">
         
   
   
@@ -781,7 +616,7 @@
   
   
     <li class="md-nav__item">
-      <a href="ruff-lint-rules/" class="md-nav__link">
+      <a href="../ruff-lint-rules/" class="md-nav__link">
         
   
   
@@ -809,7 +644,7 @@
   
   
     <li class="md-nav__item">
-      <a href="docstrings/" class="md-nav__link">
+      <a href="../docstrings/" class="md-nav__link">
         
   
   
@@ -837,7 +672,7 @@
   
   
     <li class="md-nav__item">
-      <a href="hypothesis/" class="md-nav__link">
+      <a href="../hypothesis/" class="md-nav__link">
         
   
   
@@ -865,7 +700,7 @@
   
   
     <li class="md-nav__item">
-      <a href="markdown-linting/" class="md-nav__link">
+      <a href="../markdown-linting/" class="md-nav__link">
         
   
   
@@ -893,7 +728,7 @@
   
   
     <li class="md-nav__item">
-      <a href="prose-linting/" class="md-nav__link">
+      <a href="../prose-linting/" class="md-nav__link">
         
   
   
@@ -921,7 +756,7 @@
   
   
     <li class="md-nav__item">
-      <a href="mkdocs-build/" class="md-nav__link">
+      <a href="../mkdocs-build/" class="md-nav__link">
         
   
   
@@ -949,7 +784,7 @@
   
   
     <li class="md-nav__item">
-      <a href="javascript/" class="md-nav__link">
+      <a href="../javascript/" class="md-nav__link">
         
   
   
@@ -977,7 +812,7 @@
   
   
     <li class="md-nav__item">
-      <a href="async-sqlalchemy-test-fixtures/" class="md-nav__link">
+      <a href="../async-sqlalchemy-test-fixtures/" class="md-nav__link">
         
   
   
@@ -1005,7 +840,7 @@
   
   
     <li class="md-nav__item">
-      <a href="ros2/" class="md-nav__link">
+      <a href="../ros2/" class="md-nav__link">
         
   
   
@@ -1033,7 +868,7 @@
   
   
     <li class="md-nav__item">
-      <a href="pre-commit-baseline/" class="md-nav__link">
+      <a href="../pre-commit-baseline/" class="md-nav__link">
         
   
   
@@ -1122,7 +957,7 @@
   
   
     <li class="md-nav__item">
-      <a href="component-standard/" class="md-nav__link">
+      <a href="../component-standard/" class="md-nav__link">
         
   
   
@@ -1150,7 +985,7 @@
   
   
     <li class="md-nav__item">
-      <a href="config-standard/" class="md-nav__link">
+      <a href="../config-standard/" class="md-nav__link">
         
   
   
@@ -1178,7 +1013,7 @@
   
   
     <li class="md-nav__item">
-      <a href="default-config-location/" class="md-nav__link">
+      <a href="../default-config-location/" class="md-nav__link">
         
   
   
@@ -1206,7 +1041,7 @@
   
   
     <li class="md-nav__item">
-      <a href="config-ownership/" class="md-nav__link">
+      <a href="../config-ownership/" class="md-nav__link">
         
   
   
@@ -1234,7 +1069,7 @@
   
   
     <li class="md-nav__item">
-      <a href="config-ownership-audit/" class="md-nav__link">
+      <a href="../config-ownership-audit/" class="md-nav__link">
         
   
   
@@ -1262,7 +1097,7 @@
   
   
     <li class="md-nav__item">
-      <a href="docker-standard/" class="md-nav__link">
+      <a href="../docker-standard/" class="md-nav__link">
         
   
   
@@ -1290,7 +1125,7 @@
   
   
     <li class="md-nav__item">
-      <a href="deploy-contract/" class="md-nav__link">
+      <a href="../deploy-contract/" class="md-nav__link">
         
   
   
@@ -1318,7 +1153,7 @@
   
   
     <li class="md-nav__item">
-      <a href="entrypoint-contract/" class="md-nav__link">
+      <a href="../entrypoint-contract/" class="md-nav__link">
         
   
   
@@ -1346,7 +1181,7 @@
   
   
     <li class="md-nav__item">
-      <a href="integrating-a-service/" class="md-nav__link">
+      <a href="../integrating-a-service/" class="md-nav__link">
         
   
   
@@ -1374,7 +1209,7 @@
   
   
     <li class="md-nav__item">
-      <a href="chat-access-standard/" class="md-nav__link">
+      <a href="../chat-access-standard/" class="md-nav__link">
         
   
   
@@ -1402,7 +1237,7 @@
   
   
     <li class="md-nav__item">
-      <a href="http-error-envelope/" class="md-nav__link">
+      <a href="../http-error-envelope/" class="md-nav__link">
         
   
   
@@ -1430,7 +1265,7 @@
   
   
     <li class="md-nav__item">
-      <a href="http-security-headers/" class="md-nav__link">
+      <a href="../http-security-headers/" class="md-nav__link">
         
   
   
@@ -1458,7 +1293,7 @@
   
   
     <li class="md-nav__item">
-      <a href="scorecard/" class="md-nav__link">
+      <a href="../scorecard/" class="md-nav__link">
         
   
   
@@ -1547,7 +1382,7 @@
   
   
     <li class="md-nav__item">
-      <a href="deployment-system/" class="md-nav__link">
+      <a href="../deployment-system/" class="md-nav__link">
         
   
   
@@ -1636,7 +1471,7 @@
   
   
     <li class="md-nav__item">
-      <a href="mill-agents/" class="md-nav__link">
+      <a href="../mill-agents/" class="md-nav__link">
         
   
   
@@ -1671,7 +1506,7 @@
   
   
     <li class="md-nav__item">
-      <a href="CHANGELOG/" class="md-nav__link">
+      <a href="../CHANGELOG/" class="md-nav__link">
         
   
   
@@ -1718,10 +1553,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#why-this-exists" class="md-nav__link">
+  <a href="#what-is-the-api-surface" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Why this exists
+        What is the API surface?
       
     </span>
   </a>
@@ -1729,22 +1564,22 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#two-scopes" class="md-nav__link">
+  <a href="#how-to-describe-fields" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Two scopes
+        How to describe fields
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Two scopes">
+    <nav class="md-nav" aria-label="How to describe fields">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#every-repository-libraries-and-deployable-components" class="md-nav__link">
+  <a href="#recommended-fielddescription" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Every repository (libraries and deployable components)
+        Recommended: Field(description=...)
       
     </span>
   </a>
@@ -1752,21 +1587,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#deployable-components-additionally" class="md-nav__link">
+  <a href="#acceptable-alternative-google-style-attributes-docstring" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Deployable components (additionally)
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#the-deployment-system-bootstrap-tier" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        The deployment system (bootstrap tier)
+        Acceptable alternative: Google-style Attributes: docstring
       
     </span>
   </a>
@@ -1779,54 +1603,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#which-am-i" class="md-nav__link">
+  <a href="#enforcement-optional-but-encouraged" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Which am I?
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#the-fleet" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        The fleet
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#reference-implementation" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Reference implementation
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#changing-the-standards" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Changing the standards
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#mill-agents" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Mill agents
+        Enforcement (optional but encouraged)
       
     </span>
   </a>
@@ -1853,165 +1633,90 @@
   
 
 
-<h1 id="robotsix-stack-standards">robotsix stack standards<a class="headerlink" href="#robotsix-stack-standards" title="Permanent link">&para;</a></h1>
-<p>Shared conventions for the robotsix stack, so that any repository — whoever
-wrote it, whenever — is configured, packaged, tested, and (if deployable)
-shipped in the same predictable way.</p>
-<h2 id="why-this-exists">Why this exists<a class="headerlink" href="#why-this-exists" title="Permanent link">&para;</a></h2>
-<p>As a stack grows, each repository tends to solve the same recurring problems —
-how configuration is loaded and where it lives, how packages are installed and
-versioned, how CI and security gates are wired, and how a service is deployed —
-in its own slightly different way. Left unchecked, every repo becomes a small
-dialect: contributors relearn the conventions each time, tooling and CI get
-reinvented instead of shared, and operators face per-repo guesswork.</p>
-<p>These standards define one way to do each of those things. The payoff is
-consistency: moving between repos is cheap, tooling and workflows are shared
-rather than duplicated, and a config or deploy setup learned once transfers
-everywhere.</p>
-<h2 id="two-scopes">Two scopes<a class="headerlink" href="#two-scopes" title="Permanent link">&para;</a></h2>
-<h3 id="every-repository-libraries-and-deployable-components">Every repository (libraries and deployable components)<a class="headerlink" href="#every-repository-libraries-and-deployable-components" title="Permanent link">&para;</a></h3>
+<h1 id="fastapi-pydantic-field-descriptions">FastAPI Pydantic field descriptions<a class="headerlink" href="#fastapi-pydantic-field-descriptions" title="Permanent link">&para;</a></h1>
+<blockquote>
+<p><strong>Scope: deployable components that expose a FastAPI application.</strong> A
+component whose only HTTP surface is the mandatory <code>/health</code> endpoint (see
+the <a href="../component-standard/">component standard</a>) does not need this. This
+applies <em>in addition to</em> the <a href="../repo-baseline/">repo baseline</a> and
+<a href="../component-standard/">component standard</a>.</p>
+</blockquote>
+<p>Every FastAPI service in the fleet generates an OpenAPI schema (<code>/openapi.json</code>)
+consumed by operators, downstream tools, and the Swagger UI. Pydantic v2 does
+<strong>not</strong> parse inline trailing <code>#</code> comments on field lines for JSON-schema
+descriptions — those are plain Python comments, invisible to
+<code>model_json_schema()</code>. Without explicit descriptions, the generated schema is
+undocumented at the field level: every field shows only its Python name and
+type annotation, forcing every consumer to guess at semantics.</p>
+<p><strong>The rule: every field on a Pydantic <code>BaseModel</code> that reaches the API surface
+must carry a description.</strong></p>
+<h2 id="what-is-the-api-surface">What is the API surface?<a class="headerlink" href="#what-is-the-api-surface" title="Permanent link">&para;</a></h2>
+<p>A model is on the API surface when it appears in any of these FastAPI
+positions:</p>
 <ul>
-<li><strong><a href="repo-baseline/">Repo baseline</a></strong> — distribution tiers, changelog and
-  module-registration hygiene, CI and security gates, licensing.</li>
-<li><strong><a href="free-tier-only/">Free-tier only</a></strong> — no paid services (LLM agent
-  inference excepted): free-tier CI (public repo or self-hosted runner),
-  public/self-hosted container images, permissive licences only.</li>
-<li><strong><a href="security-posture/">Security posture</a></strong> — self-enforcing security gates
-  (SAST, dependency review, Dependabot, workflow hardening, secret protection,
-  SBOM), auditable per repo.</li>
-<li><strong><a href="async-sqlalchemy-test-fixtures/">Async SQLAlchemy test fixtures</a></strong> — three-layer database
-  test fixture pattern (session-scoped engine, function-scoped connection with
-  rollback, function-scoped session with savepoints) for clean test isolation
-  without dropping tables.</li>
-<li><strong><a href="changelog-driven-releases/">Changelog &amp; releases</a></strong> — towncrier fragment-driven
-  releases, CI-enforced changelog fragments, and the shared auto-release
-  workflow — no hand-edited changelog.</li>
-<li><strong><a href="ci-lint-pinning/">CI lint tool pinning</a></strong> — CI lint jobs must run the same
-  version-pinned tools as <code>.pre-commit-config.yaml</code>, not floating/latest
-  sources — one version source, no skew.</li>
-<li><strong><a href="distribution-packaging/">Distribution &amp; Packaging</a></strong> — git-based consumption of
-  first-party libraries — no package index, no registry publish step.</li>
-<li><strong><a href="docstrings/">Docstring convention</a></strong> — Python docstring style and coverage
-  rules for all public modules, classes, and functions.</li>
-<li><strong><a href="hypothesis/">Hypothesis testing</a></strong> — property-based testing profiles,
-  shared strategies, and CI integration for repos that use Hypothesis.</li>
-<li><strong><a href="markdown-linting/">Markdown linting</a></strong> — markdownlint-cli2 and codespell
-  pre-commit hooks for every repo that publishes MkDocs documentation.</li>
-<li><strong><a href="prose-linting/">Prose linting</a></strong> — Vale prose linter for style,
-  readability, and fleet-specific vocabulary consistency — integrated
-  through the existing pre-commit pipeline.</li>
-<li><strong><a href="mkdocs-build/">MkDocs build integrity</a></strong> — strict mode build gating
-  and link-validation configuration for every MkDocs site.</li>
-<li><strong><a href="python/">Python practices</a></strong> — uv, hatchling, <code>requires-python</code> policy,
-  lint/type/security gates, test layout, pre-commit hooks.</li>
-<li><strong><a href="python-makefile-convention/">Python Makefile convention</a></strong> — standard
-  <code>Makefile</code> targets for every Python/uv repo (<code>install</code>, <code>lint</code>,
-  <code>typecheck</code>, <code>test</code>, <code>test-unit</code>, <code>test-integration</code>, <code>coverage</code>, <code>docs</code>,
-  <code>lock-check</code>, <code>pre-commit</code>, <code>clean</code>, and optional targets).</li>
-<li><strong><a href="pytest/">Pytest practices</a></strong> — <code>filterwarnings = ["error"]</code>,
-  <code>xfail_strict = true</code>, and <code>--strict-markers</code>/<code>--strict-config</code> so every test
-  suite fails loudly on deprecations, unregistered markers, and stale xfails.</li>
-<li><strong><a href="ruff-lint-rules/">Ruff lint rules</a></strong> — Tier 2 ruff rule families (SIM,
-  C4, LOG, G, ERA, PGH, RUF, PT) with the PT006 exclusion.</li>
-<li><strong><a href="javascript/">JavaScript practices</a></strong> — vanilla frontend JS as static
-  assets, lockfile discipline, vitest coverage floor, eslint/stylelint.</li>
-<li><strong><a href="ros2/">ROS 2 practices</a></strong> — workspace-skeleton layout, vcs2l manifest,
-  devcontainer, colcon/rosdep build, lint gates.</li>
-<li><strong><a href="pre-commit-baseline/">Pre-commit baseline</a></strong> — five zero-config
-  file-hygiene hooks (trailing-whitespace, end-of-file-fixer, check-yaml,
-  check-toml, check-added-large-files) for every Python repo.</li>
+<li>A <strong>response model</strong> (<code>response_model=</code>, or the return-type annotation of a
+  path operation).</li>
+<li>A <strong>request body</strong> (a parameter annotated with <code>Body(...)</code> whose type is a
+  Pydantic model, or a model-type parameter without a <code>Body</code>/<code>Query</code>/<code>Header</code>
+  annotation — FastAPI treats bare non-scalar types as bodies).</li>
+<li>A <strong><code>Query</code></strong>, <strong><code>Header</code></strong>, <strong><code>Cookie</code></strong>, or <strong><code>Path</code></strong> parameter whose
+  type is a Pydantic model (or whose individual fields are extracted via
+  <code>Query()</code>).</li>
+<li>Any model <strong>nested</strong> inside one of the above — descriptions propagate
+  through the JSON schema, so nested model fields also reach <code>/openapi.json</code>.</li>
 </ul>
-<h3 id="deployable-components-additionally">Deployable components (additionally)<a class="headerlink" href="#deployable-components-additionally" title="Permanent link">&para;</a></h3>
-<p>A <em>deployable component</em> ships a runnable service (a container image) and
-integrates with the deployment system. Beyond the baseline it follows:</p>
+<p>Models used only for internal logic — database rows, internal DTOs, config
+models — are exempt.</p>
+<h2 id="how-to-describe-fields">How to describe fields<a class="headerlink" href="#how-to-describe-fields" title="Permanent link">&para;</a></h2>
+<h3 id="recommended-fielddescription">Recommended: <code>Field(description=...)</code><a class="headerlink" href="#recommended-fielddescription" title="Permanent link">&para;</a></h3>
+<p>Colocate the description with the field definition using Pydantic's <code>Field</code>:</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">pydantic</span><span class="w"> </span><span class="kn">import</span> <span class="n">BaseModel</span><span class="p">,</span> <span class="n">Field</span>
+
+
+<span class="k">class</span><span class="w"> </span><span class="nc">CreateTicketRequest</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+    <span class="n">title</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s2">&quot;Short summary of the ticket&quot;</span><span class="p">)</span>
+    <span class="n">body</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s2">&quot;Markdown body of the ticket&quot;</span><span class="p">)</span>
+    <span class="n">priority</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Lower is more urgent; 0 means unset&quot;</span><span class="p">)</span>
+</code></pre></div>
+<p><code>Field(description=...)</code> is immune to docstring-parsing edge cases and keeps
+the description immediately next to the definition. This is the fleet's
+convention — already in use in <code>robotsix-central-deploy</code> (<code>registry/models.py</code>,
+<code>caretaker/models.py</code>, <code>lifecycle/schemas.py</code>).</p>
+<h3 id="acceptable-alternative-google-style-attributes-docstring">Acceptable alternative: Google-style <code>Attributes:</code> docstring<a class="headerlink" href="#acceptable-alternative-google-style-attributes-docstring" title="Permanent link">&para;</a></h3>
+<p>A Google-style docstring on the model class is an acceptable alternative:</p>
+<div class="highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">CreateTicketRequest</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A request to create a new ticket.</span>
+
+<span class="sd">    Attributes:</span>
+<span class="sd">        title: Short summary of the ticket.</span>
+<span class="sd">        body: Markdown body of the ticket.</span>
+<span class="sd">        priority: Lower is more urgent; 0 means unset.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">title</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">body</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">priority</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span>
+</code></pre></div>
+<p>Pydantic v2 parses the <code>Attributes:</code> block and feeds each field's description
+into the JSON schema. However, this approach has edge cases: the parser does
+not recognise multi-line field descriptions that omit a blank line before the
+next <code>field_name:</code>, and it cannot describe fields inherited from a parent
+class. Prefer <code>Field(description=...)</code> for new code.</p>
+<h2 id="enforcement-optional-but-encouraged">Enforcement (optional but encouraged)<a class="headerlink" href="#enforcement-optional-but-encouraged" title="Permanent link">&para;</a></h2>
+<p>Add an automated check that warns or fails when an API-surface model field
+has no description:</p>
 <ul>
-<li><strong><a href="component-standard/">Component standard</a></strong> — the three deploy modes,
-  no embedded auth (centralized at the gateway), image registry &amp; tags, the
-  two compose files.</li>
-<li><strong><a href="config-standard/">Config standard</a></strong> — one config model that resolves the
-  same way across all deploy modes.</li>
-<li><strong><a href="default-config-location/">Default config location</a></strong> — canonical in-repo
-  location for the shipped default config that seeds the deploy-side config on
-  first registration.</li>
-<li><strong><a href="config-ownership/">Config ownership</a></strong> — the hard line between
-  deploy-plane config (central-deploy UI) and component-owned config
-  (the component's own HTTP surface and Settings panel).</li>
-<li><strong><a href="config-ownership-audit/">Config-ownership audit</a></strong> — fleet-wide
-  classification of every deployable component against the config-ownership
-  standard, with remediation tracking.</li>
-<li><strong><a href="docker-standard/">Docker build &amp; release</a></strong> — one Dockerfile pattern and
-  one publish workflow to a single registry, with CI image scanning and
-  integration tests.</li>
-<li><strong><a href="deploy-contract/">Deploy contract</a></strong> — the <code>deploy/docker-compose.yml</code>
-  shape the deployment system consumes.</li>
-<li><strong><a href="entrypoint-contract/">Entrypoint contract</a></strong> — how a component's
-  container starts up.</li>
-<li><strong><a href="fastapi-pydantic-field-descriptions/">FastAPI Pydantic field descriptions</a></strong> —
-  every public request/response Pydantic model field must carry
-  <code>Field(description=...)</code> so the generated OpenAPI schema is
-  self-documenting.</li>
-<li><strong><a href="integrating-a-service/">Integrating a service</a></strong> — the end-to-end how-to.</li>
-<li><strong><a href="chat-access-standard/">Chat access</a></strong> — a standard skill endpoint so the
-  chat agent can invoke operations on the component.</li>
-<li><strong><a href="http-error-envelope/">HTTP error envelope</a></strong> — one consistent RFC 9457
-  <code>application/problem+json</code> envelope for every error response, registered via
-  centralized exception handlers.</li>
-<li><strong><a href="http-security-headers/">HTTP security headers</a></strong> — standard OWASP security
-  response headers (CSP, HSTS, X-Frame-Options, etc.) via a single shared
-  <code>secure</code> middleware, so no service hand-rolls its own headers.</li>
-<li><strong><a href="scorecard/">OpenSSF Scorecard</a></strong> — independent supply-chain audit
-  (~20 checks) producing a single numeric score; closes the gap the per-gate
-  security stack doesn't cover.</li>
+<li>A small AST walker that inspects <code>pydantic.BaseModel</code> subclasses in a
+  repository, flags fields without <code>Field(description=...)</code> or a
+  <code>Field(default=..., description=...)</code>, and cross-references the class
+  against the application's route registration.</li>
+<li>When integrated into the shared <code>python-ci.yml</code> reusable workflow, it
+  becomes a fleet-wide gate — every repo inherits the check at zero marginal
+  cost.</li>
 </ul>
-<h3 id="the-deployment-system-bootstrap-tier">The deployment system (bootstrap tier)<a class="headerlink" href="#the-deployment-system-bootstrap-tier" title="Permanent link">&para;</a></h3>
-<p>One repo — <code>robotsix-central-deploy</code> — is the deployment system itself and
-cannot be deployed through itself:</p>
-<ul>
-<li><strong><a href="deployment-system/">Deployment system</a></strong> — which standards it follows
-  (baseline, docker build &amp; release, entrypoint contract) and which it is
-  exempt from (deploy contract, config standard), and why.</li>
-</ul>
-<h2 id="which-am-i">Which am I?<a class="headerlink" href="#which-am-i" title="Permanent link">&para;</a></h2>
-<ul>
-<li><strong>Library</strong> — imported by other packages, no runnable service of its own.
-  Follow the <strong>repo baseline</strong> only.</li>
-<li><strong>Deployable component</strong> — ships a service/container. Follow the <strong>repo
-  baseline</strong> <em>and</em> the <strong>component</strong> standards.</li>
-<li><strong>The deployment system</strong> — central-deploy only. Follow the
-  <a href="deployment-system/">deployment-system tier</a>.</li>
-</ul>
-<h2 id="the-fleet">The fleet<a class="headerlink" href="#the-fleet" title="Permanent link">&para;</a></h2>
-<p>Every repo, what it is, and where its docs live: <strong><a href="fleet/">the fleet page</a></strong>.</p>
-<h2 id="reference-implementation">Reference implementation<a class="headerlink" href="#reference-implementation" title="Permanent link">&para;</a></h2>
-<p>The config standard is implemented by the shared configuration library
-(<a href="https://github.com/damien-robotsix/robotsix-config"><code>robotsix-config</code></a>):
-<code>load_config</code> loads <strong>the one config file</strong> (<code>ROBOTSIX_CONFIG_FILE</code>, default
-<code>config/config.json</code>) into a validated pydantic model — the file is the only
-source of values, the model's defaults fill the rest; no env overlay, no CLI
-merge — with secret masking (<code>SecretStr</code>), a <code>0600</code> config writer
-(<code>dump_config</code>), and a JSON-Schema emitter (<code>config_schema_json</code>) for the
-deploy UI. One shared library, already a stack dependency.</p>
-<h2 id="changing-the-standards">Changing the standards<a class="headerlink" href="#changing-the-standards" title="Permanent link">&para;</a></h2>
-<p>The standards change through the mill, like everything else:</p>
-<ul>
-<li><strong>File a ticket on the <code>robotsix-standards</code> board</strong> — for a gap, a
-  contradiction with fleet reality, or an incident whose post-mortem traces
-  to a standards flaw (the 2026-07-03 claude-mount outage is the worked
-  example: outage → standards change → fleet tickets, same day).</li>
-<li>The ticket follows the normal mill pipeline; <strong>the approval gate is the
-  operator's decision point</strong>. A standard nobody approved is a suggestion.</li>
-<li>An accepted change lands as <strong>one docs PR plus fleet-alignment tickets</strong> —
-  a standards change with no tickets is a wish.</li>
-<li><strong>Clean cutover is the default</strong> for every migration: no compatibility
-  shims, no aliases; data moves by hand, case by case.</li>
-<li><strong>Supersession is normal.</strong> When reality reverses a decision, the new text
-  references what it replaces — openly, not by silent rewrite.</li>
-</ul>
-<h2 id="mill-agents">Mill agents<a class="headerlink" href="#mill-agents" title="Permanent link">&para;</a></h2>
-<p>This repo carries its own <a href="mill-agents/">mill agents</a> — bespoke periodic
-passes that keep the standards themselves healthy. The security-posture-audit
-agent checks the security pages for completeness, consistency, currency, and
-enforceability, filing draft tickets for gaps it finds.</p>
+<p>This check is <strong>optional</strong> today; a repo that adds it signals that its API
+surface is fully documented. The fleet convention is the requirement — the
+automated gate is the enforcement.</p>
 
 
 
@@ -2061,10 +1766,10 @@ enforceability, filing draft tickets for gaps it finds.</p>
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": ".", "features": ["navigation.sections", "navigation.expand", "content.code.copy"], "search": "assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.sections", "navigation.expand", "content.code.copy"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
-      <script src="assets/javascripts/bundle.d7400e89.min.js"></script>
+      <script src="../assets/javascripts/bundle.d7400e89.min.js"></script>
       
     
   </body>

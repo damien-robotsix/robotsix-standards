@@ -73,6 +73,7 @@ nav:
       - Python Makefile convention: python-makefile-convention.md
       - Pytest practices: pytest.md
       - Ruff lint rules: ruff-lint-rules.md
+      - Mypy strictness: mypy.md
       - Docstring convention: docstrings.md
       - Hypothesis testing: hypothesis.md
       - Markdown linting: markdown-linting.md

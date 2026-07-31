@@ -32,3 +32,25 @@ jobs:
             exit 1
           }
           echo "README.md standards link: OK"
+
+  license-check:
+    permissions:
+      contents: read
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683  # v4.2.2
+      - name: Verify LICENSE file exists and is MIT
+        run: |
+          if [ ! -f LICENSE ]; then
+            echo "::error::LICENSE file is missing at repo root"
+            exit 1
+          fi
+          if ! grep -q 'MIT License' LICENSE; then
+            echo "::error::LICENSE file does not identify as MIT"
+            exit 1
+          fi
+          if ! grep -q 'Permission is hereby granted, free of charge' LICENSE; then
+            echo "::error::LICENSE file is not a valid MIT license (missing grant text)"
+            exit 1
+          fi
+          echo "LICENSE (MIT): OK"

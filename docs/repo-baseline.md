@@ -166,7 +166,7 @@ gate set:
   [Docker build & release](docker-standard.md).
 - **Baseline conformance:** the shared baseline-check workflow verifies the
   mechanical rules of this page — `README.md` and `AGENT.md` present and
-  linking the standards, `dependabot.yml` covering the
+  linking the standards, `LICENSE` (MIT) present, `dependabot.yml` covering the
   [required ecosystems](#automated-dependency-updates).
 - **Required-artifact uploads use `if: always()`.** A step that uploads an
   artifact the gate depends on (SBOM, coverage report) must run even when an

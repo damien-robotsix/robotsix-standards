@@ -121,6 +121,7 @@
 
 ## 0.0.0 (unreleased)
 
+- Fixed three changelog fragments that were truncated mid-sentence with a literal ellipsis (…), copied from clipped ticket titles. The fragments now end with complete sentences so `towncrier build` will emit valid release notes.
 - Fix Dependabot pre-commit update failure: correct `markdownlint-cli2` repo URL from `igorshubovych/markdownlint-cli2` (404) to `DavidAnson/markdownlint-cli2`.
 - Make the TOC-sync gate bidirectional: `scripts/check-toc-sync.py` now also
   extracts page references from `README.md` and `docs/index.md` and asserts

@@ -121,6 +121,7 @@
 
 ## 0.0.0 (unreleased)
 
+- Register `fastapi-pydantic-field-descriptions.md` in the mkdocs.yml nav under Deployable components so the page is no longer orphaned from the site build.
 - Register `docs/mypy.md` in the mkdocs.yml nav (`Every repo` section) so the Mypy strictness page is reachable from the published docs sidebar.
 - Register `fastapi-pydantic-field-descriptions.md` in mkdocs.yml nav under Deployable components.
 - Replace redundant CI-invocation rule text in `docs/markdown-linting.md` with a pointer to the canonical `docs/ci-lint-pinning.md`, keeping the two concrete `pre-commit run --all-files` commands as the markdownlint/codespell example.

@@ -121,6 +121,10 @@
 
 ## 0.0.0 (unreleased)
 
+- Added Rule 4 to the MkDocs build integrity standard: new standards pages
+  must be registered in `mkdocs.yml` `nav` in the same change that adds the
+  page — a `README.md`/`docs/index.md` TOC entry alone leaves the page
+  unbuilt.
 - Register `fastapi-pydantic-field-descriptions.md` in the mkdocs.yml nav under Deployable components so the page is no longer orphaned from the site build.
 - Register `docs/mypy.md` in the mkdocs.yml nav (`Every repo` section) so the Mypy strictness page is reachable from the published docs sidebar.
 - Register `fastapi-pydantic-field-descriptions.md` in mkdocs.yml nav under Deployable components.

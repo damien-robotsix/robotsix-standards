@@ -106,6 +106,21 @@ Keep a Changelog format) but users browsing the docs site never see it because
 it isn't in the nav. Release notes that require navigating away from the docs
 to the GitHub repo are functionally hidden from most readers.
 
+### 4. Register new pages in the same change
+
+When a new standards page is added, it must be registered in the
+`mkdocs.yml` `nav` in the **same** change that adds the page.  Adding a
+`README.md` or `docs/index.md` TOC entry alone leaves the page unbuilt by
+MkDocs and requires a second rework ticket — the TOC-sync gate is
+one-directional (it checks that TOC entries match existing files but does
+**not** check that every file has a nav entry).
+
+**Failure mode prevented:** a PR adds a new standards page and its
+`README.md` / `docs/index.md` TOC entries correctly, passes the TOC-sync CI
+gate, and merges — but the page is invisible on the published docs site
+because it was never wired into the MkDocs `nav`.  The author and reviewer
+both assumed the TOC-sync gate covered nav registration; it doesn't.
+
 ## Precedent
 
 - [Pydantic](https://github.com/pydantic/pydantic),

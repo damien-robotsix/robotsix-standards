@@ -1785,6 +1785,7 @@
 </ul>
 <h2 id="000-unreleased">0.0.0 (unreleased)<a class="headerlink" href="#000-unreleased" title="Permanent link">&para;</a></h2>
 <ul>
+<li>Replace redundant CI-invocation rule text in <code>docs/markdown-linting.md</code> with a pointer to the canonical <code>docs/ci-lint-pinning.md</code>, keeping the two concrete <code>pre-commit run --all-files</code> commands as the markdownlint/codespell example.</li>
 <li>New standard: <a href="../mypy/">Mypy strictness as a hard CI gate</a> — mypy runs as a gate (not advisory), baseline snapshots are a bootstrapping scaffold with a defined exit, and new code must be type-clean under strict mode.</li>
 <li>Added the <a href="../fastapi-pydantic-field-descriptions/">FastAPI Pydantic field descriptions</a> standard — every public request/response Pydantic model field must carry <code>Field(description=...)</code> so the generated OpenAPI schema is self-documenting.</li>
 <li>Codify in <code>docs/markdown-linting.md</code> that CI must run markdownlint-cli2 and codespell through the same pinned pre-commit hooks as local development, never via a separate unpinned <code>npx</code>/<code>uv run --with</code> invocation.</li>

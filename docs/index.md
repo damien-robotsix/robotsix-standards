@@ -64,6 +64,9 @@ everywhere.
   suite fails loudly on deprecations, unregistered markers, and stale xfails.
 - **[Ruff lint rules](ruff-lint-rules.md)** — Tier 2 ruff rule families (SIM,
   C4, LOG, G, ERA, PGH, RUF, PT) with the PT006 exclusion.
+- **[Mypy strictness](mypy.md)** — mypy as a hard CI gate (not advisory),
+  baseline snapshots as a bootstrapping scaffold with a defined exit, and
+  strict-mode type-clean new code.
 - **[JavaScript practices](javascript.md)** — vanilla frontend JS as static
   assets, lockfile discipline, vitest coverage floor, eslint/stylelint.
 - **[ROS 2 practices](ros2.md)** — workspace-skeleton layout, vcs2l manifest,

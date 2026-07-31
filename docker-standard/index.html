@@ -1244,6 +1244,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#docker-compose-smoke-test" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Docker Compose smoke test
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#deploy-updates-are-deliberate" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1792,6 +1803,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#docker-compose-smoke-test" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Docker Compose smoke test
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#deploy-updates-are-deliberate" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2039,6 +2061,40 @@ nothing ran the image.</p>
 <p>A reusable workflow for this gate lives in
 <a href="https://github.com/damien-robotsix/robotsix-github-workflows">robotsix-github-workflows</a>
 so every component calls the same integration-test step, identically.</p>
+<h2 id="docker-compose-smoke-test">Docker Compose smoke test<a class="headerlink" href="#docker-compose-smoke-test" title="Permanent link">&para;</a></h2>
+<p>The image-level integration tests (entrypoint binary, import) verify the
+runtime image ships intact. They do <strong>not</strong> verify that the compose file
+which defines how the container runs — port mappings, volume mounts,
+environment variables, sibling service wiring — actually brings up a working
+stack. A valid image behind a broken compose file deploys a crashlooping
+container just as surely as a broken image.</p>
+<p>Every deployable component therefore runs a <strong>Docker Compose smoke test</strong> on
+every PR, after the image build. The test uses the component's
+<code>deploy/docker-compose.yml</code> — the same file central-deploy consumes — and
+validates three things:</p>
+<ol>
+<li><strong>Container starts.</strong> <code>docker compose up --detach --wait</code> exits zero.</li>
+<li><strong>Health check passes.</strong> The container's health check (the image
+   <code>HEALTHCHECK</code> or a compose-level <code>healthcheck</code>) reports healthy within a
+   timeout.</li>
+<li><strong>Core endpoint responds.</strong> An HTTP request to the primary service's
+   health endpoint (<code>/health</code>) returns 200. For non-HTTP services, replace
+   with the equivalent liveness probe.</li>
+</ol>
+<p>The test runs in the same PR workflow as the image build and scan — after the
+build, before the scan. A failure blocks the PR, catching the regression
+before merge.</p>
+<p><strong>Failure mode prevented:</strong> A compose file that references a wrong port, a
+missing volume, an invalid environment variable, or a misconfigured sibling
+service — any of which passes <code>docker compose config</code> validation but causes
+the stack to fail at runtime. These are the exact regressions a compose
+integration test catches: the compose file is structurally valid but the
+stack never becomes healthy, because of a port mismatch between the service
+and its health check, a volume path the image doesn't expect, or an
+environment variable the service requires but the compose file omits.</p>
+<p>A reusable workflow for this gate lives in
+<a href="https://github.com/damien-robotsix/robotsix-github-workflows">robotsix-github-workflows</a>
+so every component calls the same compose smoke-test step, identically.</p>
 <h2 id="deploy-updates-are-deliberate">Deploy — updates are deliberate<a class="headerlink" href="#deploy-updates-are-deliberate" title="Permanent link">&para;</a></h2>
 <p>The deployment system (central-deploy) <strong>pulls</strong> the published image via the
 component's <code>deploy/docker-compose.yml</code> — it never builds. Reference the GHCR

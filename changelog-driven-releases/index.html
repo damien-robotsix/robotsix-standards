@@ -10,13 +10,13 @@
       
       
       
-        <link rel="canonical" href="https://damien-robotsix.github.io/robotsix-standards/distribution-packaging/">
+        <link rel="canonical" href="https://damien-robotsix.github.io/robotsix-standards/changelog-driven-releases/">
       
       
-        <link rel="prev" href="../changelog-driven-releases/">
+        <link rel="prev" href="../security-posture/">
       
       
-        <link rel="next" href="../python/">
+        <link rel="next" href="../distribution-packaging/">
       
       
         
@@ -27,7 +27,7 @@
     
     
       
-        <title>Distribution & Packaging - Robotsix Standards</title>
+        <title>Changelog & releases - Robotsix Standards</title>
       
     
     
@@ -78,7 +78,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#distribution-packaging" class="md-skip">
+        <a href="#changelog-releases" class="md-skip">
           Skip to content
         </a>
       
@@ -114,7 +114,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Distribution & Packaging
+              Changelog & releases
             
           </span>
         </div>
@@ -449,34 +449,6 @@
                 
   
   
-  
-  
-    <li class="md-nav__item">
-      <a href="../changelog-driven-releases/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Changelog & releases
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
     
   
   
@@ -496,7 +468,7 @@
   <span class="md-ellipsis">
     
   
-    Distribution & Packaging
+    Changelog & releases
   
 
     
@@ -514,7 +486,7 @@
   <span class="md-ellipsis">
     
   
-    Distribution & Packaging
+    Changelog & releases
   
 
     
@@ -540,6 +512,17 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
+  <a href="#why-this-convention" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why this convention
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#rules" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -552,10 +535,10 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#1-git-based-consumption-is-the-preferred-path" class="md-nav__link">
+  <a href="#1-every-pr-adds-a-newsfragment" class="md-nav__link">
     <span class="md-ellipsis">
       
-        1. Git-based consumption is the preferred path
+        1. Every PR adds a newsfragment
       
     </span>
   </a>
@@ -563,10 +546,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#2-pin-to-a-commit-sha-not-a-branch" class="md-nav__link">
+  <a href="#2-ci-enforces-the-fragment-requirement" class="md-nav__link">
     <span class="md-ellipsis">
       
-        2. Pin to a commit SHA, not a branch
+        2. CI enforces the fragment requirement
       
     </span>
   </a>
@@ -574,10 +557,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#3-versioning-via-git-tags" class="md-nav__link">
+  <a href="#3-changelogmd-is-written-only-by-the-release-workflow" class="md-nav__link">
     <span class="md-ellipsis">
       
-        3. Versioning via git tags
+        3. CHANGELOG.md is written only by the release workflow
       
     </span>
   </a>
@@ -585,10 +568,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#4-public-package-indexes-are-disallowed" class="md-nav__link">
+  <a href="#4-releases-are-automated" class="md-nav__link">
     <span class="md-ellipsis">
       
-        4. Public package indexes are disallowed
+        4. Releases are automated
       
     </span>
   </a>
@@ -596,10 +579,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#5-internal-registry-is-the-only-acceptable-alternative" class="md-nav__link">
+  <a href="#5-versions-stay-0x-until-100-is-declared-deliberately" class="md-nav__link">
     <span class="md-ellipsis">
       
-        5. Internal registry is the only acceptable alternative
+        5. Versions stay 0.x until 1.0.0 is declared deliberately
       
     </span>
   </a>
@@ -607,10 +590,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#6-document-the-distribution-method" class="md-nav__link">
+  <a href="#6-fragment-files-are-registered-in-docsmodulesyaml" class="md-nav__link">
     <span class="md-ellipsis">
       
-        6. Document the distribution method
+        6. Fragment files are registered in docs/modules.yaml
       
     </span>
   </a>
@@ -623,10 +606,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#enforcement-future" class="md-nav__link">
+  <a href="#reference" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Enforcement (future)
+        Reference
       
     </span>
   </a>
@@ -637,6 +620,34 @@
   
 </nav>
       
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../distribution-packaging/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Distribution & Packaging
+  
+
+    
+  </span>
+  
+  
+
+      </a>
     </li>
   
 
@@ -1670,6 +1681,17 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
+  <a href="#why-this-convention" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why this convention
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#rules" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1682,10 +1704,10 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#1-git-based-consumption-is-the-preferred-path" class="md-nav__link">
+  <a href="#1-every-pr-adds-a-newsfragment" class="md-nav__link">
     <span class="md-ellipsis">
       
-        1. Git-based consumption is the preferred path
+        1. Every PR adds a newsfragment
       
     </span>
   </a>
@@ -1693,10 +1715,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#2-pin-to-a-commit-sha-not-a-branch" class="md-nav__link">
+  <a href="#2-ci-enforces-the-fragment-requirement" class="md-nav__link">
     <span class="md-ellipsis">
       
-        2. Pin to a commit SHA, not a branch
+        2. CI enforces the fragment requirement
       
     </span>
   </a>
@@ -1704,10 +1726,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#3-versioning-via-git-tags" class="md-nav__link">
+  <a href="#3-changelogmd-is-written-only-by-the-release-workflow" class="md-nav__link">
     <span class="md-ellipsis">
       
-        3. Versioning via git tags
+        3. CHANGELOG.md is written only by the release workflow
       
     </span>
   </a>
@@ -1715,10 +1737,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#4-public-package-indexes-are-disallowed" class="md-nav__link">
+  <a href="#4-releases-are-automated" class="md-nav__link">
     <span class="md-ellipsis">
       
-        4. Public package indexes are disallowed
+        4. Releases are automated
       
     </span>
   </a>
@@ -1726,10 +1748,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#5-internal-registry-is-the-only-acceptable-alternative" class="md-nav__link">
+  <a href="#5-versions-stay-0x-until-100-is-declared-deliberately" class="md-nav__link">
     <span class="md-ellipsis">
       
-        5. Internal registry is the only acceptable alternative
+        5. Versions stay 0.x until 1.0.0 is declared deliberately
       
     </span>
   </a>
@@ -1737,10 +1759,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#6-document-the-distribution-method" class="md-nav__link">
+  <a href="#6-fragment-files-are-registered-in-docsmodulesyaml" class="md-nav__link">
     <span class="md-ellipsis">
       
-        6. Document the distribution method
+        6. Fragment files are registered in docs/modules.yaml
       
     </span>
   </a>
@@ -1753,10 +1775,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#enforcement-future" class="md-nav__link">
+  <a href="#reference" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Enforcement (future)
+        Reference
       
     </span>
   </a>
@@ -1783,126 +1805,147 @@
   
 
 
-<h1 id="distribution-packaging">Distribution &amp; Packaging<a class="headerlink" href="#distribution-packaging" title="Permanent link">&para;</a></h1>
+<h1 id="changelog-releases">Changelog &amp; releases<a class="headerlink" href="#changelog-releases" title="Permanent link">&para;</a></h1>
 <blockquote>
 <p><strong>Scope: every robotsix repository</strong> — libraries and deployable components
-alike. This standard codifies how robotsix-built code is distributed to
-consumers; it is <em>in addition to</em> the <a href="../repo-baseline/">repo baseline</a>.</p>
+alike, in any language. This page codifies the fragment-driven release
+convention already in use across the fleet; it is <em>in addition to</em> the
+<a href="../repo-baseline/">repo baseline</a>.</p>
 </blockquote>
-<p>The stack distributes first-party libraries <strong>directly from git</strong> — no package
-index, no registry publish step. This is the same model
-<a href="https://github.com/damien-robotsix/robotsix-llmio"><code>robotsix-llmio</code></a> already
-uses: its auto-release workflow bumps the version, updates the changelog, and
-pushes a <code>v*</code> tag; consumers pull it from GitHub pinned to a commit SHA. Every
-robotsix library follows the same path.</p>
+<p>Releases are driven by towncrier changelog fragments under <code>changelog.d/</code>,
+compiled by the shared auto-release workflow — not by hand-maintaining a
+Keep-a-Changelog file and manually creating tags.</p>
+<p>For a library whose version is derived from git tags via hatch-vcs
+(<code>[tool.hatch.version] source = "vcs"</code>), <strong>creating an annotated git tag IS the
+entire release process</strong> — there is no package to publish. The reference
+implementation lives in
+<a href="https://github.com/damien-robotsix/robotsix-github-workflows">robotsix-github-workflows</a>
+(<code>auto-release.yml</code>).</p>
+<h2 id="why-this-convention">Why this convention<a class="headerlink" href="#why-this-convention" title="Permanent link">&para;</a></h2>
+<p>A repo that maintains a hand-edited <code>CHANGELOG.md</code> with no towncrier fragment
+directory and no auto-release workflow accumulates completed entries under an
+<code>## 0.0.0 (unreleased)</code> heading with no mechanism to ever become a release.
+Because hatch-vcs derives the version from the tag, an untagged project can
+literally never emit a clean release version to downstream <code>uv.sources</code>
+consumers — they always resolve a dirty <code>0.x.dev&lt;distance&gt;+g&lt;sha&gt;</code> version
+instead of the tagged <code>X.Y.Z</code> the library's own <code>pyproject.toml</code> declares.</p>
+<p>Towncrier fragments solve the merge-conflict problem (parallel PRs each have
+their own file — the changelog itself is never a conflict surface) and the
+"what bump?" problem (the fragment type determines the semver bump).</p>
 <h2 id="rules">Rules<a class="headerlink" href="#rules" title="Permanent link">&para;</a></h2>
-<h3 id="1-git-based-consumption-is-the-preferred-path">1. Git-based consumption is the preferred path<a class="headerlink" href="#1-git-based-consumption-is-the-preferred-path" title="Permanent link">&para;</a></h3>
-<p><strong>Rule:</strong> robotsix libraries are consumed directly from their GitHub repository,
-pinned to a tag or commit SHA. No registry publish step is required.</p>
-<p><strong>Rationale:</strong> A single-org, first-party set of repositories does not benefit
-from the overhead of a package index — publishing accounts, release machinery,
-token rotation — when every consumer already has access to the source. Git-based
-consumption is simpler, auditable, and removes an entire class of
-supply-chain risk (registry-account compromise, dependency confusion).</p>
+<h3 id="1-every-pr-adds-a-newsfragment">1. Every PR adds a newsfragment<a class="headerlink" href="#1-every-pr-adds-a-newsfragment" title="Permanent link">&para;</a></h3>
+<p><strong>Rule:</strong> Every PR that changes user-visible behaviour adds a file to
+<code>changelog.d/</code> with one of these extensions: <code>.breaking.md</code>, <code>.feature.md</code>,
+<code>.bugfix.md</code>, or <code>.misc.md</code>. The filename is the issue/PR identifier followed by
+the extension (e.g. <code>changelog.d/123.bugfix.md</code>). A PR with no user-visible
+effect (CI-only, test-only, tooling-internal) adds the <code>skip-changelog</code> label
+instead.</p>
+<p><strong>Rationale:</strong> Per-PR fragment files eliminate changelog merge conflicts —
+parallel PRs never touch the same file. The extension encodes the bump type so
+the release workflow can compute the semver bump without a human classifying
+every PR at release time.</p>
 <blockquote>
-<p><strong>Failure mode.</strong> A library published to a public registry creates a
-supply-chain surface the org does not control: registry credentials must be
-provisioned, rotated, and protected; a compromised token lets an attacker
-publish malicious packages under the org's name. A registry also enables
-dependency confusion — an attacker publishing a same-named package to a public
-registry that a misconfigured resolver picks up instead of the org's internal
-one.</p>
+<p><strong>Failure mode.</strong> A repo without fragment enforcement accumulates unreleased
+changelog entries under <code>## 0.0.0 (unreleased)</code> that never become a release
+because the auto-release workflow sees an empty <code>changelog.d/</code> and does
+nothing. The downstream version stays dirty (<code>0.x.dev</code>) forever, and
+consumers pinning a git SHA never see a clean release version.</p>
 </blockquote>
-<p><strong>Python consumers</strong> use a git source in <code>pyproject.toml</code>:</p>
-<div class="highlight"><pre><span></span><code><span class="k">[tool.uv.sources]</span>
-<span class="n">robotsix-llmio</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">git</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">&quot;https://github.com/damien-robotsix/robotsix-llmio.git&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">rev</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">&quot;abc123def456&quot;</span><span class="w"> </span><span class="p">}</span>
-</code></pre></div>
-<p>Or a PEP 508 git URL in <code>[project] dependencies</code>:</p>
-<div class="highlight"><pre><span></span><code>robotsix-llmio @ git+https://github.com/damien-robotsix/robotsix-llmio@abc123def456
-</code></pre></div>
-<p><strong>npm consumers</strong> use a git URL:</p>
-<div class="highlight"><pre><span></span><code>git+https://github.com/damien-robotsix/robotsix-ui#v0.4.0
-</code></pre></div>
-<h3 id="2-pin-to-a-commit-sha-not-a-branch">2. Pin to a commit SHA, not a branch<a class="headerlink" href="#2-pin-to-a-commit-sha-not-a-branch" title="Permanent link">&para;</a></h3>
-<p><strong>Rule:</strong> Every first-party git source is pinned to a <strong>commit SHA</strong> (or an
-annotated tag, which resolves to a SHA). Branch refs like <code>main</code> are disallowed.</p>
-<p><strong>Rationale:</strong> A branch ref drifts silently — a fresh lock (or any lock-refresh)
-can pull in unrelated upstream changes with no PR, and a rename or breaking
-change upstream then breaks resolution out of nowhere.</p>
+<h3 id="2-ci-enforces-the-fragment-requirement">2. CI enforces the fragment requirement<a class="headerlink" href="#2-ci-enforces-the-fragment-requirement" title="Permanent link">&para;</a></h3>
+<p><strong>Rule:</strong> Every repo's CI runs <code>towncrier check --compare-with origin/&lt;base&gt;</code>
+as a blocking gate on PRs. A <code>skip-changelog</code> label exempts the PR from this
+check.</p>
+<p><strong>Rationale:</strong> A fragment directory with no CI gate is a suggestion, not a rule
+— contributors forget, and releases silently skip entries. The CI gate makes the
+requirement mechanical: a PR that changes user-visible behaviour and lacks a
+fragment is blocked until the fragment is added (or the label applied).</p>
 <blockquote>
-<p><strong>Failure mode.</strong> A <code>pyproject.toml</code> that pins <code>robotsix-llmio</code> to <code>main</code>
-works today but breaks tomorrow when <code>main</code> receives a breaking change the
-consumer never reviewed. The failure lands in CI with no bisectable culprit
-commit in the consumer's repo — the root cause is an upstream change that
-arrived silently.</p>
+<p><strong>Failure mode.</strong> Without CI enforcement, a multi-PR release cycle misses
+several PRs' changelog entries because no one noticed the fragments were never
+written. The compiled <code>CHANGELOG.md</code> is incomplete, and downstream consumers
+cannot audit what changed between two tagged versions.</p>
 </blockquote>
-<h3 id="3-versioning-via-git-tags">3. Versioning via git tags<a class="headerlink" href="#3-versioning-via-git-tags" title="Permanent link">&para;</a></h3>
-<p><strong>Rule:</strong> Libraries version themselves with the shared auto-release workflow
-that bumps the version, updates the changelog, and pushes a <code>v*</code> tag — the
-full mechanism is documented in
-<a href="../changelog-driven-releases/">Changelog &amp; releases</a>. Consumers pin to those
-tags (or the underlying SHA).</p>
-<p><strong>Rationale:</strong> Tags give consumers a human-readable version to pin against while
-retaining the auditability of a git SHA. The auto-release workflow (shared from
-<a href="https://github.com/damien-robotsix/robotsix-github-workflows">robotsix-github-workflows</a>)
-keeps every repo on the same release cadence rather than each repo inventing its
-own.</p>
+<h3 id="3-changelogmd-is-written-only-by-the-release-workflow">3. CHANGELOG.md is written only by the release workflow<a class="headerlink" href="#3-changelogmd-is-written-only-by-the-release-workflow" title="Permanent link">&para;</a></h3>
+<p><strong>Rule:</strong> <code>CHANGELOG.md</code> is never edited by hand. The release workflow runs
+<code>towncrier build</code> to regenerate it from <code>changelog.d/</code> fragments, producing
+valid <a href="https://keepachangelog.com/en/1.1.0/">Keep a Changelog</a> output. The one
+exception: a programmatic tool that fixes a bug in <code>CHANGELOG.md</code> itself
+(e.g. an append/insert bug that would otherwise lose history) may write to it
+directly, and only for that fix. The tool must not become a general-purpose
+changelog writer — <code>changelog.d/</code> fragments remain the single source of truth
+for content.</p>
+<p><strong>Rationale:</strong> A hand-edited changelog drifts from the fragments: one gets
+updated, the other doesn't, and neither is reliable. The release workflow as
+sole writer guarantees that <code>CHANGELOG.md</code> is always a faithful compilation of
+the fragments that were present at release time.</p>
 <blockquote>
-<p><strong>Failure mode.</strong> A repo without tagged releases forces consumers to pin to
-arbitrary SHAs with no semantic version signal — a consumer cannot tell at a
-glance whether an upgrade is a patch or a breaking change. A repo with
-hand-cut releases diverges from the fleet's shared release workflow, creating
-per-repo release procedures that new contributors must learn.</p>
+<p><strong>Failure mode.</strong> A contributor edits <code>CHANGELOG.md</code> directly to add an entry
+during a PR, then forgets the fragment. The next release rebuilds the
+changelog from fragments and silently drops the hand-edited entry — losing
+history with no warning.</p>
 </blockquote>
-<h3 id="4-public-package-indexes-are-disallowed">4. Public package indexes are disallowed<a class="headerlink" href="#4-public-package-indexes-are-disallowed" title="Permanent link">&para;</a></h3>
-<p><strong>Rule:</strong> Publishing to public registries — <code>registry.npmjs.org</code>, public PyPI
-(<code>pypi.org</code>), or any other public package index — is prohibited. Any exception
-requires explicit written approval from the Platform Owner, documenting the
-security and legal justification.</p>
-<p><strong>Rationale:</strong> Public registries expose the org to credential-theft risk,
-dependency confusion, and accidental publication of internal code. The git-based
-model already covers every legitimate consumption pattern without those risks.</p>
+<h3 id="4-releases-are-automated">4. Releases are automated<a class="headerlink" href="#4-releases-are-automated" title="Permanent link">&para;</a></h3>
+<p><strong>Rule:</strong> Every repo wires the shared auto-release workflow from
+<a href="https://github.com/damien-robotsix/robotsix-github-workflows">robotsix-github-workflows</a>.
+The workflow runs weekly (and on demand). It does nothing when <code>changelog.d/</code>
+is empty; otherwise it:</p>
+<ul>
+<li>classifies fragments (any <code>breaking</code> or <code>feature</code> → minor bump, else patch);</li>
+<li>runs <code>towncrier build</code> to regenerate <code>CHANGELOG.md</code>;</li>
+<li>bumps the version in <code>pyproject.toml</code>;</li>
+<li>commits the changes;</li>
+<li>creates and pushes an annotated tag <code>vX.Y.Z</code>.</li>
+</ul>
+<p>For a library, creating the annotated tag <strong>is</strong> the entire release — there is
+no package to publish. For a deployable component, the <code>v*</code> tag in turn triggers
+the Docker publish workflow (see <a href="../docker-standard/">Docker build &amp; release</a>).</p>
+<p><strong>Rationale:</strong> A shared workflow keeps every repo on the same release cadence,
+deriving the semver bump from fragment types so no human classifies every PR at
+release time. Weekly (or on-demand) releases keep the cadence regular — repos
+don't drift months without a tag.</p>
 <blockquote>
-<p><strong>Failure mode.</strong> A CI workflow that publishes to public npm with an
-<code>NPM_TOKEN</code> secret creates a persistent credential target. If that token is
-leaked (log output, compromised runner, misconfigured secret), an attacker can
-publish packages under the org's npm scope — indistinguishable from legitimate
-releases to downstream consumers.</p>
+<p><strong>Failure mode.</strong> A repo without the auto-release workflow never creates a
+release tag. The version stays <code>0.x.dev</code> forever — consumers pinning a git SHA
+cannot tell at a glance whether an upgrade is a patch or a breaking change,
+and there is no auditable history of what changed between consumer updates. A
+repo with a hand-rolled release workflow diverges from the fleet's shared
+mechanism; every new contributor must learn per-repo release procedures.</p>
 </blockquote>
-<h3 id="5-internal-registry-is-the-only-acceptable-alternative">5. Internal registry is the only acceptable alternative<a class="headerlink" href="#5-internal-registry-is-the-only-acceptable-alternative" title="Permanent link">&para;</a></h3>
-<p><strong>Rule:</strong> If a use case genuinely requires a registry (not just git
-consumption), it MUST target an org-internal registry — e.g. GitHub Packages
-under the <code>damien-robotsix</code> org. CI publish jobs must resolve their registry
-environment variable or <code>publishConfig</code> to an approved internal domain; a
-hard-coded public endpoint is never acceptable. Publish secrets must be
-internal-registry credentials only.</p>
-<p><strong>Rationale:</strong> An internal registry keeps packages within the org boundary while
-still providing the registry features (version ranges, discovery) that some
-toolchains require. GitHub Packages is already available under the org's GitHub
-plan and requires no additional infrastructure.</p>
+<h3 id="5-versions-stay-0x-until-100-is-declared-deliberately">5. Versions stay 0.x until 1.0.0 is declared deliberately<a class="headerlink" href="#5-versions-stay-0x-until-100-is-declared-deliberately" title="Permanent link">&para;</a></h3>
+<p><strong>Rule:</strong> Versions stay <code>0.x</code> under semver. Bumping to <code>1.0.0</code> is a human
+decision — it is never automated. Under 0.x there is no compatibility promise,
+which matches the stack's pre-release, clean-cutover stance.</p>
+<p><strong>Rationale:</strong> Semver <code>0.x</code> means "no stability guarantee" — the public API may
+change at any minor bump. This is the correct posture for a stack under active
+development where clean cutover is the default migration strategy. Automating a
+<code>1.0.0</code> bump would make an unintended stability promise.</p>
 <blockquote>
-<p><strong>Failure mode.</strong> A CI workflow that hard-codes <code>registry.npmjs.org</code> in a
-<code>publishConfig</code> or registry URL cannot be redirected to an internal registry
-without a code change — and by the time someone notices, packages may already
-be on the public registry.</p>
+<p><strong>Failure mode.</strong> A repo whose auto-release workflow bumps to <code>1.0.0</code>
+automatically signals API stability that does not exist — consumers treat
+minor bumps as safe and are broken by a breaking change that arrived without
+a major-version signal.</p>
 </blockquote>
-<h3 id="6-document-the-distribution-method">6. Document the distribution method<a class="headerlink" href="#6-document-the-distribution-method" title="Permanent link">&para;</a></h3>
-<p><strong>Rule:</strong> Each library's README must state how it is distributed and show the
-exact pin syntax consumers should use. The default is git-based; if an internal
-registry is used, document that instead.</p>
-<p><strong>Rationale:</strong> A consumer reading a library's README should not have to guess or
-search workflow files to determine how to depend on it. The pin syntax shown in
-the README is the canonical, copy-pasteable instruction.</p>
+<h3 id="6-fragment-files-are-registered-in-docsmodulesyaml">6. Fragment files are registered in docs/modules.yaml<a class="headerlink" href="#6-fragment-files-are-registered-in-docsmodulesyaml" title="Permanent link">&para;</a></h3>
+<p><strong>Rule:</strong> When a new <code>changelog.d/</code> fragment file is created, its path must be
+added to <code>docs/modules.yaml</code> under the <code>core</code> module's <code>paths</code> list (or the
+appropriate module), inserted alphabetically among the existing <code>changelog.d/</code>
+entries. This applies even when no Python files are modified.</p>
+<p><strong>Rationale:</strong> The module-registration drift check fails CI when a file matches
+no module's globs. Without this rule, every new fragment file would fail CI
+until someone manually registers it — a recurring friction point.</p>
 <blockquote>
-<p><strong>Failure mode.</strong> A library README that omits distribution instructions forces
-every new consumer to discover the pin syntax by reading <code>pyproject.toml</code> or
-<code>package.json</code> of an existing consumer — a wasteful and error-prone process
-that leads to consumers pinning to <code>main</code> or guessing at the syntax.</p>
+<p><strong>Failure mode.</strong> A contributor adds a fragment file, CI fails with a drift
+error, and the contributor either skips the fragment (losing the changelog
+entry) or spends time diagnosing a registration failure that should be
+documented as part of the fragment workflow.</p>
 </blockquote>
-<h2 id="enforcement-future">Enforcement (future)<a class="headerlink" href="#enforcement-future" title="Permanent link">&para;</a></h2>
-<p>A standards CI lint that scans changed workflows, <code>package.json</code>, and
-<code>pyproject.toml</code> for public-registry endpoints (<code>registry.npmjs.org</code>, public
-PyPI) and fails the PR if found. This is tracked as a follow-up ticket.</p>
+<h2 id="reference">Reference<a class="headerlink" href="#reference" title="Permanent link">&para;</a></h2>
+<ul>
+<li><strong>towncrier:</strong> <a href="https://towncrier.readthedocs.io">https://towncrier.readthedocs.io</a></li>
+<li><strong>Keep a Changelog:</strong> <a href="https://keepachangelog.com/en/1.1.0/">https://keepachangelog.com/en/1.1.0/</a></li>
+<li><strong>hatch-vcs:</strong> <a href="https://hatch.pypa.io/latest/config/metadata">https://hatch.pypa.io/latest/config/metadata</a></li>
+<li><strong>Reference auto-release workflow:</strong> <a href="https://github.com/damien-robotsix/robotsix-github-workflows/blob/main/.github/workflows/auto-release.yml"><code>robotsix-github-workflows/.github/workflows/auto-release.yml</code></a></li>
+</ul>
 
 
 

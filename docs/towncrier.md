@@ -94,14 +94,14 @@ showcontent = true
 
 Fragments are Markdown files in `changelog.d/` named with the convention:
 
-```
+```text
 <timestamp>Z-<slug>-<short-hash>.<type>.md
 ```
 
 The file body is a single line (or short paragraph) written in the past
 tense, describing the change from the user's perspective:
 
-```
+```text
 Fix the mail poller failing to reconnect after a DNS change.
 ```
 

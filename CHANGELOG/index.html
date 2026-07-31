@@ -1841,6 +1841,11 @@
 </ul>
 <h2 id="000-unreleased">0.0.0 (unreleased)<a class="headerlink" href="#000-unreleased" title="Permanent link">&para;</a></h2>
 <ul>
+<li>Make the TOC-sync gate bidirectional: <code>scripts/check-toc-sync.py</code> now also
+  extracts page references from <code>README.md</code> and <code>docs/index.md</code> and asserts
+  each one is present in the corresponding <code>mkdocs.yml</code> nav section. A page
+  registered in README + index but absent from the nav now fails CI instead of
+  silently dropping out of the built docs site.</li>
 <li>Add "no duplicate rules across standards pages" rule to AGENT.md, requiring cross-links instead of restating rule text in multiple pages.</li>
 <li>Added Docker Compose smoke test requirement to the Docker build &amp; release standard: every deployable component must run a CI job that validates <code>docker-compose up</code> succeeds (container starts, health check passes, core endpoint responds) on the <code>deploy/docker-compose.yml</code>. Catches compose-file breakage before deploy.</li>
 <li>Added Rule 4 to the MkDocs build integrity standard: new standards pages

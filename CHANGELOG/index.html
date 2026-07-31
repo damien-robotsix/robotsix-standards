@@ -1729,6 +1729,9 @@
 </ul>
 <h2 id="000-unreleased">0.0.0 (unreleased)<a class="headerlink" href="#000-unreleased" title="Permanent link">&para;</a></h2>
 <ul>
+<li>Sync <code>docs/prose-linting.md</code> vocabulary listings and <code>.vale.ini</code> example with the
+  actual working config files — add missing <code>Vocab = robotsix</code>, update <code>accept.txt</code>
+  from 18 to 34 terms, and correct <code>reject.txt</code> to match <code>config/vocabularies/robotsix/</code>.</li>
 <li><strong>Config ownership standard:</strong> add the verbatim boundary rule (central-deploy retains only lifecycle and Docker-boundary config; rule of thumb: container-recreate → deploy, otherwise → component), replace incremental migration guidance with a one-time config-import adoption contract, and explicitly distinguish non-boot secrets (component-owned, masked by the component) from boot-time secrets (remain with deploy plane).</li>
 <li>Added <strong>Distribution &amp; Packaging</strong> standard: git-based consumption is the preferred path for first-party libraries; public package indexes (npm, PyPI) are disallowed; internal registry (GitHub Packages) is the only acceptable registry alternative; every library README must document its distribution method with exact pin syntax.</li>
 <li>Updated <code>docs/pre-commit-baseline.md</code>: bumped example <code>rev</code> from <code>v5.0.0</code> to <code>v6.0.0</code> to match the repo's actual <code>.pre-commit-config.yaml</code>, corrected <code>check-added-large-files</code> threshold from 750 KB to 1024 KB, and documented the <code>args</code> and <code>exclude</code> pattern (<code>uv.lock</code>, <code>.secrets.baseline</code>).</li>

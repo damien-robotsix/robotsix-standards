@@ -1828,11 +1828,10 @@ degrade the reader's trust and the fleet's professional surface.</p>
 <h3 id="valeini-at-repo-root"><code>.vale.ini</code> at repo root<a class="headerlink" href="#valeini-at-repo-root" title="Permanent link">&para;</a></h3>
 <div class="highlight"><pre><span></span><code><span class="na">StylesPath</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">styles</span>
 <span class="na">MinAlertLevel</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">error</span>
-
-<span class="na">Packages</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">write-good</span>
-
+<span class="na">Vocab</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">robotsix</span>
+<span class="na">Packages</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">errata-ai/write-good</span>
 <span class="k">[*.md]</span>
-<span class="na">BasedOnStyles</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">Vale, write-good, robotsix</span>
+<span class="na">BasedOnStyles</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">write-good</span>
 </code></pre></div>
 <p><strong>The <code>StylesPath</code> directory (<code>styles/</code>) is gitignored</strong> — <code>vale sync</code>
 regenerates it from the declared packages. Only the vocabulary files
@@ -1843,20 +1842,38 @@ regenerates it from the declared packages. Only the vocabulary files
 <div class="highlight"><pre><span></span><code>robotsix
 towncrier
 central-deploy
-mkdocs
 langfuse
 llmio
 semgrep
 trufflehog
 dependabot
-pre-commit
+mkdocs
+mkdocstrings
+codespell
+hadolint
+actionlint
+ruff
+mypy
+deptry
 pydantic
 hatchling
-codespell
-markdownlint
-vitest
-rosdep
-colcon
+pre-commit
+pypi
+cyclonedx
+sbom
+trivy
+scorecard
+OpenSSF
+OWASP
+SLSA
+Sigstore
+backend
+frontend
+websocket
+lifecycle
+onboarding
+cutover
+supersession
 </code></pre></div>
 <p>Each term is a fleet product, tool, or framework name that spell-check and
 style rules would otherwise flag as errors. Adding them here suppresses the
@@ -1864,10 +1881,9 @@ false positive across every doc page in the repo.</p>
 <h4 id="rejecttxt-terms-that-must-never-appear-in-fleet-documentation"><code>reject.txt</code> — terms that must never appear in fleet documentation<a class="headerlink" href="#rejecttxt-terms-that-must-never-appear-in-fleet-documentation" title="Permanent link">&para;</a></h4>
 <div class="highlight"><pre><span></span><code>whitelist
 blacklist
-master
-slave
-sanity check
-dummy
+master/slave
+sanity.check
+crazy
 </code></pre></div>
 <p>These terms have well-established inclusive replacements (<code>allowlist</code>,
 <code>blocklist</code>, <code>primary</code>/<code>replica</code>, <code>consistency check</code>, <code>placeholder</code>). Vale

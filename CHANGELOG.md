@@ -121,6 +121,7 @@
 
 ## 0.0.0 (unreleased)
 
+- Register `docs/mypy.md` in the mkdocs.yml nav (`Every repo` section) so the Mypy strictness page is reachable from the published docs sidebar.
 - Register `fastapi-pydantic-field-descriptions.md` in mkdocs.yml nav under Deployable components.
 - Replace redundant CI-invocation rule text in `docs/markdown-linting.md` with a pointer to the canonical `docs/ci-lint-pinning.md`, keeping the two concrete `pre-commit run --all-files` commands as the markdownlint/codespell example.
 - New standard: [Mypy strictness as a hard CI gate](docs/mypy.md) — mypy runs as a gate (not advisory), baseline snapshots are a bootstrapping scaffold with a defined exit, and new code must be type-clean under strict mode.

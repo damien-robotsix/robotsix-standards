@@ -24,6 +24,9 @@ everywhere.
 
 - **[Repo baseline](repo-baseline.md)** — distribution tiers, changelog and
   module-registration hygiene, CI and security gates, licensing.
+- **[Towncrier changelog](towncrier.md)** — per-PR newsfragments in
+  `changelog.d/`, `pyproject.toml` config, CI enforcement, and automated
+  release compilation — the fleet-wide changelog tool.
 - **[Free-tier only](free-tier-only.md)** — no paid services (LLM agent
   inference excepted): free-tier CI (public repo or self-hosted runner),
   public/self-hosted container images, permissive licences only.

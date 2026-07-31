@@ -31,6 +31,7 @@ the default.
 | Doc | What it covers |
 |---|---|
 | [Repo baseline](docs/repo-baseline.md) | Distribution tiers, changelog/module hygiene, CI & security gates, license — language-agnostic. |
+| [Towncrier changelog](docs/towncrier.md) | Per-PR newsfragments in `changelog.d/`, `pyproject.toml` config, CI enforcement, and automated release compilation — the fleet-wide changelog tool. |
 | [Free-tier only](docs/free-tier-only.md) | No paid services (LLM agent inference excepted): Actions on a free tier (public or self-hosted runner), public/self-hosted images, permissive licences. |
 | [Security posture](docs/security-posture.md) | Self-enforcing security gates (SAST, dependency review, Dependabot, workflow hardening, secret protection, SBOM), auditable per repo. |
 | [Async SQLAlchemy test fixtures](docs/async-sqlalchemy-test-fixtures.md) | Three-layer database test fixture pattern — session-scoped engine, function-scoped connection with rollback, function-scoped session with savepoints — for clean isolation without dropping tables. |

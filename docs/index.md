@@ -34,6 +34,9 @@ everywhere.
   test fixture pattern (session-scoped engine, function-scoped connection with
   rollback, function-scoped session with savepoints) for clean test isolation
   without dropping tables.
+- **[Changelog & releases](changelog-driven-releases.md)** — towncrier fragment-driven
+  releases, CI-enforced changelog fragments, and the shared auto-release
+  workflow — no hand-edited changelog.
 - **[Distribution & Packaging](distribution-packaging.md)** — git-based consumption of
   first-party libraries — no package index, no registry publish step.
 - **[Docstring convention](docstrings.md)** — Python docstring style and coverage

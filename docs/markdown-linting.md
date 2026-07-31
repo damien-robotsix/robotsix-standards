@@ -31,8 +31,8 @@ runs on every `.md` file; `codespell` runs across the entire repo.
 ```
 
 **The `#fix` arg is optional.** When present it auto-fixes fixable violations
-on commit. Remove it if you prefer to fix manually — the CI job still runs
-the check and fails on any violation.
+on commit. Remove it if you prefer to fix manually — CI still runs the check (see
+[CI invocation](#ci-invocation) below) and fails on any violation.
 
 ### `codespell` — spell-checking for prose
 
@@ -46,6 +46,39 @@ the check and fails on any violation.
 
 **Failure mode prevented:** misspelled words in documentation and comments
 that survive review because reviewers read for meaning, not spelling.
+
+## CI invocation
+
+**CI must run markdownlint-cli2 and codespell through the same pinned
+pre-commit hooks as local development, never via a separate unpinned
+`npx`/`uv run --with` invocation.**
+
+```bash
+pre-commit run --all-files markdownlint-cli2
+pre-commit run --all-files codespell
+```
+
+The `.pre-commit-config.yaml` hook revisions are the single source of truth
+for tool versions — CI must not install a different version.
+
+**Failure mode prevented:** CI and local lint tooling silently diverge because
+CI installs the *latest* tool release at run time while pre-commit pins a
+specific revision. Divergence produces one of two failures:
+
+- CI fails on rules the contributor never saw locally (because CI pulled a
+  newer markdownlint/codespell release that added rules or changed defaults),
+  or
+- CI passes on regressions the pinned config would have caught (because
+  pre-commit's revision is never exercised in CI, so the pinned config
+  silently rots).
+
+Both failures erode trust in the pre-commit hooks — contributors stop running
+them locally and CI becomes the bottleneck.
+
+**Convention source:** the mature pattern in pydantic/pydantic and other
+MkDocs-publishing Python repos, which gate docs lint in CI by calling the same
+pre-commit hooks (defaulting to the pinned `.pre-commit-config.yaml`) rather
+than a second unpinned install.
 
 ## Recommended config files
 

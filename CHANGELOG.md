@@ -121,6 +121,11 @@
 
 ## 0.0.0 (unreleased)
 
+- Make the TOC-sync gate bidirectional: `scripts/check-toc-sync.py` now also
+  extracts page references from `README.md` and `docs/index.md` and asserts
+  each one is present in the corresponding `mkdocs.yml` nav section. A page
+  registered in README + index but absent from the nav now fails CI instead of
+  silently dropping out of the built docs site.
 - Add "no duplicate rules across standards pages" rule to AGENT.md, requiring cross-links instead of restating rule text in multiple pages.
 - Added Docker Compose smoke test requirement to the Docker build & release standard: every deployable component must run a CI job that validates `docker-compose up` succeeds (container starts, health check passes, core endpoint responds) on the `deploy/docker-compose.yml`. Catches compose-file breakage before deploy.
 - Added Rule 4 to the MkDocs build integrity standard: new standards pages

@@ -1,13 +1,17 @@
 #!/usr/bin/env python3
-"""Verify that mkdocs.yml nav pages appear in README.md and docs/index.md.
+"""Bidirectional TOC-sync gate for mkdocs.yml ↔ README.md + docs/index.md.
 
 Parses mkdocs.yml, extracts page references under the configured nav sections,
-and checks that each page filename appears in both README.md and docs/index.md.
-Exits 0 on success, 1 if any entries are missing.
+and checks that:
+- each nav page appears in both README.md and docs/index.md (forward); and
+- each page linked from README.md / docs/index.md appears in the nav (reverse).
+
+Exits 0 on success, 1 if any entries are missing or orphaned.
 """
 
 from __future__ import annotations
 
+import re
 import sys
 from pathlib import Path
 
@@ -21,6 +25,33 @@ INDEX_MD = REPO_ROOT / "docs" / "index.md"
 
 # Top-level nav keys whose sub-pages must appear in README.md and docs/index.md.
 SECTIONS_TO_CHECK = ["Every repo", "Deployable components"]
+
+# Map nav section names to the marker strings that introduce the corresponding
+# sections in README.md and docs/index.md.  Used to scope reverse-direction
+# extraction to the right section.
+_SECTION_MARKERS: dict[str, dict[str, str]] = {
+    "Every repo": {
+        "readme": "**Every repository**",
+        "index": "### Every repository",
+    },
+    "Deployable components": {
+        "readme": "**Deployable components**",
+        "index": "### Deployable components",
+    },
+}
+
+# Ordered lists of section-introducing markers in each file, so we can bound
+# extraction between a section header and the next one.
+_README_MARKERS = [
+    "**Every repository**",
+    "**Deployable components**",
+    "**The deployment system**",
+]
+_INDEX_MARKERS = [
+    "### Every repository",
+    "### Deployable components",
+    "### The deployment system",
+]
 
 
 def extract_pages(nav: list[object], section_name: str) -> list[str]:
@@ -43,6 +74,33 @@ def missing_pages(pages: list[str], filepath: Path) -> list[str]:
     """Return pages whose bare filename does NOT appear in *filepath*."""
     content = filepath.read_text()
     return [p for p in pages if p not in content]
+
+
+def _extract_section_text(content: str, marker: str, all_markers: list[str]) -> str:
+    """Return the substring of *content* from *marker* to the next marker."""
+    start = content.find(marker)
+    if start == -1:
+        return ""
+    marker_idx = all_markers.index(marker)
+    end = len(content)
+    for nm in all_markers[marker_idx + 1 :]:
+        nidx = content.find(nm, start + len(marker))
+        if nidx != -1:
+            end = nidx
+            break
+    return content[start:end]
+
+
+def _extract_readme_pages(content: str, marker: str, all_markers: list[str]) -> list[str]:
+    """Extract page filenames from links like ``[text](docs/<page>.md)`` in a README section."""
+    section = _extract_section_text(content, marker, all_markers)
+    return re.findall(r"\]\(docs/([^)]+\.md)\)", section)
+
+
+def _extract_index_pages(content: str, marker: str, all_markers: list[str]) -> list[str]:
+    """Extract page filenames from links like ``[text](<page>.md)`` in an index section."""
+    section = _extract_section_text(content, marker, all_markers)
+    return re.findall(r"\]\(([^)]+\.md)\)", section)
 
 
 def main() -> int:
@@ -72,11 +130,48 @@ def main() -> int:
             print(f"  MISSING from docs/index.md: {page}")
             all_missing.append((section, "docs/index.md", page))
 
-    if all_missing:
-        print(
-            f"\n{len(all_missing)} missing entry(s) found.  "
-            "Update README.md and/or docs/index.md to match mkdocs.yml nav."
+    # Reverse direction: every page linked from README.md / docs/index.md
+    # must appear in the corresponding mkdocs.yml nav section.
+    readme_content = README_MD.read_text()
+    index_content = INDEX_MD.read_text()
+
+    all_orphaned: list[tuple[str, str, str]] = []
+
+    for section in SECTIONS_TO_CHECK:
+        nav_pages = set(extract_pages(nav, section))
+        if not nav_pages:
+            continue
+
+        markers = _SECTION_MARKERS[section]
+
+        readme_pages = _extract_readme_pages(
+            readme_content, markers["readme"], _README_MARKERS
         )
+        for page in readme_pages:
+            if page not in nav_pages:
+                print(f"  ORPHANED in README.md (not in mkdocs.yml nav): {page}")
+                all_orphaned.append((section, "README.md → nav", page))
+
+        index_pages = _extract_index_pages(
+            index_content, markers["index"], _INDEX_MARKERS
+        )
+        for page in index_pages:
+            if page not in nav_pages:
+                print(f"  ORPHANED in docs/index.md (not in mkdocs.yml nav): {page}")
+                all_orphaned.append((section, "docs/index.md → nav", page))
+
+    if all_missing or all_orphaned:
+        if all_missing:
+            print(
+                f"\n{len(all_missing)} missing entry(s) found.  "
+                "Update README.md and/or docs/index.md to match mkdocs.yml nav."
+            )
+        if all_orphaned:
+            print(
+                f"\n{len(all_orphaned)} orphaned page(s) found in README.md / "
+                "docs/index.md that are not in mkdocs.yml nav.  "
+                "Add them to mkdocs.yml nav or remove the references."
+            )
         return 1
 
     print("All TOC entries are synchronized.")

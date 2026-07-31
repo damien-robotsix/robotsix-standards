@@ -98,6 +98,10 @@ integrates with the deployment system. Beyond the baseline it follows:
   shape the deployment system consumes.
 - **[Entrypoint contract](entrypoint-contract.md)** — how a component's
   container starts up.
+- **[FastAPI Pydantic field descriptions](fastapi-pydantic-field-descriptions.md)** —
+  every public request/response Pydantic model field must carry
+  `Field(description=...)` so the generated OpenAPI schema is
+  self-documenting.
 - **[Integrating a service](integrating-a-service.md)** — the end-to-end how-to.
 - **[Chat access](chat-access-standard.md)** — a standard skill endpoint so the
   chat agent can invoke operations on the component.

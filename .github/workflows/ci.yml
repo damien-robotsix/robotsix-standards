@@ -39,6 +39,7 @@ jobs:
       - name: Lint markdown (pinned pre-commit hook)
         env:
           GIT_TERMINAL_PROMPT: "0"
+          GIT_ASKPASS: /bin/true
         run: uv run --group docs pre-commit run markdownlint-cli2 --all-files
       - name: Check TOC synchronization
         run: uv run --group docs python scripts/check-toc-sync.py
@@ -47,6 +48,7 @@ jobs:
       - name: Spell check (pinned pre-commit hook)
         env:
           GIT_TERMINAL_PROMPT: "0"
+          GIT_ASKPASS: /bin/true
         run: uv run --group docs pre-commit run codespell --all-files
       - name: Check changelog fragments for truncation
         run: |

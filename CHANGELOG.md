@@ -121,6 +121,7 @@
 
 ## 0.0.0 (unreleased)
 
+- New standard: [Mypy strictness as a hard CI gate](docs/mypy.md) — mypy runs as a gate (not advisory), baseline snapshots are a bootstrapping scaffold with a defined exit, and new code must be type-clean under strict mode.
 - Added the [FastAPI Pydantic field descriptions](docs/fastapi-pydantic-field-descriptions.md) standard — every public request/response Pydantic model field must carry `Field(description=...)` so the generated OpenAPI schema is self-documenting.
 - Codify in `docs/markdown-linting.md` that CI must run markdownlint-cli2 and codespell through the same pinned pre-commit hooks as local development, never via a separate unpinned `npx`/`uv run --with` invocation.
 - Standardize: CI lint jobs must run the same version-pinned tools as `.pre-commit-config.yaml` — the pre-commit `rev:` field is the single source of truth, never floating/latest installs. (20260731T134913Z-standardize-ci-runs-the-same-pinned-lint-c651)

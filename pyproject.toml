@@ -9,7 +9,7 @@ license-files = ["LICENSE"]
 authors = [{ name = "Damien SIX", email = "damien.robotsix@gmail.com" }]
 
 [dependency-groups]
-docs = ["mkdocs-htmlproofer-plugin", "mkdocs-material"]
+docs = ["mkdocs-htmlproofer-plugin", "mkdocs-material", "pre-commit"]
 
 [tool.setuptools.packages.find]
 exclude = ["config*", "styles*"]

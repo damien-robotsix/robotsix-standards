@@ -75,36 +75,10 @@ copies, and repo AGENT.mds link rather than restate.
 
 ## Changelog & releases
 
-One mechanism, fleet-wide: **[towncrier](https://towncrier.readthedocs.io)
-newsfragments, compiled by the shared auto-release workflow.**
-
-- **Every PR adds a newsfragment** in `changelog.d/` (`.breaking.md`,
-  `.feature.md`, `.bugfix.md`, `.misc.md`); CI enforces it via `towncrier
-  check --compare-with origin/<base>` (a `skip-changelog` PR label exempts
-  changes with nothing to record). Fragments are per-PR files, so parallel
-  PRs never conflict on the changelog.
-- **`CHANGELOG.md` is written only by the release workflow** — never by hand.
-  It stays in [Keep a Changelog](https://keepachangelog.com) form. The one
-  exception: a programmatic tool that fixes a bug in `CHANGELOG.md` itself
-  (e.g., an append/insert bug that would otherwise lose history) may write
-  to it directly, and only for that fix. The tool must not become a
-  general-purpose changelog writer — `changelog.d/` fragments remain the
-  single source of truth for content.
-- **Releases are automated.** The shared auto-release workflow (in
-  [robotsix-github-workflows](https://github.com/damien-robotsix/robotsix-github-workflows);
-  runs weekly plus on demand) does nothing when `changelog.d/` is empty;
-  otherwise it derives the bump from the fragment types (any `breaking` or
-  `feature` → minor, else patch), runs `towncrier build`, bumps the version in
-  `pyproject.toml`, commits, and tags `v0.X.Y`. For deployable components the
-  `v*` tag in turn publishes the `X.Y.Z` image tag (see
-  [Docker build & release](docker-standard.md)). The release workflow also
-  attaches a CycloneDX SBOM (`sbom.cyclonedx.json`) as a release asset,
-  optionally with a Sigstore attestation — see
-  [SBOM & vulnerability audit](security-posture.md#6-sbom-vulnerability-audit).
-- **Versions stay `0.x`** until a repo deliberately declares `1.0.0` — that is
-  a human statement about stability, never automated. Under semver 0.x there
-  is no compatibility promise, which matches the stack's pre-release,
-  clean-cutover stance.
+Releases are driven by towncrier changelog fragments, not by hand-editing a
+changelog file. The full convention — fragment types, CI enforcement, the
+auto-release workflow, and version policy — lives on its own page:
+**[Changelog & releases](changelog-driven-releases.md)**.
 
 ## Repo hygiene
 

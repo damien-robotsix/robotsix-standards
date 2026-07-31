@@ -121,6 +121,7 @@
 
 ## 0.0.0 (unreleased)
 
+- Add dedicated Changelog & releases standard: towncrier fragment-driven releases, CI-enforced changelog fragments, and the shared auto-release workflow — no hand-edited changelog.
 - **Docker standard:** Added a CI integration tests section requiring every
   deployable component to build its image in CI, verify the entrypoint binary
   exists, and perform a Python import smoke test — catching the build-time

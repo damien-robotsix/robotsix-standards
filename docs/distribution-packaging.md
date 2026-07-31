@@ -68,9 +68,11 @@ change upstream then breaks resolution out of nowhere.
 
 ### 3. Versioning via git tags
 
-**Rule:** Libraries version themselves with an auto-release workflow that bumps
-the version, updates the changelog, and pushes a `v*` tag — mirroring llmio's
-`auto-release.yml`. Consumers pin to those tags (or the underlying SHA).
+**Rule:** Libraries version themselves with the shared auto-release workflow
+that bumps the version, updates the changelog, and pushes a `v*` tag — the
+full mechanism is documented in
+[Changelog & releases](changelog-driven-releases.md). Consumers pin to those
+tags (or the underlying SHA).
 
 **Rationale:** Tags give consumers a human-readable version to pin against while
 retaining the auditability of a git SHA. The auto-release workflow (shared from

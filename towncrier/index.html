@@ -10,13 +10,13 @@
       
       
       
-        <link rel="canonical" href="https://damien-robotsix.github.io/robotsix-standards/fastapi-pydantic-field-descriptions/">
+        <link rel="canonical" href="https://damien-robotsix.github.io/robotsix-standards/towncrier/">
       
       
-        <link rel="prev" href="../entrypoint-contract/">
+        <link rel="prev" href="../repo-baseline/">
       
       
-        <link rel="next" href="../integrating-a-service/">
+        <link rel="next" href="../free-tier-only/">
       
       
         
@@ -27,7 +27,7 @@
     
     
       
-        <title>FastAPI Pydantic field descriptions - Robotsix Standards</title>
+        <title>Towncrier changelog - Robotsix Standards</title>
       
     
     
@@ -78,7 +78,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#fastapi-pydantic-field-descriptions" class="md-skip">
+        <a href="#towncrier-changelog-management" class="md-skip">
           Skip to content
         </a>
       
@@ -114,7 +114,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              FastAPI Pydantic field descriptions
+              Towncrier changelog
             
           </span>
         </div>
@@ -311,8 +311,10 @@
       
   
   
+    
   
   
+  
     
     
     
@@ -323,13 +325,11 @@
       
     
     
-    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
       
         
         
-          
-        
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
         
           
           <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
@@ -350,7 +350,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_3">
             <span class="md-nav__icon md-icon"></span>
             
@@ -393,10 +393,37 @@
                 
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="../towncrier/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Towncrier changelog
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   
@@ -412,6 +439,109 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#what-towncrier-does" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What towncrier does
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Configuration
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Configuration">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#field-reference" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Field reference
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#fragment-format" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Fragment format
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ci-enforcement" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        CI enforcement
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#release-step" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Release step
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#failure-modes-this-prevents" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Failure modes this prevents
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -960,8 +1090,6 @@
       
   
   
-    
-  
   
   
     
@@ -974,11 +1102,13 @@
       
     
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4" >
         
           
           <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
@@ -999,7 +1129,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_4">
             <span class="md-nav__icon md-icon"></span>
             
@@ -1238,37 +1368,10 @@
                 
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    FastAPI Pydantic field descriptions
-  
-
-    
-  </span>
-  
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../fastapi-pydantic-field-descriptions/" class="md-nav__link">
         
   
   
@@ -1284,87 +1387,6 @@
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#what-is-the-api-surface" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        What is the API surface?
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#how-to-describe-fields" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        How to describe fields
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="How to describe fields">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#recommended-fielddescription" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Recommended: Field(description=...)
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#acceptable-alternative-google-style-attributes-docstring" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Acceptable alternative: Google-style Attributes: docstring
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#enforcement-optional-but-encouraged" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Enforcement (optional but encouraged)
-      
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -1749,10 +1771,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#what-is-the-api-surface" class="md-nav__link">
+  <a href="#what-towncrier-does" class="md-nav__link">
     <span class="md-ellipsis">
       
-        What is the API surface?
+        What towncrier does
       
     </span>
   </a>
@@ -1760,33 +1782,22 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#how-to-describe-fields" class="md-nav__link">
+  <a href="#configuration" class="md-nav__link">
     <span class="md-ellipsis">
       
-        How to describe fields
+        Configuration
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="How to describe fields">
+    <nav class="md-nav" aria-label="Configuration">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#recommended-fielddescription" class="md-nav__link">
+  <a href="#field-reference" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Recommended: Field(description=...)
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#acceptable-alternative-google-style-attributes-docstring" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Acceptable alternative: Google-style Attributes: docstring
+        Field reference
       
     </span>
   </a>
@@ -1799,10 +1810,43 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#enforcement-optional-but-encouraged" class="md-nav__link">
+  <a href="#fragment-format" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Enforcement (optional but encouraged)
+        Fragment format
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ci-enforcement" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        CI enforcement
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#release-step" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Release step
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#failure-modes-this-prevents" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Failure modes this prevents
       
     </span>
   </a>
@@ -1829,90 +1873,155 @@
   
 
 
-<h1 id="fastapi-pydantic-field-descriptions">FastAPI Pydantic field descriptions<a class="headerlink" href="#fastapi-pydantic-field-descriptions" title="Permanent link">&para;</a></h1>
+<h1 id="towncrier-changelog-management">Towncrier changelog management<a class="headerlink" href="#towncrier-changelog-management" title="Permanent link">&para;</a></h1>
 <blockquote>
-<p><strong>Scope: deployable components that expose a FastAPI application.</strong> A
-component whose only HTTP surface is the mandatory <code>/health</code> endpoint (see
-the <a href="../component-standard/">component standard</a>) does not need this. This
-applies <em>in addition to</em> the <a href="../repo-baseline/">repo baseline</a> and
-<a href="../component-standard/">component standard</a>.</p>
+<p><strong>Scope: every Python repository.</strong> Towncrier is the fleet-wide changelog
+tool — every Python repo ships a <code>[tool.towncrier]</code> config and a
+<code>changelog.d/</code> fragment directory. The language-agnostic release rules
+(auto-release workflow, version policy) live in the
+<a href="../repo-baseline/#changelog-releases">repo baseline</a>.</p>
 </blockquote>
-<p>Every FastAPI service in the fleet generates an OpenAPI schema (<code>/openapi.json</code>)
-consumed by operators, downstream tools, and the Swagger UI. Pydantic v2 does
-<strong>not</strong> parse inline trailing <code>#</code> comments on field lines for JSON-schema
-descriptions — those are plain Python comments, invisible to
-<code>model_json_schema()</code>. Without explicit descriptions, the generated schema is
-undocumented at the field level: every field shows only its Python name and
-type annotation, forcing every consumer to guess at semantics.</p>
-<p><strong>The rule: every field on a Pydantic <code>BaseModel</code> that reaches the API surface
-must carry a description.</strong></p>
-<h2 id="what-is-the-api-surface">What is the API surface?<a class="headerlink" href="#what-is-the-api-surface" title="Permanent link">&para;</a></h2>
-<p>A model is on the API surface when it appears in any of these FastAPI
-positions:</p>
-<ul>
-<li>A <strong>response model</strong> (<code>response_model=</code>, or the return-type annotation of a
-  path operation).</li>
-<li>A <strong>request body</strong> (a parameter annotated with <code>Body(...)</code> whose type is a
-  Pydantic model, or a model-type parameter without a <code>Body</code>/<code>Query</code>/<code>Header</code>
-  annotation — FastAPI treats bare non-scalar types as bodies).</li>
-<li>A <strong><code>Query</code></strong>, <strong><code>Header</code></strong>, <strong><code>Cookie</code></strong>, or <strong><code>Path</code></strong> parameter whose
-  type is a Pydantic model (or whose individual fields are extracted via
-  <code>Query()</code>).</li>
-<li>Any model <strong>nested</strong> inside one of the above — descriptions propagate
-  through the JSON schema, so nested model fields also reach <code>/openapi.json</code>.</li>
-</ul>
-<p>Models used only for internal logic — database rows, internal DTOs, config
-models — are exempt.</p>
-<h2 id="how-to-describe-fields">How to describe fields<a class="headerlink" href="#how-to-describe-fields" title="Permanent link">&para;</a></h2>
-<h3 id="recommended-fielddescription">Recommended: <code>Field(description=...)</code><a class="headerlink" href="#recommended-fielddescription" title="Permanent link">&para;</a></h3>
-<p>Colocate the description with the field definition using Pydantic's <code>Field</code>:</p>
-<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">pydantic</span><span class="w"> </span><span class="kn">import</span> <span class="n">BaseModel</span><span class="p">,</span> <span class="n">Field</span>
+<h2 id="what-towncrier-does">What towncrier does<a class="headerlink" href="#what-towncrier-does" title="Permanent link">&para;</a></h2>
+<p><a href="https://towncrier.readthedocs.io">towncrier</a> aggregates per-PR newsfragments
+into a single <code>CHANGELOG.md</code>. Instead of hand-editing <code>CHANGELOG.md</code> — which
+creates merge conflicts and lost entries — each PR drops a one-line fragment
+into <code>changelog.d/</code>. At release time, towncrier compiles them into the
+changelog and removes the fragments.</p>
+<p>This is the workflow used by pip, Twisted, PyPA build, and pulp. The fleet
+already uses towncrier-style fragment directories; standardizing the config
+makes the tooling predictable across repos.</p>
+<h2 id="configuration">Configuration<a class="headerlink" href="#configuration" title="Permanent link">&para;</a></h2>
+<p>Every Python repo MUST include the following block in <code>pyproject.toml</code>:</p>
+<div class="highlight"><pre><span></span><code><span class="k">[tool.towncrier]</span>
+<span class="n">directory</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;changelog.d&quot;</span>
+<span class="n">filename</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;CHANGELOG.md&quot;</span>
+<span class="c1"># package = &quot;&lt;python_package_name&gt;&quot;   -- uncomment for repos that ship a</span>
+<span class="c1">#                                       Python package; pulls the version</span>
+<span class="c1">#                                       from __version__. For docs-only or</span>
+<span class="c1">#                                       non-Python repos, omit it — the</span>
+<span class="c1">#                                       release workflow supplies --version.</span>
+<span class="n">start_string</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;&lt;!-- towncrier release notes start --&gt;</span><span class="se">\n</span><span class="s2">&quot;</span>
+<span class="c1"># .gitkeep keeps changelog.d/ present after a release consumes every</span>
+<span class="c1"># fragment (git drops empty dirs; baseline-check requires the dir).</span>
+<span class="n">ignore</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;.gitkeep&quot;</span><span class="p">]</span>
 
+<span class="k">[[tool.towncrier.type]]</span>
+<span class="n">directory</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;breaking&quot;</span>
+<span class="n">name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;Breaking&quot;</span>
+<span class="n">showcontent</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">true</span>
 
-<span class="k">class</span><span class="w"> </span><span class="nc">CreateTicketRequest</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
-    <span class="n">title</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s2">&quot;Short summary of the ticket&quot;</span><span class="p">)</span>
-    <span class="n">body</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s2">&quot;Markdown body of the ticket&quot;</span><span class="p">)</span>
-    <span class="n">priority</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Lower is more urgent; 0 means unset&quot;</span><span class="p">)</span>
+<span class="k">[[tool.towncrier.type]]</span>
+<span class="n">directory</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;feature&quot;</span>
+<span class="n">name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;Added&quot;</span>
+<span class="n">showcontent</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">true</span>
+
+<span class="k">[[tool.towncrier.type]]</span>
+<span class="n">directory</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;bugfix&quot;</span>
+<span class="n">name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;Fixed&quot;</span>
+<span class="n">showcontent</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">true</span>
+
+<span class="k">[[tool.towncrier.type]]</span>
+<span class="n">directory</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;misc&quot;</span>
+<span class="n">name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;Changed&quot;</span>
+<span class="n">showcontent</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">true</span>
+
+<span class="c1"># Optional — add only if the repo uses these fragment types:</span>
+<span class="c1"># [[tool.towncrier.type]]</span>
+<span class="c1"># directory = &quot;doc&quot;</span>
+<span class="c1"># name = &quot;Documentation&quot;</span>
+<span class="c1"># showcontent = true</span>
+<span class="c1">#</span>
+<span class="c1"># [[tool.towncrier.type]]</span>
+<span class="c1"># directory = &quot;removal&quot;</span>
+<span class="c1"># name = &quot;Removed&quot;</span>
+<span class="c1"># showcontent = true</span>
 </code></pre></div>
-<p><code>Field(description=...)</code> is immune to docstring-parsing edge cases and keeps
-the description immediately next to the definition. This is the fleet's
-convention — already in use in <code>robotsix-central-deploy</code> (<code>registry/models.py</code>,
-<code>caretaker/models.py</code>, <code>lifecycle/schemas.py</code>).</p>
-<h3 id="acceptable-alternative-google-style-attributes-docstring">Acceptable alternative: Google-style <code>Attributes:</code> docstring<a class="headerlink" href="#acceptable-alternative-google-style-attributes-docstring" title="Permanent link">&para;</a></h3>
-<p>A Google-style docstring on the model class is an acceptable alternative:</p>
-<div class="highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">CreateTicketRequest</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;A request to create a new ticket.</span>
-
-<span class="sd">    Attributes:</span>
-<span class="sd">        title: Short summary of the ticket.</span>
-<span class="sd">        body: Markdown body of the ticket.</span>
-<span class="sd">        priority: Lower is more urgent; 0 means unset.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-
-    <span class="n">title</span><span class="p">:</span> <span class="nb">str</span>
-    <span class="n">body</span><span class="p">:</span> <span class="nb">str</span>
-    <span class="n">priority</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span>
-</code></pre></div>
-<p>Pydantic v2 parses the <code>Attributes:</code> block and feeds each field's description
-into the JSON schema. However, this approach has edge cases: the parser does
-not recognise multi-line field descriptions that omit a blank line before the
-next <code>field_name:</code>, and it cannot describe fields inherited from a parent
-class. Prefer <code>Field(description=...)</code> for new code.</p>
-<h2 id="enforcement-optional-but-encouraged">Enforcement (optional but encouraged)<a class="headerlink" href="#enforcement-optional-but-encouraged" title="Permanent link">&para;</a></h2>
-<p>Add an automated check that warns or fails when an API-surface model field
-has no description:</p>
+<h3 id="field-reference">Field reference<a class="headerlink" href="#field-reference" title="Permanent link">&para;</a></h3>
 <ul>
-<li>A small AST walker that inspects <code>pydantic.BaseModel</code> subclasses in a
-  repository, flags fields without <code>Field(description=...)</code> or a
-  <code>Field(default=..., description=...)</code>, and cross-references the class
-  against the application's route registration.</li>
-<li>When integrated into the shared <code>python-ci.yml</code> reusable workflow, it
-  becomes a fleet-wide gate — every repo inherits the check at zero marginal
-  cost.</li>
+<li><strong><code>directory</code></strong> — always <code>"changelog.d"</code>. The fragment directory lives at
+  the repo root, next to <code>CHANGELOG.md</code>.</li>
+<li><strong><code>filename</code></strong> — always <code>"CHANGELOG.md"</code>. The compiled changelog file.</li>
+<li><strong><code>package</code></strong> — the Python package name (e.g. <code>"robotsix_foo"</code>). Towncrier
+  reads <code>__version__</code> from it to populate the release heading. Omit for
+  repos that do not ship a Python package (docs-only repos, config repos);
+  the release workflow passes <code>--version</code> explicitly.</li>
+<li><strong><code>start_string</code></strong> — the marker towncrier inserts content after. The
+  <code>&lt;!-- towncrier release notes start --&gt;</code> comment, followed by a newline,
+  is the fleet standard. This keeps the header and any hand-written
+  preamble above the marker untouched.</li>
+<li><strong><code>ignore</code></strong> — always includes <code>".gitkeep"</code> so an empty <code>changelog.d/</code>
+  survives <code>git</code> directory pruning between releases.</li>
+<li><strong><code>[[tool.towncrier.type]]</code></strong> — one block per fragment suffix. The
+  <code>directory</code> field is the fragment file extension (<code>.breaking</code>,
+  <code>.feature</code>, <code>.bugfix</code>, <code>.misc</code> — towncrier strips the leading dot).
+  The <code>name</code> field is the heading in the compiled changelog. All four
+  canonical types are required; optional types (<code>doc</code>, <code>removal</code>) are
+  added only when the repo uses them.</li>
 </ul>
-<p>This check is <strong>optional</strong> today; a repo that adds it signals that its API
-surface is fully documented. The fleet convention is the requirement — the
-automated gate is the enforcement.</p>
+<h2 id="fragment-format">Fragment format<a class="headerlink" href="#fragment-format" title="Permanent link">&para;</a></h2>
+<p>Fragments are Markdown files in <code>changelog.d/</code> named with the convention:</p>
+<div class="highlight"><pre><span></span><code>&lt;timestamp&gt;Z-&lt;slug&gt;-&lt;short-hash&gt;.&lt;type&gt;.md
+</code></pre></div>
+<p>The file body is a single line (or short paragraph) written in the past
+tense, describing the change from the user's perspective:</p>
+<div class="highlight"><pre><span></span><code>Fix the mail poller failing to reconnect after a DNS change.
+</code></pre></div>
+<ul>
+<li><strong>One fragment per PR.</strong> The PR author writes the fragment as part of
+  the change — parallel PRs never conflict on <code>CHANGELOG.md</code>.</li>
+<li><strong>The <code>skip-changelog</code> PR label</strong> exempts a PR from the fragment
+  requirement. Use it for purely mechanical changes (CI tweaks, test-only
+  fixes, tooling updates) where there is genuinely nothing to record.</li>
+<li><strong>Fragment filenames include a timestamp and hash</strong> so they are
+  universally unique — no naming collisions even across forks or
+  rebases.</li>
+</ul>
+<h2 id="ci-enforcement">CI enforcement<a class="headerlink" href="#ci-enforcement" title="Permanent link">&para;</a></h2>
+<p>Every Python repo's CI MUST run <code>towncrier check</code> on pull requests:</p>
+<div class="highlight"><pre><span></span><code><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Check changelog fragments</span>
+<span class="w">  </span><span class="nt">run</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">towncrier check --compare-with origin/${{ github.event.pull_request.base.ref }}</span>
+</code></pre></div>
+<p>If a PR has no fragment and no <code>skip-changelog</code> label, the check fails
+with a message listing the expected fragment types.</p>
+<p>For repos using pre-commit, the check can also run locally:</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># .pre-commit-config.yaml</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">repo</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">local</span>
+<span class="w">  </span><span class="nt">hooks</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">id</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">towncrier-check</span>
+<span class="w">      </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">towncrier check</span>
+<span class="w">      </span><span class="nt">entry</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">towncrier check --compare-with origin/main</span>
+<span class="w">      </span><span class="nt">language</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">python</span>
+<span class="w">      </span><span class="nt">pass_filenames</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
+<span class="w">      </span><span class="nt">always_run</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+</code></pre></div>
+<h2 id="release-step">Release step<a class="headerlink" href="#release-step" title="Permanent link">&para;</a></h2>
+<p>The shared auto-release workflow runs <code>towncrier build</code> at release time:</p>
+<div class="highlight"><pre><span></span><code>towncrier<span class="w"> </span>build<span class="w"> </span>--yes<span class="w"> </span>--version<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$NEXT_VERSION</span><span class="s2">&quot;</span>
+</code></pre></div>
+<ul>
+<li><code>--yes</code> — non-interactive, suitable for CI.</li>
+<li><code>--version</code> — the next version string (the release workflow derives this
+  from the fragment types present: any <code>breaking</code> or <code>feature</code> → minor
+  bump, else patch).</li>
+<li>Towncrier deletes the consumed fragments, appends the new section to
+  <code>CHANGELOG.md</code>, and the release workflow commits both changes.</li>
+</ul>
+<h2 id="failure-modes-this-prevents">Failure modes this prevents<a class="headerlink" href="#failure-modes-this-prevents" title="Permanent link">&para;</a></h2>
+<ul>
+<li><strong>Merge conflicts on <code>CHANGELOG.md</code>.</strong> Without fragments, every PR that
+  edits the changelog produces a conflict. Per-PR fragments eliminate this
+  entirely.</li>
+<li><strong>Lost changelog entries.</strong> Hand-editing a shared file under time
+  pressure (release day) routinely drops entries. Towncrier compiles from
+  fragments that were reviewed as part of each PR — nothing is lost.</li>
+<li><strong>Inconsistent changelog style.</strong> Without a tool, each author writes
+  changelog entries differently (some past tense, some imperative, some
+  bullet lists, some prose). Towncrier + a fragment convention enforces
+  one style.</li>
+<li><strong>Release workflow coupled to changelog format.</strong> Without a standard
+  marker (<code>start_string</code>), the release workflow cannot safely append to
+  <code>CHANGELOG.md</code>. The marker gives the workflow a known insertion point.</li>
+</ul>
 
 
 

@@ -156,4 +156,8 @@
          <loc>https://damien-robotsix.github.io/robotsix-standards/security-posture/</loc>
          <lastmod>2026-07-31</lastmod>
     </url>
+    <url>
+         <loc>https://damien-robotsix.github.io/robotsix-standards/towncrier/</loc>
+         <lastmod>2026-07-31</lastmod>
+    </url>
 </urlset>

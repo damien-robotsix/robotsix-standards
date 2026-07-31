@@ -394,6 +394,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../towncrier/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Towncrier changelog
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../free-tier-only/" class="md-nav__link">
         
   
@@ -1866,7 +1894,9 @@
 <li>Added the <a href="../fastapi-pydantic-field-descriptions/">FastAPI Pydantic field descriptions</a> standard — every public request/response Pydantic model field must carry <code>Field(description=...)</code> so the generated OpenAPI schema is self-documenting.</li>
 <li>Codify in <code>docs/markdown-linting.md</code> that CI must run markdownlint-cli2 and codespell through the same pinned pre-commit hooks as local development, never via a separate unpinned <code>npx</code>/<code>uv run --with</code> invocation.</li>
 <li>Standardize: CI lint jobs must run the same version-pinned tools as <code>.pre-commit-config.yaml</code> — the pre-commit <code>rev:</code> field is the single source of truth, never floating/latest installs. (20260731T134913Z-standardize-ci-runs-the-same-pinned-lint-c651)</li>
-<li>Add dedicated Changelog &amp; releases standard: towncrier fragment-driven releases, CI-enforced changelog fragments, and the shared auto-release workflow — no hand-edited changelog.</li>
+<li>Add dedicated <a href="../towncrier/">towncrier changelog</a> standard page with the
+  canonical <code>[tool.towncrier]</code> config, fragment format, CI enforcement, and
+  release-step rules for every Python repo.</li>
 <li><strong>Docker standard:</strong> Added a CI integration tests section requiring every
   deployable component to build its image in CI, verify the entrypoint binary
   exists, and perform a Python import smoke test — catching the build-time

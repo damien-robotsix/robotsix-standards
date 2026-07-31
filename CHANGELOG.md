@@ -121,6 +121,10 @@
 
 ## 0.0.0 (unreleased)
 
+- Strengthened the README standards-link requirement in the repo-baseline standard:
+  new repos from the template ship the link by default, and CI verifies it on
+  every PR. Added a local `readme-standards-link` job to the baseline-check
+  workflow.
 - Updated `docs/free-tier-only.md` audit table: `robotsix-standards` entry now lists its five CI workflows instead of the stale "(no workflows — docs repo)" claim.
 - Sync `docs/prose-linting.md` vocabulary listings and `.vale.ini` example with the
   actual working config files — add missing `Vocab = robotsix`, update `accept.txt`

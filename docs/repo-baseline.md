@@ -131,7 +131,9 @@ newsfragments, compiled by the shared auto-release workflow.**
   don't let removed commands, renamed paths, or old version claims linger.
 - **Point at the standards.** Every repo's `README.md` and `AGENT.md` link to
   [`robotsix-standards`](https://github.com/damien-robotsix/robotsix-standards)
-  so contributors find the shared conventions from any repo.
+  so contributors find the shared conventions from any repo. New repos
+  created from the language template ship this link by default; CI verifies
+  it is present and reachable on every PR.
 - **License.** MIT, as a `LICENSE` file at the repo root.
 - **Vulnerability disclosure.** Every repo ships a `SECURITY.md` at the root
   with at minimum: a contact method for vulnerability reports, a
@@ -189,8 +191,8 @@ gate set:
 - **Container image:** repos that ship an image also scan it in CI — see
   [Docker build & release](docker-standard.md).
 - **Baseline conformance:** the shared baseline-check workflow verifies the
-  mechanical rules of this page — `AGENT.md` present and linking the
-  standards, `dependabot.yml` covering the
+  mechanical rules of this page — `README.md` and `AGENT.md` present and
+  linking the standards, `dependabot.yml` covering the
   [required ecosystems](#automated-dependency-updates).
 - **Required-artifact uploads use `if: always()`.** A step that uploads an
   artifact the gate depends on (SBOM, coverage report) must run even when an

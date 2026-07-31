@@ -814,6 +814,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#ci-invocation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        CI invocation
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#recommended-config-files" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1754,6 +1765,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#ci-invocation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        CI invocation
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#recommended-config-files" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1849,8 +1871,8 @@ runs on every <code>.md</code> file; <code>codespell</code> runs across the enti
 <span class="w">        </span><span class="nt">args</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&quot;#fix&quot;</span><span class="p p-Indicator">]</span>
 </code></pre></div>
 <p><strong>The <code>#fix</code> arg is optional.</strong> When present it auto-fixes fixable violations
-on commit. Remove it if you prefer to fix manually — the CI job still runs
-the check and fails on any violation.</p>
+on commit. Remove it if you prefer to fix manually — CI still runs the check (see
+<a href="#ci-invocation">CI invocation</a> below) and fails on any violation.</p>
 <h3 id="codespell-spell-checking-for-prose"><code>codespell</code> — spell-checking for prose<a class="headerlink" href="#codespell-spell-checking-for-prose" title="Permanent link">&para;</a></h3>
 <div class="highlight"><pre><span></span><code><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">repo</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://github.com/codespell-project/codespell</span>
 <span class="w">    </span><span class="nt">rev</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">v2.4.1</span>
@@ -1860,6 +1882,32 @@ the check and fails on any violation.</p>
 </code></pre></div>
 <p><strong>Failure mode prevented:</strong> misspelled words in documentation and comments
 that survive review because reviewers read for meaning, not spelling.</p>
+<h2 id="ci-invocation">CI invocation<a class="headerlink" href="#ci-invocation" title="Permanent link">&para;</a></h2>
+<p><strong>CI must run markdownlint-cli2 and codespell through the same pinned
+pre-commit hooks as local development, never via a separate unpinned
+<code>npx</code>/<code>uv run --with</code> invocation.</strong></p>
+<div class="highlight"><pre><span></span><code>pre-commit<span class="w"> </span>run<span class="w"> </span>--all-files<span class="w"> </span>markdownlint-cli2
+pre-commit<span class="w"> </span>run<span class="w"> </span>--all-files<span class="w"> </span>codespell
+</code></pre></div>
+<p>The <code>.pre-commit-config.yaml</code> hook revisions are the single source of truth
+for tool versions — CI must not install a different version.</p>
+<p><strong>Failure mode prevented:</strong> CI and local lint tooling silently diverge because
+CI installs the <em>latest</em> tool release at run time while pre-commit pins a
+specific revision. Divergence produces one of two failures:</p>
+<ul>
+<li>CI fails on rules the contributor never saw locally (because CI pulled a
+  newer markdownlint/codespell release that added rules or changed defaults),
+  or</li>
+<li>CI passes on regressions the pinned config would have caught (because
+  pre-commit's revision is never exercised in CI, so the pinned config
+  silently rots).</li>
+</ul>
+<p>Both failures erode trust in the pre-commit hooks — contributors stop running
+them locally and CI becomes the bottleneck.</p>
+<p><strong>Convention source:</strong> the mature pattern in pydantic/pydantic and other
+MkDocs-publishing Python repos, which gate docs lint in CI by calling the same
+pre-commit hooks (defaulting to the pinned <code>.pre-commit-config.yaml</code>) rather
+than a second unpinned install.</p>
 <h2 id="recommended-config-files">Recommended config files<a class="headerlink" href="#recommended-config-files" title="Permanent link">&para;</a></h2>
 <h3 id="markdownlint-cli2yaml"><code>.markdownlint-cli2.yaml</code><a class="headerlink" href="#markdownlint-cli2yaml" title="Permanent link">&para;</a></h3>
 <p>Create this file at the repo root:</p>

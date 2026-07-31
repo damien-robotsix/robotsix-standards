@@ -1841,6 +1841,10 @@
 </ul>
 <h2 id="000-unreleased">0.0.0 (unreleased)<a class="headerlink" href="#000-unreleased" title="Permanent link">&para;</a></h2>
 <ul>
+<li>Added Rule 4 to the MkDocs build integrity standard: new standards pages
+  must be registered in <code>mkdocs.yml</code> <code>nav</code> in the same change that adds the
+  page — a <code>README.md</code>/<code>docs/index.md</code> TOC entry alone leaves the page
+  unbuilt.</li>
 <li>Register <code>fastapi-pydantic-field-descriptions.md</code> in the mkdocs.yml nav under Deployable components so the page is no longer orphaned from the site build.</li>
 <li>Register <code>docs/mypy.md</code> in the mkdocs.yml nav (<code>Every repo</code> section) so the Mypy strictness page is reachable from the published docs sidebar.</li>
 <li>Register <code>fastapi-pydantic-field-descriptions.md</code> in mkdocs.yml nav under Deployable components.</li>

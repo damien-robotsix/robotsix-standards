@@ -920,6 +920,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#4-register-new-pages-in-the-same-change" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Register new pages in the same change
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -1821,6 +1832,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#4-register-new-pages-in-the-same-change" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Register new pages in the same change
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -1982,6 +2004,18 @@ duplicate copy into <code>docs/</code>. Two patterns are acceptable:</p>
 Keep a Changelog format) but users browsing the docs site never see it because
 it isn't in the nav. Release notes that require navigating away from the docs
 to the GitHub repo are functionally hidden from most readers.</p>
+<h3 id="4-register-new-pages-in-the-same-change">4. Register new pages in the same change<a class="headerlink" href="#4-register-new-pages-in-the-same-change" title="Permanent link">&para;</a></h3>
+<p>When a new standards page is added, it must be registered in the
+<code>mkdocs.yml</code> <code>nav</code> in the <strong>same</strong> change that adds the page.  Adding a
+<code>README.md</code> or <code>docs/index.md</code> TOC entry alone leaves the page unbuilt by
+MkDocs and requires a second rework ticket — the TOC-sync gate is
+one-directional (it checks that TOC entries match existing files but does
+<strong>not</strong> check that every file has a nav entry).</p>
+<p><strong>Failure mode prevented:</strong> a PR adds a new standards page and its
+<code>README.md</code> / <code>docs/index.md</code> TOC entries correctly, passes the TOC-sync CI
+gate, and merges — but the page is invisible on the published docs site
+because it was never wired into the MkDocs <code>nav</code>.  The author and reviewer
+both assumed the TOC-sync gate covered nav registration; it doesn't.</p>
 <h2 id="precedent">Precedent<a class="headerlink" href="#precedent" title="Permanent link">&para;</a></h2>
 <ul>
 <li><a href="https://github.com/pydantic/pydantic">Pydantic</a>,

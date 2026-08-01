@@ -39,6 +39,7 @@ the default.
 | [CI lint tool pinning](docs/ci-lint-pinning.md) | CI lint jobs must run the same version-pinned tools as `.pre-commit-config.yaml` — no floating/latest installs, one version source. |
 | [Distribution & Packaging](docs/distribution-packaging.md) | Git-based consumption of first-party libraries — no package index, no registry publish step. |
 | [Docstring convention](docs/docstrings.md) | Python docstring style and coverage rules for all public modules, classes, and functions. |
+| [HTTP client persistence](docs/http-client-persistence.md) | One persistent `httpx.Client` (or `requests.Session`) with an explicit timeout, reused for all outbound calls — no per-call module-level convenience helpers. |
 | [Hypothesis testing](docs/hypothesis.md) | Property-based testing profiles, shared strategies module, and CI integration for repos that use Hypothesis. |
 | [Markdown linting](docs/markdown-linting.md) | markdownlint-cli2 and codespell pre-commit hooks for every repo that publishes MkDocs documentation. |
 | [Prose linting](docs/prose-linting.md) | Vale prose linter for style, readability, and fleet-specific vocabulary consistency — integrated through the existing pre-commit pipeline. |

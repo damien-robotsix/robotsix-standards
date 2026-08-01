@@ -42,6 +42,9 @@ showcontent = true
 # This repo is documentation only. The shared configuration library that
 # implements the config standard lives in `robotsix-config`, not here.
 
+[tool.setuptools.packages.find]
+exclude = ["config*", "styles*"]
+
 [tool.codespell]
 skip = "*.lock,*.json,*.svg,*.png,.git,*.secrets.baseline,site,styles"
 ignore-words-list = "bu,ro,te,ser,fo,tha,thru,coo,ans,ist,nd"

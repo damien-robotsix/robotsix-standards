@@ -47,6 +47,9 @@ everywhere.
   first-party libraries — no package index, no registry publish step.
 - **[Docstring convention](docstrings.md)** — Python docstring style and coverage
   rules for all public modules, classes, and functions.
+- **[HTTP client persistence](http-client-persistence.md)** — one persistent
+  `httpx.Client` (or `requests.Session`) with an explicit timeout, reused for
+  all outbound calls — no per-call module-level convenience helpers.
 - **[Hypothesis testing](hypothesis.md)** — property-based testing profiles,
   shared strategies, and CI integration for repos that use Hypothesis.
 - **[Markdown linting](markdown-linting.md)** — markdownlint-cli2 and codespell

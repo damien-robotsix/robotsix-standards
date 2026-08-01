@@ -121,6 +121,7 @@
 
 ## 0.0.0 (unreleased)
 
+- Standardize: persistent HTTP client with explicit timeout — one `httpx.Client` (or `requests.Session`) per process, explicit `timeout=`, no per-call module-level convenience helpers.
 - Stop attributing the `LICENSE` (MIT) check to the shared baseline-check workflow;
   the bullet now says "baseline gate" (the local `license-check` job plus the
   shared workflow) instead of over-claiming the shared workflow's scope.

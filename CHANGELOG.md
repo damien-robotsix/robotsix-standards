@@ -121,7 +121,7 @@
 
 ## 0.0.0 (unreleased)
 
-- Re-add `.robotsix-mill/periodic/docstring_coverage.yaml` periodic config (regression from PR #164).
+- Reconcile periodic-agent set for this markdown-only repo: remove test_gap (source-scanning agent, no-op here) and document the canonical intended set. The intended set is audit, changelog_autofill, completeness_check, copy_paste, health, repo_description_sync, and survey — repo-level agents that do not depend on Python source. Source-scanning agents (docstring_coverage, test_gap) are excluded because this repo declares ``languages: [markdown]`` and has no Python source modules. Future re-add tickets for source-scanning agents should reference this decision.
 - Add mkdocs.yml nav registration rule to AGENT.md — new standards pages must be
   registered in the `mkdocs.yml` nav in the same change that adds them, not
   just in README/index TOC entries (the TOC-sync gate is one-directional).

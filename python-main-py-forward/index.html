@@ -10,13 +10,13 @@
       
       
       
-        <link rel="canonical" href="https://damien-robotsix.github.io/robotsix-standards/pre-commit-baseline/">
+        <link rel="canonical" href="https://damien-robotsix.github.io/robotsix-standards/python-main-py-forward/">
       
       
-        <link rel="prev" href="../ros2/">
+        <link rel="prev" href="../python/">
       
       
-        <link rel="next" href="../component-standard/">
+        <link rel="next" href="../python-makefile-convention/">
       
       
         
@@ -27,7 +27,7 @@
     
     
       
-        <title>Pre-commit baseline - Robotsix Standards</title>
+        <title>Python __main__.py exit-code forwarding - Robotsix Standards</title>
       
     
     
@@ -78,7 +78,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#pre-commit-baseline" class="md-skip">
+        <a href="#python-__main__py-exit-code-forwarding" class="md-skip">
           Skip to content
         </a>
       
@@ -114,7 +114,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Pre-commit baseline
+              Python __main__.py exit-code forwarding
             
           </span>
         </div>
@@ -589,10 +589,37 @@
                 
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="../python-main-py-forward/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Python __main__.py exit-code forwarding
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   
@@ -608,6 +635,109 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#the-standard" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The standard
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="The standard">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-correct-pattern" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The correct pattern
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-incorrect-pattern" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The incorrect pattern
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-main-function" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The main() function
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#why-setuptools-doesnt-save-you" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why setuptools doesn't save you
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#failure-modes-this-prevents" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Failure modes this prevents
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#canonical-reference" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Canonical reference
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -981,37 +1111,10 @@
                 
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Pre-commit baseline
-  
-
-    
-  </span>
-  
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../pre-commit-baseline/" class="md-nav__link">
         
   
   
@@ -1027,109 +1130,6 @@
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#hooks" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Hooks
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Hooks">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#trailing-whitespace" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        trailing-whitespace
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#end-of-file-fixer" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        end-of-file-fixer
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#check-yaml" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        check-yaml
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#check-toml" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        check-toml
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#check-added-large-files" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        check-added-large-files
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#relationship-to-the-full-hook-set" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Relationship to the full hook set
-      
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -1827,22 +1827,22 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#hooks" class="md-nav__link">
+  <a href="#the-standard" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Hooks
+        The standard
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Hooks">
+    <nav class="md-nav" aria-label="The standard">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#trailing-whitespace" class="md-nav__link">
+  <a href="#the-correct-pattern" class="md-nav__link">
     <span class="md-ellipsis">
       
-        trailing-whitespace
+        The correct pattern
       
     </span>
   </a>
@@ -1850,10 +1850,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#end-of-file-fixer" class="md-nav__link">
+  <a href="#the-incorrect-pattern" class="md-nav__link">
     <span class="md-ellipsis">
       
-        end-of-file-fixer
+        The incorrect pattern
       
     </span>
   </a>
@@ -1861,32 +1861,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#check-yaml" class="md-nav__link">
+  <a href="#the-main-function" class="md-nav__link">
     <span class="md-ellipsis">
       
-        check-yaml
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#check-toml" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        check-toml
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#check-added-large-files" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        check-added-large-files
+        The main() function
       
     </span>
   </a>
@@ -1899,10 +1877,32 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#relationship-to-the-full-hook-set" class="md-nav__link">
+  <a href="#why-setuptools-doesnt-save-you" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Relationship to the full hook set
+        Why setuptools doesn't save you
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#failure-modes-this-prevents" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Failure modes this prevents
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#canonical-reference" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Canonical reference
       
     </span>
   </a>
@@ -1929,81 +1929,93 @@
   
 
 
-<h1 id="pre-commit-baseline">Pre-commit baseline<a class="headerlink" href="#pre-commit-baseline" title="Permanent link">&para;</a></h1>
+<h1 id="python-__main__py-exit-code-forwarding">Python <code>__main__.py</code> exit-code forwarding<a class="headerlink" href="#python-__main__py-exit-code-forwarding" title="Permanent link">&para;</a></h1>
 <blockquote>
-<p><strong>Scope: every Python repository.</strong> These are the file-hygiene hooks every
-Python repo runs at commit time — language-agnostic checks that complement
-the code-quality hooks documented in <a href="../python/#pre-commit-hooks">Python practices</a>.</p>
+<p><strong>Scope: every Python repository that ships a CLI via <code>console_scripts</code>
+entry points AND a <code>__main__.py</code> shim.</strong> The rule applies to every fleet
+package whose <code>pyproject.toml</code> declares <code>[project.scripts]</code> entry points
+and whose source tree includes <code>src/&lt;pkg&gt;/__main__.py</code>.</p>
 </blockquote>
-<p>Every Python repo's <code>.pre-commit-config.yaml</code> includes a baseline of hooks
-from <a href="https://github.com/pre-commit/pre-commit-hooks"><code>pre-commit/pre-commit-hooks</code></a>
-that catch common hygiene failures before they reach CI or the commit log.
-These hooks have no language runtime, run in milliseconds, and require zero
-configuration for Python repos.</p>
-<h2 id="hooks">Hooks<a class="headerlink" href="#hooks" title="Permanent link">&para;</a></h2>
-<p>The baseline is five hooks from the official <code>pre-commit/pre-commit-hooks</code>
-repo, each endorsed as "universally recommended" or "strongly recommended" by
-the project itself:</p>
-<div class="highlight"><pre><span></span><code><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">repo</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://github.com/pre-commit/pre-commit-hooks</span>
-<span class="w">    </span><span class="nt">rev</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">v6.0.0</span>
-<span class="w">    </span><span class="nt">hooks</span><span class="p">:</span>
-<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">id</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">trailing-whitespace</span>
-<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">id</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">end-of-file-fixer</span>
-<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">id</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">check-yaml</span>
-<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">id</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">check-toml</span>
-<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">id</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">check-added-large-files</span>
-<span class="w">        </span><span class="nt">args</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&quot;--maxkb=1024&quot;</span><span class="p p-Indicator">]</span>
-<span class="w">        </span><span class="nt">exclude</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|</span>
-<span class="w">          </span><span class="no">(?x)(</span>
-<span class="w">            </span><span class="no">uv\.lock|</span>
-<span class="w">            </span><span class="no">\.secrets\.baseline</span>
-<span class="w">          </span><span class="no">)</span>
+<p>A Python package that ships both console-script entry points and a
+<code>__main__.py</code> shim for <code>python -m &lt;pkg&gt;</code> invocation MUST forward <code>main()</code>'s
+return value to <code>sys.exit()</code> — so that <code>python -m &lt;pkg&gt;</code> yields the <strong>exact
+same process exit code</strong> as the installed console script.</p>
+<h2 id="the-standard">The standard<a class="headerlink" href="#the-standard" title="Permanent link">&para;</a></h2>
+<p><strong><code>__main__.py</code> MUST end with <code>sys.exit(main())</code></strong> where <code>main</code> returns an
+<code>int</code> or <code>enum.IntEnum</code> exit status. <code>__main__.py</code> MUST NOT call <code>main()</code>
+bare — falling off the end always yields status 0, silently discarding the
+returned exit code.</p>
+<p><strong><code>main()</code> itself SHOULD NOT call <code>sys.exit</code>.</strong> Let callers decide: the
+console-script entry point's wrapper (setuptools) already wraps the return
+with <code>sys.exit()</code>, and <code>__main__.py</code> forwards it explicitly. A <code>main()</code> that
+internally calls <code>sys.exit()</code> takes control away from every possible caller —
+including tests that want to inspect the return value.</p>
+<h3 id="the-correct-pattern">The correct pattern<a class="headerlink" href="#the-correct-pattern" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="c1"># src/&lt;pkg&gt;/__main__.py</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">sys</span>
+<span class="kn">from</span><span class="w"> </span><span class="o">&lt;</span><span class="n">pkg</span><span class="o">&gt;.</span><span class="n">cli</span> <span class="kn">import</span><span class="w"> </span><span class="nn">main</span>
+
+<span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="n">main</span><span class="p">())</span>
 </code></pre></div>
-<h3 id="trailing-whitespace">trailing-whitespace<a class="headerlink" href="#trailing-whitespace" title="Permanent link">&para;</a></h3>
-<p>Removes trailing whitespace from every line. Without this, editors with
-<code>trim_trailing_whitespace</code> off produce noisy diffs that obscure the real
-change. The hook fixes the file in place — no manual cleanup needed.</p>
-<p><strong>Failure mode prevented:</strong> commits carry trailing-whitespace-only lines that
-pollute diffs, waste reviewer attention, and create merge-conflict noise.</p>
-<h3 id="end-of-file-fixer">end-of-file-fixer<a class="headerlink" href="#end-of-file-fixer" title="Permanent link">&para;</a></h3>
-<p>Ensures every file ends with exactly one newline, and trims extra trailing
-newlines. POSIX tools (and GitHub's diff viewer) behave poorly when the final
-newline is missing — <code>\ No newline at end of file</code> annotations clutter diffs.</p>
-<p><strong>Failure mode prevented:</strong> missing-final-newline annotations in GitHub diffs
-and inconsistent EOF handling across editors and tooling.</p>
-<h3 id="check-yaml">check-yaml<a class="headerlink" href="#check-yaml" title="Permanent link">&para;</a></h3>
-<p>Parses every <code>.yml</code> and <code>.yaml</code> file (recursively) and fails on invalid YAML
-syntax. Catches indentation errors, duplicated keys, and tab characters before
-they reach CI or deploy.</p>
-<p><strong>Failure mode prevented:</strong> broken CI workflows, invalid <code>docker-compose.yml</code>
-files, and unparsable config that fails at runtime rather than at commit time.</p>
-<h3 id="check-toml">check-toml<a class="headerlink" href="#check-toml" title="Permanent link">&para;</a></h3>
-<p>Parses every <code>.toml</code> file (recursively) and fails on invalid TOML syntax.
-Python repos use TOML for <code>pyproject.toml</code>; a stray unescaped character can
-silently break a build or publish.</p>
-<p><strong>Failure mode prevented:</strong> broken <code>pyproject.toml</code> that prevents <code>uv sync</code>,
-<code>pip install</code>, or PyPI publishing — detected at commit time instead of in CI.</p>
-<h3 id="check-added-large-files">check-added-large-files<a class="headerlink" href="#check-added-large-files" title="Permanent link">&para;</a></h3>
-<p>Fails if a staged file exceeds 1024 KB (overridden from the 750 KB default
-via <code>--maxkb=1024</code>). Large binaries accidentally committed bloat the repo
-forever (Git stores them in every clone forever). The <code>args</code> and <code>exclude</code>
-pattern shown above intentionally exempts <code>uv.lock</code> (lockfiles are
-legitimately large) and <code>.secrets.baseline</code> (a committed data file) from
-size enforcement.</p>
-<p><strong>Failure mode prevented:</strong> accidental commits of large binaries (logs, dumps,
-datasets, model weights) that permanently inflate the repo and slow every
-clone.</p>
-<h2 id="relationship-to-the-full-hook-set">Relationship to the full hook set<a class="headerlink" href="#relationship-to-the-full-hook-set" title="Permanent link">&para;</a></h2>
-<p>These five hooks are a <strong>subset</strong> of the standard pre-commit configuration
-defined in <a href="../python/#pre-commit-hooks">Python practices</a>. That page documents
-the full fleet-standard set — including <code>ruff</code>, <code>mypy</code>, <code>detect-secrets</code>,
-<code>actionlint</code>, <code>vulture</code>, and the content-only-repo subset. This page isolates
-the <strong>file-hygiene baseline</strong> so repos that are not yet at the full standard
-can adopt a minimal, uncontroversial starting point that catches the most
-common commit-time mistakes.</p>
-<p>The <code>rev</code> field follows the fleet pinning rule: a tagged release, bumped
-deliberately when the fleet standard updates, never floating (<code>main</code> or
-<code>latest</code>).</p>
+<h3 id="the-incorrect-pattern">The incorrect pattern<a class="headerlink" href="#the-incorrect-pattern" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="c1"># src/&lt;pkg&gt;/__main__.py — WRONG: exit code lost</span>
+<span class="kn">from</span><span class="w"> </span><span class="o">&lt;</span><span class="n">pkg</span><span class="o">&gt;.</span><span class="n">cli</span> <span class="kn">import</span><span class="w"> </span><span class="nn">main</span>
+
+<span class="n">main</span><span class="p">()</span>  <span class="c1"># returns int, but process always exits 0</span>
+</code></pre></div>
+<h3 id="the-main-function">The <code>main()</code> function<a class="headerlink" href="#the-main-function" title="Permanent link">&para;</a></h3>
+<p><code>main()</code> should return an <code>int</code> (or <code>enum.IntEnum</code> for named constants) and
+never call <code>sys.exit</code> internally:</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># src/&lt;pkg&gt;/cli/__init__.py</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">enum</span><span class="w"> </span><span class="kn">import</span> <span class="n">IntEnum</span>
+
+<span class="k">class</span><span class="w"> </span><span class="nc">ExitCode</span><span class="p">(</span><span class="n">IntEnum</span><span class="p">):</span>
+    <span class="n">OK</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">ERRORS</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="n">FATAL</span> <span class="o">=</span> <span class="mi">2</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="n">argv</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ExitCode</span><span class="p">:</span>
+    <span class="o">...</span>
+    <span class="k">return</span> <span class="n">ExitCode</span><span class="o">.</span><span class="n">ERRORS</span>  <span class="c1"># caller forwards to sys.exit</span>
+</code></pre></div>
+<p>A guard block for direct-file execution is harmless but irrelevant — the
+<code>-m</code> path goes through <code>__main__.py</code>, not through <code>__name__ == "__main__"</code>:</p>
+<div class="highlight"><pre><span></span><code><span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>  <span class="c1"># fires on `python cli/__init__.py`, not `-m`</span>
+    <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="n">main</span><span class="p">())</span>
+</code></pre></div>
+<h2 id="why-setuptools-doesnt-save-you">Why setuptools doesn't save you<a class="headerlink" href="#why-setuptools-doesnt-save-you" title="Permanent link">&para;</a></h2>
+<p>Setuptools wraps console-script entry points in its own <code>sys.exit()</code> call,
+so the installed <code>robotsix-&lt;name&gt;</code> binary reports the correct exit code
+automatically. But <code>python -m &lt;pkg&gt;</code> goes through <code>__main__.py</code>, not the
+entry-point machinery — setuptools never touches that path. <code>__main__.py</code>
+must forward the return value itself.</p>
+<h2 id="failure-modes-this-prevents">Failure modes this prevents<a class="headerlink" href="#failure-modes-this-prevents" title="Permanent link">&para;</a></h2>
+<ul>
+<li><strong>Silent success on failure.</strong> <code>python -m &lt;pkg&gt;</code> called in a script or CI
+  pipeline always exits 0 even when the command fails. The calling script
+  proceeds as if everything succeeded — a <code>make lint</code> that runs
+  <code>python -m robotsix_modules check</code> never sees a validation failure.</li>
+<li><strong>Divergent behaviour between invocation paths.</strong> <code>robotsix-&lt;name&gt;</code> in a
+  <code>docker compose</code> healthcheck reports correct exit codes, but
+  <code>python -m &lt;pkg&gt;</code> in a developer script or CI step does not — the two
+  invocation paths behave differently with no warning.</li>
+<li><strong>Undetectable CI breakage.</strong> A CI step that runs <code>python -m &lt;pkg&gt; lint</code>
+  will never fail, even when the linter finds violations, because the
+  process always exits 0.</li>
+</ul>
+<h2 id="canonical-reference">Canonical reference<a class="headerlink" href="#canonical-reference" title="Permanent link">&para;</a></h2>
+<ul>
+<li>Python stdlib docs (<code>__main__.py</code>): the module-entry point must explicitly
+  forward <code>main()</code>'s return to <code>sys.exit()</code>; falling off the end always yields
+  status 0, discarding any returned <code>int</code>.</li>
+<li>pip ships exactly this pattern in <code>src/pip/_internal/__main__.py</code>:</li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">sys</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pip._internal.cli.main</span><span class="w"> </span><span class="kn">import</span> <span class="n">main</span> <span class="k">as</span> <span class="n">_main</span>
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="n">_main</span><span class="p">())</span>
+</code></pre></div>
 
 
 

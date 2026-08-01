@@ -192,10 +192,10 @@ gate set:
   artifact.
 - **Container image:** repos that ship an image also scan it in CI — see
   [Docker build & release](docker-standard.md).
-- **Baseline conformance:** the shared baseline-check workflow verifies the
-  mechanical rules of this page — `README.md` and `AGENT.md` present and
-  linking the standards, `LICENSE` (MIT) present, `dependabot.yml` covering the
-  [required ecosystems](#automated-dependency-updates).
+- **Baseline conformance:** the baseline gate verifies the mechanical rules
+  of this page — `README.md` and `AGENT.md` present and linking the
+  standards, `LICENSE` (MIT) present, `dependabot.yml` covering the [required
+  ecosystems](#automated-dependency-updates).
 - **Required-artifact uploads use `if: always()`.** A step that uploads an
   artifact the gate depends on (SBOM, coverage report) must run even when an
   earlier step failed — otherwise the failure skips the upload and the

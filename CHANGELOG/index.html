@@ -1874,6 +1874,7 @@
   registered in the <code>mkdocs.yml</code> nav in the same change that adds them, not
   just in README/index TOC entries (the TOC-sync gate is one-directional).</li>
 <li>Remove docstring_coverage and test_gap periodic agents from this markdown-only repo (they were incorrectly re-added by PRs #162/#164)</li>
+<li>Add LICENSE (MIT) check to the baseline-check workflow, verifying every fleet repo ships an MIT <code>LICENSE</code> at the repo root.</li>
 <li>Fixed three changelog fragments that were truncated mid-sentence with a literal ellipsis (…), copied from clipped ticket titles. The fragments now end with complete sentences so <code>towncrier build</code> will emit valid release notes.</li>
 <li>Fix Dependabot pre-commit update failure: correct <code>markdownlint-cli2</code> repo URL from <code>igorshubovych/markdownlint-cli2</code> (404) to <code>DavidAnson/markdownlint-cli2</code>.</li>
 <li>Make the TOC-sync gate bidirectional: <code>scripts/check-toc-sync.py</code> now also

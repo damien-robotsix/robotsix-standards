@@ -61,6 +61,9 @@ everywhere.
   and link-validation configuration for every MkDocs site.
 - **[Python practices](python.md)** — uv, hatchling, `requires-python` policy,
   lint/type/security gates, test layout, pre-commit hooks.
+- **[Python `__main__.py` exit-code forwarding](python-main-py-forward.md)** —
+  `__main__.py` must forward `main()`'s return value to `sys.exit()` so
+  `python -m <pkg>` reports the same exit code as the installed console script.
 - **[Python Makefile convention](python-makefile-convention.md)** — standard
   `Makefile` targets for every Python/uv repo (`install`, `lint`,
   `typecheck`, `test`, `test-unit`, `test-integration`, `coverage`, `docs`,

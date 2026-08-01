@@ -71,6 +71,7 @@ nav:
       - CI lint tool pinning: ci-lint-pinning.md
       - Distribution & Packaging: distribution-packaging.md
       - Python practices: python.md
+      - Python __main__.py exit-code forwarding: python-main-py-forward.md
       - Python Makefile convention: python-makefile-convention.md
       - Pytest practices: pytest.md
       - Ruff lint rules: ruff-lint-rules.md

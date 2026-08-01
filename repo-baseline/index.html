@@ -2271,10 +2271,10 @@ gate set:</p>
   artifact.</li>
 <li><strong>Container image:</strong> repos that ship an image also scan it in CI — see
   <a href="../docker-standard/">Docker build &amp; release</a>.</li>
-<li><strong>Baseline conformance:</strong> the shared baseline-check workflow verifies the
-  mechanical rules of this page — <code>README.md</code> and <code>AGENT.md</code> present and
-  linking the standards, <code>LICENSE</code> (MIT) present, <code>dependabot.yml</code> covering the
-  <a href="#automated-dependency-updates">required ecosystems</a>.</li>
+<li><strong>Baseline conformance:</strong> the baseline gate verifies the mechanical rules
+  of this page — <code>README.md</code> and <code>AGENT.md</code> present and linking the
+  standards, <code>LICENSE</code> (MIT) present, <code>dependabot.yml</code> covering the <a href="#automated-dependency-updates">required
+  ecosystems</a>.</li>
 <li><strong>Required-artifact uploads use <code>if: always()</code>.</strong> A step that uploads an
   artifact the gate depends on (SBOM, coverage report) must run even when an
   earlier step failed — otherwise the failure skips the upload and the

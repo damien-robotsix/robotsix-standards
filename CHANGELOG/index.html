@@ -730,6 +730,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../http-client-persistence/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    HTTP client persistence
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../hypothesis/" class="md-nav__link">
         
   
@@ -1869,6 +1897,7 @@
 </ul>
 <h2 id="000-unreleased">0.0.0 (unreleased)<a class="headerlink" href="#000-unreleased" title="Permanent link">&para;</a></h2>
 <ul>
+<li>Standardize: persistent HTTP client with explicit timeout — one <code>httpx.Client</code> (or <code>requests.Session</code>) per process, explicit <code>timeout=</code>, no per-call module-level convenience helpers.</li>
 <li>Stop attributing the <code>LICENSE</code> (MIT) check to the shared baseline-check workflow;
   the bullet now says "baseline gate" (the local <code>license-check</code> job plus the
   shared workflow) instead of over-claiming the shared workflow's scope.</li>

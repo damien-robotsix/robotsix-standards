@@ -10,13 +10,13 @@
       
       
       
-        <link rel="canonical" href="https://damien-robotsix.github.io/robotsix-standards/mypy/">
+        <link rel="canonical" href="https://damien-robotsix.github.io/robotsix-standards/http-client-persistence/">
       
       
-        <link rel="prev" href="../ruff-lint-rules/">
+        <link rel="prev" href="../docstrings/">
       
       
-        <link rel="next" href="../docstrings/">
+        <link rel="next" href="../hypothesis/">
       
       
         
@@ -27,7 +27,7 @@
     
     
       
-        <title>Mypy strictness - Robotsix Standards</title>
+        <title>HTTP client persistence - Robotsix Standards</title>
       
     
     
@@ -78,7 +78,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#mypy-strictness-as-a-hard-ci-gate" class="md-skip">
+        <a href="#http-client-persistence-and-explicit-timeouts" class="md-skip">
           Skip to content
         </a>
       
@@ -114,7 +114,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Mypy strictness
+              HTTP client persistence
             
           </span>
         </div>
@@ -673,37 +673,10 @@
                 
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Mypy strictness
-  
-
-    
-  </span>
-  
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../mypy/" class="md-nav__link">
         
   
   
@@ -719,81 +692,6 @@
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#why-this-exists" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Why this exists
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#baseline-requirements-mandatory" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Baseline requirements (mandatory)
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#baseline-bootstrapping-transitional-scaffold" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Baseline bootstrapping (transitional scaffold)
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#new-and-migrated-code" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        New and migrated code
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#precedent" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Precedent
-      
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -831,10 +729,37 @@
                 
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="../http-client-persistence/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    HTTP client persistence
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   
@@ -850,6 +775,109 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#the-rule" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The rule
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="The rule">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-one-persistent-client-per-process" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. One persistent client per process
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-explicit-timeout-never-rely-on-library-defaults" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Explicit timeout — never rely on library defaults
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-allow-the-client-to-be-caller-configurable" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Allow the client to be caller-configurable
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-retry-policy-is-caller-side" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Retry policy is caller-side
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5-async-clients-follow-the-same-pattern" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Async clients follow the same pattern
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#failure-modes-this-prevents" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Failure modes this prevents
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -1771,54 +1799,82 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#why-this-exists" class="md-nav__link">
+  <a href="#the-rule" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Why this exists
+        The rule
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="The rule">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-one-persistent-client-per-process" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. One persistent client per process
       
     </span>
   </a>
   
 </li>
-      
-        <li class="md-nav__item">
-  <a href="#baseline-requirements-mandatory" class="md-nav__link">
+        
+          <li class="md-nav__item">
+  <a href="#2-explicit-timeout-never-rely-on-library-defaults" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Baseline requirements (mandatory)
+        2. Explicit timeout — never rely on library defaults
       
     </span>
   </a>
   
 </li>
-      
-        <li class="md-nav__item">
-  <a href="#baseline-bootstrapping-transitional-scaffold" class="md-nav__link">
+        
+          <li class="md-nav__item">
+  <a href="#3-allow-the-client-to-be-caller-configurable" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Baseline bootstrapping (transitional scaffold)
+        3. Allow the client to be caller-configurable
       
     </span>
   </a>
   
 </li>
-      
-        <li class="md-nav__item">
-  <a href="#new-and-migrated-code" class="md-nav__link">
+        
+          <li class="md-nav__item">
+  <a href="#4-retry-policy-is-caller-side" class="md-nav__link">
     <span class="md-ellipsis">
       
-        New and migrated code
+        4. Retry policy is caller-side
       
     </span>
   </a>
   
 </li>
-      
-        <li class="md-nav__item">
-  <a href="#precedent" class="md-nav__link">
+        
+          <li class="md-nav__item">
+  <a href="#5-async-clients-follow-the-same-pattern" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Precedent
+        5. Async clients follow the same pattern
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#failure-modes-this-prevents" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Failure modes this prevents
       
     </span>
   </a>
@@ -1845,144 +1901,171 @@
   
 
 
-<h1 id="mypy-strictness-as-a-hard-ci-gate">Mypy strictness as a hard CI gate<a class="headerlink" href="#mypy-strictness-as-a-hard-ci-gate" title="Permanent link">&para;</a></h1>
+<h1 id="http-client-persistence-and-explicit-timeouts">HTTP client persistence and explicit timeouts<a class="headerlink" href="#http-client-persistence-and-explicit-timeouts" title="Permanent link">&para;</a></h1>
 <blockquote>
-<p><strong>Scope: every Python repository.</strong> Static type-checking runs as a CI gate
-(not advisory), new code must be type-clean under strict mode, and baseline
-snapshots are a bootstrapping scaffold with a defined exit path — never a
-permanent suppression list.</p>
+<p><strong>Scope: every Python repository that makes outbound HTTP calls.</strong> A repo
+whose only HTTP surface is serving inbound requests (a pure FastAPI service
+that never calls another service) is exempt — this only applies when the
+component is itself an HTTP <em>client</em>. This applies <em>in addition to</em> the
+<a href="../repo-baseline/">repo baseline</a>.</p>
 </blockquote>
-<h2 id="why-this-exists">Why this exists<a class="headerlink" href="#why-this-exists" title="Permanent link">&para;</a></h2>
-<p>The fleet's shared python-ci template exposes a <code>mypy-advisory</code> input. When
-set to <code>true</code>, mypy runs in advisory mode: it reports errors but never fails
-the pipeline. A repo that ships with a nonzero strict-mode error baseline and
-<code>mypy-advisory: true</code> can accumulate new type errors indefinitely with no CI
-signal — the gate is effectively absent.</p>
-<p>Three mature ASGI/data projects — FastAPI, Pydantic, and Litestar — all gate
-on type-checking as a required CI job. FastAPI runs <code>uv run mypy fastapi</code> in
-<code>scripts/lint.sh</code> with <code>strict = true</code>; a single mypy error fails the
-pipeline. None of them ship a permanent baseline snapshot as the long-term
-enforcement strategy.</p>
-<p>This standard defines the fleet-wide convention: mypy is a gate, not a
-whisper; baseline snapshots shrink monotonically and are eventually deleted;
-and new or migrated code must be type-clean under strict mode from day one.</p>
-<h2 id="baseline-requirements-mandatory">Baseline requirements (mandatory)<a class="headerlink" href="#baseline-requirements-mandatory" title="Permanent link">&para;</a></h2>
-<p>Every Python repository <strong>must</strong>:</p>
-<ol>
-<li><strong>Run mypy as a CI gate, not advisory.</strong> The shared python-ci template
-   <code>mypy-advisory</code> input must be <code>false</code> (or absent, defaulting to <code>false</code>)
-   so a new or growing type-error count fails the pipeline.</li>
-</ol>
-<p><em>Failure prevented:</em> a repo that ships with <code>mypy-advisory: true</code> has no
-   automated signal when new type errors are introduced — the baseline can
-   grow without bound and the first a team learns of a type-level regression
-   is a runtime <code>AttributeError</code> or <code>TypeError</code> in production.</p>
-<ol>
-<li><strong>Adopt <code>strict = true</code> (or an equivalent opt-in set) in mypy
-   configuration.</strong> The canonical path is a <code>[tool.mypy]</code> table in
-   <code>pyproject.toml</code> with <code>strict = true</code>. Repos that cannot enable every
-   strict-mode check at once may opt in individual flags (<code>check_untyped_defs</code>,
-   <code>disallow_any_generics</code>, <code>no_implicit_optional</code>, <code>warn_unused_ignores</code>,
-   etc.) as stepping stones toward <code>strict = true</code>.</li>
-</ol>
-<p><em>Failure prevented:</em> without strict mode, mypy silently skips untyped
-   function bodies, tolerates implicit <code>Any</code>, and misses whole categories of
-   soundness errors — the type-checker runs but the coverage gap is invisible.</p>
-<ol>
-<li><strong>Require <code>warn_unused_ignores = true</code></strong> (implied by <code>strict = true</code>).
-   Every <code># type: ignore[&lt;code&gt;]</code> suppression must target a specific error
-   code; stale ignores become CI failures.</li>
-</ol>
-<p><em>Failure prevented:</em> a blanket <code># type: ignore</code> without an error code
-   suppresses every mypy error on that line, including new ones introduced by
-   a dependency upgrade or refactor. With <code>warn_unused_ignores</code>, a
-   once-necessary suppression that becomes stale is flagged and removed.</p>
-<h2 id="baseline-bootstrapping-transitional-scaffold">Baseline bootstrapping (transitional scaffold)<a class="headerlink" href="#baseline-bootstrapping-transitional-scaffold" title="Permanent link">&para;</a></h2>
-<p>A repo that currently has a nonzero type-error count under strict mode may
-use <code>mypy-baseline</code> as a <strong>bootstrapping scaffold with a defined exit</strong>,
-never as a permanent state:</p>
-<ol>
-<li>
-<p><strong>Capture the current baseline once</strong> with
-   <code>uv run mypy-baseline --write-baseline</code> to produce a
-   <code>mypy-baseline.txt</code> snapshot.</p>
-</li>
-<li>
-<p><strong>Gate on baseline stability.</strong> CI runs
-   <code>uv run mypy-baseline --check</code> (or equivalent); a diff that introduces
-   new type errors fails the pipeline. This is the minimum viable gate —
-   no new errors, even while the legacy baseline exists.</p>
-</li>
-</ol>
-<p><em>Failure prevented:</em> without a stability gate, new type errors blend
-   into the baseline snapshot and are invisible until the next manual
-   re-capture — the baseline becomes a permanent suppression list rather
-   than a shrinking todo list.</p>
-<ol>
-<li>
-<p><strong>Define a monotonic-shrink trajectory.</strong> Each repo documents which
-   error class it is clearing next (e.g. "clear all <code>[arg-type]</code> errors
-   first, then <code>[union-attr]</code>") and periodically re-captures the baseline
-   (<code>mypy-baseline --write-baseline</code>) to reflect the shrinking count.</p>
-</li>
-<li>
-<p><strong>Delete the baseline entirely when it reaches zero entries.</strong> At that
-   point CI gates on <code>uv run mypy .</code> directly — a plain, hard gate with no
-   snapshot.</p>
-</li>
-</ol>
-<p><em>Failure prevented:</em> a baseline snapshot that is never re-captured and
-   never shrunk becomes a permanent suppression list — the repo runs mypy
-   but gets none of the safety benefit, and the snapshot drifts from the
-   actual error set.</p>
-<h2 id="new-and-migrated-code">New and migrated code<a class="headerlink" href="#new-and-migrated-code" title="Permanent link">&para;</a></h2>
-<p><strong>New modules, packages, and subsystems added to a repo must be type-clean
-under strict mode with zero baseline entries.</strong> A PR that introduces a new
-module must not add entries to <code>mypy-baseline.txt</code> for that module.</p>
-<p><strong>A repo migrating from untyped to typed code must add type annotations
-before or in the same PR as the code change.</strong> If a PR touches a previously
-untyped function, it must annotate that function — or, at minimum, not
-worsen the existing baseline.</p>
-<p><em>Failure prevented:</em> if new code is allowed to land untyped under a baseline
-snapshot, the baseline never shrinks — every new module adds suppression
-entries, and the repo accumulates permanent type debt rather than converging
-on type-clean.</p>
-<h2 id="precedent">Precedent<a class="headerlink" href="#precedent" title="Permanent link">&para;</a></h2>
-<table>
-<thead>
-<tr>
-<th>Project</th>
-<th>Type checker</th>
-<th>Gate style</th>
-<th>Baseline?</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>FastAPI</td>
-<td>mypy (<code>strict = true</code>)</td>
-<td>Required CI job (<code>scripts/lint.sh</code>)</td>
-<td>None — clean run from day one</td>
-</tr>
-<tr>
-<td>Pydantic</td>
-<td>pyright</td>
-<td>Required CI job (<code>make typecheck</code>)</td>
-<td>None</td>
-</tr>
-<tr>
-<td>Litestar</td>
-<td>mypy + pyright</td>
-<td>Separate required CI jobs</td>
-<td>None</td>
-</tr>
-</tbody>
-</table>
-<p>None of the surveyed projects ship a permanent <code>mypy-baseline.txt</code> snapshot
-as the long-term enforcement strategy. Where the <code>mypy-baseline</code> tool
-appears in the ecosystem, its own documentation treats the snapshot as a
-bootstrapping scaffold: shrink periodically, delete, then gate on the raw
-type-checker.</p>
+<p>Every fleet component that makes outbound HTTP calls uses a <strong>single
+persistent <code>httpx.Client</code> (or <code>requests.Session</code>) with an explicit
+<code>timeout</code></strong>, constructed once and reused for all requests. Module-level
+convenience functions (<code>httpx.get</code>, <code>httpx.post</code>, <code>requests.get</code>) that
+open a fresh connection per call are forbidden — they bypass connection
+pooling and silently inherit library-default timeouts that may not match
+the caller's expectations.</p>
+<h2 id="the-rule">The rule<a class="headerlink" href="#the-rule" title="Permanent link">&para;</a></h2>
+<h3 id="1-one-persistent-client-per-process">1. One persistent client per process<a class="headerlink" href="#1-one-persistent-client-per-process" title="Permanent link">&para;</a></h3>
+<p>Construct a single <code>httpx.Client</code> (or <code>requests.Session</code>) once — at module
+level or via dependency injection — and route every outbound HTTP call
+through it. Do not use <code>httpx.get()</code>, <code>httpx.post()</code>, <code>requests.get()</code>, or
+any other module-level convenience helper that creates an ephemeral client
+per call.</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># ✅  One persistent client with an explicit timeout</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">httpx</span>
+
+<span class="n">_client</span> <span class="o">=</span> <span class="n">httpx</span><span class="o">.</span><span class="n">Client</span><span class="p">(</span><span class="n">timeout</span><span class="o">=</span><span class="n">httpx</span><span class="o">.</span><span class="n">Timeout</span><span class="p">(</span><span class="mf">10.0</span><span class="p">))</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">call_external_api</span><span class="p">(</span><span class="n">url</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+    <span class="n">response</span> <span class="o">=</span> <span class="n">_client</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+    <span class="n">response</span><span class="o">.</span><span class="n">raise_for_status</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="c1"># ❌  Ephemeral per-call helper — fresh connection, no explicit timeout</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">httpx</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">call_external_api</span><span class="p">(</span><span class="n">url</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+    <span class="n">response</span> <span class="o">=</span> <span class="n">httpx</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>  <span class="c1"># no timeout argument; default 5 s</span>
+    <span class="n">response</span><span class="o">.</span><span class="n">raise_for_status</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
+</code></pre></div>
+<p>The persistent client holds a connection pool and reuses connections
+across calls, avoiding the TCP handshake and TLS negotiation on every
+request. The <code>httpx.Client</code> and <code>requests.Session</code> objects are
+thread-safe for read-only use; for async code, prefer an <code>httpx.AsyncClient</code>
+constructed the same way.</p>
+<h3 id="2-explicit-timeout-never-rely-on-library-defaults">2. Explicit timeout — never rely on library defaults<a class="headerlink" href="#2-explicit-timeout-never-rely-on-library-defaults" title="Permanent link">&para;</a></h3>
+<p>The client MUST carry an explicit <code>timeout=</code> value. Do not rely on the
+library's built-in default — httpx's default is 5 seconds for
+connect/read/write/pool, requests' default is effectively indefinite
+(no timeout). Neither default is a safe universal choice: the right
+timeout depends on the target service's SLA and the caller's own latency
+budget.</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># ✅  Explicit timeout</span>
+<span class="n">_client</span> <span class="o">=</span> <span class="n">httpx</span><span class="o">.</span><span class="n">Client</span><span class="p">(</span><span class="n">timeout</span><span class="o">=</span><span class="n">httpx</span><span class="o">.</span><span class="n">Timeout</span><span class="p">(</span><span class="mf">10.0</span><span class="p">))</span>
+
+<span class="c1"># ❌  No timeout — library default (httpx: 5 s, requests: indefinite)</span>
+<span class="n">_client</span> <span class="o">=</span> <span class="n">httpx</span><span class="o">.</span><span class="n">Client</span><span class="p">()</span>
+
+<span class="c1"># ❌  Per-call timeout without a persistent client — still opens a fresh</span>
+<span class="c1">#     connection per call</span>
+<span class="n">httpx</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mf">10.0</span><span class="p">)</span>
+</code></pre></div>
+<p>For <code>requests.Session</code>, set the timeout on the session and let every
+request inherit it:</p>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">requests</span>
+
+<span class="n">_session</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">Session</span><span class="p">()</span>
+<span class="n">_session</span><span class="o">.</span><span class="n">timeout</span> <span class="o">=</span> <span class="mf">10.0</span>  <span class="c1"># seconds — applies to every request</span>
+</code></pre></div>
+<h3 id="3-allow-the-client-to-be-caller-configurable">3. Allow the client to be caller-configurable<a class="headerlink" href="#3-allow-the-client-to-be-caller-configurable" title="Permanent link">&para;</a></h3>
+<p>When a library wraps an HTTP client for fleet-wide reuse (e.g. a GitHub
+App auth helper, a shared API client), accept an optional <code>client</code> or
+<code>session</code> parameter rather than hard-coding the client. This lets the
+caller control timeouts, transport-level retries, proxy settings, and TLS
+configuration without monkey-patching.</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># ✅  Caller can supply their own client</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Optional</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">httpx</span>
+
+
+<span class="k">class</span><span class="w"> </span><span class="nc">GitHubAppAuth</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">httpx</span><span class="o">.</span><span class="n">Client</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_client</span> <span class="o">=</span> <span class="n">client</span> <span class="ow">or</span> <span class="n">httpx</span><span class="o">.</span><span class="n">Client</span><span class="p">(</span><span class="n">timeout</span><span class="o">=</span><span class="n">httpx</span><span class="o">.</span><span class="n">Timeout</span><span class="p">(</span><span class="mf">10.0</span><span class="p">))</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_token</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="o">...</span><span class="p">)</span>
+        <span class="o">...</span>
+</code></pre></div>
+<p>This is the pattern <code>githubkit</code> and <code>PyGithub</code> follow: the transport is
+built by the caller, and the library rides it.</p>
+<h3 id="4-retry-policy-is-caller-side">4. Retry policy is caller-side<a class="headerlink" href="#4-retry-policy-is-caller-side" title="Permanent link">&para;</a></h3>
+<p>The persistent client itself does not blind-retry all 4xx/5xx responses.
+Retry decisions belong to the caller, who knows the endpoint's idempotency
+guarantees and the acceptable latency budget. The one fleet-wide exception
+is a <strong>401-on-expiry force-refresh</strong> for auth tokens — the auth layer may
+retry exactly once after refreshing its credential, because the token
+expiry is a known, expected transient failure.</p>
+<p>For connection-level retries (DNS failures, TCP resets, TLS handshake
+failures), use httpx's built-in transport retry support:</p>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">httpx</span>
+
+<span class="n">_client</span> <span class="o">=</span> <span class="n">httpx</span><span class="o">.</span><span class="n">Client</span><span class="p">(</span>
+    <span class="n">timeout</span><span class="o">=</span><span class="n">httpx</span><span class="o">.</span><span class="n">Timeout</span><span class="p">(</span><span class="mf">10.0</span><span class="p">),</span>
+    <span class="n">transport</span><span class="o">=</span><span class="n">httpx</span><span class="o">.</span><span class="n">HTTPTransport</span><span class="p">(</span><span class="n">retries</span><span class="o">=</span><span class="mi">3</span><span class="p">),</span>  <span class="c1"># connection-level only</span>
+<span class="p">)</span>
+</code></pre></div>
+<p>This retries at the transport layer — before the request reaches the
+server — and does not retry HTTP error responses (4xx/5xx). It is safe
+for all idempotent and non-idempotent requests alike.</p>
+<h3 id="5-async-clients-follow-the-same-pattern">5. Async clients follow the same pattern<a class="headerlink" href="#5-async-clients-follow-the-same-pattern" title="Permanent link">&para;</a></h3>
+<p>For async code, construct an <code>httpx.AsyncClient</code> once — typically at
+application startup — and reuse it. Do not use <code>httpx.AsyncClient()</code> as a
+context manager inside every request handler; that creates and destroys a
+client per request, defeating connection pooling.</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">contextlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">asynccontextmanager</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">httpx</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">fastapi</span><span class="w"> </span><span class="kn">import</span> <span class="n">FastAPI</span>
+
+
+<span class="n">_client</span><span class="p">:</span> <span class="n">httpx</span><span class="o">.</span><span class="n">AsyncClient</span>
+
+
+<span class="nd">@asynccontextmanager</span>
+<span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">lifespan</span><span class="p">(</span><span class="n">app</span><span class="p">:</span> <span class="n">FastAPI</span><span class="p">):</span>
+    <span class="k">global</span> <span class="n">_client</span>
+    <span class="n">_client</span> <span class="o">=</span> <span class="n">httpx</span><span class="o">.</span><span class="n">AsyncClient</span><span class="p">(</span><span class="n">timeout</span><span class="o">=</span><span class="n">httpx</span><span class="o">.</span><span class="n">Timeout</span><span class="p">(</span><span class="mf">10.0</span><span class="p">))</span>
+    <span class="k">yield</span>
+    <span class="k">await</span> <span class="n">_client</span><span class="o">.</span><span class="n">aclose</span><span class="p">()</span>
+
+
+<span class="n">app</span> <span class="o">=</span> <span class="n">FastAPI</span><span class="p">(</span><span class="n">lifespan</span><span class="o">=</span><span class="n">lifespan</span><span class="p">)</span>
+</code></pre></div>
+<h2 id="failure-modes-this-prevents">Failure modes this prevents<a class="headerlink" href="#failure-modes-this-prevents" title="Permanent link">&para;</a></h2>
+<ul>
+<li><strong>Silent timeout drift.</strong> <code>httpx.get(url)</code> with no <code>timeout=</code> argument
+  silently uses httpx's default 5-second timeout. A call that works in
+  development (fast local services) hangs in production (slower cross-network
+  calls). An explicit timeout makes the boundary visible and auditable.</li>
+<li><strong>Connection exhaustion.</strong> Opening a fresh TCP connection per call — which
+  <code>httpx.get()</code> and <code>requests.get()</code> do — consumes ephemeral ports and
+  kernel TCP buffers per request. Under load, the process runs out of ports
+  (<code>EADDRNOTAVAIL</code>) or hits the kernel's connection-track table limit. A
+  persistent client pools connections and reuses them, capping the port
+  footprint.</li>
+<li><strong>TLS handshake overhead.</strong> Every fresh connection pays the full TLS 1.3
+  handshake cost (~2–3 round-trips). For a service that makes hundreds of
+  outbound calls per second, this is wasted CPU and latency. A persistent
+  client amortizes the handshake once per connection.</li>
+<li><strong>Indefinite hangs (requests).</strong> <code>requests.get()</code> with no <code>timeout=</code>
+  argument can block indefinitely — the default timeout is <code>None</code>. A remote
+  service that stops responding (but doesn't close the connection) hangs the
+  calling thread forever, with no deadline, no abort, and no diagnostic
+  until the process is restarted.</li>
+<li><strong>Cross-service timeout inconsistency.</strong> When every component picks its
+  own timeout (or none), an operator chasing a latency regression must know
+  the timeout value of every hop in the call chain. Explicit, documented
+  timeouts make the chain traceable.</li>
+<li><strong>Retry storms.</strong> A client that blind-retries all 5xx responses can
+  amplify a transient backend overload into a sustained outage — the retries
+  add load to an already-struggling service. Caller-side retry decisions
+  keep the blast radius small.</li>
+</ul>
 
 
 

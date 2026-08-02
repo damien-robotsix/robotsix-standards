@@ -143,6 +143,91 @@ to chat operations:
 
 ---
 
+## 5. Chat observability
+
+The chat-access contract defined above enables the chat agent to **act on**
+components (restart, config-write, env-write). The observability obligations
+in this section enable the chat agent to **observe** components — reading
+logs and inspecting volume data — without opening a new permission axis. Both
+are authorized by the **same per-component chat-access checkbox** already in
+`robotsix-central-deploy`.
+
+### Rationale
+
+Components already log to stdout/stderr (12-factor). There is no need for a
+per-component log endpoint — the burden is on the deployer.
+
+Volumes hold persistent state (mailbox contents, sqlite databases, file
+stores) that the chat agent may need to inspect when debugging a component.
+The chat agent must not have write access to volumes — shell or bind-mount
+access to a running component's data would violate the chat-access trust
+boundary.
+
+### Implementer: robotsix-central-deploy
+
+Both logs and volumes are exposed by **`robotsix-central-deploy`**, not by
+individual components:
+
+- **Components** need only continue logging to stdout/stderr and mounting
+  volumes as they already do. No per-component endpoint or code change is
+  required for observability.
+- **`robotsix-central-deploy`** is responsible for collecting container logs,
+  exposing log/status endpoints, and mounting volumes read-only for
+  inspection.
+
+### Authorization: API-key path, not operator web-login
+
+All observability endpoints MUST be reachable on the **`X-API-Key`** path
+used by the chat agent's tools. Routes that sit behind the operator's
+web-login session (e.g. `/services/{name}/status` serving a login HTML page
+for unauthenticated requests) are **not** accessible to the chat agent and do
+not satisfy this standard.
+
+The chat agent reaches these endpoints through the same `central_deploy.url`
+and `central_deploy.api_token` fields described in [§3](#3-roster-not-discovery).
+Scope: only components whose chat-access checkbox is enabled.
+
+### 5.1 Logs
+
+`robotsix-central-deploy` MUST expose:
+
+- **`GET /chat/services/{name}/logs`** — return the component's recent
+  container logs (stdout/stderr). Query parameters (`tail`, `since`,
+  `timestamps`) may be supported but the minimal contract is a plain text or
+  JSON log response.
+- **`GET /chat/services/{name}/status`** — return the component's current
+  lifecycle status (running, stopped, restarting, error) as a JSON object.
+  This is a lightweight status check, distinct from the component's own
+  `/health` endpoint.
+
+Both endpoints return non-HTML content (text/plain or application/json). They
+must not redirect to or return the operator web-login page.
+
+### 5.2 Volumes (read-only)
+
+`robotsix-central-deploy` MUST expose **read-only** volume inspection for
+chat-access components:
+
+- **`GET /chat/services/{name}/volumes`** — list the volumes attached to the
+  component. Returns a JSON array of volume names.
+- **`GET /chat/services/{name}/volumes/{vol}/files?path=<relative-path>`** —
+  list directory contents or read a file from the named volume. When `path`
+  ends in `/` or names a directory, return a JSON listing of directory
+  entries. When `path` names a file, return the file content in a suitable
+  content type. The response is capped at a MAXIMUM PAYLOAD SIZE (the deployer
+  chooses the cap; 256 KiB is a reasonable default).
+
+The volume access path is **strictly read-only**:
+
+- No write, delete, rename, or symlink-create operations.
+- No path traversal outside the volume root (`..`, absolute paths, symlinks
+  that escape the volume).
+- The deployer mounts volumes read-only when serving these requests.
+- All volume reads share the same per-component chat-access authorization
+  gate — no separate volume permission toggle.
+
+---
+
 ## Reference
 
 - [Component standard](component-standard.md) — the three deploy modes, auth model,

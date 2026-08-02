@@ -10,13 +10,13 @@
       
       
       
-        <link rel="canonical" href="https://damien-robotsix.github.io/robotsix-standards/ci-lint-pinning/">
+        <link rel="canonical" href="https://damien-robotsix.github.io/robotsix-standards/pyright/">
       
       
-        <link rel="prev" href="../changelog-driven-releases/">
+        <link rel="prev" href="../mypy/">
       
       
-        <link rel="next" href="../distribution-packaging/">
+        <link rel="next" href="../docstrings/">
       
       
         
@@ -27,7 +27,7 @@
     
     
       
-        <title>CI lint tool pinning - Robotsix Standards</title>
+        <title>Pyright strict mode - Robotsix Standards</title>
       
     
     
@@ -78,7 +78,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#ci-lint-tool-pinning" class="md-skip">
+        <a href="#pyright-strict-mode" class="md-skip">
           Skip to content
         </a>
       
@@ -114,7 +114,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              CI lint tool pinning
+              Pyright strict mode
             
           </span>
         </div>
@@ -505,37 +505,10 @@
                 
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    CI lint tool pinning
-  
-
-    
-  </span>
-  
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../ci-lint-pinning/" class="md-nav__link">
         
   
   
@@ -551,131 +524,6 @@
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#the-rule" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        The rule
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#why" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Why
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#how" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        How
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="How">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#approach-a-run-the-tool-through-pre-commit-preferred" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Approach A: run the tool through pre-commit (preferred)
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#approach-b-pin-the-ci-install-to-the-pre-commit-rev-version" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Approach B: pin the CI install to the pre-commit rev: version
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#anti-patterns-never-install-from-floatinglatest-sources" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Anti-patterns: never install from floating/latest sources
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#exceptions" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Exceptions
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#failure-modes-prevented" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Failure modes prevented
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#relationship-to-other-standards" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Relationship to other standards
-      
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -909,10 +757,37 @@
                 
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="../pyright/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Pyright strict mode
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   
@@ -928,6 +803,70 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#why-this-exists" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why this exists
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#configuration-mandatory" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Configuration (mandatory)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#new-code" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        New code
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#precedent" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Precedent
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -1905,10 +1844,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#the-rule" class="md-nav__link">
+  <a href="#why-this-exists" class="md-nav__link">
     <span class="md-ellipsis">
       
-        The rule
+        Why this exists
       
     </span>
   </a>
@@ -1916,10 +1855,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#why" class="md-nav__link">
+  <a href="#configuration-mandatory" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Why
+        Configuration (mandatory)
       
     </span>
   </a>
@@ -1927,49 +1866,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#how" class="md-nav__link">
+  <a href="#new-code" class="md-nav__link">
     <span class="md-ellipsis">
       
-        How
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="How">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#approach-a-run-the-tool-through-pre-commit-preferred" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Approach A: run the tool through pre-commit (preferred)
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#approach-b-pin-the-ci-install-to-the-pre-commit-rev-version" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Approach B: pin the CI install to the pre-commit rev: version
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#anti-patterns-never-install-from-floatinglatest-sources" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Anti-patterns: never install from floating/latest sources
+        New code
       
     </span>
   </a>
@@ -1977,32 +1877,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#exceptions" class="md-nav__link">
+  <a href="#precedent" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Exceptions
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#failure-modes-prevented" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Failure modes prevented
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#relationship-to-other-standards" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Relationship to other standards
+        Precedent
       
     </span>
   </a>
@@ -2029,150 +1907,112 @@
   
 
 
-<h1 id="ci-lint-tool-pinning">CI lint tool pinning<a class="headerlink" href="#ci-lint-tool-pinning" title="Permanent link">&para;</a></h1>
+<h1 id="pyright-strict-mode">Pyright strict mode<a class="headerlink" href="#pyright-strict-mode" title="Permanent link">&para;</a></h1>
 <blockquote>
-<p><strong>Scope: every repository with a <code>.pre-commit-config.yaml</code>.</strong> The
-pre-commit config is the single source of truth for lint-tool versions;
-every CI lint job that runs a tool already covered by a pre-commit hook
-must consume that same pinned version.</p>
+<p><strong>Scope: every Python repository that runs pyright as a CI gate.</strong> Pyright
+must run at <code>typeCheckingMode = "strict"</code> — the same type-safety baseline as
+mypy <code>--strict</code> — so the two checkers enforce a consistent gate.</p>
 </blockquote>
-<h2 id="the-rule">The rule<a class="headerlink" href="#the-rule" title="Permanent link">&para;</a></h2>
-<p><strong>CI lint jobs must run the same version-pinned tools as
-<code>.pre-commit-config.yaml</code>.</strong> The pre-commit <code>rev:</code> field is the single
-source of truth for every lint-tool version. A CI job that runs the same
-tool from a different source — floating, latest, unpinned — is a
-reproducibility bug: the gate validates against a <strong>different tool version</strong>
-than the one local developers and pre-commit run.</p>
-<p>This applies to every tool that appears in both places: yamllint,
-shellcheck, hadolint, actionlint, codespell, markdownlint-cli, ruff,
-mypy, and any future lint hook added to the standard pre-commit set.</p>
-<h2 id="why">Why<a class="headerlink" href="#why" title="Permanent link">&para;</a></h2>
-<p>When CI installs <code>yamllint</code> from <code>pip install yamllint</code> (latest) while
-<code>.pre-commit-config.yaml</code> pins <code>rev: v1.35.1</code>, the two runs use different
-versions. A check can pass in CI and fail locally — or vice versa — purely
-because of version skew. The developer sees a red X on their PR, runs the
-same tool locally, and gets a green pass, because their local version is
-pinned and CI's isn't. The debugging loop is: update the tool, re-learn the
-new rule set, and hope the versions converge. It never does for long.</p>
-<p>Dependabot already bumps pre-commit <code>rev:</code> tags (the <code>pre-commit</code> ecosystem
-block in <code>.github/dependabot.yml</code>). When CI consumes those same pins,
-Dependabot keeps <strong>both</strong> paths in lockstep — one PR updates the pre-commit
-config, and the next CI run automatically uses the new version.</p>
-<h2 id="how">How<a class="headerlink" href="#how" title="Permanent link">&para;</a></h2>
-<p>Two approaches are acceptable. Both satisfy the rule — choose the one
-that fits the repo's CI workflow shape:</p>
-<h3 id="approach-a-run-the-tool-through-pre-commit-preferred">Approach A: run the tool through pre-commit (preferred)<a class="headerlink" href="#approach-a-run-the-tool-through-pre-commit-preferred" title="Permanent link">&para;</a></h3>
-<p>Run <code>pre-commit run &lt;hook-id&gt; --all-files</code> in CI. This is the simplest
-path and the one the fleet's shared workflows use. The pre-commit runtime
-installs exactly the <code>rev:</code>-pinned version into its own isolated
-environment — CI and local dev are literally the same invocation.</p>
-<div class="highlight"><pre><span></span><code><span class="c1"># In a CI job:</span>
-<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">uses</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">astral-sh/setup-uv@v6</span>
-<span class="w">  </span><span class="nt">with</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">enable-cache</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
-<span class="w">    </span><span class="nt">cache-dependency-glob</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;pyproject.toml&quot;</span>
-<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">uses</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">tox-dev/action-pre-commit-uv@v1</span>
-<span class="w">  </span><span class="nt">with</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">extra_args</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">--show-diff-on-failure --all-files</span>
+<h2 id="why-this-exists">Why this exists<a class="headerlink" href="#why-this-exists" title="Permanent link">&para;</a></h2>
+<p>The fleet's shared <code>python-ci.yml</code> workflow runs both mypy and pyright as
+separate CI gates. Mypy is configured with <code>strict = true</code> (the
+<a href="../mypy/">mypy strictness standard</a>). If pyright is left at its default
+<code>basic</code> level — no <code>pyrightconfig.json</code>, no <code>.pyrightconfig.json</code>, no
+<code>[tool.pyright]</code> section — the two checkers enforce different rulesets.
+Pyright passes code that mypy would reject (and vice versa), creating a
+divergent safety net where neither gate alone catches every error.</p>
+<p>Three mature ASGI/data projects — FastAPI, Pydantic, and Litestar — all run
+type-checking at a strict level with no permanent baseline. This standard
+extends the fleet's existing mypy strictness posture to pyright so every repo
+gets a consistent, matched pair of gates.</p>
+<h2 id="configuration-mandatory">Configuration (mandatory)<a class="headerlink" href="#configuration-mandatory" title="Permanent link">&para;</a></h2>
+<p>Every Python repository that includes pyright in its CI must:</p>
+<ol>
+<li><strong>Set <code>typeCheckingMode = "strict"</code></strong> in <code>pyproject.toml</code> under
+   <code>[tool.pyright]</code> (or in a committed <code>pyrightconfig.json</code>).  This is the
+   single setting that elevates pyright to the same strictness tier as
+   mypy <code>strict = true</code>.</li>
+</ol>
+<div class="highlight"><pre><span></span><code><span class="k">[tool.pyright]</span>
+<span class="n">typeCheckingMode</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;strict&quot;</span>
 </code></pre></div>
-<h3 id="approach-b-pin-the-ci-install-to-the-pre-commit-rev-version">Approach B: pin the CI install to the pre-commit <code>rev:</code> version<a class="headerlink" href="#approach-b-pin-the-ci-install-to-the-pre-commit-rev-version" title="Permanent link">&para;</a></h3>
-<p>When a tool must run outside pre-commit (e.g. as a standalone CI step for
-reporting reasons), pin its install command to the <strong>exact same version</strong>
-declared in <code>.pre-commit-config.yaml</code>. Extract the version from the
-pre-commit config — do not guess, do not round, do not default to latest:</p>
-<div class="highlight"><pre><span></span><code><span class="c1"># Good — pinned to the pre-commit rev:</span>
-<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">run</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">pip install yamllint==1.35.1</span>
-
-<span class="c1"># Good — action pinned to a release tag that matches the pre-commit rev:</span>
-<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">uses</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">hadolint/hadolint-action@v3.1.0</span>
+<p><em>Failure prevented:</em> without this setting, pyright runs at <code>basic</code> mode —
+   it skips type-checking of unannotated function bodies, tolerates implicit
+   <code>Any</code>, and reports far fewer issues than mypy <code>--strict</code>.  The two checkers
+   diverge, and CI's "type-check passed" signal is weaker than it appears.</p>
+<ol>
+<li><strong>Keep strict-mode report keys at <code>"error"</code>.</strong>  The strict preset enables
+   <code>reportUnknown*</code>, <code>reportMatchNotExhaustive</code>, <code>reportUnreachable</code>, and other
+   diagnostics as errors.  Do not downgrade these globally.  The set of
+   diagnostics pyright strict enables is the closest match to mypy strict's
+   coverage.</li>
+</ol>
+<p><em>Failure prevented:</em> downgrading a <code>reportUnknown*</code> key to <code>"warning"</code> or
+   <code>"none"</code> weakens the gate for an entire category (e.g. <code>reportUnknownArgumentType</code>
+   → mypy would catch mismatched argument types but pyright silently passes them).</p>
+<ol>
+<li><strong>Use per-diagnostic overrides only for proven-untyped third-party
+   dependencies.</strong>  Individual <code>report_*</code> keys in <code>[tool.pyright]</code> always
+   override whatever the strict preset enables.  The only allowed exceptions
+   are for modules the repo already exempts in mypy via
+   <code>ignore_missing_imports</code>:</li>
+</ol>
+<div class="highlight"><pre><span></span><code><span class="k">[tool.pyright]</span>
+<span class="n">typeCheckingMode</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;strict&quot;</span>
+<span class="n">reportMissingTypeStubs</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;none&quot;</span><span class="w">        </span><span class="c1"># untyped deps: cognee, playwright, etc.</span>
+<span class="n">reportMissingImports</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;none&quot;</span><span class="w">          </span><span class="c1"># same set as mypy ignore_missing_imports</span>
 </code></pre></div>
-<p>When the Dependabot PR bumps the pre-commit <code>rev:</code>, it must also bump
-any standalone CI install lines that reference the same tool. A CI job
-that references a version literal must carry a comment pointing back to
-the pre-commit config so the reviewer of the Dependabot PR knows to update
-both:</p>
-<div class="highlight"><pre><span></span><code><span class="c1"># Keep in sync with .pre-commit-config.yaml → hadolint rev:</span>
-<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">uses</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">hadolint/hadolint-action@v3.1.0</span>
-</code></pre></div>
-<h2 id="anti-patterns-never-install-from-floatinglatest-sources">Anti-patterns: never install from floating/latest sources<a class="headerlink" href="#anti-patterns-never-install-from-floatinglatest-sources" title="Permanent link">&para;</a></h2>
-<p>Every one of these patterns is forbidden in CI lint jobs for tools that
-also appear in <code>.pre-commit-config.yaml</code>:</p>
+<p>The set of exemptions must mirror the repo's <code>[tool.mypy.overrides]</code> entries
+   that set <code>ignore_missing_imports = true</code> — not a broader, different set.</p>
+<p><em>Failure prevented:</em> a repo that exempts <code>cognee.*</code> in mypy but not in
+   pyright gets pyright-only errors for the same untyped dependency — noise
+   that either gets suppressed with a blanket <code>reportMissingTypeStubs = "none"</code>
+   (which hides real gaps) or ignored (which trains the team to skip pyright
+   output).  Mirroring the mypy set keeps the suppression surface identical.</p>
+<h2 id="new-code">New code<a class="headerlink" href="#new-code" title="Permanent link">&para;</a></h2>
+<p><strong>New modules and packages must pass pyright strict with zero per-file
+suppressions beyond the dependency exemptions above.</strong>  A PR that introduces a
+new module must not add <code># pyright: ignore</code> comments or per-file diagnostic
+overrides to land.</p>
+<p><em>Failure prevented:</em> if a new module ships with pyright suppressions for
+diagnostics that mypy <code>--strict</code> already catches, the module has a type-safety
+gap that passed CI because pyright was silenced — the gap is invisible to both
+checkers.</p>
+<h2 id="precedent">Precedent<a class="headerlink" href="#precedent" title="Permanent link">&para;</a></h2>
 <table>
 <thead>
 <tr>
-<th>Forbidden</th>
-<th>Why it drifts</th>
+<th>Project</th>
+<th>Type checker</th>
+<th>Strictness</th>
+<th>Gate style</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td><code>pip install &lt;tool&gt;</code></td>
-<td>Installs latest from PyPI — unrelated to the pre-commit <code>rev:</code>.</td>
+<td>FastAPI</td>
+<td>mypy (<code>strict = true</code>)</td>
+<td>Full strict</td>
+<td>Required CI job (<code>scripts/lint.sh</code>)</td>
 </tr>
 <tr>
-<td><code>npm install -g &lt;tool&gt;</code></td>
-<td>Installs latest from npm — same problem.</td>
+<td>Pydantic</td>
+<td>pyright</td>
+<td>Strict mode</td>
+<td>Required CI job (<code>make typecheck</code>)</td>
 </tr>
 <tr>
-<td><code>apt-get install &lt;tool&gt;</code></td>
-<td>Installs whatever version the runner image ships — drifts across image updates.</td>
-</tr>
-<tr>
-<td><code>curl .../releases/latest/download/...</code></td>
-<td>Always fetches the latest release — the opposite of pinned.</td>
-</tr>
-<tr>
-<td><code>bash &lt;(curl ...download-actionlint.bash)</code></td>
-<td>Unpinned download script — version is whatever the script resolves.</td>
-</tr>
-<tr>
-<td><code>docker run &lt;image&gt;:latest</code></td>
-<td>The <code>latest</code> tag moves — a moving target.</td>
+<td>Litestar</td>
+<td>mypy + pyright</td>
+<td>Strict (both)</td>
+<td>Separate required CI jobs</td>
 </tr>
 </tbody>
 </table>
-<h2 id="exceptions">Exceptions<a class="headerlink" href="#exceptions" title="Permanent link">&para;</a></h2>
-<p>A CI job may deviate from the pre-commit pin when:</p>
-<ul>
-<li><strong>The tool runs exclusively in CI and has no pre-commit hook.</strong> No
-  conflict exists — there is no pre-commit version to stay in sync with.
-  The tool must still be pinned (never <code>latest</code>), but the pin lives in the
-  CI workflow itself rather than in <code>.pre-commit-config.yaml</code>.</li>
-<li><strong>The tool version is determined by an external constraint</strong> (e.g. a
-  language runtime version that the pre-commit hook doesn't cover). Document
-  the constraint in a comment in the CI workflow.</li>
-</ul>
-<p>Both exceptions are narrow and deliberate. The default is: if the tool has
-a pre-commit hook, CI runs that same version.</p>
-<h2 id="failure-modes-prevented">Failure modes prevented<a class="headerlink" href="#failure-modes-prevented" title="Permanent link">&para;</a></h2>
-<ul>
-<li><strong>Version-skew debugging loops.</strong> Developer runs pre-commit locally
-  (pinned), CI runs latest (different). The PR fails with a lint error the
-  developer cannot reproduce — or passes a check that should have failed,
-  because CI's newer version hasn't yet learned the rule that the pinned
-  version enforces.</li>
-<li><strong>Dependabot drift.</strong> Dependabot bumps the pre-commit <code>rev:</code> but the CI
-  job still runs the old version. The local pre-commit hook enforces new
-  rules that CI never checks — a false sense of gate coverage.</li>
-<li><strong>Runner-image drift.</strong> <code>apt-get install shellcheck</code> on
-  <code>ubuntu-24.04</code> installs a different version than <code>ubuntu-22.04</code>. A repo
-  that upgrades its runner image gets a different lint tool — and
-  potentially different results — with no code change.</li>
-<li><strong>Silent rule changes.</strong> A tool's latest release adds a new check that
-  fails on existing code. The pre-commit hook (pinned, unchanged) passes
-  but CI (latest, freshly installed) fails — a broken build with no
-  apparent cause.</li>
-</ul>
-<h2 id="relationship-to-other-standards">Relationship to other standards<a class="headerlink" href="#relationship-to-other-standards" title="Permanent link">&para;</a></h2>
-<ul>
-<li>The pre-commit hook set is defined in <a href="../python/#pre-commit-hooks">Python practices</a>
-  and the <a href="../pre-commit-baseline/">pre-commit baseline</a>.</li>
-<li>The Dependabot <code>pre-commit</code> ecosystem block is referenced in
-  <a href="../python/#tooling-uv">Python practices</a> and the
-  <a href="../security-posture/">security posture</a>.</li>
-<li>CI workflow standards (shared workflows, caching) live in
-  <a href="../python/#ci-uv-setup-caching">Python practices</a>.</li>
-</ul>
+<p>Pydantic — the largest Python project using pyright as its primary type
+checker — runs pyright at its strictest level with no baseline and no
+permanent suppression list.  Litestar, which runs both mypy and pyright,
+enforces strict mode on both with no gap between them.</p>
 
 
 

@@ -16,7 +16,7 @@
         <link rel="prev" href="../ruff-lint-rules/">
       
       
-        <link rel="next" href="../docstrings/">
+        <link rel="next" href="../pyright/">
       
       
         
@@ -846,10 +846,49 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#companion-standards" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Companion standards
+      
+    </span>
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
       
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../pyright/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Pyright strict mode
+  
+
+    
+  </span>
+  
+  
+
+      </a>
     </li>
   
 
@@ -1881,6 +1920,17 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#companion-standards" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Companion standards
+      
+    </span>
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -2039,6 +2089,13 @@ as the long-term enforcement strategy. Where the <code>mypy-baseline</code> tool
 appears in the ecosystem, its own documentation treats the snapshot as a
 bootstrapping scaffold: shrink periodically, delete, then gate on the raw
 type-checker.</p>
+<h2 id="companion-standards">Companion standards<a class="headerlink" href="#companion-standards" title="Permanent link">&para;</a></h2>
+<ul>
+<li><strong><a href="../pyright/">Pyright strict mode</a></strong> — the matching pyright strictness
+  standard.  Every fleet repo that runs both mypy and pyright in CI must
+  configure pyright with <code>typeCheckingMode = "strict"</code> so the two checkers
+  enforce a consistent gate.</li>
+</ul>
 
 
 

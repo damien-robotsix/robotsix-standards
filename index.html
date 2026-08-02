@@ -921,6 +921,34 @@
   
   
     <li class="md-nav__item">
+      <a href="pyright/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Pyright strict mode
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="docstrings/" class="md-nav__link">
         
   
@@ -2096,6 +2124,10 @@ everywhere.</p>
 <li><strong><a href="mypy/">Mypy strictness</a></strong> — mypy as a hard CI gate (not advisory),
   baseline snapshots as a bootstrapping scaffold with a defined exit, and
   strict-mode type-clean new code.</li>
+<li><strong><a href="pyright/">Pyright strict mode</a></strong> — pyright must run at
+  <code>typeCheckingMode = "strict"</code> so it enforces the same type-safety baseline
+  as mypy <code>--strict</code>, with per-diagnostic overrides only for proven-untyped
+  third-party dependencies.</li>
 <li><strong><a href="javascript/">JavaScript practices</a></strong> — vanilla frontend JS as static
   assets, lockfile discipline, vitest coverage floor, eslint/stylelint.</li>
 <li><strong><a href="ros2/">ROS 2 practices</a></strong> — workspace-skeleton layout, vcs2l manifest,

@@ -758,6 +758,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../pyright/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Pyright strict mode
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../docstrings/" class="md-nav__link">
         
   
@@ -1953,6 +1981,7 @@
 </ul>
 <h2 id="000-unreleased">0.0.0 (unreleased)<a class="headerlink" href="#000-unreleased" title="Permanent link">&para;</a></h2>
 <ul>
+<li>New standard: <a href="../pyright/">Pyright strict mode</a> — every fleet Python repo that runs pyright as a CI gate must set <code>typeCheckingMode = "strict"</code> so it enforces the same type-safety baseline as mypy <code>--strict</code>.</li>
 <li>Added "Chat observability" section to the chat-access standard defining log-read and read-only volume-inspection endpoints on <code>robotsix-central-deploy</code>, authorized by the existing per-component chat-access checkbox.</li>
 <li>Added <a href="../python-ci-workflow/">Python CI workflow</a> standard: every Python repo must ship a <code>.github/workflows/ci.yml</code> that runs lint → type-check → test+coverage on every push and PR — closing the fleet-wide gap where repos declared quality gates in <code>pyproject.toml</code> but had no CI workflow to enforce them.</li>
 <li>New standard: <strong>Python <code>__main__.py</code> exit-code forwarding</strong> — fleet Python packages that ship both console-script entry points and a <code>__main__.py</code> shim MUST forward <code>main()</code>'s return value to <code>sys.exit(main())</code> so <code>python -m &lt;pkg&gt;</code> reports the same exit code as the installed console script.</li>

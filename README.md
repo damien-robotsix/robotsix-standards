@@ -44,6 +44,7 @@ the default.
 | [Markdown linting](docs/markdown-linting.md) | markdownlint-cli2 and codespell pre-commit hooks for every repo that publishes MkDocs documentation. |
 | [Prose linting](docs/prose-linting.md) | Vale prose linter for style, readability, and fleet-specific vocabulary consistency — integrated through the existing pre-commit pipeline. |
 | [MkDocs build integrity](docs/mkdocs-build.md) | Strict mode build gating and link-validation configuration for every MkDocs site. |
+| [Python CI workflow](docs/python-ci-workflow.md) | Required `ci.yml` shape: lint → type-check → test+coverage, run on every push and PR — the enforcement mechanism for the quality gates declared in `pyproject.toml`. |
 | [Python practices](docs/python.md) | uv, hatchling, `requires-python`, lint/type/security gates, test layout, pre-commit hooks. |
 | [Python `__main__.py` exit-code forwarding](docs/python-main-py-forward.md) | `__main__.py` must forward `main()`'s return value to `sys.exit()` so `python -m <pkg>` reports the same exit code as the installed console script. |
 | [Pytest practices](docs/pytest.md) | Pytest strictness configuration — `filterwarnings`, `xfail_strict`, `--strict-markers`, and `--strict-config` — so every test suite fails loudly on deprecations, unregistered markers, and stale xfails. |

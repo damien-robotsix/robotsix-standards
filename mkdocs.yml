@@ -70,6 +70,7 @@ nav:
       - Changelog & releases: changelog-driven-releases.md
       - CI lint tool pinning: ci-lint-pinning.md
       - Distribution & Packaging: distribution-packaging.md
+      - Python CI workflow: python-ci-workflow.md
       - Python practices: python.md
       - Python __main__.py exit-code forwarding: python-main-py-forward.md
       - Python Makefile convention: python-makefile-convention.md

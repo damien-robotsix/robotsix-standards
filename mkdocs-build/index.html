@@ -1071,6 +1071,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#5-run-a-rendered-html-link-checker-in-a-separate-ci-job" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Run a rendered-HTML link checker in a separate CI job
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -1983,6 +1994,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#5-run-a-rendered-html-link-checker-in-a-separate-ci-job" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Run a rendered-HTML link checker in a separate CI job
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -2038,6 +2060,11 @@ surface.</p>
 unresolved template variables, broken <code>extra_javascript</code> / <code>extra_css</code>
 paths, malformed frontmatter) to hard errors — so a broken link fails CI, not
 just the published site.</p>
+<p>Setting <code>strict: true</code> in <code>mkdocs.yml</code> achieves the same effect and is
+preferred when the build command is not under the repo's direct control
+(e.g. called by a shared reusable workflow that doesn't accept extra CLI
+flags).  Both forms are acceptable — the requirement is that the build fails
+on warnings, not <em>how</em> the flag is delivered.</p>
 <p><strong>Failure mode prevented:</strong> a PR adds a page but forgets to register it in
 <code>mkdocs.yml</code>'s <code>nav</code>. Without <code>--strict</code>, MkDocs emits a single log line at
 <code>WARNING</code> level, CI passes, and the page is invisible on the published site
@@ -2156,6 +2183,71 @@ one-directional (it checks that TOC entries match existing files but does
 gate, and merges — but the page is invisible on the published docs site
 because it was never wired into the MkDocs <code>nav</code>.  The author and reviewer
 both assumed the TOC-sync gate covered nav registration; it doesn't.</p>
+<h3 id="5-run-a-rendered-html-link-checker-in-a-separate-ci-job">5. Run a rendered-HTML link checker in a separate CI job<a class="headerlink" href="#5-run-a-rendered-html-link-checker-in-a-separate-ci-job" title="Permanent link">&para;</a></h3>
+<p><code>--strict</code> and the <code>validation:</code> block catch broken internal links at build
+time, but they do <strong>not</strong> verify that external URLs are still reachable or
+that every internal anchor on the rendered HTML page resolves.  A separate
+rendered-HTML link checker — run against the built <code>site/</code> directory —
+validates every hyperlink on the published page: internal anchors,
+cross-page links, and external URLs.</p>
+<p>Two tools are acceptable.  Both satisfy the rule — choose the one that fits
+the repo's tolerance for external-URL flakiness:</p>
+<p><strong><code>mkdocs-htmlproofer-plugin</code> (build-time, internal + external).</strong>
+A MkDocs plugin that validates the rendered HTML during <code>mkdocs build</code>.
+Internal link and anchor failures should be hard errors (<code>raise_error_after_finish:
+true</code>).  External URLs that are known to be flaky or rate-limited (GitHub,
+raw.githubusercontent.com, docs.github.com) should be excluded via
+<code>ignore_urls</code> so the build remains deterministic:</p>
+<div class="highlight"><pre><span></span><code><span class="nt">plugins</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">htmlproofer</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">raise_error_after_finish</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">      </span><span class="nt">ignore_urls</span><span class="p">:</span>
+<span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;http://localhost*&quot;</span>
+<span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;https://raw.githubusercontent.com/*&quot;</span>
+<span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;https://github.com/*&quot;</span>
+<span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;https://docs.github.com/*&quot;</span>
+</code></pre></div>
+<p><strong><code>lychee</code> (post-build, separate job).</strong>  A standalone Rust link checker
+(<code>lycheeverse/lychee-action</code>) that validates the <code>site/</code> directory.  Run it
+in a <strong>separate CI job</strong> from the build-and-deploy job so a flaky external
+URL cannot block the deploy itself:</p>
+<div class="highlight"><pre><span></span><code><span class="nt">linkcheck</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">runs-on</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ubuntu-24.04</span>
+<span class="w">  </span><span class="nt">steps</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">uses</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">actions/checkout@v4</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="c1"># … build the docs into site/ …</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">uses</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">lycheeverse/lychee-action@v2</span>
+<span class="w">      </span><span class="nt">with</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">fail</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">        </span><span class="nt">args</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">&gt;-</span>
+<span class="w">          </span><span class="no">--accept 200,206,403,429,503</span>
+<span class="w">          </span><span class="no">--exclude-private</span>
+<span class="w">          </span><span class="no">--cache</span>
+<span class="w">          </span><span class="no">site/</span>
+</code></pre></div>
+<p><strong>Separation principle.</strong>  The link-check job must be a distinct CI job from
+the build-and-deploy job (or at least a distinct step whose failure does not
+block deploy).  The deploy path must never be gated on external URL
+reachability — a third-party site going down should not block a docs deploy.
+The link-check job gates <strong>pull requests</strong> (blocking merge when links are
+broken) but is non-blocking on the deploy workflow so a transient upstream
+outage never prevents publishing.</p>
+<p><strong>PR-time gating.</strong>  Every link-validation mechanism — <code>--strict</code>, the
+<code>validation:</code> block, and the rendered-HTML link checker — must run on pull
+requests, not only at deploy.  A gate that only fires on <code>push</code> to <code>main</code>
+(or on a <code>workflow_dispatch</code> deploy) catches breakage after it reaches
+readers.  The shared <code>python-docs.yml</code> reusable workflow already runs
+<code>mkdocs build --strict</code> on PRs; the rendered-HTML link checker must also be
+wired into the PR workflow (as a separate job or step).</p>
+<p><strong>Failure mode prevented:</strong> a PR links to an external resource (a blog post,
+a package page, an RFC) that later moves or goes offline.  Without a
+rendered-HTML link checker, the dead link is invisible — the build passes,
+the <code>validation:</code> block only checks internal structure, and readers encounter
+a 404 with no warning.  The link-check job catches this at PR time, before
+the dead link reaches readers.  A further failure mode: a flaky external URL
+blocks the docs deploy pipeline, preventing the site from updating even
+though the broken link is on a third-party domain the repo does not control.
+Separating the link-check job from deploy prevents this.</p>
 <h2 id="precedent">Precedent<a class="headerlink" href="#precedent" title="Permanent link">&para;</a></h2>
 <ul>
 <li><a href="https://github.com/pydantic/pydantic">Pydantic</a>,

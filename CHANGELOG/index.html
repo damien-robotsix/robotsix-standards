@@ -1981,6 +1981,7 @@
 </ul>
 <h2 id="000-unreleased">0.0.0 (unreleased)<a class="headerlink" href="#000-unreleased" title="Permanent link">&para;</a></h2>
 <ul>
+<li>Extended <code>mkdocs-build</code> standard with rendered-HTML link-check rule (htmlproofer-plugin or lychee in a separate CI job) and PR-time gating, so external-URL flakiness cannot block docs deploys.</li>
 <li>New standard: <a href="../pyright/">Pyright strict mode</a> — every fleet Python repo that runs pyright as a CI gate must set <code>typeCheckingMode = "strict"</code> so it enforces the same type-safety baseline as mypy <code>--strict</code>.</li>
 <li>Added "Chat observability" section to the chat-access standard defining log-read and read-only volume-inspection endpoints on <code>robotsix-central-deploy</code>, authorized by the existing per-component chat-access checkbox.</li>
 <li>Codified two Python packaging conventions in <code>docs/python.md</code>: pre-1.0 dependency upper cap (<code>httpx&gt;=0.27,&lt;1.0</code>) for dependencies still in their 0.x series, and the <code>Typing :: Typed</code> PEP 561 trove classifier for packages that ship <code>py.typed</code>.</li>

@@ -1502,6 +1502,78 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#5-chat-observability" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Chat observability
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5. Chat observability">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#rationale" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Rationale
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#implementer-robotsix-central-deploy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Implementer: robotsix-central-deploy
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#authorization-api-key-path-not-operator-web-login" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Authorization: API-key path, not operator web-login
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#51-logs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.1 Logs
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#52-volumes-read-only" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.2 Volumes (read-only)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#reference" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1905,6 +1977,78 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#5-chat-observability" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Chat observability
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5. Chat observability">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#rationale" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Rationale
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#implementer-robotsix-central-deploy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Implementer: robotsix-central-deploy
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#authorization-api-key-path-not-operator-web-login" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Authorization: API-key path, not operator web-login
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#51-logs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.1 Logs
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#52-volumes-read-only" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.2 Volumes (read-only)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#reference" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2080,6 +2224,78 @@ to chat operations:</p>
   the assumption that it protects itself. Chat access does not change this —
   the skill endpoint is an internal HTTP route behind the gateway, not a
   public API.</li>
+</ul>
+<hr />
+<h2 id="5-chat-observability">5. Chat observability<a class="headerlink" href="#5-chat-observability" title="Permanent link">&para;</a></h2>
+<p>The chat-access contract defined above enables the chat agent to <strong>act on</strong>
+components (restart, config-write, env-write). The observability obligations
+in this section enable the chat agent to <strong>observe</strong> components — reading
+logs and inspecting volume data — without opening a new permission axis. Both
+are authorized by the <strong>same per-component chat-access checkbox</strong> already in
+<code>robotsix-central-deploy</code>.</p>
+<h3 id="rationale">Rationale<a class="headerlink" href="#rationale" title="Permanent link">&para;</a></h3>
+<p>Components already log to stdout/stderr (12-factor). There is no need for a
+per-component log endpoint — the burden is on the deployer.</p>
+<p>Volumes hold persistent state (mailbox contents, sqlite databases, file
+stores) that the chat agent may need to inspect when debugging a component.
+The chat agent must not have write access to volumes — shell or bind-mount
+access to a running component's data would violate the chat-access trust
+boundary.</p>
+<h3 id="implementer-robotsix-central-deploy">Implementer: robotsix-central-deploy<a class="headerlink" href="#implementer-robotsix-central-deploy" title="Permanent link">&para;</a></h3>
+<p>Both logs and volumes are exposed by <strong><code>robotsix-central-deploy</code></strong>, not by
+individual components:</p>
+<ul>
+<li><strong>Components</strong> need only continue logging to stdout/stderr and mounting
+  volumes as they already do. No per-component endpoint or code change is
+  required for observability.</li>
+<li><strong><code>robotsix-central-deploy</code></strong> is responsible for collecting container logs,
+  exposing log/status endpoints, and mounting volumes read-only for
+  inspection.</li>
+</ul>
+<h3 id="authorization-api-key-path-not-operator-web-login">Authorization: API-key path, not operator web-login<a class="headerlink" href="#authorization-api-key-path-not-operator-web-login" title="Permanent link">&para;</a></h3>
+<p>All observability endpoints MUST be reachable on the <strong><code>X-API-Key</code></strong> path
+used by the chat agent's tools. Routes that sit behind the operator's
+web-login session (e.g. <code>/services/{name}/status</code> serving a login HTML page
+for unauthenticated requests) are <strong>not</strong> accessible to the chat agent and do
+not satisfy this standard.</p>
+<p>The chat agent reaches these endpoints through the same <code>central_deploy.url</code>
+and <code>central_deploy.api_token</code> fields described in <a href="#3-roster-not-discovery">§3</a>.
+Scope: only components whose chat-access checkbox is enabled.</p>
+<h3 id="51-logs">5.1 Logs<a class="headerlink" href="#51-logs" title="Permanent link">&para;</a></h3>
+<p><code>robotsix-central-deploy</code> MUST expose:</p>
+<ul>
+<li><strong><code>GET /chat/services/{name}/logs</code></strong> — return the component's recent
+  container logs (stdout/stderr). Query parameters (<code>tail</code>, <code>since</code>,
+  <code>timestamps</code>) may be supported but the minimal contract is a plain text or
+  JSON log response.</li>
+<li><strong><code>GET /chat/services/{name}/status</code></strong> — return the component's current
+  lifecycle status (running, stopped, restarting, error) as a JSON object.
+  This is a lightweight status check, distinct from the component's own
+  <code>/health</code> endpoint.</li>
+</ul>
+<p>Both endpoints return non-HTML content (text/plain or application/json). They
+must not redirect to or return the operator web-login page.</p>
+<h3 id="52-volumes-read-only">5.2 Volumes (read-only)<a class="headerlink" href="#52-volumes-read-only" title="Permanent link">&para;</a></h3>
+<p><code>robotsix-central-deploy</code> MUST expose <strong>read-only</strong> volume inspection for
+chat-access components:</p>
+<ul>
+<li><strong><code>GET /chat/services/{name}/volumes</code></strong> — list the volumes attached to the
+  component. Returns a JSON array of volume names.</li>
+<li><strong><code>GET /chat/services/{name}/volumes/{vol}/files?path=&lt;relative-path&gt;</code></strong> —
+  list directory contents or read a file from the named volume. When <code>path</code>
+  ends in <code>/</code> or names a directory, return a JSON listing of directory
+  entries. When <code>path</code> names a file, return the file content in a suitable
+  content type. The response is capped at a MAXIMUM PAYLOAD SIZE (the deployer
+  chooses the cap; 256 KiB is a reasonable default).</li>
+</ul>
+<p>The volume access path is <strong>strictly read-only</strong>:</p>
+<ul>
+<li>No write, delete, rename, or symlink-create operations.</li>
+<li>No path traversal outside the volume root (<code>..</code>, absolute paths, symlinks
+  that escape the volume).</li>
+<li>The deployer mounts volumes read-only when serving these requests.</li>
+<li>All volume reads share the same per-component chat-access authorization
+  gate — no separate volume permission toggle.</li>
 </ul>
 <hr />
 <h2 id="reference">Reference<a class="headerlink" href="#reference" title="Permanent link">&para;</a></h2>

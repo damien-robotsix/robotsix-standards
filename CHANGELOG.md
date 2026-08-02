@@ -123,6 +123,7 @@
 
 - New standard: [Pyright strict mode](docs/pyright.md) — every fleet Python repo that runs pyright as a CI gate must set `typeCheckingMode = "strict"` so it enforces the same type-safety baseline as mypy `--strict`.
 - Added "Chat observability" section to the chat-access standard defining log-read and read-only volume-inspection endpoints on `robotsix-central-deploy`, authorized by the existing per-component chat-access checkbox.
+- Codified two Python packaging conventions in `docs/python.md`: pre-1.0 dependency upper cap (`httpx>=0.27,<1.0`) for dependencies still in their 0.x series, and the `Typing :: Typed` PEP 561 trove classifier for packages that ship `py.typed`.
 - Added [Python CI workflow](docs/python-ci-workflow.md) standard: every Python repo must ship a `.github/workflows/ci.yml` that runs lint → type-check → test+coverage on every push and PR — closing the fleet-wide gap where repos declared quality gates in `pyproject.toml` but had no CI workflow to enforce them.
 - New standard: **Python `__main__.py` exit-code forwarding** — fleet Python packages that ship both console-script entry points and a `__main__.py` shim MUST forward `main()`'s return value to `sys.exit(main())` so `python -m <pkg>` reports the same exit code as the installed console script.
 - Standardize: persistent HTTP client with explicit timeout — one `httpx.Client` (or `requests.Session`) per process, explicit `timeout=`, no per-call module-level convenience helpers.

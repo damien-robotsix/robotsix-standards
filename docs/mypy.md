@@ -119,3 +119,10 @@ as the long-term enforcement strategy. Where the `mypy-baseline` tool
 appears in the ecosystem, its own documentation treats the snapshot as a
 bootstrapping scaffold: shrink periodically, delete, then gate on the raw
 type-checker.
+
+## Companion standards
+
+- **[Pyright strict mode](pyright.md)** — the matching pyright strictness
+  standard.  Every fleet repo that runs both mypy and pyright in CI must
+  configure pyright with `typeCheckingMode = "strict"` so the two checkers
+  enforce a consistent gate.

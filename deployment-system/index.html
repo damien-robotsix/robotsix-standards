@@ -2102,7 +2102,7 @@ latest service list?" rather than "what does the onboarding API show?"</p>
 </tr>
 <tr>
 <td>Observability project credentials</td>
-<td>Config dict (<code>langfuse_projects: {alias: {public_key, secret_key}}</code>)</td>
+<td>The owning component's canonical <code>langfuse</code> / <code>openrouter</code> blocks (see the <a href="../component-standard/">component standard</a>); the engine's own <code>langfuse_projects</code> / <code>openrouter_keys</code> config dicts are an operator override, not the primary store</td>
 </tr>
 <tr>
 <td>Mutation / capability permissions</td>
@@ -2116,11 +2116,31 @@ frozenset({"a", "b"})</code> with a boolean field on the component config model
 (e.g. <code>chat_agent_mutatable: bool</code>), set via a compose label
 (<code>robotsix.deploy.chat-agent-mutatable: "true"</code>) at onboard time. The engine
 checks the flag on the component, not the name against a hard-coded set.</p>
-<p><strong>Project aliases → config dict.</strong> Replace hard-coded <code>_PROJECT_CONFIG_KEYS =
-{"project-a": {...}}</code> with a <code>langfuse_projects: dict[str, {public_key,
-secret_key}]</code> config field read from the deployment engine's own config.
-Backward compatibility can be handled with a legacy fallback map that the
-operator can deprecate on their own schedule.</p>
+<p><strong>Project aliases → the owning component's config.</strong> Replace hard-coded
+<code>_PROJECT_CONFIG_KEYS = {"project-a": {...}}</code> with a read of each component's
+canonical credential blocks — the component owns its own observability
+credentials, and the engine only enumerates them. Keep a
+<code>langfuse_projects</code> / <code>openrouter_keys</code> dict on the engine's own config as an
+<strong>operator override</strong>: it wins on alias collision, so an operator can pin or
+rotate a key, and can bridge a component that has not migrated yet — without
+that being a fallback the engine applies on its own (see
+<a href="../component-standard/#llm-usage">No credential fallbacks</a>).</p>
+<p><strong>Credentials reach consumers through one generic endpoint.</strong> A fleet
+consumer (a cost dashboard, a trace proxy) MUST obtain another component's
+observability credentials by asking the engine, never by having them copied
+into its own config. The engine exposes one route that enumerates every
+component with its credentials; adding a consumer, a component, or a project
+requires no engine change. Failure prevented: hand-copied credentials are
+exactly the per-service definition this rule exists to eliminate, and they go
+stale silently.</p>
+<p><strong>Operator-supplied aliases that no component claims MUST still be
+surfaced</strong>, under a synthetic entry (e.g. component id
+<code>operator-configured</code>), never dropped and never attributed to a component
+that did not declare them. Failure prevented: dropping them makes an
+operator's bridge for an unmigrated component invisible; attributing them
+makes a component look migrated when it is not — and the synthetic entry
+appearing in a consumer's UI is the visible signal that a migration is
+still owed.</p>
 <p><strong>Default values → empty.</strong> Config defaults that embed specific hostnames or
 component ids (e.g. <code>langfuse_base_url = "https://langfuse.robotsix.net"</code>,
 <code>mill_component_id = "mill"</code>) MUST be empty strings or absent — the operator

@@ -2376,10 +2376,15 @@ production. Full detail: <a href="../http-error-envelope/">HTTP error envelope</
   one OpenRouter key ↔ one reconciliation row), and high-volume background
   traffic drowns the interactive function's traces and skews its
   latency/cost dashboards.</li>
-<li><strong>Each project is registered in cost-monitor's <code>projects.yaml</code></strong>,
-  alongside the OpenRouter key that funds that function. An unregistered
-  project is invisible to the cost dashboard and reconciliation — spend
-  drifts unnoticed.</li>
+<li><strong>Projects are discovered, never hand-registered in a consumer.</strong> A
+  component declares its Langfuse projects and the provider key funding each
+  of them in the canonical blocks below; the deployment engine enumerates
+  every component's declarations and serves them to the fleet consumers that
+  need them. No consumer keeps its own copy of the fleet's projects. Failure
+  prevented: a hand-maintained registry inside a consumer (cost-monitor's
+  former <code>projects.yaml</code>) drifts the moment a component adds a function or
+  rotates a key, and that function's spend silently vanishes from the cost
+  dashboard and reconciliation.</li>
 <li>Tracing credentials are <strong><code>SecretStr</code> fields in the config model</strong>, like
   any other secret; at startup the app exports them to the <code>LANGFUSE_*</code>
   process environment the SDK expects, <em>before</em> the SDK initializes. No
@@ -2422,11 +2427,33 @@ production. Full detail: <a href="../http-error-envelope/">HTTP error envelope</
   every consumer sees an empty project list while each component's own
   tracing still works, so the breakage is invisible until someone asks why
   the trace list is empty.
-- <strong>No credential fallbacks.</strong> The engine reads this block and nothing
-  else: not deploy-plane <code>LANGFUSE_*</code> environment variables, not a
-  pre-standard config layout. A component that has not migrated reports no
-  projects — a visible failure that gets fixed, rather than a silent
-  fallback that hides an unmigrated component indefinitely.</p>
+- <strong>The provider key funding each project lives in a parallel canonical
+  block</strong>, a top-level <code>openrouter</code> key holding a <code>keys</code> map addressed by
+  the <strong>same aliases</strong> as <code>langfuse.projects</code>:</p>
+<div class="highlight"><pre><span></span><code><span class="nt">&quot;openrouter&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;keys&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;my-component&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;sk-or-…&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;my-component-memory&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;sk-or-…&quot;</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+<p>Sharing the alias is the whole point: reconciliation compares what the
+  provider billed for one LLM function against what Langfuse traced for that
+  same function, and the shared alias is what makes the two joinable. It
+  follows that <strong>a provider key must fund exactly one function</strong> —
+  reconciliation diffs <em>cumulative usage per key</em>, so two functions behind
+  one key yield a single usage figure attributable to neither. A component
+  with two tracing functions declares two keys here, exactly as it declares
+  two Langfuse projects. Failure prevented: a shared key is worse than a
+  missing one, because reconciliation still produces a number and that
+  number looks attributed.
+- <strong>No credential fallbacks, for either block.</strong> The engine reads these
+  blocks and nothing else: not deploy-plane <code>LANGFUSE_*</code> environment
+  variables, not a pre-standard config layout, not a component's own
+  historical field (<code>llmio_api_key</code>, <code>secrets.openrouter_api_key</code>). A
+  component that has not migrated reports no projects and no keys — a
+  visible failure that gets fixed, rather than a silent fallback that hides
+  an unmigrated component indefinitely.</p>
 <h3 id="security">Security<a class="headerlink" href="#security" title="Permanent link">&para;</a></h3>
 <blockquote>
 <p>The fleet's core function involves LLM agents — every agent that reads

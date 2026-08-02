@@ -2284,7 +2284,9 @@ in the <a href="../repo-baseline/">repo baseline</a>.</p>
 <li><strong>src layout, one primary package:</strong> code lives in <code>src/robotsix_&lt;name&gt;/</code>,
   the snake_case of the repo name. Every package ships <strong><code>py.typed</code></strong> — any
   package may be imported by tests or tooling, and downstream type-checking
-  must see the annotations.</li>
+  must see the annotations.  The package also declares the
+  <strong><code>Typing :: Typed</code></strong> trove classifier in <code>[project].classifiers</code>
+  (PEP 561), so packaging indexes and tools recognize it as typed.</li>
 <li><strong>Modules are subdirectories</strong> of the package, mirrored by
   <code>tests/&lt;module&gt;/</code> and <code>docs/&lt;module&gt;/</code> — the same convention
   <code>docs/modules.yaml</code>'s default globs assume (see the
@@ -2386,6 +2388,22 @@ declare it in every Python repo (the baseline-check gate verifies this).</p>
   <code>uv sync</code> (uv honours <code>[tool.uv.sources]</code>).
 - Dev tooling goes in a PEP 735 <code>[dependency-groups] dev</code> group, pulled in by
   default via <code>[tool.uv] default-groups</code>.</p>
+<ul>
+<li><strong>Pre-1.0 dependency upper cap.</strong> Any runtime dependency that is still in
+  its 0.x series (notably <code>httpx</code>) MUST be declared with an upper bound at
+  the next major version — e.g. <code>httpx&gt;=0.27,&lt;1.0</code>.  A bare lower bound
+  (<code>httpx&gt;=0.27</code>) is the anti-pattern: a 0.x release can introduce breaking
+  changes without a major-version bump, and a resolver seeing only a lower
+  bound will pull in the latest 0.x, potentially breaking the consumer.</li>
+</ul>
+<blockquote>
+<p><strong>Failure mode.</strong> A library declared as <code>httpx&gt;=0.27</code> works today but
+breaks silently when httpx releases <code>0.28</code> with a breaking change — the
+resolver pulls it in, the consumer's tests may not catch it, and the
+failure lands in a downstream repo that pinned this library. The cap
+<code>httpx&gt;=0.27,&lt;1.0</code> prevents the silent upgrade while still allowing
+compatible 0.x patches.</p>
+</blockquote>
 <h2 id="requires-python"><code>requires-python</code><a class="headerlink" href="#requires-python" title="Permanent link">&para;</a></h2>
 <ul>
 <li><strong>Every repo — libraries and deployable components alike — targets the

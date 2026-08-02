@@ -195,6 +195,47 @@ production. Full detail: [HTTP error envelope](http-error-envelope.md).
   A subsystem's project gets its **own** credential fields — it must not
   reuse the component's main `LANGFUSE_*` credentials, or its traffic
   lands in the main project and silently defeats the per-function split.
+- **Those fields live in one canonical block**, so the deployment engine
+  can read every component's credentials the same way and dispatch them to
+  the fleet consumers that need them (the chat agent's trace proxy,
+  cost-monitor's reconciliation). The block is a top-level `langfuse` key
+  holding the instance `host` and a `projects` map keyed by the Langfuse
+  **project name** — the same `<repo>` / `<repo>-<function>` names fixed by
+  the one-project-per-function rule above:
+
+  ```json
+  "langfuse": {
+    "host": "https://langfuse.example.net",
+    "projects": {
+      "my-component": {
+        "public_key": "pk-lf-…",
+        "secret_key": "sk-lf-…",
+        "project_id": "cm…"
+      },
+      "my-component-memory": {
+        "public_key": "pk-lf-…",
+        "secret_key": "sk-lf-…",
+        "project_id": "cm…"
+      }
+    }
+  }
+  ```
+
+  `project_id` is optional and only needed by consumers that address the
+  Langfuse project by id rather than name. A component keeps reading its
+  own credentials from this block internally — the block is the *storage*
+  shape, not a new API. Failure prevented: when each component invents its
+  own layout (`langfuse.public_key` here, `secrets.langfuse_public_key`
+  there), the engine cannot enumerate fleet credentials without a
+  per-component special case, and discovery silently returns nothing —
+  every consumer sees an empty project list while each component's own
+  tracing still works, so the breakage is invisible until someone asks why
+  the trace list is empty.
+- **No credential fallbacks.** The engine reads this block and nothing
+  else: not deploy-plane `LANGFUSE_*` environment variables, not a
+  pre-standard config layout. A component that has not migrated reports no
+  projects — a visible failure that gets fixed, rather than a silent
+  fallback that hides an unmigrated component indefinitely.
 
 ### Security
 

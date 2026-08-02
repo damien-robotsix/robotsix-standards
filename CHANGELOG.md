@@ -121,6 +121,7 @@
 
 ## 0.0.0 (unreleased)
 
+- Extended `mkdocs-build` standard with rendered-HTML link-check rule (htmlproofer-plugin or lychee in a separate CI job) and PR-time gating, so external-URL flakiness cannot block docs deploys.
 - New standard: [Pyright strict mode](docs/pyright.md) — every fleet Python repo that runs pyright as a CI gate must set `typeCheckingMode = "strict"` so it enforces the same type-safety baseline as mypy `--strict`.
 - Added "Chat observability" section to the chat-access standard defining log-read and read-only volume-inspection endpoints on `robotsix-central-deploy`, authorized by the existing per-component chat-access checkbox.
 - Codified two Python packaging conventions in `docs/python.md`: pre-1.0 dependency upper cap (`httpx>=0.27,<1.0`) for dependencies still in their 0.x series, and the `Typing :: Typed` PEP 561 trove classifier for packages that ship `py.typed`.

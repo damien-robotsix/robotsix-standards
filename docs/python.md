@@ -9,7 +9,9 @@
 - **src layout, one primary package:** code lives in `src/robotsix_<name>/`,
   the snake_case of the repo name. Every package ships **`py.typed`** — any
   package may be imported by tests or tooling, and downstream type-checking
-  must see the annotations.
+  must see the annotations.  The package also declares the
+  **`Typing :: Typed`** trove classifier in `[project].classifiers`
+  (PEP 561), so packaging indexes and tools recognize it as typed.
 - **Modules are subdirectories** of the package, mirrored by
   `tests/<module>/` and `docs/<module>/` — the same convention
   `docs/modules.yaml`'s default globs assume (see the
@@ -124,6 +126,20 @@ declare it in every Python repo (the baseline-check gate verifies this).
   `uv sync` (uv honours `[tool.uv.sources]`).
 - Dev tooling goes in a PEP 735 `[dependency-groups] dev` group, pulled in by
   default via `[tool.uv] default-groups`.
+
+- **Pre-1.0 dependency upper cap.** Any runtime dependency that is still in
+  its 0.x series (notably `httpx`) MUST be declared with an upper bound at
+  the next major version — e.g. `httpx>=0.27,<1.0`.  A bare lower bound
+  (`httpx>=0.27`) is the anti-pattern: a 0.x release can introduce breaking
+  changes without a major-version bump, and a resolver seeing only a lower
+  bound will pull in the latest 0.x, potentially breaking the consumer.
+
+  > **Failure mode.** A library declared as `httpx>=0.27` works today but
+  > breaks silently when httpx releases `0.28` with a breaking change — the
+  > resolver pulls it in, the consumer's tests may not catch it, and the
+  > failure lands in a downstream repo that pinned this library. The cap
+  > `httpx>=0.27,<1.0` prevents the silent upgrade while still allowing
+  > compatible 0.x patches.
 
 ## `requires-python`
 

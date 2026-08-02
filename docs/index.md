@@ -79,6 +79,10 @@ everywhere.
 - **[Mypy strictness](mypy.md)** — mypy as a hard CI gate (not advisory),
   baseline snapshots as a bootstrapping scaffold with a defined exit, and
   strict-mode type-clean new code.
+- **[Pyright strict mode](pyright.md)** — pyright must run at
+  `typeCheckingMode = "strict"` so it enforces the same type-safety baseline
+  as mypy `--strict`, with per-diagnostic overrides only for proven-untyped
+  third-party dependencies.
 - **[JavaScript practices](javascript.md)** — vanilla frontend JS as static
   assets, lockfile discipline, vitest coverage floor, eslint/stylelint.
 - **[ROS 2 practices](ros2.md)** — workspace-skeleton layout, vcs2l manifest,

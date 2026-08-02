@@ -2388,7 +2388,45 @@ production. Full detail: <a href="../http-error-envelope/">HTTP error envelope</
   A subsystem's project gets its <strong>own</strong> credential fields — it must not
   reuse the component's main <code>LANGFUSE_*</code> credentials, or its traffic
   lands in the main project and silently defeats the per-function split.</li>
+<li><strong>Those fields live in one canonical block</strong>, so the deployment engine
+  can read every component's credentials the same way and dispatch them to
+  the fleet consumers that need them (the chat agent's trace proxy,
+  cost-monitor's reconciliation). The block is a top-level <code>langfuse</code> key
+  holding the instance <code>host</code> and a <code>projects</code> map keyed by the Langfuse
+  <strong>project name</strong> — the same <code>&lt;repo&gt;</code> / <code>&lt;repo&gt;-&lt;function&gt;</code> names fixed by
+  the one-project-per-function rule above:</li>
 </ul>
+<div class="highlight"><pre><span></span><code><span class="nt">&quot;langfuse&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;host&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;https://langfuse.example.net&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;projects&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;my-component&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">&quot;public_key&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;pk-lf-…&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;secret_key&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;sk-lf-…&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;project_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;cm…&quot;</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="w">    </span><span class="nt">&quot;my-component-memory&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">&quot;public_key&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;pk-lf-…&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;secret_key&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;sk-lf-…&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;project_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;cm…&quot;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+<p><code>project_id</code> is optional and only needed by consumers that address the
+  Langfuse project by id rather than name. A component keeps reading its
+  own credentials from this block internally — the block is the <em>storage</em>
+  shape, not a new API. Failure prevented: when each component invents its
+  own layout (<code>langfuse.public_key</code> here, <code>secrets.langfuse_public_key</code>
+  there), the engine cannot enumerate fleet credentials without a
+  per-component special case, and discovery silently returns nothing —
+  every consumer sees an empty project list while each component's own
+  tracing still works, so the breakage is invisible until someone asks why
+  the trace list is empty.
+- <strong>No credential fallbacks.</strong> The engine reads this block and nothing
+  else: not deploy-plane <code>LANGFUSE_*</code> environment variables, not a
+  pre-standard config layout. A component that has not migrated reports no
+  projects — a visible failure that gets fixed, rather than a silent
+  fallback that hides an unmigrated component indefinitely.</p>
 <h3 id="security">Security<a class="headerlink" href="#security" title="Permanent link">&para;</a></h3>
 <blockquote>
 <p>The fleet's core function involves LLM agents — every agent that reads

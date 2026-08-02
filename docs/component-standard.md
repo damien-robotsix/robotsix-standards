@@ -183,10 +183,15 @@ production. Full detail: [HTTP error envelope](http-error-envelope.md).
   one OpenRouter key ↔ one reconciliation row), and high-volume background
   traffic drowns the interactive function's traces and skews its
   latency/cost dashboards.
-- **Each project is registered in cost-monitor's `projects.yaml`**,
-  alongside the OpenRouter key that funds that function. An unregistered
-  project is invisible to the cost dashboard and reconciliation — spend
-  drifts unnoticed.
+- **Projects are discovered, never hand-registered in a consumer.** A
+  component declares its Langfuse projects and the provider key funding each
+  of them in the canonical blocks below; the deployment engine enumerates
+  every component's declarations and serves them to the fleet consumers that
+  need them. No consumer keeps its own copy of the fleet's projects. Failure
+  prevented: a hand-maintained registry inside a consumer (cost-monitor's
+  former `projects.yaml`) drifts the moment a component adds a function or
+  rotates a key, and that function's spend silently vanishes from the cost
+  dashboard and reconciliation.
 - Tracing credentials are **`SecretStr` fields in the config model**, like
   any other secret; at startup the app exports them to the `LANGFUSE_*`
   process environment the SDK expects, *before* the SDK initializes. No
@@ -231,11 +236,36 @@ production. Full detail: [HTTP error envelope](http-error-envelope.md).
   every consumer sees an empty project list while each component's own
   tracing still works, so the breakage is invisible until someone asks why
   the trace list is empty.
-- **No credential fallbacks.** The engine reads this block and nothing
-  else: not deploy-plane `LANGFUSE_*` environment variables, not a
-  pre-standard config layout. A component that has not migrated reports no
-  projects — a visible failure that gets fixed, rather than a silent
-  fallback that hides an unmigrated component indefinitely.
+- **The provider key funding each project lives in a parallel canonical
+  block**, a top-level `openrouter` key holding a `keys` map addressed by
+  the **same aliases** as `langfuse.projects`:
+
+  ```json
+  "openrouter": {
+    "keys": {
+      "my-component": "sk-or-…",
+      "my-component-memory": "sk-or-…"
+    }
+  }
+  ```
+
+  Sharing the alias is the whole point: reconciliation compares what the
+  provider billed for one LLM function against what Langfuse traced for that
+  same function, and the shared alias is what makes the two joinable. It
+  follows that **a provider key must fund exactly one function** —
+  reconciliation diffs *cumulative usage per key*, so two functions behind
+  one key yield a single usage figure attributable to neither. A component
+  with two tracing functions declares two keys here, exactly as it declares
+  two Langfuse projects. Failure prevented: a shared key is worse than a
+  missing one, because reconciliation still produces a number and that
+  number looks attributed.
+- **No credential fallbacks, for either block.** The engine reads these
+  blocks and nothing else: not deploy-plane `LANGFUSE_*` environment
+  variables, not a pre-standard config layout, not a component's own
+  historical field (`llmio_api_key`, `secrets.openrouter_api_key`). A
+  component that has not migrated reports no projects and no keys — a
+  visible failure that gets fixed, rather than a silent fallback that hides
+  an unmigrated component indefinitely.
 
 ### Security
 

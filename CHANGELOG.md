@@ -121,6 +121,7 @@
 
 ## 0.0.0 (unreleased)
 
+- Added [Python CI workflow](docs/python-ci-workflow.md) standard: every Python repo must ship a `.github/workflows/ci.yml` that runs lint → type-check → test+coverage on every push and PR — closing the fleet-wide gap where repos declared quality gates in `pyproject.toml` but had no CI workflow to enforce them.
 - New standard: **Python `__main__.py` exit-code forwarding** — fleet Python packages that ship both console-script entry points and a `__main__.py` shim MUST forward `main()`'s return value to `sys.exit(main())` so `python -m <pkg>` reports the same exit code as the installed console script.
 - Standardize: persistent HTTP client with explicit timeout — one `httpx.Client` (or `requests.Session`) per process, explicit `timeout=`, no per-call module-level convenience helpers.
 - Stop attributing the `LICENSE` (MIT) check to the shared baseline-check workflow;

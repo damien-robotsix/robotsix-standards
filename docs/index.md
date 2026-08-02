@@ -59,6 +59,9 @@ everywhere.
   through the existing pre-commit pipeline.
 - **[MkDocs build integrity](mkdocs-build.md)** — strict mode build gating
   and link-validation configuration for every MkDocs site.
+- **[Python CI workflow](python-ci-workflow.md)** — required `ci.yml` shape:
+  lint → type-check → test+coverage, run on every push and PR — the enforcement
+  mechanism for the quality gates declared in `pyproject.toml`.
 - **[Python practices](python.md)** — uv, hatchling, `requires-python` policy,
   lint/type/security gates, test layout, pre-commit hooks.
 - **[Python `__main__.py` exit-code forwarding](python-main-py-forward.md)** —

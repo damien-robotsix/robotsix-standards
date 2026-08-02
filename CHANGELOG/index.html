@@ -562,6 +562,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../python-ci-workflow/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Python CI workflow
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../python/" class="md-nav__link">
         
   
@@ -1925,6 +1953,7 @@
 </ul>
 <h2 id="000-unreleased">0.0.0 (unreleased)<a class="headerlink" href="#000-unreleased" title="Permanent link">&para;</a></h2>
 <ul>
+<li>Added <a href="../python-ci-workflow/">Python CI workflow</a> standard: every Python repo must ship a <code>.github/workflows/ci.yml</code> that runs lint → type-check → test+coverage on every push and PR — closing the fleet-wide gap where repos declared quality gates in <code>pyproject.toml</code> but had no CI workflow to enforce them.</li>
 <li>New standard: <strong>Python <code>__main__.py</code> exit-code forwarding</strong> — fleet Python packages that ship both console-script entry points and a <code>__main__.py</code> shim MUST forward <code>main()</code>'s return value to <code>sys.exit(main())</code> so <code>python -m &lt;pkg&gt;</code> reports the same exit code as the installed console script.</li>
 <li>Standardize: persistent HTTP client with explicit timeout — one <code>httpx.Client</code> (or <code>requests.Session</code>) per process, explicit <code>timeout=</code>, no per-call module-level convenience helpers.</li>
 <li>Stop attributing the <code>LICENSE</code> (MIT) check to the shared baseline-check workflow;

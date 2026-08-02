@@ -10,13 +10,13 @@
       
       
       
-        <link rel="canonical" href="https://damien-robotsix.github.io/robotsix-standards/default-config-location/">
+        <link rel="canonical" href="https://damien-robotsix.github.io/robotsix-standards/python-ci-workflow/">
       
       
-        <link rel="prev" href="../config-standard/">
+        <link rel="prev" href="../distribution-packaging/">
       
       
-        <link rel="next" href="../config-ownership/">
+        <link rel="next" href="../python/">
       
       
         
@@ -27,7 +27,7 @@
     
     
       
-        <title>Default config location - Robotsix Standards</title>
+        <title>Python CI workflow - Robotsix Standards</title>
       
     
     
@@ -78,7 +78,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#default-config-location" class="md-skip">
+        <a href="#python-ci-workflow" class="md-skip">
           Skip to content
         </a>
       
@@ -114,7 +114,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Default config location
+              Python CI workflow
             
           </span>
         </div>
@@ -311,8 +311,10 @@
       
   
   
+    
   
   
+  
     
     
     
@@ -323,13 +325,11 @@
       
     
     
-    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
       
         
         
-          
-        
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
         
           
           <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
@@ -350,7 +350,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_3">
             <span class="md-nav__icon md-icon"></span>
             
@@ -561,10 +561,37 @@
                 
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="../python-ci-workflow/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Python CI workflow
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   
@@ -580,6 +607,148 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#the-rule" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The rule
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#why" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#how-to-comply" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How to comply
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="How to comply">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#preferred-use-the-shared-reusable-workflow" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Preferred: use the shared reusable workflow
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fallback-standalone-ciyml" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Fallback: standalone ci.yml
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#jobs-and-ordering" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Jobs and ordering
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Jobs and ordering">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#parallel-auxiliary-gates" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Parallel auxiliary gates
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#what-ciyml-does-not-cover" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What ci.yml does not cover
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#failure-modes-prevented" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Failure modes prevented
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#relationship-to-other-standards" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Relationship to other standards
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -1044,8 +1213,6 @@
       
   
   
-    
-  
   
   
     
@@ -1058,11 +1225,13 @@
       
     
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4" >
         
           
           <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
@@ -1083,7 +1252,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_4">
             <span class="md-nav__icon md-icon"></span>
             
@@ -1154,37 +1323,10 @@
                 
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Default config location
-  
-
-    
-  </span>
-  
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../default-config-location/" class="md-nav__link">
         
   
   
@@ -1200,98 +1342,6 @@
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#the-rule" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        The rule
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="The rule">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#1-canonical-location-configconfigjson-at-the-repo-root" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        1. Canonical location: config/config.json at the repo root
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#2-relationship-to-the-robotsixdeployconfig-target-compose-label" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        2. Relationship to the robotsix.deploy.config-target compose label
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#3-validation-expectation" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        3. Validation expectation
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#4-consumer-guidance" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        4. Consumer guidance
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#why-not-bake-the-default-into-the-image" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Why not bake the default into the image?
-      
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -1852,14 +1902,36 @@
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="The rule">
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#why" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#how-to-comply" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How to comply
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="How to comply">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#1-canonical-location-configconfigjson-at-the-repo-root" class="md-nav__link">
+  <a href="#preferred-use-the-shared-reusable-workflow" class="md-nav__link">
     <span class="md-ellipsis">
       
-        1. Canonical location: config/config.json at the repo root
+        Preferred: use the shared reusable workflow
       
     </span>
   </a>
@@ -1867,32 +1939,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#2-relationship-to-the-robotsixdeployconfig-target-compose-label" class="md-nav__link">
+  <a href="#fallback-standalone-ciyml" class="md-nav__link">
     <span class="md-ellipsis">
       
-        2. Relationship to the robotsix.deploy.config-target compose label
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#3-validation-expectation" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        3. Validation expectation
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#4-consumer-guidance" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        4. Consumer guidance
+        Fallback: standalone ci.yml
       
     </span>
   </a>
@@ -1905,10 +1955,60 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#why-not-bake-the-default-into-the-image" class="md-nav__link">
+  <a href="#jobs-and-ordering" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Why not bake the default into the image?
+        Jobs and ordering
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Jobs and ordering">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#parallel-auxiliary-gates" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Parallel auxiliary gates
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#what-ciyml-does-not-cover" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What ci.yml does not cover
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#failure-modes-prevented" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Failure modes prevented
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#relationship-to-other-standards" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Relationship to other standards
       
     </span>
   </a>
@@ -1935,124 +2035,185 @@
   
 
 
-<h1 id="default-config-location">Default config location<a class="headerlink" href="#default-config-location" title="Permanent link">&para;</a></h1>
+<h1 id="python-ci-workflow">Python CI workflow<a class="headerlink" href="#python-ci-workflow" title="Permanent link">&para;</a></h1>
 <blockquote>
-<p><strong>Scope: deployable components only.</strong> See the
-<a href="../component-standard/">component standard</a>.</p>
+<p><strong>Scope: every Python repository.</strong> Every Python repo must ship a
+<code>.github/workflows/ci.yml</code> that runs lint, type-check, and test gates on
+every push to <code>main</code> and every pull request. The quality gates declared in
+<code>pyproject.toml</code> and <code>.pre-commit-config.yaml</code> are documentation;
+<code>ci.yml</code> is the enforcement mechanism.</p>
 </blockquote>
-<p>Every deployable component ships a <strong>default config file</strong> at a standardized
-in-repo location. The deployment system reads this file exactly once — when the
-repo is first registered — to seed the deploy-side config. After seeding, the
-deploy-side config is the operator's to edit; the shipped default is never
-consulted again.</p>
 <h2 id="the-rule">The rule<a class="headerlink" href="#the-rule" title="Permanent link">&para;</a></h2>
-<h3 id="1-canonical-location-configconfigjson-at-the-repo-root">1. Canonical location: <code>config/config.json</code> at the repo root<a class="headerlink" href="#1-canonical-location-configconfigjson-at-the-repo-root" title="Permanent link">&para;</a></h3>
-<p>The shipped default config lives at <strong><code>config/config.json</code></strong> at the repository
-root — the same path the component reads at runtime per the
-<a href="../config-standard/">config standard</a> (located by <code>ROBOTSIX_CONFIG_FILE</code>, which
-defaults to that path). The file is a valid instance of the component's config
-model: every required field has a value, every optional field carries its
-sensible default, and no field is left dangling.</p>
-<p><em>Failure prevented:</em> central-deploy registers a new repo and starts the
-component with an empty deploy-side config. The component fails at startup
-with a validation error (e.g. <code>'agents': [] should be non-empty</code>) because the
-deploy-side config shadows the repo's shipped default — but the deploy-side
-config was never seeded.</p>
-<h3 id="2-relationship-to-the-robotsixdeployconfig-target-compose-label">2. Relationship to the <code>robotsix.deploy.config-target</code> compose label<a class="headerlink" href="#2-relationship-to-the-robotsixdeployconfig-target-compose-label" title="Permanent link">&para;</a></h3>
-<p>The <code>robotsix.deploy.config-target</code> label on the primary service in
-<code>deploy/docker-compose.yml</code> declares <strong>where the config file is injected
-inside the container</strong> at runtime (e.g. <code>/home/app/config/config.json</code>).
-That label is part of the <a href="../deploy-contract/">deploy contract</a> and is
-consumed by central-deploy at every config save — the deployment system
-writes the deploy-side config into the mounted volume at that path before
-the container starts.</p>
-<p>The shipped default at <code>config/config.json</code> is the <strong>seed value</strong> for that
-deploy-side config. On first registration of a repo, central-deploy copies
-the shipped default into the deploy-side config store. The
-<code>config-target</code> label is the <em>target</em>; the shipped default is the <em>source</em>.
-They are separate concerns:</p>
+<p><strong>Every Python repository must have a <code>ci.yml</code> workflow that runs, in order:
+lint → type-check → test+coverage.</strong> The workflow must trigger on <code>push</code> to
+<code>main</code> and on <code>pull_request</code>. The three gates must run in sequence — a merge
+PR must pass lint and type-check before the test suite runs — because running
+tests when the code is already known to fail lint or type-check wastes CI
+minutes and delays the developer's fix loop.</p>
+<p>The required gates and their minimal invocations:</p>
 <table>
 <thead>
 <tr>
-<th>Concern</th>
-<th>Where defined</th>
-<th>Consumed by</th>
+<th>Gate</th>
+<th>Command</th>
+<th>Notes</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>Where the config goes inside the container</td>
-<td><code>robotsix.deploy.config-target</code> label in <code>deploy/docker-compose.yml</code></td>
-<td>central-deploy (every config save)</td>
+<td>Lint</td>
+<td><code>uv run ruff check src/ --output-format=github</code></td>
+<td><code>--output-format=github</code> surfaces annotations in the PR diff.</td>
 </tr>
 <tr>
-<td>The seed value for the deploy-side config</td>
-<td><code>config/config.json</code> at the repo root</td>
-<td>central-deploy (once, on first registration)</td>
+<td>Format</td>
+<td><code>uv run ruff format --check src/</code></td>
+<td>Fails if any file needs formatting; separate from lint so the developer sees check vs. format failures distinctly.</td>
+</tr>
+<tr>
+<td>Type-check</td>
+<td><code>uv run mypy</code></td>
+<td>Uses per-repo <code>pyproject.toml</code> mypy config (see <a href="../mypy/">mypy strictness</a>). Must run on both <code>src/</code> and <code>tests/</code>.</td>
+</tr>
+<tr>
+<td>Test</td>
+<td><code>uv run pytest tests/ --cov=&lt;pkg&gt; --cov-report=xml --cov-report=term-missing</code></td>
+<td>Coverage floor enforced fleet-wide; <code>coverage.xml</code> uploaded as a workflow artifact.</td>
 </tr>
 </tbody>
 </table>
-<p><em>Failure prevented:</em> a repo ships a valid default config but central-deploy
-never reads it because the convention for <em>where</em> to find it was never
-standardized — the deployment system hard-codes a path guess that differs
-from what the repo actually ships.</p>
-<h3 id="3-validation-expectation">3. Validation expectation<a class="headerlink" href="#3-validation-expectation" title="Permanent link">&para;</a></h3>
-<p>When a repo ships a <code>config/config.schema.json</code> alongside the default config
-(per the <a href="../config-standard/">config standard</a> §2 — the typed schema emitted
-from the pydantic model), the shipped <code>config/config.json</code> <strong>MUST validate</strong>
-against that schema. A repo that ships a default config that fails its own
-schema is shipping a broken seed.</p>
-<p>The validation is enforced by a <strong>CI check</strong> in every deployable repo:
-regenerate the schema from the model, then validate <code>config/config.json</code>
-against it. The check catches:</p>
+<p>The workflow must use <code>uv</code> for all Python tool invocations — no bare <code>pip
+install</code>, no <code>python -m</code>, no tool installed outside the project's locked
+environment.  <code>astral-sh/setup-uv</code> with <code>enable-cache: true</code> and a tight
+<code>cache-dependency-glob</code> covering <code>pyproject.toml</code> and <code>uv.lock</code> is required
+(see <a href="../python/#ci-uv-setup-caching">Python practices: CI uv setup caching</a>).</p>
+<p>The <code>UV_MALWARE_CHECK</code> environment variable must be set to <code>"1"</code> in every
+Python CI job that runs <code>uv sync</code>.</p>
+<h2 id="why">Why<a class="headerlink" href="#why" title="Permanent link">&para;</a></h2>
+<p>The quality gates declared in <code>pyproject.toml</code> and
+<code>.pre-commit-config.yaml</code> describe what <em>should</em> happen when a developer types
+<code>uv run ruff check</code> or <code>uv run mypy</code>.  Without a <code>ci.yml</code> that runs those same
+commands, the gates are documentation — a wish, not a fact.  A repo that
+declares <code>my_strict = true</code> but has no CI workflow running mypy ships code
+whose type-safety is unknown.</p>
+<p>Several fleet repos (hexarchy and others identified in the 2026-07 survey)
+declare <code>fail_under = 70</code> in their coverage config and <code>[tool.mypy]</code> strict
+blocks in <code>pyproject.toml</code>, but their <code>.github/workflows/</code> directory contains
+only a Docker publish workflow — lint, type-check, and test never execute in
+CI.  The <code>README.md</code> claims "CI runs pytest plus pre-commit hooks (ruff, mypy)
+on every push," but the claim is false because no workflow exists to back it.</p>
+<p>A single canonical <code>ci.yml</code> shape — consumed either as a shared reusable
+workflow or as a per-repo copy — closes this gap.  Every Python repo gets the
+same gates, run the same way, with the same failure signals.  A developer
+moving between repos sees the same CI shape and the same annotations in the PR
+diff.</p>
+<h2 id="how-to-comply">How to comply<a class="headerlink" href="#how-to-comply" title="Permanent link">&para;</a></h2>
+<h3 id="preferred-use-the-shared-reusable-workflow">Preferred: use the shared reusable workflow<a class="headerlink" href="#preferred-use-the-shared-reusable-workflow" title="Permanent link">&para;</a></h3>
+<p>The fleet maintains a shared <code>python-ci.yml</code> reusable workflow in
+<a href="https://github.com/damien-robotsix/robotsix-github-workflows">robotsix-github-workflows</a>.
+Every Python repo should call it from its <code>.github/workflows/ci.yml</code>:</p>
 <ul>
-<li>A field added to the model whose default config entry is missing or mistyped.</li>
-<li>A field removed from the model whose default config entry is stale.</li>
-<li>An enum value renamed in the model but not updated in the default config.</li>
+<li><strong>Do not inline the workflow YAML into this page.</strong> The caller template
+  lives in the robotsix-github-workflows README, alongside the workflow it
+  calls — that is the single source of truth.  This page states the rule;
+  the workflow repo owns the template.</li>
+<li><strong>Pin the reusable workflow to a full commit SHA</strong> (not a branch or tag
+  ref).  The commit SHA in the caller's <code>uses:</code> line ties the repo to a
+  specific, auditable revision of the shared workflow.</li>
+<li><strong>The shared workflow already includes</strong> ruff check + format, mypy (with
+  the <code>tests.*</code> override), pytest with coverage, and <code>coverage.xml</code> upload.
+  A repo calling it gets all required gates automatically.</li>
 </ul>
-<p><em>Failure prevented:</em> an operator onboards a repo whose shipped default config
-is out of sync with its own schema. central-deploy seeds the deploy-side
-config with the broken default; the component fails at startup, and the
-operator has no indication that the repo itself is the root cause — the error
-looks like a deploy misconfiguration.</p>
-<h3 id="4-consumer-guidance">4. Consumer guidance<a class="headerlink" href="#4-consumer-guidance" title="Permanent link">&para;</a></h3>
-<p><strong>central-deploy</strong> (and any future tooling that manages deploy-side config) is
-the primary consumer of this convention. The rules for the consumer:</p>
+<h3 id="fallback-standalone-ciyml">Fallback: standalone <code>ci.yml</code><a class="headerlink" href="#fallback-standalone-ciyml" title="Permanent link">&para;</a></h3>
+<p>When a repo cannot use the shared workflow (e.g. it has an unusual package
+layout that the shared workflow doesn't support), it must ship a standalone
+<code>ci.yml</code> that runs the same four gates in the same order, using the same <code>uv
+run</code> invocations.  The standalone workflow must still follow the
+<a href="../ci-lint-pinning/">CI lint tool pinning</a> rule — every lint tool version
+must match <code>.pre-commit-config.yaml</code>.</p>
+<p>A repo that ships a standalone <code>ci.yml</code> must carry a comment at the top of the
+file explaining why it cannot use the shared workflow, so a future reviewer
+knows the deviation is deliberate.</p>
+<h2 id="jobs-and-ordering">Jobs and ordering<a class="headerlink" href="#jobs-and-ordering" title="Permanent link">&para;</a></h2>
+<p>The workflow must run the gates in order — lint (ruff check + format) before
+type-check, type-check before test — for two reasons:</p>
+<ol>
+<li><strong>Fast-fail.</strong>  If ruff finds a syntax-level problem, there is no point
+   spending CI minutes on type-checking or running tests.  The developer needs
+   the lint failure first, not a test failure three minutes later.</li>
+<li><strong>Signal isolation.</strong>  When lint, type-check, and test run in parallel and
+   all three fail, the developer sees a wall of red and has to disentangle
+   which failure is causal.  Sequential gates surface the root-cause failure
+   first.</li>
+</ol>
+<p>The jobs may run as separate GitHub Actions jobs with <code>needs:</code> dependencies,
+or as sequential steps within a single job.  Either shape is acceptable as
+long as the ordering is enforced.</p>
+<h3 id="parallel-auxiliary-gates">Parallel auxiliary gates<a class="headerlink" href="#parallel-auxiliary-gates" title="Permanent link">&para;</a></h3>
+<p>These gates may run in parallel with the main sequence, as separate jobs (or
+steps) that do not block the main gate chain:</p>
 <ul>
-<li><strong>Seed once.</strong> On first registration of a repo, resolve the shipped default
-  from <code>config/config.json</code> at the repo root and use it to populate the
-  deploy-side config store. This is the only time the shipped default is read.</li>
-<li><strong>Never overwrite.</strong> Once the deploy-side config exists — whether seeded or
-  operator-edited — the shipped default is never consulted again. An operator
-  edit to the deploy-side config (through the Configure UI or the config API)
-  is the source of truth; re-seeding would silently revert operator work.</li>
-<li><strong>Detect absence.</strong> If a repo ships no <code>config/config.json</code>, central-deploy
-  seeds an empty config — the component starts with its model defaults (per the
-  config standard's field-default-fill rule). This is a valid state for
-  components whose defaults are production-safe; it is not an error.</li>
-<li><strong>Detect invalidity.</strong> If the shipped default fails validation against
-  <code>config/config.schema.json</code> (when one exists), central-deploy MUST reject the
-  onboarding with a clear error naming the offending field — not silently seed
-  a broken config.</li>
+<li><strong>Security SAST</strong> (Semgrep, bandit) — runs in the shared
+  <code>python-security.yml</code> workflow, not in <code>ci.yml</code>.</li>
+<li><strong>Dependency hygiene</strong> (deptry).</li>
+<li><strong>Dependency audit</strong> (<code>uv audit</code>).</li>
+<li><strong>Pre-commit hooks</strong> (via <code>tox-dev/action-pre-commit-uv</code>) — these run
+  the same hooks as local development, providing a second pass at file-level
+  hygiene beyond ruff.</li>
 </ul>
-<p>The central-deploy ticket that implements this seeding behavior is
-<code>20260724T132650Z-seed-deploy-side-config-from-repo-defaul-b159</code> on the
-robotsix-central-deploy board. That ticket is the primary consumer of this
-standard; this standard exists so the location convention is defined here
-rather than hard-coded ad-hoc inside central-deploy.</p>
-<p><em>Failure prevented:</em> central-deploy implements seeding but resolves the
-shipped default from a hard-coded path that differs from what one repo
-actually ships — the convention was never written down, so each consumer
-guesses.</p>
-<h2 id="why-not-bake-the-default-into-the-image">Why not bake the default into the image?<a class="headerlink" href="#why-not-bake-the-default-into-the-image" title="Permanent link">&para;</a></h2>
-<p>The config file is a volume mount, not a baked-in image layer, because the
-deployment system must be able to write operator edits into it at runtime.
-If the default were baked into the image at <code>/home/app/config/config.json</code>,
-the volume mount would shadow it on first deploy — and because the volume
-is empty, the component would start with no config at all. The shipped
-default at the repo root exists precisely to prevent that empty-volume
-window: central-deploy reads it, writes it into the volume, and the
-component starts with a valid config from the first deploy.</p>
+<h2 id="what-ciyml-does-not-cover">What <code>ci.yml</code> does not cover<a class="headerlink" href="#what-ciyml-does-not-cover" title="Permanent link">&para;</a></h2>
+<p>The <code>ci.yml</code> workflow is the <em>quality gate</em> — it verifies that the code as
+written is lint-clean, type-safe, and passes its tests.  It does not:</p>
+<ul>
+<li><strong>Build or publish container images.</strong>  That is the Docker publish workflow
+  (<a href="../docker-standard/">docker build &amp; release</a>).</li>
+<li><strong>Run security scans (Semgrep, SBOM, secret scanning).</strong>  Those run in the
+  shared <code>python-security.yml</code> workflow.</li>
+<li><strong>Run integration tests against a live deployment.</strong>  <code>ci.yml</code> runs the
+  unit/functional test suite; integration tests that require a running service
+  belong in a separate workflow triggered on deployment events.</li>
+<li><strong>Auto-release or changelog compilation.</strong>  That is the changelog-driven
+  release workflow (<a href="../changelog-driven-releases/">changelog &amp; releases</a>).</li>
+</ul>
+<h2 id="failure-modes-prevented">Failure modes prevented<a class="headerlink" href="#failure-modes-prevented" title="Permanent link">&para;</a></h2>
+<ul>
+<li><strong>Silent gate drift.</strong>  The <code>pyproject.toml</code> declares <code>strict = true</code> but
+  no workflow runs mypy — the type-safety of the codebase is unknown and
+  degrades silently with every commit.</li>
+<li><strong>Test rot.</strong>  The test suite exists (<code>tests/</code> with <code>pytest</code>) but the
+  coverage report is never generated in CI — <code>fail_under = 80</code> is a dead
+  letter, and coverage can drop below the floor with no signal.</li>
+<li><strong>False README claims.</strong>  A repo's README asserts that CI runs lint, type,
+  and test gates, but the workflow directory contains only a Docker publish
+  job.  The README becomes a lie the moment the workflow is missing, and no
+  automated check catches the discrepancy.</li>
+<li><strong>Per-repo CI reinvention.</strong>  Without a standard shape, each repo invents
+  its own CI invocation — different tool versions, different ordering,
+  different failure handling.  A developer moving between repos must relearn
+  the CI shape each time, and a shared fix (e.g. a new ruff rule) must be
+  applied to N different workflow files instead of one.</li>
+<li><strong>Cache waste.</strong>  A repo that invokes lint and test through separate,
+  uncached <code>uv sync</code> calls in different workflows pays the full dependency
+  install cost multiple times per push.  The standard <code>ci.yml</code> shape with
+  <code>enable-cache: true</code> amortizes the cost across every CI run.</li>
+</ul>
+<h2 id="relationship-to-other-standards">Relationship to other standards<a class="headerlink" href="#relationship-to-other-standards" title="Permanent link">&para;</a></h2>
+<ul>
+<li><strong><a href="../python/#ci-uv-setup-caching">Python practices</a></strong> — <code>setup-uv</code> caching
+  requirement and pre-commit CI integration.</li>
+<li><strong><a href="../ci-lint-pinning/">CI lint tool pinning</a></strong> — CI lint tools must match
+  <code>.pre-commit-config.yaml</code> versions; applies to both the shared and
+  standalone <code>ci.yml</code> paths.</li>
+<li><strong><a href="../mypy/">Mypy strictness</a></strong> — mypy as a hard CI gate, the <code>tests.*</code>
+  override, and baseline-driven migration.</li>
+<li><strong><a href="../pytest/">Pytest practices</a></strong> — <code>fail_under</code>, coverage configuration,
+  and strict-mode pytest flags.</li>
+<li><strong><a href="../ruff-lint-rules/">Ruff lint rules</a></strong> — the standard ruff rule families.</li>
+<li><strong><a href="../pre-commit-baseline/">Pre-commit baseline</a></strong> — the pre-commit hooks
+  that <code>ci.yml</code>'s pre-commit job verifies.</li>
+<li><strong><a href="../repo-baseline/">Repo baseline</a></strong> — CI and security gates are a
+  language-agnostic requirement; this page defines the Python-specific shape.</li>
+</ul>
 
 
 

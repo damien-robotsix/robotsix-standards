@@ -22,6 +22,12 @@ unresolved template variables, broken `extra_javascript` / `extra_css`
 paths, malformed frontmatter) to hard errors — so a broken link fails CI, not
 just the published site.
 
+Setting `strict: true` in `mkdocs.yml` achieves the same effect and is
+preferred when the build command is not under the repo's direct control
+(e.g. called by a shared reusable workflow that doesn't accept extra CLI
+flags).  Both forms are acceptable — the requirement is that the build fails
+on warnings, not *how* the flag is delivered.
+
 **Failure mode prevented:** a PR adds a page but forgets to register it in
 `mkdocs.yml`'s `nav`. Without `--strict`, MkDocs emits a single log line at
 `WARNING` level, CI passes, and the page is invisible on the published site
@@ -120,6 +126,83 @@ one-directional (it checks that TOC entries match existing files but does
 gate, and merges — but the page is invisible on the published docs site
 because it was never wired into the MkDocs `nav`.  The author and reviewer
 both assumed the TOC-sync gate covered nav registration; it doesn't.
+
+### 5. Run a rendered-HTML link checker in a separate CI job
+
+`--strict` and the `validation:` block catch broken internal links at build
+time, but they do **not** verify that external URLs are still reachable or
+that every internal anchor on the rendered HTML page resolves.  A separate
+rendered-HTML link checker — run against the built `site/` directory —
+validates every hyperlink on the published page: internal anchors,
+cross-page links, and external URLs.
+
+Two tools are acceptable.  Both satisfy the rule — choose the one that fits
+the repo's tolerance for external-URL flakiness:
+
+**`mkdocs-htmlproofer-plugin` (build-time, internal + external).**
+A MkDocs plugin that validates the rendered HTML during `mkdocs build`.
+Internal link and anchor failures should be hard errors (`raise_error_after_finish:
+true`).  External URLs that are known to be flaky or rate-limited (GitHub,
+raw.githubusercontent.com, docs.github.com) should be excluded via
+`ignore_urls` so the build remains deterministic:
+
+```yaml
+plugins:
+  - htmlproofer:
+      raise_error_after_finish: true
+      ignore_urls:
+        - "http://localhost*"
+        - "https://raw.githubusercontent.com/*"
+        - "https://github.com/*"
+        - "https://docs.github.com/*"
+```
+
+**`lychee` (post-build, separate job).**  A standalone Rust link checker
+(`lycheeverse/lychee-action`) that validates the `site/` directory.  Run it
+in a **separate CI job** from the build-and-deploy job so a flaky external
+URL cannot block the deploy itself:
+
+```yaml
+linkcheck:
+  runs-on: ubuntu-24.04
+  steps:
+    - uses: actions/checkout@v4
+    - # … build the docs into site/ …
+    - uses: lycheeverse/lychee-action@v2
+      with:
+        fail: true
+        args: >-
+          --accept 200,206,403,429,503
+          --exclude-private
+          --cache
+          site/
+```
+
+**Separation principle.**  The link-check job must be a distinct CI job from
+the build-and-deploy job (or at least a distinct step whose failure does not
+block deploy).  The deploy path must never be gated on external URL
+reachability — a third-party site going down should not block a docs deploy.
+The link-check job gates **pull requests** (blocking merge when links are
+broken) but is non-blocking on the deploy workflow so a transient upstream
+outage never prevents publishing.
+
+**PR-time gating.**  Every link-validation mechanism — `--strict`, the
+`validation:` block, and the rendered-HTML link checker — must run on pull
+requests, not only at deploy.  A gate that only fires on `push` to `main`
+(or on a `workflow_dispatch` deploy) catches breakage after it reaches
+readers.  The shared `python-docs.yml` reusable workflow already runs
+`mkdocs build --strict` on PRs; the rendered-HTML link checker must also be
+wired into the PR workflow (as a separate job or step).
+
+**Failure mode prevented:** a PR links to an external resource (a blog post,
+a package page, an RFC) that later moves or goes offline.  Without a
+rendered-HTML link checker, the dead link is invisible — the build passes,
+the `validation:` block only checks internal structure, and readers encounter
+a 404 with no warning.  The link-check job catches this at PR time, before
+the dead link reaches readers.  A further failure mode: a flaky external URL
+blocks the docs deploy pipeline, preventing the site from updating even
+though the broken link is on a third-party domain the repo does not control.
+Separating the link-check job from deploy prevents this.
 
 ## Precedent
 

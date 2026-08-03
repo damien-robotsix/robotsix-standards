@@ -97,7 +97,7 @@ fix is upstream.  Every `ignore:` line should cite the specific warning
 message or module it suppresses, so a future contributor can re-evaluate
 whether the ignore is still needed.
 
-**Failure mode:** adding `ignore:` entries pre-emptively ("just in case")
+**Failure mode:** adding `ignore:` entries preemptively ("just in case")
 accumulates stale suppressions that hide new warnings indefinitely.
 
 ### Async test drivers and nested-event-loop hazards

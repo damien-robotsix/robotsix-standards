@@ -1,5 +1,4 @@
-
-
+<!-- markdownlint-disable MD013 MD025 MD024 -->
 <!-- towncrier release notes start -->
 
 # robotsix-standards 0.3.0 (2026-08-03)
@@ -59,7 +58,6 @@
 - Remove re-created Python-specific periodic agents (docstring_coverage, test_gap) — third recurrence (20260731T200122Z-remove-re-created-python-specific-period-f6e5)
 - Consolidate duplicate changelog.d fragment for the HTTP client persistence standard (PR #186) (20260801T202857Z-consolidate-duplicate-changelog-d-fragme-4b02)
 - Correct the false 'SLSA updated to v1.3' changelog claim on robotsix-standards main (20260731T225426Z-correct-the-false-slsa-updated-to-v1-3-c-6ce5)
-
 
 # robotsix-standards 0.2.0 (2026-07-27)
 
@@ -134,8 +132,6 @@
 - robotsix-standards: Enable changelog_autofill periodic workflow (20260723T232803Z-robotsix-standards-enable-changelog-auto-1e57)
 - Adopt open-source SAST standard; remove GitHub Code Scanning fleet-wide (20260720T233047Z-adopt-open-source-sast-standard-remove-g-65f3)
 - Adopt open-source secret scanning; codify OSS-preferred tooling policy (drop licensed Gitleaks) (20260720T234819Z-adopt-open-source-secret-scanning-codify-8ee9)
-
-<!-- markdownlint-disable MD013 MD025 MD024 -->
 
 # robotsix-standards 0.1.4 (2026-07-20)
 

@@ -148,3 +148,9 @@ filterwarnings = [
     # "ignore::DeprecationWarning:some_library.*:",
 ]
 ```
+
+## Cross-reference
+
+- **[Pytest shared state builders](pytest-shared-state-builders.md)** —
+  root-conftest placement and `make_<thing>` factory fixtures for reusable
+  test-state builders across test packages.

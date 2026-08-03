@@ -702,6 +702,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../pytest-shared-state-builders/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Pytest shared state builders
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../ruff-lint-rules/" class="md-nav__link">
         
   
@@ -2036,6 +2064,7 @@
 </ul>
 <h2 id="000-unreleased">0.0.0 (unreleased)<a class="headerlink" href="#000-unreleased" title="Permanent link">&para;</a></h2>
 <ul>
+<li>Pytest shared state builders: codify root <code>tests/conftest.py</code> for shared fixtures, <code>make_&lt;thing&gt;</code> factory fixtures for mutable test state, and value fixtures as thin factory callers — so shared builders are reusable across every test package instead of duplicated inline.</li>
 <li>Extended <code>mkdocs-build</code> standard with rendered-HTML link-check rule (htmlproofer-plugin or lychee in a separate CI job) and PR-time gating, so external-URL flakiness cannot block docs deploys.</li>
 <li>New standard: <a href="../pyright/">Pyright strict mode</a> — every fleet Python repo that runs pyright as a CI gate must set <code>typeCheckingMode = "strict"</code> so it enforces the same type-safety baseline as mypy <code>--strict</code>.</li>
 <li>Added "Chat observability" section to the chat-access standard defining log-read and read-only volume-inspection endpoints on <code>robotsix-central-deploy</code>, authorized by the existing per-component chat-access checkbox.</li>

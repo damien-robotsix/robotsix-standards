@@ -10,13 +10,13 @@
       
       
       
-        <link rel="canonical" href="https://damien-robotsix.github.io/robotsix-standards/towncrier/">
+        <link rel="canonical" href="https://damien-robotsix.github.io/robotsix-standards/pytest-shared-state-builders/">
       
       
-        <link rel="prev" href="../repo-baseline/">
+        <link rel="prev" href="../pytest/">
       
       
-        <link rel="next" href="../free-tier-only/">
+        <link rel="next" href="../ruff-lint-rules/">
       
       
         
@@ -27,7 +27,7 @@
     
     
       
-        <title>Towncrier changelog - Robotsix Standards</title>
+        <title>Pytest shared state builders - Robotsix Standards</title>
       
     
     
@@ -78,7 +78,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#towncrier-changelog-management" class="md-skip">
+        <a href="#pytest-shared-state-builders" class="md-skip">
           Skip to content
         </a>
       
@@ -114,7 +114,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Towncrier changelog
+              Pytest shared state builders
             
           </span>
         </div>
@@ -393,37 +393,10 @@
                 
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Towncrier changelog
-  
-
-    
-  </span>
-  
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../towncrier/" class="md-nav__link">
         
   
   
@@ -439,109 +412,6 @@
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#what-towncrier-does" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        What towncrier does
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#configuration" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Configuration
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Configuration">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#field-reference" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Field reference
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#fragment-format" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Fragment format
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#ci-enforcement" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        CI enforcement
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#release-step" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Release step
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#failure-modes-this-prevents" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Failure modes this prevents
-      
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -831,10 +701,37 @@
                 
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="../pytest-shared-state-builders/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Pytest shared state builders
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   
@@ -850,6 +747,81 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#why-this-exists" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why this exists
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#root-conftest-placement" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Root conftest placement
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#factory-fixtures-for-mutable-objects" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Factory fixtures for mutable objects
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#value-fixtures-as-factory-callers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Value fixtures as factory callers
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cross-reference" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Cross-reference
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -1911,10 +1883,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#what-towncrier-does" class="md-nav__link">
+  <a href="#why-this-exists" class="md-nav__link">
     <span class="md-ellipsis">
       
-        What towncrier does
+        Why this exists
       
     </span>
   </a>
@@ -1922,38 +1894,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#configuration" class="md-nav__link">
+  <a href="#root-conftest-placement" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Configuration
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Configuration">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#field-reference" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Field reference
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#fragment-format" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Fragment format
+        Root conftest placement
       
     </span>
   </a>
@@ -1961,10 +1905,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#ci-enforcement" class="md-nav__link">
+  <a href="#factory-fixtures-for-mutable-objects" class="md-nav__link">
     <span class="md-ellipsis">
       
-        CI enforcement
+        Factory fixtures for mutable objects
       
     </span>
   </a>
@@ -1972,10 +1916,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#release-step" class="md-nav__link">
+  <a href="#value-fixtures-as-factory-callers" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Release step
+        Value fixtures as factory callers
       
     </span>
   </a>
@@ -1983,10 +1927,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#failure-modes-this-prevents" class="md-nav__link">
+  <a href="#cross-reference" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Failure modes this prevents
+        Cross-reference
       
     </span>
   </a>
@@ -2013,154 +1957,117 @@
   
 
 
-<h1 id="towncrier-changelog-management">Towncrier changelog management<a class="headerlink" href="#towncrier-changelog-management" title="Permanent link">&para;</a></h1>
+<h1 id="pytest-shared-state-builders">Pytest shared state builders<a class="headerlink" href="#pytest-shared-state-builders" title="Permanent link">&para;</a></h1>
 <blockquote>
-<p><strong>Scope: every Python repository.</strong> Towncrier is the fleet-wide changelog
-tool — every Python repo ships a <code>[tool.towncrier]</code> config and a
-<code>changelog.d/</code> fragment directory. The language-agnostic release rules
-(auto-release workflow, version policy) live in the
-<a href="../repo-baseline/#changelog-releases">repo baseline</a>.</p>
+<p><strong>Scope: every Python repository with more than one test package.</strong>
+These rules apply fleet-wide; single-package repos are unaffected.</p>
 </blockquote>
-<h2 id="what-towncrier-does">What towncrier does<a class="headerlink" href="#what-towncrier-does" title="Permanent link">&para;</a></h2>
-<p><a href="https://towncrier.readthedocs.io">towncrier</a> aggregates per-PR newsfragments
-into a single <code>CHANGELOG.md</code>. Instead of hand-editing <code>CHANGELOG.md</code> — which
-creates merge conflicts and lost entries — each PR drops a one-line fragment
-into <code>changelog.d/</code>. At release time, towncrier compiles them into the
-changelog and removes the fragments.</p>
-<p>This is the workflow used by pip, Twisted, PyPA build, and pulp. The fleet
-already uses towncrier-style fragment directories; standardizing the config
-makes the tooling predictable across repos.</p>
-<h2 id="configuration">Configuration<a class="headerlink" href="#configuration" title="Permanent link">&para;</a></h2>
-<p>Every Python repo MUST include the following block in <code>pyproject.toml</code>:</p>
-<div class="highlight"><pre><span></span><code><span class="k">[tool.towncrier]</span>
-<span class="n">directory</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;changelog.d&quot;</span>
-<span class="n">filename</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;CHANGELOG.md&quot;</span>
-<span class="c1"># package = &quot;&lt;python_package_name&gt;&quot;   -- uncomment for repos that ship a</span>
-<span class="c1">#                                       Python package; pulls the version</span>
-<span class="c1">#                                       from __version__. For docs-only or</span>
-<span class="c1">#                                       non-Python repos, omit it — the</span>
-<span class="c1">#                                       release workflow supplies --version.</span>
-<span class="n">start_string</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;&lt;!-- towncrier release notes start --&gt;</span><span class="se">\n</span><span class="s2">&quot;</span>
-<span class="c1"># .gitkeep keeps changelog.d/ present after a release consumes every</span>
-<span class="c1"># fragment (git drops empty dirs; baseline-check requires the dir).</span>
-<span class="n">ignore</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;.gitkeep&quot;</span><span class="p">]</span>
-
-<span class="k">[[tool.towncrier.type]]</span>
-<span class="n">directory</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;breaking&quot;</span>
-<span class="n">name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;Breaking&quot;</span>
-<span class="n">showcontent</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">true</span>
-
-<span class="k">[[tool.towncrier.type]]</span>
-<span class="n">directory</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;feature&quot;</span>
-<span class="n">name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;Added&quot;</span>
-<span class="n">showcontent</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">true</span>
-
-<span class="k">[[tool.towncrier.type]]</span>
-<span class="n">directory</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;bugfix&quot;</span>
-<span class="n">name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;Fixed&quot;</span>
-<span class="n">showcontent</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">true</span>
-
-<span class="k">[[tool.towncrier.type]]</span>
-<span class="n">directory</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;misc&quot;</span>
-<span class="n">name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;Changed&quot;</span>
-<span class="n">showcontent</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">true</span>
-
-<span class="c1"># Optional — add only if the repo uses these fragment types:</span>
-<span class="c1"># [[tool.towncrier.type]]</span>
-<span class="c1"># directory = &quot;doc&quot;</span>
-<span class="c1"># name = &quot;Documentation&quot;</span>
-<span class="c1"># showcontent = true</span>
-<span class="c1">#</span>
-<span class="c1"># [[tool.towncrier.type]]</span>
-<span class="c1"># directory = &quot;removal&quot;</span>
-<span class="c1"># name = &quot;Removed&quot;</span>
-<span class="c1"># showcontent = true</span>
-</code></pre></div>
-<h3 id="field-reference">Field reference<a class="headerlink" href="#field-reference" title="Permanent link">&para;</a></h3>
+<h2 id="why-this-exists">Why this exists<a class="headerlink" href="#why-this-exists" title="Permanent link">&para;</a></h2>
+<p>When a test suite grows beyond a single package, shared test-state builders
+— game-state factories, environment constructors, database-population helpers
+— tend to scatter across two wrong places:</p>
 <ul>
-<li><strong><code>directory</code></strong> — always <code>"changelog.d"</code>. The fragment directory lives at
-  the repo root, next to <code>CHANGELOG.md</code>.</li>
-<li><strong><code>filename</code></strong> — always <code>"CHANGELOG.md"</code>. The compiled changelog file.</li>
-<li><strong><code>package</code></strong> — the Python package name (e.g. <code>"robotsix_foo"</code>). Towncrier
-  reads <code>__version__</code> from it to populate the release heading. Omit for
-  repos that do not ship a Python package (docs-only repos, config repos);
-  the release workflow passes <code>--version</code> explicitly.</li>
-<li><strong><code>start_string</code></strong> — the marker towncrier inserts content after. The
-  <code>&lt;!-- towncrier release notes start --&gt;</code> comment, followed by a newline,
-  is the fleet standard. This keeps the header and any hand-written
-  preamble above the marker untouched.</li>
-<li><strong><code>ignore</code></strong> — always includes <code>".gitkeep"</code> so an empty <code>changelog.d/</code>
-  survives <code>git</code> directory pruning between releases.</li>
-<li><strong><code>[[tool.towncrier.type]]</code></strong> — one block per fragment suffix. The
-  <code>directory</code> field is the fragment file extension (<code>.breaking</code>,
-  <code>.feature</code>, <code>.bugfix</code>, <code>.misc</code> — towncrier strips the leading dot).
-  The <code>name</code> field is the heading in the compiled changelog. All four
-  canonical types are required; optional types (<code>doc</code>, <code>removal</code>) are
-  added only when the repo uses them.</li>
+<li><strong>Inline construction duplicated in every test module</strong> — the same
+  <code>HexarchyEnv(num_players=2, render_mode="ansi")</code> plus
+  <code>env.reset(seed=42)</code> and a step-loop appears verbatim in every test
+  function that needs an environment, because no shared factory is
+  available.</li>
+<li><strong><code>conftest.py</code> files scoped too deep</strong> — fixtures defined in
+  <code>tests/core/conftest.py</code> are only visible to <code>tests/core/</code> and its
+  descendants; sibling packages (<code>tests/env/</code>, <code>tests/agents/</code>,
+  <code>tests/server/</code>) cannot import or inherit them, so they reinvent the
+  same builders.</li>
 </ul>
-<h2 id="fragment-format">Fragment format<a class="headerlink" href="#fragment-format" title="Permanent link">&para;</a></h2>
-<p>Fragments are Markdown files in <code>changelog.d/</code> named with the convention:</p>
-<div class="highlight"><pre><span></span><code>&lt;timestamp&gt;Z-&lt;slug&gt;-&lt;short-hash&gt;.&lt;type&gt;.md
+<p>The two rules below — root-conftest placement and factory-fixture naming —
+remove duplicated inline construction, make builders reusable across every
+test package, and keep each test isolated with a fresh instance.</p>
+<h2 id="root-conftest-placement">Root conftest placement<a class="headerlink" href="#root-conftest-placement" title="Permanent link">&para;</a></h2>
+<p>Shared state-building helpers that are used by more than one test package
+<strong>must</strong> live in a single root <code>tests/conftest.py</code> (or a <code>tests/_utils/</code>
+module whose fixtures are re-exported from the root conftest).</p>
+<p>pytest discovers fixtures by walking each test module's directory tree
+<strong>upwards</strong> — a fixture in <code>tests/conftest.py</code> is visible to every test
+under <code>tests/</code>, while a fixture in <code>tests/core/conftest.py</code> is visible
+only to <code>tests/core/</code> and its subdirectories. Placing shared builders in
+the root conftest makes them available to the entire test suite without
+imports or duplication.</p>
+<p>Per-subdirectory <code>conftest.py</code> files <strong>should</strong> be reserved for
+directory-specific fixtures or parent-override hooks — not for
+builders that sibling packages also need.</p>
+<p><strong>Failure mode:</strong> a fixture defined in <code>tests/core/conftest.py</code> is
+invisible to <code>tests/env/test_env.py</code>. The env test author either
+copies the builder inline (duplication) or moves the fixture to a
+deep conftest that still doesn't help the next sibling package. The
+fleet observed this in the robotsix-mill/hexarchy <code>tests/</code> tree,
+where <code>tests/core/conftest.py</code> held game-state fixtures that
+<code>tests/env/</code>, <code>tests/agents/</code>, and <code>tests/server/</code> all needed but
+could not reach.</p>
+<h2 id="factory-fixtures-for-mutable-objects">Factory fixtures for mutable objects<a class="headerlink" href="#factory-fixtures-for-mutable-objects" title="Permanent link">&para;</a></h2>
+<p>When the built object is <strong>mutated during the test</strong> — game states,
+RL/PettingZoo environment instances, mutable ORM models — expose it
+as a <strong>factory fixture</strong> whose canonical name is <code>make_&lt;thing&gt;</code> and
+whose return value is function-scoped (fresh instance per call).</p>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">pytest</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">mygame</span><span class="w"> </span><span class="kn">import</span> <span class="n">GameState</span>
+
+
+<span class="nd">@pytest</span><span class="o">.</span><span class="n">fixture</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">make_game_state</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return a new GameState factory — one fresh instance per call.&quot;&quot;&quot;</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_make</span><span class="p">(</span><span class="n">num_players</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span> <span class="n">seed</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">42</span><span class="p">):</span>
+        <span class="n">state</span> <span class="o">=</span> <span class="n">GameState</span><span class="p">(</span><span class="n">num_players</span><span class="o">=</span><span class="n">num_players</span><span class="p">)</span>
+        <span class="n">state</span><span class="o">.</span><span class="n">reset</span><span class="p">(</span><span class="n">seed</span><span class="o">=</span><span class="n">seed</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">state</span>
+    <span class="k">return</span> <span class="n">_make</span>
 </code></pre></div>
-<p>The file body is a single line (or short paragraph) written in the past
-tense, describing the change from the user's perspective:</p>
-<div class="highlight"><pre><span></span><code>Fix the mail poller failing to reconnect after a DNS change.
+<p>A test calls the factory to get its own instance:</p>
+<div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">test_scoring</span><span class="p">(</span><span class="n">make_game_state</span><span class="p">):</span>
+    <span class="n">state</span> <span class="o">=</span> <span class="n">make_game_state</span><span class="p">(</span><span class="n">num_players</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="n">state</span><span class="o">.</span><span class="n">num_players</span> <span class="o">==</span> <span class="mi">3</span>
+    <span class="n">state</span><span class="o">.</span><span class="n">score</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>       <span class="c1"># mutation is safe — this test owns the instance</span>
+    <span class="k">assert</span> <span class="n">state</span><span class="o">.</span><span class="n">scores</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="mi">10</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">test_scoring_isolation</span><span class="p">(</span><span class="n">make_game_state</span><span class="p">):</span>
+    <span class="n">state</span> <span class="o">=</span> <span class="n">make_game_state</span><span class="p">(</span><span class="n">num_players</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="n">state</span><span class="o">.</span><span class="n">scores</span> <span class="o">==</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>   <span class="c1"># unaffected by the previous test&#39;s mutation</span>
 </code></pre></div>
+<p>This is a <strong>factory fixture</strong> — the fixture itself is a function that
+the test calls with parameters — not a <strong>value fixture</strong> that returns
+a single shared instance. A value fixture that returns a mutable object
+would leak mutations between tests, producing order-dependent failures.</p>
+<p>The <code>make_</code> prefix is the canonical naming convention (consistent with
+<a href="https://github.com/Farama-Foundation/PettingZoo">PettingZoo</a> and
+other RL/framework suites) so every test author knows at a glance that
+the fixture returns a fresh instance per call.</p>
+<p><strong>Failure mode:</strong> a shared value fixture for a mutable object causes
+order-dependent test failures — test A mutates the state, test B
+receives the mutated residue, and the suite passes or fails depending
+on execution order. Order-dependent failures are notoriously hard to
+diagnose because they vanish when the failing test is run in isolation.</p>
+<h2 id="value-fixtures-as-factory-callers">Value fixtures as factory callers<a class="headerlink" href="#value-fixtures-as-factory-callers" title="Permanent link">&para;</a></h2>
+<p>Where convenient, existing single-implementation value fixtures <strong>may</strong>
+remain as thin callers of the factory — they reduce boilerplate for the
+common case while the underlying <code>make_</code> factory stays available for
+tests that need a non-default configuration:</p>
+<div class="highlight"><pre><span></span><code><span class="nd">@pytest</span><span class="o">.</span><span class="n">fixture</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">game_state</span><span class="p">(</span><span class="n">make_game_state</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Default two-player game state for tests that don&#39;t need a custom config.&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">make_game_state</span><span class="p">()</span>
+</code></pre></div>
+<p>Tests that need the default get it without calling the factory; tests
+that need a custom configuration call <code>make_game_state(num_players=4)</code>
+directly. Both paths route through the same builder, so the construction
+logic stays in one place.</p>
+<h2 id="cross-reference">Cross-reference<a class="headerlink" href="#cross-reference" title="Permanent link">&para;</a></h2>
 <ul>
-<li><strong>One fragment per PR.</strong> The PR author writes the fragment as part of
-  the change — parallel PRs never conflict on <code>CHANGELOG.md</code>.</li>
-<li><strong>The <code>skip-changelog</code> PR label</strong> exempts a PR from the fragment
-  requirement. Use it for purely mechanical changes (CI tweaks, test-only
-  fixes, tooling updates) where there is genuinely nothing to record.</li>
-<li><strong>Fragment filenames include a timestamp and hash</strong> so they are
-  universally unique — no naming collisions even across forks or
-  rebases.</li>
-</ul>
-<h2 id="ci-enforcement">CI enforcement<a class="headerlink" href="#ci-enforcement" title="Permanent link">&para;</a></h2>
-<p>Every Python repo's CI MUST run <code>towncrier check</code> on pull requests:</p>
-<div class="highlight"><pre><span></span><code><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Check changelog fragments</span>
-<span class="w">  </span><span class="nt">run</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">towncrier check --compare-with origin/${{ github.event.pull_request.base.ref }}</span>
-</code></pre></div>
-<p>If a PR has no fragment and no <code>skip-changelog</code> label, the check fails
-with a message listing the expected fragment types.</p>
-<p>For repos using pre-commit, the check can also run locally:</p>
-<div class="highlight"><pre><span></span><code><span class="c1"># .pre-commit-config.yaml</span>
-<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">repo</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">local</span>
-<span class="w">  </span><span class="nt">hooks</span><span class="p">:</span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">id</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">towncrier-check</span>
-<span class="w">      </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">towncrier check</span>
-<span class="w">      </span><span class="nt">entry</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">towncrier check --compare-with origin/main</span>
-<span class="w">      </span><span class="nt">language</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">python</span>
-<span class="w">      </span><span class="nt">pass_filenames</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
-<span class="w">      </span><span class="nt">always_run</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
-</code></pre></div>
-<h2 id="release-step">Release step<a class="headerlink" href="#release-step" title="Permanent link">&para;</a></h2>
-<p>The shared auto-release workflow runs <code>towncrier build</code> at release time:</p>
-<div class="highlight"><pre><span></span><code>towncrier<span class="w"> </span>build<span class="w"> </span>--yes<span class="w"> </span>--version<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$NEXT_VERSION</span><span class="s2">&quot;</span>
-</code></pre></div>
-<ul>
-<li><code>--yes</code> — non-interactive, suitable for CI.</li>
-<li><code>--version</code> — the next version string (the release workflow derives this
-  from the fragment types present: any <code>breaking</code> or <code>feature</code> → minor
-  bump, else patch).</li>
-<li>Towncrier deletes the consumed fragments, appends the new section to
-  <code>CHANGELOG.md</code>, and the release workflow commits both changes.</li>
-</ul>
-<h2 id="failure-modes-this-prevents">Failure modes this prevents<a class="headerlink" href="#failure-modes-this-prevents" title="Permanent link">&para;</a></h2>
-<ul>
-<li><strong>Merge conflicts on <code>CHANGELOG.md</code>.</strong> Without fragments, every PR that
-  edits the changelog produces a conflict. Per-PR fragments eliminate this
-  entirely.</li>
-<li><strong>Lost changelog entries.</strong> Hand-editing a shared file under time
-  pressure (release day) routinely drops entries. Towncrier compiles from
-  fragments that were reviewed as part of each PR — nothing is lost.</li>
-<li><strong>Inconsistent changelog style.</strong> Without a tool, each author writes
-  changelog entries differently (some past tense, some imperative, some
-  bullet lists, some prose). Towncrier + a fragment convention enforces
-  one style.</li>
-<li><strong>Release workflow coupled to changelog format.</strong> Without a standard
-  marker (<code>start_string</code>), the release workflow cannot safely append to
-  <code>CHANGELOG.md</code>. The marker gives the workflow a known insertion point.</li>
+<li><strong><a href="../pytest/">Pytest practices</a></strong> — strictness settings (<code>filterwarnings</code>,
+  <code>xfail_strict</code>, <code>--strict-markers</code>) that every test suite must adopt.</li>
+<li><strong><a href="../hypothesis/">Hypothesis testing</a></strong> — property-based testing profiles
+  and shared strategies (another form of reusable test-state builder).</li>
+<li><strong><a href="../async-sqlalchemy-test-fixtures/">Async SQLAlchemy test fixtures</a></strong> —
+  a concrete example of the root-conftest + factory pattern applied to
+  database sessions.</li>
 </ul>
 
 

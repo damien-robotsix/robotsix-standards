@@ -865,6 +865,34 @@
   
   
     <li class="md-nav__item">
+      <a href="pytest-shared-state-builders/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Pytest shared state builders
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="ruff-lint-rules/" class="md-nav__link">
         
   
@@ -2119,6 +2147,10 @@ everywhere.</p>
 <li><strong><a href="pytest/">Pytest practices</a></strong> — <code>filterwarnings = ["error"]</code>,
   <code>xfail_strict = true</code>, and <code>--strict-markers</code>/<code>--strict-config</code> so every test
   suite fails loudly on deprecations, unregistered markers, and stale xfails.</li>
+<li><strong><a href="pytest-shared-state-builders/">Pytest shared state builders</a></strong> —
+  root <code>tests/conftest.py</code> for shared fixtures, <code>make_&lt;thing&gt;</code> factory
+  fixtures for mutable test state, and value fixtures as thin factory
+  callers — so shared builders are reusable across every test package.</li>
 <li><strong><a href="ruff-lint-rules/">Ruff lint rules</a></strong> — Tier 2 ruff rule families (SIM,
   C4, LOG, G, ERA, PGH, RUF, PT) with the PT006 exclusion.</li>
 <li><strong><a href="mypy/">Mypy strictness</a></strong> — mypy as a hard CI gate (not advisory),

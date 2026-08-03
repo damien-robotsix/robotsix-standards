@@ -4,7 +4,8 @@ version = "0.3.0"
 description = "Cross-cutting config and deployment standards for the robotsix stack."
 readme = "README.md"
 requires-python = ">=3.14"
-license = { file = "LICENSE" }
+license = "MIT"
+license-files = ["LICENSE"]
 authors = [{ name = "Damien SIX", email = "damien.robotsix@gmail.com" }]
 
 [dependency-groups]

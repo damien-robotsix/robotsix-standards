@@ -1,5 +1,65 @@
 
+
 <!-- towncrier release notes start -->
+
+# robotsix-standards 0.3.0 (2026-08-03)
+
+## Added
+
+- Component standard: fix the storage shape for Langfuse tracing credentials. Each component declares them in one canonical top-level `langfuse` block — instance `host` plus a `projects` map keyed by the Langfuse project name (`<repo>` / `<repo>-<function>`, matching the existing one-project-per-function rule), each entry carrying `public_key`, `secret_key`, and an optional `project_id`. This lets the deployment engine enumerate every component's credentials the same way and dispatch them to fleet consumers (the chat agent's trace proxy, cost-monitor's reconciliation) without per-component special cases. Also states the no-fallback rule: the engine reads this block only — never deploy-plane `LANGFUSE_*` environment variables or a pre-standard layout — so an unmigrated component fails visibly instead of silently reporting no projects. (20260802T142000Z-canonical-langfuse-credential-block)
+- Component standard: give the OpenRouter provider key the same canonical storage shape as the Langfuse credentials it reconciles against. A component declares a top-level `openrouter` block whose `keys` map is addressed by the *same* aliases as `langfuse.projects` (`<repo>` / `<repo>-<function>`), which is what makes "provider-billed for this function" joinable to "traced for this function"; from that follows the rule that a provider key must fund exactly one function, since reconciliation diffs cumulative usage per key and two functions behind one key produce a figure attributable to neither. The no-fallback rule now covers both blocks. Also drops the stale requirement to hand-register every project in cost-monitor's `projects.yaml` — consumers discover projects from the deployment engine instead of keeping their own copy.
+
+  Deployment system: record where observability credentials actually live (the owning component's canonical blocks; the engine's `langfuse_projects` / `openrouter_keys` dicts are an operator override that wins on alias collision, not the primary store), require that consumers obtain other components' credentials through one generic engine endpoint rather than hand-copied config, and require operator-supplied aliases that no component claims to be surfaced under a synthetic `operator-configured` entry — never dropped, and never attributed to a component that did not declare them. (20260802T160000Z-canonical-openrouter-credential-block)
+
+## Changed
+
+- robotsix-standards: reconcile the intended periodic-agent set (markdown-only repo) (20260801T083039Z-robotsix-standards-reconcile-the-intende-0bcf)
+- Discard docstring_coverage re-add; reconcile periodic-agent set as one decision (20260801T083041Z-discard-docstring-coverage-re-add-reconc-05b7)
+- Removed the stray `.robotsix-mill/periodic/docstring_coverage.yaml` that
+  persisted after PR #182 merged — the CHANGELOG entry at line 124 already
+  documents that source-scanning agents (docstring_coverage, test_gap) are
+  excluded from this markdown-only repo. (20260801T090851Z-remove-stray-docstring-coverage-yaml-so-d283)
+- Correct the 'shared baseline-check workflow verifies LICENSE' claim in docs/repo-baseline.md (20260801T102128Z-correct-the-shared-baseline-check-workfl-c48d)
+- CI failure: CI on main (20260727T102920Z-ci-failure-ci-on-main-0bed)
+- Add fleet-wide MIT LICENSE presence check to the baseline gate (reusable workflow + conformance bullet) (20260731T110112Z-add-fleet-wide-mit-license-presence-chec-b202)
+- Docker integration tests should be run on all deployed items (20260731T122904Z-docker-integration-tests-should-be-run-o-4ece)
+- Add dedicated towncrier changelog standard page (20260731T134745Z-standardize-adopt-towncrier-for-changelo-e239)
+- Standardize: changelog-fragment-driven releases for git-installed robotsix libraries (20260731T134833Z-standardize-changelog-fragment-driven-re-c3e7)
+- Standardize: CI runs the same pinned lint-tool versions as .pre-commit-config.yaml (single source of truth), never floating/latest (20260731T134913Z-standardize-ci-runs-the-same-pinned-lint-c651)
+- Standardize: run markdownlint-cli2 + codespell in CI via the same pinned pre-commit hooks as local, not unpinned npx/uv invocations (20260731T135203Z-standardize-run-markdownlint-cli2-codesp-4520)
+- Standardize: Public FastAPI Pydantic models carry Field(description=…) (20260731T135334Z-standardize-public-fastapi-pydantic-mode-4f0d)
+- Standardize: strict-mypy as a hard CI gate with a monotonically-shrinking baseline exit-path (20260731T135537Z-standardize-strict-mypy-as-a-hard-ci-gat-88b9)
+- Standard: per-component settings ownership (config migrates out of central-deploy) (20260730T142307Z-standard-per-component-settings-ownershi-c650)
+- Strengthened the README standards-link requirement in the repo-baseline standard and added a local CI check that verifies README.md links to robotsix-standards. (20260729T142532Z-enforce-repo-baseline-compliance-mit-lic-faa8)
+- Standardize: Python `__main__.py` must forward exit codes via `sys.exit(main())` (20260801T143604Z-standardize-python-main-py-must-forward-fbfe)
+- Standardize: uv-native CI lint/typecheck/test workflow for Python repos (20260801T143800Z-standardize-uv-native-ci-lint-typecheck-8ffa)
+- Standardize: cap pre-1.0 dependencies (httpx) with a `<1.0` upper bound and declare `Typing :: Typed` for typed Python libraries (20260801T143814Z-standardize-cap-pre-1-0-dependencies-htt-9aa7)
+- Standardize: pyright typeCheckingMode strict aligned with mypy --strict (20260801T153706Z-standardize-pyright-typecheckingmode-str-1861)
+- Add Distribution & Packaging standard: git-based consumption is the preferred path for robotsix libraries (20260729T154657Z-add-distribution-packaging-standard-git-311f)
+- Cross-link docs/markdown-linting.md CI invocation to canonical ci-lint-pinning.md (dedupe pre-commit-pinning rule) (20260731T154705Z-cross-link-docs-markdown-linting-md-ci-i-2280)
+- Add per-job permissions block to docs.yml build-and-deploy job (20260727T161215Z-add-per-job-permissions-block-to-docs-ym-cbae)
+- Document check-case-conflict pre-commit hook in docs/python.md (20260727T161215Z-document-check-case-conflict-pre-commit-9a14)
+- register fastapi-pydantic-field-descriptions in mkdocs.yml nav (20260731T161551Z-register-fastapi-pydantic-field-descript-f91a)
+- Fix pre-commit baseline doc: rev version and check-added-large-files args mismatch (20260728T162203Z-fix-pre-commit-baseline-doc-rev-version-6203)
+- AGENT.md: Rules — Every `.github/workflows/*.yml` workflow must declare `permissions: {}` at the top level. (20260727T162305Z-agent-md-rules-every-github-workflows-ym-f91b)
+- Register docs/mypy.md in the mkdocs.yml 'Every repo' nav (20260731T162905Z-register-docs-mypy-md-in-the-mkdocs-yml-f25d)
+- Fix docs/prose-linting.md: missing Vocab line and stale vocabulary file contents (20260729T163404Z-fix-docs-prose-linting-md-missing-vocab-f7e3)
+- check-toc-sync: fail CI when a README.md/docs/index.md 'Every repo' page is missing from mkdocs.yml nav (bidirectional TOC sync) (20260731T164637Z-check-toc-sync-fail-ci-when-a-readme-md-8355)
+- AGENT.md: Documentation standards — When a new standards page is added, it must be registered in the `mkdocs.yml` nav. (20260731T164638Z-agent-md-documentation-standards-when-a-4777)
+- AGENT.md: Rules — When two standards pages would state the same rule, codify the rule once in a canonical page. (20260731T165446Z-agent-md-rules-when-two-standards-pages-bf54)
+- Standardize: robotsix docs builds gate on "mkdocs build --strict" + a link checker (20260801T171004Z-standardize-robotsix-docs-builds-gate-on-b7e2)
+- Fleet-wide requirement: deployable components must have docker-compose integration test in CI (20260731T175858Z-fleet-wide-requirement-deployable-compon-6265)
+- ci_fix: out-of-scope CI failure — docs / check-toc-sync (orphaned page detection) in mkdocs.yml — add `fastapi-pydantic-field-descriptions.md` to the 'Every repo' nav section (20260731T182427Z-ci-fix-out-of-scope-ci-failure-docs-chec-8e2b)
+- Standardize: persistent HTTP client with explicit timeout — one `httpx.Client` (or `requests.Session`) per process, explicit `timeout=`, no per-call module-level convenience helpers. (20260801T183500Z-http-client-persistence-standard-8b86)
+- Add chat observability (logs + read-only volumes) to chat-access-standard.md (20260802T184729Z-add-chat-observability-logs-read-only-vo-61f8)
+- AGENT.md: add the mkdocs.yml nav-registration rule promised by 20260731T164638Z but shipped only to docs/mkdocs-build.md (20260731T190621Z-agent-md-add-the-mkdocs-yml-nav-registra-9995)
+- CI failure: pre_commit in /. - Update #1497585240 on main (20260731T191028Z-ci-failure-pre-commit-in-update-14975852-1843)
+- Update free-tier-only.md audit: robotsix-standards has 5 workflows, not 'no workflows' (20260729T191707Z-update-free-tier-only-md-audit-robotsix-f3bf)
+- Fix sentence-clipped changelog fragments before the next towncrier release rebuild (20260731T193229Z-fix-sentence-clipped-changelog-fragments-7a73)
+- Remove re-created Python-specific periodic agents (docstring_coverage, test_gap) — third recurrence (20260731T200122Z-remove-re-created-python-specific-period-f6e5)
+- Consolidate duplicate changelog.d fragment for the HTTP client persistence standard (PR #186) (20260801T202857Z-consolidate-duplicate-changelog-d-fragme-4b02)
+- Correct the false 'SLSA updated to v1.3' changelog claim on robotsix-standards main (20260731T225426Z-correct-the-false-slsa-updated-to-v1-3-c-6ce5)
+
 
 # robotsix-standards 0.2.0 (2026-07-27)
 

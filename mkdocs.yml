@@ -75,6 +75,7 @@ nav:
       - Python __main__.py exit-code forwarding: python-main-py-forward.md
       - Python Makefile convention: python-makefile-convention.md
       - Pytest practices: pytest.md
+      - Pytest shared state builders: pytest-shared-state-builders.md
       - Ruff lint rules: ruff-lint-rules.md
       - Mypy strictness: mypy.md
       - Pyright strict mode: pyright.md

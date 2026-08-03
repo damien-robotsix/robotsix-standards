@@ -74,6 +74,10 @@ everywhere.
 - **[Pytest practices](pytest.md)** — `filterwarnings = ["error"]`,
   `xfail_strict = true`, and `--strict-markers`/`--strict-config` so every test
   suite fails loudly on deprecations, unregistered markers, and stale xfails.
+- **[Pytest shared state builders](pytest-shared-state-builders.md)** —
+  root `tests/conftest.py` for shared fixtures, `make_<thing>` factory
+  fixtures for mutable test state, and value fixtures as thin factory
+  callers — so shared builders are reusable across every test package.
 - **[Ruff lint rules](ruff-lint-rules.md)** — Tier 2 ruff rule families (SIM,
   C4, LOG, G, ERA, PGH, RUF, PT) with the PT006 exclusion.
 - **[Mypy strictness](mypy.md)** — mypy as a hard CI gate (not advisory),

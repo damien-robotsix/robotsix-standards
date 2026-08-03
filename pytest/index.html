@@ -766,6 +766,34 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="Targeted warning ignores">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#adding-ignore-entries-safely" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Adding ignore entries safely
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#async-test-drivers-and-nested-event-loop-hazards" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Async test drivers and nested-event-loop hazards
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -1885,6 +1913,34 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="Targeted warning ignores">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#adding-ignore-entries-safely" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Adding ignore entries safely
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#async-test-drivers-and-nested-event-loop-hazards" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Async test drivers and nested-event-loop hazards
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -1974,20 +2030,52 @@ fixed bugs stay marked as expected failures forever, and the test suite
 never signals that the fix is real.</p>
 <h2 id="targeted-warning-ignores">Targeted warning ignores<a class="headerlink" href="#targeted-warning-ignores" title="Permanent link">&para;</a></h2>
 <p>Repos <strong>may</strong> add narrowly-scoped <code>ignore:</code> entries for third-party
-<code>DeprecationWarning</code>s that are out of their control:</p>
+<code>DeprecationWarning</code>s that are out of their control.</p>
+<p>Pytest's <code>filterwarnings</code> uses Python's warning filter syntax:
+<code>"action:message:category:module:lineno"</code>.  The <code>message</code> field is matched
+as a regex prefix — an entry ending in <code>...</code> matches any suffix (the
+trailing <code>...</code> is <code>.*</code>).  When a field is omitted entirely, it matches
+anything; an empty string between colons matches an empty string literally.</p>
+<p>The two common patterns:</p>
+<p><strong>Category-and-module targeting</strong> (Starlette, Pydantic style):</p>
 <div class="highlight"><pre><span></span><code><span class="n">filterwarnings</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span>
 <span class="w">    </span><span class="s2">&quot;error&quot;</span><span class="p">,</span>
 <span class="w">    </span><span class="s2">&quot;ignore::DeprecationWarning:third_party_package.*:&quot;</span><span class="p">,</span>
 <span class="w">    </span><span class="s2">&quot;ignore::DeprecationWarning:another_package.module:&quot;</span><span class="p">,</span>
 <span class="p">]</span>
 </code></pre></div>
-<p>Each <code>ignore:</code> entry <strong>must</strong> include a <code>message</code> and/or <code>module</code> qualifier
-so it silences only the specific warning it targets — never a bare
-<code>"ignore::DeprecationWarning"</code>. Starlette, Pydantic, and httpx all follow
-this pattern.</p>
+<p><strong>Message-prefix targeting</strong> (httpx style):</p>
+<div class="highlight"><pre><span></span><code><span class="n">filterwarnings</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span>
+<span class="w">    </span><span class="s2">&quot;error&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="s2">&quot;ignore: You seem to already have a custom sys.excepthook handler installed...&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="s2">&quot;ignore: You seem to already have a custom MultiError...&quot;</span><span class="p">,</span>
+<span class="p">]</span>
+</code></pre></div>
+<p>Each <code>ignore:</code> entry <strong>must</strong> narrow the scope to the specific warning
+it targets — never a bare <code>"ignore::DeprecationWarning"</code>.  Starlette,
+Pydantic, and httpx all follow this pattern.</p>
 <p><strong>Failure mode:</strong> a bare <code>ignore::DeprecationWarning</code> suppresses every
 deprecation in the entire test suite, including the project's own — the
 setting becomes self-defeating.</p>
+<h3 id="adding-ignore-entries-safely">Adding ignore entries safely<a class="headerlink" href="#adding-ignore-entries-safely" title="Permanent link">&para;</a></h3>
+<p>After enabling <code>filterwarnings = ["error"]</code>, run the full test suite.
+Only add <code>ignore:</code> entries for warnings that are both genuinely benign
+<strong>and</strong> unfixable by the project — i.e. third-party deprecations whose
+fix is upstream.  Every <code>ignore:</code> line should cite the specific warning
+message or module it suppresses, so a future contributor can re-evaluate
+whether the ignore is still needed.</p>
+<p><strong>Failure mode:</strong> adding <code>ignore:</code> entries preemptively ("just in case")
+accumulates stale suppressions that hide new warnings indefinitely.</p>
+<h3 id="async-test-drivers-and-nested-event-loop-hazards">Async test drivers and nested-event-loop hazards<a class="headerlink" href="#async-test-drivers-and-nested-event-loop-hazards" title="Permanent link">&para;</a></h3>
+<p>When a test helper internally calls <code>asyncio.run()</code> (or any other function
+that starts a new event loop), that helper <strong>must</strong> be exercised only from
+synchronous test functions — never from an <code>async def test_*</code> that is
+already running inside an event loop.  With <code>filterwarnings = ["error"]</code>,
+an attempted nested event loop surfaces as a hard test failure
+(e.g. <code>RuntimeError</code> or <code>DeprecationWarning</code> from the async library).</p>
+<p><strong>Failure mode:</strong> a sync test driver called from an async test function
+crashes inside CI only after the warning-as-error baseline is enabled,
+blocking unrelated work while the team diagnoses the nested-loop failure.</p>
 <h2 id="recommended-tier-strict-markers-and-config">Recommended tier: strict markers and config<a class="headerlink" href="#recommended-tier-strict-markers-and-config" title="Permanent link">&para;</a></h2>
 <p>Repos <strong>should</strong> additionally enable marker and config strictness:</p>
 <div class="highlight"><pre><span></span><code><span class="n">addopts</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;--strict-markers&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;--strict-config&quot;</span><span class="p">]</span>

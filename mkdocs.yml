@@ -74,6 +74,7 @@ nav:
       - Python CI workflow: python-ci-workflow.md
       - Python practices: python.md
       - Python __main__.py exit-code forwarding: python-main-py-forward.md
+      - Console-script subprocess tests: console-script-subprocess-test.md
       - Python Makefile convention: python-makefile-convention.md
       - Pytest practices: pytest.md
       - Pytest shared state builders: pytest-shared-state-builders.md

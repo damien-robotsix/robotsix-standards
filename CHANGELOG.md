@@ -177,6 +177,7 @@
 
 ## 0.0.0 (unreleased)
 
+- New standard: [stale bot must exempt pull requests](docs/stale-bot-must-exempt-pull-requests.md) — every `stale.yml` must disable PR staling and closing with `days-before-pr-stale: -1` and `days-before-pr-close: -1`, so issue hygiene never auto-closes contributed PRs.
 - Mypy standard: tie the blocking-CI-gate requirement explicitly to `py.typed` — a package that ships a `py.typed` marker must run its type checker as a required (non-advisory) step.
 - **FastAPI test isolation standard:** mutable server state must be exposed through `Depends()` dependencies so tests can override via `app.dependency_overrides`; never import and mutate the module-level store directly.
 - Prevent recurring towncrier-release CHANGELOG.md markdownlint breakage: exclude the build-time copy (`docs/CHANGELOG.md`) from linting in `.markdownlint-cli2.yaml`, and fold the `markdownlint-disable` guard into towncrier's `start_string` so it survives rebuilds.

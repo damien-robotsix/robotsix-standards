@@ -33,6 +33,10 @@ everywhere.
 - **[Security posture](security-posture.md)** — self-enforcing security gates
   (SAST, dependency review, Dependabot, workflow hardening, secret protection,
   SBOM), auditable per repo.
+- **[Stale bot must exempt pull requests](stale-bot-must-exempt-pull-requests.md)** —
+  every `stale.yml` must disable pull-request staling and closing with
+  `days-before-pr-stale: -1` and `days-before-pr-close: -1` — keep issue
+  hygiene, never auto-close PRs.
 - **[Async SQLAlchemy test fixtures](async-sqlalchemy-test-fixtures.md)** — three-layer database
   test fixture pattern (session-scoped engine, function-scoped connection with
   rollback, function-scoped session with savepoints) for clean test isolation

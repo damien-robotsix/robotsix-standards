@@ -146,6 +146,9 @@ integrates with the deployment system. Beyond the baseline it follows:
 - **[HTTP security headers](http-security-headers.md)** — standard OWASP security
   response headers (CSP, HSTS, X-Frame-Options, etc.) via a single shared
   `secure` middleware, so no service hand-rolls its own headers.
+- **[Health endpoints](health-endpoints.md)** — split liveness (`/health`) vs.
+  readiness (`/readyz`) endpoints so the orchestrator can restart dead processes
+  without gating traffic on a dependency probe, and vice versa.
 - **[OpenSSF Scorecard](scorecard.md)** — independent supply-chain audit
   (~20 checks) producing a single numeric score; closes the gap the per-gate
   security stack doesn't cover.

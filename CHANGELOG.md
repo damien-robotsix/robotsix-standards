@@ -177,6 +177,7 @@
 
 ## 0.0.0 (unreleased)
 
+- New standard: [stale bot must exempt pull requests](docs/stale-bot-must-exempt-pull-requests.md) — every `stale.yml` must disable PR staling and closing with `days-before-pr-stale: -1` and `days-before-pr-close: -1`, so issue hygiene never auto-closes contributed PRs.
 - Mypy standard: tie the blocking-CI-gate requirement explicitly to `py.typed` — a package that ships a `py.typed` marker must run its type checker as a required (non-advisory) step.
 - **FastAPI test isolation standard:** mutable server state must be exposed through `Depends()` dependencies so tests can override via `app.dependency_overrides`; never import and mutate the module-level store directly.
 - New standard: [Health endpoints](docs/health-endpoints.md) — split liveness (`/health`, static, no I/O) vs. readiness (`/readyz`, dependency probe with per-dependency status map) so the orchestrator can restart dead processes without gating traffic on a dependency probe, and vice versa.

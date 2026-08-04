@@ -132,6 +132,7 @@ own release PR, not on merge of any other PR.
 
 > **Pinning.** Pin the action to a commit SHA, not a tag. Resolve the SHA
 > with:
+>
 > ```bash
 > url=https://github.com/googleapis/release-please-action.git
 > git ls-remote "$url" "refs/tags/v4^{}" "refs/tags/v4" \

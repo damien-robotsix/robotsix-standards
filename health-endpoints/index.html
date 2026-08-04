@@ -10,13 +10,13 @@
       
       
       
-        <link rel="canonical" href="https://damien-robotsix.github.io/robotsix-standards/prose-linting/">
+        <link rel="canonical" href="https://damien-robotsix.github.io/robotsix-standards/health-endpoints/">
       
       
-        <link rel="prev" href="../markdown-linting/">
+        <link rel="prev" href="../http-security-headers/">
       
       
-        <link rel="next" href="../mkdocs-build/">
+        <link rel="next" href="../scorecard/">
       
       
         
@@ -27,7 +27,7 @@
     
     
       
-        <title>Prose linting - Robotsix Standards</title>
+        <title>Health endpoints - Robotsix Standards</title>
       
     
     
@@ -78,7 +78,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#prose-linting" class="md-skip">
+        <a href="#health-endpoints" class="md-skip">
           Skip to content
         </a>
       
@@ -114,7 +114,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Prose linting
+              Health endpoints
             
           </span>
         </div>
@@ -311,8 +311,6 @@
       
   
   
-    
-  
   
   
     
@@ -325,11 +323,13 @@
       
     
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3" >
         
           
           <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
@@ -350,7 +350,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_3">
             <span class="md-nav__icon md-icon"></span>
             
@@ -981,37 +981,10 @@
                 
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Prose linting
-  
-
-    
-  </span>
-  
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../prose-linting/" class="md-nav__link">
         
   
   
@@ -1027,137 +1000,6 @@
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#why-this-exists" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Why this exists
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#pre-commit-hooks" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Pre-commit hooks
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#configuration" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Configuration
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Configuration">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#valeini-at-repo-root" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        .vale.ini at repo root
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#fleet-vocabulary" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Fleet vocabulary
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Fleet vocabulary">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#accepttxt-fleet-specific-terms-that-vale-should-not-flag" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        accept.txt — fleet-specific terms that Vale should not flag
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#rejecttxt-terms-that-must-never-appear-in-fleet-documentation" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        reject.txt — terms that must never appear in fleet documentation
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#ci-integration" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        CI integration
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#fleet-precedent" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Fleet precedent
-      
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -1314,8 +1156,10 @@
       
   
   
+    
   
   
+  
     
     
     
@@ -1326,13 +1170,11 @@
       
     
     
-    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
       
         
         
-          
-        
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
         
           
           <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
@@ -1353,7 +1195,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_4">
             <span class="md-nav__icon md-icon"></span>
             
@@ -1760,10 +1602,37 @@
                 
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="../health-endpoints/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Health endpoints
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   
@@ -1779,6 +1648,109 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#the-rule" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The rule
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="The rule">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-liveness-health-static-no-io-always-200-while-up" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Liveness: /health — static, no I/O, always 200 while up
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-readiness-readyz-dependency-probe-503-when-degraded" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Readiness: /readyz — dependency probe, 503 when degraded
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-what-counts-as-a-dependency" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. What counts as a dependency
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-both-endpoints-unauthenticated-and-documented" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Both endpoints unauthenticated and documented
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#fastapi-reference-implementation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        FastAPI reference implementation
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#failure-modes-this-prevents" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Failure modes this prevents
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -2051,44 +2023,22 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#why-this-exists" class="md-nav__link">
+  <a href="#the-rule" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Why this exists
+        The rule
       
     </span>
   </a>
   
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#pre-commit-hooks" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Pre-commit hooks
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#configuration" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Configuration
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Configuration">
+    <nav class="md-nav" aria-label="The rule">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#valeini-at-repo-root" class="md-nav__link">
+  <a href="#1-liveness-health-static-no-io-always-200-while-up" class="md-nav__link">
     <span class="md-ellipsis">
       
-        .vale.ini at repo root
+        1. Liveness: /health — static, no I/O, always 200 while up
       
     </span>
   </a>
@@ -2096,22 +2046,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#fleet-vocabulary" class="md-nav__link">
+  <a href="#2-readiness-readyz-dependency-probe-503-when-degraded" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Fleet vocabulary
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Fleet vocabulary">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#accepttxt-fleet-specific-terms-that-vale-should-not-flag" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        accept.txt — fleet-specific terms that Vale should not flag
+        2. Readiness: /readyz — dependency probe, 503 when degraded
       
     </span>
   </a>
@@ -2119,10 +2057,21 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#rejecttxt-terms-that-must-never-appear-in-fleet-documentation" class="md-nav__link">
+  <a href="#3-what-counts-as-a-dependency" class="md-nav__link">
     <span class="md-ellipsis">
       
-        reject.txt — terms that must never appear in fleet documentation
+        3. What counts as a dependency
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-both-endpoints-unauthenticated-and-documented" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Both endpoints unauthenticated and documented
       
     </span>
   </a>
@@ -2133,17 +2082,12 @@
     </nav>
   
 </li>
-        
-      </ul>
-    </nav>
-  
-</li>
       
         <li class="md-nav__item">
-  <a href="#ci-integration" class="md-nav__link">
+  <a href="#fastapi-reference-implementation" class="md-nav__link">
     <span class="md-ellipsis">
       
-        CI integration
+        FastAPI reference implementation
       
     </span>
   </a>
@@ -2151,10 +2095,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#fleet-precedent" class="md-nav__link">
+  <a href="#failure-modes-this-prevents" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Fleet precedent
+        Failure modes this prevents
       
     </span>
   </a>
@@ -2181,119 +2125,139 @@
   
 
 
-<h1 id="prose-linting">Prose linting<a class="headerlink" href="#prose-linting" title="Permanent link">&para;</a></h1>
+<h1 id="health-endpoints">Health endpoints<a class="headerlink" href="#health-endpoints" title="Permanent link">&para;</a></h1>
 <blockquote>
-<p><strong>Scope: every repository that publishes MkDocs documentation.</strong>
-Repos without MkDocs (content-only repos, ROS 2 workspaces, deployment-only
-repos) are exempt.</p>
+<p><strong>Scope: deployable components that expose an HTTP API.</strong> Every deployable
+component already serves <code>GET /health</code> (per the
+<a href="../component-standard/">component standard</a>). This page codifies the
+<strong>split</strong> into two distinct endpoints — liveness vs. readiness — that the
+component standard's health section already tees up. This applies <em>in
+addition to</em> the <a href="../repo-baseline/">repo baseline</a> and
+<a href="../component-standard/">component standard</a>.</p>
 </blockquote>
-<h2 id="why-this-exists">Why this exists<a class="headerlink" href="#why-this-exists" title="Permanent link">&para;</a></h2>
-<p><a href="../markdown-linting/">Markdown linting</a> catches syntax, heading, and spelling
-errors — but it does not enforce prose style. Without an automated prose gate,
-passive voice, weasel words, non-inclusive terminology, and misspelled product
-names accumulate silently across the fleet's documentation sites. Reviewers
-read for meaning, not for readability metrics or fleet-specific vocabulary —
-the drift is only noticed when a human happens to spot it, and by then the
-same term is often misspelled in a dozen pages.</p>
-<p><a href="https://vale.sh/">Vale</a> (MIT-licensed, <code>github.com/errata-ai/vale</code>) fills
-this gap. It is a declarative prose linter that checks for style, readability,
-and vocabulary consistency — and it integrates into the fleet's existing
-pre-commit + CI pipeline with no separate workflow.</p>
-<h2 id="pre-commit-hooks">Pre-commit hooks<a class="headerlink" href="#pre-commit-hooks" title="Permanent link">&para;</a></h2>
-<p>Add both hooks to <code>.pre-commit-config.yaml</code>. The <code>sync</code> hook fetches bundled
-styles (no separate install); the lint hook runs on every Markdown file.</p>
-<div class="highlight"><pre><span></span><code><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">repo</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://github.com/errata-ai/vale</span>
-<span class="w">    </span><span class="nt">rev</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">v3.15.1</span>
-<span class="w">    </span><span class="nt">hooks</span><span class="p">:</span>
-<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">id</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">vale</span>
-<span class="w">        </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">vale sync</span>
-<span class="w">        </span><span class="nt">pass_filenames</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
-<span class="w">        </span><span class="nt">args</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">sync</span><span class="p p-Indicator">]</span>
-<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">id</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">vale</span>
-<span class="w">        </span><span class="nt">args</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">--output=line</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">--minAlertLevel=error</span><span class="p p-Indicator">]</span>
-</code></pre></div>
-<p><strong>Failure mode prevented:</strong> docs-sites that pass <code>mkdocs build --strict</code> but
-ship with passive-voice walls, filler phrases ("easily", "just", "simply"),
-outdated terminology, and misspelled fleet product names — all of which
-degrade the reader's trust and the fleet's professional surface.</p>
-<h2 id="configuration">Configuration<a class="headerlink" href="#configuration" title="Permanent link">&para;</a></h2>
-<h3 id="valeini-at-repo-root"><code>.vale.ini</code> at repo root<a class="headerlink" href="#valeini-at-repo-root" title="Permanent link">&para;</a></h3>
-<div class="highlight"><pre><span></span><code><span class="na">StylesPath</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">styles</span>
-<span class="na">MinAlertLevel</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">error</span>
-<span class="na">Vocab</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">robotsix</span>
-<span class="na">Packages</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">errata-ai/write-good</span>
-<span class="k">[*.md]</span>
-<span class="na">BasedOnStyles</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">write-good</span>
-</code></pre></div>
-<p><strong>The <code>StylesPath</code> directory (<code>styles/</code>) is gitignored</strong> — <code>vale sync</code>
-regenerates it from the declared packages. Only the vocabulary files
-(in <code>config/vocabularies/</code>) are version-controlled.</p>
-<h3 id="fleet-vocabulary">Fleet vocabulary<a class="headerlink" href="#fleet-vocabulary" title="Permanent link">&para;</a></h3>
-<p>Create <code>config/vocabularies/robotsix/</code> with two files:</p>
-<h4 id="accepttxt-fleet-specific-terms-that-vale-should-not-flag"><code>accept.txt</code> — fleet-specific terms that Vale should not flag<a class="headerlink" href="#accepttxt-fleet-specific-terms-that-vale-should-not-flag" title="Permanent link">&para;</a></h4>
-<div class="highlight"><pre><span></span><code>robotsix
-towncrier
-central-deploy
-langfuse
-llmio
-semgrep
-trufflehog
-dependabot
-mkdocs
-mkdocstrings
-codespell
-hadolint
-actionlint
-ruff
-mypy
-deptry
-pydantic
-hatchling
-pre-commit
-pypi
-cyclonedx
-sbom
-trivy
-scorecard
-OpenSSF
-OWASP
-SLSA
-Sigstore
-backend
-frontend
-websocket
-lifecycle
-onboarding
-cutover
-supersession
-</code></pre></div>
-<p>Each term is a fleet product, tool, or framework name that spell-check and
-style rules would otherwise flag as errors. Adding them here suppresses the
-false positive across every doc page in the repo.</p>
-<h4 id="rejecttxt-terms-that-must-never-appear-in-fleet-documentation"><code>reject.txt</code> — terms that must never appear in fleet documentation<a class="headerlink" href="#rejecttxt-terms-that-must-never-appear-in-fleet-documentation" title="Permanent link">&para;</a></h4>
-<div class="highlight"><pre><span></span><code>whitelist
-blacklist
-master/slave
-sanity.check
-crazy
-</code></pre></div>
-<p>These terms have well-established inclusive replacements (<code>allowlist</code>,
-<code>blocklist</code>, <code>primary</code>/<code>replica</code>, <code>consistency check</code>, <code>placeholder</code>). Vale
-flags every occurrence so they are caught before review.</p>
-<h2 id="ci-integration">CI integration<a class="headerlink" href="#ci-integration" title="Permanent link">&para;</a></h2>
-<p>No separate workflow is needed — <code>pre-commit run --all-files</code> executes Vale
-as part of the standard pre-commit CI gate (see
-<a href="../pre-commit-baseline/">Pre-commit baseline</a>). The <code>sync</code> hook runs first
-to pull the bundled styles, then the lint hook checks all Markdown files
-at the <code>error</code> severity level.</p>
-<h2 id="fleet-precedent">Fleet precedent<a class="headerlink" href="#fleet-precedent" title="Permanent link">&para;</a></h2>
+<p>Every HTTP service in the fleet exposes two health endpoints with different
+semantics, following the Kubernetes liveness/readiness probe convention. A
+single static <code>/health</code> that returns 200 unconditionally reports healthy even
+when the backing store is down — masking an outage behind a green probe. Two
+endpoints with different contracts let the orchestrator restart dead processes
+while also gating traffic away from processes that are alive but can't serve.</p>
+<h2 id="the-rule">The rule<a class="headerlink" href="#the-rule" title="Permanent link">&para;</a></h2>
+<h3 id="1-liveness-health-static-no-io-always-200-while-up">1. Liveness: <code>/health</code> — static, no I/O, always 200 while up<a class="headerlink" href="#1-liveness-health-static-no-io-always-200-while-up" title="Permanent link">&para;</a></h3>
+<p>The liveness endpoint signals that the <strong>process event loop is running</strong>.
+It must return 200 as long as the process is alive, and it must <strong>never</strong>
+touch an external dependency — no database query, no downstream HTTP call,
+no filesystem stat on a network mount. A database blip must not trigger a
+restart cascade.</p>
 <ul>
-<li>Major Python OSS documentation projects (including <code>pydantic/pydantic</code> and
-  <code>encode/httpx</code>) use Vale for prose consistency — the same declarative
-  style-checking pattern, integrated through pre-commit.</li>
-<li>The fleet's own <a href="../markdown-linting/">Markdown linting</a> standard already
-  acknowledges the prose-style gap — this standard fills it with an OSS tool
-  that slots into the existing pre-commit + CI pipeline.</li>
+<li><strong>Path:</strong> <code>GET /health</code> (the existing fleet path; no new path needed).</li>
+<li><strong>Contract:</strong> always returns <code>{"status": "ok"}</code> with HTTP 200 while the
+  process is alive.</li>
+<li><strong>No dependency I/O:</strong> the handler body is synchronous or a no-op async
+  function — it returns immediately without awaiting anything.</li>
+<li><strong>Auth-exempt:</strong> neither the gateway nor the component applies
+  authentication to this endpoint, so container healthchecks and the
+  orchestrator can probe it without credentials.</li>
+</ul>
+<h3 id="2-readiness-readyz-dependency-probe-503-when-degraded">2. Readiness: <code>/readyz</code> — dependency probe, 503 when degraded<a class="headerlink" href="#2-readiness-readyz-dependency-probe-503-when-degraded" title="Permanent link">&para;</a></h3>
+<p>The readiness endpoint signals that the component can <strong>actually serve
+traffic</strong>. It runs a lightweight probe of every critical dependency —
+datastore, downstream API, message broker — within a short timeout. If all
+dependencies respond, it returns 200; if any is unreachable, it returns 503
+with a per-dependency status map so the operator can see <em>which</em> dependency
+is down without tailing logs.</p>
+<ul>
+<li><strong>Path:</strong> <code>GET /readyz</code>.</li>
+<li><strong>Success (200):</strong> <code>{"status": "ready"}</code> when all probed dependencies
+  respond within the timeout.</li>
+<li><strong>Degraded (503):</strong> <code>{"status": "not ready", "dependencies": {"&lt;name&gt;":
+  "up|down|timeout", …}}</code> when any dependency fails or times out. The
+  <code>dependencies</code> map names every probed dependency and its status so a
+  dashboard or operator can diagnose the failure from the response alone.</li>
+<li><strong>Timeout:</strong> each individual probe has a short timeout (≤ 2 seconds per
+  dependency), and the whole handler returns within 5 seconds — a hung
+  readiness probe that blocks the event loop is worse than no probe.</li>
+<li><strong>Auth-exempt:</strong> same as liveness — no authentication, so the orchestrator
+  and load-balancer can probe it.</li>
+</ul>
+<h3 id="3-what-counts-as-a-dependency">3. What counts as a dependency<a class="headerlink" href="#3-what-counts-as-a-dependency" title="Permanent link">&para;</a></h3>
+<p>Only <strong>critical</strong> dependencies — those whose absence makes the component
+unable to serve its primary function. A component that calls three downstream
+APIs but can still serve 90% of its endpoints with two of them down should
+probe all three and report the degraded one but still return 200 (or use the
+dependency map to inform a dashboard without gating traffic). The readiness
+check gates <em>traffic routing</em>, not logging — err on the side of keeping the
+component in rotation unless it is genuinely unable to serve.</p>
+<p>Dependencies that are <strong>not</strong> probed at readiness time:</p>
+<ul>
+<li>Sibling containers (the component already starts without them per
+  <a href="../component-standard/#sibling-resilience">sibling resilience</a>).</li>
+<li>Optional integrations that degrade gracefully (e.g. an analytics sink
+  whose failures are logged and ignored).</li>
+<li>The deployment system's own infrastructure (gateway, config provider) — if
+  those are down the probe request wouldn't reach the component anyway.</li>
+</ul>
+<h3 id="4-both-endpoints-unauthenticated-and-documented">4. Both endpoints unauthenticated and documented<a class="headerlink" href="#4-both-endpoints-unauthenticated-and-documented" title="Permanent link">&para;</a></h3>
+<p>The deploy README (<code>deploy/README.md</code>) documents both endpoints — paths,
+expected responses, and probe semantics — so the operator configuring
+healthchecks in the orchestrator doesn't have to read source code.</p>
+<h2 id="fastapi-reference-implementation">FastAPI reference implementation<a class="headerlink" href="#fastapi-reference-implementation" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">fastapi</span><span class="w"> </span><span class="kn">import</span> <span class="n">FastAPI</span><span class="p">,</span> <span class="n">Request</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">fastapi.responses</span><span class="w"> </span><span class="kn">import</span> <span class="n">JSONResponse</span>
+
+<span class="n">app</span> <span class="o">=</span> <span class="n">FastAPI</span><span class="p">()</span>
+
+<span class="nd">@app</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;/health&quot;</span><span class="p">)</span>
+<span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">health</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Liveness: static, no I/O.&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;status&quot;</span><span class="p">:</span> <span class="s2">&quot;ok&quot;</span><span class="p">}</span>
+
+
+<span class="nd">@app</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;/readyz&quot;</span><span class="p">)</span>
+<span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">readyz</span><span class="p">(</span><span class="n">request</span><span class="p">:</span> <span class="n">Request</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">JSONResponse</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Readiness: probe critical dependencies.&quot;&quot;&quot;</span>
+    <span class="c1"># Each probe has its own timeout; the handler returns within 5 seconds.</span>
+    <span class="n">db_ok</span> <span class="o">=</span> <span class="k">await</span> <span class="n">check_database</span><span class="p">(</span><span class="n">timeout</span><span class="o">=</span><span class="mf">2.0</span><span class="p">)</span>
+    <span class="n">api_ok</span> <span class="o">=</span> <span class="k">await</span> <span class="n">check_downstream_api</span><span class="p">(</span><span class="n">timeout</span><span class="o">=</span><span class="mf">2.0</span><span class="p">)</span>
+
+    <span class="n">all_ok</span> <span class="o">=</span> <span class="n">db_ok</span> <span class="ow">and</span> <span class="n">api_ok</span>
+    <span class="n">status_code</span> <span class="o">=</span> <span class="mi">200</span> <span class="k">if</span> <span class="n">all_ok</span> <span class="k">else</span> <span class="mi">503</span>
+    <span class="k">return</span> <span class="n">JSONResponse</span><span class="p">(</span>
+        <span class="n">content</span><span class="o">=</span><span class="p">{</span>
+            <span class="s2">&quot;status&quot;</span><span class="p">:</span> <span class="s2">&quot;ready&quot;</span> <span class="k">if</span> <span class="n">all_ok</span> <span class="k">else</span> <span class="s2">&quot;not ready&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;dependencies&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s2">&quot;database&quot;</span><span class="p">:</span> <span class="s2">&quot;up&quot;</span> <span class="k">if</span> <span class="n">db_ok</span> <span class="k">else</span> <span class="s2">&quot;down&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;downstream_api&quot;</span><span class="p">:</span> <span class="s2">&quot;up&quot;</span> <span class="k">if</span> <span class="n">api_ok</span> <span class="k">else</span> <span class="s2">&quot;down&quot;</span><span class="p">,</span>
+            <span class="p">},</span>
+        <span class="p">},</span>
+        <span class="n">status_code</span><span class="o">=</span><span class="n">status_code</span><span class="p">,</span>
+    <span class="p">)</span>
+</code></pre></div>
+<p>The probe helpers (<code>check_database</code>, <code>check_downstream_api</code>) are
+implementation detail — a <code>SELECT 1</code>, a <code>GET /health</code> on the downstream, a
+Redis <code>PING</code> — but each must respect its timeout and never raise an unhandled
+exception (catch, log, and report "down").</p>
+<h2 id="failure-modes-this-prevents">Failure modes this prevents<a class="headerlink" href="#failure-modes-this-prevents" title="Permanent link">&para;</a></h2>
+<ul>
+<li><strong>Masked outages.</strong> A single static <code>/health</code> returns 200 while the
+  database is unreachable. The orchestrator sees a green probe and keeps
+  routing traffic to a component that 500s every real request. The readiness
+  endpoint catches this and pulls the component from rotation until the
+  dependency recovers.</li>
+<li><strong>Restart cascades.</strong> If the liveness probe touches the database and the
+  database blips, every replica restarts simultaneously — turning a brief
+  dependency hiccup into a full service outage while all replicas cycle.
+  Static liveness means the orchestrator only restarts a process that is
+  genuinely stuck.</li>
+<li><strong>Inconsistent probe paths across repos.</strong> Without a codified split, each
+  repo invents its own probe convention — <code>/healthz</code>, <code>/health/live</code>,
+  <code>/ready</code>, <code>/status</code> — and the operator must configure healthchecks
+  differently per service. Two fleet-wide paths remove that configuration
+  drift.</li>
+<li><strong>Undiagnosable readiness failures.</strong> A readiness endpoint that returns a
+  bare 503 tells the operator <em>that</em> the component is degraded but not
+  <em>why</em>. The per-dependency status map in the response body means a single
+  <code>curl</code> from the operator's terminal identifies the failing dependency
+  without log access.</li>
 </ul>
 
 

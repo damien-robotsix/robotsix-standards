@@ -1766,6 +1766,34 @@
   
   
     <li class="md-nav__item">
+      <a href="health-endpoints/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Health endpoints
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="scorecard/" class="md-nav__link">
         
   
@@ -2302,6 +2330,9 @@ integrates with the deployment system. Beyond the baseline it follows:</p>
 <li><strong><a href="http-security-headers/">HTTP security headers</a></strong> — standard OWASP security
   response headers (CSP, HSTS, X-Frame-Options, etc.) via a single shared
   <code>secure</code> middleware, so no service hand-rolls its own headers.</li>
+<li><strong><a href="health-endpoints/">Health endpoints</a></strong> — split liveness (<code>/health</code>) vs.
+  readiness (<code>/readyz</code>) endpoints so the orchestrator can restart dead processes
+  without gating traffic on a dependency probe, and vice versa.</li>
 <li><strong><a href="scorecard/">OpenSSF Scorecard</a></strong> — independent supply-chain audit
   (~20 checks) producing a single numeric score; closes the gap the per-gate
   security stack doesn't cover.</li>

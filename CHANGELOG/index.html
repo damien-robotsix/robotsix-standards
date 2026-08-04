@@ -1603,6 +1603,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../health-endpoints/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Health endpoints
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../scorecard/" class="md-nav__link">
         
   
@@ -2150,6 +2178,7 @@
 <ul>
 <li>Mypy standard: tie the blocking-CI-gate requirement explicitly to <code>py.typed</code> — a package that ships a <code>py.typed</code> marker must run its type checker as a required (non-advisory) step.</li>
 <li><strong>FastAPI test isolation standard:</strong> mutable server state must be exposed through <code>Depends()</code> dependencies so tests can override via <code>app.dependency_overrides</code>; never import and mutate the module-level store directly.</li>
+<li>New standard: <a href="../health-endpoints/">Health endpoints</a> — split liveness (<code>/health</code>, static, no I/O) vs. readiness (<code>/readyz</code>, dependency probe with per-dependency status map) so the orchestrator can restart dead processes without gating traffic on a dependency probe, and vice versa.</li>
 <li>Prevent recurring towncrier-release CHANGELOG.md markdownlint breakage: exclude the build-time copy (<code>docs/CHANGELOG.md</code>) from linting in <code>.markdownlint-cli2.yaml</code>, and fold the <code>markdownlint-disable</code> guard into towncrier's <code>start_string</code> so it survives rebuilds.</li>
 <li>Add release-please release automation standard (<code>docs/release-please.md</code>) — conventional-commit-driven release PRs, automated version bump, changelog generation, git tag, and GitHub Release via <code>googleapis/release-please-action</code>, replacing the towncrier-based workflow.</li>
 <li>Pytest shared state builders: codify root <code>tests/conftest.py</code> for shared fixtures, <code>make_&lt;thing&gt;</code> factory fixtures for mutable test state, and value fixtures as thin factory callers — so shared builders are reusable across every test package instead of duplicated inline.</li>

@@ -16,7 +16,7 @@
         <link rel="prev" href="../entrypoint-contract/">
       
       
-        <link rel="next" href="../integrating-a-service/">
+        <link rel="next" href="../fastapi-test-isolation/">
       
       
         
@@ -1557,10 +1557,49 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#cross-reference" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Cross-reference
+      
+    </span>
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
       
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../fastapi-test-isolation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    FastAPI test isolation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
     </li>
   
 
@@ -2005,6 +2044,17 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#cross-reference" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Cross-reference
+      
+    </span>
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -2109,6 +2159,14 @@ has no description:</p>
 <p>This check is <strong>optional</strong> today; a repo that adds it signals that its API
 surface is fully documented. The fleet convention is the requirement — the
 automated gate is the enforcement.</p>
+<h2 id="cross-reference">Cross-reference<a class="headerlink" href="#cross-reference" title="Permanent link">&para;</a></h2>
+<ul>
+<li><strong><a href="../fastapi-test-isolation/">FastAPI test isolation</a></strong> — the other
+  fleet-wide FastAPI convention: mutable server state must be exposed
+  through <code>Depends()</code> dependencies so tests can override via
+  <code>app.dependency_overrides</code> rather than importing and mutating module-level
+  globals.</li>
+</ul>
 
 
 

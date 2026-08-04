@@ -10,29 +10,31 @@
       
       
       
-        <link rel="canonical" href="https://damien-robotsix.github.io/robotsix-standards/">
+        <link rel="canonical" href="https://damien-robotsix.github.io/robotsix-standards/fastapi-test-isolation/">
       
       
+        <link rel="prev" href="../fastapi-pydantic-field-descriptions/">
       
-        <link rel="next" href="fleet/">
+      
+        <link rel="next" href="../integrating-a-service/">
       
       
         
       
       
-      <link rel="icon" href="assets/images/favicon.png">
+      <link rel="icon" href="../assets/images/favicon.png">
       <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
     
     
       
-        <title>Robotsix Standards</title>
+        <title>FastAPI test isolation - Robotsix Standards</title>
       
     
     
-      <link rel="stylesheet" href="assets/stylesheets/main.ec1eaa64.min.css">
+      <link rel="stylesheet" href="../assets/stylesheets/main.ec1eaa64.min.css">
       
         
-        <link rel="stylesheet" href="assets/stylesheets/palette.ab4e12ef.min.css">
+        <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
       
       
 
@@ -51,7 +53,7 @@
       
     
     
-    <script>__md_scope=new URL(".",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
 
@@ -76,7 +78,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#robotsix-stack-standards" class="md-skip">
+        <a href="#fastapi-test-isolation-via-dependency-overrides" class="md-skip">
           Skip to content
         </a>
       
@@ -92,7 +94,7 @@
 
 <header class="md-header md-header--shadow" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href="." title="Robotsix Standards" class="md-header__button md-logo" aria-label="Robotsix Standards" data-md-component="logo">
+    <a href=".." title="Robotsix Standards" class="md-header__button md-logo" aria-label="Robotsix Standards" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
@@ -112,7 +114,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Home
+              FastAPI test isolation
             
           </span>
         </div>
@@ -228,7 +230,7 @@
 
 <nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href="." title="Robotsix Standards" class="md-nav__button md-logo" aria-label="Robotsix Standards" data-md-component="logo">
+    <a href=".." title="Robotsix Standards" class="md-nav__button md-logo" aria-label="Robotsix Standards" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
@@ -255,37 +257,10 @@
       
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Home
-  
-
-    
-  </span>
-  
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="." class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
         
   
   
@@ -301,142 +276,6 @@
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#why-this-exists" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Why this exists
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#two-scopes" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Two scopes
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Two scopes">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#every-repository-libraries-and-deployable-components" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Every repository (libraries and deployable components)
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#deployable-components-additionally" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Deployable components (additionally)
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#the-deployment-system-bootstrap-tier" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        The deployment system (bootstrap tier)
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#which-am-i" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Which am I?
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#the-fleet" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        The fleet
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#reference-implementation" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Reference implementation
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#changing-the-standards" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Changing the standards
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#mill-agents" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Mill agents
-      
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -448,7 +287,7 @@
   
   
     <li class="md-nav__item">
-      <a href="fleet/" class="md-nav__link">
+      <a href="../fleet/" class="md-nav__link">
         
   
   
@@ -529,7 +368,7 @@
   
   
     <li class="md-nav__item">
-      <a href="repo-baseline/" class="md-nav__link">
+      <a href="../repo-baseline/" class="md-nav__link">
         
   
   
@@ -557,7 +396,7 @@
   
   
     <li class="md-nav__item">
-      <a href="towncrier/" class="md-nav__link">
+      <a href="../towncrier/" class="md-nav__link">
         
   
   
@@ -585,7 +424,7 @@
   
   
     <li class="md-nav__item">
-      <a href="free-tier-only/" class="md-nav__link">
+      <a href="../free-tier-only/" class="md-nav__link">
         
   
   
@@ -613,7 +452,7 @@
   
   
     <li class="md-nav__item">
-      <a href="security-posture/" class="md-nav__link">
+      <a href="../security-posture/" class="md-nav__link">
         
   
   
@@ -641,7 +480,7 @@
   
   
     <li class="md-nav__item">
-      <a href="changelog-driven-releases/" class="md-nav__link">
+      <a href="../changelog-driven-releases/" class="md-nav__link">
         
   
   
@@ -669,7 +508,7 @@
   
   
     <li class="md-nav__item">
-      <a href="release-please/" class="md-nav__link">
+      <a href="../release-please/" class="md-nav__link">
         
   
   
@@ -697,7 +536,7 @@
   
   
     <li class="md-nav__item">
-      <a href="ci-lint-pinning/" class="md-nav__link">
+      <a href="../ci-lint-pinning/" class="md-nav__link">
         
   
   
@@ -725,7 +564,7 @@
   
   
     <li class="md-nav__item">
-      <a href="distribution-packaging/" class="md-nav__link">
+      <a href="../distribution-packaging/" class="md-nav__link">
         
   
   
@@ -753,7 +592,7 @@
   
   
     <li class="md-nav__item">
-      <a href="python-ci-workflow/" class="md-nav__link">
+      <a href="../python-ci-workflow/" class="md-nav__link">
         
   
   
@@ -781,7 +620,7 @@
   
   
     <li class="md-nav__item">
-      <a href="python/" class="md-nav__link">
+      <a href="../python/" class="md-nav__link">
         
   
   
@@ -809,7 +648,7 @@
   
   
     <li class="md-nav__item">
-      <a href="python-main-py-forward/" class="md-nav__link">
+      <a href="../python-main-py-forward/" class="md-nav__link">
         
   
   
@@ -837,7 +676,7 @@
   
   
     <li class="md-nav__item">
-      <a href="console-script-subprocess-test/" class="md-nav__link">
+      <a href="../console-script-subprocess-test/" class="md-nav__link">
         
   
   
@@ -865,7 +704,7 @@
   
   
     <li class="md-nav__item">
-      <a href="python-makefile-convention/" class="md-nav__link">
+      <a href="../python-makefile-convention/" class="md-nav__link">
         
   
   
@@ -893,7 +732,7 @@
   
   
     <li class="md-nav__item">
-      <a href="pytest/" class="md-nav__link">
+      <a href="../pytest/" class="md-nav__link">
         
   
   
@@ -921,7 +760,7 @@
   
   
     <li class="md-nav__item">
-      <a href="pytest-shared-state-builders/" class="md-nav__link">
+      <a href="../pytest-shared-state-builders/" class="md-nav__link">
         
   
   
@@ -949,7 +788,7 @@
   
   
     <li class="md-nav__item">
-      <a href="ruff-lint-rules/" class="md-nav__link">
+      <a href="../ruff-lint-rules/" class="md-nav__link">
         
   
   
@@ -977,7 +816,7 @@
   
   
     <li class="md-nav__item">
-      <a href="mypy/" class="md-nav__link">
+      <a href="../mypy/" class="md-nav__link">
         
   
   
@@ -1005,7 +844,7 @@
   
   
     <li class="md-nav__item">
-      <a href="pyright/" class="md-nav__link">
+      <a href="../pyright/" class="md-nav__link">
         
   
   
@@ -1033,7 +872,7 @@
   
   
     <li class="md-nav__item">
-      <a href="docstrings/" class="md-nav__link">
+      <a href="../docstrings/" class="md-nav__link">
         
   
   
@@ -1061,7 +900,7 @@
   
   
     <li class="md-nav__item">
-      <a href="http-client-persistence/" class="md-nav__link">
+      <a href="../http-client-persistence/" class="md-nav__link">
         
   
   
@@ -1089,7 +928,7 @@
   
   
     <li class="md-nav__item">
-      <a href="hypothesis/" class="md-nav__link">
+      <a href="../hypothesis/" class="md-nav__link">
         
   
   
@@ -1117,7 +956,7 @@
   
   
     <li class="md-nav__item">
-      <a href="markdown-linting/" class="md-nav__link">
+      <a href="../markdown-linting/" class="md-nav__link">
         
   
   
@@ -1145,7 +984,7 @@
   
   
     <li class="md-nav__item">
-      <a href="prose-linting/" class="md-nav__link">
+      <a href="../prose-linting/" class="md-nav__link">
         
   
   
@@ -1173,7 +1012,7 @@
   
   
     <li class="md-nav__item">
-      <a href="mkdocs-build/" class="md-nav__link">
+      <a href="../mkdocs-build/" class="md-nav__link">
         
   
   
@@ -1201,7 +1040,7 @@
   
   
     <li class="md-nav__item">
-      <a href="javascript/" class="md-nav__link">
+      <a href="../javascript/" class="md-nav__link">
         
   
   
@@ -1229,7 +1068,7 @@
   
   
     <li class="md-nav__item">
-      <a href="async-sqlalchemy-test-fixtures/" class="md-nav__link">
+      <a href="../async-sqlalchemy-test-fixtures/" class="md-nav__link">
         
   
   
@@ -1257,7 +1096,7 @@
   
   
     <li class="md-nav__item">
-      <a href="ros2/" class="md-nav__link">
+      <a href="../ros2/" class="md-nav__link">
         
   
   
@@ -1285,7 +1124,7 @@
   
   
     <li class="md-nav__item">
-      <a href="pre-commit-baseline/" class="md-nav__link">
+      <a href="../pre-commit-baseline/" class="md-nav__link">
         
   
   
@@ -1317,8 +1156,10 @@
       
   
   
+    
   
   
+  
     
     
     
@@ -1329,13 +1170,11 @@
       
     
     
-    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
       
         
         
-          
-        
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
         
           
           <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
@@ -1356,7 +1195,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_4">
             <span class="md-nav__icon md-icon"></span>
             
@@ -1374,7 +1213,7 @@
   
   
     <li class="md-nav__item">
-      <a href="component-standard/" class="md-nav__link">
+      <a href="../component-standard/" class="md-nav__link">
         
   
   
@@ -1402,7 +1241,7 @@
   
   
     <li class="md-nav__item">
-      <a href="config-standard/" class="md-nav__link">
+      <a href="../config-standard/" class="md-nav__link">
         
   
   
@@ -1430,7 +1269,7 @@
   
   
     <li class="md-nav__item">
-      <a href="default-config-location/" class="md-nav__link">
+      <a href="../default-config-location/" class="md-nav__link">
         
   
   
@@ -1458,7 +1297,7 @@
   
   
     <li class="md-nav__item">
-      <a href="config-ownership/" class="md-nav__link">
+      <a href="../config-ownership/" class="md-nav__link">
         
   
   
@@ -1486,7 +1325,7 @@
   
   
     <li class="md-nav__item">
-      <a href="config-ownership-audit/" class="md-nav__link">
+      <a href="../config-ownership-audit/" class="md-nav__link">
         
   
   
@@ -1514,7 +1353,7 @@
   
   
     <li class="md-nav__item">
-      <a href="docker-standard/" class="md-nav__link">
+      <a href="../docker-standard/" class="md-nav__link">
         
   
   
@@ -1542,7 +1381,7 @@
   
   
     <li class="md-nav__item">
-      <a href="deploy-contract/" class="md-nav__link">
+      <a href="../deploy-contract/" class="md-nav__link">
         
   
   
@@ -1570,7 +1409,7 @@
   
   
     <li class="md-nav__item">
-      <a href="entrypoint-contract/" class="md-nav__link">
+      <a href="../entrypoint-contract/" class="md-nav__link">
         
   
   
@@ -1598,7 +1437,7 @@
   
   
     <li class="md-nav__item">
-      <a href="fastapi-pydantic-field-descriptions/" class="md-nav__link">
+      <a href="../fastapi-pydantic-field-descriptions/" class="md-nav__link">
         
   
   
@@ -1623,10 +1462,37 @@
                 
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="fastapi-test-isolation/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    FastAPI test isolation
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   
@@ -1642,6 +1508,109 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#why-this-exists" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why this exists
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#expose-mutable-state-through-a-dependency" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Expose mutable state through a dependency
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#override-dependencies-in-tests" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Override dependencies in tests
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Override dependencies in tests">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#autouse-fixture-with-dependency_overridesclear" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Autouse fixture with dependency_overrides.clear()
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#never-import-and-mutate-the-module-level-store" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Never import and mutate the module-level store
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#per-test-with-testclientapp-as-client" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Per-test with TestClient(app) as client:
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cross-reference" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Cross-reference
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -1654,7 +1623,7 @@
   
   
     <li class="md-nav__item">
-      <a href="integrating-a-service/" class="md-nav__link">
+      <a href="../integrating-a-service/" class="md-nav__link">
         
   
   
@@ -1682,7 +1651,7 @@
   
   
     <li class="md-nav__item">
-      <a href="chat-access-standard/" class="md-nav__link">
+      <a href="../chat-access-standard/" class="md-nav__link">
         
   
   
@@ -1710,7 +1679,7 @@
   
   
     <li class="md-nav__item">
-      <a href="http-error-envelope/" class="md-nav__link">
+      <a href="../http-error-envelope/" class="md-nav__link">
         
   
   
@@ -1738,7 +1707,7 @@
   
   
     <li class="md-nav__item">
-      <a href="http-security-headers/" class="md-nav__link">
+      <a href="../http-security-headers/" class="md-nav__link">
         
   
   
@@ -1766,7 +1735,7 @@
   
   
     <li class="md-nav__item">
-      <a href="scorecard/" class="md-nav__link">
+      <a href="../scorecard/" class="md-nav__link">
         
   
   
@@ -1855,7 +1824,7 @@
   
   
     <li class="md-nav__item">
-      <a href="deployment-system/" class="md-nav__link">
+      <a href="../deployment-system/" class="md-nav__link">
         
   
   
@@ -1944,7 +1913,7 @@
   
   
     <li class="md-nav__item">
-      <a href="mill-agents/" class="md-nav__link">
+      <a href="../mill-agents/" class="md-nav__link">
         
   
   
@@ -1979,7 +1948,7 @@
   
   
     <li class="md-nav__item">
-      <a href="CHANGELOG/" class="md-nav__link">
+      <a href="../CHANGELOG/" class="md-nav__link">
         
   
   
@@ -2037,22 +2006,33 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#two-scopes" class="md-nav__link">
+  <a href="#expose-mutable-state-through-a-dependency" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Two scopes
+        Expose mutable state through a dependency
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Two scopes">
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#override-dependencies-in-tests" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Override dependencies in tests
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Override dependencies in tests">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#every-repository-libraries-and-deployable-components" class="md-nav__link">
+  <a href="#autouse-fixture-with-dependency_overridesclear" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Every repository (libraries and deployable components)
+        Autouse fixture with dependency_overrides.clear()
       
     </span>
   </a>
@@ -2060,10 +2040,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#deployable-components-additionally" class="md-nav__link">
+  <a href="#never-import-and-mutate-the-module-level-store" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Deployable components (additionally)
+        Never import and mutate the module-level store
       
     </span>
   </a>
@@ -2071,10 +2051,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#the-deployment-system-bootstrap-tier" class="md-nav__link">
+  <a href="#per-test-with-testclientapp-as-client" class="md-nav__link">
     <span class="md-ellipsis">
       
-        The deployment system (bootstrap tier)
+        Per-test with TestClient(app) as client:
       
     </span>
   </a>
@@ -2087,54 +2067,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#which-am-i" class="md-nav__link">
+  <a href="#cross-reference" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Which am I?
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#the-fleet" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        The fleet
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#reference-implementation" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Reference implementation
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#changing-the-standards" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Changing the standards
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#mill-agents" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Mill agents
+        Cross-reference
       
     </span>
   </a>
@@ -2161,200 +2097,171 @@
   
 
 
-<h1 id="robotsix-stack-standards">robotsix stack standards<a class="headerlink" href="#robotsix-stack-standards" title="Permanent link">&para;</a></h1>
-<p>Shared conventions for the robotsix stack, so that any repository — whoever
-wrote it, whenever — is configured, packaged, tested, and (if deployable)
-shipped in the same predictable way.</p>
+<h1 id="fastapi-test-isolation-via-dependency-overrides">FastAPI test isolation via dependency overrides<a class="headerlink" href="#fastapi-test-isolation-via-dependency-overrides" title="Permanent link">&para;</a></h1>
+<blockquote>
+<p><strong>Scope: deployable components that expose a FastAPI (or Starlette)
+application.</strong> A component whose only HTTP surface is the mandatory
+<code>/health</code> endpoint (see the <a href="../component-standard/">component standard</a>)
+does not need this. This applies <em>in addition to</em> the
+<a href="../repo-baseline/">repo baseline</a> and <a href="../component-standard/">component standard</a>.</p>
+</blockquote>
+<p>FastAPI backends that hold mutable server state — in-memory stores, caches,
+connection pools, or other per-session objects — have two options for exposing
+that state to tests: import the module-level global directly and mutate it, or
+wire the state through a FastAPI dependency that tests can override. The first
+option (import-and-mutate) is the anti-pattern this standard replaces.</p>
 <h2 id="why-this-exists">Why this exists<a class="headerlink" href="#why-this-exists" title="Permanent link">&para;</a></h2>
-<p>As a stack grows, each repository tends to solve the same recurring problems —
-how configuration is loaded and where it lives, how packages are installed and
-versioned, how CI and security gates are wired, and how a service is deployed —
-in its own slightly different way. Left unchecked, every repo becomes a small
-dialect: contributors relearn the conventions each time, tooling and CI get
-reinvented instead of shared, and operators face per-repo guesswork.</p>
-<p>These standards define one way to do each of those things. The payoff is
-consistency: moving between repos is cheap, tooling and workflows are shared
-rather than duplicated, and a config or deploy setup learned once transfers
-everywhere.</p>
-<h2 id="two-scopes">Two scopes<a class="headerlink" href="#two-scopes" title="Permanent link">&para;</a></h2>
-<h3 id="every-repository-libraries-and-deployable-components">Every repository (libraries and deployable components)<a class="headerlink" href="#every-repository-libraries-and-deployable-components" title="Permanent link">&para;</a></h3>
+<p>Importing and clearing a module-level store from a test fixture couples tests
+to implementation detail, leaks state across tests, and skips FastAPI's
+lifespan startup/shutdown handlers:</p>
+<ol>
+<li>
+<p><strong>Implementation coupling.</strong> Tests import a private module variable
+   (<code>games</code>, <code>cache</code>, <code>pool</code>) rather than exercising the dependency wiring
+   the application actually uses. A refactor that moves the store into a
+   different module or wraps it in a class breaks every test fixture.</p>
+</li>
+<li>
+<p><strong>State leakage.</strong> If one test forgets to clear the store (or fixture
+   ordering changes), a global store accumulates leftover state and later
+   tests receive polluted data. Cross-test interference at the store level
+   is invisible to the test runner until a failure materialises in a
+   seemingly unrelated test.</p>
+</li>
+<li>
+<p><strong>No teardown hook.</strong> A <code>dependency_overrides</code> entry with an autouse
+   fixture that calls <code>app.dependency_overrides.clear()</code> gives automatic
+   per-test isolation with zero teardown logic — no <code>finally</code> block, no
+   manual cleanup.</p>
+</li>
+<li>
+<p><strong>Lifespan skipped.</strong> Using <code>TestClient(app)</code> without a <code>with</code> block
+   means ASGI startup/lifespan events never fire. Startup may initialise
+   connection pools, load configuration, or warm caches — skipping it
+   means tests run against an application in a partially-initialised state
+   that does not reflect production.</p>
+</li>
+</ol>
+<p>The FastAPI team's own guidance (the
+<a href="https://fastapi.tiangolo.com/advanced/testing-dependencies/">testing-dependencies docs</a>
+and the
+<a href="https://github.com/fastapi/full-stack-fastapi-template">full-stack template</a>)
+calls <code>dependency_overrides</code> the canonical mechanism for test isolation.</p>
+<h2 id="expose-mutable-state-through-a-dependency">Expose mutable state through a dependency<a class="headerlink" href="#expose-mutable-state-through-a-dependency" title="Permanent link">&para;</a></h2>
+<p>Every piece of mutable per-session state that tests need to replace <strong>must</strong>
+be exposed through a <code>Depends(get_X)</code> dependency that returns the current
+store:</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">fastapi</span><span class="w"> </span><span class="kn">import</span> <span class="n">Depends</span><span class="p">,</span> <span class="n">FastAPI</span>
+
+<span class="c1"># Module-level store — NEVER imported by tests.</span>
+<span class="n">_games</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Game</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">get_games</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Game</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return the current game store.&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">_games</span>
+
+
+<span class="n">app</span> <span class="o">=</span> <span class="n">FastAPI</span><span class="p">()</span>
+
+
+<span class="nd">@app</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;/games&quot;</span><span class="p">)</span>
+<span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">list_games</span><span class="p">(</span><span class="n">games</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Game</span><span class="p">]</span> <span class="o">=</span> <span class="n">Depends</span><span class="p">(</span><span class="n">get_games</span><span class="p">)):</span>
+    <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="n">games</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
+</code></pre></div>
+<p>The dependency is the single access point. Route handlers, service functions,
+and middleware all consume the store through the same <code>Depends(get_games)</code>
+injection — never by importing <code>_games</code> from the module.</p>
+<p><strong>Failure mode:</strong> a route handler imports <code>_games</code> directly while tests
+override <code>get_games</code> via <code>dependency_overrides</code>. The handler bypasses the
+override and reads/writes the production store — tests and application logic
+operate on different state, producing false passes (the test asserts against
+override state the handler never touched) or false failures (the handler
+pollutes the test's override with production data).</p>
+<h2 id="override-dependencies-in-tests">Override dependencies in tests<a class="headerlink" href="#override-dependencies-in-tests" title="Permanent link">&para;</a></h2>
+<h3 id="autouse-fixture-with-dependency_overridesclear">Autouse fixture with <code>dependency_overrides.clear()</code><a class="headerlink" href="#autouse-fixture-with-dependency_overridesclear" title="Permanent link">&para;</a></h3>
+<p>The canonical test fixture is an autouse, function-scoped fixture that sets
+each mutable-state dependency to a fresh store and clears all overrides on
+teardown:</p>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">pytest</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">fastapi.testclient</span><span class="w"> </span><span class="kn">import</span> <span class="n">TestClient</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">my_service.main</span><span class="w"> </span><span class="kn">import</span> <span class="n">app</span><span class="p">,</span> <span class="n">get_games</span>
+
+
+<span class="nd">@pytest</span><span class="o">.</span><span class="n">fixture</span><span class="p">(</span><span class="n">autouse</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">override_dependencies</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Replace every mutable-state dependency with a fresh store per test.&quot;&quot;&quot;</span>
+    <span class="n">app</span><span class="o">.</span><span class="n">dependency_overrides</span><span class="p">[</span><span class="n">get_games</span><span class="p">]</span> <span class="o">=</span> <span class="k">lambda</span><span class="p">:</span> <span class="p">{}</span>
+    <span class="k">yield</span>
+    <span class="n">app</span><span class="o">.</span><span class="n">dependency_overrides</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+</code></pre></div>
 <ul>
-<li><strong><a href="repo-baseline/">Repo baseline</a></strong> — distribution tiers, changelog and
-  module-registration hygiene, CI and security gates, licensing.</li>
-<li><strong><a href="towncrier/">Towncrier changelog</a></strong> — per-PR newsfragments in
-  <code>changelog.d/</code>, <code>pyproject.toml</code> config, CI enforcement, and automated
-  release compilation — the fleet-wide changelog tool.</li>
-<li><strong><a href="free-tier-only/">Free-tier only</a></strong> — no paid services (LLM agent
-  inference excepted): free-tier CI (public repo or self-hosted runner),
-  public/self-hosted container images, permissive licences only.</li>
-<li><strong><a href="security-posture/">Security posture</a></strong> — self-enforcing security gates
-  (SAST, dependency review, Dependabot, workflow hardening, secret protection,
-  SBOM), auditable per repo.</li>
-<li><strong><a href="async-sqlalchemy-test-fixtures/">Async SQLAlchemy test fixtures</a></strong> — three-layer database
-  test fixture pattern (session-scoped engine, function-scoped connection with
-  rollback, function-scoped session with savepoints) for clean test isolation
-  without dropping tables.</li>
-<li><strong><a href="changelog-driven-releases/">Changelog &amp; releases</a></strong> — towncrier fragment-driven
-  releases, CI-enforced changelog fragments, and the shared auto-release
-  workflow — no hand-edited changelog. <em>(Superseded by
-  <a href="release-please/">release-please</a>.)</em></li>
-<li><strong><a href="release-please/">Release-please release automation</a></strong> — conventional-commit-driven
-  release PRs, automated version bump, changelog generation, git tag, and
-  GitHub Release via <code>googleapis/release-please-action</code> — the fleet-wide
-  release-automation tool replacing towncrier.</li>
-<li><strong><a href="ci-lint-pinning/">CI lint tool pinning</a></strong> — CI lint jobs must run the same
-  version-pinned tools as <code>.pre-commit-config.yaml</code>, not floating/latest
-  sources — one version source, no skew.</li>
-<li><strong><a href="distribution-packaging/">Distribution &amp; Packaging</a></strong> — git-based consumption of
-  first-party libraries — no package index, no registry publish step.</li>
-<li><strong><a href="docstrings/">Docstring convention</a></strong> — Python docstring style and coverage
-  rules for all public modules, classes, and functions.</li>
-<li><strong><a href="http-client-persistence/">HTTP client persistence</a></strong> — one persistent
-  <code>httpx.Client</code> (or <code>requests.Session</code>) with an explicit timeout, reused for
-  all outbound calls — no per-call module-level convenience helpers.</li>
-<li><strong><a href="hypothesis/">Hypothesis testing</a></strong> — property-based testing profiles,
-  shared strategies, and CI integration for repos that use Hypothesis.</li>
-<li><strong><a href="markdown-linting/">Markdown linting</a></strong> — markdownlint-cli2 and codespell
-  pre-commit hooks for every repo that publishes MkDocs documentation.</li>
-<li><strong><a href="prose-linting/">Prose linting</a></strong> — Vale prose linter for style,
-  readability, and fleet-specific vocabulary consistency — integrated
-  through the existing pre-commit pipeline.</li>
-<li><strong><a href="mkdocs-build/">MkDocs build integrity</a></strong> — strict mode build gating
-  and link-validation configuration for every MkDocs site.</li>
-<li><strong><a href="python-ci-workflow/">Python CI workflow</a></strong> — required <code>ci.yml</code> shape:
-  lint → type-check → test+coverage, run on every push and PR — the enforcement
-  mechanism for the quality gates declared in <code>pyproject.toml</code>.</li>
-<li><strong><a href="python/">Python practices</a></strong> — uv, hatchling, <code>requires-python</code> policy,
-  lint/type/security gates, test layout, pre-commit hooks.</li>
-<li><strong><a href="python-main-py-forward/">Python <code>__main__.py</code> exit-code forwarding</a></strong> —
-  <code>__main__.py</code> must forward <code>main()</code>'s return value to <code>sys.exit()</code> so
-  <code>python -m &lt;pkg&gt;</code> reports the same exit code as the installed console script.</li>
-<li><strong><a href="console-script-subprocess-test/">Console-script subprocess tests</a></strong> —
-  every <code>[project.scripts]</code> entry point must be tested as a subprocess through
-  the installed binary — not only in-process or via <code>python -m</code>.</li>
-<li><strong><a href="python-makefile-convention/">Python Makefile convention</a></strong> — standard
-  <code>Makefile</code> targets for every Python/uv repo (<code>install</code>, <code>lint</code>,
-  <code>typecheck</code>, <code>test</code>, <code>test-unit</code>, <code>test-integration</code>, <code>coverage</code>, <code>docs</code>,
-  <code>lock-check</code>, <code>pre-commit</code>, <code>clean</code>, and optional targets).</li>
-<li><strong><a href="pytest/">Pytest practices</a></strong> — <code>filterwarnings = ["error"]</code>,
-  <code>xfail_strict = true</code>, and <code>--strict-markers</code>/<code>--strict-config</code> so every test
-  suite fails loudly on deprecations, unregistered markers, and stale xfails.</li>
-<li><strong><a href="pytest-shared-state-builders/">Pytest shared state builders</a></strong> —
-  root <code>tests/conftest.py</code> for shared fixtures, <code>make_&lt;thing&gt;</code> factory
-  fixtures for mutable test state, and value fixtures as thin factory
-  callers — so shared builders are reusable across every test package.</li>
-<li><strong><a href="ruff-lint-rules/">Ruff lint rules</a></strong> — Tier 2 ruff rule families (SIM,
-  C4, LOG, G, ERA, PGH, RUF, PT) with the PT006 exclusion.</li>
-<li><strong><a href="mypy/">Mypy strictness</a></strong> — mypy as a hard CI gate (not advisory),
-  baseline snapshots as a bootstrapping scaffold with a defined exit, and
-  strict-mode type-clean new code.</li>
-<li><strong><a href="pyright/">Pyright strict mode</a></strong> — pyright must run at
-  <code>typeCheckingMode = "strict"</code> so it enforces the same type-safety baseline
-  as mypy <code>--strict</code>, with per-diagnostic overrides only for proven-untyped
-  third-party dependencies.</li>
-<li><strong><a href="javascript/">JavaScript practices</a></strong> — vanilla frontend JS as static
-  assets, lockfile discipline, vitest coverage floor, eslint/stylelint.</li>
-<li><strong><a href="ros2/">ROS 2 practices</a></strong> — workspace-skeleton layout, vcs2l manifest,
-  devcontainer, colcon/rosdep build, lint gates.</li>
-<li><strong><a href="pre-commit-baseline/">Pre-commit baseline</a></strong> — five zero-config
-  file-hygiene hooks (trailing-whitespace, end-of-file-fixer, check-yaml,
-  check-toml, check-added-large-files) for every Python repo.</li>
+<li><strong><code>autouse=True</code></strong> ensures every test in the module or session gets a
+  clean store without importing the fixture manually.</li>
+<li><strong><code>yield</code></strong> runs the test body; <code>app.dependency_overrides.clear()</code> on
+  teardown resets the override registry so no override leaks to the next
+  test.</li>
+<li><strong><code>lambda: {}</code></strong> returns a fresh mutable store per call. For more complex
+  setup, a factory function that constructs a fresh store is fine — the key
+  is that the override returns a new object, not a shared global.</li>
 </ul>
-<h3 id="deployable-components-additionally">Deployable components (additionally)<a class="headerlink" href="#deployable-components-additionally" title="Permanent link">&para;</a></h3>
-<p>A <em>deployable component</em> ships a runnable service (a container image) and
-integrates with the deployment system. Beyond the baseline it follows:</p>
+<p><strong>Failure mode:</strong> an autouse fixture that sets the override but never calls
+<code>app.dependency_overrides.clear()</code> on teardown — overrides accumulate across
+tests, and a later test that does not set the override for <code>get_games</code> still
+inherits a stale override from an earlier test that did.</p>
+<h3 id="never-import-and-mutate-the-module-level-store">Never import and mutate the module-level store<a class="headerlink" href="#never-import-and-mutate-the-module-level-store" title="Permanent link">&para;</a></h3>
+<p>A test fixture that reaches into the application module and mutates the
+private store directly violates this standard:</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># ANTI-PATTERN — do not do this.</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">my_service.main</span>
+
+<span class="nd">@pytest</span><span class="o">.</span><span class="n">fixture</span><span class="p">(</span><span class="n">autouse</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">clear_games</span><span class="p">():</span>
+    <span class="n">my_service</span><span class="o">.</span><span class="n">main</span><span class="o">.</span><span class="n">_games</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+</code></pre></div>
+<p>This couples the test to the exact module path and variable name of the
+store. A rename or reorganisation breaks the fixture, and the test suite
+gives no warning — <code>_games.clear()</code> silently succeeds on a store the
+application no longer uses.</p>
+<h3 id="per-test-with-testclientapp-as-client">Per-test <code>with TestClient(app) as client:</code><a class="headerlink" href="#per-test-with-testclientapp-as-client" title="Permanent link">&para;</a></h3>
+<p>Prefer a <code>with</code> block so that ASGI lifespan/startup handlers actually run:</p>
+<div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">test_list_games_empty</span><span class="p">():</span>
+    <span class="k">with</span> <span class="n">TestClient</span><span class="p">(</span><span class="n">app</span><span class="p">)</span> <span class="k">as</span> <span class="n">client</span><span class="p">:</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;/games&quot;</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">()</span> <span class="o">==</span> <span class="p">[]</span>
+</code></pre></div>
+<p>The <code>with</code> block triggers <code>startup</code> and <code>shutdown</code> lifespan events. Tests
+that exercise startup-dependent state (connection pools, warmup caches,
+background-task schedulers) run against a fully-initialised application.</p>
+<p>A module-scoped <code>client</code> fixture that wraps the <code>with</code> block is also
+acceptable:</p>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">pytest</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">fastapi.testclient</span><span class="w"> </span><span class="kn">import</span> <span class="n">TestClient</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">my_service.main</span><span class="w"> </span><span class="kn">import</span> <span class="n">app</span>
+
+
+<span class="nd">@pytest</span><span class="o">.</span><span class="n">fixture</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">client</span><span class="p">():</span>
+    <span class="k">with</span> <span class="n">TestClient</span><span class="p">(</span><span class="n">app</span><span class="p">)</span> <span class="k">as</span> <span class="n">client</span><span class="p">:</span>
+        <span class="k">yield</span> <span class="n">client</span>
+</code></pre></div>
+<p><strong>Failure mode:</strong> <code>TestClient(app)</code> used as a bare value (no <code>with</code> block,
+no context manager) — the <code>startup</code> lifespan event never fires. Connection
+pools stay <code>None</code>, caches stay cold, and tests pass against a
+never-initialised application, masking bugs that only surface in production.</p>
+<h2 id="cross-reference">Cross-reference<a class="headerlink" href="#cross-reference" title="Permanent link">&para;</a></h2>
 <ul>
-<li><strong><a href="component-standard/">Component standard</a></strong> — the three deploy modes,
-  no embedded auth (centralized at the gateway), image registry &amp; tags, the
-  two compose files.</li>
-<li><strong><a href="config-standard/">Config standard</a></strong> — one config model that resolves the
-  same way across all deploy modes.</li>
-<li><strong><a href="default-config-location/">Default config location</a></strong> — canonical in-repo
-  location for the shipped default config that seeds the deploy-side config on
-  first registration.</li>
-<li><strong><a href="config-ownership/">Config ownership</a></strong> — the hard line between
-  deploy-plane config (central-deploy UI) and component-owned config
-  (the component's own HTTP surface and Settings panel).</li>
-<li><strong><a href="config-ownership-audit/">Config-ownership audit</a></strong> — fleet-wide
-  classification of every deployable component against the config-ownership
-  standard, with remediation tracking.</li>
-<li><strong><a href="docker-standard/">Docker build &amp; release</a></strong> — one Dockerfile pattern and
-  one publish workflow to a single registry, with CI image scanning and
-  integration tests.</li>
-<li><strong><a href="deploy-contract/">Deploy contract</a></strong> — the <code>deploy/docker-compose.yml</code>
-  shape the deployment system consumes.</li>
-<li><strong><a href="entrypoint-contract/">Entrypoint contract</a></strong> — how a component's
-  container starts up.</li>
-<li><strong><a href="fastapi-pydantic-field-descriptions/">FastAPI Pydantic field descriptions</a></strong> —
-  every public request/response Pydantic model field must carry
-  <code>Field(description=...)</code> so the generated OpenAPI schema is
-  self-documenting.</li>
-<li><strong><a href="fastapi-test-isolation/">FastAPI test isolation</a></strong> — mutable server
-  state exposed through <code>Depends()</code> dependencies so tests can override via
-  <code>app.dependency_overrides</code>; never import and mutate the module-level store
-  directly.</li>
-<li><strong><a href="integrating-a-service/">Integrating a service</a></strong> — the end-to-end how-to.</li>
-<li><strong><a href="chat-access-standard/">Chat access</a></strong> — a standard skill endpoint so the
-  chat agent can invoke operations on the component.</li>
-<li><strong><a href="http-error-envelope/">HTTP error envelope</a></strong> — one consistent RFC 9457
-  <code>application/problem+json</code> envelope for every error response, registered via
-  centralized exception handlers.</li>
-<li><strong><a href="http-security-headers/">HTTP security headers</a></strong> — standard OWASP security
-  response headers (CSP, HSTS, X-Frame-Options, etc.) via a single shared
-  <code>secure</code> middleware, so no service hand-rolls its own headers.</li>
-<li><strong><a href="scorecard/">OpenSSF Scorecard</a></strong> — independent supply-chain audit
-  (~20 checks) producing a single numeric score; closes the gap the per-gate
-  security stack doesn't cover.</li>
+<li><strong><a href="../fastapi-pydantic-field-descriptions/">FastAPI Pydantic field descriptions</a></strong> —
+  the other fleet-wide FastAPI convention: every public request/response field
+  must carry <code>Field(description=...)</code>.</li>
+<li><strong><a href="../pytest-shared-state-builders/">Pytest shared state builders</a></strong> —
+  root-conftest placement and <code>make_&lt;thing&gt;</code> factory fixtures — the
+  underlying test-state strategy this page's dependency-override pattern
+  builds on.</li>
+<li><strong><a href="../pytest/">Pytest practices</a></strong> — strictness settings
+  (<code>filterwarnings</code>, <code>xfail_strict</code>, <code>--strict-markers</code>) that every test
+  suite must adopt.</li>
 </ul>
-<h3 id="the-deployment-system-bootstrap-tier">The deployment system (bootstrap tier)<a class="headerlink" href="#the-deployment-system-bootstrap-tier" title="Permanent link">&para;</a></h3>
-<p>One repo — <code>robotsix-central-deploy</code> — is the deployment system itself and
-cannot be deployed through itself:</p>
-<ul>
-<li><strong><a href="deployment-system/">Deployment system</a></strong> — which standards it follows
-  (baseline, docker build &amp; release, entrypoint contract) and which it is
-  exempt from (deploy contract, config standard), and why.</li>
-</ul>
-<h2 id="which-am-i">Which am I?<a class="headerlink" href="#which-am-i" title="Permanent link">&para;</a></h2>
-<ul>
-<li><strong>Library</strong> — imported by other packages, no runnable service of its own.
-  Follow the <strong>repo baseline</strong> only.</li>
-<li><strong>Deployable component</strong> — ships a service/container. Follow the <strong>repo
-  baseline</strong> <em>and</em> the <strong>component</strong> standards.</li>
-<li><strong>The deployment system</strong> — central-deploy only. Follow the
-  <a href="deployment-system/">deployment-system tier</a>.</li>
-</ul>
-<h2 id="the-fleet">The fleet<a class="headerlink" href="#the-fleet" title="Permanent link">&para;</a></h2>
-<p>Every repo, what it is, and where its docs live: <strong><a href="fleet/">the fleet page</a></strong>.</p>
-<h2 id="reference-implementation">Reference implementation<a class="headerlink" href="#reference-implementation" title="Permanent link">&para;</a></h2>
-<p>The config standard is implemented by the shared configuration library
-(<a href="https://github.com/damien-robotsix/robotsix-config"><code>robotsix-config</code></a>):
-<code>load_config</code> loads <strong>the one config file</strong> (<code>ROBOTSIX_CONFIG_FILE</code>, default
-<code>config/config.json</code>) into a validated pydantic model — the file is the only
-source of values, the model's defaults fill the rest; no env overlay, no CLI
-merge — with secret masking (<code>SecretStr</code>), a <code>0600</code> config writer
-(<code>dump_config</code>), and a JSON-Schema emitter (<code>config_schema_json</code>) for the
-deploy UI. One shared library, already a stack dependency.</p>
-<h2 id="changing-the-standards">Changing the standards<a class="headerlink" href="#changing-the-standards" title="Permanent link">&para;</a></h2>
-<p>The standards change through the mill, like everything else:</p>
-<ul>
-<li><strong>File a ticket on the <code>robotsix-standards</code> board</strong> — for a gap, a
-  contradiction with fleet reality, or an incident whose post-mortem traces
-  to a standards flaw (the 2026-07-03 claude-mount outage is the worked
-  example: outage → standards change → fleet tickets, same day).</li>
-<li>The ticket follows the normal mill pipeline; <strong>the approval gate is the
-  operator's decision point</strong>. A standard nobody approved is a suggestion.</li>
-<li>An accepted change lands as <strong>one docs PR plus fleet-alignment tickets</strong> —
-  a standards change with no tickets is a wish.</li>
-<li><strong>Clean cutover is the default</strong> for every migration: no compatibility
-  shims, no aliases; data moves by hand, case by case.</li>
-<li><strong>Supersession is normal.</strong> When reality reverses a decision, the new text
-  references what it replaces — openly, not by silent rewrite.</li>
-</ul>
-<h2 id="mill-agents">Mill agents<a class="headerlink" href="#mill-agents" title="Permanent link">&para;</a></h2>
-<p>This repo carries its own <a href="mill-agents/">mill agents</a> — bespoke periodic
-passes that keep the standards themselves healthy. The security-posture-audit
-agent checks the security pages for completeness, consistency, currency, and
-enforceability, filing draft tickets for gaps it finds.</p>
 
 
 
@@ -2404,10 +2311,10 @@ enforceability, filing draft tickets for gaps it finds.</p>
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": ".", "features": ["navigation.sections", "navigation.expand", "content.code.copy"], "search": "assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.sections", "navigation.expand", "content.code.copy"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
-      <script src="assets/javascripts/bundle.d7400e89.min.js"></script>
+      <script src="../assets/javascripts/bundle.d7400e89.min.js"></script>
       
     
   </body>

@@ -27,9 +27,13 @@ and new or migrated code must be type-clean under strict mode from day one.
 
 Every Python repository **must**:
 
-1. **Run mypy as a CI gate, not advisory.** The shared python-ci template
-   `mypy-advisory` input must be `false` (or absent, defaulting to `false`)
-   so a new or growing type-error count fails the pipeline.
+1. **Run mypy as a blocking CI gate, not advisory.** A package that ships a
+   `py.typed` marker declares its types are reliable — the type checker must
+   therefore be a required CI step that fails the build on error.
+   Advisory/notification-only type-checking is prohibited for type-aware
+   packages.  The shared python-ci template `mypy-advisory` input must be
+   `false` (or absent, defaulting to `false`) so a new or growing type-error
+   count fails the pipeline.
 
    *Failure prevented:* a repo that ships with `mypy-advisory: true` has no
    automated signal when new type errors are introduced — the baseline can

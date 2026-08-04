@@ -10,13 +10,13 @@
       
       
       
-        <link rel="canonical" href="https://damien-robotsix.github.io/robotsix-standards/mill-agents/">
+        <link rel="canonical" href="https://damien-robotsix.github.io/robotsix-standards/console-script-subprocess-test/">
       
       
-        <link rel="prev" href="../deployment-system/">
+        <link rel="prev" href="../python-main-py-forward/">
       
       
-        <link rel="next" href="../CHANGELOG/">
+        <link rel="next" href="../python-makefile-convention/">
       
       
         
@@ -27,7 +27,7 @@
     
     
       
-        <title>Mill agents - Robotsix Standards</title>
+        <title>Console-script subprocess tests - Robotsix Standards</title>
       
     
     
@@ -78,7 +78,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#mill-agents-on-this-repo" class="md-skip">
+        <a href="#console-script-subprocess-tests" class="md-skip">
           Skip to content
         </a>
       
@@ -114,7 +114,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Mill agents
+              Console-script subprocess tests
             
           </span>
         </div>
@@ -311,8 +311,10 @@
       
   
   
+    
   
   
+  
     
     
     
@@ -323,13 +325,11 @@
       
     
     
-    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
       
         
         
-          
-        
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
         
           
           <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
@@ -350,7 +350,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_3">
             <span class="md-nav__icon md-icon"></span>
             
@@ -673,10 +673,37 @@
                 
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="../console-script-subprocess-test/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Console-script subprocess tests
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   
@@ -692,6 +719,109 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#the-standard" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The standard
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="The standard">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-correct-pattern" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The correct pattern
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#using-the-console_scripts-test-fixture-pytest-console-scripts" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Using the console_scripts test fixture (pytest-console-scripts)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#why-in-process-tests-arent-enough" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why in-process tests aren't enough
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#failure-modes-this-prevents" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Failure modes this prevents
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ci-integration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        CI integration
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cross-reference" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Cross-reference
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -1698,8 +1828,6 @@
       
   
   
-    
-  
   
   
     
@@ -1712,11 +1840,13 @@
       
     
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" checked>
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_6" >
         
           
           <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="">
@@ -1737,7 +1867,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="true">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_6">
             <span class="md-nav__icon md-icon"></span>
             
@@ -1752,37 +1882,10 @@
                 
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Mill agents
-  
-
-    
-  </span>
-  
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../mill-agents/" class="md-nav__link">
         
   
   
@@ -1798,37 +1901,6 @@
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#security-posture-audit-security-posture-audit" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Security posture audit (security-posture-audit)
-      
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -1895,10 +1967,82 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#security-posture-audit-security-posture-audit" class="md-nav__link">
+  <a href="#the-standard" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Security posture audit (security-posture-audit)
+        The standard
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="The standard">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-correct-pattern" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The correct pattern
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#using-the-console_scripts-test-fixture-pytest-console-scripts" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Using the console_scripts test fixture (pytest-console-scripts)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#why-in-process-tests-arent-enough" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why in-process tests aren't enough
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#failure-modes-this-prevents" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Failure modes this prevents
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ci-integration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        CI integration
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cross-reference" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Cross-reference
       
     </span>
   </a>
@@ -1925,68 +2069,137 @@
   
 
 
-<h1 id="mill-agents-on-this-repo">Mill agents on this repo<a class="headerlink" href="#mill-agents-on-this-repo" title="Permanent link">&para;</a></h1>
-<p>robotsix-standards is a mill-managed repo — the
-<a href="https://github.com/damien-robotsix/robotsix-mill">robotsix-mill</a> runs periodic
-agents against it to keep the standards themselves healthy. These agents are
-defined in <code>.robotsix-mill/agents/</code> and are picked up automatically by the mill
-as bespoke per-repo passes.</p>
-<h2 id="security-posture-audit-security-posture-audit">Security posture audit (<code>security-posture-audit</code>)<a class="headerlink" href="#security-posture-audit-security-posture-audit" title="Permanent link">&para;</a></h2>
-<p><strong>Purpose:</strong> Audit the security-related standards definitions for completeness,
-internal consistency, currency against upstream best practices, and
-enforceability.</p>
-<p><strong>Scope:</strong> The <strong>standard definitions</strong> themselves — the pages under <code>docs/</code>
-and the config files under <code>.github/</code> that define what the fleet must do.
-Downstream repos' compliance with these standards is the job of the general
-audit process; this agent checks whether the standard is well-formed enough to
-be auditable.</p>
-<p><strong>What it checks:</strong></p>
+<h1 id="console-script-subprocess-tests">Console-script subprocess tests<a class="headerlink" href="#console-script-subprocess-tests" title="Permanent link">&para;</a></h1>
+<blockquote>
+<p><strong>Scope: every Python repository that ships <code>[project.scripts]</code> entry
+points in <code>pyproject.toml</code>.</strong> The rule applies to every fleet package
+whose packaging declares console-script entry points (e.g.
+<code>robotsix-modules = "robotsix_modules.cli:main"</code>).</p>
+</blockquote>
+<p>Every deployed CLI entry point must be tested as a <strong>subprocess through the
+installed console script</strong> — not only through an in-process <code>main()</code> call and
+not only through <code>python -m &lt;pkg&gt;</code>. The installed console script is the
+primary user-facing interface (the documented <code>robotsix-&lt;name&gt;</code> binary), and
+only a subprocess round-trip can verify the real <code>[project.scripts]</code> wiring.</p>
+<h2 id="the-standard">The standard<a class="headerlink" href="#the-standard" title="Permanent link">&para;</a></h2>
+<p>For each <code>[project.scripts]</code> key defined in <code>pyproject.toml</code>, the test suite
+must include, at minimum:</p>
+<ol>
+<li><strong>A subprocess test invoking the installed console script on valid input</strong>
+   asserting exit code 0.</li>
+<li><strong>A subprocess test on missing or invalid input</strong> asserting a nonzero exit
+   code and the expected stderr marker.</li>
+<li><strong>A graceful skip</strong> (<code>pytest.skip</code>) when the script is not resolvable on
+   <code>PATH</code> (e.g. via <code>shutil.which</code>), so the suite still runs in bare-dev
+   environments that haven't installed the project's console scripts.</li>
+</ol>
+<p>These tests <strong>complement</strong> (do not replace) existing in-process <code>main()</code> unit
+tests and <code>python -m &lt;pkg&gt;</code> shim tests.</p>
+<h3 id="the-correct-pattern">The correct pattern<a class="headerlink" href="#the-correct-pattern" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">shutil</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">subprocess</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">pytest</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_script_path</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return the installed console-script path, or None if not installed.&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">shutil</span><span class="o">.</span><span class="n">which</span><span class="p">(</span><span class="s2">&quot;robotsix-&lt;name&gt;&quot;</span><span class="p">)</span>
+
+
+<span class="nd">@pytest</span><span class="o">.</span><span class="n">mark</span><span class="o">.</span><span class="n">skipif</span><span class="p">(</span><span class="n">_script_path</span><span class="p">()</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">,</span> <span class="n">reason</span><span class="o">=</span><span class="s2">&quot;console script not installed&quot;</span><span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">test_console_script_help</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;The installed console script exits 0 on --help.&quot;&quot;&quot;</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span>
+        <span class="p">[</span><span class="n">_script_path</span><span class="p">(),</span> <span class="s2">&quot;--help&quot;</span><span class="p">],</span>
+        <span class="n">capture_output</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="n">text</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="k">assert</span> <span class="n">result</span><span class="o">.</span><span class="n">returncode</span> <span class="o">==</span> <span class="mi">0</span>
+    <span class="k">assert</span> <span class="s2">&quot;usage:&quot;</span> <span class="ow">in</span> <span class="n">result</span><span class="o">.</span><span class="n">stdout</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">or</span> <span class="s2">&quot;usage:&quot;</span> <span class="ow">in</span> <span class="n">result</span><span class="o">.</span><span class="n">stderr</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+
+
+<span class="nd">@pytest</span><span class="o">.</span><span class="n">mark</span><span class="o">.</span><span class="n">skipif</span><span class="p">(</span><span class="n">_script_path</span><span class="p">()</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">,</span> <span class="n">reason</span><span class="o">=</span><span class="s2">&quot;console script not installed&quot;</span><span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">test_console_script_invalid_flag</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;The installed console script exits nonzero on an unknown flag.&quot;&quot;&quot;</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span>
+        <span class="p">[</span><span class="n">_script_path</span><span class="p">(),</span> <span class="s2">&quot;--no-such-flag&quot;</span><span class="p">],</span>
+        <span class="n">capture_output</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="n">text</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="k">assert</span> <span class="n">result</span><span class="o">.</span><span class="n">returncode</span> <span class="o">!=</span> <span class="mi">0</span>
+    <span class="k">assert</span> <span class="s2">&quot;--no-such-flag&quot;</span> <span class="ow">in</span> <span class="n">result</span><span class="o">.</span><span class="n">stderr</span> <span class="ow">or</span> <span class="s2">&quot;unrecognized&quot;</span> <span class="ow">in</span> <span class="n">result</span><span class="o">.</span><span class="n">stderr</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+</code></pre></div>
+<h3 id="using-the-console_scripts-test-fixture-pytest-console-scripts">Using the console_scripts test fixture (pytest-console-scripts)<a class="headerlink" href="#using-the-console_scripts-test-fixture-pytest-console-scripts" title="Permanent link">&para;</a></h3>
+<p>Repos may alternatively use the
+<a href="https://pypi.org/project/pytest-console-scripts/"><code>pytest-console-scripts</code></a>
+plugin, which provides a <code>console_script</code> fixture that runs installed entry
+points as subprocesses:</p>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">pytest</span>
+
+
+<span class="n">pytest</span><span class="o">.</span><span class="n">importorskip</span><span class="p">(</span><span class="s2">&quot;pytest_console_scripts&quot;</span><span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">test_entrypoint_help</span><span class="p">(</span><span class="n">console_script</span><span class="p">):</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="n">console_script</span><span class="p">(</span><span class="s2">&quot;robotsix-&lt;name&gt;&quot;</span><span class="p">,</span> <span class="s2">&quot;--help&quot;</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="n">result</span><span class="o">.</span><span class="n">returncode</span> <span class="o">==</span> <span class="mi">0</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">test_entrypoint_invalid</span><span class="p">(</span><span class="n">console_script</span><span class="p">):</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="n">console_script</span><span class="p">(</span><span class="s2">&quot;robotsix-&lt;name&gt;&quot;</span><span class="p">,</span> <span class="s2">&quot;--no-such-flag&quot;</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="n">result</span><span class="o">.</span><span class="n">returncode</span> <span class="o">!=</span> <span class="mi">0</span>
+</code></pre></div>
+<p>Add <code>pytest-console-scripts</code> as a test dependency (e.g. <code>[dependency-groups]
+test</code> in <code>pyproject.toml</code>).</p>
+<h2 id="why-in-process-tests-arent-enough">Why in-process tests aren't enough<a class="headerlink" href="#why-in-process-tests-arent-enough" title="Permanent link">&para;</a></h2>
 <ul>
-<li>
-<p><strong>Completeness.</strong> Every security area relevant to the fleet (Semgrep, secret
-  scanning, push protection, dependency-review, SBOM, Dependabot ecosystems,
-  SHA-pinned actions, least-privilege permissions, image scanning, etc.) must
-  have a named, discoverable requirement in the standards.</p>
-</li>
-<li>
-<p><strong>Internal consistency.</strong> Two standards pages must not conflict — a rule
-  stated twice must agree both times.</p>
-</li>
-<li>
-<p><strong>Currency.</strong> Each requirement should reflect current OWASP, OpenSSF
-  Scorecard / Best Practices Badge, and SLSA guidance at the tier appropriate
-  to the fleet.</p>
-</li>
-<li>
-<p><strong>Enforceability.</strong> Every SHOULD/MUST requirement must be either
-  machine-checkable (a CI gate, a Dependabot ecosystem, a reusable workflow)
-  or covered by a periodic agent that verifies it. Requirements described as
-  "report-only" with no automated check are aspirations, not standards.</p>
-</li>
+<li><strong>Console-script shim generation.</strong> The packaging backend (uv/hatchling)
+  generates a wrapper script that calls the entry-point function and wraps its
+  return value with <code>sys.exit()</code>. An in-process <code>main()</code> call cannot observe
+  this shim — argv parsing, stdout/stderr plumbing, and the actual process
+  exit code seen by a shell are all invisible.</li>
+<li><strong><code>[project.scripts]</code> wiring regressions.</strong> A rename of the callable or a
+  packaging-config change (e.g. switching from hatchling to a different
+  backend) can silently break the installed binary. In-process tests and
+  <code>python -m</code> tests don't exercise the entry-point mapping at all.</li>
+<li><strong><code>python -m</code> only verifies the module path.</strong> <code>python -m &lt;pkg&gt;</code> tests the
+  <code>__main__.py</code> shim (see
+  <a href="../python-main-py-forward/"><code>__main__.py</code> exit-code forwarding</a>), but never
+  touches the installed console-script wrapper — it's a different code path.</li>
 </ul>
-<p><strong>What it does NOT audit:</strong></p>
+<h2 id="failure-modes-this-prevents">Failure modes this prevents<a class="headerlink" href="#failure-modes-this-prevents" title="Permanent link">&para;</a></h2>
 <ul>
-<li>Downstream repos' compliance with these standards.</li>
-<li>The implementation of security tooling (robotsix-github-workflows,
-  robotsix-mill agents) — those are separate repos.</li>
-<li>Non-security repo hygiene (changelog format, README skeleton, towncrier).</li>
+<li><strong>Broken console script after refactor.</strong> A rename of <code>cli:main</code> to
+  <code>cli:entrypoint</code> in <code>pyproject.toml</code> while the callable is renamed in the
+  source breaks the installed binary — but in-process tests and <code>python -m</code>
+  tests all pass because they don't use the entry-point mapping.</li>
+<li><strong>Silent packaging regression.</strong> A <code>pyproject.toml</code> change that drops or
+  renames a <code>[project.scripts]</code> key goes undetected — CI smoke-tests the wheel
+  install but no test actually runs the binary.</li>
+<li><strong>Shell-facing exit-code drift.</strong> The <code>__main__.py</code> shim forwards the exit
+  code correctly (verified by <code>python -m</code> tests), but the console-script
+  wrapper has a different code path — a packaging-backend upgrade could change
+  its behaviour without any test noticing.</li>
 </ul>
-<p><strong>Output:</strong> Draft tickets filed on the robotsix-standards board for gaps or
-outdated requirements it finds. A clean pass with no findings is a valid
-result — the agent does not invent gaps to fill a quota.</p>
-<p><strong>Cadence:</strong> Weekly (604800 seconds). The agent carries a memory ledger across
-passes so it doesn't re-audit unchanged content and can defer long-running
-investigations.</p>
-<p><strong>Capability level:</strong> 2 (intermediate reasoning). The audit requires comparing
-standards text against upstream best-practice documents and cross-referencing
-multiple standards pages — a level-1 agent doesn't have the context window or
-reasoning depth for that.</p>
-<p><strong>Web knowledge:</strong> Enabled. The agent uses <code>ask_web_knowledge</code> to query current
-OWASP Top 10, OpenSSF Scorecard checks, and SLSA level requirements when it
-needs to verify currency.</p>
-<p><strong>Tools:</strong> Read-only — <code>read_file</code>, <code>list_dir</code>. The agent cannot modify
-standards content; all findings go through the normal ticket pipeline so an
-operator reviews every proposed change.</p>
+<h2 id="ci-integration">CI integration<a class="headerlink" href="#ci-integration" title="Permanent link">&para;</a></h2>
+<p>Console-script subprocess tests run naturally as part of the normal test suite
+when the package is installed (e.g. <code>pip install .</code> or <code>uv run pytest</code> with
+the package in editable mode). When the script is not on <code>PATH</code>, the
+<code>@pytest.mark.skipif</code> guard skips the subprocess tests gracefully, so the
+suite still passes in environments that haven't installed the console scripts
+(e.g. a bare <code>python -m pytest</code> in a checkout without <code>pip install -e .</code>).</p>
+<p>The existing <code>wheel-install</code> CI job (which installs the built wheel and
+smoke-tests it) already provides a suitable environment for these tests to
+run without the skip guard — the script is on <code>PATH</code> after wheel install.</p>
+<h2 id="cross-reference">Cross-reference<a class="headerlink" href="#cross-reference" title="Permanent link">&para;</a></h2>
+<ul>
+<li><strong><a href="../python-main-py-forward/">Python <code>__main__.py</code> exit-code forwarding</a></strong> —
+  the <code>__main__.py</code> shim must forward <code>main()</code>'s return to <code>sys.exit()</code> so
+  <code>python -m &lt;pkg&gt;</code> reports the same exit code as the installed console script.</li>
+<li><strong><a href="../pytest/">Pytest practices</a></strong> — <code>filterwarnings = ["error"]</code>,
+  <code>xfail_strict = true</code>, and <code>--strict-markers</code> for every fleet test suite.</li>
+</ul>
 
 
 

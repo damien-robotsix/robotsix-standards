@@ -950,6 +950,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../console-script-subprocess-test/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Console-script subprocess tests
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../python-makefile-convention/" class="md-nav__link">
         
   
@@ -2501,6 +2529,10 @@ concern (see the <a href="../component-standard/#logging">component standard</a>
 <li><strong>Host-side ops tooling does not belong in <code>[project.scripts]</code>.</strong> Update/deploy
   helpers (git-pull + <code>docker compose up</code>, etc.) aren't part of the shipped
   package and aren't copied into a runtime image — keep them in <code>scripts/</code>.</li>
+<li><strong>Every entry point must be subprocess-tested.</strong> See
+  <a href="../console-script-subprocess-test/">console-script subprocess tests</a> —
+  the installed binary is the primary user-facing interface and only a
+  subprocess round-trip verifies the real <code>[project.scripts]</code> wiring.</li>
 </ul>
 <h2 id="lint-types-and-security-lint">Lint, types, and security lint<a class="headerlink" href="#lint-types-and-security-lint" title="Permanent link">&para;</a></h2>
 <p>Run via the shared <code>python-ci.yml</code> reusable workflow:</p>

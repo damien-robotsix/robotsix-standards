@@ -837,6 +837,34 @@
   
   
     <li class="md-nav__item">
+      <a href="console-script-subprocess-test/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Console-script subprocess tests
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="python-makefile-convention/" class="md-nav__link">
         
   
@@ -2173,6 +2201,9 @@ everywhere.</p>
 <li><strong><a href="python-main-py-forward/">Python <code>__main__.py</code> exit-code forwarding</a></strong> —
   <code>__main__.py</code> must forward <code>main()</code>'s return value to <code>sys.exit()</code> so
   <code>python -m &lt;pkg&gt;</code> reports the same exit code as the installed console script.</li>
+<li><strong><a href="console-script-subprocess-test/">Console-script subprocess tests</a></strong> —
+  every <code>[project.scripts]</code> entry point must be tested as a subprocess through
+  the installed binary — not only in-process or via <code>python -m</code>.</li>
 <li><strong><a href="python-makefile-convention/">Python Makefile convention</a></strong> — standard
   <code>Makefile</code> targets for every Python/uv repo (<code>install</code>, <code>lint</code>,
   <code>typecheck</code>, <code>test</code>, <code>test-unit</code>, <code>test-integration</code>, <code>coverage</code>, <code>docs</code>,

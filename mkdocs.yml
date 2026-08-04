@@ -106,6 +106,7 @@ nav:
       - Chat access: chat-access-standard.md
       - HTTP error envelope: http-error-envelope.md
       - HTTP security headers: http-security-headers.md
+      - Health endpoints: health-endpoints.md
       - OpenSSF Scorecard: scorecard.md
   - Deployment system:
       - Bootstrap tier: deployment-system.md

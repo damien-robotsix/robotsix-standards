@@ -36,6 +36,8 @@ jobs:
         run: npx --yes markdownlint-cli2 'docs/**/*.md' README.md
       - name: Check TOC synchronization
         run: uv run --group docs python scripts/check-toc-sync.py
+      - name: Check for duplicate changelog fragments
+        run: python3 scripts/check-changelog-duplicates.py
       - name: Spell check
         run: uv run --with codespell codespell
 

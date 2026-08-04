@@ -2087,9 +2087,13 @@ and new or migrated code must be type-clean under strict mode from day one.</p>
 <h2 id="baseline-requirements-mandatory">Baseline requirements (mandatory)<a class="headerlink" href="#baseline-requirements-mandatory" title="Permanent link">&para;</a></h2>
 <p>Every Python repository <strong>must</strong>:</p>
 <ol>
-<li><strong>Run mypy as a CI gate, not advisory.</strong> The shared python-ci template
-   <code>mypy-advisory</code> input must be <code>false</code> (or absent, defaulting to <code>false</code>)
-   so a new or growing type-error count fails the pipeline.</li>
+<li><strong>Run mypy as a blocking CI gate, not advisory.</strong> A package that ships a
+   <code>py.typed</code> marker declares its types are reliable — the type checker must
+   therefore be a required CI step that fails the build on error.
+   Advisory/notification-only type-checking is prohibited for type-aware
+   packages.  The shared python-ci template <code>mypy-advisory</code> input must be
+   <code>false</code> (or absent, defaulting to <code>false</code>) so a new or growing type-error
+   count fails the pipeline.</li>
 </ol>
 <p><em>Failure prevented:</em> a repo that ships with <code>mypy-advisory: true</code> has no
    automated signal when new type errors are introduced — the baseline can

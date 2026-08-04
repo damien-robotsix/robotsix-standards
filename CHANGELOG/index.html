@@ -478,6 +478,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../stale-bot-must-exempt-pull-requests/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Stale bot must exempt pull requests
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../changelog-driven-releases/" class="md-nav__link">
         
   
@@ -2176,6 +2204,7 @@
 </ul>
 <h2 id="000-unreleased">0.0.0 (unreleased)<a class="headerlink" href="#000-unreleased" title="Permanent link">&para;</a></h2>
 <ul>
+<li>New standard: <a href="../stale-bot-must-exempt-pull-requests/">stale bot must exempt pull requests</a> — every <code>stale.yml</code> must disable PR staling and closing with <code>days-before-pr-stale: -1</code> and <code>days-before-pr-close: -1</code>, so issue hygiene never auto-closes contributed PRs.</li>
 <li>Mypy standard: tie the blocking-CI-gate requirement explicitly to <code>py.typed</code> — a package that ships a <code>py.typed</code> marker must run its type checker as a required (non-advisory) step.</li>
 <li><strong>FastAPI test isolation standard:</strong> mutable server state must be exposed through <code>Depends()</code> dependencies so tests can override via <code>app.dependency_overrides</code>; never import and mutate the module-level store directly.</li>
 <li>New standard: <a href="../health-endpoints/">Health endpoints</a> — split liveness (<code>/health</code>, static, no I/O) vs. readiness (<code>/readyz</code>, dependency probe with per-dependency status map) so the orchestrator can restart dead processes without gating traffic on a dependency probe, and vice versa.</li>

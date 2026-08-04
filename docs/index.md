@@ -72,6 +72,9 @@ everywhere.
 - **[Python `__main__.py` exit-code forwarding](python-main-py-forward.md)** —
   `__main__.py` must forward `main()`'s return value to `sys.exit()` so
   `python -m <pkg>` reports the same exit code as the installed console script.
+- **[Console-script subprocess tests](console-script-subprocess-test.md)** —
+  every `[project.scripts]` entry point must be tested as a subprocess through
+  the installed binary — not only in-process or via `python -m`.
 - **[Python Makefile convention](python-makefile-convention.md)** — standard
   `Makefile` targets for every Python/uv repo (`install`, `lint`,
   `typecheck`, `test`, `test-unit`, `test-integration`, `coverage`, `docs`,

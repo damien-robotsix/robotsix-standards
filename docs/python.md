@@ -184,6 +184,10 @@ concern (see the [component standard](component-standard.md#logging)).
 - **Host-side ops tooling does not belong in `[project.scripts]`.** Update/deploy
   helpers (git-pull + `docker compose up`, etc.) aren't part of the shipped
   package and aren't copied into a runtime image — keep them in `scripts/`.
+- **Every entry point must be subprocess-tested.** See
+  [console-script subprocess tests](console-script-subprocess-test.md) —
+  the installed binary is the primary user-facing interface and only a
+  subprocess round-trip verifies the real `[project.scripts]` wiring.
 
 ## Lint, types, and security lint
 

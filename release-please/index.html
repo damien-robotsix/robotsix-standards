@@ -10,13 +10,13 @@
       
       
       
-        <link rel="canonical" href="https://damien-robotsix.github.io/robotsix-standards/markdown-linting/">
+        <link rel="canonical" href="https://damien-robotsix.github.io/robotsix-standards/release-please/">
       
       
-        <link rel="prev" href="../hypothesis/">
+        <link rel="prev" href="../changelog-driven-releases/">
       
       
-        <link rel="next" href="../prose-linting/">
+        <link rel="next" href="../ci-lint-pinning/">
       
       
         
@@ -27,7 +27,7 @@
     
     
       
-        <title>Markdown linting - Robotsix Standards</title>
+        <title>Release-please release automation - Robotsix Standards</title>
       
     
     
@@ -78,7 +78,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#markdown-linting" class="md-skip">
+        <a href="#release-please-release-automation" class="md-skip">
           Skip to content
         </a>
       
@@ -114,7 +114,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Markdown linting
+              Release-please release automation
             
           </span>
         </div>
@@ -505,10 +505,37 @@
                 
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="../release-please/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Release-please release automation
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   
@@ -524,6 +551,203 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#why-release-please" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why release-please
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Configuration
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Configuration">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#release-please-configjson" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        release-please-config.json
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#release-please-manifestjson" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        .release-please-manifest.json
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#how-it-works" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How it works
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#workflow-file" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Workflow file
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#shared-reusable-workflow" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Shared reusable workflow
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#conventional-commits" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Conventional commits
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#rules" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Rules
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Rules">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-every-repo-wires-release-please" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Every repo wires release-please
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-the-release-pr-is-the-sole-version-bump-mechanism" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. The release PR is the sole version-bump mechanism
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-conventional-commits-are-the-single-source-of-changelog-content" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Conventional commits are the single source of changelog content
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-versions-stay-0x-until-100-is-declared-deliberately" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Versions stay 0.x until 1.0.0 is declared deliberately
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5-config-files-are-registered-in-docsmodulesyaml" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Config files are registered in docs/modules.yaml
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#reference" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Reference
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -925,37 +1149,10 @@
                 
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Markdown linting
-  
-
-    
-  </span>
-  
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../markdown-linting/" class="md-nav__link">
         
   
   
@@ -971,137 +1168,6 @@
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#why-this-exists" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Why this exists
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#pre-commit-hooks" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Pre-commit hooks
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Pre-commit hooks">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#markdownlint-cli2-markdown-style-enforcement" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        markdownlint-cli2 — Markdown style enforcement
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#codespell-spell-checking-for-prose" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        codespell — spell-checking for prose
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#ci-invocation" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        CI invocation
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#recommended-config-files" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Recommended config files
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Recommended config files">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#markdownlint-cli2yaml" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        .markdownlint-cli2.yaml
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#toolcodespell-in-pyprojecttoml" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        [tool.codespell] in pyproject.toml
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#fleet-precedent" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Fleet precedent
-      
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -1967,10 +2033,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#why-this-exists" class="md-nav__link">
+  <a href="#why-release-please" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Why this exists
+        Why release-please
       
     </span>
   </a>
@@ -1978,22 +2044,22 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#pre-commit-hooks" class="md-nav__link">
+  <a href="#configuration" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Pre-commit hooks
+        Configuration
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Pre-commit hooks">
+    <nav class="md-nav" aria-label="Configuration">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#markdownlint-cli2-markdown-style-enforcement" class="md-nav__link">
+  <a href="#release-please-configjson" class="md-nav__link">
     <span class="md-ellipsis">
       
-        markdownlint-cli2 — Markdown style enforcement
+        release-please-config.json
       
     </span>
   </a>
@@ -2001,10 +2067,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#codespell-spell-checking-for-prose" class="md-nav__link">
+  <a href="#release-please-manifestjson" class="md-nav__link">
     <span class="md-ellipsis">
       
-        codespell — spell-checking for prose
+        .release-please-manifest.json
       
     </span>
   </a>
@@ -2017,10 +2083,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#ci-invocation" class="md-nav__link">
+  <a href="#how-it-works" class="md-nav__link">
     <span class="md-ellipsis">
       
-        CI invocation
+        How it works
       
     </span>
   </a>
@@ -2028,22 +2094,55 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#recommended-config-files" class="md-nav__link">
+  <a href="#workflow-file" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Recommended config files
+        Workflow file
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Recommended config files">
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#shared-reusable-workflow" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Shared reusable workflow
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#conventional-commits" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Conventional commits
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#rules" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Rules
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Rules">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#markdownlint-cli2yaml" class="md-nav__link">
+  <a href="#1-every-repo-wires-release-please" class="md-nav__link">
     <span class="md-ellipsis">
       
-        .markdownlint-cli2.yaml
+        1. Every repo wires release-please
       
     </span>
   </a>
@@ -2051,10 +2150,43 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#toolcodespell-in-pyprojecttoml" class="md-nav__link">
+  <a href="#2-the-release-pr-is-the-sole-version-bump-mechanism" class="md-nav__link">
     <span class="md-ellipsis">
       
-        [tool.codespell] in pyproject.toml
+        2. The release PR is the sole version-bump mechanism
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-conventional-commits-are-the-single-source-of-changelog-content" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Conventional commits are the single source of changelog content
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-versions-stay-0x-until-100-is-declared-deliberately" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Versions stay 0.x until 1.0.0 is declared deliberately
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5-config-files-are-registered-in-docsmodulesyaml" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Config files are registered in docs/modules.yaml
       
     </span>
   </a>
@@ -2067,10 +2199,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#fleet-precedent" class="md-nav__link">
+  <a href="#reference" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Fleet precedent
+        Reference
       
     </span>
   </a>
@@ -2097,105 +2229,263 @@
   
 
 
-<h1 id="markdown-linting">Markdown linting<a class="headerlink" href="#markdown-linting" title="Permanent link">&para;</a></h1>
+<h1 id="release-please-release-automation">Release-please release automation<a class="headerlink" href="#release-please-release-automation" title="Permanent link">&para;</a></h1>
 <blockquote>
-<p><strong>Scope: every Python repository that publishes MkDocs documentation.</strong>
-Repos without MkDocs (content-only repos, ROS 2 workspaces, deployment-only
-repos) are exempt.</p>
+<p><strong>Scope: every robotsix repository</strong> — libraries and deployable components
+alike. This page prescribes
+<a href="https://github.com/googleapis/release-please">release-please</a> as the
+fleet-wide release-automation tool — replacing the previous towncrier-based
+workflow documented in <a href="../changelog-driven-releases/">changelog &amp; releases</a>
+and <a href="../towncrier/">towncrier</a>.</p>
 </blockquote>
-<h2 id="why-this-exists">Why this exists<a class="headerlink" href="#why-this-exists" title="Permanent link">&para;</a></h2>
-<p>Without automated Markdown quality gates, each repo's documentation drifts
-independently: broken internal links, inconsistent heading styles, spelling
-errors, and deprecated inline-HTML patterns accumulate over time. The
-fleet publishes docs sites with <code>mkdocs build --strict</code> (see
-<a href="../mkdocs-build/">MkDocs build integrity</a>), which catches structural MkDocs
-errors but does not enforce prose style, heading consistency, or spelling —
-those gaps are filled by the two hooks below (and the prose-style gap
-is covered separately by <a href="../prose-linting/">Vale prose linting</a>).</p>
-<h2 id="pre-commit-hooks">Pre-commit hooks<a class="headerlink" href="#pre-commit-hooks" title="Permanent link">&para;</a></h2>
-<p>Add both hooks to <code>.pre-commit-config.yaml</code>. The <code>markdownlint-cli2</code> hook
-runs on every <code>.md</code> file; <code>codespell</code> runs across the entire repo.</p>
-<h3 id="markdownlint-cli2-markdown-style-enforcement"><code>markdownlint-cli2</code> — Markdown style enforcement<a class="headerlink" href="#markdownlint-cli2-markdown-style-enforcement" title="Permanent link">&para;</a></h3>
-<div class="highlight"><pre><span></span><code><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">repo</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://github.com/DavidAnson/markdownlint-cli2</span>
-<span class="w">    </span><span class="nt">rev</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">v0.17.2</span>
-<span class="w">    </span><span class="nt">hooks</span><span class="p">:</span>
-<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">id</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">markdownlint-cli2</span>
-<span class="w">        </span><span class="nt">args</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&quot;#fix&quot;</span><span class="p p-Indicator">]</span>
+<p>Release-please owns the entire release pipeline: it reads the static version
+from <code>pyproject.toml</code>, opens a release PR that bumps the version and generates
+release notes from conventional commits, and on merge creates the git tag and
+GitHub Release — all driven by the <code>googleapis/release-please-action</code> GitHub
+Action.</p>
+<h2 id="why-release-please">Why release-please<a class="headerlink" href="#why-release-please" title="Permanent link">&para;</a></h2>
+<p>The previous towncrier-based workflow required per-PR fragment files in
+<code>changelog.d/</code>, a CI gate to enforce them, and a separate auto-release workflow
+that ran weekly to classify fragments, bump the version, compile the changelog,
+and push a tag. This worked but added friction: every PR needed a fragment file
+with the right extension, the CI gate blocked PRs that forgot one, and the
+release workflow was a separate scheduled job whose output (tag, changelog,
+version bump) was opaque until it ran.</p>
+<p>Release-please replaces this with <strong>conventional commits</strong> — the commit message
+itself is the changelog entry and the bump signal. No fragment files, no
+separate release workflow, no manual bump classification. A release PR opens
+automatically whenever releasable commits land on the default branch; merging
+it publishes the release.</p>
+<h2 id="configuration">Configuration<a class="headerlink" href="#configuration" title="Permanent link">&para;</a></h2>
+<p>Every repo carries two config files at its root:</p>
+<h3 id="release-please-configjson"><code>release-please-config.json</code><a class="headerlink" href="#release-please-configjson" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;$schema&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;https://raw.githubusercontent.com/googleapis/release-please/main/schemas/config.json&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;release-type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;python&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;changelog-path&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;CHANGELOG.md&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;include-v-in-tag&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;packages&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;.&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{}</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
 </code></pre></div>
-<p><strong>The <code>#fix</code> arg is optional.</strong> When present it auto-fixes fixable violations
-on commit. Remove it if you prefer to fix manually — CI still runs the check (see
-<a href="#ci-invocation">CI invocation</a> below) and fails on any violation.</p>
-<h3 id="codespell-spell-checking-for-prose"><code>codespell</code> — spell-checking for prose<a class="headerlink" href="#codespell-spell-checking-for-prose" title="Permanent link">&para;</a></h3>
-<div class="highlight"><pre><span></span><code><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">repo</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://github.com/codespell-project/codespell</span>
-<span class="w">    </span><span class="nt">rev</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">v2.4.1</span>
-<span class="w">    </span><span class="nt">hooks</span><span class="p">:</span>
-<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">id</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">codespell</span>
-<span class="w">        </span><span class="nt">args</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&quot;--ignore-words-list&quot;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&quot;hist,ist,te,nd&quot;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&quot;--skip&quot;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&quot;*.lock,uv.lock,*.css,*.map,*.min.*,.git/,node_modules/,site/,vendor/&quot;</span><span class="p p-Indicator">]</span>
-</code></pre></div>
-<p><strong>Failure mode prevented:</strong> misspelled words in documentation and comments
-that survive review because reviewers read for meaning, not spelling.</p>
-<h2 id="ci-invocation">CI invocation<a class="headerlink" href="#ci-invocation" title="Permanent link">&para;</a></h2>
-<p>The fleet-wide rule is stated in <a href="../ci-lint-pinning/">CI lint tool pinning</a> —
-CI must run lint tools through the same pinned pre-commit hooks. For
-markdownlint-cli2 and codespell specifically:</p>
-<div class="highlight"><pre><span></span><code>pre-commit<span class="w"> </span>run<span class="w"> </span>--all-files<span class="w"> </span>markdownlint-cli2
-pre-commit<span class="w"> </span>run<span class="w"> </span>--all-files<span class="w"> </span>codespell
-</code></pre></div>
-<h2 id="recommended-config-files">Recommended config files<a class="headerlink" href="#recommended-config-files" title="Permanent link">&para;</a></h2>
-<h3 id="markdownlint-cli2yaml"><code>.markdownlint-cli2.yaml</code><a class="headerlink" href="#markdownlint-cli2yaml" title="Permanent link">&para;</a></h3>
-<p>Create this file at the repo root:</p>
-<div class="highlight"><pre><span></span><code><span class="c1"># .markdownlint-cli2.yaml</span>
-<span class="nt">default</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
-
-<span class="nt">MD013</span><span class="p">:</span>
-<span class="w">  </span><span class="nt">line_length</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">120</span>
-<span class="w">  </span><span class="nt">code_blocks</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span><span class="w">      </span><span class="c1"># long code lines in docs</span>
-<span class="w">  </span><span class="nt">tables</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span><span class="w">           </span><span class="c1"># table cells exceed line length</span>
-
-<span class="nt">MD024</span><span class="p">:</span>
-<span class="w">  </span><span class="nt">allow_different_nesting</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span><span class="w">   </span><span class="c1"># repeated headings under different parents</span>
-
-<span class="nt">MD033</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span><span class="w">              </span><span class="c1"># inline HTML for mkdocs-material admonitions, image sizing</span>
-
-<span class="nt">MD041</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span><span class="w">              </span><span class="c1"># docs pages start with frontmatter, not H1</span>
-
-<span class="nt">MD046</span><span class="p">:</span>
-<span class="w">  </span><span class="nt">style</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;fenced&quot;</span><span class="w">         </span><span class="c1"># enforce fenced code blocks, not indented</span>
-</code></pre></div>
-<p>Each rule override states the failure it prevents:</p>
 <ul>
-<li><strong>MD013 (line length):</strong> code blocks and tables routinely exceed 80 or 120
-  characters; silencing them avoids noise without losing heading/paragraph
-  line-length enforcement.</li>
-<li><strong>MD024 (duplicate headings):</strong> MkDocs generates anchor slugs from heading
-  text; identical headings under different parent sections are valid and
-  common (e.g. "Usage" under both "CLI" and "Library").</li>
-<li><strong>MD033 (no inline HTML):</strong> mkdocs-material admonitions (<code>!!! note</code>) and
-  image-sizing attributes require inline HTML; a blanket ban breaks the
-  theme.</li>
-<li><strong>MD041 (first line is H1):</strong> docs pages in MkDocs Material repos
-  frequently start with YAML frontmatter (<code>---</code>), not an H1.</li>
-<li><strong>MD046 (code block style):</strong> fenced blocks (<code>```</code>) are the fleet
-  convention; indented blocks are ambiguous with list items.</li>
+<li><strong><code>release-type</code></strong> — <code>"python"</code>. Release-please reads the static
+  <code>[project].version</code> from <code>pyproject.toml</code>, bumps it according to the
+  conventional-commit types in the release PR, and writes it back.</li>
+<li><strong><code>changelog-path</code></strong> — <code>"CHANGELOG.md"</code>. Generated release notes are
+  prepended to this file at the top of the <code>##</code> section for the new version.</li>
+<li><strong><code>include-v-in-tag</code></strong> — <code>true</code>. Tags are <code>vX.Y.Z</code> (matching the existing
+  <code>docker-release.yml</code> tag filter <code>["*.*.*"]</code> — the <code>v</code> prefix is part of
+  the tag name).</li>
+<li><strong><code>packages</code></strong> — a single root package <code>"."</code>. Monorepo repos with multiple
+  publishable packages list each package directory here; single-package repos
+  use the root.</li>
 </ul>
-<h3 id="toolcodespell-in-pyprojecttoml"><code>[tool.codespell]</code> in <code>pyproject.toml</code><a class="headerlink" href="#toolcodespell-in-pyprojecttoml" title="Permanent link">&para;</a></h3>
-<div class="highlight"><pre><span></span><code><span class="k">[tool.codespell]</span>
-<span class="n">skip</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;*.lock,*.css,*.map,*.min.*,.git/,node_modules/,uv.lock,LICENSE,site/,vendor/&quot;</span>
-<span class="n">ignore-words-list</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;hist,ist,te,nd&quot;</span>
-<span class="n">check-filenames</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">true</span>
+<h3 id="release-please-manifestjson"><code>.release-please-manifest.json</code><a class="headerlink" href="#release-please-manifestjson" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;.&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;0.1.0&quot;</span>
+<span class="p">}</span>
 </code></pre></div>
-<p><strong>Failure mode prevented:</strong> <code>codespell</code> without skip patterns scans lock
-files, minified JS/CSS, and vendored code — producing false-positive noise
-that trains contributors to ignore the hook.</p>
-<h2 id="fleet-precedent">Fleet precedent<a class="headerlink" href="#fleet-precedent" title="Permanent link">&para;</a></h2>
+<p>The manifest records the last released version for each package. Release-please
+reads it on startup to know where the previous release left off; it updates
+the manifest automatically when a release PR is merged. The initial value is
+the current version in <code>pyproject.toml</code>.</p>
+<h2 id="how-it-works">How it works<a class="headerlink" href="#how-it-works" title="Permanent link">&para;</a></h2>
+<ol>
+<li><strong>On every push to the default branch</strong>, the <code>googleapis/release-please-action</code>
+   inspects commits since the last release (tracked in
+   <code>.release-please-manifest.json</code>).</li>
+<li><strong>If releasable commits exist</strong> (commits with <code>feat:</code>, <code>fix:</code>, or
+   <code>feat!:</code>/<code>fix!:</code> prefixes), release-please opens or updates a <strong>release PR</strong>
+   that:</li>
+<li>Bumps the version in <code>pyproject.toml</code> and <code>.release-please-manifest.json</code>
+     (minor for <code>feat</code>, patch for <code>fix</code>, major for <code>!</code> breaking markers).</li>
+<li>Prepends generated release notes to <code>CHANGELOG.md</code> under a new <code>## X.Y.Z</code>
+     heading.</li>
+<li><strong>When the release PR is merged</strong>, the same action:</li>
+<li>Creates a git tag <code>vX.Y.Z</code> on the merge commit.</li>
+<li>Creates a GitHub Release with the generated notes.</li>
+</ol>
+<p>The action runs on two triggers: <code>push</code> to the default branch (to open/update
+the release PR) and <code>pull_request</code> <code>closed</code> on the default branch (to create
+the tag and release when the release PR is merged).</p>
+<h2 id="workflow-file">Workflow file<a class="headerlink" href="#workflow-file" title="Permanent link">&para;</a></h2>
+<p>Every repo wires the action in <code>.github/workflows/release-please.yml</code>:</p>
+<div class="highlight"><pre><span></span><code><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">release-please</span>
+
+<span class="nt">on</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">push</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">branches</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">main</span>
+<span class="w">  </span><span class="nt">pull_request</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">types</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">closed</span>
+<span class="w">    </span><span class="nt">branches</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">main</span>
+
+<span class="nt">permissions</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">contents</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">write</span>
+<span class="w">  </span><span class="nt">pull-requests</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">write</span>
+
+<span class="nt">jobs</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">release-please</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">runs-on</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ubuntu-latest</span>
+<span class="w">    </span><span class="nt">if</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|</span>
+<span class="w">      </span><span class="no">github.event_name == &#39;push&#39; ||</span>
+<span class="w">      </span><span class="no">(github.event_name == &#39;pull_request&#39; &amp;&amp;</span>
+<span class="w">       </span><span class="no">github.event.pull_request.merged == true &amp;&amp;</span>
+<span class="w">       </span><span class="no">github.event.pull_request.head.ref == &#39;release-please--branches--main&#39;)</span>
+<span class="w">    </span><span class="nt">steps</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">uses</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">googleapis/release-please-action@&lt;COMMIT_SHA&gt;</span><span class="w">  </span><span class="c1"># see pinning note below</span>
+<span class="w">        </span><span class="nt">with</span><span class="p">:</span>
+<span class="w">          </span><span class="nt">token</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">${{ secrets.GITHUB_TOKEN }}</span>
+</code></pre></div>
+<p>The <code>if</code> guard ensures the action only creates tags/releases on merge of its
+own release PR, not on merge of any other PR.</p>
+<blockquote>
+<p><strong>Pinning.</strong> Pin the action to a commit SHA, not a tag. Resolve the SHA
+with:</p>
+<div class="highlight"><pre><span></span><code><span class="nv">url</span><span class="o">=</span>https://github.com/googleapis/release-please-action.git
+git<span class="w"> </span>ls-remote<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$url</span><span class="s2">&quot;</span><span class="w"> </span><span class="s2">&quot;refs/tags/v4^{}&quot;</span><span class="w"> </span><span class="s2">&quot;refs/tags/v4&quot;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span><span class="p">|</span><span class="w"> </span>awk<span class="w"> </span><span class="s1">&#39;/\^\{\}$/{c=$1} !/\^\{\}$/{p=$1} END{print (c!=&quot;&quot;?c:p)}&#39;</span>
+</code></pre></div>
+</blockquote>
+<h2 id="shared-reusable-workflow">Shared reusable workflow<a class="headerlink" href="#shared-reusable-workflow" title="Permanent link">&para;</a></h2>
+<p>Optionally, the fleet may carry a shared reusable workflow in
+<a href="https://github.com/damien-robotsix/robotsix-github-workflows">robotsix-github-workflows</a>
+(<code>release-please.yml</code>) so member repos adopt it in one <code>uses:</code> line —
+mirroring the existing <code>docker-release.yml</code> pattern:</p>
+<div class="highlight"><pre><span></span><code><span class="nt">jobs</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">release-please</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">uses</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">damien-robotsix/robotsix-github-workflows/.github/workflows/release-please.yml@&lt;COMMIT_SHA&gt;</span>
+<span class="w">    </span><span class="nt">secrets</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">inherit</span>
+</code></pre></div>
+<p>When the shared workflow exists, member repos use it instead of inlining the
+action. Until then, the inline workflow above is the canonical setup.</p>
+<h2 id="conventional-commits">Conventional commits<a class="headerlink" href="#conventional-commits" title="Permanent link">&para;</a></h2>
+<p>Release-please determines the semver bump from
+<a href="https://www.conventionalcommits.org/">Conventional Commits</a> prefixes in merge
+commit messages:</p>
+<table>
+<thead>
+<tr>
+<th>Prefix</th>
+<th>Bump</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>fix:</code></td>
+<td>patch</td>
+<td><code>fix: handle empty mail poller response</code></td>
+</tr>
+<tr>
+<td><code>feat:</code></td>
+<td>minor</td>
+<td><code>feat: add retry to the mail poller</code></td>
+</tr>
+<tr>
+<td><code>fix!:</code> / <code>feat!:</code></td>
+<td>major</td>
+<td><code>feat!: drop support for Python 3.12</code></td>
+</tr>
+<tr>
+<td><code>docs:</code>, <code>chore:</code>, <code>test:</code>, <code>ci:</code></td>
+<td>none — not included in release notes</td>
+<td><code>chore: bump ruff</code></td>
+</tr>
+</tbody>
+</table>
+<p>The <code>!</code> marker (before the colon) signals a breaking change. A commit footer
+<code>BREAKING CHANGE:</code> also triggers a major bump.</p>
+<p>Commits with types outside the conventional set (<code>docs</code>, <code>chore</code>, <code>test</code>,
+<code>ci</code>, <code>style</code>, <code>refactor</code>, <code>perf</code>, <code>build</code>) do not appear in the generated
+release notes and do not trigger a bump — release-please ignores them for
+versioning purposes.</p>
+<h2 id="rules">Rules<a class="headerlink" href="#rules" title="Permanent link">&para;</a></h2>
+<h3 id="1-every-repo-wires-release-please">1. Every repo wires release-please<a class="headerlink" href="#1-every-repo-wires-release-please" title="Permanent link">&para;</a></h3>
+<p><strong>Rule:</strong> Every robotsix repo carries a <code>release-please-config.json</code>, a
+<code>.release-please-manifest.json</code>, and a <code>.github/workflows/release-please.yml</code>
+(or the shared reusable workflow equivalent).</p>
+<p><strong>Rationale:</strong> Without release-please, a repo has no mechanism to create
+version tags or compile changelogs automatically. Tags must be pushed by hand,
+and the shared <code>docker-release.yml</code> workflow — which gates Docker publishing
+on <code>tags: ["*.*.*"]</code> — never fires.</p>
+<blockquote>
+<p><strong>Failure mode.</strong> A repo that lacks release-please accumulates conventional
+commits on its default branch with no release PR, no version bump, and no
+tag. The version in <code>pyproject.toml</code> stays at the last manually-set value;
+downstream consumers resolving via git see a dirty <code>0.x.dev</code> version
+forever, and there is no auditable changelog of what changed.</p>
+</blockquote>
+<h3 id="2-the-release-pr-is-the-sole-version-bump-mechanism">2. The release PR is the sole version-bump mechanism<a class="headerlink" href="#2-the-release-pr-is-the-sole-version-bump-mechanism" title="Permanent link">&para;</a></h3>
+<p><strong>Rule:</strong> <code>pyproject.toml</code> <code>[project].version</code> is never edited by hand.
+Release-please owns the version — it is the only writer of the version field.
+The <code>.release-please-manifest.json</code> is likewise never hand-edited; it tracks
+the last released version and release-please updates it automatically.</p>
+<p><strong>Rationale:</strong> A hand-edited version drifts from the manifest, causing
+release-please to open a release PR for the wrong version or to skip versions
+entirely. The manifest is the source of truth for "what was last released";
+editing it by hand breaks the automation.</p>
+<blockquote>
+<p><strong>Failure mode.</strong> A contributor bumps the version in <code>pyproject.toml</code>
+directly (e.g. from <code>0.3.0</code> to <code>0.4.0</code>) without going through release-please.
+Release-please sees the manifest still at <code>0.3.0</code> and opens a release PR
+proposing <code>0.3.1</code> — a downgrade. The tag <code>v0.3.1</code> is created on a tree that
+already declares <code>0.4.0</code>, and every runtime version check thereafter reports
+a mismatch.</p>
+</blockquote>
+<h3 id="3-conventional-commits-are-the-single-source-of-changelog-content">3. Conventional commits are the single source of changelog content<a class="headerlink" href="#3-conventional-commits-are-the-single-source-of-changelog-content" title="Permanent link">&para;</a></h3>
+<p><strong>Rule:</strong> Every PR that changes user-visible behaviour uses a conventional
+commit prefix (<code>fix:</code>, <code>feat:</code>, or the <code>!</code> breaking marker). The commit
+message body — what appears under the prefix — is the changelog entry. There
+are no fragment files; <code>CHANGELOG.md</code> is written exclusively by release-please.</p>
+<p><strong>Rationale:</strong> Conventional commits eliminate the fragment-file overhead
+(per-PR file creation, CI gate, skip-changelog label, fragment registration in
+<code>modules.yaml</code>). The commit message is already written as part of the PR; using
+it as the changelog entry removes a duplicate step.</p>
+<blockquote>
+<p><strong>Failure mode.</strong> A repo adopts release-please but contributors do not use
+conventional commit prefixes. Release-please sees no releasable commits and
+never opens a release PR. The version stays frozen, and the changelog is
+empty despite months of merged PRs.</p>
+</blockquote>
+<h3 id="4-versions-stay-0x-until-100-is-declared-deliberately">4. Versions stay 0.x until 1.0.0 is declared deliberately<a class="headerlink" href="#4-versions-stay-0x-until-100-is-declared-deliberately" title="Permanent link">&para;</a></h3>
+<p><strong>Rule:</strong> Versions stay <code>0.x</code> under semver. Bumping to <code>1.0.0</code> is a human
+decision — it is never automated. Under 0.x there is no compatibility promise,
+which matches the stack's pre-release, clean-cutover stance.</p>
+<p><strong>Rationale:</strong> Semver <code>0.x</code> means "no stability guarantee" — the public API may
+change at any minor bump. This is the correct posture for a stack under active
+development where clean cutover is the default migration strategy. Automating a
+<code>1.0.0</code> bump would make an unintended stability promise.</p>
+<blockquote>
+<p><strong>Failure mode.</strong> A repo whose release-please workflow bumps to <code>1.0.0</code>
+automatically signals API stability that does not exist — consumers treat
+minor bumps as safe and are broken by a breaking change that arrived without
+a major-version signal.</p>
+</blockquote>
+<h3 id="5-config-files-are-registered-in-docsmodulesyaml">5. Config files are registered in docs/modules.yaml<a class="headerlink" href="#5-config-files-are-registered-in-docsmodulesyaml" title="Permanent link">&para;</a></h3>
+<p><strong>Rule:</strong> When a new <code>release-please-config.json</code> or
+<code>.release-please-manifest.json</code> file is created, its path must be added to
+<code>docs/modules.yaml</code> under the appropriate module's <code>paths</code> list. This applies
+even when no Python files are modified.</p>
+<p><strong>Rationale:</strong> The module-registration drift check fails CI when a file matches
+no module's globs. Without this rule, every new release-please config file
+would fail CI until someone manually registers it.</p>
+<blockquote>
+<p><strong>Failure mode.</strong> A contributor adds the config files, CI fails with a drift
+error, and the contributor either removes the files (breaking release
+automation) or spends time diagnosing a registration failure.</p>
+</blockquote>
+<h2 id="reference">Reference<a class="headerlink" href="#reference" title="Permanent link">&para;</a></h2>
 <ul>
-<li><strong>pydantic/pydantic</strong> (the leading Python validation library in the
-  FastAPI ecosystem) uses both <code>markdownlint-cli2</code> and <code>codespell</code> in its
-  <code>.pre-commit-config.yaml</code> — this is a proven, battle-tested combination.</li>
-<li>The ROS 2 fleet already runs <code>markdownlint</code> and <code>codespell</code> via a justfile;
-  this standard brings the same gates to every Python repo via the shared
-  pre-commit mechanism (see <a href="../ros2/">ROS 2 practices</a> for the ROS 2
-  fleet's equivalent).</li>
+<li><strong>release-please:</strong> <a href="https://github.com/googleapis/release-please">https://github.com/googleapis/release-please</a></li>
+<li><strong>release-please-action:</strong> <a href="https://github.com/googleapis/release-please-action">https://github.com/googleapis/release-please-action</a></li>
+<li><strong>Conventional Commits:</strong> <a href="https://www.conventionalcommits.org/">https://www.conventionalcommits.org/</a></li>
+<li><strong>Python release-type:</strong> release-please reads <code>[project].version</code> from
+  <code>pyproject.toml</code> and writes the bumped version back to the same field.</li>
 </ul>
 
 

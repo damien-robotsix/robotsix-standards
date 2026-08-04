@@ -669,6 +669,34 @@
   
   
     <li class="md-nav__item">
+      <a href="release-please/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Release-please release automation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="ci-lint-pinning/" class="md-nav__link">
         
   
@@ -2112,7 +2140,12 @@ everywhere.</p>
   without dropping tables.</li>
 <li><strong><a href="changelog-driven-releases/">Changelog &amp; releases</a></strong> — towncrier fragment-driven
   releases, CI-enforced changelog fragments, and the shared auto-release
-  workflow — no hand-edited changelog.</li>
+  workflow — no hand-edited changelog. <em>(Superseded by
+  <a href="release-please/">release-please</a>.)</em></li>
+<li><strong><a href="release-please/">Release-please release automation</a></strong> — conventional-commit-driven
+  release PRs, automated version bump, changelog generation, git tag, and
+  GitHub Release via <code>googleapis/release-please-action</code> — the fleet-wide
+  release-automation tool replacing towncrier.</li>
 <li><strong><a href="ci-lint-pinning/">CI lint tool pinning</a></strong> — CI lint jobs must run the same
   version-pinned tools as <code>.pre-commit-config.yaml</code>, not floating/latest
   sources — one version source, no skew.</li>

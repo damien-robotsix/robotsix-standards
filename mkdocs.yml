@@ -101,6 +101,7 @@ nav:
       - Deploy contract: deploy-contract.md
       - Entrypoint contract: entrypoint-contract.md
       - FastAPI Pydantic field descriptions: fastapi-pydantic-field-descriptions.md
+      - FastAPI test isolation: fastapi-test-isolation.md
       - Integrating a service: integrating-a-service.md
       - Chat access: chat-access-standard.md
       - HTTP error envelope: http-error-envelope.md

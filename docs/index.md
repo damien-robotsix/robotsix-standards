@@ -133,6 +133,10 @@ integrates with the deployment system. Beyond the baseline it follows:
   every public request/response Pydantic model field must carry
   `Field(description=...)` so the generated OpenAPI schema is
   self-documenting.
+- **[FastAPI test isolation](fastapi-test-isolation.md)** — mutable server
+  state exposed through `Depends()` dependencies so tests can override via
+  `app.dependency_overrides`; never import and mutate the module-level store
+  directly.
 - **[Integrating a service](integrating-a-service.md)** — the end-to-end how-to.
 - **[Chat access](chat-access-standard.md)** — a standard skill endpoint so the
   chat agent can invoke operations on the component.

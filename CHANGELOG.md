@@ -177,6 +177,7 @@
 
 ## 0.0.0 (unreleased)
 
+- Prevent recurring towncrier-release CHANGELOG.md markdownlint breakage: exclude the build-time copy (`docs/CHANGELOG.md`) from linting in `.markdownlint-cli2.yaml`, and fold the `markdownlint-disable` guard into towncrier's `start_string` so it survives rebuilds.
 - Add release-please release automation standard (`docs/release-please.md`) — conventional-commit-driven release PRs, automated version bump, changelog generation, git tag, and GitHub Release via `googleapis/release-please-action`, replacing the towncrier-based workflow.
 - Pytest shared state builders: codify root `tests/conftest.py` for shared fixtures, `make_<thing>` factory fixtures for mutable test state, and value fixtures as thin factory callers — so shared builders are reusable across every test package instead of duplicated inline.
 - Extended `mkdocs-build` standard with rendered-HTML link-check rule (htmlproofer-plugin or lychee in a separate CI job) and PR-time gating, so external-URL flakiness cannot block docs deploys.

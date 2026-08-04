@@ -98,3 +98,11 @@ has no description:
 This check is **optional** today; a repo that adds it signals that its API
 surface is fully documented. The fleet convention is the requirement — the
 automated gate is the enforcement.
+
+## Cross-reference
+
+- **[FastAPI test isolation](fastapi-test-isolation.md)** — the other
+  fleet-wide FastAPI convention: mutable server state must be exposed
+  through `Depends()` dependencies so tests can override via
+  `app.dependency_overrides` rather than importing and mutating module-level
+  globals.

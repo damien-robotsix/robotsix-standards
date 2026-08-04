@@ -39,7 +39,12 @@ everywhere.
   without dropping tables.
 - **[Changelog & releases](changelog-driven-releases.md)** — towncrier fragment-driven
   releases, CI-enforced changelog fragments, and the shared auto-release
-  workflow — no hand-edited changelog.
+  workflow — no hand-edited changelog. *(Superseded by
+  [release-please](release-please.md).)*
+- **[Release-please release automation](release-please.md)** — conventional-commit-driven
+  release PRs, automated version bump, changelog generation, git tag, and
+  GitHub Release via `googleapis/release-please-action` — the fleet-wide
+  release-automation tool replacing towncrier.
 - **[CI lint tool pinning](ci-lint-pinning.md)** — CI lint jobs must run the same
   version-pinned tools as `.pre-commit-config.yaml`, not floating/latest
   sources — one version source, no skew.

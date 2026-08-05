@@ -89,29 +89,57 @@ declare it in every Python repo (the baseline-check gate verifies this).
   pattern — plain dependency names resolved through `[tool.uv.sources]` — does
   not need it, because the git pin lives in uv's config, not in the project
   metadata hatchling validates.
-- **Single-source the version: `pyproject.toml [project].version` is the
-  authoritative version.** Packages MUST NOT hard-code `__version__` as a
-  literal in `__init__.py`.  Instead, derive it at import time from the
-  installed distribution metadata:
+- **Single-source the version in a checked-in file.** Each package MUST
+  expose a runtime `__version__` string on its package `__init__`,
+  sourced from a single checked-in file — NOT from `importlib.metadata`.
 
-  ```python
-  from importlib.metadata import PackageNotFoundError, version
+  1. Add `src/<pkg>/_version.py` containing the version literal:
 
-  try:
-      __version__ = version("robotsix-chat")  # distribution name from pyproject
-  except PackageNotFoundError:  # pragma: no cover - source checkout without install
-      __version__ = "0.0.0+unknown"
-  ```
+     ```python
+     __version__ = "0.1.0"
+     ```
 
-  `importlib.metadata` is stdlib (fleet targets `requires-python >=3.14`), so
-  no new dependency.  The shared auto-release workflow bumps exactly one file
-  (`pyproject.toml`), and `__version__` stays in sync automatically.
+  2. Wire it into the build backend so that file is the single source.
+     For hatchling, add to `pyproject.toml`:
 
-  *Failure prevented:* when `__version__` is a hand-maintained literal in
-  `__init__.py`, the auto-release bumper updates only `pyproject.toml` —
-  the two sources drift silently.  Runtime version checks (e.g. comparing
-  `__version__` against the latest GitHub release tag) then permanently
-  report the deployment as out of date, even immediately after a release.
+     ```toml
+     [tool.hatch.version]
+     source = "version"
+     path = "src/<pkg>/_version.py"
+     ```
+
+     and drop the bare `version =` line under `[project]`.
+
+  3. Re-export at the top of the package `__init__`:
+
+     ```python
+     from ._version import __version__
+     ```
+
+     This is a plain string constant, not deferred through PEP 562
+     `__getattr__` — it is cheap and must be importable without side
+     effects.
+
+  `importlib.metadata` is NOT a reliable fallback for git-consumed /
+  untagged installs.  Untagged VCS build backends synthesize moving
+  PEP 440 local versions (`0.2.0.post17+g<SHA>`) that never equal a
+  clean `vX.Y.Z`; `.egg-info`/`dist-info` can be missing or stale;
+  and the metadata key is the distribution (PyPI) name, not the import
+  name.
+
+  *Failure prevented:* when `__version__` is derived from
+  `importlib.metadata`, an untagged VCS install or a stale dist-info
+  returns a moving local version — runtime version checks (e.g.
+  comparing `__version__` against the latest GitHub release tag) report
+  every deployment as out of date even immediately after release.  A
+  checked-in `_version.py` is the one file the auto-release workflow
+  bumps; it stays in sync by construction.
+
+  **Citable idiom:** pydantic ships `pydantic/version.py` re-exported as
+  `from .version import __version__` in `__init__.py`, wired to hatchling
+  via `[tool.hatch.version] source="version" path=...` — chosen precisely
+  because it keeps ONE source of truth that works regardless of how the
+  package is installed.
 - **No PyPI.** Nothing is published to a package index (see the
   [repo baseline](repo-baseline.md#no-package-index-consume-libraries-from-git)).
   Repos carry **no index-publish workflow** — no `pypi-publish`, no

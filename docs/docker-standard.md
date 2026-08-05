@@ -64,9 +64,8 @@ A multi-stage Dockerfile that keeps build tooling out of the runtime image:
   endpoint **using only the Python stdlib** — the slim image has no `curl` or
   `wget`, so a curl-based probe fails on every run. The image `HEALTHCHECK` is
   the **canonical** probe: it travels with the image and applies in every
-  deploy mode. A compose-level `healthcheck:` is an optional override for
-  deploy contexts that genuinely need a different probe (a heartbeat-file
-  check for a non-HTTP worker, a longer timeout under sustained load).
+  deploy mode. Every compose file must also declare a matching service-level
+  `healthcheck:` stanza — see [Compose-level healthcheck](#compose-level-healthcheck).
 - **Entrypoint:** exec-form **`ENTRYPOINT ["robotsix-<name>"]`** — the console
   script is PID 1 and receives SIGTERM directly. An `entrypoint.sh` is the
   exception for genuine startup work, not the rule — see the
@@ -222,6 +221,68 @@ nothing ran the image.
 A reusable workflow for this gate lives in
 [robotsix-github-workflows](https://github.com/damien-robotsix/robotsix-github-workflows)
 so every component calls the same integration-test step, identically.
+
+## Compose-level healthcheck
+
+Every deployable component's compose file **must** declare a service-level
+`healthcheck:` stanza on the primary service, even when the probe is identical
+to the image's `HEALTHCHECK`. The compose `healthcheck:` key
+[overrides](https://docs.docker.com/reference/compose-file/services/#healthcheck) the
+Dockerfile directive at runtime and is the only health declaration that
+Compose's `depends_on` with `condition: service_healthy` can gate on.
+
+**The probe.** Use the same stdlib-only command as the image `HEALTHCHECK`
+— the slim image has no `curl` or `wget`, so a curl-based probe fails on
+every run:
+
+```yaml
+services:
+  <svc>:
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:<port>/health')"]
+      interval: 30s
+      timeout: 5s
+      start_period: 5s
+      retries: 3
+```
+
+The `test` command, port, and timing values must match the image's
+`HEALTHCHECK` directive exactly unless a per-environment override is
+deliberate (a longer `start_period` under sustained load, a different
+`interval` in dev). Any deviation from the image's values is a conscious
+tuning decision, not accidental drift.
+
+**Why the duplication is deliberate.** The image `HEALTHCHECK` travels with
+the image and reports health in any runtime (plain `docker run`, Compose,
+Kubernetes). The compose `healthcheck:` is required *in addition* because:
+
+- **`depends_on` gating.** Only a compose-level `healthcheck:` enables
+  `depends_on: { service: { condition: service_healthy } }` — the Dockerfile
+  directive alone does not make a container a usable readiness target for
+  dependent services.
+- **Per-environment tuning.** Compose overrides (`docker-compose.override.yml`)
+  can adjust `interval`, `start_period`, and `retries` per environment without
+  rebuilding the image.
+- **Orchestrator visibility.** External orchestrators and proxies that read
+  per-service health state from the Compose API only see the compose-level
+  declaration.
+
+**Failure modes prevented:**
+
+- **Silent startup ordering bugs.** Without a compose-level healthcheck,
+  `depends_on` with `condition: service_healthy` is a no-op — the dependent
+  service starts before the dependency is ready, producing startup-time
+  connection failures that are hard to diagnose because they are
+  timing-dependent and vanish on restart.
+- **Untunable health in production.** The image's healthcheck timings are
+  baked in at build time. A service that needs a longer `start_period` under
+  production load (cold cache, database migrations) requires a rebuild to
+  adjust — the compose override would be ignored because no compose
+  `healthcheck:` exists to override.
+- **Invisible health state.** Proxies and dashboards that query the Compose
+  API for per-service health see no status when only the Dockerfile
+  `HEALTHCHECK` exists — the service appears permanently unmonitored even
+  though the container is reporting health internally.
 
 ## Docker Compose smoke test
 

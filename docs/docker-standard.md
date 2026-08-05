@@ -254,7 +254,7 @@ tuning decision, not accidental drift.
 
 **Why the duplication is deliberate.** The image `HEALTHCHECK` travels with
 the image and reports health in any runtime (plain `docker run`, Compose,
-Kubernetes). The compose `healthcheck:` is required _in addition_ because:
+Kubernetes). The compose `healthcheck:` is required *in addition* because:
 
 - **`depends_on` gating.** Only a compose-level `healthcheck:` enables
   `depends_on: { service: { condition: service_healthy } }` — the Dockerfile

@@ -227,7 +227,7 @@ so every component calls the same integration-test step, identically.
 Every deployable component's compose file **must** declare a service-level
 `healthcheck:` stanza on the primary service, even when the probe is identical
 to the image's `HEALTHCHECK`. The compose `healthcheck:` key
-[overrides](https://docs.compose-spec.io/05-services/#healthcheck) the
+[overrides](https://docs.docker.com/reference/compose-file/services/#healthcheck) the
 Dockerfile directive at runtime and is the only health declaration that
 Compose's `depends_on` with `condition: service_healthy` can gate on.
 

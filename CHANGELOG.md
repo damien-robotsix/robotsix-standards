@@ -177,6 +177,7 @@
 
 ## 0.0.0 (unreleased)
 
+- Add Langfuse config block (§7) to the config standard: every trace-emitting component declares its own `langfuse.host` + `langfuse.projects.<alias>.{public_key, secret_key}` in its own `config/config.json` — component-owned, `SecretStr`-masked, no env-var discovery, no central credential map.
 - New standard: [py.typed wheel guard](docs/py-typed-wheel-guard.md) — automated
   verification that PEP 561 type markers ship in built wheels via installed
   type-check and wheel-content assertion.

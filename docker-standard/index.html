@@ -1496,6 +1496,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#compose-level-healthcheck" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Compose-level healthcheck
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#docker-compose-smoke-test" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2111,6 +2122,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#compose-level-healthcheck" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Compose-level healthcheck
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#docker-compose-smoke-test" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2225,9 +2247,8 @@ uv<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </s
   endpoint <strong>using only the Python stdlib</strong> — the slim image has no <code>curl</code> or
   <code>wget</code>, so a curl-based probe fails on every run. The image <code>HEALTHCHECK</code> is
   the <strong>canonical</strong> probe: it travels with the image and applies in every
-  deploy mode. A compose-level <code>healthcheck:</code> is an optional override for
-  deploy contexts that genuinely need a different probe (a heartbeat-file
-  check for a non-HTTP worker, a longer timeout under sustained load).
+  deploy mode. Every compose file must also declare a matching service-level
+  <code>healthcheck:</code> stanza — see <a href="#compose-level-healthcheck">Compose-level healthcheck</a>.
 - <strong>Entrypoint:</strong> exec-form <strong><code>ENTRYPOINT ["robotsix-&lt;name&gt;"]</code></strong> — the console
   script is PID 1 and receives SIGTERM directly. An <code>entrypoint.sh</code> is the
   exception for genuine startup work, not the rule — see the
@@ -2369,6 +2390,62 @@ nothing ran the image.</p>
 <p>A reusable workflow for this gate lives in
 <a href="https://github.com/damien-robotsix/robotsix-github-workflows">robotsix-github-workflows</a>
 so every component calls the same integration-test step, identically.</p>
+<h2 id="compose-level-healthcheck">Compose-level healthcheck<a class="headerlink" href="#compose-level-healthcheck" title="Permanent link">&para;</a></h2>
+<p>Every deployable component's compose file <strong>must</strong> declare a service-level
+<code>healthcheck:</code> stanza on the primary service, even when the probe is identical
+to the image's <code>HEALTHCHECK</code>. The compose <code>healthcheck:</code> key
+<a href="https://docs.docker.com/reference/compose-file/services/#healthcheck">overrides</a> the
+Dockerfile directive at runtime and is the only health declaration that
+Compose's <code>depends_on</code> with <code>condition: service_healthy</code> can gate on.</p>
+<p><strong>The probe.</strong> Use the same stdlib-only command as the image <code>HEALTHCHECK</code>
+— the slim image has no <code>curl</code> or <code>wget</code>, so a curl-based probe fails on
+every run:</p>
+<div class="highlight"><pre><span></span><code><span class="nt">services</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">&lt;svc&gt;</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">healthcheck</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">test</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&quot;CMD&quot;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&quot;python&quot;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&quot;-c&quot;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&quot;import</span><span class="nv"> </span><span class="s">urllib.request;</span><span class="nv"> </span><span class="s">urllib.request.urlopen(&#39;http://localhost:&lt;port&gt;/health&#39;)&quot;</span><span class="p p-Indicator">]</span>
+<span class="w">      </span><span class="nt">interval</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">30s</span>
+<span class="w">      </span><span class="nt">timeout</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">5s</span>
+<span class="w">      </span><span class="nt">start_period</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">5s</span>
+<span class="w">      </span><span class="nt">retries</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">3</span>
+</code></pre></div>
+<p>The <code>test</code> command, port, and timing values must match the image's
+<code>HEALTHCHECK</code> directive exactly unless a per-environment override is
+deliberate (a longer <code>start_period</code> under sustained load, a different
+<code>interval</code> in dev). Any deviation from the image's values is a conscious
+tuning decision, not accidental drift.</p>
+<p><strong>Why the duplication is deliberate.</strong> The image <code>HEALTHCHECK</code> travels with
+the image and reports health in any runtime (plain <code>docker run</code>, Compose,
+Kubernetes). The compose <code>healthcheck:</code> is required <em>in addition</em> because:</p>
+<ul>
+<li><strong><code>depends_on</code> gating.</strong> Only a compose-level <code>healthcheck:</code> enables
+  <code>depends_on: { service: { condition: service_healthy } }</code> — the Dockerfile
+  directive alone does not make a container a usable readiness target for
+  dependent services.</li>
+<li><strong>Per-environment tuning.</strong> Compose overrides (<code>docker-compose.override.yml</code>)
+  can adjust <code>interval</code>, <code>start_period</code>, and <code>retries</code> per environment without
+  rebuilding the image.</li>
+<li><strong>Orchestrator visibility.</strong> External orchestrators and proxies that read
+  per-service health state from the Compose API only see the compose-level
+  declaration.</li>
+</ul>
+<p><strong>Failure modes prevented:</strong></p>
+<ul>
+<li><strong>Silent startup ordering bugs.</strong> Without a compose-level healthcheck,
+  <code>depends_on</code> with <code>condition: service_healthy</code> is a no-op — the dependent
+  service starts before the dependency is ready, producing startup-time
+  connection failures that are hard to diagnose because they are
+  timing-dependent and vanish on restart.</li>
+<li><strong>Untunable health in production.</strong> The image's healthcheck timings are
+  baked in at build time. A service that needs a longer <code>start_period</code> under
+  production load (cold cache, database migrations) requires a rebuild to
+  adjust — the compose override would be ignored because no compose
+  <code>healthcheck:</code> exists to override.</li>
+<li><strong>Invisible health state.</strong> Proxies and dashboards that query the Compose
+  API for per-service health see no status when only the Dockerfile
+  <code>HEALTHCHECK</code> exists — the service appears permanently unmonitored even
+  though the container is reporting health internally.</li>
+</ul>
 <h2 id="docker-compose-smoke-test">Docker Compose smoke test<a class="headerlink" href="#docker-compose-smoke-test" title="Permanent link">&para;</a></h2>
 <p>The image-level integration tests (entrypoint binary, import) verify the
 runtime image ships intact. They do <strong>not</strong> verify that the compose file

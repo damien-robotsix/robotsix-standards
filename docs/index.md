@@ -52,6 +52,10 @@ everywhere.
 - **[CI lint tool pinning](ci-lint-pinning.md)** — CI lint jobs must run the same
   version-pinned tools as `.pre-commit-config.yaml`, not floating/latest
   sources — one version source, no skew.
+- **[Dependabot auto-merge](dependabot-auto-merge.md)** — Dependabot auto-merge
+  must be CI-gated (`mergeable_state == "clean"`), restricted to minor/patch
+  updates, and must exclude docker and pre-commit ecosystems from the
+  auto-merge group.
 - **[Distribution & Packaging](distribution-packaging.md)** — git-based consumption of
   first-party libraries — no package index, no registry publish step.
 - **[Docstring convention](docstrings.md)** — Python docstring style and coverage

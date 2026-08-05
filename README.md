@@ -39,6 +39,7 @@ the default.
 | [Changelog & releases](docs/changelog-driven-releases.md) | Towncrier fragment-driven releases, CI-enforced changelog fragments, and the shared auto-release workflow — no hand-edited changelog. *(Superseded by [release-please](docs/release-please.md).)* |
 | [Release-please release automation](docs/release-please.md) | Conventional-commit-driven release PRs, automated version bump, changelog generation, git tag, and GitHub Release — the fleet-wide replacement for towncrier. |
 | [CI lint tool pinning](docs/ci-lint-pinning.md) | CI lint jobs must run the same version-pinned tools as `.pre-commit-config.yaml` — no floating/latest installs, one version source. |
+| [Dependabot auto-merge](docs/dependabot-auto-merge.md) | Dependabot auto-merge must be gated on required CI passing (not purely actor-gated), restricted to minor/patch updates, and must exclude docker and pre-commit ecosystems. |
 | [Distribution & Packaging](docs/distribution-packaging.md) | Git-based consumption of first-party libraries — no package index, no registry publish step. |
 | [Docstring convention](docs/docstrings.md) | Python docstring style and coverage rules for all public modules, classes, and functions. |
 | [HTTP client persistence](docs/http-client-persistence.md) | One persistent `httpx.Client` (or `requests.Session`) with an explicit timeout, reused for all outbound calls — no per-call module-level convenience helpers. |

@@ -177,6 +177,7 @@
 
 ## 0.0.0 (unreleased)
 
+- New standard: [Dependabot auto-merge](docs/dependabot-auto-merge.md) — codifies the fleet-wide convention that Dependabot auto-merge must be gated on required CI passing (`mergeable_state == "clean"`), restricted to minor/patch updates, and must exclude `docker` and `pre-commit` ecosystems from the auto-merge group.
 - New standard: [Library internal logging](docs/library-logging.md) — codifies the fleet-wide logging convention for Python libraries: module-level `logging.getLogger(__name__)`, a single `NullHandler` in `__init__.py`, lazy `%`-style formatting (enforced by ruff rule `G004`), and DEBUG-for-routine / WARNING+ERROR-for-abnormal level policy.
 - **Python packaging:** runtime `__version__` is now single-sourced from a checked-in `_version.py` file wired through hatchling (`[tool.hatch.version]`), not derived from `importlib.metadata`.  Git-consumed, untagged installs produce unreliable PEP 440 local versions from `importlib.metadata`; a checked-in file keeps the auto-release bumper and all import paths in sync by construction.
 - Superseded page `docs/changelog-driven-releases.md` now carries a top-of-page superseded admonition banner and an annotated `mkdocs.yml` nav entry, matching the existing supersession markers in `README.md` and `docs/index.md`.

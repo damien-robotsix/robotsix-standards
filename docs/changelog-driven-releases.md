@@ -1,5 +1,9 @@
 # Changelog & releases
 
+> **Superseded:** [release-please](release-please.md) is the fleet-wide release
+> automation. This page documents the prior towncrier convention, kept for
+> historical reference.
+
 > **Scope: every robotsix repository** — libraries and deployable components
 > alike, in any language. This page codifies the fragment-driven release
 > convention already in use across the fleet; it is *in addition to* the

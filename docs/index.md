@@ -59,6 +59,10 @@ everywhere.
 - **[HTTP client persistence](http-client-persistence.md)** — one persistent
   `httpx.Client` (or `requests.Session`) with an explicit timeout, reused for
   all outbound calls — no per-call module-level convenience helpers.
+- **[Library internal logging](library-logging.md)** — module-level
+  `logging.getLogger(__name__)`, a single `NullHandler` in `__init__.py`,
+  lazy `%`-style formatting, and DEBUG-for-routine events — library logging
+  that never prints unless the application opts in.
 - **[Hypothesis testing](hypothesis.md)** — property-based testing profiles,
   shared strategies, and CI integration for repos that use Hypothesis.
 - **[Markdown linting](markdown-linting.md)** — markdownlint-cli2 and codespell

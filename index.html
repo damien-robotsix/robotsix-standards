@@ -1117,6 +1117,34 @@
   
   
     <li class="md-nav__item">
+      <a href="library-logging/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Library internal logging
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="hypothesis/" class="md-nav__link">
         
   
@@ -2272,6 +2300,10 @@ everywhere.</p>
 <li><strong><a href="http-client-persistence/">HTTP client persistence</a></strong> — one persistent
   <code>httpx.Client</code> (or <code>requests.Session</code>) with an explicit timeout, reused for
   all outbound calls — no per-call module-level convenience helpers.</li>
+<li><strong><a href="library-logging/">Library internal logging</a></strong> — module-level
+  <code>logging.getLogger(__name__)</code>, a single <code>NullHandler</code> in <code>__init__.py</code>,
+  lazy <code>%</code>-style formatting, and DEBUG-for-routine events — library logging
+  that never prints unless the application opts in.</li>
 <li><strong><a href="hypothesis/">Hypothesis testing</a></strong> — property-based testing profiles,
   shared strategies, and CI integration for repos that use Hypothesis.</li>
 <li><strong><a href="markdown-linting/">Markdown linting</a></strong> — markdownlint-cli2 and codespell

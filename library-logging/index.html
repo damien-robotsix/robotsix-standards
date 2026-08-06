@@ -10,13 +10,13 @@
       
       
       
-        <link rel="canonical" href="https://damien-robotsix.github.io/robotsix-standards/http-security-headers/">
+        <link rel="canonical" href="https://damien-robotsix.github.io/robotsix-standards/library-logging/">
       
       
-        <link rel="prev" href="../http-error-envelope/">
+        <link rel="prev" href="../http-client-persistence/">
       
       
-        <link rel="next" href="../health-endpoints/">
+        <link rel="next" href="../hypothesis/">
       
       
         
@@ -27,7 +27,7 @@
     
     
       
-        <title>HTTP security headers - Robotsix Standards</title>
+        <title>Library internal logging - Robotsix Standards</title>
       
     
     
@@ -78,7 +78,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#http-security-response-headers" class="md-skip">
+        <a href="#library-internal-logging" class="md-skip">
           Skip to content
         </a>
       
@@ -114,7 +114,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              HTTP security headers
+              Library internal logging
             
           </span>
         </div>
@@ -311,8 +311,10 @@
       
   
   
+    
   
   
+  
     
     
     
@@ -323,13 +325,11 @@
       
     
     
-    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
       
         
         
-          
-        
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
         
           
           <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
@@ -350,7 +350,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_3">
             <span class="md-nav__icon md-icon"></span>
             
@@ -953,10 +953,37 @@
                 
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="../library-logging/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Library internal logging
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   
@@ -972,6 +999,131 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#the-rule" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The rule
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="The rule">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-module-level-logger" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Module-level logger
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-one-nullhandler-on-the-packages-top-level-logger" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. One NullHandler on the package's top-level logger
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-never-call-basicconfig-set-levels-or-add-non-null-handlers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Never call basicConfig, set levels, or add non-null handlers
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-debug-for-routine-operational-events-warningerror-for-abnormal-conditions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. DEBUG for routine operational events; WARNING/ERROR for abnormal conditions
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5-always-lazy-style-formatting-never-f-strings" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Always lazy %-style formatting — never f-strings
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#why" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#failure-modes-this-prevents" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Failure modes this prevents
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#relationship-to-other-standards" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Relationship to other standards
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -1212,8 +1364,6 @@
       
   
   
-    
-  
   
   
     
@@ -1226,11 +1376,13 @@
       
     
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4" >
         
           
           <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
@@ -1251,7 +1403,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_4">
             <span class="md-nav__icon md-icon"></span>
             
@@ -1630,37 +1782,10 @@
                 
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    HTTP security headers
-  
-
-    
-  </span>
-  
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../http-security-headers/" class="md-nav__link">
         
   
   
@@ -1676,98 +1801,6 @@
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#the-rule" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        The rule
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="The rule">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#1-use-the-secure-library-with-presetbalanced-as-the-baseline" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        1. Use the secure library with Preset.BALANCED as the baseline
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#2-integration-one-middleware-registered-once" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        2. Integration: one middleware, registered once
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#3-csp-relaxation-is-explicit-and-auditable" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        3. CSP relaxation is explicit and auditable
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#4-hsts-is-conditional-on-tls" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        4. HSTS is conditional on TLS
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#failure-modes-this-prevents" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Failure modes this prevents
-      
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -2080,10 +2113,10 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#1-use-the-secure-library-with-presetbalanced-as-the-baseline" class="md-nav__link">
+  <a href="#1-module-level-logger" class="md-nav__link">
     <span class="md-ellipsis">
       
-        1. Use the secure library with Preset.BALANCED as the baseline
+        1. Module-level logger
       
     </span>
   </a>
@@ -2091,10 +2124,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#2-integration-one-middleware-registered-once" class="md-nav__link">
+  <a href="#2-one-nullhandler-on-the-packages-top-level-logger" class="md-nav__link">
     <span class="md-ellipsis">
       
-        2. Integration: one middleware, registered once
+        2. One NullHandler on the package's top-level logger
       
     </span>
   </a>
@@ -2102,10 +2135,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#3-csp-relaxation-is-explicit-and-auditable" class="md-nav__link">
+  <a href="#3-never-call-basicconfig-set-levels-or-add-non-null-handlers" class="md-nav__link">
     <span class="md-ellipsis">
       
-        3. CSP relaxation is explicit and auditable
+        3. Never call basicConfig, set levels, or add non-null handlers
       
     </span>
   </a>
@@ -2113,10 +2146,21 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#4-hsts-is-conditional-on-tls" class="md-nav__link">
+  <a href="#4-debug-for-routine-operational-events-warningerror-for-abnormal-conditions" class="md-nav__link">
     <span class="md-ellipsis">
       
-        4. HSTS is conditional on TLS
+        4. DEBUG for routine operational events; WARNING/ERROR for abnormal conditions
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5-always-lazy-style-formatting-never-f-strings" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Always lazy %-style formatting — never f-strings
       
     </span>
   </a>
@@ -2129,10 +2173,32 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#why" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#failure-modes-this-prevents" class="md-nav__link">
     <span class="md-ellipsis">
       
         Failure modes this prevents
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#relationship-to-other-standards" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Relationship to other standards
       
     </span>
   </a>
@@ -2159,113 +2225,158 @@
   
 
 
-<h1 id="http-security-response-headers">HTTP security response headers<a class="headerlink" href="#http-security-response-headers" title="Permanent link">&para;</a></h1>
+<h1 id="library-internal-logging">Library internal logging<a class="headerlink" href="#library-internal-logging" title="Permanent link">&para;</a></h1>
 <blockquote>
-<p><strong>Scope: deployable components that serve HTTP responses</strong> — especially those
-rendering an HTML web UI. This applies <em>in addition to</em> the
-<a href="../repo-baseline/">repo baseline</a> and <a href="../component-standard/">component standard</a>.</p>
+<p><strong>Scope: every Python repository (libraries and deployable components).</strong>
+A package that emits no log records at all is exempt — this only applies
+when the package uses the <code>logging</code> module for internal observability.
+This applies <em>in addition to</em> the <a href="../repo-baseline/">repo baseline</a>.</p>
 </blockquote>
-<p>Every fleet service that serves HTTP responses emits the standard OWASP security
-response headers via a single, shared middleware. Hand-rolling these headers per
-service — or leaving them unset — exposes every HTML surface to clickjacking,
-MIME-sniffing, and referrer-leak classes of issues.</p>
+<p>Every library package in the fleet follows the standard-library logging
+convention for internal observability: a module-level logger, a single
+<code>NullHandler</code> on the package's top-level logger, no configuration, and
+lazy <code>%</code>-style formatting. Callers get zero-config visibility into
+retries, requests, and errors without wiring their own callbacks.</p>
 <h2 id="the-rule">The rule<a class="headerlink" href="#the-rule" title="Permanent link">&para;</a></h2>
-<h3 id="1-use-the-secure-library-with-presetbalanced-as-the-baseline">1. Use the <code>secure</code> library with Preset.BALANCED as the baseline<a class="headerlink" href="#1-use-the-secure-library-with-presetbalanced-as-the-baseline" title="Permanent link">&para;</a></h3>
-<p>All services use the maintained <a href="https://pypi.org/project/secure/"><code>secure</code></a>
-Python library (≥2.0.1) to set security headers. A hand-rolled
-<code>BaseHTTPMiddleware</code> is only appropriate for a single custom header; for the
-OWASP suite, <code>secure</code> handles CSP construction, deduplication, and
-normalization.</p>
-<p>The default preset is <strong><code>Preset.BALANCED</code></strong> (importable as <code>Secure.with_default_headers()</code>),
-which provides a safe, low-friction baseline:</p>
-<table>
-<thead>
-<tr>
-<th>Header</th>
-<th>Value</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>X-Content-Type-Options</code></td>
-<td><code>nosniff</code></td>
-</tr>
-<tr>
-<td><code>X-Frame-Options</code></td>
-<td><code>SAMEORIGIN</code> (or <code>DENY</code> if the service is never framed)</td>
-</tr>
-<tr>
-<td><code>Referrer-Policy</code></td>
-<td><code>strict-origin-when-cross-origin</code></td>
-</tr>
-<tr>
-<td><code>Content-Security-Policy</code></td>
-<td><code>default-src 'self'</code> (relax per-app for inline assets)</td>
-</tr>
-<tr>
-<td><code>Permissions-Policy</code></td>
-<td><code>geolocation=(), microphone=(), camera=()</code></td>
-</tr>
-<tr>
-<td><code>Strict-Transport-Security</code></td>
-<td><code>max-age=31536000; includeSubDomains</code> (only behind TLS)</td>
-</tr>
-</tbody>
-</table>
-<p>Services that require a stricter posture — e.g. an admin dashboard that must
-never be framed and must restrict script sources tightly — use
-<code>Preset.STRICT</code> instead. Services that need to relax the CSP for inline styles
-or scripts do so by calling the <code>Secure</code> object's update methods rather than
-bypassing the middleware.</p>
-<h3 id="2-integration-one-middleware-registered-once">2. Integration: one middleware, registered once<a class="headerlink" href="#2-integration-one-middleware-registered-once" title="Permanent link">&para;</a></h3>
-<p>The <code>SecureASGIMiddleware</code> is added to the ASGI app once at startup. Routes
-never set security headers themselves — the middleware applies the same set to
-every response.</p>
-<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">secure</span><span class="w"> </span><span class="kn">import</span> <span class="n">Secure</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">secure.middleware</span><span class="w"> </span><span class="kn">import</span> <span class="n">SecureASGIMiddleware</span>
+<h3 id="1-module-level-logger">1. Module-level logger<a class="headerlink" href="#1-module-level-logger" title="Permanent link">&para;</a></h3>
+<p>Each module that emits log records creates a module-level logger:</p>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
 
-<span class="n">secure_headers</span> <span class="o">=</span> <span class="n">Secure</span><span class="o">.</span><span class="n">with_default_headers</span><span class="p">()</span>
-<span class="n">app</span><span class="o">.</span><span class="n">add_middleware</span><span class="p">(</span><span class="n">SecureASGIMiddleware</span><span class="p">,</span> <span class="n">secure</span><span class="o">=</span><span class="n">secure_headers</span><span class="p">)</span>
+<span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
 </code></pre></div>
-<p>For Starlette/FastAPI apps, this is the standard <code>app.add_middleware()</code> call
-during application construction. The middleware must be registered before any
-route handlers that could return a response.</p>
-<h3 id="3-csp-relaxation-is-explicit-and-auditable">3. CSP relaxation is explicit and auditable<a class="headerlink" href="#3-csp-relaxation-is-explicit-and-auditable" title="Permanent link">&para;</a></h3>
-<p>The <code>default-src 'self'</code> CSP blocks inline styles and scripts, which some
-frontend frameworks require. When a service needs to relax the CSP, it does so
-by calling methods on the <code>Secure</code> object — e.g.
-<code>secure_headers.csp.default_src = "'self' 'unsafe-inline'"</code> — rather than
-disabling the header or building a CSP string by hand. This keeps every CSP
-modification traceable to a single, grep-able location.</p>
-<h3 id="4-hsts-is-conditional-on-tls">4. HSTS is conditional on TLS<a class="headerlink" href="#4-hsts-is-conditional-on-tls" title="Permanent link">&para;</a></h3>
-<p>The <code>Strict-Transport-Security</code> header is only emitted when the service is
-behind TLS. The <code>secure</code> library detects this from the request scheme and
-suppresses the header on plain-HTTP requests automatically — the service does
-not need to branch on this itself.</p>
+<p>This gives every log record a hierarchical dotted name matching the
+package structure (<code>robotsix_http.client</code>, <code>robotsix_http.retry</code>), so
+callers can enable or silence specific subsystems with standard
+logger-level configuration.</p>
+<h3 id="2-one-nullhandler-on-the-packages-top-level-logger">2. One NullHandler on the package's top-level logger<a class="headerlink" href="#2-one-nullhandler-on-the-packages-top-level-logger" title="Permanent link">&para;</a></h3>
+<p>The package's <code>__init__.py</code> attaches exactly one <code>logging.NullHandler()</code>
+to the top-level logger:</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># src/robotsix_http/__init__.py</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
+
+<span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span><span class="o">.</span><span class="n">addHandler</span><span class="p">(</span><span class="n">logging</span><span class="o">.</span><span class="n">NullHandler</span><span class="p">())</span>
+</code></pre></div>
+<p>This is the CPython logging HOWTO's recommended pattern for libraries.
+A <code>NullHandler</code> swallows every record, so importing the package never
+triggers the "No handlers could be found for logger …" warning and the
+library never prints to stderr unless the application opts in by adding
+its own handler.</p>
+<p>The handler is attached <strong>once</strong> in <code>__init__.py</code>, at the package root.
+Individual modules do not add handlers — they only obtain a logger
+(<code>logging.getLogger(__name__)</code>) and emit records through it.</p>
+<h3 id="3-never-call-basicconfig-set-levels-or-add-non-null-handlers">3. Never call <code>basicConfig</code>, set levels, or add non-null handlers<a class="headerlink" href="#3-never-call-basicconfig-set-levels-or-add-non-null-handlers" title="Permanent link">&para;</a></h3>
+<p>The library never calls <code>logging.basicConfig()</code>, never sets a level on
+any logger (<code>logger.setLevel(…)</code>), and never adds a non-null handler
+(<code>StreamHandler</code>, <code>FileHandler</code>, etc.). Logging configuration —
+levels, formatting, destinations — is the application's decision.</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># ✅  Library obtains a logger and emits records</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
+
+<span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">fetch</span><span class="p">(</span><span class="n">url</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bytes</span><span class="p">:</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;fetching </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">url</span><span class="p">)</span>
+    <span class="o">...</span>
+
+<span class="c1"># ❌  Library configures logging — steals control from the application</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
+
+<span class="n">logging</span><span class="o">.</span><span class="n">basicConfig</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="n">logging</span><span class="o">.</span><span class="n">DEBUG</span><span class="p">)</span>  <span class="c1"># never do this in a library</span>
+<span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+<span class="n">logger</span><span class="o">.</span><span class="n">setLevel</span><span class="p">(</span><span class="n">logging</span><span class="o">.</span><span class="n">DEBUG</span><span class="p">)</span>            <span class="c1"># never do this either</span>
+</code></pre></div>
+<p>A library that calls <code>basicConfig</code> or sets a level on import breaks
+every other library in the same process — the first import wins, and
+the application's own logging setup is silently overridden.</p>
+<h3 id="4-debug-for-routine-operational-events-warningerror-for-abnormal-conditions">4. DEBUG for routine operational events; WARNING/ERROR for abnormal conditions<a class="headerlink" href="#4-debug-for-routine-operational-events-warningerror-for-abnormal-conditions" title="Permanent link">&para;</a></h3>
+<p>Routine operational events — retries, backoff, connection reuse, cache
+hits — are emitted at <code>DEBUG</code> level:</p>
+<div class="highlight"><pre><span></span><code><span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;retrying (</span><span class="si">%d</span><span class="s2">/</span><span class="si">%d</span><span class="s2">) after </span><span class="si">%0.1f</span><span class="s2">s: </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">attempt</span><span class="p">,</span> <span class="n">max_attempts</span><span class="p">,</span> <span class="n">delay</span><span class="p">,</span> <span class="n">reason</span><span class="p">)</span>
+</code></pre></div>
+<p>Use <code>WARNING</code> for conditions the operator should know about but that
+don't prevent operation (a deprecated API call, a degraded fallback
+path). Use <code>ERROR</code> only for genuinely abnormal conditions — a request
+that failed after exhausting retries, a corrupt cache entry.</p>
+<p>This mirrors urllib3's convention: retry records on the
+<code>urllib3.connectionpool</code> logger at <code>DEBUG</code> level, with the lazy-formatted
+<code>"Retrying (%d/%d) ... %s"</code> message.</p>
+<h3 id="5-always-lazy-style-formatting-never-f-strings">5. Always lazy <code>%</code>-style formatting — never f-strings<a class="headerlink" href="#5-always-lazy-style-formatting-never-f-strings" title="Permanent link">&para;</a></h3>
+<p>All logging calls use lazy <code>%</code>-style formatting with arguments passed to
+the logging method:</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># ✅  Lazy formatting — the string is only interpolated if the record is emitted</span>
+<span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;retrying (</span><span class="si">%d</span><span class="s2">/</span><span class="si">%d</span><span class="s2">) after </span><span class="si">%0.1f</span><span class="s2">s&quot;</span><span class="p">,</span> <span class="n">attempt</span><span class="p">,</span> <span class="n">max_attempts</span><span class="p">,</span> <span class="n">delay</span><span class="p">)</span>
+<span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;degraded fallback to </span><span class="si">%s</span><span class="s2">: </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">endpoint</span><span class="p">,</span> <span class="n">exc</span><span class="p">)</span>
+
+<span class="c1"># ❌  f-string — interpolation happens before the logging call, even at</span>
+<span class="c1">#     levels that are disabled, wasting CPU on every call site</span>
+<span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;retrying (</span><span class="si">{</span><span class="n">attempt</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">max_attempts</span><span class="si">}</span><span class="s2">) after </span><span class="si">{</span><span class="n">delay</span><span class="si">:</span><span class="s2">0.1f</span><span class="si">}</span><span class="s2">s&quot;</span><span class="p">)</span>
+</code></pre></div>
+<p>An f-string in a logging call eagerly evaluates the string formatting
+even when the logger's effective level is above <code>DEBUG</code> — the string is
+built, then discarded. For a retry loop that emits a record on every
+attempt, this is wasted work on every disabled call site.</p>
+<p>Enforce this with ruff rule <strong><code>G004</code></strong> (<code>flake8-logging-format</code>), which
+flags f-string usage in logging calls. See the <a href="../ruff-lint-rules/">ruff lint rules</a>
+standard for the full <code>G</code> rule family.</p>
+<h2 id="why">Why<a class="headerlink" href="#why" title="Permanent link">&para;</a></h2>
+<p>Every HTTP, IO, and retry library the fleet ships has the same need:
+emit internal observability records so operators can trace what the
+library is doing without wiring their own callbacks. urllib3 solved this
+with its <code>urllib3.connectionpool</code> logger; tenacity exposes a
+<code>before_sleep</code> hook for the same purpose. Codifying one convention —
+the logger hierarchy, the <code>NullHandler</code> pattern, the level policy, and
+the formatting rule — prevents each repo from inventing its own logger
+naming, level policy, or formatting style.</p>
+<p>A fleet that shares one convention gives operators one mental model:
+enable <code>DEBUG</code> on the package logger, see every retry and backoff
+decision; enable <code>WARNING</code>, see degradations; the records are always
+lazy-formatted and never print unless the application opts in.</p>
 <h2 id="failure-modes-this-prevents">Failure modes this prevents<a class="headerlink" href="#failure-modes-this-prevents" title="Permanent link">&para;</a></h2>
 <ul>
-<li><strong>Clickjacking.</strong> Without <code>X-Frame-Options</code> or CSP <code>frame-ancestors</code>, an
-  attacker can embed the service's UI in an invisible iframe on a malicious
-  page and trick users into clicking UI elements they cannot see.</li>
-<li><strong>MIME-sniffing attacks.</strong> Without <code>X-Content-Type-Options: nosniff</code>, older
-  browsers may guess the content type of a response and execute a user-uploaded
-  text file as JavaScript if the server's <code>Content-Type</code> header is missing or
-  wrong.</li>
-<li><strong>Referrer leakage.</strong> Without <code>Referrer-Policy</code>, full URLs — including path
-  and query string — leak to third-party sites when a user clicks an external
-  link from the service's UI. Query strings often carry tokens, identifiers,
-  or search terms.</li>
-<li><strong>Permission abuse.</strong> Without <code>Permissions-Policy</code> denying sensitive APIs
-  (<code>geolocation</code>, <code>microphone</code>, <code>camera</code>), any JavaScript running in the
-  service's origin — including third-party scripts loaded via CDN — can request
-  these permissions without the user's meaningful consent.</li>
-<li><strong>Downgrade attacks.</strong> Without <code>Strict-Transport-Security</code>, a MITM attacker
-  can rewrite HTTPS links to HTTP and intercept traffic that the user believes
-  is encrypted.</li>
-<li><strong>Cross-service inconsistency.</strong> Hand-rolling headers per service produces
-  slightly different header sets, different header-name casing, and different
-  CSP syntax across the fleet. A single middleware — the same library, the same
-  preset, the same integration pattern — eliminates per-service drift.</li>
+<li><strong>"No handlers could be found" on import.</strong> A library that emits log
+  records without a <code>NullHandler</code> causes the <code>logging</code> module to print a
+  warning to stderr on the first record. In a container, that warning
+  lands in the log stream with no context, confusing operators. The
+  <code>NullHandler</code> silences it.</li>
+<li><strong>Library steals logging configuration.</strong> A library that calls
+  <code>basicConfig()</code> or <code>setLevel()</code> on import overwrites the application's
+  logging setup. The first import wins; every subsequent library and the
+  application itself inherit the library's level and format. The
+  <code>NullHandler</code>-only rule prevents this.</li>
+<li><strong>Wasted CPU on disabled debug records.</strong> An f-string in a <code>logger.debug()</code>
+  call builds the string before the logging call runs, even when <code>DEBUG</code>
+  is disabled. In a retry loop or a hot path, this is measurable overhead
+  with no value. Lazy <code>%</code>-style formatting defers the work until the
+  record is actually emitted.</li>
+<li><strong>Inconsistent logger naming.</strong> Without a convention, one library uses
+  <code>logging.getLogger("retry")</code>, another uses <code>logging.getLogger("http")</code>,
+  and a third uses <code>logging.getLogger(__name__)</code>. Operators can't
+  predictably enable or silence a subsystem — they must read each
+  library's source to find its logger names. <code>__name__</code>-based loggers
+  make the hierarchy discoverable from the import path.</li>
+<li><strong>Mis-leveled records.</strong> A library that logs retries at <code>WARNING</code> or
+  <code>ERROR</code> floods the operator's attention with routine events that don't
+  require action. A library that logs genuine failures at <code>DEBUG</code> hides
+  them unless the operator already knows to turn up verbosity. The
+  DEBUG-for-routine / WARNING+ERROR-for-abnormal convention gives
+  operators a predictable signal-to-noise ratio.</li>
+</ul>
+<h2 id="relationship-to-other-standards">Relationship to other standards<a class="headerlink" href="#relationship-to-other-standards" title="Permanent link">&para;</a></h2>
+<ul>
+<li><strong><a href="../component-standard/#logging">Component standard</a></strong> — the logging
+  section requires stdout/stderr (never files) and UTC ISO-8601
+  timestamps. This standard governs what <em>libraries</em> emit; the component
+  standard governs where the <em>process</em> sends its output. They are
+  complementary — a library that follows this standard produces records
+  the component standard's sink will capture.</li>
+<li><strong><a href="../ruff-lint-rules/">Ruff lint rules</a></strong> — the <code>G</code> rule family
+  (<code>flake8-logging-format</code>) enforces lazy formatting. Rule <code>G004</code>
+  specifically catches f-strings in logging calls. Repos that adopt this
+  standard should also adopt the <code>G</code> rules.</li>
+<li><strong><a href="../python/">Python practices</a></strong> — the Python practices standard
+  references the component standard's logging section for process-level
+  output conventions. This standard adds the library-internal
+  observability layer on top.</li>
 </ul>
 
 

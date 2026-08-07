@@ -155,7 +155,26 @@ plugins:
         - "https://raw.githubusercontent.com/*"
         - "https://github.com/*"
         - "https://docs.github.com/*"
+        - "https://*.readthedocs.io*"
 ```
+
+**A rate-limit is not a broken link.** Whichever mechanism a repo picks, the
+checker must not fail on `403` or `429`. Both responses mean the server
+answered — the URL resolved, the host is up, and the link is fine; the checker
+was simply throttled or refused anonymous access. Failing on them is the one
+case where the check is guaranteed to be wrong, and it fails *unpredictably*,
+which is worse than not checking at all.
+
+`lychee` expresses this directly with `--accept 200,206,403,429,503` (see
+below). `mkdocs-htmlproofer-plugin` has no equivalent, so a rate-limited host
+must go in `ignore_urls` instead — which is why the list above exists and why it
+grows: GitHub, then OWASP, then readthedocs, each added after it broke a build.
+
+Prefer adding a host to `ignore_urls` the first time it 429s rather than
+retrying the build. But treat a long list as a signal: past roughly half a dozen
+entries the external half of the check is mostly disabled, and `lychee` in a
+separate job — where a status-code allowlist is expressible and a failure cannot
+block a deploy — is the better tool.
 
 **`lychee` (post-build, separate job).**  A standalone Rust link checker
 (`lycheeverse/lychee-action`) that validates the `site/` directory.  Run it

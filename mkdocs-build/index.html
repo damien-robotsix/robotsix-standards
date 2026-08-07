@@ -2486,7 +2486,23 @@ raw.githubusercontent.com, docs.github.com) should be excluded via
 <span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;https://raw.githubusercontent.com/*&quot;</span>
 <span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;https://github.com/*&quot;</span>
 <span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;https://docs.github.com/*&quot;</span>
+<span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;https://*.readthedocs.io*&quot;</span>
 </code></pre></div>
+<p><strong>A rate-limit is not a broken link.</strong> Whichever mechanism a repo picks, the
+checker must not fail on <code>403</code> or <code>429</code>. Both responses mean the server
+answered — the URL resolved, the host is up, and the link is fine; the checker
+was simply throttled or refused anonymous access. Failing on them is the one
+case where the check is guaranteed to be wrong, and it fails <em>unpredictably</em>,
+which is worse than not checking at all.</p>
+<p><code>lychee</code> expresses this directly with <code>--accept 200,206,403,429,503</code> (see
+below). <code>mkdocs-htmlproofer-plugin</code> has no equivalent, so a rate-limited host
+must go in <code>ignore_urls</code> instead — which is why the list above exists and why it
+grows: GitHub, then OWASP, then readthedocs, each added after it broke a build.</p>
+<p>Prefer adding a host to <code>ignore_urls</code> the first time it 429s rather than
+retrying the build. But treat a long list as a signal: past roughly half a dozen
+entries the external half of the check is mostly disabled, and <code>lychee</code> in a
+separate job — where a status-code allowlist is expressible and a failure cannot
+block a deploy — is the better tool.</p>
 <p><strong><code>lychee</code> (post-build, separate job).</strong>  A standalone Rust link checker
 (<code>lycheeverse/lychee-action</code>) that validates the <code>site/</code> directory.  Run it
 in a <strong>separate CI job</strong> from the build-and-deploy job so a flaky external

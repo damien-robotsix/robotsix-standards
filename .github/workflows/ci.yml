@@ -38,6 +38,13 @@ jobs:
         run: uv run --group docs python scripts/check-toc-sync.py
       - name: Spell check
         run: uv run --with codespell codespell
+      - name: Check changelog fragments for truncation
+        run: |
+          if grep -Pn '…\s*$' changelog.d/*.md | grep -v 'Field(description=…)' | grep -q .; then
+            echo "::error::Truncated changelog fragment(s) found (lines ending in '…')"
+            grep -Pn '…\s*$' changelog.d/*.md | grep -v 'Field(description=…)'
+            exit 1
+          fi
 
   changelog:
     # skip-changelog label handling lives inside the shared workflow.

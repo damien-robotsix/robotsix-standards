@@ -68,6 +68,7 @@ nav:
       - Free-tier only: free-tier-only.md
       - Security posture: security-posture.md
       - Stale bot must exempt pull requests: stale-bot-must-exempt-pull-requests.md
+      - Dependabot auto-merge: dependabot-auto-merge.md
       - Changelog & releases: changelog-driven-releases.md
       - Release-please release automation: release-please.md
       - CI lint tool pinning: ci-lint-pinning.md

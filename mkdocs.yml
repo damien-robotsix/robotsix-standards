@@ -95,6 +95,7 @@ nav:
       - Markdown linting: markdown-linting.md
       - Prose linting: prose-linting.md
       - MkDocs build integrity: mkdocs-build.md
+      - Module taxonomy scope: module-taxonomy-scope.md
       - Docs site deployment: docs-site-deployment.md
       - JavaScript practices: javascript.md
       - Async SQLAlchemy test fixtures: async-sqlalchemy-test-fixtures.md

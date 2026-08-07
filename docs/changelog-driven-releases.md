@@ -138,21 +138,23 @@ development where clean cutover is the default migration strategy. Automating a
 > minor bumps as safe and are broken by a breaking change that arrived without
 > a major-version signal.
 
-### 6. Fragment files are registered in docs/modules.yaml
+### 6. Fragment files are NOT registered in docs/modules.yaml
 
-**Rule:** When a new `changelog.d/` fragment file is created, its path must be
-added to `docs/modules.yaml` under the `core` module's `paths` list (or the
-appropriate module), inserted alphabetically among the existing `changelog.d/`
-entries. This applies even when no Python files are modified.
+**Rule:** Do not add `changelog.d/` fragment paths to `docs/modules.yaml`. The
+module taxonomy exempts them by default — see
+[Module taxonomy scope](module-taxonomy-scope.md).
 
-**Rationale:** The module-registration drift check fails CI when a file matches
-no module's globs. Without this rule, every new fragment file would fail CI
-until someone manually registers it — a recurring friction point.
+**Rationale:** towncrier writes one fragment file per pull request, so requiring
+registration made every changelog entry a second, unrelated taxonomy edit. This
+rule previously mandated exactly that, and its own rationale conceded it was "a
+recurring friction point" — documenting the workaround instead of removing the
+requirement.
 
-> **Failure mode.** A contributor adds a fragment file, CI fails with a drift
-> error, and the contributor either skips the fragment (losing the changelog
-> entry) or spends time diagnosing a registration failure that should be
-> documented as part of the fragment workflow.
+> **Failure mode prevented.** A repo enumerates fragments in the taxonomy
+> instead of relying on the exemption. Each PR then needs two edits, the
+> enumeration drifts, and the bookkeeping becomes its own ticket class: one such
+> ticket sat blocked for a week with a branch proposing 199 explicit fragment
+> entries, none of which described a module.
 
 ## Reference
 

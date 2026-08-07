@@ -506,6 +506,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../dependabot-auto-merge/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Dependabot auto-merge
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../changelog-driven-releases/" class="md-nav__link">
         
   
@@ -2232,6 +2260,7 @@
 </ul>
 <h2 id="000-unreleased">0.0.0 (unreleased)<a class="headerlink" href="#000-unreleased" title="Permanent link">&para;</a></h2>
 <ul>
+<li>New standard: <a href="../dependabot-auto-merge/">Dependabot auto-merge</a> — codifies the fleet-wide convention that Dependabot auto-merge must be gated on required CI passing (<code>mergeable_state == "clean"</code>), restricted to minor/patch updates, and must exclude <code>docker</code> and <code>pre-commit</code> ecosystems from the auto-merge group.</li>
 <li>New standard: <a href="../library-logging/">Library internal logging</a> — codifies the fleet-wide logging convention for Python libraries: module-level <code>logging.getLogger(__name__)</code>, a single <code>NullHandler</code> in <code>__init__.py</code>, lazy <code>%</code>-style formatting (enforced by ruff rule <code>G004</code>), and DEBUG-for-routine / WARNING+ERROR-for-abnormal level policy.</li>
 <li><strong>Python packaging:</strong> runtime <code>__version__</code> is now single-sourced from a checked-in <code>_version.py</code> file wired through hatchling (<code>[tool.hatch.version]</code>), not derived from <code>importlib.metadata</code>.  Git-consumed, untagged installs produce unreliable PEP 440 local versions from <code>importlib.metadata</code>; a checked-in file keeps the auto-release bumper and all import paths in sync by construction.</li>
 <li>Superseded page <code>docs/changelog-driven-releases.md</code> now carries a top-of-page superseded admonition banner and an annotated <code>mkdocs.yml</code> nav entry, matching the existing supersession markers in <code>README.md</code> and <code>docs/index.md</code>.</li>

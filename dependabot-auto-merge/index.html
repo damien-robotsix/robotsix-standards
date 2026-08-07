@@ -10,13 +10,13 @@
       
       
       
-        <link rel="canonical" href="https://damien-robotsix.github.io/robotsix-standards/deployment-system/">
+        <link rel="canonical" href="https://damien-robotsix.github.io/robotsix-standards/dependabot-auto-merge/">
       
       
-        <link rel="prev" href="../scorecard/">
+        <link rel="prev" href="../stale-bot-must-exempt-pull-requests/">
       
       
-        <link rel="next" href="../mill-agents/">
+        <link rel="next" href="../changelog-driven-releases/">
       
       
         
@@ -27,7 +27,7 @@
     
     
       
-        <title>Bootstrap tier - Robotsix Standards</title>
+        <title>Dependabot auto-merge - Robotsix Standards</title>
       
     
     
@@ -78,7 +78,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#the-deployment-system-bootstrap-tier" class="md-skip">
+        <a href="#dependabot-auto-merge" class="md-skip">
           Skip to content
         </a>
       
@@ -114,7 +114,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Bootstrap tier
+              Dependabot auto-merge
             
           </span>
         </div>
@@ -311,8 +311,10 @@
       
   
   
+    
   
   
+  
     
     
     
@@ -323,13 +325,11 @@
       
     
     
-    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
       
         
         
-          
-        
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
         
           
           <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
@@ -350,7 +350,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_3">
             <span class="md-nav__icon md-icon"></span>
             
@@ -505,10 +505,37 @@
                 
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="../dependabot-auto-merge/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Dependabot auto-merge
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   
@@ -524,6 +551,103 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#the-rule" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The rule
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#why" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#how" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#anti-patterns" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Anti-patterns
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#exceptions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exceptions
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#failure-modes-prevented" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Failure modes prevented
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#relationship-to-other-standards" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Relationship to other standards
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -1749,8 +1873,6 @@
       
   
   
-    
-  
   
   
     
@@ -1763,11 +1885,13 @@
       
     
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" checked>
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5" >
         
           
           <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="">
@@ -1788,7 +1912,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="true">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_5">
             <span class="md-nav__icon md-icon"></span>
             
@@ -1803,37 +1927,10 @@
                 
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Bootstrap tier
-  
-
-    
-  </span>
-  
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../deployment-system/" class="md-nav__link">
         
   
   
@@ -1849,148 +1946,6 @@
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#what-it-follows" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        What it follows
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#what-it-is-exempt-from" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        What it is exempt from
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="What it is exempt from">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#deploy-contract-deploydocker-composeyml" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Deploy contract (deploy/docker-compose.yml)
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#config-standard-one-json-file" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Config standard (one JSON file)
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#deployment-engine-code-must-be-repo-agnostic" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Deployment engine code must be repo-agnostic
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Deployment engine code must be repo-agnostic">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#where-service-definitions-live" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Where service definitions live
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#implementation-patterns" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Implementation patterns
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#acceptance-criteria" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Acceptance criteria
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#reference" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Reference
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#rule-of-thumb" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Rule of thumb
-      
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -2146,10 +2101,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#what-it-follows" class="md-nav__link">
+  <a href="#the-rule" class="md-nav__link">
     <span class="md-ellipsis">
       
-        What it follows
+        The rule
       
     </span>
   </a>
@@ -2157,110 +2112,65 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#what-it-is-exempt-from" class="md-nav__link">
+  <a href="#why" class="md-nav__link">
     <span class="md-ellipsis">
       
-        What it is exempt from
+        Why
       
     </span>
   </a>
-  
-    <nav class="md-nav" aria-label="What it is exempt from">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#deploy-contract-deploydocker-composeyml" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Deploy contract (deploy/docker-compose.yml)
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#config-standard-one-json-file" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Config standard (one JSON file)
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#deployment-engine-code-must-be-repo-agnostic" class="md-nav__link">
+  <a href="#how" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Deployment engine code must be repo-agnostic
+        How
       
     </span>
   </a>
-  
-    <nav class="md-nav" aria-label="Deployment engine code must be repo-agnostic">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#where-service-definitions-live" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Where service definitions live
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#implementation-patterns" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Implementation patterns
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#acceptance-criteria" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Acceptance criteria
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#reference" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Reference
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#rule-of-thumb" class="md-nav__link">
+  <a href="#anti-patterns" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Rule of thumb
+        Anti-patterns
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#exceptions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exceptions
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#failure-modes-prevented" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Failure modes prevented
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#relationship-to-other-standards" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Relationship to other standards
       
     </span>
   </a>
@@ -2287,166 +2197,189 @@
   
 
 
-<h1 id="the-deployment-system-bootstrap-tier">The deployment system (bootstrap tier)<a class="headerlink" href="#the-deployment-system-bootstrap-tier" title="Permanent link">&para;</a></h1>
+<h1 id="dependabot-auto-merge">Dependabot auto-merge<a class="headerlink" href="#dependabot-auto-merge" title="Permanent link">&para;</a></h1>
 <blockquote>
-<p><strong>Scope: <a href="https://github.com/damien-robotsix/robotsix-central-deploy"><code>robotsix-central-deploy</code></a>
-only.</strong> Every other repo is a <a href="../repo-baseline/">library</a> or a
-<a href="../component-standard/">deployable component</a>.</p>
+<p><strong>Scope: every repository that enables Dependabot auto-merge.</strong> The
+auto-merge gate must be CI-status-driven — it must wait for required
+status checks to pass before merging — not purely actor-driven.  Actor-gated
+auto-merge (<code>if: github.actor == 'dependabot[bot]'</code>) that does not wait on
+CI status is the anti-pattern this standard forbids.</p>
 </blockquote>
-<p>central-deploy is the deployment system itself, which makes it a third kind of
-repo: it ships a runnable service like any component, but it <strong>cannot be
-deployed through itself</strong> — someone has to start the thing that starts
-everything else. Rather than leaving it silently non-conforming, this page
-states exactly which standards it follows and which it is exempt from, and why.</p>
-<h2 id="what-it-follows">What it follows<a class="headerlink" href="#what-it-follows" title="Permanent link">&para;</a></h2>
+<h2 id="the-rule">The rule<a class="headerlink" href="#the-rule" title="Permanent link">&para;</a></h2>
+<p><strong>Dependabot auto-merge MUST be gated on required CI passing.</strong> The
+merged-in PR must not land before its required status checks complete. The
+canonical safe mechanism is to poll the PR's <code>mergeable_state</code> (via the
+GitHub API) and only call the merge endpoint once it reports <code>"clean"</code>.
+Purely actor-gated auto-merge — a workflow that merges a Dependabot PR
+solely because the actor is <code>dependabot[bot]</code>, without waiting for CI —
+MUST NOT be used.</p>
+<p>Additionally:</p>
 <ul>
-<li><strong><a href="../repo-baseline/">Repo baseline</a></strong> and <strong><a href="../python/">Python practices</a></strong> —
-  fully. uv tooling, hatchling, <code>requires-python &gt;= 3.14</code>, changelog and
-  module hygiene, MIT license, the full CI gate set.</li>
-<li><strong><a href="../docker-standard/">Docker build &amp; release</a></strong> — fully. Digest-pinned
-  <code>python:3.14-slim</code> in both stages, uv via <code>COPY --from=ghcr.io/astral-sh/uv</code>,
-  frozen-lockfile system-interpreter install, runtime image without build
-  tooling, non-root user (uid 1000), <code>HEALTHCHECK</code> on <code>/health</code> (Python
-  stdlib), and the shared <code>docker-release.yml</code> workflow publishing
-  <code>ghcr.io/damien-robotsix/robotsix-central-deploy</code> with SBOM/provenance
-  attestation and a Trivy gate.</li>
-<li><strong><a href="../entrypoint-contract/">Entrypoint contract</a></strong> — in its default form: no
-  <code>entrypoint.sh</code>; the exec-form console script is PID 1, so SIGTERM reaches
-  the server directly.</li>
+<li><strong>Restrict auto-merge to low-risk, non-breaking updates.</strong> The trigger
+  must constrain the target to <code>minor</code> and/or <code>patch</code> dependency updates
+  so a major version bump to a build or test tool never lands without a
+  human review.</li>
+<li><strong>Exclude Docker image and pre-commit ecosystem bumps from auto-merge.</strong>
+  These ecosystems rewrite build environments (<code>/.devcontainer/Dockerfile</code>,
+  image digests) or pin/refactor hook versions (rewrites code or images) and
+  warrant human review. Every repo's <code>.github/dependabot.yml</code> must exclude
+  the <code>docker</code> and <code>pre-commit</code> ecosystems from the auto-merge group.</li>
 </ul>
-<h2 id="what-it-is-exempt-from">What it is exempt from<a class="headerlink" href="#what-it-is-exempt-from" title="Permanent link">&para;</a></h2>
-<h3 id="deploy-contract-deploydocker-composeyml">Deploy contract (<code>deploy/docker-compose.yml</code>)<a class="headerlink" href="#deploy-contract-deploydocker-composeyml" title="Permanent link">&para;</a></h3>
-<p>Central-deploy does not sit above another central-deploy. Its <strong>root
-<code>docker-compose.yml</code> is the production deploy</strong> — the one sanctioned exception
-to "the root compose is dev-only". That compose:</p>
+<h2 id="why">Why<a class="headerlink" href="#why" title="Permanent link">&para;</a></h2>
+<p>GitHub's native auto-merge is only safe when branch protection requires
+status checks. Without that, native auto-merge can merge a PR whose CI is
+still running — or worse, whose CI has failed. An actor-gated workflow that
+triggers on <code>pull_request</code> and merges immediately because
+<code>github.actor == 'dependabot[bot]'</code> reproduces the same defect: it can merge
+a broken PR before any check has run.</p>
+<p>The failure mode is a silent broken build. Dependabot bumps a lint tool to a
+new major version that introduces a new rule. The auto-merge gate — gated
+only on the actor — merges the bump before CI runs. The next contributor's
+PR fails with a lint error they did not introduce, and the root cause (the
+unreviewed auto-merged bump) is buried in the git history.</p>
+<p>Waiting for <code>mergeable_state == "clean"</code> guarantees that every required
+check in the branch-protection rule set has passed before the merge API is
+called. The merge is CI-gated, not actor-gated.</p>
+<p>Excluding <code>docker</code> and <code>pre-commit</code> ecosystems from auto-merge prevents a
+second class of silent breakage:</p>
 <ul>
-<li>pulls the published GHCR image (<code>docker compose pull &amp;&amp; docker compose up -d</code>
-  is the update path; <code>build: .</code> remains for local dev);</li>
-<li>runs the hardened <strong>socket-proxy sibling</strong>
-  (<code>tecnativa/docker-socket-proxy</code> with a minimal API-scope allowlist) — the
-  same pattern the deploy contract's <code>host-docker-sock</code> label mandates for
-  components;</li>
-<li>carries the host bind-mounts no component may declare (the Docker socket on
-  the proxy, read-only; the host filesystem read-only for disk reporting) —
-  they are the reason this tier exists;</li>
-<li>runs a dedicated <strong>self-update Watchtower</strong>, scoped to central-deploy's own
-  container — <strong>the single sanctioned auto-updater in the stack</strong>. Components
-  update only via central-deploy's Update action (see
-  <a href="../docker-standard/#deploy-updates-are-deliberate">Docker build &amp; release</a>);
-  central-deploy itself has no button above it, so a Watchtower presses it.
-  Any other Watchtower or registry poller in the fleet is legacy and must be
-  removed.</li>
+<li>A <code>docker</code> bump rewrites a base-image digest; the new image may carry a
+  breaking runtime change (different <code>PATH</code>, removed CA certificates,
+  incompatible libc) that only surfaces at deploy time.</li>
+<li>A <code>pre-commit</code> bump rewrites hook <code>rev:</code> tags; a new hook release may
+  introduce a lint rule that fails on existing code — exactly the same
+  failure mode as a major lint-tool bump, but harder to spot because the
+  diff is a single <code>rev:</code> line change in <code>.pre-commit-config.yaml</code>.</li>
 </ul>
-<h3 id="config-standard-one-json-file">Config standard (one JSON file)<a class="headerlink" href="#config-standard-one-json-file" title="Permanent link">&para;</a></h3>
-<p>central-deploy is configured by <strong><code>ROBOTSIX_LIFECYCLE_*</code> environment
-variables</strong> (pydantic-settings), injected by its own compose file. The
-component that writes every other service's <code>config.json</code> takes its own
-configuration from the layer below it; a config file would add a volume and a
-bootstrap step to the thing that exists to remove those steps. Its env-var
-table lives in its own docs, not here.</p>
-<h2 id="deployment-engine-code-must-be-repo-agnostic">Deployment engine code must be repo-agnostic<a class="headerlink" href="#deployment-engine-code-must-be-repo-agnostic" title="Permanent link">&para;</a></h2>
-<p>A deployment engine is a <strong>generic control plane</strong>, not a registry of
-services. Its source code (<code>src/</code>) MUST NOT carry per-service or per-repo
-definitions — those belong in declarative data, never in engine code.</p>
-<p><strong>Rule:</strong> The engine source code MUST NOT contain:</p>
-<ul>
-<li>Hard-coded service names (<code>if service == "chat"</code>, <code>frozenset({"svc1",
-  "svc2"})</code> allowlists)</li>
-<li>Per-service routing, TLS, or hostname rules</li>
-<li>Per-service image-pull config or registry references</li>
-<li>Service-specific project aliases for observability backends</li>
-</ul>
-<p><strong>Failure mode it prevents:</strong> Hard-coding service definitions in engine code
-makes the engine a bottleneck. Every new service, every renamed service, and
-every changed observability project requires a code change, a PR, and a
-redeploy of the engine itself — the opposite of the self-service onboarding
-the engine exists to provide. Over time the engine accumulates a graveyard of
-special cases, and the operator's first question becomes "which branch has the
-latest service list?" rather than "what does the onboarding API show?"</p>
-<h3 id="where-service-definitions-live">Where service definitions live<a class="headerlink" href="#where-service-definitions-live" title="Permanent link">&para;</a></h3>
+<p>Both ecosystems deserve a human reviewer who understands the blast radius
+before the merge lands.</p>
+<h2 id="how">How<a class="headerlink" href="#how" title="Permanent link">&para;</a></h2>
+<p>The fleet's shared reusable workflow
+(<code>damien-robotsix/robotsix-github-workflows/.github/workflows/dependabot-auto-merge.yml</code>)
+implements this convention. Every repo consumes it via a thin caller
+workflow:</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># .github/workflows/dependabot-auto-merge.yml</span>
+<span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Dependabot auto-merge</span>
+
+<span class="nt">on</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">pull_request</span><span class="p">:</span>
+
+<span class="nt">permissions</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{}</span>
+
+<span class="nt">jobs</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">auto-merge</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">if</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">github.actor == &#39;dependabot[bot]&#39;</span>
+<span class="w">    </span><span class="nt">permissions</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">contents</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">write</span>
+<span class="w">      </span><span class="nt">pull-requests</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">write</span>
+<span class="w">    </span><span class="nt">uses</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">damien-robotsix/robotsix-github-workflows/.github/workflows/dependabot-auto-merge.yml@&lt;pinned-sha&gt;</span>
+</code></pre></div>
+<p>The reusable workflow triggers on <code>pull_request_target</code> (so it has write
+access to merge), accepts a <code>target</code> input (<code>minor</code> or <code>patch</code>), and
+internally polls <code>mergeable_state</code> until it reports <code>"clean"</code> before
+calling the merge API.</p>
+<p>The calling repo's <code>.github/dependabot.yml</code> must additionally exclude
+<code>docker</code> and <code>pre-commit</code> ecosystems from the auto-merge group so those
+bumps never reach the auto-merge workflow:</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># In .github/dependabot.yml — exclude docker and pre-commit from auto-merge</span>
+<span class="nt">version</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2</span>
+<span class="nt">updates</span><span class="p">:</span>
+<span class="w">  </span><span class="c1"># ... other ecosystems ...</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">package-ecosystem</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;docker&quot;</span>
+<span class="w">    </span><span class="nt">directory</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;/&quot;</span>
+<span class="w">    </span><span class="nt">schedule</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">interval</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;weekly&quot;</span>
+<span class="w">    </span><span class="c1"># No auto-merge group — these PRs require human review.</span>
+<span class="w">    </span><span class="nt">open-pull-requests-limit</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">5</span>
+
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">package-ecosystem</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;pre-commit&quot;</span>
+<span class="w">    </span><span class="nt">directory</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;/&quot;</span>
+<span class="w">    </span><span class="nt">schedule</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">interval</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;weekly&quot;</span>
+<span class="w">    </span><span class="c1"># No auto-merge group — these PRs require human review.</span>
+<span class="w">    </span><span class="nt">open-pull-requests-limit</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">5</span>
+</code></pre></div>
+<p>When the <code>docker</code> or <code>pre-commit</code> ecosystem blocks have no <code>groups:</code> key
+(or are absent from the auto-merge group), Dependabot still opens PRs for
+them, but those PRs are not eligible for auto-merge — they land in the
+review queue like any normal PR.</p>
+<h2 id="anti-patterns">Anti-patterns<a class="headerlink" href="#anti-patterns" title="Permanent link">&para;</a></h2>
+<p>Every one of these patterns is forbidden for Dependabot auto-merge:</p>
 <table>
 <thead>
 <tr>
-<th>Concern</th>
-<th>Location</th>
+<th>Forbidden</th>
+<th>Why it fails</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>Per-service specs (name, repo URL, deploy mode, compose label flags)</td>
-<td>Persisted component config store, populated via the onboarding API</td>
+<td>Auto-merge gated only on <code>github.actor == 'dependabot[bot]'</code> with no CI-status poll</td>
+<td>Merges before CI runs — a broken build can land silently.</td>
 </tr>
 <tr>
-<td>Virtual component definitions</td>
-<td>Config file (<code>config.json</code>) under a <code>virtual_components</code> key</td>
+<td>Native GitHub auto-merge without branch-protection status checks</td>
+<td>GitHub's auto-merge is only safe when branch protection requires status checks; without them it can merge with absent or failed CI.</td>
 </tr>
 <tr>
-<td>Observability project credentials</td>
-<td>The owning component's canonical <code>langfuse</code> / <code>openrouter</code> blocks (see the <a href="../component-standard/">component standard</a>); the engine's own <code>langfuse_projects</code> / <code>openrouter_keys</code> config dicts are an operator override, not the primary store</td>
+<td>Including <code>docker</code> or <code>pre-commit</code> ecosystems in the auto-merge group</td>
+<td>These ecosystems rewrite build environments or hook versions — a bump can break the build or the deploy environment with no human review.</td>
 </tr>
 <tr>
-<td>Mutation / capability permissions</td>
-<td>Per-component boolean flags (e.g. <code>chat_agent_mutatable: bool</code>), set at onboard time via compose labels</td>
+<td>Auto-merging major version bumps (<code>target: major</code>)</td>
+<td>A major version bump to a build or test tool (e.g. ruff 1.x → 2.x) can introduce breaking changes that need human triage.</td>
+</tr>
+<tr>
+<td>Using <code>pull_request</code> (instead of <code>pull_request_target</code>) for the merge workflow</td>
+<td><code>pull_request</code> runs in the PR's context with read-only tokens — it cannot merge. <code>pull_request_target</code> runs in the base branch's context with write access, which is correct for a merge workflow.</td>
 </tr>
 </tbody>
 </table>
-<h3 id="implementation-patterns">Implementation patterns<a class="headerlink" href="#implementation-patterns" title="Permanent link">&para;</a></h3>
-<p><strong>Allowlists → permission flags.</strong> Replace a module-level <code>_ALLOWED_SERVICES =
-frozenset({"a", "b"})</code> with a boolean field on the component config model
-(e.g. <code>chat_agent_mutatable: bool</code>), set via a compose label
-(<code>robotsix.deploy.chat-agent-mutatable: "true"</code>) at onboard time. The engine
-checks the flag on the component, not the name against a hard-coded set.</p>
-<p><strong>Project aliases → the owning component's config.</strong> Replace hard-coded
-<code>_PROJECT_CONFIG_KEYS = {"project-a": {...}}</code> with a read of each component's
-canonical credential blocks — the component owns its own observability
-credentials, and the engine only enumerates them. Keep a
-<code>langfuse_projects</code> / <code>openrouter_keys</code> dict on the engine's own config as an
-<strong>operator override</strong>: it wins on alias collision, so an operator can pin or
-rotate a key, and can bridge a component that has not migrated yet — without
-that being a fallback the engine applies on its own (see
-<a href="../component-standard/#llm-usage">No credential fallbacks</a>).</p>
-<p><strong>Credentials reach consumers through one generic endpoint.</strong> A fleet
-consumer (a cost dashboard, a trace proxy) MUST obtain another component's
-observability credentials by asking the engine, never by having them copied
-into its own config. The engine exposes one route that enumerates every
-component with its credentials; adding a consumer, a component, or a project
-requires no engine change. Failure prevented: hand-copied credentials are
-exactly the per-service definition this rule exists to eliminate, and they go
-stale silently.</p>
-<p><strong>Operator-supplied aliases that no component claims MUST still be
-surfaced</strong>, under a synthetic entry (e.g. component id
-<code>operator-configured</code>), never dropped and never attributed to a component
-that did not declare them. Failure prevented: dropping them makes an
-operator's bridge for an unmigrated component invisible; attributing them
-makes a component look migrated when it is not — and the synthetic entry
-appearing in a consumer's UI is the visible signal that a migration is
-still owed.</p>
-<p><strong>Default values → empty.</strong> Config defaults that embed specific hostnames or
-component ids (e.g. <code>langfuse_base_url = "https://langfuse.robotsix.net"</code>,
-<code>mill_component_id = "mill"</code>) MUST be empty strings or absent — the operator
-sets them per deployment. A default that names a specific fleet resource is a
-hard-coded service definition by another name.</p>
-<h3 id="acceptance-criteria">Acceptance criteria<a class="headerlink" href="#acceptance-criteria" title="Permanent link">&para;</a></h3>
-<p>A deployment engine that satisfies this rule passes these checks:</p>
+<h2 id="exceptions">Exceptions<a class="headerlink" href="#exceptions" title="Permanent link">&para;</a></h2>
+<p>A repo may deviate from the CI-gated auto-merge rule when:</p>
 <ul>
-<li><code>grep</code> for individual service names in <code>src/</code> returns nothing except
-  backward-compat fallback maps and documentation strings.</li>
-<li>Adding a new managed service is achievable via the onboarding API or
-  declarative config — never by editing engine code.</li>
-<li>Every hard-coded allowlist, project alias, and named default has been
-  migrated to the component config store, a config dict, or a per-component
-  boolean flag.</li>
+<li><strong>The repo has no CI.</strong> If there are no required status checks,
+  <code>mergeable_state</code> is always <code>"clean"</code> and the CI gate is vacuously
+  satisfied. The repo still follows the ecosystem-exclusion rule
+  (no <code>docker</code>/<code>pre-commit</code> in the auto-merge group) and the
+  minor/patch-only rule.</li>
+<li><strong>The repo does not use Dependabot at all.</strong> No auto-merge workflow is
+  needed; the rule does not apply.</li>
 </ul>
-<h3 id="reference">Reference<a class="headerlink" href="#reference" title="Permanent link">&para;</a></h3>
-<p>The <code>robotsix-central-deploy</code> repo completed this migration in
-<code>20260719T181243Z-make-central-deploy-repo-agnostic-remove-f13a</code>, removing all
-service-specific code in favour of the patterns above.</p>
-<h2 id="rule-of-thumb">Rule of thumb<a class="headerlink" href="#rule-of-thumb" title="Permanent link">&para;</a></h2>
-<p>If central-deploy needs a capability, ask whether a component could get it
-through the deploy contract instead. Only what genuinely cannot be expressed
-there (self-hosting, the Docker socket, host-level introspection) belongs in
-this tier — everything else follows the component standards like any other
-repo.</p>
+<p>Both exceptions are narrow. The default is: if Dependabot auto-merge is
+enabled, it is CI-gated, minor/patch-only, and excludes <code>docker</code> and
+<code>pre-commit</code> ecosystems.</p>
+<h2 id="failure-modes-prevented">Failure modes prevented<a class="headerlink" href="#failure-modes-prevented" title="Permanent link">&para;</a></h2>
+<ul>
+<li><strong>Silent broken builds from unreviewed auto-merges.</strong> A Dependabot bump
+  that passes no CI gates lands a broken change that surfaces on the next
+  contributor's PR, with no obvious root cause.</li>
+<li><strong>Docker-image drift at deploy time.</strong> A base-image digest bump that
+  changes the runtime environment (CA certificates, libc, <code>PATH</code>) lands
+  without review and breaks at deploy — potentially days after the merge.</li>
+<li><strong>Pre-commit hook version surprises.</strong> A hook <code>rev:</code> bump introduces a
+  new lint rule that fails on existing code. Without the ecosystem
+  exclusion, this lands automatically and every subsequent PR fails with an
+  unrelated lint error.</li>
+<li><strong>Major tool-version breakage.</strong> A major version bump to a build or test
+  tool (e.g. mypy 1.x → 2.x) changes the type-checking surface without a
+  human reviewer understanding the impact.</li>
+</ul>
+<h2 id="relationship-to-other-standards">Relationship to other standards<a class="headerlink" href="#relationship-to-other-standards" title="Permanent link">&para;</a></h2>
+<ul>
+<li>The Dependabot ecosystem configuration is defined in the
+  <a href="../repo-baseline/#automated-dependency-updates">repo baseline</a>.</li>
+<li>The CI workflow that must pass before auto-merge is defined in the
+  <a href="../python-ci-workflow/">Python CI workflow</a> standard.</li>
+<li>The pre-commit hook set that must be excluded from auto-merge is defined
+  in <a href="../python/#pre-commit-hooks">Python practices</a> and the
+  <a href="../pre-commit-baseline/">pre-commit baseline</a>.</li>
+<li>CI lint-tool pinning — the rule that keeps CI and pre-commit versions in
+  lockstep — is defined in
+  <a href="../ci-lint-pinning/">CI lint tool pinning</a>. The Dependabot auto-merge
+  exclusion of the <code>pre-commit</code> ecosystem prevents an auto-merged hook bump
+  from breaking that lockstep without review.</li>
+</ul>
 
 
 

@@ -23,8 +23,8 @@ REPO_ROOT = Path(__file__).resolve().parent.parent
 _TIMESTAMP_RE = re.compile(r"^(\d{8}T\d{6}Z)")
 
 
-def get_new_fragments(base_ref: str) -> list[str]:
-    """Return ``changelog.d/*.md`` files newly added in the current branch."""
+def _run_git_diff(base_ref: str) -> list[str]:
+    """Run ``git diff --name-only --diff-filter=A`` and return matching files."""
     result = subprocess.run(
         ["git", "diff", "--name-only", "--diff-filter=A", f"{base_ref}...HEAD"],
         capture_output=True,
@@ -32,13 +32,34 @@ def get_new_fragments(base_ref: str) -> list[str]:
         cwd=REPO_ROOT,
     )
     if result.returncode != 0:
-        print(f"git diff failed (exit {result.returncode}):", result.stderr.strip())
-        sys.exit(1)
+        raise RuntimeError(result.stderr.strip())
     return [
         f
         for f in result.stdout.strip().splitlines()
         if f.startswith("changelog.d/") and f.endswith(".md")
     ]
+
+
+def get_new_fragments(base_ref: str) -> list[str]:
+    """Return ``changelog.d/*.md`` files newly added in the current branch."""
+    # Try the requested base ref first.
+    try:
+        return _run_git_diff(base_ref)
+    except RuntimeError:
+        pass  # fall through to auto-detection
+
+    # If the base ref doesn't exist (e.g. shallow PR clone), try HEAD^1
+    # (on a PR merge commit, HEAD^1 is the base branch tip).
+    try:
+        return _run_git_diff("HEAD^1")
+    except RuntimeError:
+        pass
+
+    print(
+        f"git diff failed: '{base_ref}' (and fallback 'HEAD^1') not available.\n"
+        "Fetch the base branch (e.g. 'git fetch origin main') and try again."
+    )
+    sys.exit(1)
 
 
 def main() -> int:

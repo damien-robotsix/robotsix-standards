@@ -1202,6 +1202,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../py-typed-wheel-guard/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    py.typed wheel guard
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../docstrings/" class="md-nav__link">
         
   
@@ -2510,7 +2538,9 @@ in the <a href="../repo-baseline/">repo baseline</a>.</p>
   package may be imported by tests or tooling, and downstream type-checking
   must see the annotations.  The package also declares the
   <strong><code>Typing :: Typed</code></strong> trove classifier in <code>[project].classifiers</code>
-  (PEP 561), so packaging indexes and tools recognize it as typed.</li>
+  (PEP 561), so packaging indexes and tools recognize it as typed.
+  For automated verification that the marker actually ships in the built
+  wheel, see the <a href="../py-typed-wheel-guard/">py.typed wheel guard</a>.</li>
 <li><strong>Modules are subdirectories</strong> of the package, mirrored by
   <code>tests/&lt;module&gt;/</code> and <code>docs/&lt;module&gt;/</code> — the same convention
   <code>docs/modules.yaml</code>'s default globs assume (see the

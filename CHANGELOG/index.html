@@ -926,6 +926,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../py-typed-wheel-guard/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    py.typed wheel guard
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../docstrings/" class="md-nav__link">
         
   
@@ -2260,6 +2288,9 @@
 </ul>
 <h2 id="000-unreleased">0.0.0 (unreleased)<a class="headerlink" href="#000-unreleased" title="Permanent link">&para;</a></h2>
 <ul>
+<li>New standard: <a href="../py-typed-wheel-guard/">py.typed wheel guard</a> — automated
+  verification that PEP 561 type markers ship in built wheels via installed
+  type-check and wheel-content assertion.</li>
 <li>New standard: <a href="../dependabot-auto-merge/">Dependabot auto-merge</a> — codifies the fleet-wide convention that Dependabot auto-merge must be gated on required CI passing (<code>mergeable_state == "clean"</code>), restricted to minor/patch updates, and must exclude <code>docker</code> and <code>pre-commit</code> ecosystems from the auto-merge group.</li>
 <li>New standard: <a href="../library-logging/">Library internal logging</a> — codifies the fleet-wide logging convention for Python libraries: module-level <code>logging.getLogger(__name__)</code>, a single <code>NullHandler</code> in <code>__init__.py</code>, lazy <code>%</code>-style formatting (enforced by ruff rule <code>G004</code>), and DEBUG-for-routine / WARNING+ERROR-for-abnormal level policy.</li>
 <li><strong>Python packaging:</strong> runtime <code>__version__</code> is now single-sourced from a checked-in <code>_version.py</code> file wired through hatchling (<code>[tool.hatch.version]</code>), not derived from <code>importlib.metadata</code>.  Git-consumed, untagged installs produce unreliable PEP 440 local versions from <code>importlib.metadata</code>; a checked-in file keeps the auto-release bumper and all import paths in sync by construction.</li>

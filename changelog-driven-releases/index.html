@@ -674,10 +674,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#6-fragment-files-are-registered-in-docsmodulesyaml" class="md-nav__link">
+  <a href="#6-fragment-files-are-not-registered-in-docsmodulesyaml" class="md-nav__link">
     <span class="md-ellipsis">
       
-        6. Fragment files are registered in docs/modules.yaml
+        6. Fragment files are NOT registered in docs/modules.yaml
       
     </span>
   </a>
@@ -1284,6 +1284,34 @@
     
   
     MkDocs build integrity
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../module-taxonomy-scope/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Module taxonomy scope
   
 
     
@@ -2263,10 +2291,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#6-fragment-files-are-registered-in-docsmodulesyaml" class="md-nav__link">
+  <a href="#6-fragment-files-are-not-registered-in-docsmodulesyaml" class="md-nav__link">
     <span class="md-ellipsis">
       
-        6. Fragment files are registered in docs/modules.yaml
+        6. Fragment files are NOT registered in docs/modules.yaml
       
     </span>
   </a>
@@ -2432,19 +2460,21 @@ automatically signals API stability that does not exist — consumers treat
 minor bumps as safe and are broken by a breaking change that arrived without
 a major-version signal.</p>
 </blockquote>
-<h3 id="6-fragment-files-are-registered-in-docsmodulesyaml">6. Fragment files are registered in docs/modules.yaml<a class="headerlink" href="#6-fragment-files-are-registered-in-docsmodulesyaml" title="Permanent link">&para;</a></h3>
-<p><strong>Rule:</strong> When a new <code>changelog.d/</code> fragment file is created, its path must be
-added to <code>docs/modules.yaml</code> under the <code>core</code> module's <code>paths</code> list (or the
-appropriate module), inserted alphabetically among the existing <code>changelog.d/</code>
-entries. This applies even when no Python files are modified.</p>
-<p><strong>Rationale:</strong> The module-registration drift check fails CI when a file matches
-no module's globs. Without this rule, every new fragment file would fail CI
-until someone manually registers it — a recurring friction point.</p>
+<h3 id="6-fragment-files-are-not-registered-in-docsmodulesyaml">6. Fragment files are NOT registered in docs/modules.yaml<a class="headerlink" href="#6-fragment-files-are-not-registered-in-docsmodulesyaml" title="Permanent link">&para;</a></h3>
+<p><strong>Rule:</strong> Do not add <code>changelog.d/</code> fragment paths to <code>docs/modules.yaml</code>. The
+module taxonomy exempts them by default — see
+<a href="../module-taxonomy-scope/">Module taxonomy scope</a>.</p>
+<p><strong>Rationale:</strong> towncrier writes one fragment file per pull request, so requiring
+registration made every changelog entry a second, unrelated taxonomy edit. This
+rule previously mandated exactly that, and its own rationale conceded it was "a
+recurring friction point" — documenting the workaround instead of removing the
+requirement.</p>
 <blockquote>
-<p><strong>Failure mode.</strong> A contributor adds a fragment file, CI fails with a drift
-error, and the contributor either skips the fragment (losing the changelog
-entry) or spends time diagnosing a registration failure that should be
-documented as part of the fragment workflow.</p>
+<p><strong>Failure mode prevented.</strong> A repo enumerates fragments in the taxonomy
+instead of relying on the exemption. Each PR then needs two edits, the
+enumeration drifts, and the bookkeeping becomes its own ticket class: one such
+ticket sat blocked for a week with a branch proposing 199 explicit fragment
+entries, none of which described a module.</p>
 </blockquote>
 <h2 id="reference">Reference<a class="headerlink" href="#reference" title="Permanent link">&para;</a></h2>
 <ul>

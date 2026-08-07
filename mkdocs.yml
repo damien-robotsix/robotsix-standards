@@ -58,6 +58,10 @@ plugins:
         - "https://owasp.org/*"
         - "https://genai.owasp.org/*"
         - "https://damien-robotsix.github.io/*"
+        # readthedocs rate-limits anonymous traffic with 429. Four pages link
+        # there (towncrier, hypothesis, changelog-driven-releases,
+        # repo-baseline), so an unlucky build fails on all four at once.
+        - "https://*.readthedocs.io*"
 
 nav:
   - Home: index.md

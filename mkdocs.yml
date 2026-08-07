@@ -91,6 +91,7 @@ nav:
       - Markdown linting: markdown-linting.md
       - Prose linting: prose-linting.md
       - MkDocs build integrity: mkdocs-build.md
+      - Docs site deployment: docs-site-deployment.md
       - JavaScript practices: javascript.md
       - Async SQLAlchemy test fixtures: async-sqlalchemy-test-fixtures.md
       - ROS 2 practices: ros2.md

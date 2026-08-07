@@ -76,6 +76,9 @@ everywhere.
   through the existing pre-commit pipeline.
 - **[MkDocs build integrity](mkdocs-build.md)** — strict mode build gating
   and link-validation configuration for every MkDocs site.
+- **[Docs site deployment](docs-site-deployment.md)** — the GitHub Pages
+  contract for repos that publish: caller permissions, Pages source, and
+  concurrency ownership. A mismatch fails at startup with no logs at all.
 - **[Python CI workflow](python-ci-workflow.md)** — required `ci.yml` shape:
   lint → type-check → test+coverage, run on every push and PR — the enforcement
   mechanism for the quality gates declared in `pyproject.toml`.

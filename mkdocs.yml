@@ -83,6 +83,7 @@ nav:
       - Ruff lint rules: ruff-lint-rules.md
       - Mypy strictness: mypy.md
       - Pyright strict mode: pyright.md
+      - py.typed wheel guard: py-typed-wheel-guard.md
       - Docstring convention: docstrings.md
       - HTTP client persistence: http-client-persistence.md
       - Library internal logging: library-logging.md

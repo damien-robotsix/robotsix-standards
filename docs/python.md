@@ -12,6 +12,8 @@
   must see the annotations.  The package also declares the
   **`Typing :: Typed`** trove classifier in `[project].classifiers`
   (PEP 561), so packaging indexes and tools recognize it as typed.
+  For automated verification that the marker actually ships in the built
+  wheel, see the [py.typed wheel guard](py-typed-wheel-guard.md).
 - **Modules are subdirectories** of the package, mirrored by
   `tests/<module>/` and `docs/<module>/` — the same convention
   `docs/modules.yaml`'s default globs assume (see the

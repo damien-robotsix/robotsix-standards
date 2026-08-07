@@ -10,13 +10,13 @@
       
       
       
-        <link rel="canonical" href="https://damien-robotsix.github.io/robotsix-standards/deploy-contract/">
+        <link rel="canonical" href="https://damien-robotsix.github.io/robotsix-standards/docs-site-deployment/">
       
       
-        <link rel="prev" href="../docker-standard/">
+        <link rel="prev" href="../mkdocs-build/">
       
       
-        <link rel="next" href="../entrypoint-contract/">
+        <link rel="next" href="../javascript/">
       
       
         
@@ -27,7 +27,7 @@
     
     
       
-        <title>Deploy contract - Robotsix Standards</title>
+        <title>Docs site deployment - Robotsix Standards</title>
       
     
     
@@ -78,7 +78,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#central-deploy-docker-compose-contract" class="md-skip">
+        <a href="#docs-site-deployment" class="md-skip">
           Skip to content
         </a>
       
@@ -114,7 +114,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Deploy contract
+              Docs site deployment
             
           </span>
         </div>
@@ -311,8 +311,10 @@
       
   
   
+    
   
   
+  
     
     
     
@@ -323,13 +325,11 @@
       
     
     
-    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
       
         
         
-          
-        
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
         
           
           <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
@@ -350,7 +350,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_3">
             <span class="md-nav__icon md-icon"></span>
             
@@ -1149,10 +1149,37 @@
                 
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="../docs-site-deployment/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Docs site deployment
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   
@@ -1168,6 +1195,120 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#why-this-exists" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why this exists
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#rules" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Rules
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Rules">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-the-caller-grants-exactly-contents-read-pages-write-id-token-write" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. The caller grants exactly contents: read, pages: write, id-token: write
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-repository-pages-source-must-be-github-actions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Repository Pages source must be "GitHub Actions"
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-the-caller-owns-concurrency-and-the-group-is-pages" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. The caller owns concurrency, and the group is pages
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-pin-the-shared-workflow-and-move-pins-deliberately" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Pin the shared workflow, and move pins deliberately
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#verifying-a-repo" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Verifying a repo
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#exemptions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exemptions
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -1296,8 +1437,6 @@
       
   
   
-    
-  
   
   
     
@@ -1310,11 +1449,13 @@
       
     
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4" >
         
           
           <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
@@ -1335,7 +1476,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_4">
             <span class="md-nav__icon md-icon"></span>
             
@@ -1518,37 +1659,10 @@
                 
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Deploy contract
-  
-
-    
-  </span>
-  
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../deploy-contract/" class="md-nav__link">
         
   
   
@@ -1564,76 +1678,6 @@
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#where-to-read-it" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Where to read it
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#what-it-covers" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        What it covers
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#volumes-only-no-host-path-bind-mounts" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Volumes only — no host-path bind mounts
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Volumes only — no host-path bind mounts">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#volume-ownership-deployer-guarantee-component-obligation" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Volume ownership (deployer guarantee + component obligation)
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -2130,10 +2174,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#where-to-read-it" class="md-nav__link">
+  <a href="#why-this-exists" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Where to read it
+        Why this exists
       
     </span>
   </a>
@@ -2141,33 +2185,55 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#what-it-covers" class="md-nav__link">
+  <a href="#rules" class="md-nav__link">
     <span class="md-ellipsis">
       
-        What it covers
+        Rules
       
     </span>
   </a>
   
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#volumes-only-no-host-path-bind-mounts" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Volumes only — no host-path bind mounts
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Volumes only — no host-path bind mounts">
+    <nav class="md-nav" aria-label="Rules">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#volume-ownership-deployer-guarantee-component-obligation" class="md-nav__link">
+  <a href="#1-the-caller-grants-exactly-contents-read-pages-write-id-token-write" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Volume ownership (deployer guarantee + component obligation)
+        1. The caller grants exactly contents: read, pages: write, id-token: write
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-repository-pages-source-must-be-github-actions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Repository Pages source must be "GitHub Actions"
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-the-caller-owns-concurrency-and-the-group-is-pages" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. The caller owns concurrency, and the group is pages
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-pin-the-shared-workflow-and-move-pins-deliberately" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Pin the shared workflow, and move pins deliberately
       
     </span>
   </a>
@@ -2176,6 +2242,28 @@
         
       </ul>
     </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#verifying-a-repo" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Verifying a repo
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#exemptions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exemptions
+      
+    </span>
+  </a>
   
 </li>
       
@@ -2199,80 +2287,125 @@
   
 
 
-<h1 id="central-deploy-docker-compose-contract">central-deploy Docker Compose Contract<a class="headerlink" href="#central-deploy-docker-compose-contract" title="Permanent link">&para;</a></h1>
+<h1 id="docs-site-deployment">Docs site deployment<a class="headerlink" href="#docs-site-deployment" title="Permanent link">&para;</a></h1>
 <blockquote>
-<p><strong>Scope: deployable components only.</strong> See the
-<a href="../component-standard/">component standard</a>.</p>
-<p><strong>Canonical home:
-<a href="https://github.com/damien-robotsix/robotsix-central-deploy"><code>robotsix-central-deploy</code></a>.</strong>
-The contract is implemented by central-deploy's parser and served by the
-running server, so the authoritative copy lives — and versions — with the
-code. This page is a pointer, not a copy; an earlier copy kept here drifted
-from the implementation (gateway routing, § 8 config) and was removed.</p>
+<p><strong>Scope: every repository that publishes its MkDocs site to GitHub Pages.</strong>
+Repos with no published site are exempt. This is the <em>deployment</em> half of the
+docs story — <a href="../mkdocs-build/">MkDocs build integrity</a> covers the <em>build</em>
+half, and a repo that publishes needs both.</p>
 </blockquote>
-<h2 id="where-to-read-it">Where to read it<a class="headerlink" href="#where-to-read-it" title="Permanent link">&para;</a></h2>
+<h2 id="why-this-exists">Why this exists<a class="headerlink" href="#why-this-exists" title="Permanent link">&para;</a></h2>
+<p>The shared <code>python-docs.yml</code> workflow deploys through the <strong>Pages Actions</strong>
+(<code>actions/upload-pages-artifact</code> + <code>actions/deploy-pages</code>), not through
+<code>mkdocs gh-deploy</code>. That choice has three consequences a calling repo must
+honour, and none of them were written down.</p>
+<p>The result, audited on 2026-08-07 across nine repos that publish docs: <strong>six
+different pins of the same shared workflow, four different caller-permission
+shapes, three different Pages configurations, and three repos whose Docs
+workflow had never once run.</strong></p>
+<p>What makes this worth a standard rather than a bug fix is the failure mode. A
+caller that requests permissions the shared workflow cannot satisfy fails at
+<strong>startup</strong>: no logs, no checks, no annotation on the PR, no red anywhere. The
+workflow simply never runs. Nothing in the fleet surfaces it, so it persists
+indefinitely — auto-mail's had been dead for weeks before anyone noticed, and it
+was noticed only by counting <code>startup_failure</code> entries in the run list.</p>
+<h2 id="rules">Rules<a class="headerlink" href="#rules" title="Permanent link">&para;</a></h2>
+<h3 id="1-the-caller-grants-exactly-contents-read-pages-write-id-token-write">1. The caller grants exactly <code>contents: read</code>, <code>pages: write</code>, <code>id-token: write</code><a class="headerlink" href="#1-the-caller-grants-exactly-contents-read-pages-write-id-token-write" title="Permanent link">&para;</a></h3>
+<p><strong>Rule:</strong> A repo calling <code>python-docs.yml</code> must set, on the calling <strong>job</strong>:</p>
+<div class="highlight"><pre><span></span><code><span class="nt">jobs</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">deploy</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">permissions</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">contents</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">read</span><span class="w">    </span><span class="c1"># the spine&#39;s build job checks out the repo</span>
+<span class="w">      </span><span class="nt">pages</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">write</span><span class="w">      </span><span class="c1"># the spine&#39;s deploy job publishes the artifact</span>
+<span class="w">      </span><span class="nt">id-token</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">write</span><span class="w">   </span><span class="c1"># OIDC auth for actions/deploy-pages</span>
+<span class="w">    </span><span class="nt">uses</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">damien-robotsix/robotsix-github-workflows/.github/workflows/python-docs.yml@&lt;sha&gt;</span>
+</code></pre></div>
+<p><strong>Rationale:</strong> A caller job's <code>permissions</code> map <strong>replaces</strong> the token scopes
+available to the called workflow — it does not merge with the workflow-level
+default. Every scope not listed is zeroed. A called workflow whose jobs request
+a scope the caller did not grant is rejected before execution.</p>
+<p>All three are required together. Omitting any one is as fatal as granting none.</p>
+<blockquote>
+<p><strong>Failure mode.</strong> Two real variants, both silent:</p>
 <ul>
-<li><strong>Source:</strong>
-  <a href="https://github.com/damien-robotsix/robotsix-central-deploy/blob/main/docs/ui/DEPLOY_CONTRACT.md"><code>docs/ui/DEPLOY_CONTRACT.md</code></a>
-  in the central-deploy repo</li>
-<li><strong>From the running server:</strong> <code>GET /help/deploy-contract</code> on the deploy
-  dashboard (the server ships the same file inside its image)</li>
+<li>Granting <code>contents: write</code> (the <code>gh-deploy</code> shape) leaves all three unmet.
+  Observed on auto-mail and cost-monitor.</li>
+<li>Granting <code>pages: write</code> + <code>id-token: write</code> but omitting <code>contents: read</code>
+  starves the build job's checkout. Observed on board — a repo pinning the
+  <em>same</em> shared revision as a working one, which is why "copy a repo that
+  works" is not a reliable substitute for the rule.</li>
 </ul>
-<h2 id="what-it-covers">What it covers<a class="headerlink" href="#what-it-covers" title="Permanent link">&para;</a></h2>
-<p>The contract is the authoritative specification for the
-<code>deploy/docker-compose.yml</code> a service repo must ship before central-deploy's
-onboarding flow accepts it:</p>
-<ul>
-<li>the machine-readable version header (<code># central-deploy-contract-version: 1</code>)
-  and its breaking-change semantics;</li>
-<li>structural rules — service keys, primary/sibling designation, container
-  naming;</li>
-<li>required and optional fields (image, ports, named volumes, environment
-  secret slots, healthcheck);</li>
-<li>the <code>robotsix.deploy.*</code> extension labels (primary, claude-mount,
-  host-docker-sock, config-target, config-assist);</li>
-<li>volume declarations;</li>
-<li>ignored vs. prohibited compose fields (error classification);</li>
-<li>runtime configuration via the repo's config template (§ 8 —
-  <code>config/config.json</code> + <code>config/config.schema.json</code> per the
-  <a href="../config-standard/">config standard</a>) and the field → <code>ComponentConfig</code>
-  mapping.</li>
-</ul>
-<h2 id="volumes-only-no-host-path-bind-mounts">Volumes only — no host-path bind mounts<a class="headerlink" href="#volumes-only-no-host-path-bind-mounts" title="Permanent link">&para;</a></h2>
-<p>Deployed components <strong>never bind-mount host paths</strong>; all persistent or shared
-state goes through <strong>named volumes</strong> (declared in the compose, or injected by
-central-deploy — e.g. the managed <code>claude-auth</code> volume behind the
-claude-mount label). Coupling a component to host filesystem layout caused a
-real outage (2026-07-03, robotsix-chat: host-uid-dependent credential
-readability plus a containerized <code>~</code> expansion silently auto-creating empty
-root-owned host directories). The <strong>single sanctioned exception</strong> is the
-Docker socket, read-only, on a hardened non-primary socket-proxy sibling
-(<code>host-docker-sock</code> label). central-deploy's own infra mounts are the
-deployment system itself (<a href="../deployment-system/">bootstrap tier</a>), not a
-managed component.</p>
-<p>Resource limits follow the same shape: compose resource fields are ignored —
-central-deploy applies a <strong>default memory limit</strong> to every managed container
-(overridable per component in the dashboard), so one leaking service OOMs and
-restarts alone instead of taking the host with it.</p>
-<h3 id="volume-ownership-deployer-guarantee-component-obligation">Volume ownership (deployer guarantee + component obligation)<a class="headerlink" href="#volume-ownership-deployer-guarantee-component-obligation" title="Permanent link">&para;</a></h3>
-<p>Docker's copy-up only fixes named-volume ownership when the image already
-contains the mount path. When a component uses a path the image never prepared
-(e.g. <code>/data</code>, <code>/home/app/.claude</code>), freshly created volumes stay root-owned
-and the component silently fails every write while reporting healthy — chat
-lost all conversations in production (2026-07-04).</p>
-<p><strong>Deployer guarantee.</strong> When the deployment system creates a named volume (first
-creation only — existing volume data is <strong>never touched</strong>), it makes the volume
-root writable by the component's runtime uid: either the uid declared via
-<code>user:</code> in the compose service, or the platform-forced uid when no <code>user:</code> is
-set.</p>
-<p><strong>Component obligation.</strong> Components <strong>MUST NOT</strong> rely on image-side directory
-preparation (Dockerfile <code>mkdir</code> / <code>chown</code>) for volume mount paths, and
-<strong>SHOULD</strong> log resolved persistence paths at startup. The startup log line was
-the single diagnostic that made the root-owned-volume outage diagnosable in
-seconds rather than hours — without it, a component that cannot write its data
-directory reports healthy and the failure is invisible.</p>
-<p>For the task-oriented walkthrough of making a repo deployable, see
-<a href="../integrating-a-service/">Integrating a service</a>.</p>
+</blockquote>
+<h3 id="2-repository-pages-source-must-be-github-actions">2. Repository Pages source must be "GitHub Actions"<a class="headerlink" href="#2-repository-pages-source-must-be-github-actions" title="Permanent link">&para;</a></h3>
+<p><strong>Rule:</strong> The repo's Pages configuration must be build type <code>workflow</code>
+(Settings → Pages → Source: <em>GitHub Actions</em>), not the legacy branch model.
+Verify with:</p>
+<div class="highlight"><pre><span></span><code>gh<span class="w"> </span>api<span class="w"> </span>repos/&lt;owner&gt;/&lt;repo&gt;/pages<span class="w"> </span>--jq<span class="w"> </span><span class="s1">&#39;.build_type&#39;</span><span class="w">   </span><span class="c1"># must print: workflow</span>
+</code></pre></div>
+<p><strong>Rationale:</strong> <code>actions/deploy-pages</code> publishes an artifact to the Pages
+service. A repo still set to serve a <code>gh-pages</code> branch has nowhere to receive
+it, so the workflow starts, builds, and fails at the final step.</p>
+<p><strong>This rule and rule 1 must land together.</strong> Fixing permissions alone converts
+an invisible startup failure into a visible deploy failure — an improvement, but
+not a working site.</p>
+<blockquote>
+<p><strong>Failure mode.</strong> A repo bumps its <code>python-docs.yml</code> pin to a revision that
+switched from <code>gh-deploy</code> to the Pages Actions, and keeps its old permissions
+and Pages settings. Both halves of the contract silently break at once. This
+is exactly what happened to auto-mail.</p>
+</blockquote>
+<h3 id="3-the-caller-owns-concurrency-and-the-group-is-pages">3. The caller owns concurrency, and the group is <code>pages</code><a class="headerlink" href="#3-the-caller-owns-concurrency-and-the-group-is-pages" title="Permanent link">&para;</a></h3>
+<p><strong>Rule:</strong> The calling workflow sets its own concurrency:</p>
+<div class="highlight"><pre><span></span><code><span class="nt">concurrency</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">group</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">pages</span>
+<span class="w">  </span><span class="nt">cancel-in-progress</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
+</code></pre></div>
+<p><strong>Rationale:</strong> The shared spine deliberately sets <strong>no</strong> workflow-level
+concurrency. Inside a called workflow, <code>${{ github.workflow }}</code> resolves to the
+<strong>caller's</strong> workflow name, so a group built from it in the spine would deadlock
+against a caller using the same expression. Concurrency therefore belongs to the
+caller, and <code>pages</code> names the resource actually being serialised — the single
+Pages deployment — rather than the workflow that happens to drive it.</p>
+<p>Prefer <code>cancel-in-progress: false</code> for deployments: cancelling a half-finished
+Pages publish is worse than queueing behind it.</p>
+<h3 id="4-pin-the-shared-workflow-and-move-pins-deliberately">4. Pin the shared workflow, and move pins deliberately<a class="headerlink" href="#4-pin-the-shared-workflow-and-move-pins-deliberately" title="Permanent link">&para;</a></h3>
+<p><strong>Rule:</strong> Call <code>python-docs.yml</code> at a full commit SHA with a trailing <code># main</code>
+comment, per <a href="../ci-lint-pinning/">CI lint pinning</a>. When bumping that pin,
+re-read rules 1 and 2 — the pin is the mechanism by which a repo silently
+changes deployment model.</p>
+<p><strong>Rationale:</strong> The permissions contract is a property of the <em>pinned revision</em>,
+not of the workflow name. A repo on an older pin using <code>mkdocs gh-deploy</code> is
+internally consistent with <code>contents: write</code> and legacy Pages, and works
+correctly — robotsix-mill is in exactly that state and is not broken. It becomes
+broken the moment its pin moves without its permissions and Pages settings
+moving too.</p>
+<blockquote>
+<p><strong>Failure mode.</strong> Six pins of one shared workflow across nine repos means six
+different contracts in force simultaneously. A fix verified against one repo
+tells you nothing about the next.</p>
+</blockquote>
+<h2 id="verifying-a-repo">Verifying a repo<a class="headerlink" href="#verifying-a-repo" title="Permanent link">&para;</a></h2>
+<p>Two commands answer both halves:</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># rule 1: the caller&#39;s job-level grants</span>
+gh<span class="w"> </span>api<span class="w"> </span>repos/&lt;owner&gt;/&lt;repo&gt;/contents/.github/workflows/docs.yml<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--jq<span class="w"> </span><span class="s1">&#39;.content&#39;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>base64<span class="w"> </span>-d<span class="w"> </span><span class="p">|</span><span class="w"> </span>sed<span class="w"> </span>-n<span class="w"> </span><span class="s1">&#39;/^jobs:/,$p&#39;</span>
+
+<span class="c1"># rule 2: the Pages build type</span>
+gh<span class="w"> </span>api<span class="w"> </span>repos/&lt;owner&gt;/&lt;repo&gt;/pages<span class="w"> </span>--jq<span class="w"> </span><span class="s1">&#39;.build_type&#39;</span>
+</code></pre></div>
+<p>And the signal that something is wrong at all — because a startup failure
+produces nothing else:</p>
+<div class="highlight"><pre><span></span><code>gh<span class="w"> </span>run<span class="w"> </span>list<span class="w"> </span>--repo<span class="w"> </span>&lt;owner&gt;/&lt;repo&gt;<span class="w"> </span>--workflow<span class="w"> </span>Docs<span class="w"> </span>--limit<span class="w"> </span><span class="m">10</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--json<span class="w"> </span>conclusion<span class="w"> </span>--jq<span class="w"> </span><span class="s1">&#39;[.[].conclusion] | join(&quot;,&quot;)&#39;</span>
+</code></pre></div>
+<p><code>startup_failure</code> in that output always means a permissions mismatch. There is
+no other way for a run to die before producing a single log line.</p>
+<h2 id="exemptions">Exemptions<a class="headerlink" href="#exemptions" title="Permanent link">&para;</a></h2>
+<p>A repo may hand-roll its docs job instead of calling the shared spine (chat and
+standards both do). Rules 2 and 3 still apply — they are properties of GitHub
+Pages, not of the shared workflow. Rule 1 does not, since there is no called
+workflow whose permissions to satisfy; the job's own <code>permissions</code> block simply
+needs whatever its steps use.</p>
 
 
 

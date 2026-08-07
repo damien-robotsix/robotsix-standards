@@ -58,6 +58,7 @@ the default.
 | [Ruff lint rules](docs/ruff-lint-rules.md) | Tier 2 ruff rule families (SIM, C4, LOG, G, ERA, PGH, RUF, PT) with the PT006 exclusion. |
 | [Mypy strictness](docs/mypy.md) | Mypy as a hard CI gate (not advisory), baseline snapshots as a bootstrapping scaffold with a defined exit, and strict-mode type-clean new code. |
 | [Pyright strict mode](docs/pyright.md) | Pyright must run at `typeCheckingMode = "strict"` so it enforces the same type-safety baseline as mypy `--strict`. |
+| [py.typed wheel guard](docs/py-typed-wheel-guard.md) | Automated verification that the `py.typed` marker ships in the built wheel — installed type-check + wheel-content assertion. |
 | [JavaScript practices](docs/javascript.md) | Vanilla frontend JS as static assets, lockfile discipline, vitest coverage floor, eslint/stylelint. |
 | [ROS 2 practices](docs/ros2.md) | Workspace-skeleton layout, vcs2l manifest, devcontainer, colcon/rosdep build, lint gates. |
 | [Pre-commit baseline](docs/pre-commit-baseline.md) | Five zero-config file-hygiene hooks (trailing-whitespace, end-of-file-fixer, check-yaml, check-toml, check-added-large-files) for every Python repo. |

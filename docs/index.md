@@ -107,6 +107,9 @@ everywhere.
   `typeCheckingMode = "strict"` so it enforces the same type-safety baseline
   as mypy `--strict`, with per-diagnostic overrides only for proven-untyped
   third-party dependencies.
+- **[py.typed wheel guard](py-typed-wheel-guard.md)** — automated verification
+  that the `py.typed` marker ships in the built wheel, so a packaging
+  regression cannot silently strip type information from downstream consumers.
 - **[JavaScript practices](javascript.md)** — vanilla frontend JS as static
   assets, lockfile discipline, vitest coverage floor, eslint/stylelint.
 - **[ROS 2 practices](ros2.md)** — workspace-skeleton layout, vcs2l manifest,

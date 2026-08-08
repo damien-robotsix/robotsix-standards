@@ -193,7 +193,7 @@ already failed on `main`.
 > `baseline-check.yml` caller to `a6378ac` or later. Earlier revisions require
 > `changelog.d/` and `[tool.towncrier]` unconditionally, so they fail the very
 > commit that removes them.
-
+>
 > **Pinning.** Pin the action to a commit SHA, not a tag. Resolve the SHA
 > with:
 >

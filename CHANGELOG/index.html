@@ -2344,6 +2344,7 @@
 </ul>
 <h2 id="000-unreleased">0.0.0 (unreleased)<a class="headerlink" href="#000-unreleased" title="Permanent link">&para;</a></h2>
 <ul>
+<li>Add Langfuse config block (§7) to the config standard: every trace-emitting component declares its own <code>langfuse.host</code> + <code>langfuse.projects.&lt;alias&gt;.{public_key, secret_key}</code> in its own <code>config/config.json</code> — component-owned, <code>SecretStr</code>-masked, no env-var discovery, no central credential map.</li>
 <li>New standard: <a href="../py-typed-wheel-guard/">py.typed wheel guard</a> — automated
   verification that PEP 561 type markers ship in built wheels via installed
   type-check and wheel-content assertion.</li>

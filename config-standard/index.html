@@ -1546,6 +1546,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#7-langfuse-configuration-one-per-component-block" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7. Langfuse configuration — one per-component block
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -2318,6 +2329,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#7-langfuse-configuration-one-per-component-block" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7. Langfuse configuration — one per-component block
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -2569,6 +2591,92 @@ fields next to the URL. Explicitly <strong>not</strong> part of the stack, added
 deliberately only if ever needed: service discovery, a registry,
 central-deploy-injected addresses, DNS-name conventions. Plain config fields
 are the whole mechanism.</p>
+<h3 id="7-langfuse-configuration-one-per-component-block">7. Langfuse configuration — one per-component block<a class="headerlink" href="#7-langfuse-configuration-one-per-component-block" title="Permanent link">&para;</a></h3>
+<p>Every component that emits traces to Langfuse declares its own Langfuse
+credentials in its own config. The config block is a nested <code>langfuse</code>
+field on the component's root model — the component is the authoritative
+source of its Langfuse identity, not a shared env secret, not a
+central-deploy credential map.</p>
+<p><strong>Model shape — pydantic</strong></p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">pydantic</span><span class="w"> </span><span class="kn">import</span> <span class="n">BaseModel</span><span class="p">,</span> <span class="n">SecretStr</span>
+
+
+<span class="k">class</span><span class="w"> </span><span class="nc">LangfuseProjectConfig</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Credentials for one Langfuse project.&quot;&quot;&quot;</span>
+    <span class="n">public_key</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">secret_key</span><span class="p">:</span> <span class="n">SecretStr</span>
+
+
+<span class="k">class</span><span class="w"> </span><span class="nc">LangfuseConfig</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Per-component Langfuse configuration.&quot;&quot;&quot;</span>
+    <span class="n">host</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;https://cloud.langfuse.com&quot;</span>
+    <span class="n">projects</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">LangfuseProjectConfig</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+</code></pre></div>
+<p>On the root component model:</p>
+<div class="highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">MyComponentConfig</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+    <span class="n">langfuse</span><span class="p">:</span> <span class="n">LangfuseConfig</span> <span class="o">=</span> <span class="n">LangfuseConfig</span><span class="p">()</span>
+</code></pre></div>
+<p>The block nests under the <code>langfuse</code> key in <code>config/config.json</code>:</p>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;langfuse&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;host&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;https://cloud.langfuse.com&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;projects&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">&quot;primary&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;public_key&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;pk-lf-...&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;secret_key&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;sk-lf-...&quot;</span>
+<span class="w">      </span><span class="p">}</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+<p><strong>Constraints</strong></p>
+<ul>
+<li><strong>Component-owned.</strong> The <code>langfuse</code> block lives in the component's own
+  <code>config/config.json</code> per the one-file rule (§1). No env-var-based
+  credential discovery (<code>LANGFUSE_PUBLIC_KEY</code>, <code>LANGFUSE_SECRET_KEY</code>,
+  <code>LANGFUSE_HOST</code>).</li>
+<li><strong>No central override map.</strong> There is no deploy-plane credential map or
+  shared Langfuse config that components read from. Each component declares
+  its own <code>langfuse</code> block, and its own config is the sole source of truth
+  for its Langfuse identity. The deploy plane never injects Langfuse
+  credentials.</li>
+<li><strong><code>secret_key</code> is a <code>SecretStr</code>.</strong> Per the secret convention (§3),
+  <code>secret_key</code> is typed as <code>pydantic.SecretStr</code> — masked on read
+  (<code>**********</code>), rendered as <code>writeOnly</code> / <code>format: password</code> in the JSON
+  Schema, never echoed by <code>GET /config</code>. The deploy UI masks it server-side.</li>
+<li><strong>One block, multiple projects.</strong> The <code>projects</code> dict maps a local alias
+  (e.g. <code>"primary"</code>) to a <code>{public_key, secret_key}</code> pair. Components that
+  write to multiple Langfuse projects declare one entry per project, keyed
+  by alias — the alias is the component's own namespace; it does not need to
+  match any Langfuse-side name. Components that only ever use one project
+  declare a single entry and pick a stable alias (e.g. <code>"primary"</code> or
+  <code>"default"</code>).</li>
+<li><strong><code>host</code> is optional with a default.</strong> <code>host</code> defaults to
+  <code>"https://cloud.langfuse.com"</code> — self-hosted Langfuse instances override
+  it with their own URL. The field is typed as <code>str</code> and rendered as a text
+  input in the deploy UI.</li>
+</ul>
+<p><strong>Schema reflection</strong></p>
+<p>The JSON Schema emitted by <code>config_schema_json</code> encodes the block's nested
+structure, types, and secret annotations — so the deploy UI renders
+<code>public_key</code> as a text input, <code>secret_key</code> as a masked password input, and
+<code>host</code> as a text input with the default visible. The schema is committed as
+<code>config/config.schema.json</code> per the typed-schema rule (§2).</p>
+<p><strong>Why this shape</strong></p>
+<ul>
+<li><strong>No credential sharing across components.</strong> A map of project aliases at
+  the deploy-plane level creates a "why is this component using that project"
+  mystery and a "who else is using this key" audit gap. One block per
+  component makes ownership unambiguous: the component's config is the
+  complete answer to "what Langfuse identity does this component use."</li>
+<li><strong>Alias indirection.</strong> Components reference projects by a local alias, not
+  by raw key material in code. The alias is stable across key rotation — the
+  operator rotates the key in the deploy UI without changing the component's
+  source.</li>
+<li><strong><code>SecretStr</code> from day one.</strong> A plain <code>str</code> secret field in config drifts
+  into logs, error messages, and debug output. <code>SecretStr</code> prevents that at
+  the type level — the value is never accidentally serialized or printed.</li>
+</ul>
 <h2 id="using-the-library">Using the library<a class="headerlink" href="#using-the-library" title="Permanent link">&para;</a></h2>
 <p>Install it (<code>uv add robotsix-config</code>, SHA-pinned via <code>[tool.uv.sources]</code> per
 the <a href="../repo-baseline/">repo baseline</a>), define plain pydantic models, and call

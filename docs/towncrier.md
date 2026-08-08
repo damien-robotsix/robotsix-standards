@@ -1,9 +1,14 @@
 # Towncrier changelog management
 
-> **Scope: every Python repository.** Towncrier is the fleet-wide changelog
-> tool — every Python repo ships a `[tool.towncrier]` config and a
-> `changelog.d/` fragment directory. The language-agnostic release rules
-> (auto-release workflow, version policy) live in the
+> **Superseded:** [release-please](release-please.md) is the fleet-wide
+> release and changelog automation. This page documents the prior towncrier
+> convention, kept for reference while repos migrate. A repo that has adopted
+> release-please carries no `[tool.towncrier]` config and no `changelog.d/`
+> directory — its changelog is generated from conventional commits.
+>
+> **Scope while still on towncrier.** Every Python repo that has not yet
+> migrated ships a `[tool.towncrier]` config and a `changelog.d/` fragment
+> directory. The language-agnostic release rules live in the
 > [repo baseline](repo-baseline.md#changelog-releases).
 
 ## What towncrier does

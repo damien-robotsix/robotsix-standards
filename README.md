@@ -31,7 +31,7 @@ the default.
 | Doc | What it covers |
 |---|---|
 | [Repo baseline](docs/repo-baseline.md) | Distribution tiers, changelog/module hygiene, CI & security gates, license — language-agnostic. |
-| [Towncrier changelog](docs/towncrier.md) | Per-PR newsfragments in `changelog.d/`, `pyproject.toml` config, CI enforcement, and automated release compilation — the fleet-wide changelog tool. |
+| [Towncrier changelog](docs/towncrier.md) | Per-PR newsfragments in `changelog.d/`, `pyproject.toml` config, CI enforcement, and automated release compilation. *(Superseded by [release-please](docs/release-please.md).)* |
 | [Free-tier only](docs/free-tier-only.md) | No paid services (LLM agent inference excepted): Actions on a free tier (public or self-hosted runner), public/self-hosted images, permissive licences. |
 | [Security posture](docs/security-posture.md) | Self-enforcing security gates (SAST, dependency review, Dependabot, workflow hardening, secret protection, SBOM), auditable per repo. |
 | [GitHub Actions security](docs/github-actions-security.md) | zizmor static-security auditor for GitHub Actions workflows — canonical invocation, severity policy, phased rollout. |

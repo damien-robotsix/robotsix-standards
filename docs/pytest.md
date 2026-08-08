@@ -156,7 +156,7 @@ filterwarnings = [
 > module-level `import` in a test file that references a package **not**
 > listed in the project's unconditional (bare) `dependencies`.
 
-### Why this exists
+### Why this rule exists
 
 `pytest` imports every test module during **collection**, before any test
 runs.  An unguarded module-level `import <optional-dep>` therefore breaks

@@ -663,6 +663,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#prerequisite-let-actions-open-pull-requests" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Prerequisite: let Actions open pull requests
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#configuration" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2324,6 +2335,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#prerequisite-let-actions-open-pull-requests" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Prerequisite: let Actions open pull requests
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#configuration" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2536,6 +2558,27 @@ itself is the changelog entry and the bump signal. No fragment files, no
 separate release workflow, no manual bump classification. A release PR opens
 automatically whenever releasable commits land on the default branch; merging
 it publishes the release.</p>
+<h2 id="prerequisite-let-actions-open-pull-requests">Prerequisite: let Actions open pull requests<a class="headerlink" href="#prerequisite-let-actions-open-pull-requests" title="Permanent link">&para;</a></h2>
+<p><strong>Before any of the configuration below matters</strong>, the repository must allow
+GitHub Actions to open pull requests. Release-please's entire mechanism is
+opening a release PR, so without this it can do nothing.</p>
+<p>Settings → Actions → General → <em>"Allow GitHub Actions to create and approve
+pull requests"</em>, or via the API:</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># check</span>
+gh<span class="w"> </span>api<span class="w"> </span>repos/damien-robotsix/&lt;repo&gt;/actions/permissions/workflow<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-q<span class="w"> </span><span class="s1">&#39;.can_approve_pull_request_reviews&#39;</span>
+<span class="c1"># enable</span>
+gh<span class="w"> </span>api<span class="w"> </span>-X<span class="w"> </span>PUT<span class="w"> </span>repos/damien-robotsix/&lt;repo&gt;/actions/permissions/workflow<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-f<span class="w"> </span><span class="nv">default_workflow_permissions</span><span class="o">=</span><span class="nb">read</span><span class="w"> </span>-F<span class="w"> </span><span class="nv">can_approve_pull_request_reviews</span><span class="o">=</span><span class="nb">true</span>
+</code></pre></div>
+<blockquote>
+<p><strong>Failure mode.</strong> With the setting off, the run gets as far as building the
+tree and the release commit, then dies with
+<code>release-please failed: GitHub Actions is not permitted to create or approve
+pull requests.</code> The workflow and both config files can be perfectly correct
+and the repo still never releases. On 2026-08-08 this was off in 9 of 15
+fleet repos, which is why release-please had produced nothing anywhere.</p>
+</blockquote>
 <h2 id="configuration">Configuration<a class="headerlink" href="#configuration" title="Permanent link">&para;</a></h2>
 <p>Every repo carries two config files at its root:</p>
 <h3 id="release-please-configjson"><code>release-please-config.json</code><a class="headerlink" href="#release-please-configjson" title="Permanent link">&para;</a></h3>
@@ -2544,6 +2587,7 @@ it publishes the release.</p>
 <span class="w">  </span><span class="nt">&quot;release-type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;python&quot;</span><span class="p">,</span>
 <span class="w">  </span><span class="nt">&quot;changelog-path&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;CHANGELOG.md&quot;</span><span class="p">,</span>
 <span class="w">  </span><span class="nt">&quot;include-v-in-tag&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;bump-minor-pre-major&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span>
 <span class="w">  </span><span class="nt">&quot;packages&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
 <span class="w">    </span><span class="nt">&quot;.&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{}</span>
 <span class="w">  </span><span class="p">}</span>
@@ -2558,6 +2602,11 @@ it publishes the release.</p>
 <li><strong><code>include-v-in-tag</code></strong> — <code>true</code>. Tags are <code>vX.Y.Z</code> (matching the existing
   <code>docker-release.yml</code> tag filter <code>["*.*.*"]</code> — the <code>v</code> prefix is part of
   the tag name).</li>
+<li><strong><code>bump-minor-pre-major</code></strong> — <code>true</code>. <strong>Required to satisfy rule 4 below.</strong>
+  Without it a breaking conventional commit (<code>feat!:</code> / <code>fix!:</code>) bumps the
+  <em>major</em> version even from <code>0.x</code>, so the first breaking change in any repo
+  proposes <code>1.0.0</code>. With it, breaking changes bump the minor while the version
+  stays below <code>1.0.0</code>, which is what a 0.x posture means.</li>
 <li><strong><code>packages</code></strong> — a single root package <code>"."</code>. Monorepo repos with multiple
   publishable packages list each package directory here; single-package repos
   use the root.</li>
@@ -2740,11 +2789,21 @@ which matches the stack's pre-release, clean-cutover stance.</p>
 change at any minor bump. This is the correct posture for a stack under active
 development where clean cutover is the default migration strategy. Automating a
 <code>1.0.0</code> bump would make an unintended stability promise.</p>
+<p><strong>How it is enforced:</strong> <code>"bump-minor-pre-major": true</code> in
+<code>release-please-config.json</code>. This rule is not self-enforcing — release-please
+bumps the major on a <code>feat!:</code> / <code>fix!:</code> commit by default, so a repo that omits
+the flag violates this rule the first time anyone lands a breaking change.</p>
 <blockquote>
 <p><strong>Failure mode.</strong> A repo whose release-please workflow bumps to <code>1.0.0</code>
 automatically signals API stability that does not exist — consumers treat
 minor bumps as safe and are broken by a breaking change that arrived without
 a major-version signal.</p>
+<p>Observed 2026-08-08 on <code>robotsix-file-hub</code>: the first run after release-please
+was made functional proposed <code>chore(main): release 1.0.0</code>, because the config
+block above had been copied without the flag. Adding it produced the correct
+<code>0.2.0</code> — a minor bump that still recorded the breaking change in the
+changelog under <strong>⚠ BREAKING CHANGES</strong>, which is the intended behaviour: the
+break is documented, the stability promise is not made.</p>
 </blockquote>
 <h3 id="5-config-files-are-registered-in-docsmodulesyaml">5. Config files are registered in docs/modules.yaml<a class="headerlink" href="#5-config-files-are-registered-in-docsmodulesyaml" title="Permanent link">&para;</a></h3>
 <p><strong>Rule:</strong> When a new <code>release-please-config.json</code> or

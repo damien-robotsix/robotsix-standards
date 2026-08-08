@@ -2652,16 +2652,28 @@ the tag and release when the release PR is merged).</p>
 <span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">closed</span>
 <span class="w">    </span><span class="nt">branches</span><span class="p">:</span>
 <span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">main</span>
+<span class="w">  </span><span class="nt">workflow_dispatch</span><span class="p">:</span>
 
-<span class="nt">permissions</span><span class="p">:</span>
-<span class="w">  </span><span class="nt">contents</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">write</span>
-<span class="w">  </span><span class="nt">pull-requests</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">write</span>
+<span class="c1"># Serialise releases per branch. Deliberately NOT cancel-in-progress: a cancel</span>
+<span class="c1"># between pushing the release commit and creating the tag would leave the repo</span>
+<span class="c1"># half-released.</span>
+<span class="nt">concurrency</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">group</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">${{ github.workflow }}-${{ github.ref_name }}</span>
+<span class="w">  </span><span class="nt">cancel-in-progress</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
+
+<span class="c1"># Job-scoped below, not here.</span>
+<span class="nt">permissions</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{}</span>
 
 <span class="nt">jobs</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">release-please</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Release Please</span>
 <span class="w">    </span><span class="nt">runs-on</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ubuntu-latest</span>
+<span class="w">    </span><span class="nt">permissions</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">contents</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">write</span><span class="w">       </span><span class="c1"># create the release commit, tag and GitHub Release</span>
+<span class="w">      </span><span class="nt">pull-requests</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">write</span><span class="w">  </span><span class="c1"># open and update the release PR</span>
 <span class="w">    </span><span class="nt">if</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|</span>
 <span class="w">      </span><span class="no">github.event_name == &#39;push&#39; ||</span>
+<span class="w">      </span><span class="no">github.event_name == &#39;workflow_dispatch&#39; ||</span>
 <span class="w">      </span><span class="no">(github.event_name == &#39;pull_request&#39; &amp;&amp;</span>
 <span class="w">       </span><span class="no">github.event.pull_request.merged == true &amp;&amp;</span>
 <span class="w">       </span><span class="no">github.event.pull_request.head.ref == &#39;release-please--branches--main&#39;)</span>
@@ -2672,7 +2684,26 @@ the tag and release when the release PR is merged).</p>
 </code></pre></div>
 <p>The <code>if</code> guard ensures the action only creates tags/releases on merge of its
 own release PR, not on merge of any other PR.</p>
+<p><strong>Every element above is load-bearing</strong> — an earlier version of this template
+omitted four of them and failed the fleet's own <code>lint-workflows</code> audit:</p>
+<ul>
+<li><strong><code>permissions: {}</code> at the top with write scopes on the job.</strong> zizmor's
+  <code>excessive-permissions</code> rejects workflow-level <code>contents: write</code> /
+  <code>pull-requests: write</code>, because they are then granted to every job.</li>
+<li><strong>A comment on each permission.</strong> zizmor's <code>undocumented-permissions</code>.</li>
+<li><strong><code>name:</code> on the job.</strong> zizmor's <code>anonymous-definition</code> is only <em>info</em>
+  severity, but the shared <code>lint-workflows</code> reusable fails on it (exit 11).</li>
+<li><strong>A <code>concurrency:</code> block.</strong> zizmor's <code>concurrency-limits</code> (exit 12).</li>
+</ul>
+<p><strong><code>workflow_dispatch</code></strong> is not required by zizmor but is required in practice:
+without it the workflow can only be exercised by landing a commit on the
+default branch, so a misconfiguration cannot be verified until after it has
+already failed on <code>main</code>.</p>
 <blockquote>
+<p><strong>Baseline pin.</strong> A repo migrating from towncrier must also bump its
+<code>baseline-check.yml</code> caller to <code>a6378ac</code> or later. Earlier revisions require
+<code>changelog.d/</code> and <code>[tool.towncrier]</code> unconditionally, so they fail the very
+commit that removes them.</p>
 <p><strong>Pinning.</strong> Pin the action to a commit SHA, not a tag. Resolve the SHA
 with:</p>
 <div class="highlight"><pre><span></span><code><span class="nv">url</span><span class="o">=</span>https://github.com/googleapis/release-please-action.git

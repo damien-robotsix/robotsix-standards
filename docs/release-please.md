@@ -81,7 +81,7 @@ Every repo carries two config files at its root:
 - **`include-v-in-tag`** — `true`. Tags are `vX.Y.Z` (matching the existing
   `docker-release.yml` tag filter `["*.*.*"]` — the `v` prefix is part of
   the tag name).
-- **`bump-minor-pre-major`** — `true`. **Required to satisfy rule 4 below.**
+- **`bump-minor-pre-major`** — `true`. **Required to satisfy rule 5 below.**
   Without it a breaking conventional commit (`feat!:` / `fix!:`) bumps the
   *major* version even from `0.x`, so the first breaking change in any repo
   proposes `1.0.0`. With it, breaking changes bump the minor while the version
@@ -279,7 +279,74 @@ editing it by hand breaks the automation.
 > already declares `0.4.0`, and every runtime version check thereafter reports
 > a mismatch.
 
-### 3. Conventional commits are the single source of changelog content
+### 3. The version is declared statically
+
+**Rule:** `pyproject.toml` declares the version as a literal in `[project]`:
+
+```toml
+[project]
+version = "0.4.0"
+```
+
+It must **not** be computed. Specifically, `dynamic = ["version"]` combined
+with a VCS-derived source is disallowed:
+
+```toml
+# DISALLOWED — the version is computed from git tags at build time
+[build-system]
+requires = ["hatchling", "hatch-vcs"]
+
+[tool.hatch.version]
+source = "vcs"
+```
+
+The equivalent `setuptools_scm` configuration is disallowed for the same
+reason.
+
+**Rationale:** Release-please's model is *edit the version files, commit, then
+tag*. Its Python strategy rewrites `[project].version` in `pyproject.toml`,
+`__version__` in the package's `__init__.py`, and
+`.release-please-manifest.json`, then tags the resulting commit.
+
+A VCS-derived version inverts that arrow — the tag produces the version, so
+there is no file to rewrite. The two mechanisms then disagree about who owns
+the number: release-please bumps the manifest while the built artifact takes
+its version from `git describe` independently. Rule 2 above ("release-please
+is the only writer of the version field") is unsatisfiable when no version
+field exists.
+
+A **file-based** dynamic source is a narrower case:
+
+```toml
+[tool.hatch.version]
+path = "src/<package>/__init__.py"
+```
+
+Here the version *is* in a file, and release-please already rewrites that file,
+so it happens to work. It is still disallowed: `[project]` then carries no
+version for a reader or tool to find, and the arrangement only functions
+because two independent tools happen to agree on one path. Declare the literal
+and let hatchling read it.
+
+**Migrating off a VCS version:** replace `dynamic = ["version"]` with the
+literal, drop `hatch-vcs` from `build-system.requires` and delete the
+`[tool.hatch.version]` block. Choose the starting version deliberately — an
+untagged repo has been building `0.x.dev<distance>+g<sha>` strings, which are
+not a release history to continue from.
+
+> **Failure mode.** A repo on `hatch-vcs` with no tags builds as
+> `0.1.dev47+gf2a91c3`. Add release-please and it opens a release PR that bumps
+> a manifest and nothing else; merging tags the commit, and only then does the
+> package version change — via a completely different mechanism. Every
+> subsequent release PR proposes a bump from a number the build does not use.
+>
+> Dropping the VCS source also removes a whole class of Docker failure: the
+> `.git` directory is normally excluded from the build context, so a
+> VCS-derived version cannot be computed there at all, and the build needs a
+> `SETUPTOOLS_SCM_PRETEND_VERSION` escape hatch to work around its own
+> versioning scheme.
+
+### 4. Conventional commits are the single source of changelog content
 
 **Rule:** Every PR that changes user-visible behaviour uses a conventional
 commit prefix (`fix:`, `feat:`, or the `!` breaking marker). The commit
@@ -296,7 +363,7 @@ it as the changelog entry removes a duplicate step.
 > never opens a release PR. The version stays frozen, and the changelog is
 > empty despite months of merged PRs.
 
-### 4. Versions stay 0.x until 1.0.0 is declared deliberately
+### 5. Versions stay 0.x until 1.0.0 is declared deliberately
 
 **Rule:** Versions stay `0.x` under semver. Bumping to `1.0.0` is a human
 decision — it is never automated. Under 0.x there is no compatibility promise,
@@ -324,7 +391,7 @@ the flag violates this rule the first time anyone lands a breaking change.
 > changelog under **⚠ BREAKING CHANGES**, which is the intended behaviour: the
 > break is documented, the stability promise is not made.
 
-### 5. Config files are registered in docs/modules.yaml
+### 6. Config files are registered in docs/modules.yaml
 
 **Rule:** When a new `release-please-config.json` or
 `.release-please-manifest.json` file is created, its path must be added to

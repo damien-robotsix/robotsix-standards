@@ -2451,8 +2451,9 @@ everywhere.</p>
   <code>typecheck</code>, <code>test</code>, <code>test-unit</code>, <code>test-integration</code>, <code>coverage</code>, <code>docs</code>,
   <code>lock-check</code>, <code>pre-commit</code>, <code>clean</code>, and optional targets).</li>
 <li><strong><a href="pytest/">Pytest practices</a></strong> — <code>filterwarnings = ["error"]</code>,
-  <code>xfail_strict = true</code>, and <code>--strict-markers</code>/<code>--strict-config</code> so every test
-  suite fails loudly on deprecations, unregistered markers, and stale xfails.</li>
+  <code>xfail_strict = true</code>, <code>--strict-markers</code>/<code>--strict-config</code>, and
+  optional-dependency <code>importorskip</code> guards so every test suite fails loudly on
+  deprecations and collects cleanly without optional extras.</li>
 <li><strong><a href="pytest-shared-state-builders/">Pytest shared state builders</a></strong> —
   root <code>tests/conftest.py</code> for shared fixtures, <code>make_&lt;thing&gt;</code> factory
   fixtures for mutable test state, and value fixtures as thin factory

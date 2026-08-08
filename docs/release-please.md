@@ -29,6 +29,31 @@ separate release workflow, no manual bump classification. A release PR opens
 automatically whenever releasable commits land on the default branch; merging
 it publishes the release.
 
+## Prerequisite: let Actions open pull requests
+
+**Before any of the configuration below matters**, the repository must allow
+GitHub Actions to open pull requests. Release-please's entire mechanism is
+opening a release PR, so without this it can do nothing.
+
+Settings → Actions → General → *"Allow GitHub Actions to create and approve
+pull requests"*, or via the API:
+
+```bash
+# check
+gh api repos/damien-robotsix/<repo>/actions/permissions/workflow \
+  -q '.can_approve_pull_request_reviews'
+# enable
+gh api -X PUT repos/damien-robotsix/<repo>/actions/permissions/workflow \
+  -f default_workflow_permissions=read -F can_approve_pull_request_reviews=true
+```
+
+> **Failure mode.** With the setting off, the run gets as far as building the
+> tree and the release commit, then dies with
+> `release-please failed: GitHub Actions is not permitted to create or approve
+> pull requests.` The workflow and both config files can be perfectly correct
+> and the repo still never releases. On 2026-08-08 this was off in 9 of 15
+> fleet repos, which is why release-please had produced nothing anywhere.
+
 ## Configuration
 
 Every repo carries two config files at its root:
@@ -41,6 +66,7 @@ Every repo carries two config files at its root:
   "release-type": "python",
   "changelog-path": "CHANGELOG.md",
   "include-v-in-tag": true,
+  "bump-minor-pre-major": true,
   "packages": {
     ".": {}
   }
@@ -55,6 +81,11 @@ Every repo carries two config files at its root:
 - **`include-v-in-tag`** — `true`. Tags are `vX.Y.Z` (matching the existing
   `docker-release.yml` tag filter `["*.*.*"]` — the `v` prefix is part of
   the tag name).
+- **`bump-minor-pre-major`** — `true`. **Required to satisfy rule 4 below.**
+  Without it a breaking conventional commit (`feat!:` / `fix!:`) bumps the
+  *major* version even from `0.x`, so the first breaking change in any repo
+  proposes `1.0.0`. With it, breaking changes bump the minor while the version
+  stays below `1.0.0`, which is what a 0.x posture means.
 - **`packages`** — a single root package `"."`. Monorepo repos with multiple
   publishable packages list each package directory here; single-package repos
   use the root.
@@ -243,10 +274,22 @@ change at any minor bump. This is the correct posture for a stack under active
 development where clean cutover is the default migration strategy. Automating a
 `1.0.0` bump would make an unintended stability promise.
 
+**How it is enforced:** `"bump-minor-pre-major": true` in
+`release-please-config.json`. This rule is not self-enforcing — release-please
+bumps the major on a `feat!:` / `fix!:` commit by default, so a repo that omits
+the flag violates this rule the first time anyone lands a breaking change.
+
 > **Failure mode.** A repo whose release-please workflow bumps to `1.0.0`
 > automatically signals API stability that does not exist — consumers treat
 > minor bumps as safe and are broken by a breaking change that arrived without
 > a major-version signal.
+>
+> Observed 2026-08-08 on `robotsix-file-hub`: the first run after release-please
+> was made functional proposed `chore(main): release 1.0.0`, because the config
+> block above had been copied without the flag. Adding it produced the correct
+> `0.2.0` — a minor bump that still recorded the breaking change in the
+> changelog under **⚠ BREAKING CHANGES**, which is the intended behaviour: the
+> break is documented, the stability promise is not made.
 
 ### 5. Config files are registered in docs/modules.yaml
 

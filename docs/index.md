@@ -33,6 +33,9 @@ everywhere.
 - **[Security posture](security-posture.md)** — self-enforcing security gates
   (SAST, dependency review, Dependabot, workflow hardening, secret protection,
   SBOM), auditable per repo.
+- **[GitHub Actions security](github-actions-security.md)** — zizmor static-security
+  auditor for GitHub Actions workflows, canonical invocation, and a
+  warning-first-then-fail-closed phased rollout policy.
 - **[Stale bot must exempt pull requests](stale-bot-must-exempt-pull-requests.md)** —
   every `stale.yml` must disable pull-request staling and closing with
   `days-before-pr-stale: -1` and `days-before-pr-close: -1` — keep issue

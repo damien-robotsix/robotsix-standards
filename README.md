@@ -54,7 +54,7 @@ the default.
 | [Python practices](docs/python.md) | uv, hatchling, `requires-python`, lint/type/security gates, test layout, pre-commit hooks. |
 | [Python `__main__.py` exit-code forwarding](docs/python-main-py-forward.md) | `__main__.py` must forward `main()`'s return value to `sys.exit()` so `python -m <pkg>` reports the same exit code as the installed console script. |
 | [Console-script subprocess tests](docs/console-script-subprocess-test.md) | Every `[project.scripts]` entry point must be tested as a subprocess through the installed binary, not only in-process or via `python -m`. |
-| [Pytest practices](docs/pytest.md) | Pytest strictness configuration — `filterwarnings`, `xfail_strict`, `--strict-markers`, and `--strict-config` — so every test suite fails loudly on deprecations, unregistered markers, and stale xfails. |
+| [Pytest practices](docs/pytest.md) | Pytest strictness configuration (`filterwarnings`, `xfail_strict`, `--strict-markers`, `--strict-config`) and optional-dependency `importorskip` guards so every test suite fails loudly on deprecations and collects cleanly without optional extras. |
 | [Pytest shared state builders](docs/pytest-shared-state-builders.md) | Root `tests/conftest.py` for shared fixtures, `make_<thing>` factory fixtures for mutable state, and value fixtures as thin factory callers — reusable builders across every test package. |
 | [Python Makefile convention](docs/python-makefile-convention.md) | Standard Makefile targets (install, lint, test, clean) for every Python repository using uv. |
 | [Ruff lint rules](docs/ruff-lint-rules.md) | Tier 2 ruff rule families (SIM, C4, LOG, G, ERA, PGH, RUF, PT) with the PT006 exclusion. |

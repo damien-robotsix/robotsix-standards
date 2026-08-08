@@ -149,6 +149,76 @@ filterwarnings = [
 ]
 ```
 
+## Optional test dependencies — `importorskip` guard
+
+> **Scope: every Python repository that declares optional test dependencies**
+> in `[project.optional-dependencies]` (any extra).  The rule applies to any
+> module-level `import` in a test file that references a package **not**
+> listed in the project's unconditional (bare) `dependencies`.
+
+### Why this exists
+
+`pytest` imports every test module during **collection**, before any test
+runs.  An unguarded module-level `import <optional-dep>` therefore breaks
+the whole test suite with `ModuleNotFoundError` — it does **not** defer the
+failure to the tests that use it.  When the optional dependency is absent,
+the suite cannot even start.
+
+Guarding with `pytest.importorskip` (at module scope, before the import)
+makes pytest report the affected tests as `skipped` when the optional
+dependency is missing, so the suite still collects and runs the remaining
+tests.
+
+### Rule
+
+Every **module-level import of an optional dependency** in a test file must
+be guarded with `pytest.importorskip("<module>")` placed **immediately before**
+the guarded `import` statement.
+
+**Pattern:**
+
+```python
+import pytest
+
+pytest.importorskip("hypothesis")
+from hypothesis import given, settings  # guarded — only reached if hypothesis is installed
+```
+
+A conditional import (`try: ... except ImportError: ...`) is an acceptable
+alternative when the test file needs to import the optional module
+conditionally, but `importorskip` is preferred because it integrates with
+pytest's skip reporting and is the canonical mechanism.
+
+**Failure mode:** an unguarded module-level `import <optional-dep>` causes
+`ModuleNotFoundError` at collection time, preventing the **entire** test
+suite from running — not just the tests that need the dependency.  A
+contributor running `pytest` without the `[dev]` extra installed gets a
+crashed suite with no indication of which dependency is missing or which
+tests are affected.
+
+### Adoption by the ecosystem
+
+All prominent typed projects apply exactly this pattern at module scope,
+before the optional-extra imports:
+
+- **pandas** — guards optional-backend test files with `importorskip`
+  (including `minversion` forms).
+- **Pydantic** — module-level `importorskip` for optional extras
+  (`email-validator`, `python-dotenv`, `orjson`, `Babel`) so the suite
+  collects cleanly without them.
+- **FastAPI** — same for SQLAlchemy and version-specific test files.
+
+### Fleet exemplar
+
+`robotsix-config` already codifies this in its `AGENT.md` and follows it:
+`tests/config/test_config_properties.py` calls
+`pytest.importorskip("hypothesis")` at line 9, immediately before the
+`from hypothesis import ...` at lines 12-13.
+
+Repos that follow this standard should also consider adding a CI guardian
+job that mechanically verifies every module-level optional-dependency
+import in `tests/` is guarded, preventing regressions.
+
 ## Cross-reference
 
 - **[Pytest shared state builders](pytest-shared-state-builders.md)** —

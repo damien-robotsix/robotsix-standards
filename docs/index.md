@@ -98,8 +98,9 @@ everywhere.
   `typecheck`, `test`, `test-unit`, `test-integration`, `coverage`, `docs`,
   `lock-check`, `pre-commit`, `clean`, and optional targets).
 - **[Pytest practices](pytest.md)** — `filterwarnings = ["error"]`,
-  `xfail_strict = true`, and `--strict-markers`/`--strict-config` so every test
-  suite fails loudly on deprecations, unregistered markers, and stale xfails.
+  `xfail_strict = true`, `--strict-markers`/`--strict-config`, and
+  optional-dependency `importorskip` guards so every test suite fails loudly on
+  deprecations and collects cleanly without optional extras.
 - **[Pytest shared state builders](pytest-shared-state-builders.md)** —
   root `tests/conftest.py` for shared fixtures, `make_<thing>` factory
   fixtures for mutable test state, and value fixtures as thin factory

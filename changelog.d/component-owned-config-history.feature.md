@@ -1,0 +1,1 @@
+Config ownership: define where a component's setting history lives and forbid the deploy plane from mirroring component config. The history is a `<config>.versions` JSONL sidecar implemented by `robotsix_config.history` rather than hand-rolled per component, and central-deploy reads a component's config directly instead of keeping its own copy of the values.

@@ -139,16 +139,28 @@ on:
       - closed
     branches:
       - main
+  workflow_dispatch:
 
-permissions:
-  contents: write
-  pull-requests: write
+# Serialise releases per branch. Deliberately NOT cancel-in-progress: a cancel
+# between pushing the release commit and creating the tag would leave the repo
+# half-released.
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref_name }}
+  cancel-in-progress: false
+
+# Job-scoped below, not here.
+permissions: {}
 
 jobs:
   release-please:
+    name: Release Please
     runs-on: ubuntu-latest
+    permissions:
+      contents: write       # create the release commit, tag and GitHub Release
+      pull-requests: write  # open and update the release PR
     if: |
       github.event_name == 'push' ||
+      github.event_name == 'workflow_dispatch' ||
       (github.event_name == 'pull_request' &&
        github.event.pull_request.merged == true &&
        github.event.pull_request.head.ref == 'release-please--branches--main')
@@ -160,6 +172,27 @@ jobs:
 
 The `if` guard ensures the action only creates tags/releases on merge of its
 own release PR, not on merge of any other PR.
+
+**Every element above is load-bearing** — an earlier version of this template
+omitted four of them and failed the fleet's own `lint-workflows` audit:
+
+- **`permissions: {}` at the top with write scopes on the job.** zizmor's
+  `excessive-permissions` rejects workflow-level `contents: write` /
+  `pull-requests: write`, because they are then granted to every job.
+- **A comment on each permission.** zizmor's `undocumented-permissions`.
+- **`name:` on the job.** zizmor's `anonymous-definition` is only *info*
+  severity, but the shared `lint-workflows` reusable fails on it (exit 11).
+- **A `concurrency:` block.** zizmor's `concurrency-limits` (exit 12).
+
+**`workflow_dispatch`** is not required by zizmor but is required in practice:
+without it the workflow can only be exercised by landing a commit on the
+default branch, so a misconfiguration cannot be verified until after it has
+already failed on `main`.
+
+> **Baseline pin.** A repo migrating from towncrier must also bump its
+> `baseline-check.yml` caller to `a6378ac` or later. Earlier revisions require
+> `changelog.d/` and `[tool.towncrier]` unconditionally, so they fail the very
+> commit that removes them.
 
 > **Pinning.** Pin the action to a commit SHA, not a tag. Resolve the SHA
 > with:

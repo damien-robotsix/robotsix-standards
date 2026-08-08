@@ -6,6 +6,7 @@
 # release-time failures when towncrier rebuilds displace the disable guard.
 ignores:
   - docs/CHANGELOG.md
+  - changelog.d/
 
 config:
   MD013:

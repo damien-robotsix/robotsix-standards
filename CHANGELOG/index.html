@@ -76,7 +76,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#robotsix-standards-030-2026-08-03" class="md-skip">
+        <a href="#robotsix-standards-040-2026-08-08" class="md-skip">
           Skip to content
         </a>
       
@@ -2111,6 +2111,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#fixed" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Fixed
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#changed" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2167,6 +2178,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#fixed" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Fixed
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#changed" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2200,14 +2222,69 @@
 <!-- markdownlint-disable MD013 MD025 MD024 -->
 <!-- towncrier release notes start -->
 
-<h1 id="robotsix-standards-030-2026-08-03">robotsix-standards 0.3.0 (2026-08-03)<a class="headerlink" href="#robotsix-standards-030-2026-08-03" title="Permanent link">&para;</a></h1>
+<h1 id="robotsix-standards-040-2026-08-08">robotsix-standards 0.4.0 (2026-08-08)<a class="headerlink" href="#robotsix-standards-040-2026-08-08" title="Permanent link">&para;</a></h1>
 <h2 id="added">Added<a class="headerlink" href="#added" title="Permanent link">&para;</a></h2>
+<ul>
+<li>Config ownership: define where a component's setting history lives and forbid the deploy plane from mirroring component config. The history is a <code>&lt;config&gt;.versions</code> JSONL sidecar implemented by <code>robotsix_config.history</code> rather than hand-rolled per component, and central-deploy reads a component's config directly instead of keeping its own copy of the values. (component-owned-config-history)</li>
+<li>Added a <strong>Docs site deployment</strong> standard covering the GitHub Pages contract for
+  repos that publish: the caller-permission triple the shared <code>python-docs.yml</code>
+  spine requires, the Pages source setting that must accompany it, and who owns
+  concurrency. A fleet audit found six different pins of that one workflow, four
+  caller-permission shapes, three Pages configurations, and three repos whose Docs
+  workflow had never once run — a permissions mismatch fails at startup with no
+  logs, no checks and nothing on the PR, so nothing surfaces it. (docs-site-deployment-standard)</li>
+<li>Added a <strong>Module taxonomy scope</strong> standard: <code>docs/modules.yaml</code> inventories
+  product code, not the repository's own build, lint, packaging and release
+  scaffolding. Rule 6 of the changelog standard, which previously <em>required</em>
+  registering every towncrier fragment in the taxonomy, is inverted to forbid it —
+  its own rationale had conceded the requirement was "a recurring friction point"
+  while documenting the workaround rather than removing the cause. (module-taxonomy-scope)</li>
+<li>New standard: py.typed wheel guard — automated verification that PEP 561 type markers ship in built wheels via installed type-check and wheel-content assertion. (20260802T163029Z-standardize-automated-py-typed-wheel-mar-6cad)</li>
+</ul>
+<h2 id="fixed">Fixed<a class="headerlink" href="#fixed" title="Permanent link">&para;</a></h2>
+<ul>
+<li>Link checking no longer fails on rate-limited hosts. <code>readthedocs.io</code> joins the
+  <code>ignore_urls</code> list — four pages link there and it answers anonymous traffic with
+  429, so an unlucky build failed on all four at once. The MkDocs build integrity
+  standard now states the general rule: a <code>403</code> or <code>429</code> means the server answered
+  and the link is fine, so a checker must never fail on either. (linkcheck-rate-limit)</li>
+<li>Documented the "Allow GitHub Actions to create and approve pull requests" repository setting as a prerequisite for release-please — without it every run fails at PR creation, which is why release-please had produced nothing across the fleet. Also added the missing <code>bump-minor-pre-major</code> flag to the config example: rule 4 requires staying in the 0.x line, but the printed config omitted the only setting that enforces it, so following the page exactly produced the <code>1.0.0</code> bump the page forbids. (20260808T190000Z-release-please-prereq-and-0x)</li>
+<li>Aligned the release-please workflow template with the fleet's own <code>lint-workflows</code> audit. As printed it failed zizmor on four counts — workflow-level write permissions (<code>excessive-permissions</code>), undocumented permissions, an unnamed job (<code>anonymous-definition</code>), and a missing <code>concurrency</code> block — so a repo following the page exactly could not pass CI. Also added <code>workflow_dispatch</code>, and a note that migrating repos must bump their <code>baseline-check.yml</code> pin to <code>a6378ac</code> or later. (20260808T192000Z-release-please-template-zizmor)</li>
+</ul>
+<h2 id="changed">Changed<a class="headerlink" href="#changed" title="Permanent link">&para;</a></h2>
+<ul>
+<li>CI failure: CI on main (20260803T102810Z-ci-failure-ci-on-main-08b2)</li>
+<li>Langfuse ownership 1/3 — standardized per-component Langfuse credential block in the component config standard (20260805T105614Z-langfuse-ownership-1-3-standardized-per-90d8)</li>
+<li>Standardize: release-please for automated version/changelog/tag sync across robotsix repos (20260803T115354Z-standardize-release-please-for-automated-72d9)</li>
+<li>Prevent recurring towncrier-release CHANGELOG.md markdownlint CI breakage on robotsix-standards main (20260803T130133Z-prevent-recurring-towncrier-release-chan-f116)</li>
+<li>Extended <code>docs/pytest.md</code> targeted warning ignores with the httpx-style
+  message-prefix example, regex-matching note, safe-ignore procedure, and
+  async nested-event-loop hazard guidance. (20260802T153209Z-pytest-filterwarnings-0d1f)</li>
+<li>Standardize: console-script subprocess tests — every [project.scripts] entry point must be tested as a subprocess through the installed binary (20260803T160730Z-standardize-subprocess-test-installed-pr-d88c)</li>
+<li>Standardize: pytest shared state-builders as factory fixtures in a root tests/conftest.py (20260802T160811Z-standardize-pytest-shared-state-builders-b57a)</li>
+<li>Standardize: FastAPI test isolation via Depends() + dependency_overrides (20260804T163354Z-standardize-fastapi-test-isolation-via-d-7d34)</li>
+<li>Standardize: split liveness vs readiness health endpoints for HTTP-serving fleet services (20260804T163427Z-standardize-split-liveness-vs-readiness-7932)</li>
+<li>Standardize: library-internal logging convention (getLogger(<strong>name</strong>) + NullHandler, DEBUG retry logs) (20260806T163819Z-standardize-library-internal-logging-con-a5ec)</li>
+<li>Standardize: service-level compose healthcheck hitting app liveness endpoint for backend repos (20260805T163918Z-standardize-service-level-compose-health-a647)</li>
+<li>Mark docs/changelog-driven-releases.md as superseded (add page banner + nav annotation) (20260806T164342Z-mark-docs-changelog-driven-releases-md-a-9fc0)</li>
+<li>Standardize: enforce mypy as a blocking merge gate for type-aware packages (20260804T171434Z-standardize-enforce-mypy-as-a-blocking-m-3530)</li>
+<li>Standardize: stale bot must exempt pull requests from auto-close (days-before-pr-stale / days-before-pr-close: -1) (20260804T172417Z-standardize-stale-bot-must-exempt-pull-r-48cf)</li>
+<li>Standardize: Dependabot auto-merge must wait for passing CI and exclude Docker/pre-commit bumps (20260805T173539Z-standardize-dependabot-auto-merge-must-w-2f1c)</li>
+<li>Standardize: expose a runtime <strong>version</strong> via a file-based single source for git-consumed stack libraries (20260805T173848Z-standardize-expose-a-runtime-version-via-69c2)</li>
+<li>Add a local CI gate rejecting changelog fragments clipped with a literal truncation ellipsis (20260731T193229Z-add-a-local-ci-gate-rejecting-changelog-f3b6)</li>
+<li>Add a CI gate rejecting multiple changelog.d fragments for the same ticket/event in a single changeset (20260803T200250Z-add-a-ci-gate-rejecting-multiple-changel-bdae)</li>
+<li>Consolidated two duplicate changelog entries for pytest filterwarnings standardization (20260803T200250Z-consolidate-the-two-duplicate-changelog-8d58)</li>
+<li>Adopt zizmor as a fleet-wide GitHub Actions security standard (warn-first rollout) (20260807T204925Z-adopt-zizmor-as-a-fleet-wide-github-acti-93c6)</li>
+<li>Update deprecated pyproject.toml license format (table → SPDX string) (20260802T212642Z-update-deprecated-pyproject-toml-license-8e98)</li>
+</ul>
+<h1 id="robotsix-standards-030-2026-08-03">robotsix-standards 0.3.0 (2026-08-03)<a class="headerlink" href="#robotsix-standards-030-2026-08-03" title="Permanent link">&para;</a></h1>
+<h2 id="added_1">Added<a class="headerlink" href="#added_1" title="Permanent link">&para;</a></h2>
 <ul>
 <li>Component standard: fix the storage shape for Langfuse tracing credentials. Each component declares them in one canonical top-level <code>langfuse</code> block — instance <code>host</code> plus a <code>projects</code> map keyed by the Langfuse project name (<code>&lt;repo&gt;</code> / <code>&lt;repo&gt;-&lt;function&gt;</code>, matching the existing one-project-per-function rule), each entry carrying <code>public_key</code>, <code>secret_key</code>, and an optional <code>project_id</code>. This lets the deployment engine enumerate every component's credentials the same way and dispatch them to fleet consumers (the chat agent's trace proxy, cost-monitor's reconciliation) without per-component special cases. Also states the no-fallback rule: the engine reads this block only — never deploy-plane <code>LANGFUSE_*</code> environment variables or a pre-standard layout — so an unmigrated component fails visibly instead of silently reporting no projects. (20260802T142000Z-canonical-langfuse-credential-block)</li>
 <li>Component standard: give the OpenRouter provider key the same canonical storage shape as the Langfuse credentials it reconciles against. A component declares a top-level <code>openrouter</code> block whose <code>keys</code> map is addressed by the <em>same</em> aliases as <code>langfuse.projects</code> (<code>&lt;repo&gt;</code> / <code>&lt;repo&gt;-&lt;function&gt;</code>), which is what makes "provider-billed for this function" joinable to "traced for this function"; from that follows the rule that a provider key must fund exactly one function, since reconciliation diffs cumulative usage per key and two functions behind one key produce a figure attributable to neither. The no-fallback rule now covers both blocks. Also drops the stale requirement to hand-register every project in cost-monitor's <code>projects.yaml</code> — consumers discover projects from the deployment engine instead of keeping their own copy.</li>
 </ul>
 <p>Deployment system: record where observability credentials actually live (the owning component's canonical blocks; the engine's <code>langfuse_projects</code> / <code>openrouter_keys</code> dicts are an operator override that wins on alias collision, not the primary store), require that consumers obtain other components' credentials through one generic engine endpoint rather than hand-copied config, and require operator-supplied aliases that no component claims to be surfaced under a synthetic <code>operator-configured</code> entry — never dropped, and never attributed to a component that did not declare them. (20260802T160000Z-canonical-openrouter-credential-block)</p>
-<h2 id="changed">Changed<a class="headerlink" href="#changed" title="Permanent link">&para;</a></h2>
+<h2 id="changed_1">Changed<a class="headerlink" href="#changed_1" title="Permanent link">&para;</a></h2>
 <ul>
 <li>robotsix-standards: reconcile the intended periodic-agent set (markdown-only repo) (20260801T083039Z-robotsix-standards-reconcile-the-intende-0bcf)</li>
 <li>Discard docstring_coverage re-add; reconcile periodic-agent set as one decision (20260801T083041Z-discard-docstring-coverage-re-add-reconc-05b7)</li>
@@ -2257,7 +2334,7 @@
 <li>Correct the false 'SLSA updated to v1.3' changelog claim on robotsix-standards main (20260731T225426Z-correct-the-false-slsa-updated-to-v1-3-c-6ce5)</li>
 </ul>
 <h1 id="robotsix-standards-020-2026-07-27">robotsix-standards 0.2.0 (2026-07-27)<a class="headerlink" href="#robotsix-standards-020-2026-07-27" title="Permanent link">&para;</a></h1>
-<h2 id="added_1">Added<a class="headerlink" href="#added_1" title="Permanent link">&para;</a></h2>
+<h2 id="added_2">Added<a class="headerlink" href="#added_2" title="Permanent link">&para;</a></h2>
 <ul>
 <li>Add the <strong>Free-tier-only (no paid services)</strong> standard: the fleet runs on free/OSS
   tooling only — the sole permitted paid dependency is LLM agent inference. Codifies
@@ -2268,7 +2345,7 @@
   is compliant; private repos <code>robotsix-invest</code>/<code>robotsix-website</code>/<code>hexarchy</code> run
   paid Actions and need remediation. (20260724T152735Z-add-free-tier-only-standard)</li>
 </ul>
-<h2 id="changed_1">Changed<a class="headerlink" href="#changed_1" title="Permanent link">&para;</a></h2>
+<h2 id="changed_2">Changed<a class="headerlink" href="#changed_2" title="Permanent link">&para;</a></h2>
 <ul>
 <li>Standardize: Ruff high-signal lint rules (SIM, C4, LOG, G, ERA, PGH, RUF, selective PT) (20260725T001924Z-standardize-ruff-high-signal-lint-rules-9975)</li>
 <li>docs/security-posture.md: update CodeQL→Semgrep in tooling-policy parenthetical (line 60) (20260721T002037Z-docs-security-posture-md-update-codeql-s-d6c9)</li>
@@ -2330,7 +2407,7 @@
 <li>Adopt open-source secret scanning; codify OSS-preferred tooling policy (drop licensed Gitleaks) (20260720T234819Z-adopt-open-source-secret-scanning-codify-8ee9)</li>
 </ul>
 <h1 id="robotsix-standards-014-2026-07-20">robotsix-standards 0.1.4 (2026-07-20)<a class="headerlink" href="#robotsix-standards-014-2026-07-20" title="Permanent link">&para;</a></h1>
-<h2 id="changed_2">Changed<a class="headerlink" href="#changed_2" title="Permanent link">&para;</a></h2>
+<h2 id="changed_3">Changed<a class="headerlink" href="#changed_3" title="Permanent link">&para;</a></h2>
 <ul>
 <li>security-posture.md: add exemption for content-only / docs-only repos (20260718T000300Z-security-posture-md-add-exemption-for-co-60f0)</li>
 <li>component-standard.md: address OWASP Top 10 for LLM Applications (20260718T000301Z-component-standard-md-address-owasp-top-ff59)</li>
@@ -2584,7 +2661,7 @@
 <li>README: add direct link to the published docs site (<code>damien-robotsix.github.io/robotsix-standards</code>). (20260717T173132Z-readme-add-the-required-docs-site-link-p-164f)</li>
 </ul>
 <h1 id="robotsix-standards-013-2026-07-13">robotsix-standards 0.1.3 (2026-07-13)<a class="headerlink" href="#robotsix-standards-013-2026-07-13" title="Permanent link">&para;</a></h1>
-<h2 id="changed_3">Changed<a class="headerlink" href="#changed_3" title="Permanent link">&para;</a></h2>
+<h2 id="changed_4">Changed<a class="headerlink" href="#changed_4" title="Permanent link">&para;</a></h2>
 <ul>
 <li>entrypoint-contract.md: mill example cites outdated root rationale (socket-group-join, not volume reconciliation) (20260711T070827Z-entrypoint-contract-md-mill-example-cite-93f5)</li>
 <li>CHANGELOG.md: stale duplicated '0.0.0 (unreleased)' block below released sections (20260711T070831Z-changelog-md-stale-duplicated-0-0-0-unre-fb58)</li>
@@ -2596,7 +2673,7 @@
 <li>Derive a ROS 2 practices page for robotsix-standards from mill-ros2 (20260712T232045Z-derive-a-ros-2-practices-page-for-robots-d71c)</li>
 </ul>
 <h1 id="robotsix-standards-012-2026-07-06">robotsix-standards 0.1.2 (2026-07-06)<a class="headerlink" href="#robotsix-standards-012-2026-07-06" title="Permanent link">&para;</a></h1>
-<h2 id="changed_4">Changed<a class="headerlink" href="#changed_4" title="Permanent link">&para;</a></h2>
+<h2 id="changed_5">Changed<a class="headerlink" href="#changed_5" title="Permanent link">&para;</a></h2>
 <ul>
 <li>Baseline self-conformance sweep: standard pre-commit set (docs-repo
   subset), shared baseline-check and dependabot-auto-merge callers, docs
@@ -2616,7 +2693,7 @@
 <li>CI failure: Auto Release on main (20260703T234004Z-ci-failure-auto-release-on-main-2aa9)</li>
 </ul>
 <h1 id="robotsix-standards-011-2026-07-03">robotsix-standards 0.1.1 (2026-07-03)<a class="headerlink" href="#robotsix-standards-011-2026-07-03" title="Permanent link">&para;</a></h1>
-<h2 id="changed_5">Changed<a class="headerlink" href="#changed_5" title="Permanent link">&para;</a></h2>
+<h2 id="changed_6">Changed<a class="headerlink" href="#changed_6" title="Permanent link">&para;</a></h2>
 <ul>
 <li>Third standards-review round: one fleet-wide coverage floor (80, shared-workflow-enforced, fleet-wide raises only), branch-protection standard, <code>robotsix-template-python</code> starting point, gate-completeness principle, <code>robotsix.deploy.stateful</code> flag removed (backups are the operator's concern), modules.yaml scoped to mill-managed repos, config-standard YAML transition notes closed (clean cutover, old YAML paths deleted), repo self-conformance (dependabot, towncrier, <code>requires-python &gt;=3.14</code>). (20260703T120000Z-third-review-round)</li>
 <li>Fourth standards-review round: one health endpoint (<code>GET /health</code>, liveness only), <code>/data</code> as the fleet data mount, Python project-layout section, docs publishing declarative + fleet index page, <code>&lt;name&gt;_url</code> service-wiring convention, volumes-only rule (no host bind mounts; claude auth via the managed <code>claude-auth</code> volume with dashboard login — closes the host-<code>~/.claude</code> design after the 2026-07-03 outage), broker (agent-comm) deprecated fleet-wide. (20260703T130000Z-fourth-review-round)</li>

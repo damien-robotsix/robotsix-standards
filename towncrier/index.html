@@ -2323,10 +2323,14 @@
 
 <h1 id="towncrier-changelog-management">Towncrier changelog management<a class="headerlink" href="#towncrier-changelog-management" title="Permanent link">&para;</a></h1>
 <blockquote>
-<p><strong>Scope: every Python repository.</strong> Towncrier is the fleet-wide changelog
-tool — every Python repo ships a <code>[tool.towncrier]</code> config and a
-<code>changelog.d/</code> fragment directory. The language-agnostic release rules
-(auto-release workflow, version policy) live in the
+<p><strong>Superseded:</strong> <a href="../release-please/">release-please</a> is the fleet-wide
+release and changelog automation. This page documents the prior towncrier
+convention, kept for reference while repos migrate. A repo that has adopted
+release-please carries no <code>[tool.towncrier]</code> config and no <code>changelog.d/</code>
+directory — its changelog is generated from conventional commits.</p>
+<p><strong>Scope while still on towncrier.</strong> Every Python repo that has not yet
+migrated ships a <code>[tool.towncrier]</code> config and a <code>changelog.d/</code> fragment
+directory. The language-agnostic release rules live in the
 <a href="../repo-baseline/#changelog-releases">repo baseline</a>.</p>
 </blockquote>
 <h2 id="what-towncrier-does">What towncrier does<a class="headerlink" href="#what-towncrier-does" title="Permanent link">&para;</a></h2>

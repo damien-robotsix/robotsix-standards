@@ -1,5 +1,3 @@
-
-
 <!-- markdownlint-disable MD013 MD025 MD024 -->
 <!-- towncrier release notes start -->
 
@@ -233,6 +231,41 @@
 - Define security posture requirements as an auditable standard (20260717T233031Z-define-security-posture-requirements-as-590f)
 - Add custom audit agent for security aspects of the standards definitions (20260717T233343Z-add-custom-audit-agent-for-security-aspe-7ef2)
 - Standardize: enable uv cache in all CI jobs using astral-sh/setup-uv (20260718T235556Z-standardize-enable-uv-cache-in-all-ci-jo-9993)
+
+## [0.5.0](https://github.com/damien-robotsix/robotsix-standards/compare/v0.4.0...v0.5.0) (2026-08-08)
+
+
+### Features
+
+* **component-standard:** canonical OpenRouter key block + credential dispatch ([#190](https://github.com/damien-robotsix/robotsix-standards/issues/190)) ([d1d9a80](https://github.com/damien-robotsix/robotsix-standards/commit/d1d9a8035ae59807b7757b25597e2f498fa15b51))
+* **component-standard:** fix the storage shape for Langfuse credentials ([#189](https://github.com/damien-robotsix/robotsix-standards/issues/189)) ([82bffc1](https://github.com/damien-robotsix/robotsix-standards/commit/82bffc1185517510ab0bb5d5f9641fcf4d47c36a))
+* **release-please:** require a statically declared version ([#229](https://github.com/damien-robotsix/robotsix-standards/issues/229)) ([b532de2](https://github.com/damien-robotsix/robotsix-standards/commit/b532de27a95779b386c415dd5d9d2a9caed7e53c))
+* **release:** adopt release-please, retire towncrier ([#227](https://github.com/damien-robotsix/robotsix-standards/issues/227)) ([c3da78d](https://github.com/damien-robotsix/robotsix-standards/commit/c3da78d871c9c6be8bfc223f7ae65ac3cee5a9cd))
+
+
+### Bug Fixes
+
+* **release-please:** align the workflow template with the fleet linter ([#226](https://github.com/damien-robotsix/robotsix-standards/issues/226)) ([2a59558](https://github.com/damien-robotsix/robotsix-standards/commit/2a59558e395b6792ba027231f01df7d3b895626f))
+* **release-please:** document the Actions PR setting and the 0.x flag ([#225](https://github.com/damien-robotsix/robotsix-standards/issues/225)) ([b682235](https://github.com/damien-robotsix/robotsix-standards/commit/b6822353e2b7098087c98a1bc59572137fc2d4aa))
+* **release-please:** mint an App token, not GITHUB_TOKEN ([#230](https://github.com/damien-robotsix/robotsix-standards/issues/230)) ([da07f1f](https://github.com/damien-robotsix/robotsix-standards/commit/da07f1f1101029a49e5d3a3714075596fe864827))
+* **release:** mint an App token so release PRs get CI ([#231](https://github.com/damien-robotsix/robotsix-standards/issues/231)) ([00853ca](https://github.com/damien-robotsix/robotsix-standards/commit/00853caa049d8dc0cd6e22cd79eea4f7b5eb95a9))
+* **release:** regenerate uv.lock on the release branch ([#232](https://github.com/damien-robotsix/robotsix-standards/issues/232)) ([e456810](https://github.com/damien-robotsix/robotsix-standards/commit/e456810011a76e3286a4ad292f2f95bdc1e678f3))
+
+
+### Documentation
+
+* a rate-limit is not a broken link ([#216](https://github.com/damien-robotsix/robotsix-standards/issues/216)) ([8aac08c](https://github.com/damien-robotsix/robotsix-standards/commit/8aac08c9ce1608dcd9f5b883aea84461746a94be))
+* add configure-pages init step for reliable Pages deployment ([54c0ecb](https://github.com/damien-robotsix/robotsix-standards/commit/54c0ecb70f2b3dbf4fe9e684c9ba73c76cc88512))
+* add Free-tier-only (no paid services) standard + audit ([#117](https://github.com/damien-robotsix/robotsix-standards/issues/117)) ([96c8c20](https://github.com/damien-robotsix/robotsix-standards/commit/96c8c20006a293e1eee6d1fb0df73cfb62f44df4))
+* add the deployment-system (bootstrap) tier ([#3](https://github.com/damien-robotsix/robotsix-standards/issues/3)) ([1f04146](https://github.com/damien-robotsix/robotsix-standards/commit/1f041463b7add595f6cec376a67729a4aac7a591))
+* add the docs-site deployment standard ([#215](https://github.com/damien-robotsix/robotsix-standards/issues/215)) ([5eadd52](https://github.com/damien-robotsix/robotsix-standards/commit/5eadd52847a1a2bfc5816361071aa61d5cf76d4b))
+* align README/index with the no-env-overlay config standard ([#2](https://github.com/damien-robotsix/robotsix-standards/issues/2)) ([c20e28d](https://github.com/damien-robotsix/robotsix-standards/commit/c20e28d873b5052ac2f9843dc40ce071bdcdac2e))
+* **config-ownership:** component-owned setting history, no deploy-plane mirror ([#220](https://github.com/damien-robotsix/robotsix-standards/issues/220)) ([1d70164](https://github.com/damien-robotsix/robotsix-standards/commit/1d701640baaa1cc3f821a2783808e7ba2acc2123))
+* define what belongs in the module taxonomy ([#219](https://github.com/damien-robotsix/robotsix-standards/issues/219)) ([8d1b937](https://github.com/damien-robotsix/robotsix-standards/commit/8d1b93799e5b2c6fee16f7a1ccc17074b5a719e8))
+* deploy to GitHub Pages via the shared python-docs workflow ([fd59f49](https://github.com/damien-robotsix/robotsix-standards/commit/fd59f496cbb83f22057844014450a1b8b6509723))
+* point deploy contract at its canonical home in central-deploy ([#1](https://github.com/damien-robotsix/robotsix-standards/issues/1)) ([970e21a](https://github.com/damien-robotsix/robotsix-standards/commit/970e21a829b98f42204083d2443996e3c5b60885))
+* self-contained GitHub Pages deploy (modern Pages Actions) ([e62257c](https://github.com/damien-robotsix/robotsix-standards/commit/e62257cba8e9726b62b5832b605b93d6d33a6163))
+* split baseline by language; promote fleet practices; drop vulture ([#4](https://github.com/damien-robotsix/robotsix-standards/issues/4)) ([9d52976](https://github.com/damien-robotsix/robotsix-standards/commit/9d52976b6df54311699841ab8d6ed2e11fb9f33f))
 
 ## 0.0.0 (unreleased)
 

@@ -192,6 +192,105 @@ deliberately only if ever needed: service discovery, a registry,
 central-deploy-injected addresses, DNS-name conventions. Plain config fields
 are the whole mechanism.
 
+### 7. Langfuse configuration — one per-component block
+
+Every component that emits traces to Langfuse declares its own Langfuse
+credentials in its own config. The config block is a nested `langfuse`
+field on the component's root model — the component is the authoritative
+source of its Langfuse identity, not a shared env secret, not a
+central-deploy credential map.
+
+**Model shape — pydantic**
+
+```python
+from pydantic import BaseModel, SecretStr
+
+
+class LangfuseProjectConfig(BaseModel):
+    """Credentials for one Langfuse project."""
+    public_key: str
+    secret_key: SecretStr
+
+
+class LangfuseConfig(BaseModel):
+    """Per-component Langfuse configuration."""
+    host: str = "https://cloud.langfuse.com"
+    projects: dict[str, LangfuseProjectConfig] = {}
+```
+
+On the root component model:
+
+```python
+class MyComponentConfig(BaseModel):
+    langfuse: LangfuseConfig = LangfuseConfig()
+```
+
+The block nests under the `langfuse` key in `config/config.json`:
+
+```json
+{
+  "langfuse": {
+    "host": "https://cloud.langfuse.com",
+    "projects": {
+      "primary": {
+        "public_key": "pk-lf-...",
+        "secret_key": "sk-lf-..."
+      }
+    }
+  }
+}
+```
+
+**Constraints**
+
+- **Component-owned.** The `langfuse` block lives in the component's own
+  `config/config.json` per the one-file rule (§1). No env-var-based
+  credential discovery (`LANGFUSE_PUBLIC_KEY`, `LANGFUSE_SECRET_KEY`,
+  `LANGFUSE_HOST`).
+- **No central override map.** There is no deploy-plane credential map or
+  shared Langfuse config that components read from. Each component declares
+  its own `langfuse` block, and its own config is the sole source of truth
+  for its Langfuse identity. The deploy plane never injects Langfuse
+  credentials.
+- **`secret_key` is a `SecretStr`.** Per the secret convention (§3),
+  `secret_key` is typed as `pydantic.SecretStr` — masked on read
+  (`**********`), rendered as `writeOnly` / `format: password` in the JSON
+  Schema, never echoed by `GET /config`. The deploy UI masks it server-side.
+- **One block, multiple projects.** The `projects` dict maps a local alias
+  (e.g. `"primary"`) to a `{public_key, secret_key}` pair. Components that
+  write to multiple Langfuse projects declare one entry per project, keyed
+  by alias — the alias is the component's own namespace; it does not need to
+  match any Langfuse-side name. Components that only ever use one project
+  declare a single entry and pick a stable alias (e.g. `"primary"` or
+  `"default"`).
+- **`host` is optional with a default.** `host` defaults to
+  `"https://cloud.langfuse.com"` — self-hosted Langfuse instances override
+  it with their own URL. The field is typed as `str` and rendered as a text
+  input in the deploy UI.
+
+**Schema reflection**
+
+The JSON Schema emitted by `config_schema_json` encodes the block's nested
+structure, types, and secret annotations — so the deploy UI renders
+`public_key` as a text input, `secret_key` as a masked password input, and
+`host` as a text input with the default visible. The schema is committed as
+`config/config.schema.json` per the typed-schema rule (§2).
+
+**Why this shape**
+
+- **No credential sharing across components.** A map of project aliases at
+  the deploy-plane level creates a "why is this component using that project"
+  mystery and a "who else is using this key" audit gap. One block per
+  component makes ownership unambiguous: the component's config is the
+  complete answer to "what Langfuse identity does this component use."
+- **Alias indirection.** Components reference projects by a local alias, not
+  by raw key material in code. The alias is stable across key rotation — the
+  operator rotates the key in the deploy UI without changing the component's
+  source.
+- **`SecretStr` from day one.** A plain `str` secret field in config drifts
+  into logs, error messages, and debug output. `SecretStr` prevents that at
+  the type level — the value is never accidentally serialized or printed.
+
 ## Using the library
 
 Install it (`uv add robotsix-config`, SHA-pinned via `[tool.uv.sources]` per

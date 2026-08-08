@@ -1669,6 +1669,28 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#where-the-history-lives-and-who-implements-it" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Where the history lives — and who implements it
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-deploy-plane-reads-config-it-does-not-mirror-it" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The deploy plane reads config, it does not mirror it
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -2463,6 +2485,28 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#where-the-history-lives-and-who-implements-it" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Where the history lives — and who implements it
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-deploy-plane-reads-config-it-does-not-mirror-it" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The deploy plane reads config, it does not mirror it
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -2787,6 +2831,86 @@ reachable from the component's primary navigation. The panel:</p>
 <p>Headless components (no browser UI) skip the panel but MUST still implement
 the full HTTP surface (<code>GET /config</code>, <code>PUT /config</code>, <code>GET /config/versions</code>,
 <code>POST /config/rollback</code>).</p>
+<h3 id="where-the-history-lives-and-who-implements-it">Where the history lives — and who implements it<a class="headerlink" href="#where-the-history-lives-and-who-implements-it" title="Permanent link">&para;</a></h3>
+<p>The HTTP surface above says <em>what</em> a component exposes. This says where the
+history is stored, and forbids reimplementing it per component.</p>
+<p><strong>Rule: the history is a <code>&lt;config&gt;.versions</code> JSONL sidecar, and it is
+implemented by <code>robotsix_config.history</code>.</strong></p>
+<p>One JSON object per line, appended, never rewritten:</p>
+<div class="highlight"><pre><span></span><code><span class="p">{</span><span class="nt">&quot;version&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;timestamp&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2026-08-07T22:03:27+00:00&quot;</span><span class="p">,</span>
+<span class="w"> </span><span class="nt">&quot;changed_keys&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;langfuse (secret)&quot;</span><span class="p">],</span><span class="w"> </span><span class="nt">&quot;data&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="nt">&quot;...&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;config snapshot&quot;</span><span class="p">}}</span>
+</code></pre></div>
+<p>The sidecar sits beside the config file so it travels with the same volume,
+the same backup, and the same file permissions (<code>0600</code>). A component MUST
+NOT keep its history anywhere the config file is not — a database, a
+separate volume, or the deploy plane.</p>
+<p>Use the shared library rather than hand-rolling:</p>
+<table>
+<thead>
+<tr>
+<th>Call</th>
+<th>Implements</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>apply_update(model_cls, update)</code></td>
+<td>the whole of <code>PUT /config</code></td>
+</tr>
+<tr>
+<td><code>rollback(model_cls, version)</code></td>
+<td><code>POST /config/rollback</code></td>
+</tr>
+<tr>
+<td><code>read_versions()</code></td>
+<td><code>GET /config/versions</code></td>
+</tr>
+<tr>
+<td><code>mask_secrets(data, model_cls)</code></td>
+<td>secret masking for <code>GET /config</code></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Rationale.</strong> <code>PUT /config</code> is deceptively hard: deep-merge, then restore
+secrets the caller did not genuinely resubmit, then validate, then write,
+then record — in that order. Get the order wrong and a component persists
+config its own model refuses to load, then crash-loops on its next restart.
+Skip the secret step and a form save wipes a live credential, because a UI
+that renders a secret as <code>**********</code> posts that mask straight back. Both
+have happened in this fleet. Every component reimplementing this sequence
+is every component getting a chance to reimplement those bugs.</p>
+<blockquote>
+<p><strong>Failure mode prevented.</strong> A component identifies its secrets by
+key-name suffix instead of asking its own model. <code>public_key</code> ends in
+<code>_key</code> and gets masked, so an operator never sees a value that was never
+sensitive; meanwhile a secret whose field name does not match the
+suffix list is returned in the clear. Secrets are exactly the fields the
+model declares <code>SecretStr</code>, which the JSON Schema marks <code>writeOnly</code> —
+that is the authoritative list, and the library reads it.</p>
+</blockquote>
+<h3 id="the-deploy-plane-reads-config-it-does-not-mirror-it">The deploy plane reads config, it does not mirror it<a class="headerlink" href="#the-deploy-plane-reads-config-it-does-not-mirror-it" title="Permanent link">&para;</a></h3>
+<p><strong>Rule: central-deploy MUST NOT keep its own copy of a component's config
+values.</strong> When it needs one, it reads the component's config directly.</p>
+<p>The deploy plane legitimately holds two things: the JSON Schema it renders
+the Configure UI from, and the deploy-plane settings in the
+<a href="#deploy-plane-allowlist">allowlist</a> above. Effective <em>values</em> of
+component-owned settings are not among them.</p>
+<p><strong>Rationale.</strong> A mirror is a second source of truth that nothing keeps
+honest, and staleness in it is silent — the copy looks like config, reads
+like config, and is wrong. Rollback belongs with the history, and the
+history belongs with the component, so a deploy-side copy has no remaining
+job.</p>
+<blockquote>
+<p><strong>Failure mode prevented.</strong> An operator fixes a component's credentials in
+the component's own config and restarts it. The component is correct, but
+a deploy-plane feature that reconciles against the <em>mirror</em> keeps acting
+on the old values, and nothing errors — the credential simply appears
+absent to everything downstream. Diagnosis stalls because the config was
+demonstrably fixed in the place the component actually reads. This
+happened on 2026-08-07: chat's Langfuse credentials were repaired in its
+config volume and the fleet's Langfuse discovery still reported them
+missing, because discovery read central-deploy's stored copy.</p>
+</blockquote>
 <h2 id="secret-handling">Secret handling<a class="headerlink" href="#secret-handling" title="Permanent link">&para;</a></h2>
 <p>Secrets fall into two categories with different owners:</p>
 <ul>

@@ -45,8 +45,6 @@ zizmor --pedantic --min-severity medium .github/workflows/
 - **`--min-severity medium`** — findings at `medium` severity or higher fail the
   gate. Low-severity and informational findings surface as annotations
   (warning mode) but do not block.
-- **`--persona=pedantic`** — applies the pedantic persona, enabling every
-  audit in zizmor's catalog regardless of default severity thresholds.
 
 The full audit catalog is documented upstream:
 [zizmor audits](https://woodruffw.github.io/zizmor/audits/).

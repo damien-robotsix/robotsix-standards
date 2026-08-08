@@ -245,6 +245,78 @@ Headless components (no browser UI) skip the panel but MUST still implement
 the full HTTP surface (`GET /config`, `PUT /config`, `GET /config/versions`,
 `POST /config/rollback`).
 
+### Where the history lives — and who implements it
+
+The HTTP surface above says *what* a component exposes. This says where the
+history is stored, and forbids reimplementing it per component.
+
+**Rule: the history is a `<config>.versions` JSONL sidecar, and it is
+implemented by `robotsix_config.history`.**
+
+One JSON object per line, appended, never rewritten:
+
+```json
+{"version": 3, "timestamp": "2026-08-07T22:03:27+00:00",
+ "changed_keys": ["langfuse (secret)"], "data": {"...": "config snapshot"}}
+```
+
+The sidecar sits beside the config file so it travels with the same volume,
+the same backup, and the same file permissions (`0600`). A component MUST
+NOT keep its history anywhere the config file is not — a database, a
+separate volume, or the deploy plane.
+
+Use the shared library rather than hand-rolling:
+
+| Call | Implements |
+|---|---|
+| `apply_update(model_cls, update)` | the whole of `PUT /config` |
+| `rollback(model_cls, version)` | `POST /config/rollback` |
+| `read_versions()` | `GET /config/versions` |
+| `mask_secrets(data, model_cls)` | secret masking for `GET /config` |
+
+**Rationale.** `PUT /config` is deceptively hard: deep-merge, then restore
+secrets the caller did not genuinely resubmit, then validate, then write,
+then record — in that order. Get the order wrong and a component persists
+config its own model refuses to load, then crash-loops on its next restart.
+Skip the secret step and a form save wipes a live credential, because a UI
+that renders a secret as `**********` posts that mask straight back. Both
+have happened in this fleet. Every component reimplementing this sequence
+is every component getting a chance to reimplement those bugs.
+
+> **Failure mode prevented.** A component identifies its secrets by
+> key-name suffix instead of asking its own model. `public_key` ends in
+> `_key` and gets masked, so an operator never sees a value that was never
+> sensitive; meanwhile a secret whose field name does not match the
+> suffix list is returned in the clear. Secrets are exactly the fields the
+> model declares `SecretStr`, which the JSON Schema marks `writeOnly` —
+> that is the authoritative list, and the library reads it.
+
+### The deploy plane reads config, it does not mirror it
+
+**Rule: central-deploy MUST NOT keep its own copy of a component's config
+values.** When it needs one, it reads the component's config directly.
+
+The deploy plane legitimately holds two things: the JSON Schema it renders
+the Configure UI from, and the deploy-plane settings in the
+[allowlist](#deploy-plane-allowlist) above. Effective *values* of
+component-owned settings are not among them.
+
+**Rationale.** A mirror is a second source of truth that nothing keeps
+honest, and staleness in it is silent — the copy looks like config, reads
+like config, and is wrong. Rollback belongs with the history, and the
+history belongs with the component, so a deploy-side copy has no remaining
+job.
+
+> **Failure mode prevented.** An operator fixes a component's credentials in
+> the component's own config and restarts it. The component is correct, but
+> a deploy-plane feature that reconciles against the *mirror* keeps acting
+> on the old values, and nothing errors — the credential simply appears
+> absent to everything downstream. Diagnosis stalls because the config was
+> demonstrably fixed in the place the component actually reads. This
+> happened on 2026-08-07: chat's Langfuse credentials were repaired in its
+> config volume and the fleet's Langfuse discovery still reported them
+> missing, because discovery read central-deploy's stored copy.
+
 ## Secret handling
 
 Secrets fall into two categories with different owners:

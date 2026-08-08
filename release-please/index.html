@@ -2700,10 +2700,38 @@ the tag and release when the release PR is merged).</p>
 <span class="w">       </span><span class="no">github.event.pull_request.merged == true &amp;&amp;</span>
 <span class="w">       </span><span class="no">github.event.pull_request.head.ref == &#39;release-please--branches--main&#39;)</span>
 <span class="w">    </span><span class="nt">steps</span><span class="p">:</span>
+<span class="w">      </span><span class="c1"># Mint a GitHub App installation token. NOT GITHUB_TOKEN — see below.</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Mint a GitHub App installation token</span>
+<span class="w">        </span><span class="nt">id</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">app-token</span>
+<span class="w">        </span><span class="nt">uses</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">actions/create-github-app-token@fee1f7d63c2ff003460e3d139729b119787bc349</span><span class="w">  </span><span class="c1"># v2.2.2</span>
+<span class="w">        </span><span class="nt">with</span><span class="p">:</span>
+<span class="w">          </span><span class="nt">app-id</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">${{ vars.RELEASE_APP_ID }}</span>
+<span class="w">          </span><span class="nt">private-key</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">${{ secrets.RELEASE_APP_PRIVATE_KEY }}</span>
+<span class="w">          </span><span class="c1"># Scope the token. Without at least one `permission-*` input it</span>
+<span class="w">          </span><span class="c1"># inherits the App&#39;s blanket installation permissions, which zizmor</span>
+<span class="w">          </span><span class="c1"># flags as a high-severity finding.</span>
+<span class="w">          </span><span class="nt">permission-contents</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">write</span><span class="w">        </span><span class="c1"># release commit, tag, Release</span>
+<span class="w">          </span><span class="nt">permission-pull-requests</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">write</span><span class="w">   </span><span class="c1"># open and update the release PR</span>
+
 <span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">uses</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">googleapis/release-please-action@&lt;COMMIT_SHA&gt;</span><span class="w">  </span><span class="c1"># see pinning note below</span>
 <span class="w">        </span><span class="nt">with</span><span class="p">:</span>
-<span class="w">          </span><span class="nt">token</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">${{ secrets.GITHUB_TOKEN }}</span>
+<span class="w">          </span><span class="nt">token</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">${{ steps.app-token.outputs.token }}</span>
 </code></pre></div>
+<blockquote>
+<p><strong>The token must not be <code>GITHUB_TOKEN</code>.</strong> GitHub deliberately suppresses
+workflow runs for events created by <code>GITHUB_TOKEN</code>, to prevent recursion. A
+release PR opened with it therefore triggers <strong>no CI at all</strong> — every
+required status check stays pending forever and the PR can never be merged
+on a protected branch. The PR looks fine; it simply reports
+<code>no checks reported on the 'release-please--branches--main' branch</code>.</p>
+<p>Observed 2026-08-08 across six repos at once: llmio, board, standards, mill,
+http and auto-mail all opened release PRs that could not merge.
+<code>robotsix-file-hub</code> released successfully only because its default branch is
+unprotected.</p>
+<p><code>RELEASE_APP_ID</code> (variable) and <code>RELEASE_APP_PRIVATE_KEY</code> (secret) are the
+same fleet App credentials used elsewhere; see the prerequisite section
+above.</p>
+</blockquote>
 <p>The <code>if</code> guard ensures the action only creates tags/releases on merge of its
 own release PR, not on merge of any other PR.</p>
 <p><strong>Every element above is load-bearing</strong> — an earlier version of this template

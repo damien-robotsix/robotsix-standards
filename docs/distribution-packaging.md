@@ -7,9 +7,9 @@
 The stack distributes first-party libraries **directly from git** — no package
 index, no registry publish step. This is the same model
 [`robotsix-llmio`](https://github.com/damien-robotsix/robotsix-llmio) already
-uses: its auto-release workflow bumps the version, updates the changelog, and
-pushes a `v*` tag; consumers pull it from GitHub pinned to a commit SHA. Every
-robotsix library follows the same path.
+uses: release-please bumps the version, generates the changelog, and pushes a
+`v*` tag; consumers pull it from GitHub pinned to a commit SHA. Every robotsix
+library follows the same path.
 
 ## Rules
 
@@ -68,17 +68,15 @@ change upstream then breaks resolution out of nowhere.
 
 ### 3. Versioning via git tags
 
-**Rule:** Libraries version themselves with the shared auto-release workflow
-that bumps the version, updates the changelog, and pushes a `v*` tag — the
-full mechanism is documented in
-[Changelog & releases](changelog-driven-releases.md). Consumers pin to those
-tags (or the underlying SHA).
+**Rule:** Libraries version themselves with release-please, which bumps the
+version, generates the changelog, and pushes a `v*` tag — the full mechanism is
+documented in [release-please](release-please.md). The version is declared
+statically in `pyproject.toml`; deriving it from git tags is disallowed
+(release-please rule 3). Consumers pin to those tags (or the underlying SHA).
 
 **Rationale:** Tags give consumers a human-readable version to pin against while
-retaining the auditability of a git SHA. The auto-release workflow (shared from
-[robotsix-github-workflows](https://github.com/damien-robotsix/robotsix-github-workflows))
-keeps every repo on the same release cadence rather than each repo inventing its
-own.
+retaining the auditability of a git SHA. Release-please keeps every repo on the
+same release mechanism rather than each repo inventing its own.
 
 > **Failure mode.** A repo without tagged releases forces consumers to pin to
 > arbitrary SHAs with no semantic version signal — a consumer cannot tell at a

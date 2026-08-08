@@ -10,13 +10,13 @@
       
       
       
-        <link rel="canonical" href="https://damien-robotsix.github.io/robotsix-standards/http-security-headers/">
+        <link rel="canonical" href="https://damien-robotsix.github.io/robotsix-standards/github-actions-security/">
       
       
-        <link rel="prev" href="../http-error-envelope/">
+        <link rel="prev" href="../security-posture/">
       
       
-        <link rel="next" href="../health-endpoints/">
+        <link rel="next" href="../stale-bot-must-exempt-pull-requests/">
       
       
         
@@ -27,7 +27,7 @@
     
     
       
-        <title>HTTP security headers - Robotsix Standards</title>
+        <title>GitHub Actions security - Robotsix Standards</title>
       
     
     
@@ -78,7 +78,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#http-security-response-headers" class="md-skip">
+        <a href="#github-actions-security-zizmor" class="md-skip">
           Skip to content
         </a>
       
@@ -114,7 +114,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              HTTP security headers
+              GitHub Actions security
             
           </span>
         </div>
@@ -311,8 +311,10 @@
       
   
   
+    
   
   
+  
     
     
     
@@ -323,13 +325,11 @@
       
     
     
-    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
       
         
         
-          
-        
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
         
           
           <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
@@ -350,7 +350,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_3">
             <span class="md-nav__icon md-icon"></span>
             
@@ -477,10 +477,37 @@
                 
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="../github-actions-security/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    GitHub Actions security
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   
@@ -496,6 +523,159 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#the-rule" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The rule
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#canonical-invocation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Canonical invocation
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Canonical invocation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#in-pre-commit" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        In pre-commit
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#phased-rollout" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Phased rollout
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Phased rollout">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#phase-1-error-gate-on-robotsix-github-workflows-active" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Phase 1 — error gate on robotsix-github-workflows (active)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#phase-2-warning-mode-fleet-wide-current" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Phase 2 — warning mode fleet-wide (current)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#phase-3-per-repo-fail-closed-tracked" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Phase 3 — per-repo fail-closed (tracked)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#how-to-verify" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How to verify
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#failure-modes-prevented" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Failure modes prevented
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#relationship-to-other-standards" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Relationship to other standards
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#see-also" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        See also
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -1352,8 +1532,6 @@
       
   
   
-    
-  
   
   
     
@@ -1366,11 +1544,13 @@
       
     
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4" >
         
           
           <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
@@ -1391,7 +1571,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_4">
             <span class="md-nav__icon md-icon"></span>
             
@@ -1770,37 +1950,10 @@
                 
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    HTTP security headers
-  
-
-    
-  </span>
-  
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../http-security-headers/" class="md-nav__link">
         
   
   
@@ -1816,98 +1969,6 @@
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#the-rule" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        The rule
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="The rule">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#1-use-the-secure-library-with-presetbalanced-as-the-baseline" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        1. Use the secure library with Preset.BALANCED as the baseline
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#2-integration-one-middleware-registered-once" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        2. Integration: one middleware, registered once
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#3-csp-relaxation-is-explicit-and-auditable" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        3. CSP relaxation is explicit and auditable
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#4-hsts-is-conditional-on-tls" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        4. HSTS is conditional on TLS
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#failure-modes-this-prevents" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Failure modes this prevents
-      
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -2216,47 +2277,25 @@
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="The rule">
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#canonical-invocation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Canonical invocation
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Canonical invocation">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#1-use-the-secure-library-with-presetbalanced-as-the-baseline" class="md-nav__link">
+  <a href="#in-pre-commit" class="md-nav__link">
     <span class="md-ellipsis">
       
-        1. Use the secure library with Preset.BALANCED as the baseline
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#2-integration-one-middleware-registered-once" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        2. Integration: one middleware, registered once
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#3-csp-relaxation-is-explicit-and-auditable" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        3. CSP relaxation is explicit and auditable
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#4-hsts-is-conditional-on-tls" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        4. HSTS is conditional on TLS
+        In pre-commit
       
     </span>
   </a>
@@ -2269,10 +2308,93 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#failure-modes-this-prevents" class="md-nav__link">
+  <a href="#phased-rollout" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Failure modes this prevents
+        Phased rollout
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Phased rollout">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#phase-1-error-gate-on-robotsix-github-workflows-active" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Phase 1 — error gate on robotsix-github-workflows (active)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#phase-2-warning-mode-fleet-wide-current" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Phase 2 — warning mode fleet-wide (current)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#phase-3-per-repo-fail-closed-tracked" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Phase 3 — per-repo fail-closed (tracked)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#how-to-verify" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How to verify
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#failure-modes-prevented" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Failure modes prevented
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#relationship-to-other-standards" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Relationship to other standards
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#see-also" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        See also
       
     </span>
   </a>
@@ -2299,113 +2421,161 @@
   
 
 
-<h1 id="http-security-response-headers">HTTP security response headers<a class="headerlink" href="#http-security-response-headers" title="Permanent link">&para;</a></h1>
+<h1 id="github-actions-security-zizmor">GitHub Actions security (zizmor)<a class="headerlink" href="#github-actions-security-zizmor" title="Permanent link">&para;</a></h1>
 <blockquote>
-<p><strong>Scope: deployable components that serve HTTP responses</strong> — especially those
-rendering an HTML web UI. This applies <em>in addition to</em> the
-<a href="../repo-baseline/">repo baseline</a> and <a href="../component-standard/">component standard</a>.</p>
+<p><strong>Scope: every robotsix repository with GitHub Actions workflows.</strong>
+This is <em>in addition to</em> the <a href="../repo-baseline/">repo baseline</a> and
+<a href="../security-posture/">security posture</a>, which every repo follows.
+Content-only repos (documentation, standards, static content — no
+<code>src/</code> directory, no container image) are exempt from the zizmor
+audit, as documented in the security posture preamble.</p>
 </blockquote>
-<p>Every fleet service that serves HTTP responses emits the standard OWASP security
-response headers via a single, shared middleware. Hand-rolling these headers per
-service — or leaving them unset — exposes every HTML surface to clickjacking,
-MIME-sniffing, and referrer-leak classes of issues.</p>
+<p><a href="https://github.com/woodruffw/zizmor">zizmor</a> is a static-security
+auditor for GitHub Actions workflows by Trail of Bits. It catches
+workflow-level vulnerabilities that generic linters and human review
+miss: template-injection via <code>${{ }}</code> in <code>run:</code> blocks,
+overly broad <code>permissions:</code> on <code>GITHUB_TOKEN</code>, bot-condition spoofing
+(<code>github.actor</code> checks without verifying the trigger), unpinned actions,
+credential persistence, and artifact poisoning.</p>
+<p>The fleet's automation workflows — App-token minting, deps-bump,
+pin-bump, auto-release, docker-release — handle untrusted PR input
+and hold write permissions or secrets. A single uncaught injection
+in one of these workflows compromises the entire repo's CI surface
+and potentially the fleet's shared secrets.</p>
 <h2 id="the-rule">The rule<a class="headerlink" href="#the-rule" title="Permanent link">&para;</a></h2>
-<h3 id="1-use-the-secure-library-with-presetbalanced-as-the-baseline">1. Use the <code>secure</code> library with Preset.BALANCED as the baseline<a class="headerlink" href="#1-use-the-secure-library-with-presetbalanced-as-the-baseline" title="Permanent link">&para;</a></h3>
-<p>All services use the maintained <a href="https://pypi.org/project/secure/"><code>secure</code></a>
-Python library (≥2.0.1) to set security headers. A hand-rolled
-<code>BaseHTTPMiddleware</code> is only appropriate for a single custom header; for the
-OWASP suite, <code>secure</code> handles CSP construction, deduplication, and
-normalization.</p>
-<p>The default preset is <strong><code>Preset.BALANCED</code></strong> (importable as <code>Secure.with_default_headers()</code>),
-which provides a safe, low-friction baseline:</p>
-<table>
-<thead>
-<tr>
-<th>Header</th>
-<th>Value</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>X-Content-Type-Options</code></td>
-<td><code>nosniff</code></td>
-</tr>
-<tr>
-<td><code>X-Frame-Options</code></td>
-<td><code>SAMEORIGIN</code> (or <code>DENY</code> if the service is never framed)</td>
-</tr>
-<tr>
-<td><code>Referrer-Policy</code></td>
-<td><code>strict-origin-when-cross-origin</code></td>
-</tr>
-<tr>
-<td><code>Content-Security-Policy</code></td>
-<td><code>default-src 'self'</code> (relax per-app for inline assets)</td>
-</tr>
-<tr>
-<td><code>Permissions-Policy</code></td>
-<td><code>geolocation=(), microphone=(), camera=()</code></td>
-</tr>
-<tr>
-<td><code>Strict-Transport-Security</code></td>
-<td><code>max-age=31536000; includeSubDomains</code> (only behind TLS)</td>
-</tr>
-</tbody>
-</table>
-<p>Services that require a stricter posture — e.g. an admin dashboard that must
-never be framed and must restrict script sources tightly — use
-<code>Preset.STRICT</code> instead. Services that need to relax the CSP for inline styles
-or scripts do so by calling the <code>Secure</code> object's update methods rather than
-bypassing the middleware.</p>
-<h3 id="2-integration-one-middleware-registered-once">2. Integration: one middleware, registered once<a class="headerlink" href="#2-integration-one-middleware-registered-once" title="Permanent link">&para;</a></h3>
-<p>The <code>SecureASGIMiddleware</code> is added to the ASGI app once at startup. Routes
-never set security headers themselves — the middleware applies the same set to
-every response.</p>
-<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">secure</span><span class="w"> </span><span class="kn">import</span> <span class="n">Secure</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">secure.middleware</span><span class="w"> </span><span class="kn">import</span> <span class="n">SecureASGIMiddleware</span>
-
-<span class="n">secure_headers</span> <span class="o">=</span> <span class="n">Secure</span><span class="o">.</span><span class="n">with_default_headers</span><span class="p">()</span>
-<span class="n">app</span><span class="o">.</span><span class="n">add_middleware</span><span class="p">(</span><span class="n">SecureASGIMiddleware</span><span class="p">,</span> <span class="n">secure</span><span class="o">=</span><span class="n">secure_headers</span><span class="p">)</span>
+<p><strong>zizmor is a required CI gate for every <code>robotsix-</code> fleet repo
+with GitHub Actions workflows.</strong> Every workflow file (<code>.github/workflows/*.yml</code>)
+must pass zizmor's audit at the configured minimum severity. The gate is
+delivered through a shared reusable workflow in
+<a href="https://github.com/damien-robotsix/robotsix-github-workflows">robotsix-github-workflows</a>
+so that one workflow definition protects the entire fleet — no per-repo
+copy-paste, no per-repo version skew.</p>
+<h2 id="canonical-invocation">Canonical invocation<a class="headerlink" href="#canonical-invocation" title="Permanent link">&para;</a></h2>
+<p>The shared reusable workflow runs zizmor with these parameters:</p>
+<div class="highlight"><pre><span></span><code>zizmor<span class="w"> </span>--pedantic<span class="w"> </span>--min-severity<span class="w"> </span>medium<span class="w"> </span>.github/workflows/
 </code></pre></div>
-<p>For Starlette/FastAPI apps, this is the standard <code>app.add_middleware()</code> call
-during application construction. The middleware must be registered before any
-route handlers that could return a response.</p>
-<h3 id="3-csp-relaxation-is-explicit-and-auditable">3. CSP relaxation is explicit and auditable<a class="headerlink" href="#3-csp-relaxation-is-explicit-and-auditable" title="Permanent link">&para;</a></h3>
-<p>The <code>default-src 'self'</code> CSP blocks inline styles and scripts, which some
-frontend frameworks require. When a service needs to relax the CSP, it does so
-by calling methods on the <code>Secure</code> object — e.g.
-<code>secure_headers.csp.default_src = "'self' 'unsafe-inline'"</code> — rather than
-disabling the header or building a CSP string by hand. This keeps every CSP
-modification traceable to a single, grep-able location.</p>
-<h3 id="4-hsts-is-conditional-on-tls">4. HSTS is conditional on TLS<a class="headerlink" href="#4-hsts-is-conditional-on-tls" title="Permanent link">&para;</a></h3>
-<p>The <code>Strict-Transport-Security</code> header is only emitted when the service is
-behind TLS. The <code>secure</code> library detects this from the request scheme and
-suppresses the header on plain-HTTP requests automatically — the service does
-not need to branch on this itself.</p>
-<h2 id="failure-modes-this-prevents">Failure modes this prevents<a class="headerlink" href="#failure-modes-this-prevents" title="Permanent link">&para;</a></h2>
 <ul>
-<li><strong>Clickjacking.</strong> Without <code>X-Frame-Options</code> or CSP <code>frame-ancestors</code>, an
-  attacker can embed the service's UI in an invisible iframe on a malicious
-  page and trick users into clicking UI elements they cannot see.</li>
-<li><strong>MIME-sniffing attacks.</strong> Without <code>X-Content-Type-Options: nosniff</code>, older
-  browsers may guess the content type of a response and execute a user-uploaded
-  text file as JavaScript if the server's <code>Content-Type</code> header is missing or
-  wrong.</li>
-<li><strong>Referrer leakage.</strong> Without <code>Referrer-Policy</code>, full URLs — including path
-  and query string — leak to third-party sites when a user clicks an external
-  link from the service's UI. Query strings often carry tokens, identifiers,
-  or search terms.</li>
-<li><strong>Permission abuse.</strong> Without <code>Permissions-Policy</code> denying sensitive APIs
-  (<code>geolocation</code>, <code>microphone</code>, <code>camera</code>), any JavaScript running in the
-  service's origin — including third-party scripts loaded via CDN — can request
-  these permissions without the user's meaningful consent.</li>
-<li><strong>Downgrade attacks.</strong> Without <code>Strict-Transport-Security</code>, a MITM attacker
-  can rewrite HTTPS links to HTTP and intercept traffic that the user believes
-  is encrypted.</li>
-<li><strong>Cross-service inconsistency.</strong> Hand-rolling headers per service produces
-  slightly different header sets, different header-name casing, and different
-  CSP syntax across the fleet. A single middleware — the same library, the same
-  preset, the same integration pattern — eliminates per-service drift.</li>
+<li><strong><code>--pedantic</code></strong> — enables every audit check, including informational and
+  experimental rules. An injection vector that a non-pedantic run would skip
+  is still a vulnerability; the pedantic flag closes that gap.</li>
+<li><strong><code>--min-severity medium</code></strong> — findings at <code>medium</code> severity or higher fail the
+  gate. Low-severity and informational findings surface as annotations
+  (warning mode) but do not block.</li>
+</ul>
+<p>The full audit catalog is documented upstream:
+<a href="https://woodruffw.github.io/zizmor/audits/">zizmor audits</a>.</p>
+<h3 id="in-pre-commit">In pre-commit<a class="headerlink" href="#in-pre-commit" title="Permanent link">&para;</a></h3>
+<p>zizmor is also available as a pre-commit hook — <code>pre-commit run zizmor</code>
+runs the same audit locally before the push. Repos SHOULD add it to
+<code>.pre-commit-config.yaml</code> so that workflow-authors catch findings at
+commit time rather than waiting for CI. The pre-commit hook version must
+match the CI version, following the
+<a href="../ci-lint-pinning/">CI lint tool pinning</a> rule.</p>
+<h2 id="phased-rollout">Phased rollout<a class="headerlink" href="#phased-rollout" title="Permanent link">&para;</a></h2>
+<p>zizmor is rolled out fleet-wide in three phases. No repo moves to a
+later phase before it is demonstrably clean at the current phase.</p>
+<h3 id="phase-1-error-gate-on-robotsix-github-workflows-active">Phase 1 — error gate on <code>robotsix-github-workflows</code> (active)<a class="headerlink" href="#phase-1-error-gate-on-robotsix-github-workflows-active" title="Permanent link">&para;</a></h3>
+<p>The highest-leverage placement is the shared-workflow repo itself.
+<code>robotsix-github-workflows</code> houses the reusable workflows that every fleet
+repo calls. A vulnerability in a shared workflow propagates to every
+downstream caller — one injection in the shared Python CI workflow,
+and every Python repo's CI is compromised.</p>
+<p>zizmor runs as a <strong>fail-closed CI gate</strong> on <code>robotsix-github-workflows</code>
+(already active as of August 2025). Every PR that touches a workflow file
+must pass <code>zizmor --pedantic</code> with zero findings at any severity. This
+gate protects the fleet's highest-value workflow surface.</p>
+<h3 id="phase-2-warning-mode-fleet-wide-current">Phase 2 — warning mode fleet-wide (current)<a class="headerlink" href="#phase-2-warning-mode-fleet-wide-current" title="Permanent link">&para;</a></h3>
+<p>Every other fleet repo with GitHub Actions workflows runs zizmor in
+<strong>warning mode</strong>: findings are published as CI annotations and surfaced
+in the fleet dashboard, but do not block the PR or the merge. No repo
+is blocked before it has had a chance to clean up existing findings.</p>
+<p>The shared reusable workflow accepts a <code>fail-on-finding</code> input (default
+<code>false</code> in Phase 2). A repo that is already clean can opt in to
+fail-closed early by setting <code>fail-on-finding: true</code> — but the fleet-wide
+default remains warning-only until Phase 3.</p>
+<h3 id="phase-3-per-repo-fail-closed-tracked">Phase 3 — per-repo fail-closed (tracked)<a class="headerlink" href="#phase-3-per-repo-fail-closed-tracked" title="Permanent link">&para;</a></h3>
+<p>Each repo is promoted to fail-closed individually once it demonstrates
+a clean zizmor run (zero findings at <code>--min-severity medium</code>) on its
+default branch. Promotion is tracked in the fleet dashboard; remaining
+warning-mode repos are tracked until the fleet is fully migrated.</p>
+<p>Once a repo is fail-closed, zizmor becomes a blocking CI gate — every PR
+that introduces a new finding at <code>medium</code> or higher severity is rejected
+until the finding is fixed or suppressed with a documented rationale.</p>
+<h2 id="how-to-verify">How to verify<a class="headerlink" href="#how-to-verify" title="Permanent link">&para;</a></h2>
+<ul>
+<li>The repo's CI workflow calls the shared zizmor reusable workflow from
+  <code>robotsix-github-workflows</code>.</li>
+<li>For fail-closed repos: the latest CI run on the default branch shows
+  a passing zizmor gate with zero findings.</li>
+<li>For warning-mode repos: the latest CI run shows zizmor annotations
+  but the gate does not block.</li>
+<li>Content-only repos are exempt — see the scope block above.</li>
+</ul>
+<h2 id="failure-modes-prevented">Failure modes prevented<a class="headerlink" href="#failure-modes-prevented" title="Permanent link">&para;</a></h2>
+<ul>
+<li><strong>Template injection via <code>${{ }}</code> in <code>run:</code> blocks.</strong> A workflow that
+  interpolates <code>${{ github.event.issue.title }}</code> or
+  <code>${{ github.event.pull_request.body }}</code> directly into a shell step
+  executes attacker-controlled code in the CI context — with access to
+  every secret and write permission that workflow holds. zizmor's
+  <a href="https://woodruffw.github.io/zizmor/audits/#template-injection">template-injection</a>
+  audit catches this.</li>
+<li><strong>Overly broad <code>permissions:</code> on <code>GITHUB_TOKEN</code>.</strong> A workflow without
+  a top-level <code>permissions:</code> block defaults to <code>write-all</code> — a
+  compromised action or step can push to <code>main</code>, exfiltrate secrets,
+  or modify releases. zizmor's
+  <a href="https://woodruffw.github.io/zizmor/audits/#excessive-permissions">excessive-permissions</a>
+  audit flags missing or over-broad blocks.</li>
+<li><strong>Untrusted checkout of <code>pull_request_target</code> events.</strong> The
+  <code>pull_request_target</code> trigger runs in the <em>target</em> repo's context
+  with full write access, but checks out the <em>fork's</em> code. Checking
+  out and executing untrusted PR code in this context is a known
+  escalation path. zizmor's
+  <a href="https://woodruffw.github.io/zizmor/audits/#untrusted-checkout">untrusted-checkout</a>
+  audit catches it.</li>
+<li><strong>Artifact poisoning.</strong> A workflow that uploads an artifact from an
+  untrusted PR context and later downloads it in a privileged context
+  (e.g. a release workflow) allows an attacker to inject malicious
+  content into a trusted pipeline stage. zizmor's
+  <a href="https://woodruffw.github.io/zizmor/audits/#artifact-poisoning">artifact-poisoning</a>
+  audit catches the cross-workflow pattern.</li>
+<li><strong>Credential persistence.</strong> A workflow that writes secrets or tokens
+  to a file or environment variable that persists across steps risks
+  leaking them to a later, less-trusted step. zizmor's
+  <a href="https://woodruffw.github.io/zizmor/audits/#credential-persistence">credential-persistence</a>
+  audit flags this.</li>
+<li><strong>Known-vulnerable actions.</strong> A workflow that uses an action at a
+  version with a published security advisory runs known-exploitable
+  code in CI. zizmor's
+  <a href="https://woodruffw.github.io/zizmor/audits/#known-vulnerable-actions">known-vulnerable-actions</a>
+  audit catches this.</li>
+</ul>
+<h2 id="relationship-to-other-standards">Relationship to other standards<a class="headerlink" href="#relationship-to-other-standards" title="Permanent link">&para;</a></h2>
+<ul>
+<li><strong><a href="../security-posture/#4b-workflow-linting-actionlint-zizmor">Security posture — gate 4b</a></strong>
+  already lists zizmor as a required workflow-linting gate. This page
+  expands the gate into a standalone standard with canonical invocation,
+  severity policy, and phased rollout. The rule text lives here; the
+  security posture page cross-references it.</li>
+<li><strong><a href="../ci-lint-pinning/">CI lint tool pinning</a></strong> — the version of zizmor
+  run in CI must match the version in <code>.pre-commit-config.yaml</code>. The
+  shared reusable workflow pins zizmor's version; downstream repos
+  consume it by reference rather than installing it directly.</li>
+<li><strong><a href="../repo-baseline/#ci-and-security-gates">Repo baseline — CI and security gates</a></strong>
+  lists zizmor as part of the standard gate set.</li>
+<li><strong><a href="../scorecard/">OpenSSF Scorecard</a></strong> — Scorecard's <em>Token-Permissions</em>
+  and <em>Dangerous-Workflow</em> checks overlap with zizmor's audit surface.
+  zizmor catches workflow-level vulnerabilities at authoring time;
+  Scorecard provides an independent outside-in audit that confirms
+  the gates are effective.</li>
+</ul>
+<h2 id="see-also">See also<a class="headerlink" href="#see-also" title="Permanent link">&para;</a></h2>
+<ul>
+<li><a href="https://github.com/woodruffw/zizmor">zizmor — GitHub Actions static-security auditor</a></li>
+<li><a href="https://woodruffw.github.io/zizmor/audits/">zizmor audit catalog</a></li>
+<li><a href="../security-posture/#4-workflow-hardening">Security posture — workflow hardening</a></li>
+<li><a href="https://docs.github.com/en/actions/security-for-github-actions/security-guides/security-hardening-for-github-actions">GitHub Actions security hardening</a></li>
+<li><a href="https://owasp.org/www-project-top-10-ci-cd-security-risks/">OWASP Top 10 CI/CD Security Risks</a></li>
 </ul>
 
 

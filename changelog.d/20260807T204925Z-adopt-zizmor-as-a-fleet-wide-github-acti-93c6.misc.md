@@ -1,1 +1,0 @@
-Adopt zizmor as a fleet-wide GitHub Actions security standard (warn-first rollout)

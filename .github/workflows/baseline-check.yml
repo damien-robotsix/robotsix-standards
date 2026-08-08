@@ -11,7 +11,7 @@ jobs:
   baseline:
     permissions:
       contents: read
-    uses: damien-robotsix/robotsix-github-workflows/.github/workflows/baseline-check.yml@7314c9b6c2b536ca81023e8841f272b72733262e # main
+    uses: damien-robotsix/robotsix-github-workflows/.github/workflows/baseline-check.yml@a6378accaf26c75b12fac324c3056255647c107b # main
     with:
       has-docker: false
       # This repo has a mill board but is docs-only: nothing consumes a

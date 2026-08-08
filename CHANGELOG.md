@@ -1,5 +1,64 @@
+
+
 <!-- markdownlint-disable MD013 MD025 MD024 -->
 <!-- towncrier release notes start -->
+
+# robotsix-standards 0.4.0 (2026-08-08)
+
+## Added
+
+- Config ownership: define where a component's setting history lives and forbid the deploy plane from mirroring component config. The history is a `<config>.versions` JSONL sidecar implemented by `robotsix_config.history` rather than hand-rolled per component, and central-deploy reads a component's config directly instead of keeping its own copy of the values. (component-owned-config-history)
+- Added a **Docs site deployment** standard covering the GitHub Pages contract for
+  repos that publish: the caller-permission triple the shared `python-docs.yml`
+  spine requires, the Pages source setting that must accompany it, and who owns
+  concurrency. A fleet audit found six different pins of that one workflow, four
+  caller-permission shapes, three Pages configurations, and three repos whose Docs
+  workflow had never once run — a permissions mismatch fails at startup with no
+  logs, no checks and nothing on the PR, so nothing surfaces it. (docs-site-deployment-standard)
+- Added a **Module taxonomy scope** standard: `docs/modules.yaml` inventories
+  product code, not the repository's own build, lint, packaging and release
+  scaffolding. Rule 6 of the changelog standard, which previously *required*
+  registering every towncrier fragment in the taxonomy, is inverted to forbid it —
+  its own rationale had conceded the requirement was "a recurring friction point"
+  while documenting the workaround rather than removing the cause. (module-taxonomy-scope)
+- New standard: py.typed wheel guard — automated verification that PEP 561 type markers ship in built wheels via installed type-check and wheel-content assertion. (20260802T163029Z-standardize-automated-py-typed-wheel-mar-6cad)
+
+## Fixed
+
+- Link checking no longer fails on rate-limited hosts. `readthedocs.io` joins the
+  `ignore_urls` list — four pages link there and it answers anonymous traffic with
+  429, so an unlucky build failed on all four at once. The MkDocs build integrity
+  standard now states the general rule: a `403` or `429` means the server answered
+  and the link is fine, so a checker must never fail on either. (linkcheck-rate-limit)
+- Documented the "Allow GitHub Actions to create and approve pull requests" repository setting as a prerequisite for release-please — without it every run fails at PR creation, which is why release-please had produced nothing across the fleet. Also added the missing `bump-minor-pre-major` flag to the config example: rule 4 requires staying in the 0.x line, but the printed config omitted the only setting that enforces it, so following the page exactly produced the `1.0.0` bump the page forbids. (20260808T190000Z-release-please-prereq-and-0x)
+- Aligned the release-please workflow template with the fleet's own `lint-workflows` audit. As printed it failed zizmor on four counts — workflow-level write permissions (`excessive-permissions`), undocumented permissions, an unnamed job (`anonymous-definition`), and a missing `concurrency` block — so a repo following the page exactly could not pass CI. Also added `workflow_dispatch`, and a note that migrating repos must bump their `baseline-check.yml` pin to `a6378ac` or later. (20260808T192000Z-release-please-template-zizmor)
+
+## Changed
+
+- CI failure: CI on main (20260803T102810Z-ci-failure-ci-on-main-08b2)
+- Langfuse ownership 1/3 — standardized per-component Langfuse credential block in the component config standard (20260805T105614Z-langfuse-ownership-1-3-standardized-per-90d8)
+- Standardize: release-please for automated version/changelog/tag sync across robotsix repos (20260803T115354Z-standardize-release-please-for-automated-72d9)
+- Prevent recurring towncrier-release CHANGELOG.md markdownlint CI breakage on robotsix-standards main (20260803T130133Z-prevent-recurring-towncrier-release-chan-f116)
+- Extended `docs/pytest.md` targeted warning ignores with the httpx-style
+  message-prefix example, regex-matching note, safe-ignore procedure, and
+  async nested-event-loop hazard guidance. (20260802T153209Z-pytest-filterwarnings-0d1f)
+- Standardize: console-script subprocess tests — every [project.scripts] entry point must be tested as a subprocess through the installed binary (20260803T160730Z-standardize-subprocess-test-installed-pr-d88c)
+- Standardize: pytest shared state-builders as factory fixtures in a root tests/conftest.py (20260802T160811Z-standardize-pytest-shared-state-builders-b57a)
+- Standardize: FastAPI test isolation via Depends() + dependency_overrides (20260804T163354Z-standardize-fastapi-test-isolation-via-d-7d34)
+- Standardize: split liveness vs readiness health endpoints for HTTP-serving fleet services (20260804T163427Z-standardize-split-liveness-vs-readiness-7932)
+- Standardize: library-internal logging convention (getLogger(__name__) + NullHandler, DEBUG retry logs) (20260806T163819Z-standardize-library-internal-logging-con-a5ec)
+- Standardize: service-level compose healthcheck hitting app liveness endpoint for backend repos (20260805T163918Z-standardize-service-level-compose-health-a647)
+- Mark docs/changelog-driven-releases.md as superseded (add page banner + nav annotation) (20260806T164342Z-mark-docs-changelog-driven-releases-md-a-9fc0)
+- Standardize: enforce mypy as a blocking merge gate for type-aware packages (20260804T171434Z-standardize-enforce-mypy-as-a-blocking-m-3530)
+- Standardize: stale bot must exempt pull requests from auto-close (days-before-pr-stale / days-before-pr-close: -1) (20260804T172417Z-standardize-stale-bot-must-exempt-pull-r-48cf)
+- Standardize: Dependabot auto-merge must wait for passing CI and exclude Docker/pre-commit bumps (20260805T173539Z-standardize-dependabot-auto-merge-must-w-2f1c)
+- Standardize: expose a runtime __version__ via a file-based single source for git-consumed stack libraries (20260805T173848Z-standardize-expose-a-runtime-version-via-69c2)
+- Add a local CI gate rejecting changelog fragments clipped with a literal truncation ellipsis (20260731T193229Z-add-a-local-ci-gate-rejecting-changelog-f3b6)
+- Add a CI gate rejecting multiple changelog.d fragments for the same ticket/event in a single changeset (20260803T200250Z-add-a-ci-gate-rejecting-multiple-changel-bdae)
+- Consolidated two duplicate changelog entries for pytest filterwarnings standardization (20260803T200250Z-consolidate-the-two-duplicate-changelog-8d58)
+- Adopt zizmor as a fleet-wide GitHub Actions security standard (warn-first rollout) (20260807T204925Z-adopt-zizmor-as-a-fleet-wide-github-acti-93c6)
+- Update deprecated pyproject.toml license format (table → SPDX string) (20260802T212642Z-update-deprecated-pyproject-toml-license-8e98)
+
 
 # robotsix-standards 0.3.0 (2026-08-03)
 

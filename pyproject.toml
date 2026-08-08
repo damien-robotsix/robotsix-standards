@@ -1,6 +1,6 @@
 [project]
 name = "robotsix-standards"
-version = "0.3.0"
+version = "0.4.0"
 description = "Cross-cutting config and deployment standards for the robotsix stack."
 readme = "README.md"
 requires-python = ">=3.14"
@@ -10,38 +10,6 @@ authors = [{ name = "Damien SIX", email = "damien.robotsix@gmail.com" }]
 
 [dependency-groups]
 docs = ["mkdocs-htmlproofer-plugin", "mkdocs-material"]
-
-[tool.towncrier]
-directory = "changelog.d"
-filename = "CHANGELOG.md"
-name = "robotsix-standards"
-start_string = "<!-- markdownlint-disable MD013 MD025 MD024 -->\n<!-- towncrier release notes start -->\n"
-# .gitkeep keeps changelog.d/ present after a release consumes every
-# fragment (git drops empty dirs; baseline-check requires the dir).
-ignore = [".gitkeep"]
-
-[[tool.towncrier.type]]
-directory = "breaking"
-name = "Breaking"
-showcontent = true
-
-[[tool.towncrier.type]]
-directory = "feature"
-name = "Added"
-showcontent = true
-
-[[tool.towncrier.type]]
-directory = "bugfix"
-name = "Fixed"
-showcontent = true
-
-[[tool.towncrier.type]]
-directory = "misc"
-name = "Changed"
-showcontent = true
-
-# This repo is documentation only. The shared configuration library that
-# implements the config standard lives in `robotsix-config`, not here.
 
 [tool.setuptools.packages.find]
 exclude = ["config*", "styles*"]

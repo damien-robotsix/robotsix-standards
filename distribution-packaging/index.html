@@ -2352,9 +2352,9 @@ consumers; it is <em>in addition to</em> the <a href="../repo-baseline/">repo ba
 <p>The stack distributes first-party libraries <strong>directly from git</strong> — no package
 index, no registry publish step. This is the same model
 <a href="https://github.com/damien-robotsix/robotsix-llmio"><code>robotsix-llmio</code></a> already
-uses: its auto-release workflow bumps the version, updates the changelog, and
-pushes a <code>v*</code> tag; consumers pull it from GitHub pinned to a commit SHA. Every
-robotsix library follows the same path.</p>
+uses: release-please bumps the version, generates the changelog, and pushes a
+<code>v*</code> tag; consumers pull it from GitHub pinned to a commit SHA. Every robotsix
+library follows the same path.</p>
 <h2 id="rules">Rules<a class="headerlink" href="#rules" title="Permanent link">&para;</a></h2>
 <h3 id="1-git-based-consumption-is-the-preferred-path">1. Git-based consumption is the preferred path<a class="headerlink" href="#1-git-based-consumption-is-the-preferred-path" title="Permanent link">&para;</a></h3>
 <p><strong>Rule:</strong> robotsix libraries are consumed directly from their GitHub repository,
@@ -2397,16 +2397,14 @@ commit in the consumer's repo — the root cause is an upstream change that
 arrived silently.</p>
 </blockquote>
 <h3 id="3-versioning-via-git-tags">3. Versioning via git tags<a class="headerlink" href="#3-versioning-via-git-tags" title="Permanent link">&para;</a></h3>
-<p><strong>Rule:</strong> Libraries version themselves with the shared auto-release workflow
-that bumps the version, updates the changelog, and pushes a <code>v*</code> tag — the
-full mechanism is documented in
-<a href="../changelog-driven-releases/">Changelog &amp; releases</a>. Consumers pin to those
-tags (or the underlying SHA).</p>
+<p><strong>Rule:</strong> Libraries version themselves with release-please, which bumps the
+version, generates the changelog, and pushes a <code>v*</code> tag — the full mechanism is
+documented in <a href="../release-please/">release-please</a>. The version is declared
+statically in <code>pyproject.toml</code>; deriving it from git tags is disallowed
+(release-please rule 3). Consumers pin to those tags (or the underlying SHA).</p>
 <p><strong>Rationale:</strong> Tags give consumers a human-readable version to pin against while
-retaining the auditability of a git SHA. The auto-release workflow (shared from
-<a href="https://github.com/damien-robotsix/robotsix-github-workflows">robotsix-github-workflows</a>)
-keeps every repo on the same release cadence rather than each repo inventing its
-own.</p>
+retaining the auditability of a git SHA. Release-please keeps every repo on the
+same release mechanism rather than each repo inventing its own.</p>
 <blockquote>
 <p><strong>Failure mode.</strong> A repo without tagged releases forces consumers to pin to
 arbitrary SHAs with no semantic version signal — a consumer cannot tell at a

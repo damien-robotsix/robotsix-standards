@@ -791,10 +791,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#3-conventional-commits-are-the-single-source-of-changelog-content" class="md-nav__link">
+  <a href="#3-the-version-is-declared-statically" class="md-nav__link">
     <span class="md-ellipsis">
       
-        3. Conventional commits are the single source of changelog content
+        3. The version is declared statically
       
     </span>
   </a>
@@ -802,10 +802,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#4-versions-stay-0x-until-100-is-declared-deliberately" class="md-nav__link">
+  <a href="#4-conventional-commits-are-the-single-source-of-changelog-content" class="md-nav__link">
     <span class="md-ellipsis">
       
-        4. Versions stay 0.x until 1.0.0 is declared deliberately
+        4. Conventional commits are the single source of changelog content
       
     </span>
   </a>
@@ -813,10 +813,21 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#5-config-files-are-registered-in-docsmodulesyaml" class="md-nav__link">
+  <a href="#5-versions-stay-0x-until-100-is-declared-deliberately" class="md-nav__link">
     <span class="md-ellipsis">
       
-        5. Config files are registered in docs/modules.yaml
+        5. Versions stay 0.x until 1.0.0 is declared deliberately
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#6-config-files-are-registered-in-docsmodulesyaml" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. Config files are registered in docs/modules.yaml
       
     </span>
   </a>
@@ -2463,10 +2474,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#3-conventional-commits-are-the-single-source-of-changelog-content" class="md-nav__link">
+  <a href="#3-the-version-is-declared-statically" class="md-nav__link">
     <span class="md-ellipsis">
       
-        3. Conventional commits are the single source of changelog content
+        3. The version is declared statically
       
     </span>
   </a>
@@ -2474,10 +2485,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#4-versions-stay-0x-until-100-is-declared-deliberately" class="md-nav__link">
+  <a href="#4-conventional-commits-are-the-single-source-of-changelog-content" class="md-nav__link">
     <span class="md-ellipsis">
       
-        4. Versions stay 0.x until 1.0.0 is declared deliberately
+        4. Conventional commits are the single source of changelog content
       
     </span>
   </a>
@@ -2485,10 +2496,21 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#5-config-files-are-registered-in-docsmodulesyaml" class="md-nav__link">
+  <a href="#5-versions-stay-0x-until-100-is-declared-deliberately" class="md-nav__link">
     <span class="md-ellipsis">
       
-        5. Config files are registered in docs/modules.yaml
+        5. Versions stay 0.x until 1.0.0 is declared deliberately
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#6-config-files-are-registered-in-docsmodulesyaml" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. Config files are registered in docs/modules.yaml
       
     </span>
   </a>
@@ -2602,7 +2624,7 @@ fleet repos, which is why release-please had produced nothing anywhere.</p>
 <li><strong><code>include-v-in-tag</code></strong> — <code>true</code>. Tags are <code>vX.Y.Z</code> (matching the existing
   <code>docker-release.yml</code> tag filter <code>["*.*.*"]</code> — the <code>v</code> prefix is part of
   the tag name).</li>
-<li><strong><code>bump-minor-pre-major</code></strong> — <code>true</code>. <strong>Required to satisfy rule 4 below.</strong>
+<li><strong><code>bump-minor-pre-major</code></strong> — <code>true</code>. <strong>Required to satisfy rule 5 below.</strong>
   Without it a breaking conventional commit (<code>feat!:</code> / <code>fix!:</code>) bumps the
   <em>major</em> version even from <code>0.x</code>, so the first breaking change in any repo
   proposes <code>1.0.0</code>. With it, breaking changes bump the minor while the version
@@ -2797,7 +2819,59 @@ proposing <code>0.3.1</code> — a downgrade. The tag <code>v0.3.1</code> is cre
 already declares <code>0.4.0</code>, and every runtime version check thereafter reports
 a mismatch.</p>
 </blockquote>
-<h3 id="3-conventional-commits-are-the-single-source-of-changelog-content">3. Conventional commits are the single source of changelog content<a class="headerlink" href="#3-conventional-commits-are-the-single-source-of-changelog-content" title="Permanent link">&para;</a></h3>
+<h3 id="3-the-version-is-declared-statically">3. The version is declared statically<a class="headerlink" href="#3-the-version-is-declared-statically" title="Permanent link">&para;</a></h3>
+<p><strong>Rule:</strong> <code>pyproject.toml</code> declares the version as a literal in <code>[project]</code>:</p>
+<div class="highlight"><pre><span></span><code><span class="k">[project]</span>
+<span class="n">version</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;0.4.0&quot;</span>
+</code></pre></div>
+<p>It must <strong>not</strong> be computed. Specifically, <code>dynamic = ["version"]</code> combined
+with a VCS-derived source is disallowed:</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># DISALLOWED — the version is computed from git tags at build time</span>
+<span class="k">[build-system]</span>
+<span class="n">requires</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;hatchling&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;hatch-vcs&quot;</span><span class="p">]</span>
+
+<span class="k">[tool.hatch.version]</span>
+<span class="n">source</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;vcs&quot;</span>
+</code></pre></div>
+<p>The equivalent <code>setuptools_scm</code> configuration is disallowed for the same
+reason.</p>
+<p><strong>Rationale:</strong> Release-please's model is <em>edit the version files, commit, then
+tag</em>. Its Python strategy rewrites <code>[project].version</code> in <code>pyproject.toml</code>,
+<code>__version__</code> in the package's <code>__init__.py</code>, and
+<code>.release-please-manifest.json</code>, then tags the resulting commit.</p>
+<p>A VCS-derived version inverts that arrow — the tag produces the version, so
+there is no file to rewrite. The two mechanisms then disagree about who owns
+the number: release-please bumps the manifest while the built artifact takes
+its version from <code>git describe</code> independently. Rule 2 above ("release-please
+is the only writer of the version field") is unsatisfiable when no version
+field exists.</p>
+<p>A <strong>file-based</strong> dynamic source is a narrower case:</p>
+<div class="highlight"><pre><span></span><code><span class="k">[tool.hatch.version]</span>
+<span class="n">path</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;src/&lt;package&gt;/__init__.py&quot;</span>
+</code></pre></div>
+<p>Here the version <em>is</em> in a file, and release-please already rewrites that file,
+so it happens to work. It is still disallowed: <code>[project]</code> then carries no
+version for a reader or tool to find, and the arrangement only functions
+because two independent tools happen to agree on one path. Declare the literal
+and let hatchling read it.</p>
+<p><strong>Migrating off a VCS version:</strong> replace <code>dynamic = ["version"]</code> with the
+literal, drop <code>hatch-vcs</code> from <code>build-system.requires</code> and delete the
+<code>[tool.hatch.version]</code> block. Choose the starting version deliberately — an
+untagged repo has been building <code>0.x.dev&lt;distance&gt;+g&lt;sha&gt;</code> strings, which are
+not a release history to continue from.</p>
+<blockquote>
+<p><strong>Failure mode.</strong> A repo on <code>hatch-vcs</code> with no tags builds as
+<code>0.1.dev47+gf2a91c3</code>. Add release-please and it opens a release PR that bumps
+a manifest and nothing else; merging tags the commit, and only then does the
+package version change — via a completely different mechanism. Every
+subsequent release PR proposes a bump from a number the build does not use.</p>
+<p>Dropping the VCS source also removes a whole class of Docker failure: the
+<code>.git</code> directory is normally excluded from the build context, so a
+VCS-derived version cannot be computed there at all, and the build needs a
+<code>SETUPTOOLS_SCM_PRETEND_VERSION</code> escape hatch to work around its own
+versioning scheme.</p>
+</blockquote>
+<h3 id="4-conventional-commits-are-the-single-source-of-changelog-content">4. Conventional commits are the single source of changelog content<a class="headerlink" href="#4-conventional-commits-are-the-single-source-of-changelog-content" title="Permanent link">&para;</a></h3>
 <p><strong>Rule:</strong> Every PR that changes user-visible behaviour uses a conventional
 commit prefix (<code>fix:</code>, <code>feat:</code>, or the <code>!</code> breaking marker). The commit
 message body — what appears under the prefix — is the changelog entry. There
@@ -2812,7 +2886,7 @@ conventional commit prefixes. Release-please sees no releasable commits and
 never opens a release PR. The version stays frozen, and the changelog is
 empty despite months of merged PRs.</p>
 </blockquote>
-<h3 id="4-versions-stay-0x-until-100-is-declared-deliberately">4. Versions stay 0.x until 1.0.0 is declared deliberately<a class="headerlink" href="#4-versions-stay-0x-until-100-is-declared-deliberately" title="Permanent link">&para;</a></h3>
+<h3 id="5-versions-stay-0x-until-100-is-declared-deliberately">5. Versions stay 0.x until 1.0.0 is declared deliberately<a class="headerlink" href="#5-versions-stay-0x-until-100-is-declared-deliberately" title="Permanent link">&para;</a></h3>
 <p><strong>Rule:</strong> Versions stay <code>0.x</code> under semver. Bumping to <code>1.0.0</code> is a human
 decision — it is never automated. Under 0.x there is no compatibility promise,
 which matches the stack's pre-release, clean-cutover stance.</p>
@@ -2836,7 +2910,7 @@ block above had been copied without the flag. Adding it produced the correct
 changelog under <strong>⚠ BREAKING CHANGES</strong>, which is the intended behaviour: the
 break is documented, the stability promise is not made.</p>
 </blockquote>
-<h3 id="5-config-files-are-registered-in-docsmodulesyaml">5. Config files are registered in docs/modules.yaml<a class="headerlink" href="#5-config-files-are-registered-in-docsmodulesyaml" title="Permanent link">&para;</a></h3>
+<h3 id="6-config-files-are-registered-in-docsmodulesyaml">6. Config files are registered in docs/modules.yaml<a class="headerlink" href="#6-config-files-are-registered-in-docsmodulesyaml" title="Permanent link">&para;</a></h3>
 <p><strong>Rule:</strong> When a new <code>release-please-config.json</code> or
 <code>.release-please-manifest.json</code> file is created, its path must be added to
 <code>docs/modules.yaml</code> under the appropriate module's <code>paths</code> list. This applies

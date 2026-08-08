@@ -165,10 +165,39 @@ jobs:
        github.event.pull_request.merged == true &&
        github.event.pull_request.head.ref == 'release-please--branches--main')
     steps:
+      # Mint a GitHub App installation token. NOT GITHUB_TOKEN — see below.
+      - name: Mint a GitHub App installation token
+        id: app-token
+        uses: actions/create-github-app-token@fee1f7d63c2ff003460e3d139729b119787bc349  # v2.2.2
+        with:
+          app-id: ${{ vars.RELEASE_APP_ID }}
+          private-key: ${{ secrets.RELEASE_APP_PRIVATE_KEY }}
+          # Scope the token. Without at least one `permission-*` input it
+          # inherits the App's blanket installation permissions, which zizmor
+          # flags as a high-severity finding.
+          permission-contents: write        # release commit, tag, Release
+          permission-pull-requests: write   # open and update the release PR
+
       - uses: googleapis/release-please-action@<COMMIT_SHA>  # see pinning note below
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ steps.app-token.outputs.token }}
 ```
+
+> **The token must not be `GITHUB_TOKEN`.** GitHub deliberately suppresses
+> workflow runs for events created by `GITHUB_TOKEN`, to prevent recursion. A
+> release PR opened with it therefore triggers **no CI at all** — every
+> required status check stays pending forever and the PR can never be merged
+> on a protected branch. The PR looks fine; it simply reports
+> `no checks reported on the 'release-please--branches--main' branch`.
+>
+> Observed 2026-08-08 across six repos at once: llmio, board, standards, mill,
+> http and auto-mail all opened release PRs that could not merge.
+> `robotsix-file-hub` released successfully only because its default branch is
+> unprotected.
+>
+> `RELEASE_APP_ID` (variable) and `RELEASE_APP_PRIVATE_KEY` (secret) are the
+> same fleet App credentials used elsewhere; see the prerequisite section
+> above.
 
 The `if` guard ensures the action only creates tags/releases on merge of its
 own release PR, not on merge of any other PR.

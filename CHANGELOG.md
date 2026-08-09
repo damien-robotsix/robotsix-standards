@@ -1,5 +1,15 @@
 <!-- markdownlint-disable MD013 MD025 MD024 -->
 <!-- towncrier release notes start -->
+## [0.5.2](https://github.com/damien-robotsix/robotsix-standards/compare/v0.5.1...v0.5.2) (2026-08-09)
+
+
+### Documentation
+
+* **changelog:** put the newest release at the top ([#238](https://github.com/damien-robotsix/robotsix-standards/issues/238)) ([ea82287](https://github.com/damien-robotsix/robotsix-standards/commit/ea82287fda136b3496be72a9b3a91d4ad74941cf))
+* move authentication to the fleet edge, not per component ([#246](https://github.com/damien-robotsix/robotsix-standards/issues/246)) ([8c91e68](https://github.com/damien-robotsix/robotsix-standards/commit/8c91e685cd981717292b1949b2f3a469f50cf693))
+* Standard: every CI job must set timeout-minutes (20260807T203627Z-standard-every-ci-job-must-set-timeout-m-a63d) ([#241](https://github.com/damien-robotsix/robotsix-standards/issues/241)) ([b83523a](https://github.com/damien-robotsix/robotsix-standards/commit/b83523a5bbb8765431c1e70bb7f507be2ba706db))
+* Standard: optional dependencies must be imported behind a guard, enforced with deptry (no bespoke scanners) (20260807T202331Z-standard-optional-dependencies-must-be-i-47da) ([#240](https://github.com/damien-robotsix/robotsix-standards/issues/240)) ([42136fd](https://github.com/damien-robotsix/robotsix-standards/commit/42136fd89f829746f198253ac6f327268e6378c9))
+
 ## [0.5.1](https://github.com/damien-robotsix/robotsix-standards/compare/v0.5.0...v0.5.1) (2026-08-09)
 
 

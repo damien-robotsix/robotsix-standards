@@ -232,6 +232,14 @@
 - Add custom audit agent for security aspects of the standards definitions (20260717T233343Z-add-custom-audit-agent-for-security-aspe-7ef2)
 - Standardize: enable uv cache in all CI jobs using astral-sh/setup-uv (20260718T235556Z-standardize-enable-uv-cache-in-all-ci-jo-9993)
 
+## [0.5.1](https://github.com/damien-robotsix/robotsix-standards/compare/v0.5.0...v0.5.1) (2026-08-09)
+
+
+### Documentation
+
+* **chat-access:** state who provisions central_deploy.api_token ([#233](https://github.com/damien-robotsix/robotsix-standards/issues/233)) ([61ca5d8](https://github.com/damien-robotsix/robotsix-standards/commit/61ca5d868e5afe9fc0ddfe5a9c448d8f568d7f9b))
+* **release-please:** record the three traps the fleet rollout hit ([#237](https://github.com/damien-robotsix/robotsix-standards/issues/237)) ([31f29f2](https://github.com/damien-robotsix/robotsix-standards/commit/31f29f257be2bdf60313faa3b536991a3a264b75))
+
 ## [0.5.0](https://github.com/damien-robotsix/robotsix-standards/compare/v0.4.0...v0.5.0) (2026-08-08)
 
 

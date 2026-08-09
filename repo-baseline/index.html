@@ -561,6 +561,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#job-timeout-minutes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Job timeout-minutes
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -2452,6 +2463,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#job-timeout-minutes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Job timeout-minutes
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -2792,6 +2814,16 @@ and can push to protected branches, publish releases, or read secrets.
 Per-job permissions contain the blast radius to only the jobs that
 genuinely need the capability.</p>
 </blockquote>
+<h3 id="job-timeout-minutes">Job timeout-minutes<a class="headerlink" href="#job-timeout-minutes" title="Permanent link">&para;</a></h3>
+<p>Every CI job must declare an explicit <code>timeout-minutes</code> ceiling — the
+GitHub default is 6 hours, and a hung job that runs to the default
+burns the repo's free-tier budget.  The rule (fleet-wide default of 15
+minutes, per-job tuning, and the required comment for deviations) is
+defined in <a href="../python-ci-workflow/#job-timeout-minutes">Python CI workflow</a>.
+The rule is language-agnostic — it applies to every GitHub Actions job
+regardless of language — but the Python CI page is the canonical source
+because Python is the fleet's primary language and its workflow template
+is the pattern every repo follows.</p>
 <h2 id="branch-protection">Branch protection<a class="headerlink" href="#branch-protection" title="Permanent link">&para;</a></h2>
 <p><code>main</code> is protected identically in every repo — several standards are
 silently vacuous without it (auto-merge merges instantly, direct pushes

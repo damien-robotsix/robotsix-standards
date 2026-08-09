@@ -10,13 +10,13 @@
       
       
       
-        <link rel="canonical" href="https://damien-robotsix.github.io/robotsix-standards/entrypoint-contract/">
+        <link rel="canonical" href="https://damien-robotsix.github.io/robotsix-standards/deploy-api-key/">
       
       
-        <link rel="prev" href="../deploy-api-key/">
+        <link rel="prev" href="../deploy-contract/">
       
       
-        <link rel="next" href="../fastapi-pydantic-field-descriptions/">
+        <link rel="next" href="../entrypoint-contract/">
       
       
         
@@ -27,7 +27,7 @@
     
     
       
-        <title>Entrypoint contract - Robotsix Standards</title>
+        <title>Deploy API key provisioning - Robotsix Standards</title>
       
     
     
@@ -78,7 +78,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#entrypoint-contract" class="md-skip">
+        <a href="#deploy-api-key-provisioning" class="md-skip">
           Skip to content
         </a>
       
@@ -114,7 +114,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Entrypoint contract
+              Deploy API key provisioning
             
           </span>
         </div>
@@ -1602,34 +1602,6 @@
                 
   
   
-  
-  
-    <li class="md-nav__item">
-      <a href="../deploy-api-key/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Deploy API key provisioning
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
     
   
   
@@ -1649,7 +1621,7 @@
   <span class="md-ellipsis">
     
   
-    Entrypoint contract
+    Deploy API key provisioning
   
 
     
@@ -1667,7 +1639,7 @@
   <span class="md-ellipsis">
     
   
-    Entrypoint contract
+    Deploy API key provisioning
   
 
     
@@ -1693,10 +1665,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#the-standard-no-entrypoint-script" class="md-nav__link">
+  <a href="#1-opt-in-mechanism" class="md-nav__link">
     <span class="md-ellipsis">
       
-        The standard: no entrypoint script
+        1. Opt-in mechanism
       
     </span>
   </a>
@@ -1704,10 +1676,65 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#the-exception-genuine-startup-work" class="md-nav__link">
+  <a href="#2-injection-path" class="md-nav__link">
     <span class="md-ellipsis">
       
-        The exception: genuine startup work
+        2. Injection path
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-secret-handling-constraints" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Secret-handling constraints
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-lifecycle" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Lifecycle
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-capabilities" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Capabilities
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-relationship-to-chat-access" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. Relationship to chat access
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cross-references" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Cross-references
       
     </span>
   </a>
@@ -1718,6 +1745,34 @@
   
 </nav>
       
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../entrypoint-contract/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Entrypoint contract
+  
+
+    
+  </span>
+  
+  
+
+      </a>
     </li>
   
 
@@ -2186,10 +2241,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#the-standard-no-entrypoint-script" class="md-nav__link">
+  <a href="#1-opt-in-mechanism" class="md-nav__link">
     <span class="md-ellipsis">
       
-        The standard: no entrypoint script
+        1. Opt-in mechanism
       
     </span>
   </a>
@@ -2197,10 +2252,65 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#the-exception-genuine-startup-work" class="md-nav__link">
+  <a href="#2-injection-path" class="md-nav__link">
     <span class="md-ellipsis">
       
-        The exception: genuine startup work
+        2. Injection path
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-secret-handling-constraints" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Secret-handling constraints
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-lifecycle" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Lifecycle
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-capabilities" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Capabilities
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-relationship-to-chat-access" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. Relationship to chat access
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cross-references" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Cross-references
       
     </span>
   </a>
@@ -2227,58 +2337,115 @@
   
 
 
-<h1 id="entrypoint-contract">Entrypoint contract<a class="headerlink" href="#entrypoint-contract" title="Permanent link">&para;</a></h1>
+<h1 id="deploy-api-key-provisioning">Deploy API key provisioning<a class="headerlink" href="#deploy-api-key-provisioning" title="Permanent link">&para;</a></h1>
 <blockquote>
-<p><strong>Scope: deployable components only.</strong> See the
-<a href="../component-standard/">component standard</a>.</p>
+<p><strong>Scope: any component deployed by robotsix-central-deploy that needs to call
+the deploy lifecycle API.</strong> Deploy API key provisioning is <strong>opt-in</strong> — a
+component that does not declare the opt-in below receives no key, and that is
+a valid choice for components with no need to call the deploy API.</p>
 </blockquote>
-<p>How a component's container starts. The rule is simple: <strong>the console script
-is PID 1.</strong></p>
-<h2 id="the-standard-no-entrypoint-script">The standard: no entrypoint script<a class="headerlink" href="#the-standard-no-entrypoint-script" title="Permanent link">&para;</a></h2>
-<p>The default — what most of the fleet ships — is a direct exec-form entrypoint
-in the Dockerfile:</p>
-<div class="highlight"><pre><span></span><code><span class="k">ENTRYPOINT</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;robotsix-&lt;name&gt;&quot;</span><span class="p">]</span>
+<h2 id="1-opt-in-mechanism">1. Opt-in mechanism<a class="headerlink" href="#1-opt-in-mechanism" title="Permanent link">&para;</a></h2>
+<p>A component opts into deploy API key provisioning by declaring a
+<code>central_deploy.api_token</code> field (typed as <code>pydantic.SecretStr</code>) in its config
+model:</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">pydantic</span><span class="w"> </span><span class="kn">import</span> <span class="n">BaseModel</span><span class="p">,</span> <span class="n">SecretStr</span>
+
+
+<span class="k">class</span><span class="w"> </span><span class="nc">CentralDeployConfig</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Credentials for calling the deploy lifecycle API.&quot;&quot;&quot;</span>
+    <span class="n">url</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+    <span class="n">api_token</span><span class="p">:</span> <span class="n">SecretStr</span> <span class="o">=</span> <span class="n">SecretStr</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+
+
+<span class="k">class</span><span class="w"> </span><span class="nc">MyComponentConfig</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+    <span class="n">central_deploy</span><span class="p">:</span> <span class="n">CentralDeployConfig</span> <span class="o">=</span> <span class="n">CentralDeployConfig</span><span class="p">()</span>
 </code></pre></div>
-<p>Every duty an entrypoint script used to carry has a better home:</p>
+<p>The committed <code>config/config.schema.json</code> advertises the field to
+<code>robotsix-central-deploy</code> — the presence of <code>central_deploy.api_token</code> in the
+typed schema is the opt-in signal. A component whose schema does not include
+this field receives no key; central-deploy skips it.</p>
+<p>The field follows the <code>&lt;name&gt;_url</code> + <code>SecretStr</code> pattern defined in the
+<a href="../config-standard/#6-calling-another-service-a-name_url-config-field">config standard §6</a>.</p>
+<h2 id="2-injection-path">2. Injection path<a class="headerlink" href="#2-injection-path" title="Permanent link">&para;</a></h2>
+<p><code>robotsix-central-deploy</code> writes the deploy API key into the component's
+<strong>config volume</strong> at deploy time. The key is injected directly into
+<code>config/config.json</code> under the <code>central_deploy.api_token</code> key before the
+container starts — the same mechanism used for <code>fleet_auth.auth_hosts</code>.</p>
 <ul>
-<li><strong>Signal delivery</strong> — exec form makes the console script PID 1, so SIGTERM
-  from <code>docker stop</code> reaches the Python process directly. A <code>--watch</code>/daemon
-  subcommand stops cleanly on SIGTERM (log a stop line, drain if mid-cycle,
-  exit 0) — the <strong>app</strong> implements the handler.</li>
-<li><strong>Config validation</strong> — <code>robotsix_config.load_config</code> already fails fast
-  with a clear <code>MissingConfigError</code>/<code>InvalidConfigError</code>; a shell pre-check
-  duplicates it with a worse message. Bootstrap commands that must run before
-  a config exists (<code>detect</code>, <code>--help</code>, <code>--version</code>) simply don't call
-  <code>load_config</code> — the app knows which of its commands need config, whereas a
-  shell-script allowlist of subcommand names rots the first time one is added.</li>
-<li><strong>Config file permissions</strong> — enforced by whoever <em>writes</em> the file:
-  <code>dump_config</code> writes <code>0600</code> in a <code>0700</code> directory, and central-deploy owns
-  the config volume it writes into. Not a per-container <code>chmod</code>.</li>
+<li>The value is <strong>provisioned by robotsix-central-deploy automatically</strong> —
+  components MUST NOT require manual credential paste.</li>
+<li>The component reads the key from its own config file via <code>load_config</code>,
+  exactly like any other config field — no special env-var discovery path.</li>
+<li>central-deploy validates the merged config document against the component's
+  committed <code>config/config.schema.json</code> before writing.</li>
 </ul>
-<h2 id="the-exception-genuine-startup-work">The exception: genuine startup work<a class="headerlink" href="#the-exception-genuine-startup-work" title="Permanent link">&para;</a></h2>
-<p>A component ships an <code>entrypoint.sh</code> only when the container must do real work
-before the app can run that the app itself cannot do — the canonical example
-is robotsix-mill's privilege drop: start as root to reconcile config/data
-volume ownership (<code>chmod 600</code> secrets, <code>chown</code> to the runtime user) and raise
-the fd ulimit, then <code>runuser</code> down to the app user. The older
-socket-group-join pattern is the legacy direct-mount branch, which the deploy
-contract forbids for app containers. If you are not sure you need one, you
-don't.</p>
-<p>Rules for such a script:</p>
-<ol>
-<li><strong><code>exec</code> the application as the final step</strong> — never run the app as a child
-   of the shell, or <code>docker stop</code> can't deliver SIGTERM and the container is
-   SIGKILLed after the grace period with no clean shutdown.</li>
-<li><strong>Never gate bootstrap commands on config</strong> (<code>--help</code>, <code>detect</code>, …) — a
-   fresh operator must be able to run them before any config exists.</li>
-<li><strong>No config templating.</strong> Don't template with <code>envsubst</code>: per the
-   <a href="../config-standard/">config standard</a> the one config file is the only
-   source of values, so there is nothing to template — and <code>gettext-base</code>
-   isn't in the runtime image anyway, so the block silently does nothing (a
-   real bug found in the stack). Delete any <code>envsubst</code> block.</li>
-<li><strong>Keep it short, and comment why it exists</strong> — the script is an exception;
-   the comment is its justification.</li>
-</ol>
+<h2 id="3-secret-handling-constraints">3. Secret-handling constraints<a class="headerlink" href="#3-secret-handling-constraints" title="Permanent link">&para;</a></h2>
+<ul>
+<li>The field is typed as <code>pydantic.SecretStr</code> — masked on read (<code>**********</code>),
+  rendered as <code>writeOnly</code> / <code>format: password</code> in the JSON Schema, per the
+  <a href="../config-standard/#3-one-secret-convention">config standard §3</a>.</li>
+<li>The key is injected by central-deploy at deploy time; it is <strong>never
+  persisted in clear text</strong> in central-deploy's config store or in any repo.</li>
+<li><code>GET /config</code> masks the value — the actual key is never returned to any
+  caller.</li>
+<li>The config file is written with <code>0600</code> permissions in a <code>0700</code> directory,
+  per <code>robotsix_config.dump_config</code>.</li>
+<li>The key is a <strong>first-party secret</strong> and follows the config standard's
+  one-file rule: it lives in <code>config/config.json</code>, never in a compose
+  <code>environment:</code> slot. The config standard's
+  <a href="../config-standard/#5-what-environment-is-for"><code>environment:</code> rule</a> forbids
+  first-party secrets in compose <code>environment:</code> — one channel for the value
+  prevents the "why is this value what it is" ambiguity and keeps the
+  component's config surface uniform.</li>
+</ul>
+<h2 id="4-lifecycle">4. Lifecycle<a class="headerlink" href="#4-lifecycle" title="Permanent link">&para;</a></h2>
+<ul>
+<li>The key is <strong>(re)injected on every deploy and every update</strong>. central-deploy
+  writes the current key into the config volume before starting the container
+  on every deploy, update, and restart operation.</li>
+<li><strong>Enabling the opt-in on an already-deployed component requires a
+  redeploy/restart</strong> for the key to be picked up. The config file is only
+  rewritten when central-deploy starts the container; a component that adds
+  the <code>central_deploy.api_token</code> field to its schema after initial deployment
+  must be redeployed for the key to appear.</li>
+<li>The component reads its config once at startup. A key rotation by
+  central-deploy on a running component takes effect on the next restart —
+  the component does not need to poll for key changes.</li>
+</ul>
+<h2 id="5-capabilities">5. Capabilities<a class="headerlink" href="#5-capabilities" title="Permanent link">&para;</a></h2>
+<p>The deploy API key grants the component the ability to call
+<code>robotsix-central-deploy</code>'s <strong>deploy lifecycle API</strong> within the component's
+permitted scope:</p>
+<ul>
+<li>Read the component's own deployment status, configuration, and metadata.</li>
+<li>Trigger lifecycle operations the component is authorised to perform
+  (e.g. self-restart, self-update, log retrieval).</li>
+<li>Enumerate sibling components visible at the component's access level.</li>
+</ul>
+<p>The key is <strong>scoped to the component's own identity</strong> — it does not grant
+administrative access to central-deploy or cross-component control. The
+operations a component may perform with the key are bounded by
+central-deploy's per-component authorisation, not by the key itself.</p>
+<h2 id="6-relationship-to-chat-access">6. Relationship to chat access<a class="headerlink" href="#6-relationship-to-chat-access" title="Permanent link">&para;</a></h2>
+<p>The <a href="../chat-access-standard/">chat access standard</a> defines a specific
+consumer of this mechanism: when an operator enables chat access for a
+component, central-deploy provisions the deploy API key so the chat agent can
+call the deploy lifecycle API on behalf of that component. The chat access
+standard's §3.1 describes the same <code>central_deploy.api_token</code> injection path
+documented here.</p>
+<p>This page is the <strong>authoritative definition</strong> of the provisioning mechanism;
+the chat access standard is a specific use case that consumes it.</p>
+<h2 id="cross-references">Cross-references<a class="headerlink" href="#cross-references" title="Permanent link">&para;</a></h2>
+<ul>
+<li><a href="../config-standard/">Config standard</a> — the one-file rule, <code>SecretStr</code>
+  convention, <code>&lt;name&gt;_url</code> pattern, and what <code>environment:</code> is for.</li>
+<li><a href="../config-ownership/">Config ownership</a> — the boundary between deploy-plane
+  and component-owned config.</li>
+<li><a href="../chat-access-standard/">Chat access standard</a> — the chat-agent use case
+  that consumes this mechanism.</li>
+<li><a href="../deploy-contract/">Deploy contract</a> — the <code>deploy/docker-compose.yml</code>
+  shape.</li>
+</ul>
 
 
 

@@ -270,6 +270,18 @@ across the fleet.
 > Per-job permissions contain the blast radius to only the jobs that
 > genuinely need the capability.
 
+### Job timeout-minutes
+
+Every CI job must declare an explicit `timeout-minutes` ceiling — the
+GitHub default is 6 hours, and a hung job that runs to the default
+burns the repo's free-tier budget.  The rule (fleet-wide default of 15
+minutes, per-job tuning, and the required comment for deviations) is
+defined in [Python CI workflow](python-ci-workflow.md#job-timeout-minutes).
+The rule is language-agnostic — it applies to every GitHub Actions job
+regardless of language — but the Python CI page is the canonical source
+because Python is the fleet's primary language and its workflow template
+is the pattern every repo follows.
+
 ## Branch protection
 
 `main` is protected identically in every repo — several standards are

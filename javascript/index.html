@@ -1361,6 +1361,17 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#vulnerability-scanning" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Vulnerability scanning
+      
+    </span>
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -2267,6 +2278,17 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#vulnerability-scanning" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Vulnerability scanning
+      
+    </span>
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -2345,6 +2367,27 @@ genuinely outgrows static files — that is the exception, not the default.</p>
 <h2 id="dependency-updates">Dependency updates<a class="headerlink" href="#dependency-updates" title="Permanent link">&para;</a></h2>
 <p>Repos with a <code>package.json</code> add the <strong><code>npm</code></strong> ecosystem to <code>dependabot.yml</code>
 (see <a href="../repo-baseline/#automated-dependency-updates">automated dependency updates</a>).</p>
+<h2 id="vulnerability-scanning">Vulnerability scanning<a class="headerlink" href="#vulnerability-scanning" title="Permanent link">&para;</a></h2>
+<p><strong>A blocking <code>npm audit</code> CI gate is intentionally NOT part of this
+standard.</strong> Frontend CVE detection is already mandated through Dependabot
+(above), which detects vulnerable dependencies and opens fix PRs — that is
+the sanctioned mechanism.</p>
+<ul>
+<li><strong><code>npm audit</code> MUST NOT be wired as a required/blocking CI check.</strong>
+  npm advisories can fire on transitive dependencies outside the team's
+  control; a newly-published advisory turns CI red on unrelated PRs until
+  someone bumps the dep or raises the audit level threshold. This
+  "flaky-red" tax blocks unrelated work for low marginal safety: the
+  vulnerability is already visible to Dependabot, and the fix PR is the
+  correct channel.</li>
+<li><strong>Contrast with Python:</strong> the <a href="../python/">Python standard</a> mandates a
+  blocking <code>pip-audit</code> gate paired with a commented suppression allow-list
+  for CVEs that have no fix. The frontend standard deliberately relies on
+  Dependabot instead of a blocking audit gate.</li>
+<li>If a team wants PR-time visibility, <code>npm audit</code> may be run as an
+  <strong>advisory-only / non-blocking</strong> job (e.g. <code>npm audit || true</code>), never
+  as a gate.</li>
+</ul>
 
 
 

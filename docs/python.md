@@ -262,6 +262,64 @@ unused by deptry and fails CI. Register it under `DEP002` in
 `[tool.deptry.per_rule_ignores]`, with a comment — same convention as the
 ruff suppressions above.
 
+**deptry and optional-dependency imports:** any runtime dependency declared
+under `[project.optional-dependencies]` / extras MUST NOT be imported
+unconditionally at module top level — an unconditional import of an optional
+dependency makes the "optional" a lie: every installation, including the base
+`uv sync` without extras, will fail at import time.
+
+Guard the import with one of two patterns:
+
+- **Module-level `try`/`except ImportError` with a `HAVE_PKG` flag:**
+  the guard runs once at import time, and the rest of the module branches on
+  the flag:
+
+  ```python
+  try:
+      import httpx
+      HAVE_HTTPX = True
+  except ImportError:
+      HAVE_HTTPX = False
+  ```
+
+  Callers test `HAVE_HTTPX` before entering the code path that needs httpx,
+  and skip or raise a clear `ImportError` message when it is absent.
+
+- **Lazy in-function import:** the import lives inside the function or method
+  that actually needs the dependency.  The module stays importable without
+  it, and the `ImportError` surfaces at the point of use with a message
+  naming the missing extra:
+
+  ```python
+  def fetch(url: str) -> bytes:
+      try:
+          import httpx
+      except ImportError:
+          raise ImportError(
+              "httpx is required for fetch().  Install with: "
+              "uv sync --extra http"
+          ) from None
+      return httpx.get(url).content
+  ```
+
+  This is the preferred pattern when the optional dependency is only needed
+  in a single code path — it avoids a module-level flag that can drift from
+  the import it guards.
+
+**deptry enforces this fleet-wide.** deptry's dependency rules already
+detect optional/extra dependencies imported at module level without a guard.
+It is a required CI gate in every Python repo (see
+[repo baseline](repo-baseline.md) and the deptry section above). Do NOT ship
+bespoke home-grown scanners for optional-dependency hygiene — deptry is the
+classic off-the-shelf tool, and the fleet already runs it.
+
+If a repo needs a convention deptry cannot express (e.g. a dependency that is
+genuinely optional at runtime but must be imported at module level for
+type-checking), that gap MUST be documented explicitly — a comment in
+`pyproject.toml` under the relevant `[tool.deptry]` configuration, and a note
+in the repo's README.  The default is "deptry decides"; deviations are
+declared, never silent.
+
 ## Mypy: type-check tests
 
 **CI must run mypy on both `src/` and `tests/`** — not just the production

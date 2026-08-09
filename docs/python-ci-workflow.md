@@ -157,7 +157,8 @@ written is lint-clean, type-safe, and passes its tests.  It does not:
 ## Relationship to other standards
 
 - **[Python practices](python.md#ci-uv-setup-caching)** — `setup-uv` caching
-  requirement and pre-commit CI integration.
+  requirement, pre-commit CI integration, and the
+  [optional-dependency import guard rule](python.md) (deptry enforcement).
 - **[CI lint tool pinning](ci-lint-pinning.md)** — CI lint tools must match
   `.pre-commit-config.yaml` versions; applies to both the shared and
   standalone `ci.yml` paths.

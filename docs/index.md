@@ -152,6 +152,9 @@ integrates with the deployment system. Beyond the baseline it follows:
   integration tests.
 - **[Deploy contract](deploy-contract.md)** — the `deploy/docker-compose.yml`
   shape the deployment system consumes.
+- **[Deploy API key provisioning](deploy-api-key.md)** — how central-deploy
+  auto-provisions a deploy API key into any component that opts in — opt-in
+  mechanism, injection path, secret-handling, and lifecycle.
 - **[Entrypoint contract](entrypoint-contract.md)** — how a component's
   container starts up.
 - **[FastAPI Pydantic field descriptions](fastapi-pydantic-field-descriptions.md)** —

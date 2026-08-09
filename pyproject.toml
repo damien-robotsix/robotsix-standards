@@ -14,6 +14,9 @@ docs = ["mkdocs-htmlproofer-plugin", "mkdocs-material"]
 [tool.setuptools.packages.find]
 exclude = ["config*", "styles*"]
 
+[tool.setuptools.packages.find]
+exclude = ["config*", "styles*"]
+
 [tool.codespell]
 skip = "*.lock,*.json,*.svg,*.png,.git,*.secrets.baseline,site,styles"
 ignore-words-list = "bu,ro,te,ser,fo,tha,thru,coo,ans,ist,nd"

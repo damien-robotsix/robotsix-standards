@@ -412,7 +412,7 @@ gh api repos/OWNER/REPO -q '.squash_merge_commit_title'
 > changes were silently dropped. Fixed in robotsix-mill#2802 by deriving the
 > type from the changelog fragment the implement agent already writes.
 >
-> The lesson generalises: **a release pipeline that ignores unparseable commits
+> The lesson generalises: **a release pipeline that ignores unparsable commits
 > fails silently.** Nothing goes red. Audit what fraction of your history is
 > actually conventional before trusting an empty release PR to mean "no
 > changes".

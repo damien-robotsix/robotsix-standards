@@ -117,6 +117,36 @@ DNS enumeration:
   whole mechanism. This standard does not change section 5; it uses the
   existing pattern.
 
+### 3.1 Who provisions `api_token`
+
+`robotsix-central-deploy` writes `central_deploy.api_token` into the
+**config volume** of each chat-agent component — the same mechanism it uses for
+`fleet_auth.auth_hosts` — validating the merged document against the
+component's committed schema first and skipping any component that does not
+declare the key. A component therefore gets working deploy access by declaring
+the field; no operator paste, and no per-component copy of the value.
+
+Three rules follow, and they are the point of this section:
+
+- **The credential never travels as an environment variable.** Not
+  `DEPLOY_API_KEY`, not any other name.
+  [Config standard §5](config-standard.md#5-what-environment-is-for) forbids
+  first-party secrets in `environment:`, and an env channel here is worse than
+  redundant: it is a second source of truth for a credential that grants full
+  control of the deploy plane. A component that reads such a variable is
+  non-conforming.
+- **The roster carries auth *metadata*, never credential locations.** A
+  `GET /chat/components` entry's `auth` object names the scheme (`basic` /
+  `header`) and, for header auth, the header name. It does not name an
+  environment variable or carry a value. The consumer resolves the credential
+  from its own config.
+- **One value, one place.** `central_deploy.api_token` is the token for every
+  component fronted by the deploy plane. The optional
+  `central_deploy.component_credentials.<id>` map is an *override* for a
+  component with its own credential — not somewhere to copy the shared token.
+  Duplicating it per component is what made earlier revisions fragile: each
+  copy is a value a config rewrite can silently drop.
+
 ---
 
 ## 4. Trust model

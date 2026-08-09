@@ -2658,7 +2658,7 @@ paths, and <strong>SHOULD</strong> log resolved persistence paths at startup. Se
 <h3 id="multi-service-skeleton">Multi-service skeleton<a class="headerlink" href="#multi-service-skeleton" title="Permanent link">&para;</a></h3>
 <p>When you have ≥2 services, exactly one <strong>must</strong> carry
 <code>robotsix.deploy.primary: "true"</code> (§2, §5). The primary's first port gets the
-gateway route <code>deploy.robotsix.net/&lt;component&gt;/*</code> and its health is the
+edge route <code>&lt;component&gt;.deploy.robotsix.net</code> and its health is the
 component health. Sibling container names derive as <code>&lt;component&gt;-&lt;service-key&gt;</code>.</p>
 <div class="highlight"><pre><span></span><code><span class="c1"># central-deploy-contract-version: 1</span>
 <span class="nt">services</span><span class="p">:</span>

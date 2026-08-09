@@ -2406,9 +2406,11 @@ restart cascade.</p>
   process is alive.</li>
 <li><strong>No dependency I/O:</strong> the handler body is synchronous or a no-op async
   function — it returns immediately without awaiting anything.</li>
-<li><strong>Auth-exempt:</strong> neither the gateway nor the component applies
-  authentication to this endpoint, so container healthchecks and the
-  orchestrator can probe it without credentials.</li>
+<li><strong>Auth-exempt:</strong> neither the fleet edge nor the component applies
+  authentication to this endpoint, so container healthchecks, the
+  orchestrator, and external uptime monitoring can probe it without
+  credentials. The edge gives every component a dedicated highest-priority
+  <code>/health</code> route carrying no auth middleware.</li>
 </ul>
 <h3 id="2-readiness-readyz-dependency-probe-503-when-degraded">2. Readiness: <code>/readyz</code> — dependency probe, 503 when degraded<a class="headerlink" href="#2-readiness-readyz-dependency-probe-503-when-degraded" title="Permanent link">&para;</a></h3>
 <p>The readiness endpoint signals that the component can <strong>actually serve

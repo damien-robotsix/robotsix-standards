@@ -2672,34 +2672,62 @@ the detailed contracts are linked at the end.</p>
 <p>Configuration is identical across all three modes — see the
 <a href="../config-standard/">config standard</a>.</p>
 <h2 id="authentication-is-centralized-components-ship-none">Authentication is centralized — components ship none<a class="headerlink" href="#authentication-is-centralized-components-ship-none" title="Permanent link">&para;</a></h2>
-<p>A deployable component implements <strong>no user-facing authentication</strong> of its
-own: no login page, no HTTP Basic middleware, no session handling, no
-<code>auth.*</code> config section. Authentication happens <strong>once, at the deployment
-system's gateway</strong> — central-deploy validates the operator's session on every
-proxied HTTP and WebSocket request before traffic reaches a component, so a
-component behind the gateway only ever receives authenticated requests.
-Per-component auth on top of that is a second password for the same door:
-each one is an extra credential to provision, rotate, and get wrong.</p>
+<p>A deployable component implements <strong>no authentication of its own</strong> — not for
+humans, not for machines: no login page, no HTTP Basic middleware, no session
+handling, no bearer-token dependency on its routers, no <code>auth.*</code> config
+section. Authentication happens <strong>once, at the fleet edge</strong>. Traefik terminates
+TLS for every <code>&lt;component&gt;.&lt;base-domain&gt;</code> hostname and authenticates the
+request before it reaches a container:</p>
+<table>
+<thead>
+<tr>
+<th>Caller</th>
+<th>How the edge authenticates it</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>A person in a browser</td>
+<td><code>forwardAuth</code> to tinyauth — one fleet-wide SSO login</td>
+</tr>
+<tr>
+<td>A fleet service or script</td>
+<td>Traefik's <code>basicauth</code> middleware on a higher-priority router matched by the <code>Authorization</code> header</td>
+</tr>
+</tbody>
+</table>
+<p>A component therefore only ever receives authenticated requests, and it does
+not need to distinguish the two cases. Per-component auth on top of that is a
+second password for the same door: an extra credential to provision, rotate,
+and get wrong, and a second thing to be wrong about when access breaks.</p>
 <p>Scope — what this does and doesn't cover:</p>
 <ul>
-<li><strong>Removed</strong>: operator/user-facing auth — UI login walls, Basic-auth
-  middleware, password/session config fields.</li>
-<li><strong>Kept</strong>: machine-to-machine credentials a component <em>uses or serves</em> —
-  service bearer tokens, third-party API keys, webhook signatures. Those are
-  secrets (see the <a href="../config-standard/">config standard</a>), not an auth
-  system.</li>
+<li><strong>Removed</strong>: everything that decides <em>whether a caller may call</em> — UI login
+  walls, Basic-auth middleware, session handling, and component-issued API or
+  bearer tokens checked on the component's own routes. A component-issued
+  token is still a second door; the edge's machine router already covers that
+  caller.</li>
+<li><strong>Kept</strong>: credentials a component <em>uses</em> to call outward — third-party API
+  keys, forge tokens, SMTP and database passwords. Those are secrets (see the
+  <a href="../config-standard/">config standard</a>), not an auth system.</li>
+<li><strong>Kept</strong>: cryptographic verification of third-party callbacks — webhook
+  signatures (GitHub, Stripe, …). The edge cannot verify these; only the
+  component holds the shared secret, and the check proves <em>provenance</em>, not
+  authorization. Such a webhook route is the one thing that may sit on a
+  router the edge leaves open.</li>
 <li><strong>Deployed any other way</strong> (own reverse proxy, raw port, local dev),
   authentication is the <strong>operator's responsibility</strong> — e.g. auth at their
   proxy. A component must never be exposed directly to an untrusted network
   on the assumption that it protects itself; it doesn't.</li>
-<li><strong>Trust model</strong>: the network behind the gateway is trusted; isolating
+<li><strong>Trust model</strong>: the network behind the edge is trusted; isolating
   components from each other is the deployment system's concern, not
   per-component auth.</li>
 </ul>
-<p>Migration sequencing: a component that today relies on its embedded auth
-(e.g. behind a plain reverse proxy) removes it <strong>only after</strong> it is served
-exclusively through the gateway — otherwise the removal window exposes it
-unauthenticated.</p>
+<p>Migration sequencing: a component that today ships its own auth removes it
+<strong>only after</strong> it is served exclusively through the fleet edge — otherwise the
+removal window exposes it unauthenticated. Where the auth is already
+config-gated (an empty token meaning "disabled"), clearing the token at cutover
+and deleting the code afterwards is the safer order.</p>
 <h2 id="health-endpoint">Health endpoint<a class="headerlink" href="#health-endpoint" title="Permanent link">&para;</a></h2>
 <p>Every deployable component serves <strong><code>GET /health</code></strong> on its service port —
 <strong>200 means alive</strong>, anything else means not. One fleet-wide path (it was a

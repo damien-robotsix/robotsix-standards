@@ -2691,10 +2691,10 @@ the field; no operator paste, and no per-component copy of the value.</p>
 <a href="../component-standard/">component standard</a>'s authentication section, applied
 to chat operations:</p>
 <ul>
-<li><strong>The gateway authenticates once.</strong> <code>robotsix-central-deploy</code> validates the
-  operator's session on every proxied request before traffic reaches a
-  component.</li>
-<li><strong>The internal network is trusted.</strong> Components behind the gateway receive
+<li><strong>The fleet edge authenticates once.</strong> Traefik authenticates every request —
+  browsers via tinyauth SSO, machine callers via its <code>basicauth</code> middleware —
+  before traffic reaches a component.</li>
+<li><strong>The internal network is trusted.</strong> Components behind the edge receive
   only authenticated requests and do not ship per-component auth.</li>
 <li><strong>The per-component chat-access checkbox is the authorization boundary for
   chat operations.</strong> An operator grants or revokes chat access per component
@@ -2704,7 +2704,7 @@ to chat operations:</p>
   control what the agent may do once connected.</li>
 <li><strong>A component must never be exposed directly to an untrusted network</strong> on
   the assumption that it protects itself. Chat access does not change this —
-  the skill endpoint is an internal HTTP route behind the gateway, not a
+  the skill endpoint is an internal HTTP route behind the edge, not a
   public API.</li>
 </ul>
 <hr />

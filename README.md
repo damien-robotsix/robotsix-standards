@@ -82,6 +82,7 @@ the default.
 | [FastAPI test isolation](docs/fastapi-test-isolation.md) | Mutable server state exposed through `Depends()` dependencies so tests can override via `app.dependency_overrides` — never import and mutate the module-level store directly. |
 | [Integrating a service](docs/integrating-a-service.md) | Task-oriented how-to: zero to a one-click deploy. |
 | [Chat access](docs/chat-access-standard.md) | A standard skill endpoint so the chat agent (`robotsix-chat`) can invoke operations on the component. |
+| [Deploy API key](docs/deploy-api-key.md) | How central-deploy auto-provisions a deploy API key into any component that opts in — opt-in mechanism, injection path, secret-handling, and lifecycle. |
 | [HTTP error envelope](docs/http-error-envelope.md) | One consistent RFC 9457 `application/problem+json` envelope for every error response, registered via centralized exception handlers. |
 | [HTTP security headers](docs/http-security-headers.md) | Standard OWASP security response headers (CSP, HSTS, X-Frame-Options, etc.) via a single shared `secure` middleware — no hand-rolled per-service headers. |
 | [Health endpoints](docs/health-endpoints.md) | Split liveness (`/health`) vs. readiness (`/readyz`) endpoints so the orchestrator can restart dead processes without gating traffic on a dependency probe, and vice versa. |

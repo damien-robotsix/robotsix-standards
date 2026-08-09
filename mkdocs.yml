@@ -112,6 +112,7 @@ nav:
       - Config-ownership audit: config-ownership-audit.md
       - Docker build & release: docker-standard.md
       - Deploy contract: deploy-contract.md
+      - Deploy API key provisioning: deploy-api-key.md
       - Entrypoint contract: entrypoint-contract.md
       - FastAPI Pydantic field descriptions: fastapi-pydantic-field-descriptions.md
       - FastAPI test isolation: fastapi-test-isolation.md

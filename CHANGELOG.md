@@ -24,14 +24,12 @@
 
 ## [0.5.1](https://github.com/damien-robotsix/robotsix-standards/compare/v0.5.0...v0.5.1) (2026-08-09)
 
-
 ### Documentation
 
 * **chat-access:** state who provisions central_deploy.api_token ([#233](https://github.com/damien-robotsix/robotsix-standards/issues/233)) ([61ca5d8](https://github.com/damien-robotsix/robotsix-standards/commit/61ca5d868e5afe9fc0ddfe5a9c448d8f568d7f9b))
 * **release-please:** record the three traps the fleet rollout hit ([#237](https://github.com/damien-robotsix/robotsix-standards/issues/237)) ([31f29f2](https://github.com/damien-robotsix/robotsix-standards/commit/31f29f257be2bdf60313faa3b536991a3a264b75))
 
 ## [0.5.0](https://github.com/damien-robotsix/robotsix-standards/compare/v0.4.0...v0.5.0) (2026-08-08)
-
 
 ### Features
 
@@ -40,7 +38,6 @@
 * **release-please:** require a statically declared version ([#229](https://github.com/damien-robotsix/robotsix-standards/issues/229)) ([b532de2](https://github.com/damien-robotsix/robotsix-standards/commit/b532de27a95779b386c415dd5d9d2a9caed7e53c))
 * **release:** adopt release-please, retire towncrier ([#227](https://github.com/damien-robotsix/robotsix-standards/issues/227)) ([c3da78d](https://github.com/damien-robotsix/robotsix-standards/commit/c3da78d871c9c6be8bfc223f7ae65ac3cee5a9cd))
 
-
 ### Bug Fixes
 
 * **release-please:** align the workflow template with the fleet linter ([#226](https://github.com/damien-robotsix/robotsix-standards/issues/226)) ([2a59558](https://github.com/damien-robotsix/robotsix-standards/commit/2a59558e395b6792ba027231f01df7d3b895626f))
@@ -48,7 +45,6 @@
 * **release-please:** mint an App token, not GITHUB_TOKEN ([#230](https://github.com/damien-robotsix/robotsix-standards/issues/230)) ([da07f1f](https://github.com/damien-robotsix/robotsix-standards/commit/da07f1f1101029a49e5d3a3714075596fe864827))
 * **release:** mint an App token so release PRs get CI ([#231](https://github.com/damien-robotsix/robotsix-standards/issues/231)) ([00853ca](https://github.com/damien-robotsix/robotsix-standards/commit/00853caa049d8dc0cd6e22cd79eea4f7b5eb95a9))
 * **release:** regenerate uv.lock on the release branch ([#232](https://github.com/damien-robotsix/robotsix-standards/issues/232)) ([e456810](https://github.com/damien-robotsix/robotsix-standards/commit/e456810011a76e3286a4ad292f2f95bdc1e678f3))
-
 
 ### Documentation
 
@@ -374,19 +370,18 @@ are added above by release-please.
 - Standardize: pytest shared state-builders as factory fixtures in a root tests/conftest.py (20260802T160811Z-standardize-pytest-shared-state-builders-b57a)
 - Standardize: FastAPI test isolation via Depends() + dependency_overrides (20260804T163354Z-standardize-fastapi-test-isolation-via-d-7d34)
 - Standardize: split liveness vs readiness health endpoints for HTTP-serving fleet services (20260804T163427Z-standardize-split-liveness-vs-readiness-7932)
-- Standardize: library-internal logging convention (getLogger(__name__) + NullHandler, DEBUG retry logs) (20260806T163819Z-standardize-library-internal-logging-con-a5ec)
+- Standardize: library-internal logging convention (getLogger(`__name__`) + NullHandler, DEBUG retry logs) (20260806T163819Z-standardize-library-internal-logging-con-a5ec)
 - Standardize: service-level compose healthcheck hitting app liveness endpoint for backend repos (20260805T163918Z-standardize-service-level-compose-health-a647)
 - Mark docs/changelog-driven-releases.md as superseded (add page banner + nav annotation) (20260806T164342Z-mark-docs-changelog-driven-releases-md-a-9fc0)
 - Standardize: enforce mypy as a blocking merge gate for type-aware packages (20260804T171434Z-standardize-enforce-mypy-as-a-blocking-m-3530)
 - Standardize: stale bot must exempt pull requests from auto-close (days-before-pr-stale / days-before-pr-close: -1) (20260804T172417Z-standardize-stale-bot-must-exempt-pull-r-48cf)
 - Standardize: Dependabot auto-merge must wait for passing CI and exclude Docker/pre-commit bumps (20260805T173539Z-standardize-dependabot-auto-merge-must-w-2f1c)
-- Standardize: expose a runtime __version__ via a file-based single source for git-consumed stack libraries (20260805T173848Z-standardize-expose-a-runtime-version-via-69c2)
+- Standardize: expose a runtime `__version__` via a file-based single source for git-consumed stack libraries (20260805T173848Z-standardize-expose-a-runtime-version-via-69c2)
 - Add a local CI gate rejecting changelog fragments clipped with a literal truncation ellipsis (20260731T193229Z-add-a-local-ci-gate-rejecting-changelog-f3b6)
 - Add a CI gate rejecting multiple changelog.d fragments for the same ticket/event in a single changeset (20260803T200250Z-add-a-ci-gate-rejecting-multiple-changel-bdae)
 - Consolidated two duplicate changelog entries for pytest filterwarnings standardization (20260803T200250Z-consolidate-the-two-duplicate-changelog-8d58)
 - Adopt zizmor as a fleet-wide GitHub Actions security standard (warn-first rollout) (20260807T204925Z-adopt-zizmor-as-a-fleet-wide-github-acti-93c6)
 - Update deprecated pyproject.toml license format (table → SPDX string) (20260802T212642Z-update-deprecated-pyproject-toml-license-8e98)
-
 
 # robotsix-standards 0.3.0 (2026-08-03)
 

@@ -103,7 +103,6 @@ are added above by release-please.
 - Add mkdocs.yml nav registration rule to AGENT.md — new standards pages must be
   registered in the `mkdocs.yml` nav in the same change that adds them, not
   just in README/index TOC entries (the TOC-sync gate is one-directional).
-- Remove docstring_coverage and test_gap periodic agents from this markdown-only repo (they were incorrectly re-added by PRs #162/#164)
 - Add LICENSE (MIT) check to the baseline-check workflow, verifying every fleet repo ships an MIT `LICENSE` at the repo root.
 - Fixed three changelog fragments that were truncated mid-sentence with a literal ellipsis (…), copied from clipped ticket titles. The fragments now end with complete sentences so `towncrier build` will emit valid release notes.
 - Fix Dependabot pre-commit update failure: correct `markdownlint-cli2` repo URL from `igorshubovych/markdownlint-cli2` (404) to `DavidAnson/markdownlint-cli2`.

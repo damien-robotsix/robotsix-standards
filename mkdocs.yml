@@ -101,6 +101,7 @@ nav:
       - Module taxonomy scope: module-taxonomy-scope.md
       - Docs site deployment: docs-site-deployment.md
       - JavaScript practices: javascript.md
+      - PHP practices: php.md
       - Async SQLAlchemy test fixtures: async-sqlalchemy-test-fixtures.md
       - ROS 2 practices: ros2.md
       - Pre-commit baseline: pre-commit-baseline.md

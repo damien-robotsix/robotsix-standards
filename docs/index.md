@@ -122,6 +122,9 @@ everywhere.
   regression cannot silently strip type information from downstream consumers.
 - **[JavaScript practices](javascript.md)** — vanilla frontend JS as static
   assets, lockfile discipline, vitest coverage floor, eslint/stylelint.
+- **[PHP practices](php.md)** — native `php -l` syntax-check over all `.php`
+  files as a blocking CI gate — no custom scanners, no parse errors in
+  production.
 - **[ROS 2 practices](ros2.md)** — workspace-skeleton layout, vcs2l manifest,
   devcontainer, colcon/rosdep build, lint gates.
 - **[Pre-commit baseline](pre-commit-baseline.md)** — five zero-config

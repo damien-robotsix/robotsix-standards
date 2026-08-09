@@ -155,9 +155,10 @@ The trust model is a direct restatement of the
 [component standard](component-standard.md)'s authentication section, applied
 to chat operations:
 
-- **The fleet edge authenticates once.** Traefik authenticates every request —
-  browsers via tinyauth SSO, machine callers via its `basicauth` middleware —
-  before traffic reaches a component.
+- **The fleet edge authenticates once.** Traefik puts every externally routed
+  request through tinyauth SSO before it reaches a component. There is no
+  second, weaker gate — machine callers reach components over the internal
+  container network instead, which never passes through the edge.
 - **The internal network is trusted.** Components behind the edge receive
   only authenticated requests and do not ship per-component auth.
 - **The per-component chat-access checkbox is the authorization boundary for

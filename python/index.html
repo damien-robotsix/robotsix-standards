@@ -2849,6 +2849,56 @@ never imported (a linter or formatter in an optional group) gets flagged as
 unused by deptry and fails CI. Register it under <code>DEP002</code> in
 <code>[tool.deptry.per_rule_ignores]</code>, with a comment — same convention as the
 ruff suppressions above.</p>
+<p><strong>deptry and optional-dependency imports:</strong> any runtime dependency declared
+under <code>[project.optional-dependencies]</code> / extras MUST NOT be imported
+unconditionally at module top level — an unconditional import of an optional
+dependency makes the "optional" a lie: every installation, including the base
+<code>uv sync</code> without extras, will fail at import time.</p>
+<p>Guard the import with one of two patterns:</p>
+<ul>
+<li><strong>Module-level <code>try</code>/<code>except ImportError</code> with a <code>HAVE_PKG</code> flag:</strong>
+  the guard runs once at import time, and the rest of the module branches on
+  the flag:</li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="k">try</span><span class="p">:</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">httpx</span>
+    <span class="n">HAVE_HTTPX</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+    <span class="n">HAVE_HTTPX</span> <span class="o">=</span> <span class="kc">False</span>
+</code></pre></div>
+<p>Callers test <code>HAVE_HTTPX</code> before entering the code path that needs httpx,
+  and skip or raise a clear <code>ImportError</code> message when it is absent.</p>
+<ul>
+<li><strong>Lazy in-function import:</strong> the import lives inside the function or method
+  that actually needs the dependency.  The module stays importable without
+  it, and the <code>ImportError</code> surfaces at the point of use with a message
+  naming the missing extra:</li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">fetch</span><span class="p">(</span><span class="n">url</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bytes</span><span class="p">:</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="kn">import</span><span class="w"> </span><span class="nn">httpx</span>
+    <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ImportError</span><span class="p">(</span>
+            <span class="s2">&quot;httpx is required for fetch().  Install with: &quot;</span>
+            <span class="s2">&quot;uv sync --extra http&quot;</span>
+        <span class="p">)</span> <span class="kn">from</span><span class="w"> </span><span class="kc">None</span>
+    <span class="k">return</span> <span class="n">httpx</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">)</span><span class="o">.</span><span class="n">content</span>
+</code></pre></div>
+<p>This is the preferred pattern when the optional dependency is only needed
+  in a single code path — it avoids a module-level flag that can drift from
+  the import it guards.</p>
+<p><strong>deptry enforces this fleet-wide.</strong> deptry's dependency rules already
+detect optional/extra dependencies imported at module level without a guard.
+It is a required CI gate in every Python repo (see
+<a href="../repo-baseline/">repo baseline</a> and the deptry section above). Do NOT ship
+bespoke home-grown scanners for optional-dependency hygiene — deptry is the
+classic off-the-shelf tool, and the fleet already runs it.</p>
+<p>If a repo needs a convention deptry cannot express (e.g. a dependency that is
+genuinely optional at runtime but must be imported at module level for
+type-checking), that gap MUST be documented explicitly — a comment in
+<code>pyproject.toml</code> under the relevant <code>[tool.deptry]</code> configuration, and a note
+in the repo's README.  The default is "deptry decides"; deviations are
+declared, never silent.</p>
 <h2 id="mypy-type-check-tests">Mypy: type-check tests<a class="headerlink" href="#mypy-type-check-tests" title="Permanent link">&para;</a></h2>
 <p><strong>CI must run mypy on both <code>src/</code> and <code>tests/</code></strong> — not just the production
 package.  Tests are the most exercised consumer of the public API, and a type

@@ -2691,9 +2691,10 @@ the field; no operator paste, and no per-component copy of the value.</p>
 <a href="../component-standard/">component standard</a>'s authentication section, applied
 to chat operations:</p>
 <ul>
-<li><strong>The fleet edge authenticates once.</strong> Traefik authenticates every request —
-  browsers via tinyauth SSO, machine callers via its <code>basicauth</code> middleware —
-  before traffic reaches a component.</li>
+<li><strong>The fleet edge authenticates once.</strong> Traefik puts every externally routed
+  request through tinyauth SSO before it reaches a component. There is no
+  second, weaker gate — machine callers reach components over the internal
+  container network instead, which never passes through the edge.</li>
 <li><strong>The internal network is trusted.</strong> Components behind the edge receive
   only authenticated requests and do not ship per-component auth.</li>
 <li><strong>The per-component chat-access checkbox is the authorization boundary for

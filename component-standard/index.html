@@ -2682,20 +2682,26 @@ request before it reaches a container:</p>
 <thead>
 <tr>
 <th>Caller</th>
-<th>How the edge authenticates it</th>
+<th>How it reaches a component</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td>A person in a browser</td>
-<td><code>forwardAuth</code> to tinyauth — one fleet-wide SSO login</td>
+<td>Through the edge, <code>forwardAuth</code> to tinyauth — one fleet-wide SSO login</td>
 </tr>
 <tr>
 <td>A fleet service or script</td>
-<td>Traefik's <code>basicauth</code> middleware on a higher-priority router matched by the <code>Authorization</code> header</td>
+<td><strong>Not through the edge.</strong> Over the internal container network, <code>http://&lt;container&gt;:&lt;port&gt;</code></td>
 </tr>
 </tbody>
 </table>
+<p>The edge has exactly one gate. A second, HTTP Basic door for machine callers
+existed briefly and was removed: it was keyed with the credential the previous
+ingress used, so every browser that had ever authenticated against that ingress
+replayed it and was served without ever seeing the SSO login. A door whose key
+every client already holds is not defence in depth. Machine callers do not need
+the edge at all — they share a network with the components.</p>
 <p>A component therefore only ever receives authenticated requests, and it does
 not need to distinguish the two cases. Per-component auth on top of that is a
 second password for the same door: an extra credential to provision, rotate,
@@ -2705,8 +2711,8 @@ and get wrong, and a second thing to be wrong about when access breaks.</p>
 <li><strong>Removed</strong>: everything that decides <em>whether a caller may call</em> — UI login
   walls, Basic-auth middleware, session handling, and component-issued API or
   bearer tokens checked on the component's own routes. A component-issued
-  token is still a second door; the edge's machine router already covers that
-  caller.</li>
+  token is still a second door, and a caller inside the network does not need
+  one.</li>
 <li><strong>Kept</strong>: credentials a component <em>uses</em> to call outward — third-party API
   keys, forge tokens, SMTP and database passwords. Those are secrets (see the
   <a href="../config-standard/">config standard</a>), not an auth system.</li>

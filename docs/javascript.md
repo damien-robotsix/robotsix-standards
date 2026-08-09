@@ -59,3 +59,25 @@ genuinely outgrows static files — that is the exception, not the default.
 
 Repos with a `package.json` add the **`npm`** ecosystem to `dependabot.yml`
 (see [automated dependency updates](repo-baseline.md#automated-dependency-updates)).
+
+## Vulnerability scanning
+
+**A blocking `npm audit` CI gate is intentionally NOT part of this
+standard.** Frontend CVE detection is already mandated through Dependabot
+(above), which detects vulnerable dependencies and opens fix PRs — that is
+the sanctioned mechanism.
+
+- **`npm audit` MUST NOT be wired as a required/blocking CI check.**
+  npm advisories can fire on transitive dependencies outside the team's
+  control; a newly-published advisory turns CI red on unrelated PRs until
+  someone bumps the dep or raises the audit level threshold. This
+  "flaky-red" tax blocks unrelated work for low marginal safety: the
+  vulnerability is already visible to Dependabot, and the fix PR is the
+  correct channel.
+- **Contrast with Python:** the [Python standard](python.md) mandates a
+  blocking `pip-audit` gate paired with a commented suppression allow-list
+  for CVEs that have no fix. The frontend standard deliberately relies on
+  Dependabot instead of a blocking audit gate.
+- If a team wants PR-time visibility, `npm audit` may be run as an
+  **advisory-only / non-blocking** job (e.g. `npm audit || true`), never
+  as a gate.

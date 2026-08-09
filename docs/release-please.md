@@ -228,7 +228,7 @@ already failed on `main`.
 >
 > ```bash
 > url=https://github.com/googleapis/release-please-action.git
-> git ls-remote "$url" "refs/tags/v4^{}" "refs/tags/v4" \
+> git ls-remote "$url" "refs/tags/v5^{}" "refs/tags/v5" \
 >   | awk '/\^\{\}$/{c=$1} !/\^\{\}$/{p=$1} END{print (c!=""?c:p)}'
 > ```
 
@@ -714,7 +714,7 @@ Bump the caller in `.github/workflows/baseline-check.yml` (or wherever the
 repo calls the shared workflow) to `a6378ac` or later:
 
 ```yaml
-uses: damien-robotsix/robotsix-github-workflows/.github/workflows/baseline-check.yml@a6378accaf26c75b12fac324c3056255647c107b # main
+uses: damien-robotsix/robotsix-github-workflows/.github/workflows/baseline-check.yml@86dae89b637dad27ddba0aaa5f9430e083288365 # main
 ```
 
 > **Verification.** The baseline-check job passes after the towncrier +

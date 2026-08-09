@@ -11,4 +11,4 @@ jobs:
     permissions:
       contents: write
       pull-requests: write
-    uses: damien-robotsix/robotsix-github-workflows/.github/workflows/dependabot-auto-merge.yml@7314c9b6c2b536ca81023e8841f272b72733262e # main
+    uses: damien-robotsix/robotsix-github-workflows/.github/workflows/dependabot-auto-merge.yml@86dae89b637dad27ddba0aaa5f9430e083288365 # main

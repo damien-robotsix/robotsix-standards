@@ -840,6 +840,56 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#traps" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Traps
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Traps">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#uvlock-records-the-projects-own-version" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        uv.lock records the project's own version
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#markdownlint-rejects-the-generated-changelog" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Markdownlint rejects the generated CHANGELOG
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#a-release-pr-that-never-merges-is-usually-a-token-problem" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        A release PR that never merges is usually a token problem
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#reference" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2523,6 +2573,56 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#traps" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Traps
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Traps">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#uvlock-records-the-projects-own-version" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        uv.lock records the project's own version
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#markdownlint-rejects-the-generated-changelog" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Markdownlint rejects the generated CHANGELOG
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#a-release-pr-that-never-merges-is-usually-a-token-problem" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        A release PR that never merges is usually a token problem
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#reference" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2908,11 +3008,31 @@ are no fragment files; <code>CHANGELOG.md</code> is written exclusively by relea
 (per-PR file creation, CI gate, skip-changelog label, fragment registration in
 <code>modules.yaml</code>). The commit message is already written as part of the PR; using
 it as the changelog entry removes a duplicate step.</p>
+<p>This applies to <strong>automation as much as to people</strong>. Any tool that opens PRs
+against a fleet repo must title them conventionally.</p>
+<p><strong>Which subject release-please actually reads.</strong> Every fleet repo sets
+<code>squash_merge_commit_title = COMMIT_OR_PR_TITLE</code>. GitHub squashes a
+<strong>single-commit</strong> PR under that commit's own subject, and a <strong>multi-commit</strong> PR
+under the PR title. A tool that sets one but not the other therefore produces
+parseable subjects only some of the time, depending on how many commits the
+branch happened to end up with:</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># What the repo will use as the squash subject</span>
+gh<span class="w"> </span>api<span class="w"> </span>repos/OWNER/REPO<span class="w"> </span>-q<span class="w"> </span><span class="s1">&#39;.squash_merge_commit_title&#39;</span>
+</code></pre></div>
 <blockquote>
-<p><strong>Failure mode.</strong> A repo adopts release-please but contributors do not use
-conventional commit prefixes. Release-please sees no releasable commits and
-never opens a release PR. The version stays frozen, and the changelog is
-empty despite months of merged PRs.</p>
+<p><strong>Failure mode — measured, not hypothetical (2026-08-09).</strong> robotsix-mill
+titled every commit and PR <code>mill: &lt;title&gt; (&lt;id&gt;)</code>. <code>mill</code> is not a
+conventional type, so release-please discarded those commits: they landed on
+<code>main</code> but reached neither <code>CHANGELOG.md</code> nor any version bump. A fleet audit
+of the last 100 commits on each repo's <code>main</code> found <strong>1055 of 1073</strong>
+non-conventional subjects were mill's — between 56% and 93% per repo. The
+pipeline was working correctly over a stream where three of every four
+changes were silently dropped. Fixed in robotsix-mill#2802 by deriving the
+type from the changelog fragment the implement agent already writes.</p>
+<p>The lesson generalises: <strong>a release pipeline that ignores unparsable commits
+fails silently.</strong> Nothing goes red. Audit what fraction of your history is
+actually conventional before trusting an empty release PR to mean "no
+changes".</p>
 </blockquote>
 <h3 id="5-versions-stay-0x-until-100-is-declared-deliberately">5. Versions stay 0.x until 1.0.0 is declared deliberately<a class="headerlink" href="#5-versions-stay-0x-until-100-is-declared-deliberately" title="Permanent link">&para;</a></h3>
 <p><strong>Rule:</strong> Versions stay <code>0.x</code> under semver. Bumping to <code>1.0.0</code> is a human
@@ -2951,6 +3071,59 @@ would fail CI until someone manually registers it.</p>
 error, and the contributor either removes the files (breaking release
 automation) or spends time diagnosing a registration failure.</p>
 </blockquote>
+<h2 id="traps">Traps<a class="headerlink" href="#traps" title="Permanent link">&para;</a></h2>
+<p>Three failure modes surfaced during the fleet-wide rollout. All three pass CI
+on the PR that introduces them and only break later.</p>
+<h3 id="uvlock-records-the-projects-own-version"><code>uv.lock</code> records the project's own version<a class="headerlink" href="#uvlock-records-the-projects-own-version" title="Permanent link">&para;</a></h3>
+<p>A <code>uv</code> project pins itself in <code>uv.lock</code>. Release-please bumps
+<code>[project].version</code> in <code>pyproject.toml</code> but knows nothing about the lock, so the
+release commit leaves the two disagreeing and every subsequent
+<code>uv sync --locked</code> fails — including in the Docker build, long after the release
+PR merged.</p>
+<p><code>--frozen</code> does not check, so a repo using it will not notice until something
+else does.</p>
+<p>Do <strong>not</strong> try to fix this with release-please's <code>extra-files</code>: a lock entry
+needs a jsonpath into an array whose index shifts with every dependency change.
+Add a step to the release workflow instead, guarded on a release PR having been
+opened:</p>
+<div class="highlight"><pre><span></span><code><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Sync uv.lock to the released version</span>
+<span class="w">  </span><span class="nt">if</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">steps.release.outputs.prs_created == &#39;true&#39; || steps.release.outputs.pr != &#39;&#39;</span>
+<span class="w">  </span><span class="nt">env</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">GH_TOKEN</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">${{ steps.app-token.outputs.token }}</span>
+<span class="w">    </span><span class="nt">BRANCH</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">release-please--branches--main</span>
+<span class="w">  </span><span class="nt">run</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|</span>
+<span class="w">    </span><span class="no">set -euo pipefail</span>
+<span class="w">    </span><span class="no">git fetch --depth=1 origin &quot;$BRANCH&quot;</span>
+<span class="w">    </span><span class="no">git checkout -B &quot;$BRANCH&quot; &quot;origin/$BRANCH&quot;</span>
+<span class="w">    </span><span class="no">uv lock</span>
+<span class="w">    </span><span class="no">git diff --quiet -- uv.lock &amp;&amp; exit 0</span>
+<span class="w">    </span><span class="no">git config user.name &quot;github-actions[bot]&quot;</span>
+<span class="w">    </span><span class="no">git config user.email &quot;41898282+github-actions[bot]@users.noreply.github.com&quot;</span>
+<span class="w">    </span><span class="no">git commit -m &quot;chore: sync uv.lock to the released version&quot; -- uv.lock</span>
+<span class="w">    </span><span class="no">git push &quot;https://x-access-token:${GH_TOKEN}@github.com/${GITHUB_REPOSITORY}.git&quot; &quot;$BRANCH&quot;</span>
+</code></pre></div>
+<p>Set <code>enable-cache: false</code> on <code>setup-uv</code> here — this job holds <code>contents: write</code>,
+and a poisoned cache in a write-privileged workflow is a supply-chain risk
+(zizmor <code>cache-poisoning</code>).</p>
+<h3 id="markdownlint-rejects-the-generated-changelog">Markdownlint rejects the generated CHANGELOG<a class="headerlink" href="#markdownlint-rejects-the-generated-changelog" title="Permanent link">&para;</a></h3>
+<p>Release-please's output is not markdownlint-clean: it emits bare URLs, long
+lines, and duplicate headings across versions. A repo that lints <code>**/*.md</code> goes
+red on the release PR itself — the one PR nobody can hand-fix, because the file
+is regenerated on every run.</p>
+<p>Exclude the generated file rather than fighting it:</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># .markdownlint-cli2.yaml</span>
+<span class="nt">ignores</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">CHANGELOG.md</span><span class="w">   </span><span class="c1"># generated by release-please; not hand-edited</span>
+</code></pre></div>
+<h3 id="a-release-pr-that-never-merges-is-usually-a-token-problem">A release PR that never merges is usually a token problem<a class="headerlink" href="#a-release-pr-that-never-merges-is-usually-a-token-problem" title="Permanent link">&para;</a></h3>
+<p>If a release PR opens but its required checks never report, the workflow is
+using <code>GITHUB_TOKEN</code>. Events created by it deliberately do not trigger workflow
+runs, so the checks never start and the PR cannot satisfy them. Mint a scoped
+App token instead — see the workflow template above.</p>
+<p>A release PR that never <em>opens</em> is the other half: check that the repo setting
+in <a href="#prerequisite-let-actions-open-pull-requests">Prerequisite</a> is enabled, and
+that no <code>if:</code> gate references a secret that was never provisioned. A gate on a
+missing secret makes the step <strong>skip</strong> while the job still reports success.</p>
 <h2 id="reference">Reference<a class="headerlink" href="#reference" title="Permanent link">&para;</a></h2>
 <ul>
 <li><strong>release-please:</strong> <a href="https://github.com/googleapis/release-please">https://github.com/googleapis/release-please</a></li>

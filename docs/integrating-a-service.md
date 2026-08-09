@@ -130,7 +130,7 @@ Two things deliberately absent from the skeleton:
 
 When you have ≥2 services, exactly one **must** carry
 `robotsix.deploy.primary: "true"` (§2, §5). The primary's first port gets the
-gateway route `deploy.robotsix.net/<component>/*` and its health is the
+edge route `<component>.deploy.robotsix.net` and its health is the
 component health. Sibling container names derive as `<component>-<service-key>`.
 
 ```yaml

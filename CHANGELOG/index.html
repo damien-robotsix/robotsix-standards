@@ -3388,13 +3388,13 @@ are added above by release-please.</p>
 <li>Standardize: pytest shared state-builders as factory fixtures in a root tests/conftest.py (20260802T160811Z-standardize-pytest-shared-state-builders-b57a)</li>
 <li>Standardize: FastAPI test isolation via Depends() + dependency_overrides (20260804T163354Z-standardize-fastapi-test-isolation-via-d-7d34)</li>
 <li>Standardize: split liveness vs readiness health endpoints for HTTP-serving fleet services (20260804T163427Z-standardize-split-liveness-vs-readiness-7932)</li>
-<li>Standardize: library-internal logging convention (getLogger(<strong>name</strong>) + NullHandler, DEBUG retry logs) (20260806T163819Z-standardize-library-internal-logging-con-a5ec)</li>
+<li>Standardize: library-internal logging convention (getLogger(<code>__name__</code>) + NullHandler, DEBUG retry logs) (20260806T163819Z-standardize-library-internal-logging-con-a5ec)</li>
 <li>Standardize: service-level compose healthcheck hitting app liveness endpoint for backend repos (20260805T163918Z-standardize-service-level-compose-health-a647)</li>
 <li>Mark docs/changelog-driven-releases.md as superseded (add page banner + nav annotation) (20260806T164342Z-mark-docs-changelog-driven-releases-md-a-9fc0)</li>
 <li>Standardize: enforce mypy as a blocking merge gate for type-aware packages (20260804T171434Z-standardize-enforce-mypy-as-a-blocking-m-3530)</li>
 <li>Standardize: stale bot must exempt pull requests from auto-close (days-before-pr-stale / days-before-pr-close: -1) (20260804T172417Z-standardize-stale-bot-must-exempt-pull-r-48cf)</li>
 <li>Standardize: Dependabot auto-merge must wait for passing CI and exclude Docker/pre-commit bumps (20260805T173539Z-standardize-dependabot-auto-merge-must-w-2f1c)</li>
-<li>Standardize: expose a runtime <strong>version</strong> via a file-based single source for git-consumed stack libraries (20260805T173848Z-standardize-expose-a-runtime-version-via-69c2)</li>
+<li>Standardize: expose a runtime <code>__version__</code> via a file-based single source for git-consumed stack libraries (20260805T173848Z-standardize-expose-a-runtime-version-via-69c2)</li>
 <li>Add a local CI gate rejecting changelog fragments clipped with a literal truncation ellipsis (20260731T193229Z-add-a-local-ci-gate-rejecting-changelog-f3b6)</li>
 <li>Add a CI gate rejecting multiple changelog.d fragments for the same ticket/event in a single changeset (20260803T200250Z-add-a-ci-gate-rejecting-multiple-changel-bdae)</li>
 <li>Consolidated two duplicate changelog entries for pytest filterwarnings standardization (20260803T200250Z-consolidate-the-two-duplicate-changelog-8d58)</li>

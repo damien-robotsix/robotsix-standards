@@ -530,6 +530,223 @@ in [Prerequisite](#prerequisite-let-actions-open-pull-requests) is enabled, and
 that no `if:` gate references a secret that was never provisioned. A gate on a
 missing secret makes the step **skip** while the job still reports success.
 
+## Migration checklist
+
+This is the step-by-step playbook for a fleet repo moving OFF
+towncrier/hatch-vcs/auto-release.yml/changelog.d and ONTO release-please.
+Each step is atomic and independently verifiable — run CI after each one
+rather than stacking them into a single commit.
+
+### 1. Delete the towncrier config
+
+Remove the `[tool.towncrier]` block from `pyproject.toml`. If the repo has a
+`towncrier.toml` or `towncrier.toml` at the repo root, delete that file too.
+
+```bash
+git rm pyproject.toml  # after editing out the block
+# or
+git rm towncrier.toml
+```
+
+> **Verification.** `grep -r towncrier pyproject.toml` returns nothing and CI
+> passes (the baseline-check towncrier gate previously required this block;
+> after step 9 it no longer does).
+
+### 2. Remove the changelog fragment directory
+
+Delete `changelog.d/` and all its contents. There is no seed step —
+release-please generates release notes from commit messages, never from
+fragment files.
+
+```bash
+git rm -r changelog.d/
+```
+
+If `.gitignore` lists `changelog.d/`, drop that line.
+
+> **Verification.** `ls changelog.d/` fails with "No such file". CI passes
+> (the baseline-check changelog gate previously required this directory; after
+> step 9 it no longer does).
+
+### 3. Remove the old auto-release workflow
+
+Delete `.github/workflows/auto-release.yml`. This is the weekly towncrier
+release workflow — release-please replaces it with an event-driven workflow
+that opens a release PR on every push to the default branch.
+
+```bash
+git rm .github/workflows/auto-release.yml
+```
+
+> **Verification.** The file is gone. No CI step references it; if
+> `ci.yml` or `docs.yml` called it, those references must also be removed.
+
+### 4. Make the version static
+
+If `pyproject.toml` uses `dynamic = ["version"]` with a VCS-derived source
+(`hatch-vcs` or `setuptools_scm`):
+
+1. Replace `dynamic = ["version"]` with `version = "X.Y.Z"` — choose the
+   starting version deliberately (see step 7).
+2. Drop `hatch-vcs` (or `setuptools_scm`) from `build-system.requires`.
+3. Delete the `[tool.hatch.version]` (or `[tool.setuptools_scm]`) block.
+
+A file-based dynamic source (`[tool.hatch.version] path = "src/.../__init__.py"`)
+is also disallowed — move the literal into `[project]` and delete the block.
+
+```toml
+# Before (VCS-derived — disallowed)
+[project]
+dynamic = ["version"]
+
+[build-system]
+requires = ["hatchling", "hatch-vcs"]
+
+[tool.hatch.version]
+source = "vcs"
+
+# After (static — required)
+[project]
+version = "0.1.0"
+
+[build-system]
+requires = ["hatchling"]
+```
+
+> **Verification.** `pyproject.toml` has a literal `version = "..."` under
+> `[project]` with no `dynamic` key for version. `uv lock` succeeds.
+
+### 5. Add the release-please config files
+
+Create two files at the repo root:
+
+**`release-please-config.json`** — copy from the [Configuration](#configuration)
+section above.
+
+**`.release-please-manifest.json`** — set the initial version to the current
+`[project].version` (see step 7 for how to pick it):
+
+```json
+{
+  ".": "0.1.0"
+}
+```
+
+Register both paths in `docs/modules.yaml` under the appropriate module's
+`paths` list.
+
+> **Verification.** `cat .release-please-manifest.json` shows a version that
+> matches `pyproject.toml` `[project].version`.
+
+### 6. Add the release-please workflow
+
+Copy the workflow template from the [Workflow file](#workflow-file) section
+into `.github/workflows/release-please.yml`. Pin the action SHA — resolve it
+with:
+
+```bash
+url=https://github.com/googleapis/release-please-action.git
+git ls-remote "$url" "refs/tags/v5^{}" "refs/tags/v5" \
+  | awk '/\^\{\}$/{c=$1} !/\^\{\}$/{p=$1} END{print (c!=""?c:p)}'
+```
+
+If the repo is not a `uv` project, omit the `uv.lock` sync step. If the repo
+uses the shared reusable workflow from `robotsix-github-workflows`, use that
+instead of inlining.
+
+> **Verification.** The workflow file passes `zizmor` (or the fleet
+> `lint-workflows` gate). The token step uses an App installation token, not
+> `GITHUB_TOKEN`.
+
+### 7. Seed the initial version
+
+Release-please uses `.release-please-manifest.json` as the baseline — it
+proposes a bump *from* that version. Pick the starting version:
+
+- **If the repo already has tags:** set the manifest to the latest tag's
+  version (without the `v` prefix). Release-please will propose the next bump.
+- **If the repo has no tags (or only VCS-derived dev versions):** choose the
+  version deliberately. An untagged repo on `hatch-vcs` has been building
+  `0.x.dev<distance>+g<sha>` strings — those are not a release history.
+  `0.1.0` is a reasonable starting point for a repo that has never been
+  released; for a repo with existing releases made by hand, set it to the
+  version already in `pyproject.toml`.
+
+> **Verification.** The version in `.release-please-manifest.json` and
+> `pyproject.toml` `[project].version` agree.
+
+### 8. Preserve changelog history
+
+Release-please prepends new release notes to `CHANGELOG.md`. Any existing
+changelog content must be preserved below a marker so it is not lost:
+
+1. If `CHANGELOG.md` already has a release-please header (`# Changelog`),
+   the existing content is already in the right format — leave it.
+2. If the changelog was towncrier-generated (starts with a towncrier header
+   like `# Release Notes`), wrap the existing content under a
+   `## Pre-release-please history` heading at the bottom of the file, and add
+   a `# Changelog` heading at the top:
+
+   ```markdown
+   # Changelog
+
+   ## Pre-release-please history
+
+   (existing towncrier content here)
+   ```
+
+3. Exclude `CHANGELOG.md` from markdownlint — release-please output is not
+   lint-clean. Add to `.markdownlint-cli2.yaml`:
+
+   ```yaml
+   ignores:
+     - CHANGELOG.md
+   ```
+
+> **Verification.** `head -1 CHANGELOG.md` is `# Changelog`. The file passes
+> CI (no markdownlint violations on it).
+
+### 9. Bump the baseline-check caller
+
+The fleet's `baseline-check.yml` reusable workflow at revisions before
+`a6378ac` requires `changelog.d/` and `[tool.towncrier]` unconditionally.
+Bump the caller in `.github/workflows/baseline-check.yml` (or wherever the
+repo calls the shared workflow) to `a6378ac` or later:
+
+```yaml
+uses: damien-robotsix/robotsix-github-workflows/.github/workflows/baseline-check.yml@a6378accaf26c75b12fac324c3056255647c107b # main
+```
+
+> **Verification.** The baseline-check job passes after the towncrier +
+> changelog.d removal. If it fails with "towncrier config not found" or
+> "changelog.d directory is empty", the SHA is too old.
+
+### 10. Enable Actions to create pull requests
+
+Release-please's entire mechanism is opening a release PR. The repo setting
+must allow this. Check and enable via the API (see
+[Prerequisite](#prerequisite-let-actions-open-pull-requests)):
+
+```bash
+gh api -X PUT repos/damien-robotsix/<repo>/actions/permissions/workflow \
+  -f default_workflow_permissions=read -F can_approve_pull_request_reviews=true
+```
+
+> **Verification.** The API returns `can_approve_pull_request_reviews: true`.
+> Without this, the first push to `main` runs the workflow and it dies with
+> `release-please failed: GitHub Actions is not permitted to create or approve
+> pull requests`.
+
+### 11. Verify end-to-end
+
+Push a commit with a conventional subject (`fix:`, `feat:`) to the default
+branch. Within a minute the release-please workflow runs and opens a release
+PR. Merge it (if appropriate) or close it as a smoke test.
+
+> **Verification.** A release PR exists, its checks pass, and merging it
+> creates a tag and GitHub Release. The version in `pyproject.toml` has been
+> bumped by release-please.
+
 ## Reference
 
 - **release-please:** [https://github.com/googleapis/release-please](https://github.com/googleapis/release-please)

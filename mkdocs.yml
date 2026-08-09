@@ -117,7 +117,6 @@ nav:
       - FastAPI test isolation: fastapi-test-isolation.md
       - Integrating a service: integrating-a-service.md
       - Chat access: chat-access-standard.md
-      - Deploy API key: deploy-api-key.md
       - HTTP error envelope: http-error-envelope.md
       - HTTP security headers: http-security-headers.md
       - Health endpoints: health-endpoints.md

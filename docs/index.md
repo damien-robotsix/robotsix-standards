@@ -134,7 +134,7 @@ A *deployable component* ships a runnable service (a container image) and
 integrates with the deployment system. Beyond the baseline it follows:
 
 - **[Component standard](component-standard.md)** — the three deploy modes,
-  no embedded auth (centralized at the gateway), image registry & tags, the
+  no embedded auth (centralized at the fleet edge), image registry & tags, the
   two compose files.
 - **[Config standard](config-standard.md)** — one config model that resolves the
   same way across all deploy modes.

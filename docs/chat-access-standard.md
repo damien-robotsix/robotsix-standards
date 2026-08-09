@@ -155,10 +155,10 @@ The trust model is a direct restatement of the
 [component standard](component-standard.md)'s authentication section, applied
 to chat operations:
 
-- **The gateway authenticates once.** `robotsix-central-deploy` validates the
-  operator's session on every proxied request before traffic reaches a
-  component.
-- **The internal network is trusted.** Components behind the gateway receive
+- **The fleet edge authenticates once.** Traefik authenticates every request —
+  browsers via tinyauth SSO, machine callers via its `basicauth` middleware —
+  before traffic reaches a component.
+- **The internal network is trusted.** Components behind the edge receive
   only authenticated requests and do not ship per-component auth.
 - **The per-component chat-access checkbox is the authorization boundary for
   chat operations.** An operator grants or revokes chat access per component
@@ -168,7 +168,7 @@ to chat operations:
   control what the agent may do once connected.
 - **A component must never be exposed directly to an untrusted network** on
   the assumption that it protects itself. Chat access does not change this —
-  the skill endpoint is an internal HTTP route behind the gateway, not a
+  the skill endpoint is an internal HTTP route behind the edge, not a
   public API.
 
 ---

@@ -23,35 +23,51 @@ Configuration is identical across all three modes — see the
 
 ## Authentication is centralized — components ship none
 
-A deployable component implements **no user-facing authentication** of its
-own: no login page, no HTTP Basic middleware, no session handling, no
-`auth.*` config section. Authentication happens **once, at the deployment
-system's gateway** — central-deploy validates the operator's session on every
-proxied HTTP and WebSocket request before traffic reaches a component, so a
-component behind the gateway only ever receives authenticated requests.
-Per-component auth on top of that is a second password for the same door:
-each one is an extra credential to provision, rotate, and get wrong.
+A deployable component implements **no authentication of its own** — not for
+humans, not for machines: no login page, no HTTP Basic middleware, no session
+handling, no bearer-token dependency on its routers, no `auth.*` config
+section. Authentication happens **once, at the fleet edge**. Traefik terminates
+TLS for every `<component>.<base-domain>` hostname and authenticates the
+request before it reaches a container:
+
+| Caller | How the edge authenticates it |
+|---|---|
+| A person in a browser | `forwardAuth` to tinyauth — one fleet-wide SSO login |
+| A fleet service or script | Traefik's `basicauth` middleware on a higher-priority router matched by the `Authorization` header |
+
+A component therefore only ever receives authenticated requests, and it does
+not need to distinguish the two cases. Per-component auth on top of that is a
+second password for the same door: an extra credential to provision, rotate,
+and get wrong, and a second thing to be wrong about when access breaks.
 
 Scope — what this does and doesn't cover:
 
-- **Removed**: operator/user-facing auth — UI login walls, Basic-auth
-  middleware, password/session config fields.
-- **Kept**: machine-to-machine credentials a component *uses or serves* —
-  service bearer tokens, third-party API keys, webhook signatures. Those are
-  secrets (see the [config standard](config-standard.md)), not an auth
-  system.
+- **Removed**: everything that decides *whether a caller may call* — UI login
+  walls, Basic-auth middleware, session handling, and component-issued API or
+  bearer tokens checked on the component's own routes. A component-issued
+  token is still a second door; the edge's machine router already covers that
+  caller.
+- **Kept**: credentials a component *uses* to call outward — third-party API
+  keys, forge tokens, SMTP and database passwords. Those are secrets (see the
+  [config standard](config-standard.md)), not an auth system.
+- **Kept**: cryptographic verification of third-party callbacks — webhook
+  signatures (GitHub, Stripe, …). The edge cannot verify these; only the
+  component holds the shared secret, and the check proves *provenance*, not
+  authorization. Such a webhook route is the one thing that may sit on a
+  router the edge leaves open.
 - **Deployed any other way** (own reverse proxy, raw port, local dev),
   authentication is the **operator's responsibility** — e.g. auth at their
   proxy. A component must never be exposed directly to an untrusted network
   on the assumption that it protects itself; it doesn't.
-- **Trust model**: the network behind the gateway is trusted; isolating
+- **Trust model**: the network behind the edge is trusted; isolating
   components from each other is the deployment system's concern, not
   per-component auth.
 
-Migration sequencing: a component that today relies on its embedded auth
-(e.g. behind a plain reverse proxy) removes it **only after** it is served
-exclusively through the gateway — otherwise the removal window exposes it
-unauthenticated.
+Migration sequencing: a component that today ships its own auth removes it
+**only after** it is served exclusively through the fleet edge — otherwise the
+removal window exposes it unauthenticated. Where the auth is already
+config-gated (an empty token meaning "disabled"), clearing the token at cutover
+and deleting the code afterwards is the safer order.
 
 ## Health endpoint
 

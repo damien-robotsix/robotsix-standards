@@ -1824,6 +1824,23 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="3. Roster, not discovery">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#31-who-provisions-api_token" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.1 Who provisions api_token
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -2327,6 +2344,23 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="3. Roster, not discovery">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#31-who-provisions-api_token" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.1 Who provisions api_token
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -2566,6 +2600,34 @@ DNS enumeration:</p>
   No injected addresses, no service discovery — plain config fields are the
   whole mechanism. This standard does not change section 5; it uses the
   existing pattern.</li>
+</ul>
+<h3 id="31-who-provisions-api_token">3.1 Who provisions <code>api_token</code><a class="headerlink" href="#31-who-provisions-api_token" title="Permanent link">&para;</a></h3>
+<p><code>robotsix-central-deploy</code> writes <code>central_deploy.api_token</code> into the
+<strong>config volume</strong> of each chat-agent component — the same mechanism it uses for
+<code>fleet_auth.auth_hosts</code> — validating the merged document against the
+component's committed schema first and skipping any component that does not
+declare the key. A component therefore gets working deploy access by declaring
+the field; no operator paste, and no per-component copy of the value.</p>
+<p>Three rules follow, and they are the point of this section:</p>
+<ul>
+<li><strong>The credential never travels as an environment variable.</strong> Not
+  <code>DEPLOY_API_KEY</code>, not any other name.
+  <a href="../config-standard/#5-what-environment-is-for">Config standard §5</a> forbids
+  first-party secrets in <code>environment:</code>, and an env channel here is worse than
+  redundant: it is a second source of truth for a credential that grants full
+  control of the deploy plane. A component that reads such a variable is
+  non-conforming.</li>
+<li><strong>The roster carries auth <em>metadata</em>, never credential locations.</strong> A
+  <code>GET /chat/components</code> entry's <code>auth</code> object names the scheme (<code>basic</code> /
+  <code>header</code>) and, for header auth, the header name. It does not name an
+  environment variable or carry a value. The consumer resolves the credential
+  from its own config.</li>
+<li><strong>One value, one place.</strong> <code>central_deploy.api_token</code> is the token for every
+  component fronted by the deploy plane. The optional
+  <code>central_deploy.component_credentials.&lt;id&gt;</code> map is an <em>override</em> for a
+  component with its own credential — not somewhere to copy the shared token.
+  Duplicating it per component is what made earlier revisions fragile: each
+  copy is a value a config rewrite can silently drop.</li>
 </ul>
 <hr />
 <h2 id="4-trust-model">4. Trust model<a class="headerlink" href="#4-trust-model" title="Permanent link">&para;</a></h2>

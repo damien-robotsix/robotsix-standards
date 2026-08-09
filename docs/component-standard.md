@@ -30,10 +30,17 @@ section. Authentication happens **once, at the fleet edge**. Traefik terminates
 TLS for every `<component>.<base-domain>` hostname and authenticates the
 request before it reaches a container:
 
-| Caller | How the edge authenticates it |
+| Caller | How it reaches a component |
 |---|---|
-| A person in a browser | `forwardAuth` to tinyauth — one fleet-wide SSO login |
-| A fleet service or script | Traefik's `basicauth` middleware on a higher-priority router matched by the `Authorization` header |
+| A person in a browser | Through the edge, `forwardAuth` to tinyauth — one fleet-wide SSO login |
+| A fleet service or script | **Not through the edge.** Over the internal container network, `http://<container>:<port>` |
+
+The edge has exactly one gate. A second, HTTP Basic door for machine callers
+existed briefly and was removed: it was keyed with the credential the previous
+ingress used, so every browser that had ever authenticated against that ingress
+replayed it and was served without ever seeing the SSO login. A door whose key
+every client already holds is not defence in depth. Machine callers do not need
+the edge at all — they share a network with the components.
 
 A component therefore only ever receives authenticated requests, and it does
 not need to distinguish the two cases. Per-component auth on top of that is a
@@ -45,8 +52,8 @@ Scope — what this does and doesn't cover:
 - **Removed**: everything that decides *whether a caller may call* — UI login
   walls, Basic-auth middleware, session handling, and component-issued API or
   bearer tokens checked on the component's own routes. A component-issued
-  token is still a second door; the edge's machine router already covers that
-  caller.
+  token is still a second door, and a caller inside the network does not need
+  one.
 - **Kept**: credentials a component *uses* to call outward — third-party API
   keys, forge tokens, SMTP and database passwords. Those are secrets (see the
   [config standard](config-standard.md)), not an auth system.

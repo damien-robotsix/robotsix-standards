@@ -94,6 +94,7 @@ nav:
       - Docstring convention: docstrings.md
       - HTTP client persistence: http-client-persistence.md
       - Library internal logging: library-logging.md
+      - Logging: logging.md
       - Hypothesis testing: hypothesis.md
       - Markdown linting: markdown-linting.md
       - Prose linting: prose-linting.md

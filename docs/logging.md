@@ -238,7 +238,7 @@ events, and the plain-text line carries none of the structured context
 
 ## Failure modes this prevents
 
-- **Unparseable log stream.** Mixed `print()`, `logging.info("done")`,
+- **Unparsable log stream.** Mixed `print()`, `logging.info("done")`,
   and traceback text in the container log stream forces the aggregator
   to parse ad-hoc formats. Structured JSON eliminates the parser —
   every field is addressable by key.

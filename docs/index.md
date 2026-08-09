@@ -70,6 +70,9 @@ everywhere.
   `logging.getLogger(__name__)`, a single `NullHandler` in `__init__.py`,
   lazy `%`-style formatting, and DEBUG-for-routine events — library logging
   that never prints unless the application opts in.
+- **[Logging](logging.md)** — structured JSON logging via structlog,
+  stdout-only output, correlation-id middleware, and level conventions
+  for every deployable service.
 - **[Hypothesis testing](hypothesis.md)** — property-based testing profiles,
   shared strategies, and CI integration for repos that use Hypothesis.
 - **[Markdown linting](markdown-linting.md)** — markdownlint-cli2 and codespell

@@ -37,9 +37,7 @@ REPO_ROOT = Path(__file__).resolve().parent.parent
 # Detection: is this repo a type-aware Python package?
 # ---------------------------------------------------------------------------
 
-_TYPED_CLASSIFIER_RE = re.compile(
-    r"^\s*['\"]?Typing\s*::\s*Typed['\"]?\s*$"
-)
+_TYPED_CLASSIFIER_RE = re.compile(r"\bTyping\s*::\s*Typed\b")
 
 
 def _has_typed_classifier(pyproject: Path) -> bool:
@@ -47,56 +45,17 @@ def _has_typed_classifier(pyproject: Path) -> bool:
     if not pyproject.exists():
         return False
     text = pyproject.read_text()
-    for line in text.splitlines():
-        if _TYPED_CLASSIFIER_RE.match(line):
-            return True
-    return False
+    return bool(_TYPED_CLASSIFIER_RE.search(text))
 
 
 def _has_py_typed_marker(root: Path) -> bool:
     """Return True if any py.typed file exists in the repository."""
-    return list(root.rglob("py.typed")) != []
+    return any(root.rglob("py.typed"))
 
 
 # ---------------------------------------------------------------------------
 # Guard detection: does the CI workflow contain the required assertion?
 # ---------------------------------------------------------------------------
-
-# Patterns that signal the workflow builds + installs a wheel and then
-# type-checks the installed package.
-_INSTALLED_TYPECHECK_SIGNALS: list[str] = [
-    # Build + install signals
-    r"uv\s+build",
-    r"pip\s+install\s+.*\.whl",
-    r"uv\s+pip\s+install\s+.*\.whl",
-    r"install.*dist/\*\.whl",
-    r"uv\s+build\b",
-    # Type-check signals against installed (not source-tree)
-    r"mypy\s+--(?:no-site-packages|python-executable)",
-    r"mypy\s+/tmp/",
-    r"pyright\s+/tmp/",
-]
-
-# Patterns that signal the workflow explicitly checks the wheel contents.
-_WHEEL_CONTENT_SIGNALS: list[str] = [
-    r"zipfile\.ZipFile",
-    r"py\.typed",
-    r"zipfile\b.*\bnamelist",
-    r"assert.*py\.typed",
-]
-
-# Combined check: at least one installed-typecheck signal AND one
-# wheel-content signal appearing together with wheel-build context.
-#
-# A single regex approach won't work well across YAML multiline blocks.
-# Instead we scan for lines that mention building a wheel AND either
-# type-checking the installed package or inspecting the wheel contents.
-
-
-def _workflow_file_has_build_context(text: str) -> bool:
-    """Return True if the workflow text mentions building a Python wheel."""
-    return bool(re.search(r"uv\s+build|python\s+-m\s+build|pip\s+build", text))
-
 
 def _workflow_file_has_installed_typecheck(text: str) -> bool:
     """Return True if the workflow type-checks an *installed* package.

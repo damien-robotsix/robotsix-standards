@@ -163,6 +163,9 @@ integrates with the deployment system. Beyond the baseline it follows:
   integration tests.
 - **[Deploy contract](deploy-contract.md)** — the `deploy/docker-compose.yml`
   shape the deployment system consumes.
+- **[Multi-disk data handling](disk-handling.md)** — disk-agnostic named volumes
+  in component repos, deploy-time disk selection, relocatable volumes, and
+  per-disk usage reporting.
 - **[Deploy API key provisioning](deploy-api-key.md)** — how central-deploy
   auto-provisions a deploy API key into any component that opts in — opt-in
   mechanism, injection path, secret-handling, and lifecycle.

@@ -889,6 +889,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../ci-dependency-standard/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    CI dependency management
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../distribution-packaging/" class="md-nav__link">
         
   
@@ -2823,6 +2851,9 @@ gate set:</p>
   workflow), <code>dependency-review</code> on PRs (<code>fail-on-severity:
   moderate</code>), and a CycloneDX SBOM generated and uploaded as a workflow
   artifact.</li>
+<li><strong>Dependency lockfile integrity:</strong> <code>uv lock --check</code> validates that
+  <code>uv.lock</code> is consistent with <code>pyproject.toml</code> constraints before
+  <code>uv sync --frozen</code> — see <a href="../ci-dependency-standard/">CI dependency management</a>.</li>
 <li><strong>Container image:</strong> repos that ship an image also scan it in CI — see
   <a href="../docker-standard/">Docker build &amp; release</a>.</li>
 <li><strong>Baseline conformance:</strong> the baseline gate verifies the mechanical rules
@@ -2981,8 +3012,8 @@ receiving security patches until someone moves it):</p>
 <td>the scheduled pin-bump workflow (above)</td>
 </tr>
 <tr>
-<td>Third-party packages (lockfile)</td>
-<td>Dependabot — language-specific ecosystem</td>
+<td>Third-party Python packages (uv lockfile)</td>
+<td>Renovate (<code>uv</code> manager) — see <a href="../ci-dependency-standard/">CI dependency management</a></td>
 </tr>
 <tr>
 <td>GitHub Actions SHAs</td>
@@ -3009,6 +3040,9 @@ and <strong><code>npm</code></strong> in repos with a <code>package.json</code>
 baseline-check gate verifies its contents instead). Dependabot PRs auto-merge
 once required checks pass, via the shared <code>dependabot-auto-merge.yml</code> caller
 from robotsix-github-workflows.</p>
+<p>Python/uv lockfile updates use <strong>Renovate</strong> instead of Dependabot — see
+<a href="../ci-dependency-standard/">CI dependency management</a> for the configuration
+and rationale.</p>
 
 
 

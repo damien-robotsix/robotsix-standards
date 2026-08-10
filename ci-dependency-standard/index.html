@@ -10,13 +10,13 @@
       
       
       
-        <link rel="canonical" href="https://damien-robotsix.github.io/robotsix-standards/scorecard/">
+        <link rel="canonical" href="https://damien-robotsix.github.io/robotsix-standards/ci-dependency-standard/">
       
       
-        <link rel="prev" href="../health-endpoints/">
+        <link rel="prev" href="../ci-lint-pinning/">
       
       
-        <link rel="next" href="../deployment-system/">
+        <link rel="next" href="../distribution-packaging/">
       
       
         
@@ -27,7 +27,7 @@
     
     
       
-        <title>OpenSSF Scorecard - Robotsix Standards</title>
+        <title>CI dependency management - Robotsix Standards</title>
       
     
     
@@ -78,7 +78,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#openssf-scorecard" class="md-skip">
+        <a href="#ci-dependency-management" class="md-skip">
           Skip to content
         </a>
       
@@ -114,7 +114,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              OpenSSF Scorecard
+              CI dependency management
             
           </span>
         </div>
@@ -311,8 +311,10 @@
       
   
   
+    
   
   
+  
     
     
     
@@ -323,13 +325,11 @@
       
     
     
-    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
       
         
         
-          
-        
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
         
           
           <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
@@ -350,7 +350,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_3">
             <span class="md-nav__icon md-icon"></span>
             
@@ -645,10 +645,37 @@
                 
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="../ci-dependency-standard/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    CI dependency management
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   
@@ -664,6 +691,176 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#the-rules" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The rules
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#1-renovate-for-pythonuv" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Renovate for Python/uv
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1. Renovate for Python/uv">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Configuration
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#dependabot-stays-for-non-python-ecosystems" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Dependabot stays for non-Python ecosystems
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#why-renovate-over-dependabot-for-uv" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why Renovate over Dependabot for uv
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-uv-lock-check-ci-gate" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. uv lock --check CI gate
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. uv lock --check CI gate">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#why-uv-lock-check" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why uv lock --check
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-scheduled-refresh-for-git-pinned-dependencies" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Scheduled refresh for git-pinned dependencies
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. Scheduled refresh for git-pinned dependencies">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#workflow-shape" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Workflow shape
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#why-scheduled-refresh" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why scheduled refresh
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#failure-modes-prevented" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Failure modes prevented
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#relationship-to-other-standards" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Relationship to other standards
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -1436,8 +1633,6 @@
       
   
   
-    
-  
   
   
     
@@ -1450,11 +1645,13 @@
       
     
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4" >
         
           
           <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
@@ -1475,7 +1672,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_4">
             <span class="md-nav__icon md-icon"></span>
             
@@ -1938,37 +2135,10 @@
                 
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    OpenSSF Scorecard
-  
-
-    
-  </span>
-  
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../scorecard/" class="md-nav__link">
         
   
   
@@ -1984,142 +2154,6 @@
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#the-workflow" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        The workflow
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="The workflow">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#schedule-and-trigger" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Schedule and trigger
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#action-pinning" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Action pinning
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#sarif-upload" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        SARIF upload
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#permissions" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Permissions
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#score-target" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Score target
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#how-it-fits-with-the-security-posture-standard" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        How it fits with the security posture standard
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#how-to-verify" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        How to verify
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#failure-prevented" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Failure prevented
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#see-also" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        See also
-      
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -2364,22 +2398,33 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#the-workflow" class="md-nav__link">
+  <a href="#the-rules" class="md-nav__link">
     <span class="md-ellipsis">
       
-        The workflow
+        The rules
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="The workflow">
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#1-renovate-for-pythonuv" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Renovate for Python/uv
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1. Renovate for Python/uv">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#schedule-and-trigger" class="md-nav__link">
+  <a href="#configuration" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Schedule and trigger
+        Configuration
       
     </span>
   </a>
@@ -2387,10 +2432,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#action-pinning" class="md-nav__link">
+  <a href="#dependabot-stays-for-non-python-ecosystems" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Action pinning
+        Dependabot stays for non-Python ecosystems
       
     </span>
   </a>
@@ -2398,21 +2443,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#sarif-upload" class="md-nav__link">
+  <a href="#why-renovate-over-dependabot-for-uv" class="md-nav__link">
     <span class="md-ellipsis">
       
-        SARIF upload
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#permissions" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Permissions
+        Why Renovate over Dependabot for uv
       
     </span>
   </a>
@@ -2425,10 +2459,77 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#score-target" class="md-nav__link">
+  <a href="#2-uv-lock-check-ci-gate" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Score target
+        2. uv lock --check CI gate
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. uv lock --check CI gate">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#why-uv-lock-check" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why uv lock --check
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-scheduled-refresh-for-git-pinned-dependencies" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Scheduled refresh for git-pinned dependencies
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. Scheduled refresh for git-pinned dependencies">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#workflow-shape" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Workflow shape
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#why-scheduled-refresh" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why scheduled refresh
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#failure-modes-prevented" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Failure modes prevented
       
     </span>
   </a>
@@ -2436,43 +2537,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#how-it-fits-with-the-security-posture-standard" class="md-nav__link">
+  <a href="#relationship-to-other-standards" class="md-nav__link">
     <span class="md-ellipsis">
       
-        How it fits with the security posture standard
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#how-to-verify" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        How to verify
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#failure-prevented" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Failure prevented
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#see-also" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        See also
+        Relationship to other standards
       
     </span>
   </a>
@@ -2499,120 +2567,188 @@
   
 
 
-<h1 id="openssf-scorecard">OpenSSF Scorecard<a class="headerlink" href="#openssf-scorecard" title="Permanent link">&para;</a></h1>
+<h1 id="ci-dependency-management">CI dependency management<a class="headerlink" href="#ci-dependency-management" title="Permanent link">&para;</a></h1>
 <blockquote>
-<p><strong>Scope: deployable components only.</strong> This is <em>in addition to</em> the
-<a href="../repo-baseline/">repo baseline</a> and <a href="../security-posture/">security posture</a>,
-which every repo follows.</p>
+<p><strong>Scope: every Python repository using uv.</strong> This standard defines the
+fleet's approach to automated dependency updates, lockfile integrity
+checks, and git-pinned dependency refresh for uv-based Python repos.
+Non-Python ecosystems (<code>github-actions</code>, <code>pre-commit</code>, <code>docker</code>, <code>npm</code>)
+continue to use Dependabot as described in the
+<a href="../repo-baseline/#automated-dependency-updates">repo baseline</a>.</p>
 </blockquote>
-<p>The <a href="https://securityscorecards.dev/">OpenSSF Scorecard</a> independently audits
-~20 supply-chain health checks — Dangerous-Workflow patterns, token permissions,
-Branch-Protection, Code-Review, Signed-Releases, dependency update cadence,
-fuzzing, and more — producing a single numeric score. Several of these checks
-are not covered by the fleet's existing security stack (Semgrep, Bandit,
-detect-secrets, Trivy, TruffleHog, pip-audit, dependency-review, zizmor, SBOM), so
-Scorecard closes the last common gap in a mid-2025 Python security stack.</p>
-<p>The fleet's other security gates (Semgrep, dependency-review, Dependabot,
-workflow hardening, secret scanning, SBOM) are each verified independently by
-the <a href="../security-posture/">security posture</a> standard. Scorecard adds an
-<strong>independent, cross-check audit</strong> — it verifies those gates from outside the
-fleet's own tooling, catching drift that a per-gate self-audit would miss.</p>
-<h2 id="the-workflow">The workflow<a class="headerlink" href="#the-workflow" title="Permanent link">&para;</a></h2>
-<p>Every deployable component MUST include <code>.github/workflows/scorecard.yml</code> with
-these properties:</p>
-<h3 id="schedule-and-trigger">Schedule and trigger<a class="headerlink" href="#schedule-and-trigger" title="Permanent link">&para;</a></h3>
-<ul>
-<li><strong>Weekly cron</strong> (e.g. <code>0 0 * * 0</code> — midnight Sunday UTC). The Scorecard
-  checks evolve; a weekly run catches regressions without the noise of a
-  per-commit gate.</li>
-<li><strong>Push to the default branch</strong> (<code>push: branches: [main]</code>). A push to main
-  re-runs the analysis immediately, so a fix or config change is reflected
-  without waiting for the cron.</li>
-</ul>
-<h3 id="action-pinning">Action pinning<a class="headerlink" href="#action-pinning" title="Permanent link">&para;</a></h3>
-<p>The <code>ossf/scorecard-action</code> MUST be pinned to a full 40-character commit SHA,
-with a trailing <code># vX.Y.Z</code> version comment. This is the same SHA-pinning rule
-that <a href="../security-posture/#4a-actions-pinned-to-commit-shas">security posture gate 4a</a>
-requires for every third-party action.</p>
-<h3 id="sarif-upload">SARIF upload<a class="headerlink" href="#sarif-upload" title="Permanent link">&para;</a></h3>
-<p>Results MUST be published to the repo's GitHub Security tab via
-<code>github/codeql-action/upload-sarif</code>, also pinned to a full commit SHA. The
-SARIF file is the Scorecard action's output; the upload makes results visible
-in the repository's Security tab alongside other code-scanning findings.</p>
-<h3 id="permissions">Permissions<a class="headerlink" href="#permissions" title="Permanent link">&para;</a></h3>
-<p>The workflow MUST declare a top-level <code>permissions:</code> block with exactly these
-scopes:</p>
-<div class="highlight"><pre><span></span><code><span class="nt">permissions</span><span class="p">:</span>
-<span class="w">  </span><span class="nt">security-events</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">write</span><span class="w">   </span><span class="c1"># for uploading SARIF results</span>
-<span class="w">  </span><span class="nt">id-token</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">write</span><span class="w">          </span><span class="c1"># for publishing results to the OpenSSF REST API (optional but recommended)</span>
-<span class="w">  </span><span class="nt">contents</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">read</span><span class="w">           </span><span class="c1"># for checking out the repo</span>
+<h2 id="the-rules">The rules<a class="headerlink" href="#the-rules" title="Permanent link">&para;</a></h2>
+<ol>
+<li><strong>Renovate over Dependabot for Python/uv lockfile updates.</strong></li>
+<li><strong>Every Python repo's CI must include a <code>uv lock --check</code> gate.</strong></li>
+<li><strong>Repos with git-pinned <code>[tool.uv.sources]</code> dependencies must have a
+   scheduled refresh workflow.</strong></li>
+</ol>
+<hr />
+<h2 id="1-renovate-for-pythonuv">1. Renovate for Python/uv<a class="headerlink" href="#1-renovate-for-pythonuv" title="Permanent link">&para;</a></h2>
+<p><strong>Use Renovate (Mend) with the <code>uv</code> package manager for all Python repos
+using uv.</strong> Dependabot's <code>uv</code> ecosystem has unresolved lockfile update
+bugs (<a href="https://github.com/dependabot/dependabot-core/issues/13912">dependabot-core#13912</a>,
+still open as of mid-2026) — every Dependabot PR that touches a uv lockfile
+risks a broken lockfile and a CI failure. Renovate's uv support (v38+) handles
+lockfile updates correctly, and uv workspace/monorepo support landed in
+v41.63.0.</p>
+<h3 id="configuration">Configuration<a class="headerlink" href="#configuration" title="Permanent link">&para;</a></h3>
+<p>Every Python repo must include a <code>renovate.json</code> at the repo root:</p>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;$schema&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;https://docs.renovatebot.com/renovate-schema.json&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;extends&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;config:recommended&quot;</span><span class="p">],</span>
+<span class="w">  </span><span class="nt">&quot;packageRules&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">&quot;matchUpdateTypes&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;minor&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;patch&quot;</span><span class="p">],</span>
+<span class="w">      </span><span class="nt">&quot;groupName&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;non-major dependencies&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;automerge&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">  </span><span class="p">],</span>
+<span class="w">  </span><span class="nt">&quot;lockFileMaintenance&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;enabled&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;schedule&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;before 5am on monday&quot;</span><span class="p">]</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
 </code></pre></div>
-<p>No other permissions. This follows the least-privilege rule in
-<a href="../security-posture/#4c-least-privilege-permissions-blocks">security posture gate 4c</a>.</p>
-<h2 id="score-target">Score target<a class="headerlink" href="#score-target" title="Permanent link">&para;</a></h2>
-<p>The fleet targets a Scorecard score of <strong>≥ 7/10</strong> (out of 10). This is an
-aspirational target, not a hard CI gate — Scorecard runs as an audit, not a
-blocking check. A repo below 7/10 is non-compliant and must be remediated, but
-the Scorecard workflow itself does not fail the build.</p>
-<p>Individual checks that commonly drag the score below 7 in the fleet:</p>
 <ul>
-<li><strong>Branch-Protection</strong> — requires <code>include_admins: true</code> and required status
-  checks (already met by the <a href="../repo-baseline/">repo baseline</a>).</li>
-<li><strong>Code-Review</strong> — requires at least one approving review before merge
-  (already met).</li>
-<li><strong>Token-Permissions</strong> — requires <code>permissions: read-all</code> at the top level
-  of every workflow (already met by gate 4c).</li>
-<li><strong>Dangerous-Workflow</strong> — flagging untrusted <code>pull_request_target</code> usage
-  (already caught by zizmor in gate 4b).</li>
-<li><strong>Signed-Releases</strong> — requires signed release artifacts. Deferred: the
-  fleet does not currently sign releases.</li>
+<li><code>"extends": ["config:recommended"]</code> — Renovate's curated defaults (labels,
+  onboarding PR, rate-limiting).</li>
+<li>The <code>packageRules</code> block groups minor and patch updates into a single PR
+  and enables auto-merge (<code>"automerge": true</code>).  Major updates remain
+  individual and require human review.</li>
+<li><code>"lockFileMaintenance"</code> — weekly lockfile refresh (re-resolves transitive
+  deps within <code>pyproject.toml</code> constraints and re-locks <code>uv.lock</code>).</li>
 </ul>
-<p>Checks that are <em>not</em> covered by existing fleet gates and represent new
-surface:</p>
+<p>Repos that already have a <code>renovate.json</code> (e.g. bundling Renovate for
+non-Python ecosystems) must add the <code>uv</code> manager configuration to their
+existing file rather than replacing it.</p>
+<h3 id="dependabot-stays-for-non-python-ecosystems">Dependabot stays for non-Python ecosystems<a class="headerlink" href="#dependabot-stays-for-non-python-ecosystems" title="Permanent link">&para;</a></h3>
+<p>Renovate replaces Dependabot <strong>only for the <code>uv</code> ecosystem</strong>.  Dependabot
+remains the bumper for <code>github-actions</code>, <code>pre-commit</code>, <code>docker</code>, and <code>npm</code>
+as declared in the <a href="../repo-baseline/#automated-dependency-updates">repo baseline</a>.
+A repo using Renovate for <code>uv</code> must therefore carry both a <code>renovate.json</code>
+and a <code>.github/dependabot.yml</code>.</p>
+<h3 id="why-renovate-over-dependabot-for-uv">Why Renovate over Dependabot for uv<a class="headerlink" href="#why-renovate-over-dependabot-for-uv" title="Permanent link">&para;</a></h3>
+<p>Dependabot's <code>uv</code> ecosystem produces broken lockfiles — the generated
+<code>uv.lock</code> is not consistent with <code>pyproject.toml</code> constraints, causing
+<code>uv sync --frozen</code> to fail on every Dependabot PR.  The Django project's
+infrastructure team <a href="https://github.com/django/django-docker-box/pull/219">explicitly switched from Dependabot to Renovate</a>
+in 2025 citing stagnant development and unresolved uv issues.  The failure
+mode is wasted human review time: every Dependabot PR arrives with a red CI,
+requires a manual <code>uv lock</code> fix, and trains reviewers to ignore red CI on
+dependency PRs — which is exactly the signal that should be actionable.</p>
+<p>Renovate's uv support is actively maintained and handles lockfile updates
+correctly.  The <code>lockFileMaintenance</code> schedule keeps the lockfile fresh
+without noise.</p>
+<hr />
+<h2 id="2-uv-lock-check-ci-gate">2. <code>uv lock --check</code> CI gate<a class="headerlink" href="#2-uv-lock-check-ci-gate" title="Permanent link">&para;</a></h2>
+<p><strong>Every Python repo's CI must include a <code>uv lock --check</code> step as the first
+step in the dependency-validation job, before <code>uv sync --frozen</code>.</strong></p>
+<div class="highlight"><pre><span></span><code><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Check lockfile consistency</span>
+<span class="w">  </span><span class="nt">run</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">uv lock --check</span>
+</code></pre></div>
+<p><code>uv sync --frozen</code> validates that the lockfile is <strong>internally consistent</strong>
+(all hashes match, no missing entries) but does <strong>not</strong> detect drift from
+<code>pyproject.toml</code> — if a developer bumps a dependency version in
+<code>pyproject.toml</code> without running <code>uv lock</code>, <code>uv sync --frozen</code> succeeds
+using the stale lockfile.  <code>uv lock --check</code> is the only way to catch this:
+it exits non-zero when <code>uv.lock</code> would change if re-resolved from the
+current <code>pyproject.toml</code>.</p>
+<p><strong>Placement:</strong> before <code>uv sync --frozen</code>, in whichever job installs
+dependencies.  In the standard
+<a href="../python-ci-workflow/">Python CI workflow</a>, this is the first step after
+the <code>setup-uv</code> action.</p>
+<h3 id="why-uv-lock-check">Why uv lock --check<a class="headerlink" href="#why-uv-lock-check" title="Permanent link">&para;</a></h3>
+<p>The failure mode is silent lockfile drift.  A developer bumps a lower-bound
+in <code>pyproject.toml</code> (e.g. <code>httpx&gt;=0.28</code> → <code>httpx&gt;=0.29</code>), forgets to run
+<code>uv lock</code>, and pushes.  CI runs <code>uv sync --frozen</code>, which reads the old
+lockfile — all hashes are valid, no error.  The new lower-bound is
+effectively not enforced in CI; a contributor or deployment can pick up the
+old transitive version.  <code>uv lock --check</code> fails loudly on this condition
+and forces the developer to run <code>uv lock</code> before the PR can merge.</p>
+<hr />
+<h2 id="3-scheduled-refresh-for-git-pinned-dependencies">3. Scheduled refresh for git-pinned dependencies<a class="headerlink" href="#3-scheduled-refresh-for-git-pinned-dependencies" title="Permanent link">&para;</a></h2>
+<p><strong>Repos with <code>[tool.uv.sources]</code> git-pinned inter-project dependencies must
+have a scheduled weekly workflow that runs <code>uv lock --upgrade-package &lt;pkg&gt;</code>
+and creates a PR.</strong></p>
+<p>Neither Dependabot nor Renovate can update git-pinned dependencies declared
+in <code>[tool.uv.sources]</code> — those are first-party fleet libraries pinned to
+commit SHAs (see the
+<a href="../repo-baseline/#pin-to-a-commit-sha-not-a-branch">repo baseline: pin to a commit SHA</a>).
+They need a dedicated workflow.</p>
+<h3 id="workflow-shape">Workflow shape<a class="headerlink" href="#workflow-shape" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Refresh git-pinned dependencies</span>
+<span class="nt">on</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">schedule</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">cron</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;0</span><span class="nv"> </span><span class="s">6</span><span class="nv"> </span><span class="s">*</span><span class="nv"> </span><span class="s">*</span><span class="nv"> </span><span class="s">1&quot;</span><span class="w">  </span><span class="c1"># Monday 06:00 UTC</span>
+<span class="w">  </span><span class="nt">workflow_dispatch</span><span class="p">:</span>
+
+<span class="nt">jobs</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">refresh</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">runs-on</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ubuntu-latest</span>
+<span class="w">    </span><span class="nt">timeout-minutes</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">10</span>
+<span class="w">    </span><span class="nt">steps</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">uses</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">actions/checkout@&lt;sha&gt;</span><span class="w">  </span><span class="c1"># v4.x</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">uses</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">astral-sh/setup-uv@&lt;sha&gt;</span><span class="w">  </span><span class="c1"># v6.x</span>
+<span class="w">        </span><span class="nt">with</span><span class="p">:</span>
+<span class="w">          </span><span class="nt">enable-cache</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">          </span><span class="nt">cache-dependency-glob</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;pyproject.toml&quot;</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Upgrade git-pinned dependencies</span>
+<span class="w">        </span><span class="nt">run</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|</span>
+<span class="w">          </span><span class="no">uv lock --upgrade-package robotsix-config</span>
+<span class="w">          </span><span class="no">uv lock --upgrade-package robotsix-llmio</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">uses</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">peter-evans/create-pull-request@&lt;sha&gt;</span><span class="w">  </span><span class="c1"># v7.x</span>
+<span class="w">        </span><span class="nt">with</span><span class="p">:</span>
+<span class="w">          </span><span class="nt">title</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;chore:</span><span class="nv"> </span><span class="s">refresh</span><span class="nv"> </span><span class="s">git-pinned</span><span class="nv"> </span><span class="s">dependencies&quot;</span>
+<span class="w">          </span><span class="nt">branch</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;chore/refresh-git-pins&quot;</span>
+<span class="w">          </span><span class="nt">commit-message</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;chore:</span><span class="nv"> </span><span class="s">refresh</span><span class="nv"> </span><span class="s">git-pinned</span><span class="nv"> </span><span class="s">dependencies&quot;</span>
+<span class="w">          </span><span class="nt">body</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|</span>
+<span class="w">            </span><span class="no">Weekly refresh of `[tool.uv.sources]` git-pinned dependencies.</span>
+<span class="w">            </span><span class="no">Updates each pinned commit SHA to the latest commit on its</span>
+<span class="w">            </span><span class="no">default branch.</span>
+<span class="w">          </span><span class="nt">labels</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;dependencies&quot;</span>
+</code></pre></div>
+<p>Each <code>--upgrade-package</code> line names one git-pinned dependency.  The list
+must be repo-specific — a repo with two git-pinned deps runs two
+<code>--upgrade-package</code> commands.  The schedule (Monday morning) runs before
+any scheduled release workflow so refreshed pins land in a release PR if
+one opens that week.</p>
+<h3 id="why-scheduled-refresh">Why scheduled refresh<a class="headerlink" href="#why-scheduled-refresh" title="Permanent link">&para;</a></h3>
+<p>Git-pinned dependencies are opaque to standard dependency bots — neither
+Dependabot nor Renovate understands <code>[tool.uv.sources]</code> git references.
+Without a dedicated workflow, first-party library pins silently rot: the
+pinned commit drifts further from its upstream default branch with every
+upstream change, and the consuming repo never picks up bug fixes or API
+additions until a developer manually notices and runs <code>uv lock --upgrade-package</code>.</p>
+<p>The failure mode is a stale pin that blocks an upgrade — a security fix
+lands upstream in <code>robotsix-config</code>, but every consumer is pinned to a
+commit from six weeks ago.  No automated PR opens, no human notices, and
+the fix sits unused until someone stumbles on the drift.</p>
+<hr />
+<h2 id="failure-modes-prevented">Failure modes prevented<a class="headerlink" href="#failure-modes-prevented" title="Permanent link">&para;</a></h2>
 <ul>
-<li><strong>Fuzzing</strong> — the fleet does not currently require fuzzing. This is a known
-  gap; the Scorecard result documents it without creating a per-repo mandate.</li>
-<li><strong>CII-Best-Practices</strong> — the fleet does not currently require an OpenSSF
-  Best Practices badge. Like fuzzing, this is documented by Scorecard but not
-  mandated by this standard.</li>
+<li><strong>Broken Dependabot PRs.</strong> Dependabot's <code>uv</code> ecosystem generates
+  inconsistent lockfiles — every PR arrives with a red CI, trains reviewers
+  to ignore red CI on dependency PRs, and wastes human time on manual
+  <code>uv lock</code> fixes.</li>
+<li><strong>Silent lockfile drift.</strong> <code>uv sync --frozen</code> does not detect when
+  <code>uv.lock</code> is stale relative to <code>pyproject.toml</code>.  <code>uv lock --check</code> is
+  the only gate that catches this.</li>
+<li><strong>Stale git pins.</strong> First-party fleet-library pins are invisible to
+  dependency bots — without a scheduled refresh, they sit at an ever-staler
+  commit and never pick up upstream bug fixes or API additions.</li>
 </ul>
-<h2 id="how-it-fits-with-the-security-posture-standard">How it fits with the security posture standard<a class="headerlink" href="#how-it-fits-with-the-security-posture-standard" title="Permanent link">&para;</a></h2>
-<p>The <a href="../security-posture/">security posture</a> standard defines self-enforcing,
-per-gate CI controls. Scorecard is an <strong>independent audit</strong> — it re-verifies
-those controls from the outside:</p>
+<h2 id="relationship-to-other-standards">Relationship to other standards<a class="headerlink" href="#relationship-to-other-standards" title="Permanent link">&para;</a></h2>
 <ul>
-<li>Gate 1 (Semgrep SAST) → Scorecard <em>SAST</em> check</li>
-<li>Gate 2 (dependency-review) → Scorecard <em>Dependency-Update-Tool</em> and <em>Vulnerabilities</em> checks</li>
-<li>Gate 3 (Dependabot) → Scorecard <em>Dependency-Update-Tool</em> check</li>
-<li>Gate 4a (SHA-pinned actions) → Scorecard <em>Pinned-Dependencies</em> check</li>
-<li>Gate 4b (workflow linting) → Scorecard <em>Token-Permissions</em> and <em>Dangerous-Workflow</em> checks</li>
-<li>Gate 4c (least-privilege permissions) → Scorecard <em>Token-Permissions</em> check</li>
-<li>Gate 6 (SBOM &amp; vulnerability audit) → Scorecard <em>SBOM</em> and <em>Vulnerabilities</em> checks</li>
-</ul>
-<p>A repo that passes every security-posture gate should score ≥ 7 on Scorecard.
-If it doesn't, either a gate has drifted or Scorecard is checking something the
-fleet doesn't yet cover — both are actionable findings.</p>
-<h2 id="how-to-verify">How to verify<a class="headerlink" href="#how-to-verify" title="Permanent link">&para;</a></h2>
-<ul>
-<li><code>.github/workflows/scorecard.yml</code> exists and matches the schedule, trigger,
-  action pinning, SARIF upload, and permissions requirements above.</li>
-<li>The repo's Security tab shows Scorecard results under "Code scanning."</li>
-<li>The Scorecard badge in the repo README shows ≥ 7/10 (or an open ticket
-  tracks the remediation).</li>
-</ul>
-<h2 id="failure-prevented">Failure prevented<a class="headerlink" href="#failure-prevented" title="Permanent link">&para;</a></h2>
-<p>A supply-chain weakness that every other fleet security gate misses — e.g. a
-workflow that passes zizmor but still triggers a Scorecard <em>Dangerous-Workflow</em>
-finding, or a dependency-update gap that Dependabot's config doesn't cover —
-goes undetected indefinitely. Scorecard's outside-in audit catches the gaps
-that self-audit inevitably misses.</p>
-<h2 id="see-also">See also<a class="headerlink" href="#see-also" title="Permanent link">&para;</a></h2>
-<ul>
-<li><a href="../security-posture/">Security posture</a> — the per-gate security controls
-  Scorecard cross-checks.</li>
-<li><a href="../repo-baseline/#ci-and-security-gates">Repo baseline — CI and security gates</a></li>
-<li><a href="https://securityscorecards.dev/">OpenSSF Scorecard</a></li>
-<li><a href="https://github.com/ossf/scorecard-action">OpenSSF Scorecard GitHub Action</a></li>
+<li><strong><a href="../repo-baseline/">Repo baseline</a></strong> — the language-agnostic dependency
+  update rules; this page defines the Python/uv-specific replacement for
+  the Dependabot <code>uv</code> ecosystem.</li>
+<li><strong><a href="../python-ci-workflow/">Python CI workflow</a></strong> — the standard <code>ci.yml</code>
+  shape that must include the <code>uv lock --check</code> gate.</li>
+<li><strong><a href="../python/">Python practices</a></strong> — uv as the standard tool, first-party
+  git-pinning convention, and CI uv setup caching.</li>
+<li><strong><a href="../dependabot-auto-merge/">Dependabot auto-merge</a></strong> — the auto-merge
+  gate for Dependabot PRs (which remain for non-Python ecosystems).</li>
 </ul>
 
 

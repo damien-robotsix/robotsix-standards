@@ -21,6 +21,5 @@ updates:
     directory: "/"
     schedule:
       interval: "weekly"
-    groups:
-      pre-commit-hooks:
-        patterns: ["*"]
+    # No auto-merge group — these PRs require human review.
+    open-pull-requests-limit: 5

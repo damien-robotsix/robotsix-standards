@@ -148,3 +148,15 @@ standards both do). Rules 2 and 3 still apply — they are properties of GitHub
 Pages, not of the shared workflow. Rule 1 does not, since there is no called
 workflow whose permissions to satisfy; the job's own `permissions` block simply
 needs whatever its steps use.
+
+**Pages Actions API unrecoverable error.** A repo for which
+`actions/deploy-pages` returns an unrecoverable error (e.g. "Deployment failed,
+try again later" on every attempt) may use `peaceiris/actions-gh-pages` with
+the legacy branch-based Pages source instead. This is the `robotsix-standards`
+repo's situation: the Pages Actions API has never successfully deployed for this
+repo, regardless of whether the workflow is self-contained or called through a
+reusable workflow. The branch-based approach requires the repo's Pages source
+to be set to "Deploy from a branch" (branch: `gh-pages`), which directly
+contradicts Rule 2. A repo adopting this exemption must document the reason in
+its workflow file so future maintainers do not attempt to "fix" it back to the
+Actions API.

@@ -695,8 +695,9 @@ full set for repos that ship Python packages; content-only repos use the subset
 documented in the template's `.pre-commit-config.yaml`.
 
 - **File checks:** `end-of-file-fixer`, `trailing-whitespace`,
-  `check-merge-conflict`, `check-case-conflict`, `check-added-large-files`,
-  `check-yaml`, `check-toml`, `check-json`, `detect-private-key`.
+  `check-merge-conflict`, `check-ast`, `check-case-conflict`,
+  `check-added-large-files`, `check-yaml`, `check-toml`, `check-json`,
+  `debug-statements`, `detect-private-key`.
 - **Code:** `ruff` (with `--fix`), `ruff-format`, `mypy`.
 - **Secrets:** `detect-secrets` (with a committed `.secrets.baseline`) —
   catches credentials *before* the commit exists, complementing CI's push

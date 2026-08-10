@@ -27,7 +27,7 @@ The library MUST emit a **WARNING**-level log record naming each stripped
 key and its top-level path, so the operator knows stale keys were removed.
 Example:
 
-```
+```text
 WARNING: robotsix_config.loader: stripping unrecognized config key
 'legal_guardrails' (not present in model 'InvestConfig') — config will be
 rewritten to remove it

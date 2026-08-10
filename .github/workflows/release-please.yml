@@ -28,6 +28,7 @@ jobs:
   release-please:
     name: Release Please
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     permissions:
       contents: write       # create the release commit, tag and GitHub Release
       pull-requests: write  # open and update the release PR

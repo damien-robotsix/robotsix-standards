@@ -11,6 +11,7 @@ jobs:
   baseline:
     permissions:
       contents: read
+    timeout-minutes: 5
     uses: damien-robotsix/robotsix-github-workflows/.github/workflows/baseline-check.yml@86dae89b637dad27ddba0aaa5f9430e083288365 # main
     with:
       has-docker: false
@@ -23,6 +24,7 @@ jobs:
     permissions:
       contents: read
     runs-on: ubuntu-latest
+    timeout-minutes: 5
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
       - name: Verify README links to robotsix-standards
@@ -37,6 +39,7 @@ jobs:
     permissions:
       contents: read
     runs-on: ubuntu-latest
+    timeout-minutes: 5
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
       - name: Verify LICENSE file exists and is MIT

@@ -35,7 +35,9 @@ jobs:
         run: uv run --group docs mkdocs build --strict
       - name: Run pre-commit hooks (markdownlint-cli2, codespell)
         uses: tox-dev/action-pre-commit-uv@e09b8958484dfe71f4ac3bc7afb230ba506402ec  # v1
+        env:
+          SKIP: trailing-whitespace,end-of-file-fixer,check-yaml,check-toml,check-json,check-merge-conflict,check-case-conflict,check-added-large-files,detect-private-key,detect-secrets,actionlint-docker,vale
         with:
-          extra_args: markdownlint-cli2 codespell --all-files
+          extra_args: --all-files
       - name: Check TOC synchronization
         run: uv run --group docs python scripts/check-toc-sync.py

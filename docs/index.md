@@ -55,6 +55,10 @@ everywhere.
 - **[CI lint tool pinning](ci-lint-pinning.md)** — CI lint jobs must run the same
   version-pinned tools as `.pre-commit-config.yaml`, not floating/latest
   sources — one version source, no skew.
+- **[CI dependency management](ci-dependency-standard.md)** — fleet-wide approach
+  to automated Python/uv dependency updates via Renovate, lockfile integrity
+  checks (`uv lock --check`), and scheduled refresh for git-pinned
+  dependencies.
 - **[Dependabot auto-merge](dependabot-auto-merge.md)** — Dependabot auto-merge
   must be CI-gated (`mergeable_state == "clean"`), restricted to minor/patch
   updates, and must exclude docker and pre-commit ecosystems from the

@@ -2548,8 +2548,9 @@ everywhere.</p>
 <li><strong><a href="mkdocs-build/">MkDocs build integrity</a></strong> — strict mode build gating
   and link-validation configuration for every MkDocs site.</li>
 <li><strong><a href="module-taxonomy-scope/">Module taxonomy scope</a></strong> — what belongs in
-  <code>docs/modules.yaml</code>: product code, not the repo's own build and lint
-  scaffolding.</li>
+  <code>docs/modules.yaml</code> and the pre-commit hook that runs <code>check-registration</code>
+  locally so module-ownership drift is caught at commit time instead of one
+  CI push later.</li>
 <li><strong><a href="docs-site-deployment/">Docs site deployment</a></strong> — the GitHub Pages
   contract for repos that publish: caller permissions, Pages source, and
   concurrency ownership. A mismatch fails at startup with no logs at all.</li>

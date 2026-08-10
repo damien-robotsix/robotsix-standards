@@ -1350,6 +1350,17 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#pre-commit-hook-local-dev-ci-parity" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Pre-commit hook: local-dev / CI parity
+      
+    </span>
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -2385,6 +2396,17 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#pre-commit-hook-local-dev-ci-parity" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Pre-commit hook: local-dev / CI parity
+      
+    </span>
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -2548,6 +2570,63 @@ file and the kind (<code>unclassified_file</code>, <code>stale_path</code>, <cod
 reports a schema error rather than a finding. Validate structure separately:</p>
 <div class="highlight"><pre><span></span><code>robotsix-modules<span class="w"> </span>validate<span class="w"> </span>docs/modules.yaml
 </code></pre></div>
+<h2 id="pre-commit-hook-local-dev-ci-parity">Pre-commit hook: local-dev / CI parity<a class="headerlink" href="#pre-commit-hook-local-dev-ci-parity" title="Permanent link">&para;</a></h2>
+<blockquote>
+<p><strong>Scope: every repository that gates CI on <code>robotsix-modules
+check-registration</code>.</strong> A repo that only runs <code>validate</code> in CI is not
+required to add <code>check-registration</code> locally, but that is a gap in its own
+right — <code>validate</code> checks the schema, not the file coverage.</p>
+</blockquote>
+<p><strong>Rule:</strong> Any repo whose CI runs <code>robotsix-modules check-registration
+&lt;manifest&gt; --root .</code> must also run that same command in a local pre-commit
+hook. The hook must trigger not only when the manifest itself changes but
+also when any path that the registry claims (typically <code>src/</code>, <code>tests/</code>,
+<code>scripts/</code>, <code>docs/</code>) is added or removed, so adding a new module or test
+file without updating the registry is flagged at commit time instead of one
+CI push later.</p>
+<p>The hook must run <strong>both</strong> subcommands — <code>validate</code> (schema) and
+<code>check-registration</code> (coverage) — in a single local hook entry so the two
+checks stay versioned and triggered together:</p>
+<div class="highlight"><pre><span></span><code><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">repo</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">local</span>
+<span class="w">    </span><span class="nt">hooks</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">id</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">robotsix-modules</span>
+<span class="w">        </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">robotsix-modules</span>
+<span class="w">        </span><span class="nt">entry</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">robotsix-modules validate docs/&lt;pkg&gt;/modules.yaml &amp;&amp; robotsix-modules check-registration docs/&lt;pkg&gt;/modules.yaml --root .</span>
+<span class="w">        </span><span class="nt">language</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">system</span>
+<span class="w">        </span><span class="nt">files</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">^(docs/&lt;pkg&gt;/modules\.yaml|src/|tests/|scripts/|docs/)</span>
+<span class="w">        </span><span class="nt">pass_filenames</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
+</code></pre></div>
+<ul>
+<li><strong><code>language: system</code></strong> — runs the installed <code>robotsix-modules</code> binary
+  directly; no isolated virtualenv. The tool is already installed as a dev
+  dependency (it is the same tool that CI runs).</li>
+<li><strong><code>pass_filenames: false</code></strong> — the hook does not operate on individual
+  staged files; it always scans the whole tree.</li>
+<li><strong><code>files</code></strong> — the regex covers the manifest itself <strong>and</strong> every owned
+  directory. A file added to <code>src/</code> or <code>tests/</code> without updating the
+  manifest triggers the hook; the <code>check-registration</code> subcommand then
+  reports the unclassified file. Repos with additional owned directories
+  (e.g. a <code>templates/</code> that is genuinely product code, not scaffolding)
+  add them to the regex.</li>
+</ul>
+<p><strong>Rationale:</strong> The CI lint-tool-pinning rule (<a href="../ci-lint-pinning/">ci-lint-pinning.md</a>)
+already requires CI to run the same version-pinned tools as pre-commit —
+this rule extends the same principle to the module-registration gate: if CI
+rejects ownership drift, the developer's local commit should too. A repo
+that only runs <code>check-registration</code> in CI (as <code>robotsix-config</code> did before
+this standard existed) silently accepts at commit time what CI later
+rejects, turning a fast local fix into a round-trip: push, wait for CI,
+discover the failure, amend, push again.</p>
+<blockquote>
+<p><strong>Failure mode prevented.</strong> A developer adds a new module file under
+<code>src/</code> or <code>tests/</code>, commits, and pushes. CI fails with an
+<code>unclassified_file</code> finding because the file was never registered in
+<code>docs/modules.yaml</code>. The developer has already moved on; the failure
+arrives as a CI notification, not a local pre-commit block — a full
+round-trip that could have been a sub-second local failure. Over time
+developers learn to ignore the CI registration gate because it fires
+too late, and the taxonomy drifts.</p>
+</blockquote>
 
 
 

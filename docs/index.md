@@ -158,6 +158,9 @@ integrates with the deployment system. Beyond the baseline it follows:
 - **[Config-ownership audit](config-ownership-audit.md)** — fleet-wide
   classification of every deployable component against the config-ownership
   standard, with remediation tracking.
+- **[Config self-healing](config-self-healing.md)** — lenient load with
+  automatic stale-key stripping and self-heal rewrite — prevents crashloops
+  when a config field is removed from the model.
 - **[Docker build & release](docker-standard.md)** — one Dockerfile pattern and
   one publish workflow to a single registry, with CI image scanning and
   integration tests.

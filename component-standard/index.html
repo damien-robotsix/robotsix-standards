@@ -2922,27 +2922,24 @@ production. Full detail: <a href="../http-error-envelope/">HTTP error envelope</
 <span class="w">  </span><span class="nt">&quot;projects&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
 <span class="w">    </span><span class="nt">&quot;my-component&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
 <span class="w">      </span><span class="nt">&quot;public_key&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;pk-lf-…&quot;</span><span class="p">,</span>
-<span class="w">      </span><span class="nt">&quot;secret_key&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;sk-lf-…&quot;</span><span class="p">,</span>
-<span class="w">      </span><span class="nt">&quot;project_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;cm…&quot;</span>
+<span class="w">      </span><span class="nt">&quot;secret_key&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;sk-lf-…&quot;</span>
 <span class="w">    </span><span class="p">},</span>
 <span class="w">    </span><span class="nt">&quot;my-component-memory&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
 <span class="w">      </span><span class="nt">&quot;public_key&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;pk-lf-…&quot;</span><span class="p">,</span>
-<span class="w">      </span><span class="nt">&quot;secret_key&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;sk-lf-…&quot;</span><span class="p">,</span>
-<span class="w">      </span><span class="nt">&quot;project_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;cm…&quot;</span>
+<span class="w">      </span><span class="nt">&quot;secret_key&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;sk-lf-…&quot;</span>
 <span class="w">    </span><span class="p">}</span>
 <span class="w">  </span><span class="p">}</span>
 <span class="p">}</span>
 </code></pre></div>
-<p><code>project_id</code> is optional and only needed by consumers that address the
-  Langfuse project by id rather than name. A component keeps reading its
-  own credentials from this block internally — the block is the <em>storage</em>
-  shape, not a new API. Failure prevented: when each component invents its
-  own layout (<code>langfuse.public_key</code> here, <code>secrets.langfuse_public_key</code>
-  there), the engine cannot enumerate fleet credentials without a
-  per-component special case, and discovery silently returns nothing —
-  every consumer sees an empty project list while each component's own
-  tracing still works, so the breakage is invisible until someone asks why
-  the trace list is empty.
+<p>A component keeps reading its own credentials from this block internally —
+  the block is the <em>storage</em> shape (only <code>public_key</code> and <code>secret_key</code>), not
+  a new API. The <code>project_id</code> is NOT part of the component's config model;
+  the deployment engine enriches each project entry with the Langfuse
+  project id through its own API query when it enumerates fleet credentials
+  for consumers that need it. Failure prevented: when the component omits
+  <code>project_id</code>, the engine does a single lookup and serves it; when the
+  standard requires the component to carry it, every project entry in
+  every component across the fleet must declare an id that can drift.
 - <strong>The provider key funding each project lives in a parallel canonical
   block</strong>, a top-level <code>openrouter</code> key holding a <code>keys</code> map addressed by
   the <strong>same aliases</strong> as <code>langfuse.projects</code>:</p>

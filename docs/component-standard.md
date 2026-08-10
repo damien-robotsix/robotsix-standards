@@ -237,28 +237,25 @@ production. Full detail: [HTTP error envelope](http-error-envelope.md).
     "projects": {
       "my-component": {
         "public_key": "pk-lf-…",
-        "secret_key": "sk-lf-…",
-        "project_id": "cm…"
+        "secret_key": "sk-lf-…"
       },
       "my-component-memory": {
         "public_key": "pk-lf-…",
-        "secret_key": "sk-lf-…",
-        "project_id": "cm…"
+        "secret_key": "sk-lf-…"
       }
     }
   }
   ```
 
-  `project_id` is optional and only needed by consumers that address the
-  Langfuse project by id rather than name. A component keeps reading its
-  own credentials from this block internally — the block is the *storage*
-  shape, not a new API. Failure prevented: when each component invents its
-  own layout (`langfuse.public_key` here, `secrets.langfuse_public_key`
-  there), the engine cannot enumerate fleet credentials without a
-  per-component special case, and discovery silently returns nothing —
-  every consumer sees an empty project list while each component's own
-  tracing still works, so the breakage is invisible until someone asks why
-  the trace list is empty.
+  A component keeps reading its own credentials from this block internally —
+  the block is the *storage* shape (only `public_key` and `secret_key`), not
+  a new API. The `project_id` is NOT part of the component's config model;
+  the deployment engine enriches each project entry with the Langfuse
+  project id through its own API query when it enumerates fleet credentials
+  for consumers that need it. Failure prevented: when the component omits
+  `project_id`, the engine does a single lookup and serves it; when the
+  standard requires the component to carry it, every project entry in
+  every component across the fleet must declare an id that can drift.
 - **The provider key funding each project lives in a parallel canonical
   block**, a top-level `openrouter` key holding a `keys` map addressed by
   the **same aliases** as `langfuse.projects`:

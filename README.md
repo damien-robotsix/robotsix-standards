@@ -50,7 +50,7 @@ the default.
 | [Markdown linting](docs/markdown-linting.md) | markdownlint-cli2 and codespell pre-commit hooks for every repo that publishes MkDocs documentation. |
 | [Prose linting](docs/prose-linting.md) | Vale prose linter for style, readability, and fleet-specific vocabulary consistency — integrated through the existing pre-commit pipeline. |
 | [MkDocs build integrity](docs/mkdocs-build.md) | Strict mode build gating and link-validation configuration for every MkDocs site. |
-| [Module taxonomy scope](docs/module-taxonomy-scope.md) | What belongs in `docs/modules.yaml` — product code, not the repo's own build and lint scaffolding. |
+| [Module taxonomy scope](docs/module-taxonomy-scope.md) | What belongs in `docs/modules.yaml`, and the pre-commit hook that keeps the registry in sync with the tree — product code, not the repo's own build and lint scaffolding. |
 | [Docs site deployment](docs/docs-site-deployment.md) | GitHub Pages contract for repos that publish: caller permissions, Pages source, concurrency ownership. A mismatch fails at startup with no logs. |
 | [Python CI workflow](docs/python-ci-workflow.md) | Required `ci.yml` shape: lint → type-check → test+coverage, run on every push and PR — the enforcement mechanism for the quality gates declared in `pyproject.toml`. |
 | [Python practices](docs/python.md) | uv, hatchling, `requires-python`, lint/type/security gates, test layout, pre-commit hooks. |

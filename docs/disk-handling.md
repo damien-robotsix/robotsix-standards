@@ -58,9 +58,9 @@ This is the single source of truth for volume placement — no other mechanism
 (compose `driver_opts`, host-wide Docker daemon config, operator shell scripts)
 overrides it.
 
-**Rule:** The deploy-time disk selector (shipped in [central-deploy PR
-#729](https://github.com/damien-robotsix/robotsix-central-deploy/pull/729)) is
-the **sole mechanism** for choosing which physical disk backs a component's
+**Rule:** The deploy-time disk selector (shipped in [central-deploy
+PR #729](https://github.com/damien-robotsix/robotsix-central-deploy/pull/729))
+is the **sole mechanism** for choosing which physical disk backs a component's
 data volume. The operator sees available disks and their free space, picks one,
 and the deployment system creates the named volume on that disk. The component
 repo never participates in this decision.

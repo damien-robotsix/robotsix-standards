@@ -113,6 +113,7 @@ nav:
       - Default config location: default-config-location.md
       - Config ownership: config-ownership.md
       - Config-ownership audit: config-ownership-audit.md
+      - Config self-healing: config-self-healing.md
       - Docker build & release: docker-standard.md
       - Deploy contract: deploy-contract.md
       - Multi-disk data handling: disk-handling.md

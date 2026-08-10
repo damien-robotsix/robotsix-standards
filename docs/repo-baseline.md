@@ -190,6 +190,9 @@ gate set:
   workflow), `dependency-review` on PRs (`fail-on-severity:
   moderate`), and a CycloneDX SBOM generated and uploaded as a workflow
   artifact.
+- **Dependency lockfile integrity:** `uv lock --check` validates that
+  `uv.lock` is consistent with `pyproject.toml` constraints before
+  `uv sync --frozen` — see [CI dependency management](ci-dependency-standard.md).
 - **Container image:** repos that ship an image also scan it in CI — see
   [Docker build & release](docker-standard.md).
 - **Baseline conformance:** the baseline gate verifies the mechanical rules
@@ -352,7 +355,7 @@ receiving security patches until someone moves it):
 | Pin | Bumper |
 |---|---|
 | First-party git-dependency pins | the scheduled pin-bump workflow (above) |
-| Third-party packages (lockfile) | Dependabot — language-specific ecosystem |
+| Third-party Python packages (uv lockfile) | Renovate (`uv` manager) — see [CI dependency management](ci-dependency-standard.md) |
 | GitHub Actions SHAs | Dependabot `github-actions` ecosystem |
 | Base-image digests + the `COPY --from` pin | Dependabot `docker` ecosystem |
 | Pre-commit hook versions | Dependabot `pre-commit` ecosystem |
@@ -365,3 +368,7 @@ and **`npm`** in repos with a `package.json`
 baseline-check gate verifies its contents instead). Dependabot PRs auto-merge
 once required checks pass, via the shared `dependabot-auto-merge.yml` caller
 from robotsix-github-workflows.
+
+Python/uv lockfile updates use **Renovate** instead of Dependabot — see
+[CI dependency management](ci-dependency-standard.md) for the configuration
+and rationale.

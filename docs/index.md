@@ -61,6 +61,36 @@ everywhere.
   sources — one version source, no skew.
 - **[Distribution & Packaging](distribution-packaging.md)** — git-based consumption of
   first-party libraries — no package index, no registry publish step.
+- **[Docstring convention](docstrings.md)** — Python docstring style and coverage
+  rules for all public modules, classes, and functions.
+- **[HTTP client persistence](http-client-persistence.md)** — one persistent
+  `httpx.Client` (or `requests.Session`) with an explicit timeout, reused for
+  all outbound calls — no per-call module-level convenience helpers.
+- **[Library internal logging](library-logging.md)** — module-level
+  `logging.getLogger(__name__)`, a single `NullHandler` in `__init__.py`,
+  lazy `%`-style formatting, and DEBUG-for-routine events — library logging
+  that never prints unless the application opts in.
+- **[Logging](logging.md)** — structured JSON logging via structlog,
+  stdout-only output, correlation-id middleware, and level conventions
+  for every deployable service.
+- **[Hypothesis testing](hypothesis.md)** — property-based testing profiles,
+  shared strategies, and CI integration for repos that use Hypothesis.
+- **[Markdown linting](markdown-linting.md)** — markdownlint-cli2 and codespell
+  pre-commit hooks for every repo that publishes MkDocs documentation.
+- **[Prose linting](prose-linting.md)** — Vale prose linter for style,
+  readability, and fleet-specific vocabulary consistency — integrated
+  through the existing pre-commit pipeline.
+- **[MkDocs build integrity](mkdocs-build.md)** — strict mode build gating
+  and link-validation configuration for every MkDocs site.
+- **[Module taxonomy scope](module-taxonomy-scope.md)** — what belongs in
+  `docs/modules.yaml`: product code, not the repo's own build and lint
+  scaffolding.
+- **[Docs site deployment](docs-site-deployment.md)** — the GitHub Pages
+  contract for repos that publish: caller permissions, Pages source, and
+  concurrency ownership. A mismatch fails at startup with no logs at all.
+- **[Contributor guide in docs nav](contributing-in-nav.md)** — every MkDocs
+  site must surface the repo's contributor guide in the docs nav so it is
+  discoverable to readers of the published site.
 - **[Python CI workflow](python-ci-workflow.md)** — required `ci.yml` shape:
   lint → type-check → test+coverage, run on every push and PR — the enforcement
   mechanism for the quality gates declared in `pyproject.toml`.
@@ -96,34 +126,6 @@ everywhere.
 - **[py.typed wheel guard](py-typed-wheel-guard.md)** — automated verification
   that the `py.typed` marker ships in the built wheel, so a packaging
   regression cannot silently strip type information from downstream consumers.
-- **[Docstring convention](docstrings.md)** — Python docstring style and coverage
-  rules for all public modules, classes, and functions.
-- **[HTTP client persistence](http-client-persistence.md)** — one persistent
-  `httpx.Client` (or `requests.Session`) with an explicit timeout, reused for
-  all outbound calls — no per-call module-level convenience helpers.
-- **[Library internal logging](library-logging.md)** — module-level
-  `logging.getLogger(__name__)`, a single `NullHandler` in `__init__.py`,
-  lazy `%`-style formatting, and DEBUG-for-routine events — library logging
-  that never prints unless the application opts in.
-- **[Logging](logging.md)** — structured JSON logging via structlog,
-  stdout-only output, correlation-id middleware, and level conventions
-  for every deployable service.
-- **[Hypothesis testing](hypothesis.md)** — property-based testing profiles,
-  shared strategies, and CI integration for repos that use Hypothesis.
-- **[Markdown linting](markdown-linting.md)** — markdownlint-cli2 and codespell
-  pre-commit hooks for every repo that publishes MkDocs documentation.
-- **[Prose linting](prose-linting.md)** — Vale prose linter for style,
-  readability, and fleet-specific vocabulary consistency — integrated
-  through the existing pre-commit pipeline.
-- **[MkDocs build integrity](mkdocs-build.md)** — strict mode build gating
-  and link-validation configuration for every MkDocs site.
-- **[Module taxonomy scope](module-taxonomy-scope.md)** — what belongs in
-  `docs/modules.yaml` and the pre-commit hook that runs `check-registration`
-  locally so module-ownership drift is caught at commit time instead of one
-  CI push later.
-- **[Docs site deployment](docs-site-deployment.md)** — the GitHub Pages
-  contract for repos that publish: caller permissions, Pages source, and
-  concurrency ownership. A mismatch fails at startup with no logs at all.
 - **[JavaScript practices](javascript.md)** — vanilla frontend JS as static
   assets, lockfile discipline, vitest coverage floor, eslint/stylelint.
 - **[PHP practices](php.md)** — native `php -l` syntax-check over all `.php`

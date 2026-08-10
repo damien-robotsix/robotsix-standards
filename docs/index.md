@@ -88,9 +88,6 @@ everywhere.
 - **[Docs site deployment](docs-site-deployment.md)** — the GitHub Pages
   contract for repos that publish: caller permissions, Pages source, and
   concurrency ownership. A mismatch fails at startup with no logs at all.
-- **[Contributor guide in docs nav](contributing-in-nav.md)** — every MkDocs
-  site must surface the repo's contributor guide in the docs nav so it is
-  discoverable to readers of the published site.
 - **[Python CI workflow](python-ci-workflow.md)** — required `ci.yml` shape:
   lint → type-check → test+coverage, run on every push and PR — the enforcement
   mechanism for the quality gates declared in `pyproject.toml`.
@@ -99,6 +96,9 @@ everywhere.
 - **[Python `__main__.py` exit-code forwarding](python-main-py-forward.md)** —
   `__main__.py` must forward `main()`'s return value to `sys.exit()` so
   `python -m <pkg>` reports the same exit code as the installed console script.
+- **[Contributor guide in docs nav](contributing-in-nav.md)** — every MkDocs
+  site must surface the repo's contributor guide in the docs nav so it is
+  discoverable to readers of the published site.
 - **[Console-script subprocess tests](console-script-subprocess-test.md)** —
   every `[project.scripts]` entry point must be tested as a subprocess through
   the installed binary — not only in-process or via `python -m`.

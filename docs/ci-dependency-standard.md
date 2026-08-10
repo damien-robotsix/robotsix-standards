@@ -68,7 +68,7 @@ as declared in the [repo baseline](repo-baseline.md#automated-dependency-updates
 A repo using Renovate for `uv` must therefore carry both a `renovate.json`
 and a `.github/dependabot.yml`.
 
-### Why
+### Why Renovate over Dependabot for uv
 
 Dependabot's `uv` ecosystem produces broken lockfiles — the generated
 `uv.lock` is not consistent with `pyproject.toml` constraints, causing
@@ -108,7 +108,7 @@ dependencies.  In the standard
 [Python CI workflow](python-ci-workflow.md), this is the first step after
 the `setup-uv` action.
 
-### Why
+### Why uv lock --check
 
 The failure mode is silent lockfile drift.  A developer bumps a lower-bound
 in `pyproject.toml` (e.g. `httpx>=0.28` → `httpx>=0.29`), forgets to run
@@ -173,7 +173,7 @@ must be repo-specific — a repo with two git-pinned deps runs two
 any scheduled release workflow so refreshed pins land in a release PR if
 one opens that week.
 
-### Why
+### Why scheduled refresh
 
 Git-pinned dependencies are opaque to standard dependency bots — neither
 Dependabot nor Renovate understands `[tool.uv.sources]` git references.

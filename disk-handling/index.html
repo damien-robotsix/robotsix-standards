@@ -10,13 +10,13 @@
       
       
       
-        <link rel="canonical" href="https://damien-robotsix.github.io/robotsix-standards/fastapi-pydantic-field-descriptions/">
+        <link rel="canonical" href="https://damien-robotsix.github.io/robotsix-standards/disk-handling/">
       
       
-        <link rel="prev" href="../entrypoint-contract/">
+        <link rel="prev" href="../deploy-contract/">
       
       
-        <link rel="next" href="../fastapi-test-isolation/">
+        <link rel="next" href="../deploy-api-key/">
       
       
         
@@ -27,7 +27,7 @@
     
     
       
-        <title>FastAPI Pydantic field descriptions - Robotsix Standards</title>
+        <title>Multi-disk data handling - Robotsix Standards</title>
       
     
     
@@ -78,7 +78,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#fastapi-pydantic-field-descriptions" class="md-skip">
+        <a href="#multi-disk-data-handling" class="md-skip">
           Skip to content
         </a>
       
@@ -114,7 +114,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              FastAPI Pydantic field descriptions
+              Multi-disk data handling
             
           </span>
         </div>
@@ -1686,10 +1686,37 @@
                 
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="../disk-handling/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Multi-disk data handling
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   
@@ -1705,6 +1732,81 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#no-default-disk-in-the-component-repo" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        No default disk in the component repo
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#target-disk-chosen-at-deploy-time" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Target disk chosen at deploy time
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#volumes-are-relocatable-between-disks" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Volumes are relocatable between disks
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#disk-usage-reported-per-physical-device" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Disk usage reported per physical device
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#reference-implementations" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Reference implementations
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -1770,37 +1872,10 @@
                 
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    FastAPI Pydantic field descriptions
-  
-
-    
-  </span>
-  
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../fastapi-pydantic-field-descriptions/" class="md-nav__link">
         
   
   
@@ -1816,98 +1891,6 @@
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#what-is-the-api-surface" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        What is the API surface?
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#how-to-describe-fields" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        How to describe fields
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="How to describe fields">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#recommended-fielddescription" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Recommended: Field(description=...)
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#acceptable-alternative-google-style-attributes-docstring" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Acceptable alternative: Google-style Attributes: docstring
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#enforcement-optional-but-encouraged" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Enforcement (optional but encouraged)
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#cross-reference" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Cross-reference
-      
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -2348,10 +2331,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#what-is-the-api-surface" class="md-nav__link">
+  <a href="#no-default-disk-in-the-component-repo" class="md-nav__link">
     <span class="md-ellipsis">
       
-        What is the API surface?
+        No default disk in the component repo
       
     </span>
   </a>
@@ -2359,49 +2342,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#how-to-describe-fields" class="md-nav__link">
+  <a href="#target-disk-chosen-at-deploy-time" class="md-nav__link">
     <span class="md-ellipsis">
       
-        How to describe fields
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="How to describe fields">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#recommended-fielddescription" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Recommended: Field(description=...)
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#acceptable-alternative-google-style-attributes-docstring" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Acceptable alternative: Google-style Attributes: docstring
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#enforcement-optional-but-encouraged" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Enforcement (optional but encouraged)
+        Target disk chosen at deploy time
       
     </span>
   </a>
@@ -2409,10 +2353,32 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#cross-reference" class="md-nav__link">
+  <a href="#volumes-are-relocatable-between-disks" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Cross-reference
+        Volumes are relocatable between disks
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#disk-usage-reported-per-physical-device" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Disk usage reported per physical device
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#reference-implementations" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Reference implementations
       
     </span>
   </a>
@@ -2439,97 +2405,119 @@
   
 
 
-<h1 id="fastapi-pydantic-field-descriptions">FastAPI Pydantic field descriptions<a class="headerlink" href="#fastapi-pydantic-field-descriptions" title="Permanent link">&para;</a></h1>
+<h1 id="multi-disk-data-handling">Multi-disk data handling<a class="headerlink" href="#multi-disk-data-handling" title="Permanent link">&para;</a></h1>
 <blockquote>
-<p><strong>Scope: deployable components that expose a FastAPI application.</strong> A
-component whose only HTTP surface is the mandatory <code>/health</code> endpoint (see
-the <a href="../component-standard/">component standard</a>) does not need this. This
-applies <em>in addition to</em> the <a href="../repo-baseline/">repo baseline</a> and
-<a href="../component-standard/">component standard</a>.</p>
+<p><strong>Scope: deployable components and the deployment system.</strong>
+Cross-refs: <a href="../component-standard/">component standard</a>,
+<a href="../deploy-contract/">deploy contract</a>,
+<a href="../docker-standard/">Docker build &amp; release</a>,
+<a href="../deployment-system/">deployment system</a>.</p>
 </blockquote>
-<p>Every FastAPI service in the fleet generates an OpenAPI schema (<code>/openapi.json</code>)
-consumed by operators, downstream tools, and the Swagger UI. Pydantic v2 does
-<strong>not</strong> parse inline trailing <code>#</code> comments on field lines for JSON-schema
-descriptions — those are plain Python comments, invisible to
-<code>model_json_schema()</code>. Without explicit descriptions, the generated schema is
-undocumented at the field level: every field shows only its Python name and
-type annotation, forcing every consumer to guess at semantics.</p>
-<p><strong>The rule: every field on a Pydantic <code>BaseModel</code> that reaches the API surface
-must carry a description.</strong></p>
-<h2 id="what-is-the-api-surface">What is the API surface?<a class="headerlink" href="#what-is-the-api-surface" title="Permanent link">&para;</a></h2>
-<p>A model is on the API surface when it appears in any of these FastAPI
-positions:</p>
-<ul>
-<li>A <strong>response model</strong> (<code>response_model=</code>, or the return-type annotation of a
-  path operation).</li>
-<li>A <strong>request body</strong> (a parameter annotated with <code>Body(...)</code> whose type is a
-  Pydantic model, or a model-type parameter without a <code>Body</code>/<code>Query</code>/<code>Header</code>
-  annotation — FastAPI treats bare non-scalar types as bodies).</li>
-<li>A <strong><code>Query</code></strong>, <strong><code>Header</code></strong>, <strong><code>Cookie</code></strong>, or <strong><code>Path</code></strong> parameter whose
-  type is a Pydantic model (or whose individual fields are extracted via
-  <code>Query()</code>).</li>
-<li>Any model <strong>nested</strong> inside one of the above — descriptions propagate
-  through the JSON schema, so nested model fields also reach <code>/openapi.json</code>.</li>
-</ul>
-<p>Models used only for internal logic — database rows, internal DTOs, config
-models — are exempt.</p>
-<h2 id="how-to-describe-fields">How to describe fields<a class="headerlink" href="#how-to-describe-fields" title="Permanent link">&para;</a></h2>
-<h3 id="recommended-fielddescription">Recommended: <code>Field(description=...)</code><a class="headerlink" href="#recommended-fielddescription" title="Permanent link">&para;</a></h3>
-<p>Colocate the description with the field definition using Pydantic's <code>Field</code>:</p>
-<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">pydantic</span><span class="w"> </span><span class="kn">import</span> <span class="n">BaseModel</span><span class="p">,</span> <span class="n">Field</span>
+<p>The server has multiple physical disks (e.g. a smaller root disk and a larger
+data disk mounted at <code>/data2</code>). Without a fleet-wide standard for how a
+component's persistent data volume is placed onto — and later moved between —
+disks, every component handles storage ad-hoc. The deploy dashboard had to be
+reworked to report per-disk usage, a deploy-time disk selector was added to
+central-deploy (PR #729), and some components shipped with no persistent volume
+at all. This standard defines the contract so every component handles
+multi-disk storage the same way.</p>
+<h2 id="no-default-disk-in-the-component-repo">No default disk in the component repo<a class="headerlink" href="#no-default-disk-in-the-component-repo" title="Permanent link">&para;</a></h2>
+<p>A component declares its data volume in its deploy spec <strong>without</strong> hard-coding
+a host disk or mount path. The component repo's job is to state <em>what data it
+needs persisted</em>, not <em>where on the host that data lives</em>.</p>
+<p><strong>Rule:</strong> The component's <code>deploy/docker-compose.yml</code> declares a <strong>named data
+volume</strong>. The volume name describes the data (e.g. <code>file-hub-data</code>,
+<code>chat-sessions</code>), never the physical disk. No <code>device</code>, <code>driver_opts</code>, or
+host-path mount belongs in the component repo's compose file — those are
+placement decisions the deployment system owns.</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># In the component repo — correct (disk-agnostic):</span>
+<span class="nt">volumes</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">file-hub-data</span><span class="p">:</span>
 
-
-<span class="k">class</span><span class="w"> </span><span class="nc">CreateTicketRequest</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
-    <span class="n">title</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s2">&quot;Short summary of the ticket&quot;</span><span class="p">)</span>
-    <span class="n">body</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s2">&quot;Markdown body of the ticket&quot;</span><span class="p">)</span>
-    <span class="n">priority</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Lower is more urgent; 0 means unset&quot;</span><span class="p">)</span>
+<span class="nt">services</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">file-hub</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">volumes</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">file-hub-data:/data</span>
 </code></pre></div>
-<p><code>Field(description=...)</code> is immune to docstring-parsing edge cases and keeps
-the description immediately next to the definition. This is the fleet's
-convention — already in use in <code>robotsix-central-deploy</code> (<code>registry/models.py</code>,
-<code>caretaker/models.py</code>, <code>lifecycle/schemas.py</code>).</p>
-<h3 id="acceptable-alternative-google-style-attributes-docstring">Acceptable alternative: Google-style <code>Attributes:</code> docstring<a class="headerlink" href="#acceptable-alternative-google-style-attributes-docstring" title="Permanent link">&para;</a></h3>
-<p>A Google-style docstring on the model class is an acceptable alternative:</p>
-<div class="highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">CreateTicketRequest</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;A request to create a new ticket.</span>
-
-<span class="sd">    Attributes:</span>
-<span class="sd">        title: Short summary of the ticket.</span>
-<span class="sd">        body: Markdown body of the ticket.</span>
-<span class="sd">        priority: Lower is more urgent; 0 means unset.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-
-    <span class="n">title</span><span class="p">:</span> <span class="nb">str</span>
-    <span class="n">body</span><span class="p">:</span> <span class="nb">str</span>
-    <span class="n">priority</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span>
-</code></pre></div>
-<p>Pydantic v2 parses the <code>Attributes:</code> block and feeds each field's description
-into the JSON schema. However, this approach has edge cases: the parser does
-not recognise multi-line field descriptions that omit a blank line before the
-next <code>field_name:</code>, and it cannot describe fields inherited from a parent
-class. Prefer <code>Field(description=...)</code> for new code.</p>
-<h2 id="enforcement-optional-but-encouraged">Enforcement (optional but encouraged)<a class="headerlink" href="#enforcement-optional-but-encouraged" title="Permanent link">&para;</a></h2>
-<p>Add an automated check that warns or fails when an API-surface model field
-has no description:</p>
+<p><strong>Failure mode prevented.</strong> When a component hard-codes a host path (e.g.
+<code>/data2/file-hub</code>) it ties the deployment to one disk layout, breaks on every
+host that differs, and forces operators to edit the repo source to move data.
+Named volumes decouple the component from the host's physical layout and let
+the deployment system choose the backing disk at deploy time.</p>
+<p>Components that today ship with <strong>no persistent volume at all</strong> (e.g. the
+file-hub before its persistent-volume work) violate this rule: a service whose
+data disappears on restart is not deployable. Every deployable component that
+holds state — files, databases, session data — must declare at least one named
+data volume.</p>
+<h2 id="target-disk-chosen-at-deploy-time">Target disk chosen at deploy time<a class="headerlink" href="#target-disk-chosen-at-deploy-time" title="Permanent link">&para;</a></h2>
+<p>The physical disk a component's data volume lands on is selected
+<strong>case-by-case when the component is added or deployed</strong> in central-deploy.
+This is the single source of truth for volume placement — no other mechanism
+(compose <code>driver_opts</code>, host-wide Docker daemon config, operator shell scripts)
+overrides it.</p>
+<p><strong>Rule:</strong> The deploy-time disk selector (shipped in <a href="https://github.com/damien-robotsix/robotsix-central-deploy/pull/729">central-deploy
+PR #729</a>)
+is the <strong>sole mechanism</strong> for choosing which physical disk backs a component's
+data volume. The operator sees available disks and their free space, picks one,
+and the deployment system creates the named volume on that disk. The component
+repo never participates in this decision.</p>
+<p><strong>Failure mode prevented.</strong> Before the disk selector existed, operators had to
+know the host's disk layout, guess which disk had space, and manually place
+volumes — a process that varied per component and per host. Centralizing the
+choice in the deploy UI makes it auditable (the dashboard records which disk
+every volume lives on), repeatable (no host-specific knowledge needed), and
+safe (free space is visible before the choice is made).</p>
+<h2 id="volumes-are-relocatable-between-disks">Volumes are relocatable between disks<a class="headerlink" href="#volumes-are-relocatable-between-disks" title="Permanent link">&para;</a></h2>
+<p>An operator must be able to move an existing component's data volume from one
+physical disk to another later, <strong>without data loss</strong>. A disk that fills up, a
+hardware replacement, or a planned rebalancing must not require deleting and
+re-creating the volume.</p>
+<p><strong>Rule:</strong> The deployment system provides a <strong>relocate workflow</strong> that:</p>
+<ol>
+<li>stops the component (the component's data must be quiescent);</li>
+<li>copies the volume's data to the target disk (preserving ownership, permissions,
+   and timestamps — <code>rsync -a</code> semantics);</li>
+<li>re-points the named volume to the new physical location;</li>
+<li>restarts the component against the relocated volume.</li>
+</ol>
+<p>The component itself is <strong>never aware</strong> of the relocation — it continues to
+read and write the same mount path (e.g. <code>/data</code>), and the named volume name
+does not change. Only the backing disk changes, and the deployment system is
+the sole actor that touches the volume at rest.</p>
+<p><strong>Failure mode prevented.</strong> Without a defined relocate workflow, a full disk
+forces the operator to either (a) manually <code>rsync</code> data and hand-edit Docker
+volume metadata — a risky, unrepeatable process — or (b) discard the data and
+start fresh. A standard relocate guarantee makes disk space management a
+routine operation instead of an incident.</p>
+<blockquote>
+<p><strong>Note:</strong> The relocate capability is a central-deploy implementation
+concern. If the deploy plane cannot yet relocate a live volume, file a
+follow-on central-deploy ticket to add it. The standard defines the
+<em>guarantee</em> the fleet relies on; the implementation closes the gap.</p>
+</blockquote>
+<h2 id="disk-usage-reported-per-physical-device">Disk usage reported per physical device<a class="headerlink" href="#disk-usage-reported-per-physical-device" title="Permanent link">&para;</a></h2>
+<p>Operators need to see free space <strong>per physical disk</strong> before choosing where
+to place a new volume or whether to relocate an existing one. An aggregate
+number that double-counts bind-mounts or merges all disks into one figure is
+misleading and unsafe.</p>
+<p><strong>Rule:</strong> The deployment system's disk usage panel reports <strong>one row per
+physical block device</strong>, showing total space, used space, and free space for
+each. Named volumes are attributed to the disk they physically reside on — the
+reporting follows the filesystem, not Docker's volume abstraction.</p>
+<p><strong>Failure mode prevented.</strong> Aggregate disk usage (e.g. summing <code>df</code> across all
+mount points without deduplication) hides which disk is actually full, causing
+operators to pick the wrong target for a new volume or fail to notice that a
+single disk is nearing capacity. Per-device reporting makes the storage layout
+legible so placement decisions are informed.</p>
+<h2 id="reference-implementations">Reference implementations<a class="headerlink" href="#reference-implementations" title="Permanent link">&para;</a></h2>
 <ul>
-<li>A small AST walker that inspects <code>pydantic.BaseModel</code> subclasses in a
-  repository, flags fields without <code>Field(description=...)</code> or a
-  <code>Field(default=..., description=...)</code>, and cross-references the class
-  against the application's route registration.</li>
-<li>When integrated into the shared <code>python-ci.yml</code> reusable workflow, it
-  becomes a fleet-wide gate — every repo inherits the check at zero marginal
-  cost.</li>
-</ul>
-<p>This check is <strong>optional</strong> today; a repo that adds it signals that its API
-surface is fully documented. The fleet convention is the requirement — the
-automated gate is the enforcement.</p>
-<h2 id="cross-reference">Cross-reference<a class="headerlink" href="#cross-reference" title="Permanent link">&para;</a></h2>
-<ul>
-<li><strong><a href="../fastapi-test-isolation/">FastAPI test isolation</a></strong> — the other
-  fleet-wide FastAPI convention: mutable server state must be exposed
-  through <code>Depends()</code> dependencies so tests can override via
-  <code>app.dependency_overrides</code> rather than importing and mutating module-level
-  globals.</li>
+<li><strong><a href="https://github.com/damien-robotsix/robotsix-central-deploy/pull/729">central-deploy PR #729</a></strong> —
+  the deploy-time disk selector and per-disk usage display that implement the
+  "target disk chosen at deploy time" and "per-disk observability" rules.</li>
+<li><strong>file-hub persistent data volume</strong> — the first component to ship a
+  disk-agnostic named data volume (no default disk, no host path) following
+  this standard; demonstrates the "no default disk in the component repo" rule
+  in a real deployable component.</li>
 </ul>
 
 

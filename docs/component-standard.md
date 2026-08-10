@@ -122,9 +122,9 @@ siblings routinely restart, so:
   pydantic model (see the [config standard](config-standard.md)), not an
   environment variable.
 
-Nothing more is standardized on purpose — no structured-JSON mandate, no
-metrics/collector requirement. Either gets added deliberately when something
-in the fleet needs it.
+Structured JSON logging is mandated by the [logging standard](logging.md).
+No metrics/collector requirement is standardized — that gets added
+deliberately when something in the fleet needs it.
 
 ## Error handling
 

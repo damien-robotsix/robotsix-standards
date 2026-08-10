@@ -56,11 +56,11 @@ BasedOnStyles = write-good
 
 **The `StylesPath` directory (`styles/`) is gitignored** — `vale sync`
 regenerates it from the declared packages. Only the vocabulary files
-(in `config/vocabularies/`) are version-controlled.
+(in `styles/config/vocabularies/`) are version-controlled.
 
 ### Fleet vocabulary
 
-Create `config/vocabularies/robotsix/` with two files:
+Create `styles/config/vocabularies/robotsix/` with two files:
 
 #### `accept.txt` — fleet-specific terms that Vale should not flag
 

@@ -26,22 +26,37 @@ discipline rather than each re-deriving it.
 
 ## Baseline settings (mandatory)
 
-Every Python repository **must** include these two settings in
+Every Python repository **must** include these settings in
 `[tool.pytest.ini_options]`:
 
 ```toml
 [tool.pytest.ini_options]
+addopts = ["--strict-markers"]
 filterwarnings = ["error"]
 xfail_strict = true
+markers = [
+    # Register every custom @pytest.mark.<name> used in the test suite.
+    # A marker that appears in a @pytest.mark decorator but is not listed
+    # here causes a hard collection error (because of --strict-markers).
+]
 ```
 
+- **`addopts = ["--strict-markers"]`** — any `@pytest.mark.xxx` decorator
+  whose marker name is not registered in `markers` (or not a pytest builtin)
+  raises a hard collection error instead of silently adding an ad-hoc marker.
 - **`filterwarnings = ["error"]`** — turn every warning into an exception.
   This is the universal baseline across all four surveyed projects.
 - **`xfail_strict = true`** — an `@pytest.mark.xfail` test that unexpectedly
   passes is reported as a failure (`XPASS(strict)`), flagging the stale
   marker so it can be removed.
 
-**Failure mode:** without `filterwarnings = ["error"]`, dependency
+**Failure mode:** without `--strict-markers`, a typo like
+`@pytest.mark.sloww` (intended `slow`) becomes a silently-registered ad-hoc
+marker that no `-m` filter ever selects — the test is never run in the
+targeted suite, and the mistake is invisible until a human notices the test
+is missing from CI results.  The same applies to a CI selection
+`-m "not docker"` against an unregistered `docker` marker, which silently
+filters *nothing*.  Without `filterwarnings = ["error"]`, dependency
 deprecation warnings are invisible in CI output — the upgrade that removes
 the deprecated API lands as a surprise breakage. Without `xfail_strict`,
 fixed bugs stay marked as expected failures forever, and the test suite
@@ -113,28 +128,36 @@ an attempted nested event loop surfaces as a hard test failure
 crashes inside CI only after the warning-as-error baseline is enabled,
 blocking unrelated work while the team diagnoses the nested-loop failure.
 
-## Recommended tier: strict markers and config
+## Additional strictness: `--strict-config`
 
-Repos **should** additionally enable marker and config strictness:
+Repos **should** additionally enable config strictness by adding
+`"--strict-config"` to `addopts`:
 
 ```toml
 addopts = ["--strict-markers", "--strict-config"]
 ```
 
-- **`--strict-markers`** — any `@pytest.mark.xxx` decorator whose marker
-  name is not registered (via `markers` in `pyproject.toml` or a
-  `pytest_configure` hook) raises an error instead of silently adding an
-  ad-hoc marker.
 - **`--strict-config`** — any unrecognised `[tool.pytest.ini_options]` key
   raises an error, catching typos in config.
 
-FastAPI and Starlette both ship these settings.
+(`--strict-markers` is already required by the baseline above.)
 
-**Failure mode:** without `--strict-markers`, a typo like
-`@pytest.mark.smoke` (intended `smoke`) becomes a silently-registered ad-hoc
-marker that no `-m` filter ever selects — the test is never run in the
-targeted suite, and the mistake is invisible until a human notices the test
-is missing from CI results.
+FastAPI and Starlette both ship this setting alongside `--strict-markers`.
+
+**Failure mode:** without `--strict-config`, a typo in a
+`[tool.pytest.ini_options]` key (e.g. `addopt` instead of `addopts`) is
+silently ignored and the intended option never takes effect.
+
+---
+
+## Complementary guard: `filterwarnings` for unknown markers
+
+As an alternative or complementary approach, a repo may enable
+`filterwarnings = ["error::pytest.PytestUnknownMarkWarning"]` to turn
+unknown-marker warnings into errors.  This is redundant once
+`--strict-markers` is enabled (the strict-marker flag already errors on
+unregistered markers during collection), but it is acceptable as a
+belt-and-suspenders guard.
 
 ## Full example
 
@@ -146,6 +169,10 @@ filterwarnings = [
     "error",
     # Third-party deprecation warnings that the project cannot fix:
     # "ignore::DeprecationWarning:some_library.*:",
+]
+markers = [
+    "integration: marks tests that need external services (deselect with '-m \"not integration\"')",
+    "slow: marks tests as slow (deselect with '-m \"not slow\"')",
 ]
 ```
 

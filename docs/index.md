@@ -83,8 +83,9 @@ everywhere.
 - **[MkDocs build integrity](mkdocs-build.md)** — strict mode build gating
   and link-validation configuration for every MkDocs site.
 - **[Module taxonomy scope](module-taxonomy-scope.md)** — what belongs in
-  `docs/modules.yaml`: product code, not the repo's own build and lint
-  scaffolding.
+  `docs/modules.yaml` and the pre-commit hook that runs `check-registration`
+  locally so module-ownership drift is caught at commit time instead of one
+  CI push later.
 - **[Docs site deployment](docs-site-deployment.md)** — the GitHub Pages
   contract for repos that publish: caller permissions, Pages source, and
   concurrency ownership. A mismatch fails at startup with no logs at all.

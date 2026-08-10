@@ -129,3 +129,63 @@ reports a schema error rather than a finding. Validate structure separately:
 ```bash
 robotsix-modules validate docs/modules.yaml
 ```
+
+## Pre-commit hook: local-dev / CI parity
+
+> **Scope: every repository that gates CI on `robotsix-modules
+> check-registration`.** A repo that only runs `validate` in CI is not
+> required to add `check-registration` locally, but that is a gap in its own
+> right — `validate` checks the schema, not the file coverage.
+
+**Rule:** Any repo whose CI runs `robotsix-modules check-registration
+<manifest> --root .` must also run that same command in a local pre-commit
+hook. The hook must trigger not only when the manifest itself changes but
+also when any path that the registry claims (typically `src/`, `tests/`,
+`scripts/`, `docs/`) is added or removed, so adding a new module or test
+file without updating the registry is flagged at commit time instead of one
+CI push later.
+
+The hook must run **both** subcommands — `validate` (schema) and
+`check-registration` (coverage) — in a single local hook entry so the two
+checks stay versioned and triggered together:
+
+```yaml
+  - repo: local
+    hooks:
+      - id: robotsix-modules
+        name: robotsix-modules
+        entry: robotsix-modules validate docs/<pkg>/modules.yaml && robotsix-modules check-registration docs/<pkg>/modules.yaml --root .
+        language: system
+        files: ^(docs/<pkg>/modules\.yaml|src/|tests/|scripts/|docs/)
+        pass_filenames: false
+```
+
+- **`language: system`** — runs the installed `robotsix-modules` binary
+  directly; no isolated virtualenv. The tool is already installed as a dev
+  dependency (it is the same tool that CI runs).
+- **`pass_filenames: false`** — the hook does not operate on individual
+  staged files; it always scans the whole tree.
+- **`files`** — the regex covers the manifest itself **and** every owned
+  directory. A file added to `src/` or `tests/` without updating the
+  manifest triggers the hook; the `check-registration` subcommand then
+  reports the unclassified file. Repos with additional owned directories
+  (e.g. a `templates/` that is genuinely product code, not scaffolding)
+  add them to the regex.
+
+**Rationale:** The CI lint-tool-pinning rule ([ci-lint-pinning.md](ci-lint-pinning.md))
+already requires CI to run the same version-pinned tools as pre-commit —
+this rule extends the same principle to the module-registration gate: if CI
+rejects ownership drift, the developer's local commit should too. A repo
+that only runs `check-registration` in CI (as `robotsix-config` did before
+this standard existed) silently accepts at commit time what CI later
+rejects, turning a fast local fix into a round-trip: push, wait for CI,
+discover the failure, amend, push again.
+
+> **Failure mode prevented.** A developer adds a new module file under
+> `src/` or `tests/`, commits, and pushes. CI fails with an
+> `unclassified_file` finding because the file was never registered in
+> `docs/modules.yaml`. The developer has already moved on; the failure
+> arrives as a CI notification, not a local pre-commit block — a full
+> round-trip that could have been a sub-second local failure. Over time
+> developers learn to ignore the CI registration gate because it fires
+> too late, and the taxonomy drifts.

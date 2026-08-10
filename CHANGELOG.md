@@ -1,5 +1,17 @@
 <!-- markdownlint-disable MD013 MD025 MD024 -->
 <!-- towncrier release notes start -->
+## [0.6.0](https://github.com/damien-robotsix/robotsix-standards/compare/v0.5.3...v0.6.0) (2026-08-10)
+
+
+### Features
+
+* Standardize: pre-commit registration hooks mirror CI's validate + check-registration for robotsix-modules ownership registries (20260806T182929Z-standardize-pre-commit-registration-hook-8002) ([#254](https://github.com/damien-robotsix/robotsix-standards/issues/254)) ([43f349b](https://github.com/damien-robotsix/robotsix-standards/commit/43f349b7c596edac5ddfbada4e5664826a445bbb))
+
+
+### Documentation
+
+* Standardize: enable pytest `--strict-markers` across fleet Python repos (20260806T192420Z-standardize-enable-pytest-strict-markers-63dc) ([#256](https://github.com/damien-robotsix/robotsix-standards/issues/256)) ([d69bca4](https://github.com/damien-robotsix/robotsix-standards/commit/d69bca4e1be41c602c6241943e62d4dfc01a3d99))
+
 ## [0.5.3](https://github.com/damien-robotsix/robotsix-standards/compare/v0.5.2...v0.5.3) (2026-08-09)
 
 

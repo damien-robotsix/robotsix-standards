@@ -2877,7 +2877,8 @@ gate set:</p>
   (complemented by TruffleHog for PR-diff and full-repo scans in the shared
   security workflow), a dependency CVE audit (<code>uv audit</code> in the CI gate, plus <code>pip-audit</code> in the security
   workflow), <code>dependency-review</code> on PRs (<code>fail-on-severity:
-  moderate</code>), and a CycloneDX SBOM generated and uploaded as a workflow
+  high</code> — this is a <strong>floor</strong>; a repo may set something stricter such as
+  <code>moderate</code>. Strictness is per-repo headroom, laxity is not.), and a CycloneDX SBOM generated and uploaded as a workflow
   artifact.</li>
 <li><strong>Dependency lockfile integrity:</strong> <code>uv lock --check</code> validates that
   <code>uv.lock</code> is consistent with <code>pyproject.toml</code> constraints before

@@ -2840,9 +2840,9 @@ siblings routinely restart, so:</p>
   pydantic model (see the <a href="../config-standard/">config standard</a>), not an
   environment variable.</li>
 </ul>
-<p>Nothing more is standardized on purpose — no structured-JSON mandate, no
-metrics/collector requirement. Either gets added deliberately when something
-in the fleet needs it.</p>
+<p>Structured JSON logging is mandated by the <a href="../logging/">logging standard</a>.
+No metrics/collector requirement is standardized — that gets added
+deliberately when something in the fleet needs it.</p>
 <h2 id="error-handling">Error handling<a class="headerlink" href="#error-handling" title="Permanent link">&para;</a></h2>
 <p>Every deployable component serves HTTP endpoints, and error responses must
 never leak internals — stack traces, hostnames, file paths, database error

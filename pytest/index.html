@@ -937,10 +937,21 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#recommended-tier-strict-markers-and-config" class="md-nav__link">
+  <a href="#additional-strictness-strict-config" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Recommended tier: strict markers and config
+        Additional strictness: --strict-config
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#complementary-guard-filterwarnings-for-unknown-markers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Complementary guard: filterwarnings for unknown markers
       
     </span>
   </a>
@@ -2436,10 +2447,21 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#recommended-tier-strict-markers-and-config" class="md-nav__link">
+  <a href="#additional-strictness-strict-config" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Recommended tier: strict markers and config
+        Additional strictness: --strict-config
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#complementary-guard-filterwarnings-for-unknown-markers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Complementary guard: filterwarnings for unknown markers
       
     </span>
   </a>
@@ -2574,20 +2596,35 @@ Starlette additionally enable <code>--strict-markers</code> and <code>--strict-c
 Codifying the convention here means every fleet repo inherits the same
 discipline rather than each re-deriving it.</p>
 <h2 id="baseline-settings-mandatory">Baseline settings (mandatory)<a class="headerlink" href="#baseline-settings-mandatory" title="Permanent link">&para;</a></h2>
-<p>Every Python repository <strong>must</strong> include these two settings in
+<p>Every Python repository <strong>must</strong> include these settings in
 <code>[tool.pytest.ini_options]</code>:</p>
 <div class="highlight"><pre><span></span><code><span class="k">[tool.pytest.ini_options]</span>
+<span class="n">addopts</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;--strict-markers&quot;</span><span class="p">]</span>
 <span class="n">filterwarnings</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;error&quot;</span><span class="p">]</span>
 <span class="n">xfail_strict</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">true</span>
+<span class="n">markers</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span>
+<span class="w">    </span><span class="c1"># Register every custom @pytest.mark.&lt;name&gt; used in the test suite.</span>
+<span class="w">    </span><span class="c1"># A marker that appears in a @pytest.mark decorator but is not listed</span>
+<span class="w">    </span><span class="c1"># here causes a hard collection error (because of --strict-markers).</span>
+<span class="p">]</span>
 </code></pre></div>
 <ul>
+<li><strong><code>addopts = ["--strict-markers"]</code></strong> — any <code>@pytest.mark.xxx</code> decorator
+  whose marker name is not registered in <code>markers</code> (or not a pytest builtin)
+  raises a hard collection error instead of silently adding an ad-hoc marker.</li>
 <li><strong><code>filterwarnings = ["error"]</code></strong> — turn every warning into an exception.
   This is the universal baseline across all four surveyed projects.</li>
 <li><strong><code>xfail_strict = true</code></strong> — an <code>@pytest.mark.xfail</code> test that unexpectedly
   passes is reported as a failure (<code>XPASS(strict)</code>), flagging the stale
   marker so it can be removed.</li>
 </ul>
-<p><strong>Failure mode:</strong> without <code>filterwarnings = ["error"]</code>, dependency
+<p><strong>Failure mode:</strong> without <code>--strict-markers</code>, a typo like
+<code>@pytest.mark.sloww</code> (intended <code>slow</code>) becomes a silently-registered ad-hoc
+marker that no <code>-m</code> filter ever selects — the test is never run in the
+targeted suite, and the mistake is invisible until a human notices the test
+is missing from CI results.  The same applies to a CI selection
+<code>-m "not docker"</code> against an unregistered <code>docker</code> marker, which silently
+filters <em>nothing</em>.  Without <code>filterwarnings = ["error"]</code>, dependency
 deprecation warnings are invisible in CI output — the upgrade that removes
 the deprecated API lands as a surprise breakage. Without <code>xfail_strict</code>,
 fixed bugs stay marked as expected failures forever, and the test suite
@@ -2640,24 +2677,28 @@ an attempted nested event loop surfaces as a hard test failure
 <p><strong>Failure mode:</strong> a sync test driver called from an async test function
 crashes inside CI only after the warning-as-error baseline is enabled,
 blocking unrelated work while the team diagnoses the nested-loop failure.</p>
-<h2 id="recommended-tier-strict-markers-and-config">Recommended tier: strict markers and config<a class="headerlink" href="#recommended-tier-strict-markers-and-config" title="Permanent link">&para;</a></h2>
-<p>Repos <strong>should</strong> additionally enable marker and config strictness:</p>
+<h2 id="additional-strictness-strict-config">Additional strictness: <code>--strict-config</code><a class="headerlink" href="#additional-strictness-strict-config" title="Permanent link">&para;</a></h2>
+<p>Repos <strong>should</strong> additionally enable config strictness by adding
+<code>"--strict-config"</code> to <code>addopts</code>:</p>
 <div class="highlight"><pre><span></span><code><span class="n">addopts</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;--strict-markers&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;--strict-config&quot;</span><span class="p">]</span>
 </code></pre></div>
 <ul>
-<li><strong><code>--strict-markers</code></strong> — any <code>@pytest.mark.xxx</code> decorator whose marker
-  name is not registered (via <code>markers</code> in <code>pyproject.toml</code> or a
-  <code>pytest_configure</code> hook) raises an error instead of silently adding an
-  ad-hoc marker.</li>
 <li><strong><code>--strict-config</code></strong> — any unrecognised <code>[tool.pytest.ini_options]</code> key
   raises an error, catching typos in config.</li>
 </ul>
-<p>FastAPI and Starlette both ship these settings.</p>
-<p><strong>Failure mode:</strong> without <code>--strict-markers</code>, a typo like
-<code>@pytest.mark.smoke</code> (intended <code>smoke</code>) becomes a silently-registered ad-hoc
-marker that no <code>-m</code> filter ever selects — the test is never run in the
-targeted suite, and the mistake is invisible until a human notices the test
-is missing from CI results.</p>
+<p>(<code>--strict-markers</code> is already required by the baseline above.)</p>
+<p>FastAPI and Starlette both ship this setting alongside <code>--strict-markers</code>.</p>
+<p><strong>Failure mode:</strong> without <code>--strict-config</code>, a typo in a
+<code>[tool.pytest.ini_options]</code> key (e.g. <code>addopt</code> instead of <code>addopts</code>) is
+silently ignored and the intended option never takes effect.</p>
+<hr />
+<h2 id="complementary-guard-filterwarnings-for-unknown-markers">Complementary guard: <code>filterwarnings</code> for unknown markers<a class="headerlink" href="#complementary-guard-filterwarnings-for-unknown-markers" title="Permanent link">&para;</a></h2>
+<p>As an alternative or complementary approach, a repo may enable
+<code>filterwarnings = ["error::pytest.PytestUnknownMarkWarning"]</code> to turn
+unknown-marker warnings into errors.  This is redundant once
+<code>--strict-markers</code> is enabled (the strict-marker flag already errors on
+unregistered markers during collection), but it is acceptable as a
+belt-and-suspenders guard.</p>
 <h2 id="full-example">Full example<a class="headerlink" href="#full-example" title="Permanent link">&para;</a></h2>
 <div class="highlight"><pre><span></span><code><span class="k">[tool.pytest.ini_options]</span>
 <span class="n">addopts</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;--strict-markers&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;--strict-config&quot;</span><span class="p">]</span>
@@ -2666,6 +2707,10 @@ is missing from CI results.</p>
 <span class="w">    </span><span class="s2">&quot;error&quot;</span><span class="p">,</span>
 <span class="w">    </span><span class="c1"># Third-party deprecation warnings that the project cannot fix:</span>
 <span class="w">    </span><span class="c1"># &quot;ignore::DeprecationWarning:some_library.*:&quot;,</span>
+<span class="p">]</span>
+<span class="n">markers</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span>
+<span class="w">    </span><span class="s2">&quot;integration: marks tests that need external services (deselect with &#39;-m </span><span class="se">\&quot;</span><span class="s2">not integration</span><span class="se">\&quot;</span><span class="s2">&#39;)&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="s2">&quot;slow: marks tests as slow (deselect with &#39;-m </span><span class="se">\&quot;</span><span class="s2">not slow</span><span class="se">\&quot;</span><span class="s2">&#39;)&quot;</span><span class="p">,</span>
 <span class="p">]</span>
 </code></pre></div>
 <h2 id="optional-test-dependencies-importorskip-guard">Optional test dependencies — <code>importorskip</code> guard<a class="headerlink" href="#optional-test-dependencies-importorskip-guard" title="Permanent link">&para;</a></h2>

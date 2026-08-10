@@ -33,9 +33,9 @@ jobs:
           python-version: "3.14"
       - name: Build docs (strict)
         run: uv run --group docs mkdocs build --strict
-      - name: Lint markdown
-        run: npx --yes markdownlint-cli2 'docs/**/*.md' README.md
+      - name: Run pre-commit hooks
+        uses: tox-dev/action-pre-commit-uv@e09b8958484dfe71f4ac3bc7afb230ba506402ec  # v1
+        with:
+          extra_args: --all-files
       - name: Check TOC synchronization
         run: uv run --group docs python scripts/check-toc-sync.py
-      - name: Spell check
-        run: uv run --with codespell codespell

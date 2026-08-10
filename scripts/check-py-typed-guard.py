@@ -48,9 +48,26 @@ def _has_typed_classifier(pyproject: Path) -> bool:
     return bool(_TYPED_CLASSIFIER_RE.search(text))
 
 
+# Directories that should never be scanned for a project's own py.typed marker.
+# These contain third-party packages, build artifacts, or tool caches whose
+# py.typed files belong to other packages — not the repository itself.
+_EXCLUDE_DIRS = {".venv", "venv", ".tox", "__pycache__", "node_modules",
+                 ".git", "site-packages", "dist", "build", "site", ".mypy_cache",
+                 ".pytest_cache", ".ruff_cache"}
+
+
 def _has_py_typed_marker(root: Path) -> bool:
-    """Return True if any py.typed file exists in the repository."""
-    return any(root.rglob("py.typed"))
+    """Return True if any py.typed file exists in the repository source tree.
+
+    Excludes virtualenv, build, and cache directories whose py.typed
+    files belong to third-party packages rather than the repo itself.
+    """
+    for candidate in root.rglob("py.typed"):
+        parts = set(candidate.relative_to(root).parts)
+        if parts & _EXCLUDE_DIRS:
+            continue
+        return True
+    return False
 
 
 # ---------------------------------------------------------------------------

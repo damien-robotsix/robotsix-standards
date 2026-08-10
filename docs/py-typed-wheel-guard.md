@@ -115,9 +115,45 @@ intended package. An explicit name fails loudly when the package renames.
 > always fails or always passes depending on the match logic — it provides no
 > signal either way.
 
-## Enforcement (future)
+## Enforcement
 
-A standards CI lint that scans changed workflow files and `pyproject.toml` for
-type-aware packages missing the wheel-content assertion, and fails the PR if a
-typed package has neither the installed type-check nor the wheel-content guard.
-This is tracked as a follow-up ticket.
+The enforcement gate lives at `scripts/check-py-typed-guard.py` in the
+standards repo.  Every type-aware (PEP 561) Python repository must invoke
+it in CI — it exits non-zero when the repository declares itself typed
+but neither guard rule is present in its workflow files.
+
+### How to add the gate to your repository
+
+Copy the script into your repository's `scripts/` directory (keep it in
+sync with the upstream standards repo) and add a CI step:
+
+```yaml
+- name: Check py.typed wheel guard
+  run: uv run python scripts/check-py-typed-guard.py
+```
+
+If the check fails the output tells you which guard is missing and how
+to add it, referencing this standard page.
+
+### What the script checks
+
+1. **Is the package type-aware?**  It reads `pyproject.toml` for the
+   `Typing :: Typed` trove classifier, and scans the source tree for
+   a `py.typed` marker file (PEP 561).  If neither is present the
+   check passes — no guard is required for untyped packages.
+
+2. **Does CI include at least one guard?**  It scans every
+   `.github/workflows/*.yml` file for either:
+   - an **installed type-check** (build wheel → install in clean venv →
+     run mypy/pyright against the installed package), or
+   - a **wheel-content assertion** (zipfile inspection explicitly
+     checking for `py.typed` inside the built wheel).
+
+   If neither pattern is found the check fails with a diagnostic
+   message that links back to this page.
+
+> **Failure mode prevented.** A typed package whose CI workflow drifts
+> away from the guard (e.g. a refactor that removes the installed-check
+> step without replacing it) silently loses downstream type-safety. The
+> enforcement gate catches the regression at PR time, before the wheel
+> is published.

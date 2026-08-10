@@ -16,4 +16,4 @@ exclude = ["config*", "styles*"]
 
 [tool.codespell]
 skip = "*.lock,*.json,*.svg,*.png,.git,*.secrets.baseline,site,styles"
-ignore-words-list = "bu,ro,te,ser,fo,tha,thru,coo,ans,ist,nd"
+ignore-words-list = "addopt,bu,ro,te,ser,fo,tha,thru,coo,ans,ist,nd"

@@ -1,0 +1,5 @@
+whitelist
+blacklist
+master/slave
+sanity.check
+crazy

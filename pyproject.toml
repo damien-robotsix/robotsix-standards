@@ -11,9 +11,6 @@ authors = [{ name = "Damien SIX", email = "damien.robotsix@gmail.com" }]
 [dependency-groups]
 docs = ["mkdocs-htmlproofer-plugin", "mkdocs-material"]
 
-[tool.setuptools.packages.find]
-exclude = ["config*", "styles*"]
-
 [tool.codespell]
 skip = "*.lock,*.json,*.svg,*.png,.git,*.secrets.baseline,site,styles"
 ignore-words-list = "addopt,bu,ro,te,ser,fo,tha,thru,coo,ans,ist,nd"

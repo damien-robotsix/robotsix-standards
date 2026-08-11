@@ -24,7 +24,7 @@ README_MD = REPO_ROOT / "README.md"
 INDEX_MD = REPO_ROOT / "docs" / "index.md"
 
 # Top-level nav keys whose sub-pages must appear in README.md and docs/index.md.
-SECTIONS_TO_CHECK = ["Every repo", "Deployable components"]
+SECTIONS_TO_CHECK = ["Every repo", "Deployable components", "Deployment system", "Meta"]
 
 # Map nav section names to the marker strings that introduce the corresponding
 # sections in README.md and docs/index.md.  Used to scope reverse-direction
@@ -38,6 +38,14 @@ _SECTION_MARKERS: dict[str, dict[str, str]] = {
         "readme": "**Deployable components**",
         "index": "### Deployable components",
     },
+    "Deployment system": {
+        "readme": "**The deployment system**",
+        "index": "### The deployment system",
+    },
+    "Meta": {
+        "readme": "**Meta**",
+        "index": "### Meta",
+    },
 }
 
 # Ordered lists of section-introducing markers in each file, so we can bound
@@ -46,11 +54,13 @@ _README_MARKERS = [
     "**Every repository**",
     "**Deployable components**",
     "**The deployment system**",
+    "**Meta**",
 ]
 _INDEX_MARKERS = [
     "### Every repository",
     "### Deployable components",
     "### The deployment system",
+    "### Meta",
 ]
 
 

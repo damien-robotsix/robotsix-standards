@@ -40,7 +40,7 @@ repos:
       - id: codespell
         args: ["--config", "pyproject.toml"]
   - repo: https://github.com/errata-ai/vale
-    rev: v3.17.0
+    rev: v3.17.1
     hooks:
       - id: vale
         name: vale sync

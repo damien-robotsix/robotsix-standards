@@ -76,10 +76,10 @@ nav:
       - GitHub Actions security: github-actions-security.md
       - Stale bot must exempt pull requests: stale-bot-must-exempt-pull-requests.md
       - Dependabot auto-merge: dependabot-auto-merge.md
+      - CI dependency management: ci-dependency-standard.md
       - Changelog & releases (superseded): changelog-driven-releases.md
       - Release-please release automation: release-please.md
       - CI lint tool pinning: ci-lint-pinning.md
-      - CI dependency management: ci-dependency-standard.md
       - Distribution & Packaging: distribution-packaging.md
       - Python CI workflow: python-ci-workflow.md
       - Python practices: python.md

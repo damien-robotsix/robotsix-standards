@@ -58,9 +58,8 @@ a bottleneck (2026-07 standards review).
 
 **Rule:** When a new standards page is added, it must be registered in the
 `mkdocs.yml` nav in the **same** change that adds the page — a `README.md` /
-`docs/index.md` TOC entry alone leaves the page unbuilt by MkDocs because the
-TOC-sync gate is one-directional.
-**Rationale:** a PR that adds a page plus its README/index TOC entries can
-pass CI while the page is invisible on the published site because it never
-reached the nav; several pages have needed dedicated follow-up nav tickets
-(config-ownership, prose-linting, mypy, fastapi-pydantic).
+`docs/index.md` TOC entry alone leaves the page unbuilt by MkDocs.
+**Rationale:** the bidirectional `check-toc-sync.py` gate catches missing
+pages in either direction, but ordering drift between the three lists is
+still invisible to CI; registering the nav entry in the same PR keeps the
+lists aligned from the start.

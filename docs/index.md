@@ -40,10 +40,14 @@ everywhere.
   every `stale.yml` must disable pull-request staling and closing with
   `days-before-pr-stale: -1` and `days-before-pr-close: -1` — keep issue
   hygiene, never auto-close PRs.
-- **[Async SQLAlchemy test fixtures](async-sqlalchemy-test-fixtures.md)** — three-layer database
-  test fixture pattern (session-scoped engine, function-scoped connection with
-  rollback, function-scoped session with savepoints) for clean test isolation
-  without dropping tables.
+- **[Dependabot auto-merge](dependabot-auto-merge.md)** — Dependabot auto-merge
+  must be CI-gated (`mergeable_state == "clean"`), restricted to minor/patch
+  updates, and must exclude docker and pre-commit ecosystems from the
+  auto-merge group.
+- **[CI dependency management](ci-dependency-standard.md)** — fleet-wide approach
+  to automated Python/uv dependency updates via Renovate, lockfile integrity
+  checks (`uv lock --check`), and scheduled refresh for git-pinned
+  dependencies.
 - **[Changelog & releases](changelog-driven-releases.md)** — towncrier fragment-driven
   releases, CI-enforced changelog fragments, and the shared auto-release
   workflow — no hand-edited changelog. *(Superseded by
@@ -55,44 +59,8 @@ everywhere.
 - **[CI lint tool pinning](ci-lint-pinning.md)** — CI lint jobs must run the same
   version-pinned tools as `.pre-commit-config.yaml`, not floating/latest
   sources — one version source, no skew.
-- **[CI dependency management](ci-dependency-standard.md)** — fleet-wide approach
-  to automated Python/uv dependency updates via Renovate, lockfile integrity
-  checks (`uv lock --check`), and scheduled refresh for git-pinned
-  dependencies.
-- **[Dependabot auto-merge](dependabot-auto-merge.md)** — Dependabot auto-merge
-  must be CI-gated (`mergeable_state == "clean"`), restricted to minor/patch
-  updates, and must exclude docker and pre-commit ecosystems from the
-  auto-merge group.
 - **[Distribution & Packaging](distribution-packaging.md)** — git-based consumption of
   first-party libraries — no package index, no registry publish step.
-- **[Docstring convention](docstrings.md)** — Python docstring style and coverage
-  rules for all public modules, classes, and functions.
-- **[HTTP client persistence](http-client-persistence.md)** — one persistent
-  `httpx.Client` (or `requests.Session`) with an explicit timeout, reused for
-  all outbound calls — no per-call module-level convenience helpers.
-- **[Library internal logging](library-logging.md)** — module-level
-  `logging.getLogger(__name__)`, a single `NullHandler` in `__init__.py`,
-  lazy `%`-style formatting, and DEBUG-for-routine events — library logging
-  that never prints unless the application opts in.
-- **[Logging](logging.md)** — structured JSON logging via structlog,
-  stdout-only output, correlation-id middleware, and level conventions
-  for every deployable service.
-- **[Hypothesis testing](hypothesis.md)** — property-based testing profiles,
-  shared strategies, and CI integration for repos that use Hypothesis.
-- **[Markdown linting](markdown-linting.md)** — markdownlint-cli2 and codespell
-  pre-commit hooks for every repo that publishes MkDocs documentation.
-- **[Prose linting](prose-linting.md)** — Vale prose linter for style,
-  readability, and fleet-specific vocabulary consistency — integrated
-  through the existing pre-commit pipeline.
-- **[MkDocs build integrity](mkdocs-build.md)** — strict mode build gating
-  and link-validation configuration for every MkDocs site.
-- **[Module taxonomy scope](module-taxonomy-scope.md)** — what belongs in
-  `docs/modules.yaml` and the pre-commit hook that runs `check-registration`
-  locally so module-ownership drift is caught at commit time instead of one
-  CI push later.
-- **[Docs site deployment](docs-site-deployment.md)** — the GitHub Pages
-  contract for repos that publish: caller permissions, Pages source, and
-  concurrency ownership. A mismatch fails at startup with no logs at all.
 - **[Python CI workflow](python-ci-workflow.md)** — required `ci.yml` shape:
   lint → type-check → test+coverage, run on every push and PR — the enforcement
   mechanism for the quality gates declared in `pyproject.toml`.
@@ -128,11 +96,43 @@ everywhere.
 - **[py.typed wheel guard](py-typed-wheel-guard.md)** — automated verification
   that the `py.typed` marker ships in the built wheel, so a packaging
   regression cannot silently strip type information from downstream consumers.
+- **[Docstring convention](docstrings.md)** — Python docstring style and coverage
+  rules for all public modules, classes, and functions.
+- **[HTTP client persistence](http-client-persistence.md)** — one persistent
+  `httpx.Client` (or `requests.Session`) with an explicit timeout, reused for
+  all outbound calls — no per-call module-level convenience helpers.
+- **[Library internal logging](library-logging.md)** — module-level
+  `logging.getLogger(__name__)`, a single `NullHandler` in `__init__.py`,
+  lazy `%`-style formatting, and DEBUG-for-routine events — library logging
+  that never prints unless the application opts in.
+- **[Logging](logging.md)** — structured JSON logging via structlog,
+  stdout-only output, correlation-id middleware, and level conventions
+  for every deployable service.
+- **[Hypothesis testing](hypothesis.md)** — property-based testing profiles,
+  shared strategies, and CI integration for repos that use Hypothesis.
+- **[Markdown linting](markdown-linting.md)** — markdownlint-cli2 and codespell
+  pre-commit hooks for every repo that publishes MkDocs documentation.
+- **[Prose linting](prose-linting.md)** — Vale prose linter for style,
+  readability, and fleet-specific vocabulary consistency — integrated
+  through the existing pre-commit pipeline.
+- **[MkDocs build integrity](mkdocs-build.md)** — strict mode build gating
+  and link-validation configuration for every MkDocs site.
+- **[Module taxonomy scope](module-taxonomy-scope.md)** — what belongs in
+  `docs/modules.yaml` and the pre-commit hook that runs `check-registration`
+  locally so module-ownership drift is caught at commit time instead of one
+  CI push later.
+- **[Docs site deployment](docs-site-deployment.md)** — the GitHub Pages
+  contract for repos that publish: caller permissions, Pages source, and
+  concurrency ownership. A mismatch fails at startup with no logs at all.
 - **[JavaScript practices](javascript.md)** — vanilla frontend JS as static
   assets, lockfile discipline, vitest coverage floor, eslint/stylelint.
 - **[PHP practices](php.md)** — native `php -l` syntax-check over all `.php`
   files as a blocking CI gate — no custom scanners, no parse errors in
   production.
+- **[Async SQLAlchemy test fixtures](async-sqlalchemy-test-fixtures.md)** — three-layer database
+  test fixture pattern (session-scoped engine, function-scoped connection with
+  rollback, function-scoped session with savepoints) for clean test isolation
+  without dropping tables.
 - **[ROS 2 practices](ros2.md)** — workspace-skeleton layout, vcs2l manifest,
   devcontainer, colcon/rosdep build, lint gates.
 - **[Pre-commit baseline](pre-commit-baseline.md)** — five zero-config

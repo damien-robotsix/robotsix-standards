@@ -207,6 +207,14 @@ cannot be deployed through itself:
   (baseline, docker build & release, entrypoint contract) and which it is
   exempt from (deploy contract, config standard), and why.
 
+### Meta (this repo's own operational docs)
+
+One page documents the agents that maintain the standards themselves:
+
+- **[Mill agents](mill-agents.md)** — bespoke periodic agents that keep the
+  standards themselves healthy — security-posture audits, TOC-sync checks,
+  and similar health passes.
+
 ## Which am I?
 
 - **Library** — imported by other packages, no runnable service of its own.

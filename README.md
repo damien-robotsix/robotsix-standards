@@ -99,6 +99,12 @@ the default.
 |---|---|
 | [Deployment system](docs/deployment-system.md) | The bootstrap tier: which standards central-deploy follows and which it is exempt from, and why. |
 
+**Meta** (this repo's own operational docs):
+
+| Doc | What it covers |
+|---|---|
+| [Mill agents](docs/mill-agents.md) | Bespoke periodic agents that keep the standards themselves healthy — security-posture audits, TOC-sync checks, and similar health passes. |
+
 ## The shared library
 
 The config standard is implemented by

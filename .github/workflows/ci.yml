@@ -20,6 +20,7 @@ jobs:
     # python-docs.yml reusable causes 'Deployment failed, try again later'
     # from the Pages API for this repo).
     runs-on: ubuntu-latest
+    timeout-minutes: 10  # docs build; well under 15-minute default
     permissions:
       contents: read
     steps:

@@ -113,6 +113,22 @@ def _extract_index_pages(content: str, marker: str, all_markers: list[str]) -> l
     return re.findall(r"\]\(([^)]+\.md)\)", section)
 
 
+def _all_nav_pages(nav: list[object]) -> set[str]:
+    """Return the set of all page filenames referenced anywhere in the nav."""
+    pages: set[str] = set()
+    for item in nav:
+        if not isinstance(item, dict):
+            continue
+        for _key, value in item.items():
+            if isinstance(value, list):
+                for sub in value:
+                    if isinstance(sub, dict):
+                        pages.update(sub.values())
+            elif isinstance(value, str):
+                pages.add(value)
+    return pages
+
+
 def main() -> int:
     with MKDOCS_YML.open() as fh:
         config = yaml.safe_load(fh)
@@ -141,24 +157,27 @@ def main() -> int:
             all_missing.append((section, "docs/index.md", page))
 
     # Reverse direction: every page linked from README.md / docs/index.md
-    # must appear in the corresponding mkdocs.yml nav section.
+    # must appear somewhere in the mkdocs.yml nav (any section).
     readme_content = README_MD.read_text()
     index_content = INDEX_MD.read_text()
+
+    all_nav = _all_nav_pages(nav)
 
     all_orphaned: list[tuple[str, str, str]] = []
 
     for section in SECTIONS_TO_CHECK:
-        nav_pages = set(extract_pages(nav, section))
-        if not nav_pages:
+        # Only run reverse extraction for sections that actually exist
+        # in the nav; skip sections with no pages so we don't report
+        # false orphans for pages extracted from stale marker regions.
+        markers = _SECTION_MARKERS.get(section)
+        if not markers:
             continue
-
-        markers = _SECTION_MARKERS[section]
 
         readme_pages = _extract_readme_pages(
             readme_content, markers["readme"], _README_MARKERS
         )
         for page in readme_pages:
-            if page not in nav_pages:
+            if page not in all_nav:
                 print(f"  ORPHANED in README.md (not in mkdocs.yml nav): {page}")
                 all_orphaned.append((section, "README.md → nav", page))
 
@@ -166,7 +185,7 @@ def main() -> int:
             index_content, markers["index"], _INDEX_MARKERS
         )
         for page in index_pages:
-            if page not in nav_pages:
+            if page not in all_nav:
                 print(f"  ORPHANED in docs/index.md (not in mkdocs.yml nav): {page}")
                 all_orphaned.append((section, "docs/index.md → nav", page))
 

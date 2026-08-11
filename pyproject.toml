@@ -9,7 +9,43 @@ license-files = ["LICENSE"]
 authors = [{ name = "Damien SIX", email = "damien.robotsix@gmail.com" }]
 
 [dependency-groups]
-docs = ["mkdocs-htmlproofer-plugin", "mkdocs-material"]
+docs = ["mkdocs-htmlproofer-plugin", "mkdocs-material", "pre-commit"]
+
+[tool.towncrier]
+directory = "changelog.d"
+filename = "CHANGELOG.md"
+name = "robotsix-standards"
+start_string = "<!-- markdownlint-disable MD013 MD025 MD024 -->\n<!-- towncrier release notes start -->\n"
+# .gitkeep keeps changelog.d/ present after a release consumes every
+# fragment (git drops empty dirs; baseline-check requires the dir).
+ignore = [".gitkeep"]
+
+[[tool.towncrier.type]]
+directory = "breaking"
+name = "Breaking"
+showcontent = true
+
+[[tool.towncrier.type]]
+directory = "feature"
+name = "Added"
+showcontent = true
+
+[[tool.towncrier.type]]
+directory = "bugfix"
+name = "Fixed"
+showcontent = true
+
+[[tool.towncrier.type]]
+directory = "misc"
+name = "Changed"
+showcontent = true
+
+# This repo is documentation only. The shared configuration library that
+# implements the config standard lives in `robotsix-config`, not here.
+
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
 
 [tool.setuptools.packages.find]
 exclude = ["config*", "styles*"]

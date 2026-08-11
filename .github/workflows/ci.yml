@@ -33,9 +33,29 @@ jobs:
           python-version: "3.14"
       - name: Build docs (strict)
         run: uv run --group docs mkdocs build --strict
-      - name: Lint markdown
-        run: npx --yes markdownlint-cli2 'docs/**/*.md' README.md
+      - name: Configure git for pre-commit (use token for GitHub)
+        env:
+          TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: git config --global url."https://x-access-token:${TOKEN}@github.com/".insteadOf "https://github.com/"
+      - name: Lint markdown (pinned pre-commit hook)
+        run: uv run --group docs pre-commit run markdownlint-cli2 --all-files
       - name: Check TOC synchronization
         run: uv run --group docs python scripts/check-toc-sync.py
-      - name: Spell check
-        run: uv run --with codespell codespell
+      - name: Check for duplicate changelog fragments
+        run: python3 scripts/check-changelog-duplicates.py
+      - name: Spell check (pinned pre-commit hook)
+        run: uv run --group docs pre-commit run codespell --all-files
+      - name: Check changelog fragments for truncation
+        run: |
+          if grep -Pn '…\s*$' changelog.d/*.md | grep -v 'Field(description=…)' | grep -q .; then
+            echo "::error::Truncated changelog fragment(s) found (lines ending in '…')"
+            grep -Pn '…\s*$' changelog.d/*.md | grep -v 'Field(description=…)'
+            exit 1
+          fi
+
+  changelog:
+    # skip-changelog label handling lives inside the shared workflow.
+    if: github.event_name == 'pull_request'
+    permissions:
+      contents: read
+    uses: damien-robotsix/robotsix-github-workflows/.github/workflows/changelog-check.yml@089b2aa0ae1ee81de5069864140a49b841df44d7 # main

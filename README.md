@@ -63,6 +63,7 @@ the default.
 | [MkDocs build integrity](docs/mkdocs-build.md) | Strict mode build gating and link-validation configuration for every MkDocs site. |
 | [Module taxonomy scope](docs/module-taxonomy-scope.md) | What belongs in `docs/modules.yaml`, and the pre-commit hook that keeps the registry in sync with the tree — product code, not the repo's own build and lint scaffolding. |
 | [Docs site deployment](docs/docs-site-deployment.md) | GitHub Pages contract for repos that publish: caller permissions, Pages source, concurrency ownership. A mismatch fails at startup with no logs. |
+| [Contributor guide in docs nav](docs/contributing-in-nav.md) | Every MkDocs site must surface the repo's contributor guide in the docs nav so it is discoverable to readers of the published site. |
 | [JavaScript practices](docs/javascript.md) | Vanilla frontend JS as static assets, lockfile discipline, vitest coverage floor, eslint/stylelint. |
 | [PHP practices](docs/php.md) | Native `php -l` syntax-check over all `.php` files as a blocking CI gate — no custom scanners, no parse errors in production. |
 | [Async SQLAlchemy test fixtures](docs/async-sqlalchemy-test-fixtures.md) | Three-layer database test fixture pattern — session-scoped engine, function-scoped connection with rollback, function-scoped session with savepoints — for clean isolation without dropping tables. |

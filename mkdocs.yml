@@ -101,6 +101,7 @@ nav:
       - MkDocs build integrity: mkdocs-build.md
       - Module taxonomy scope: module-taxonomy-scope.md
       - Docs site deployment: docs-site-deployment.md
+      - Contributor guide in docs nav: contributing-in-nav.md
       - JavaScript practices: javascript.md
       - PHP practices: php.md
       - Async SQLAlchemy test fixtures: async-sqlalchemy-test-fixtures.md

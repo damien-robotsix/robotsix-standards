@@ -10,13 +10,13 @@
       
       
       
-        <link rel="canonical" href="https://damien-robotsix.github.io/robotsix-standards/pytest/">
+        <link rel="canonical" href="https://damien-robotsix.github.io/robotsix-standards/contributing-in-nav/">
       
       
-        <link rel="prev" href="../python-makefile-convention/">
+        <link rel="prev" href="../docs-site-deployment/">
       
       
-        <link rel="next" href="../pytest-shared-state-builders/">
+        <link rel="next" href="../javascript/">
       
       
         
@@ -27,7 +27,7 @@
     
     
       
-        <title>Pytest practices - Robotsix Standards</title>
+        <title>Contributor guide in docs nav - Robotsix Standards</title>
       
     
     
@@ -78,7 +78,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#pytest-strictness-configuration" class="md-skip">
+        <a href="#contributor-guide-in-docs-nav" class="md-skip">
           Skip to content
         </a>
       
@@ -114,7 +114,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Pytest practices
+              Contributor guide in docs nav
             
           </span>
         </div>
@@ -841,37 +841,10 @@
                 
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Pytest practices
-  
-
-    
-  </span>
-  
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../pytest/" class="md-nav__link">
         
   
   
@@ -887,192 +860,6 @@
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#why-this-exists" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Why this exists
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#baseline-settings-mandatory" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Baseline settings (mandatory)
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#targeted-warning-ignores" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Targeted warning ignores
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Targeted warning ignores">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#adding-ignore-entries-safely" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Adding ignore entries safely
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#async-test-drivers-and-nested-event-loop-hazards" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Async test drivers and nested-event-loop hazards
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#additional-strictness-strict-config" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Additional strictness: --strict-config
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#complementary-guard-filterwarnings-for-unknown-markers" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Complementary guard: filterwarnings for unknown markers
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#full-example" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Full example
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#optional-test-dependencies-importorskip-guard" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Optional test dependencies — importorskip guard
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Optional test dependencies — importorskip guard">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#why-this-rule-exists" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Why this rule exists
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#rule" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Rule
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#adoption-by-the-ecosystem" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Adoption by the ecosystem
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#fleet-exemplar" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Fleet exemplar
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#cross-reference" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Cross-reference
-      
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -1502,10 +1289,37 @@
                 
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="../contributing-in-nav/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Contributor guide in docs nav
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   
@@ -1521,6 +1335,98 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#why-this-exists" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why this exists
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#rules" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Rules
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Rules">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-surface-the-contributor-guide-in-the-docs-nav" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Surface the contributor guide in the docs nav
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-single-source-of-truth" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Single source of truth
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-link-from-the-home-page" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Link from the home page
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#precedent" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Precedent
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -2509,33 +2415,22 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#baseline-settings-mandatory" class="md-nav__link">
+  <a href="#rules" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Baseline settings (mandatory)
+        Rules
       
     </span>
   </a>
   
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#targeted-warning-ignores" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Targeted warning ignores
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Targeted warning ignores">
+    <nav class="md-nav" aria-label="Rules">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#adding-ignore-entries-safely" class="md-nav__link">
+  <a href="#1-surface-the-contributor-guide-in-the-docs-nav" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Adding ignore entries safely
+        1. Surface the contributor guide in the docs nav
       
     </span>
   </a>
@@ -2543,10 +2438,21 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#async-test-drivers-and-nested-event-loop-hazards" class="md-nav__link">
+  <a href="#2-single-source-of-truth" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Async test drivers and nested-event-loop hazards
+        2. Single source of truth
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-link-from-the-home-page" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Link from the home page
       
     </span>
   </a>
@@ -2559,104 +2465,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#additional-strictness-strict-config" class="md-nav__link">
+  <a href="#precedent" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Additional strictness: --strict-config
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#complementary-guard-filterwarnings-for-unknown-markers" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Complementary guard: filterwarnings for unknown markers
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#full-example" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Full example
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#optional-test-dependencies-importorskip-guard" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Optional test dependencies — importorskip guard
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Optional test dependencies — importorskip guard">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#why-this-rule-exists" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Why this rule exists
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#rule" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Rule
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#adoption-by-the-ecosystem" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Adoption by the ecosystem
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#fleet-exemplar" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Fleet exemplar
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#cross-reference" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Cross-reference
+        Precedent
       
     </span>
   </a>
@@ -2683,209 +2495,84 @@
   
 
 
-<h1 id="pytest-strictness-configuration">Pytest strictness configuration<a class="headerlink" href="#pytest-strictness-configuration" title="Permanent link">&para;</a></h1>
+<h1 id="contributor-guide-in-docs-nav">Contributor guide in docs nav<a class="headerlink" href="#contributor-guide-in-docs-nav" title="Permanent link">&para;</a></h1>
 <blockquote>
-<p><strong>Scope: every Python repository.</strong> These settings apply fleet-wide so
-every test suite fails loudly on deprecation warnings, unregistered markers,
-and unexpectedly-passing xfails.</p>
+<p><strong>Scope: every repository that publishes an MkDocs documentation site and
+maintains a root <code>CONTRIBUTING.md</code>.</strong>
+Repos without MkDocs (content-only repos, ROS 2 workspaces, deployment-only
+repos) are exempt, as are repos without a contributor guide.</p>
 </blockquote>
 <h2 id="why-this-exists">Why this exists<a class="headerlink" href="#why-this-exists" title="Permanent link">&para;</a></h2>
-<p>Without strictness settings, pytest silently ignores several classes of
-problem that matter in CI:</p>
+<p>A root <code>CONTRIBUTING.md</code> is GitHub's standard for contributor-facing
+documentation — it renders on the repo's landing page and is linked from
+issue and PR templates. But when a repo also publishes an MkDocs documentation
+site, that same contributor guide must be reachable from the docs nav so that
+readers who land on the published site can find it without navigating away to
+GitHub.</p>
+<h2 id="rules">Rules<a class="headerlink" href="#rules" title="Permanent link">&para;</a></h2>
+<h3 id="1-surface-the-contributor-guide-in-the-docs-nav">1. Surface the contributor guide in the docs nav<a class="headerlink" href="#1-surface-the-contributor-guide-in-the-docs-nav" title="Permanent link">&para;</a></h3>
+<p>Every repo that publishes an MkDocs docs site and maintains a root
+<code>CONTRIBUTING.md</code> must include it in the docs <code>nav</code> so it is discoverable to
+readers browsing the published site. A contributor guide that lives only in
+the repo root is invisible to readers of the docs.</p>
+<div class="highlight"><pre><span></span><code><span class="nt">nav</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">Contributing</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">contributing.md</span>
+</code></pre></div>
+<p><strong>Title.</strong> Use <strong>Contributing</strong> or <strong>Development</strong> as the nav label — either
+is acceptable. The requirement is that the guide is in the nav, not the exact
+wording.</p>
+<p><strong>Failure mode prevented:</strong> a repo has a thorough contributor guide in its
+root <code>CONTRIBUTING.md</code>, visible on GitHub, but contributors who discover the
+repo through its published docs site never see it — the guide is functionally
+invisible to that audience.</p>
+<h3 id="2-single-source-of-truth">2. Single source of truth<a class="headerlink" href="#2-single-source-of-truth" title="Permanent link">&para;</a></h3>
+<p>The nav entry must resolve to the canonical root <code>CONTRIBUTING.md</code> — not a
+manually-maintained copy that can drift. Two patterns are acceptable:</p>
+<table>
+<thead>
+<tr>
+<th>Pattern</th>
+<th>How</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Include plugin</strong></td>
+<td>Install <code>mkdocs-include-markdown-plugin</code> and create a stub <code>docs/contributing.md</code> containing <code>{! ../CONTRIBUTING.md !}</code>. The include directive pulls the root file into the page at build time — the root file remains the single source of truth, and the stub is a build artifact that never needs manual upkeep.</td>
+</tr>
+<tr>
+<td><strong>Symlink</strong></td>
+<td><code>ln -s ../CONTRIBUTING.md docs/contributing.md</code>. Git tracks the symlink as a file — every clone and CI run resolves it. Simple, zero-build-step, zero-plugin. Preferred when the target platform supports symlinks (Linux/macOS CI runners).</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Failure mode prevented:</strong> a contributor updates <code>CONTRIBUTING.md</code> in the
+repo root but the copy in <code>docs/</code> is stale because it was manually duplicated
+rather than linked or included. The published docs site shows outdated
+contributor guidance, and the reviewer who merges the PR sees a green build
+with no warning.</p>
+<h3 id="3-link-from-the-home-page">3. Link from the home page<a class="headerlink" href="#3-link-from-the-home-page" title="Permanent link">&para;</a></h3>
+<p>The docs home page (<code>docs/index.md</code>) or landing README must link to the
+contributor guide so it is discoverable without navigating the nav sidebar.
+This is satisfied by a paragraph or bullet in the home page pointing to the
+contributor guide, e.g.:</p>
+<div class="highlight"><pre><span></span><code>See the [<span class="nt">Contributing guide</span>](<span class="na">contributing.md</span>) for how to set up a development
+environment and submit changes.
+</code></pre></div>
+<p><strong>Failure mode prevented:</strong> a reader lands on the docs home page, sees no
+contributor link, and assumes the project has no contributor guide — even
+though one exists in the nav sidebar. The home-page link is a second
+discovery path that catches readers who don't expand the sidebar.</p>
+<h2 id="precedent">Precedent<a class="headerlink" href="#precedent" title="Permanent link">&para;</a></h2>
 <ul>
-<li><strong>Deprecation warnings from dependencies scroll past invisibly</strong> — the
-  first a team learns of a removed API is the upgrade that breaks at runtime.</li>
-<li><strong>Typos in <code>@pytest.mark.xxx</code> decorators are silently tolerated</strong> — the
-  marker is registered as an ad-hoc string, the test runs without it, and the
-  intended filtering or skipping never happens.</li>
-<li><strong><code>@pytest.mark.xfail</code> tests that start passing</strong> (because the bug was
-  fixed) continue to report as "expected failure" — the test suite never
-  signals that the fix landed, so the xfail marker rots indefinitely.</li>
-</ul>
-<p>Four mature ASGI/data projects — FastAPI, Starlette, Pydantic, and httpx —
-all ship <code>filterwarnings = ["error"]</code> in their <code>pyproject.toml</code>. FastAPI and
-Starlette additionally enable <code>--strict-markers</code> and <code>--strict-config</code>.
-Codifying the convention here means every fleet repo inherits the same
-discipline rather than each re-deriving it.</p>
-<h2 id="baseline-settings-mandatory">Baseline settings (mandatory)<a class="headerlink" href="#baseline-settings-mandatory" title="Permanent link">&para;</a></h2>
-<p>Every Python repository <strong>must</strong> include these settings in
-<code>[tool.pytest.ini_options]</code>:</p>
-<div class="highlight"><pre><span></span><code><span class="k">[tool.pytest.ini_options]</span>
-<span class="n">addopts</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;--strict-markers&quot;</span><span class="p">]</span>
-<span class="n">filterwarnings</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;error&quot;</span><span class="p">]</span>
-<span class="n">xfail_strict</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">true</span>
-<span class="n">markers</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span>
-<span class="w">    </span><span class="c1"># Register every custom @pytest.mark.&lt;name&gt; used in the test suite.</span>
-<span class="w">    </span><span class="c1"># A marker that appears in a @pytest.mark decorator but is not listed</span>
-<span class="w">    </span><span class="c1"># here causes a hard collection error (because of --strict-markers).</span>
-<span class="p">]</span>
-</code></pre></div>
-<ul>
-<li><strong><code>addopts = ["--strict-markers"]</code></strong> — any <code>@pytest.mark.xxx</code> decorator
-  whose marker name is not registered in <code>markers</code> (or not a pytest builtin)
-  raises a hard collection error instead of silently adding an ad-hoc marker.</li>
-<li><strong><code>filterwarnings = ["error"]</code></strong> — turn every warning into an exception.
-  This is the universal baseline across all four surveyed projects.</li>
-<li><strong><code>xfail_strict = true</code></strong> — an <code>@pytest.mark.xfail</code> test that unexpectedly
-  passes is reported as a failure (<code>XPASS(strict)</code>), flagging the stale
-  marker so it can be removed.</li>
-</ul>
-<p><strong>Failure mode:</strong> without <code>--strict-markers</code>, a typo like
-<code>@pytest.mark.sloww</code> (intended <code>slow</code>) becomes a silently-registered ad-hoc
-marker that no <code>-m</code> filter ever selects — the test is never run in the
-targeted suite, and the mistake is invisible until a human notices the test
-is missing from CI results.  The same applies to a CI selection
-<code>-m "not docker"</code> against an unregistered <code>docker</code> marker, which silently
-filters <em>nothing</em>.  Without <code>filterwarnings = ["error"]</code>, dependency
-deprecation warnings are invisible in CI output — the upgrade that removes
-the deprecated API lands as a surprise breakage. Without <code>xfail_strict</code>,
-fixed bugs stay marked as expected failures forever, and the test suite
-never signals that the fix is real.</p>
-<h2 id="targeted-warning-ignores">Targeted warning ignores<a class="headerlink" href="#targeted-warning-ignores" title="Permanent link">&para;</a></h2>
-<p>Repos <strong>may</strong> add narrowly-scoped <code>ignore:</code> entries for third-party
-<code>DeprecationWarning</code>s that are out of their control.</p>
-<p>Pytest's <code>filterwarnings</code> uses Python's warning filter syntax:
-<code>"action:message:category:module:lineno"</code>.  The <code>message</code> field is matched
-as a regex prefix — an entry ending in <code>...</code> matches any suffix (the
-trailing <code>...</code> is <code>.*</code>).  When a field is omitted entirely, it matches
-anything; an empty string between colons matches an empty string literally.</p>
-<p>The two common patterns:</p>
-<p><strong>Category-and-module targeting</strong> (Starlette, Pydantic style):</p>
-<div class="highlight"><pre><span></span><code><span class="n">filterwarnings</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span>
-<span class="w">    </span><span class="s2">&quot;error&quot;</span><span class="p">,</span>
-<span class="w">    </span><span class="s2">&quot;ignore::DeprecationWarning:third_party_package.*:&quot;</span><span class="p">,</span>
-<span class="w">    </span><span class="s2">&quot;ignore::DeprecationWarning:another_package.module:&quot;</span><span class="p">,</span>
-<span class="p">]</span>
-</code></pre></div>
-<p><strong>Message-prefix targeting</strong> (httpx style):</p>
-<div class="highlight"><pre><span></span><code><span class="n">filterwarnings</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span>
-<span class="w">    </span><span class="s2">&quot;error&quot;</span><span class="p">,</span>
-<span class="w">    </span><span class="s2">&quot;ignore: You seem to already have a custom sys.excepthook handler installed...&quot;</span><span class="p">,</span>
-<span class="w">    </span><span class="s2">&quot;ignore: You seem to already have a custom MultiError...&quot;</span><span class="p">,</span>
-<span class="p">]</span>
-</code></pre></div>
-<p>Each <code>ignore:</code> entry <strong>must</strong> narrow the scope to the specific warning
-it targets — never a bare <code>"ignore::DeprecationWarning"</code>.  Starlette,
-Pydantic, and httpx all follow this pattern.</p>
-<p><strong>Failure mode:</strong> a bare <code>ignore::DeprecationWarning</code> suppresses every
-deprecation in the entire test suite, including the project's own — the
-setting becomes self-defeating.</p>
-<h3 id="adding-ignore-entries-safely">Adding ignore entries safely<a class="headerlink" href="#adding-ignore-entries-safely" title="Permanent link">&para;</a></h3>
-<p>After enabling <code>filterwarnings = ["error"]</code>, run the full test suite.
-Only add <code>ignore:</code> entries for warnings that are both genuinely benign
-<strong>and</strong> unfixable by the project — i.e. third-party deprecations whose
-fix is upstream.  Every <code>ignore:</code> line should cite the specific warning
-message or module it suppresses, so a future contributor can re-evaluate
-whether the ignore is still needed.</p>
-<p><strong>Failure mode:</strong> adding <code>ignore:</code> entries preemptively ("just in case")
-accumulates stale suppressions that hide new warnings indefinitely.</p>
-<h3 id="async-test-drivers-and-nested-event-loop-hazards">Async test drivers and nested-event-loop hazards<a class="headerlink" href="#async-test-drivers-and-nested-event-loop-hazards" title="Permanent link">&para;</a></h3>
-<p>When a test helper internally calls <code>asyncio.run()</code> (or any other function
-that starts a new event loop), that helper <strong>must</strong> be exercised only from
-synchronous test functions — never from an <code>async def test_*</code> that is
-already running inside an event loop.  With <code>filterwarnings = ["error"]</code>,
-an attempted nested event loop surfaces as a hard test failure
-(e.g. <code>RuntimeError</code> or <code>DeprecationWarning</code> from the async library).</p>
-<p><strong>Failure mode:</strong> a sync test driver called from an async test function
-crashes inside CI only after the warning-as-error baseline is enabled,
-blocking unrelated work while the team diagnoses the nested-loop failure.</p>
-<h2 id="additional-strictness-strict-config">Additional strictness: <code>--strict-config</code><a class="headerlink" href="#additional-strictness-strict-config" title="Permanent link">&para;</a></h2>
-<p>Repos <strong>should</strong> additionally enable config strictness by adding
-<code>"--strict-config"</code> to <code>addopts</code>:</p>
-<div class="highlight"><pre><span></span><code><span class="n">addopts</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;--strict-markers&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;--strict-config&quot;</span><span class="p">]</span>
-</code></pre></div>
-<ul>
-<li><strong><code>--strict-config</code></strong> — any unrecognised <code>[tool.pytest.ini_options]</code> key
-  raises an error, catching typos in config.</li>
-</ul>
-<p>(<code>--strict-markers</code> is already required by the baseline above.)</p>
-<p>FastAPI and Starlette both ship this setting alongside <code>--strict-markers</code>.</p>
-<p><strong>Failure mode:</strong> without <code>--strict-config</code>, a typo in a
-<code>[tool.pytest.ini_options]</code> key (e.g. <code>addopt</code> instead of <code>addopts</code>) is
-silently ignored and the intended option never takes effect.</p>
-<hr />
-<h2 id="complementary-guard-filterwarnings-for-unknown-markers">Complementary guard: <code>filterwarnings</code> for unknown markers<a class="headerlink" href="#complementary-guard-filterwarnings-for-unknown-markers" title="Permanent link">&para;</a></h2>
-<p>As an alternative or complementary approach, a repo may enable
-<code>filterwarnings = ["error::pytest.PytestUnknownMarkWarning"]</code> to turn
-unknown-marker warnings into errors.  This is redundant once
-<code>--strict-markers</code> is enabled (the strict-marker flag already errors on
-unregistered markers during collection), but it is acceptable as a
-belt-and-suspenders guard.</p>
-<h2 id="full-example">Full example<a class="headerlink" href="#full-example" title="Permanent link">&para;</a></h2>
-<div class="highlight"><pre><span></span><code><span class="k">[tool.pytest.ini_options]</span>
-<span class="n">addopts</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;--strict-markers&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;--strict-config&quot;</span><span class="p">]</span>
-<span class="n">xfail_strict</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">true</span>
-<span class="n">filterwarnings</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span>
-<span class="w">    </span><span class="s2">&quot;error&quot;</span><span class="p">,</span>
-<span class="w">    </span><span class="c1"># Third-party deprecation warnings that the project cannot fix:</span>
-<span class="w">    </span><span class="c1"># &quot;ignore::DeprecationWarning:some_library.*:&quot;,</span>
-<span class="p">]</span>
-<span class="n">markers</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span>
-<span class="w">    </span><span class="s2">&quot;integration: marks tests that need external services (deselect with &#39;-m </span><span class="se">\&quot;</span><span class="s2">not integration</span><span class="se">\&quot;</span><span class="s2">&#39;)&quot;</span><span class="p">,</span>
-<span class="w">    </span><span class="s2">&quot;slow: marks tests as slow (deselect with &#39;-m </span><span class="se">\&quot;</span><span class="s2">not slow</span><span class="se">\&quot;</span><span class="s2">&#39;)&quot;</span><span class="p">,</span>
-<span class="p">]</span>
-</code></pre></div>
-<h2 id="optional-test-dependencies-importorskip-guard">Optional test dependencies — <code>importorskip</code> guard<a class="headerlink" href="#optional-test-dependencies-importorskip-guard" title="Permanent link">&para;</a></h2>
-<blockquote>
-<p><strong>Scope: every Python repository that declares optional test dependencies</strong>
-in <code>[project.optional-dependencies]</code> (any extra).  The rule applies to any
-module-level <code>import</code> in a test file that references a package <strong>not</strong>
-listed in the project's unconditional (bare) <code>dependencies</code>.</p>
-</blockquote>
-<h3 id="why-this-rule-exists">Why this rule exists<a class="headerlink" href="#why-this-rule-exists" title="Permanent link">&para;</a></h3>
-<p><code>pytest</code> imports every test module during <strong>collection</strong>, before any test
-runs.  An unguarded module-level <code>import &lt;optional-dep&gt;</code> therefore breaks
-the whole test suite with <code>ModuleNotFoundError</code> — it does <strong>not</strong> defer the
-failure to the tests that use it.  When the optional dependency is absent,
-the suite cannot even start.</p>
-<p>Guarding with <code>pytest.importorskip</code> (at module scope, before the import)
-makes pytest report the affected tests as <code>skipped</code> when the optional
-dependency is missing, so the suite still collects and runs the remaining
-tests.</p>
-<h3 id="rule">Rule<a class="headerlink" href="#rule" title="Permanent link">&para;</a></h3>
-<p>Every <strong>module-level import of an optional dependency</strong> in a test file must
-be guarded with <code>pytest.importorskip("&lt;module&gt;")</code> placed <strong>immediately before</strong>
-the guarded <code>import</code> statement.</p>
-<p><strong>Pattern:</strong></p>
-<div class="highlight"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">pytest</span>
-
-<span class="n">pytest</span><span class="o">.</span><span class="n">importorskip</span><span class="p">(</span><span class="s2">&quot;hypothesis&quot;</span><span class="p">)</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">hypothesis</span><span class="w"> </span><span class="kn">import</span> <span class="n">given</span><span class="p">,</span> <span class="n">settings</span>  <span class="c1"># guarded — only reached if hypothesis is installed</span>
-</code></pre></div>
-<p>A conditional import (<code>try: ... except ImportError: ...</code>) is an acceptable
-alternative when the test file needs to import the optional module
-conditionally, but <code>importorskip</code> is preferred because it integrates with
-pytest's skip reporting and is the canonical mechanism.</p>
-<p><strong>Failure mode:</strong> an unguarded module-level <code>import &lt;optional-dep&gt;</code> causes
-<code>ModuleNotFoundError</code> at collection time, preventing the <strong>entire</strong> test
-suite from running — not just the tests that need the dependency.  A
-contributor running <code>pytest</code> without the <code>[dev]</code> extra installed gets a
-crashed suite with no indication of which dependency is missing or which
-tests are affected.</p>
-<h3 id="adoption-by-the-ecosystem">Adoption by the ecosystem<a class="headerlink" href="#adoption-by-the-ecosystem" title="Permanent link">&para;</a></h3>
-<p>All prominent typed projects apply exactly this pattern at module scope,
-before the optional-extra imports:</p>
-<ul>
-<li><strong>pandas</strong> — guards optional-backend test files with <code>importorskip</code>
-  (including <code>minversion</code> forms).</li>
-<li><strong>Pydantic</strong> — module-level <code>importorskip</code> for optional extras
-  (<code>email-validator</code>, <code>python-dotenv</code>, <code>orjson</code>, <code>Babel</code>) so the suite
-  collects cleanly without them.</li>
-<li><strong>FastAPI</strong> — same for SQLAlchemy and version-specific test files.</li>
-</ul>
-<h3 id="fleet-exemplar">Fleet exemplar<a class="headerlink" href="#fleet-exemplar" title="Permanent link">&para;</a></h3>
-<p><code>robotsix-config</code> already codifies this in its <code>AGENT.md</code> and follows it:
-<code>tests/config/test_config_properties.py</code> calls
-<code>pytest.importorskip("hypothesis")</code> at line 9, immediately before the
-<code>from hypothesis import ...</code> at lines 12-13.</p>
-<p>Repos that follow this standard should also consider adding a CI guardian
-job that mechanically verifies every module-level optional-dependency
-import in <code>tests/</code> is guarded, preventing regressions.</p>
-<h2 id="cross-reference">Cross-reference<a class="headerlink" href="#cross-reference" title="Permanent link">&para;</a></h2>
-<ul>
-<li><strong><a href="../pytest-shared-state-builders/">Pytest shared state builders</a></strong> —
-  root-conftest placement and <code>make_&lt;thing&gt;</code> factory fixtures for reusable
-  test-state builders across test packages.</li>
+<li><a href="https://fastapi.tiangolo.com/contributing/">FastAPI</a> surfaces its
+  contributor guide as a docs nav page under "Development - Contributing".</li>
+<li><a href="https://squidfunk.github.io/mkdocs-material/contributing/">Material for MkDocs</a>
+  includes contributing guidance in its published documentation.</li>
+<li>MkDocs provides <code>validation.nav</code> + <code>--strict</code> to catch nav↔file drift
+  (see <a href="../mkdocs-build/">MkDocs build integrity</a>), but these do not enforce
+  that contributing content is in the site at all — so the convention must
+  be codified as a standard.</li>
 </ul>
 
 

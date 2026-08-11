@@ -1464,6 +1464,34 @@
   
   
     <li class="md-nav__item">
+      <a href="contributing-in-nav/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Contributor guide in docs nav
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="javascript/" class="md-nav__link">
         
   
@@ -2632,6 +2660,33 @@ everywhere.</p>
   sources — one version source, no skew.</li>
 <li><strong><a href="distribution-packaging/">Distribution &amp; Packaging</a></strong> — git-based consumption of
   first-party libraries — no package index, no registry publish step.</li>
+<li><strong><a href="docstrings/">Docstring convention</a></strong> — Python docstring style and coverage
+  rules for all public modules, classes, and functions.</li>
+<li><strong><a href="http-client-persistence/">HTTP client persistence</a></strong> — one persistent
+  <code>httpx.Client</code> (or <code>requests.Session</code>) with an explicit timeout, reused for
+  all outbound calls — no per-call module-level convenience helpers.</li>
+<li><strong><a href="library-logging/">Library internal logging</a></strong> — module-level
+  <code>logging.getLogger(__name__)</code>, a single <code>NullHandler</code> in <code>__init__.py</code>,
+  lazy <code>%</code>-style formatting, and DEBUG-for-routine events — library logging
+  that never prints unless the application opts in.</li>
+<li><strong><a href="logging/">Logging</a></strong> — structured JSON logging via structlog,
+  stdout-only output, correlation-id middleware, and level conventions
+  for every deployable service.</li>
+<li><strong><a href="hypothesis/">Hypothesis testing</a></strong> — property-based testing profiles,
+  shared strategies, and CI integration for repos that use Hypothesis.</li>
+<li><strong><a href="markdown-linting/">Markdown linting</a></strong> — markdownlint-cli2 and codespell
+  pre-commit hooks for every repo that publishes MkDocs documentation.</li>
+<li><strong><a href="prose-linting/">Prose linting</a></strong> — Vale prose linter for style,
+  readability, and fleet-specific vocabulary consistency — integrated
+  through the existing pre-commit pipeline.</li>
+<li><strong><a href="mkdocs-build/">MkDocs build integrity</a></strong> — strict mode build gating
+  and link-validation configuration for every MkDocs site.</li>
+<li><strong><a href="module-taxonomy-scope/">Module taxonomy scope</a></strong> — what belongs in
+  <code>docs/modules.yaml</code>: product code, not the repo's own build and lint
+  scaffolding.</li>
+<li><strong><a href="docs-site-deployment/">Docs site deployment</a></strong> — the GitHub Pages
+  contract for repos that publish: caller permissions, Pages source, and
+  concurrency ownership. A mismatch fails at startup with no logs at all.</li>
 <li><strong><a href="python-ci-workflow/">Python CI workflow</a></strong> — required <code>ci.yml</code> shape:
   lint → type-check → test+coverage, run on every push and PR — the enforcement
   mechanism for the quality gates declared in <code>pyproject.toml</code>.</li>
@@ -2640,6 +2695,9 @@ everywhere.</p>
 <li><strong><a href="python-main-py-forward/">Python <code>__main__.py</code> exit-code forwarding</a></strong> —
   <code>__main__.py</code> must forward <code>main()</code>'s return value to <code>sys.exit()</code> so
   <code>python -m &lt;pkg&gt;</code> reports the same exit code as the installed console script.</li>
+<li><strong><a href="contributing-in-nav/">Contributor guide in docs nav</a></strong> — every MkDocs
+  site must surface the repo's contributor guide in the docs nav so it is
+  discoverable to readers of the published site.</li>
 <li><strong><a href="console-script-subprocess-test/">Console-script subprocess tests</a></strong> —
   every <code>[project.scripts]</code> entry point must be tested as a subprocess through
   the installed binary — not only in-process or via <code>python -m</code>.</li>
@@ -2667,34 +2725,6 @@ everywhere.</p>
 <li><strong><a href="py-typed-wheel-guard/">py.typed wheel guard</a></strong> — automated verification
   that the <code>py.typed</code> marker ships in the built wheel, so a packaging
   regression cannot silently strip type information from downstream consumers.</li>
-<li><strong><a href="docstrings/">Docstring convention</a></strong> — Python docstring style and coverage
-  rules for all public modules, classes, and functions.</li>
-<li><strong><a href="http-client-persistence/">HTTP client persistence</a></strong> — one persistent
-  <code>httpx.Client</code> (or <code>requests.Session</code>) with an explicit timeout, reused for
-  all outbound calls — no per-call module-level convenience helpers.</li>
-<li><strong><a href="library-logging/">Library internal logging</a></strong> — module-level
-  <code>logging.getLogger(__name__)</code>, a single <code>NullHandler</code> in <code>__init__.py</code>,
-  lazy <code>%</code>-style formatting, and DEBUG-for-routine events — library logging
-  that never prints unless the application opts in.</li>
-<li><strong><a href="logging/">Logging</a></strong> — structured JSON logging via structlog,
-  stdout-only output, correlation-id middleware, and level conventions
-  for every deployable service.</li>
-<li><strong><a href="hypothesis/">Hypothesis testing</a></strong> — property-based testing profiles,
-  shared strategies, and CI integration for repos that use Hypothesis.</li>
-<li><strong><a href="markdown-linting/">Markdown linting</a></strong> — markdownlint-cli2 and codespell
-  pre-commit hooks for every repo that publishes MkDocs documentation.</li>
-<li><strong><a href="prose-linting/">Prose linting</a></strong> — Vale prose linter for style,
-  readability, and fleet-specific vocabulary consistency — integrated
-  through the existing pre-commit pipeline.</li>
-<li><strong><a href="mkdocs-build/">MkDocs build integrity</a></strong> — strict mode build gating
-  and link-validation configuration for every MkDocs site.</li>
-<li><strong><a href="module-taxonomy-scope/">Module taxonomy scope</a></strong> — what belongs in
-  <code>docs/modules.yaml</code> and the pre-commit hook that runs <code>check-registration</code>
-  locally so module-ownership drift is caught at commit time instead of one
-  CI push later.</li>
-<li><strong><a href="docs-site-deployment/">Docs site deployment</a></strong> — the GitHub Pages
-  contract for repos that publish: caller permissions, Pages source, and
-  concurrency ownership. A mismatch fails at startup with no logs at all.</li>
 <li><strong><a href="javascript/">JavaScript practices</a></strong> — vanilla frontend JS as static
   assets, lockfile discipline, vitest coverage floor, eslint/stylelint.</li>
 <li><strong><a href="php/">PHP practices</a></strong> — native <code>php -l</code> syntax-check over all <code>.php</code>

@@ -79,6 +79,7 @@ nav:
       - Changelog & releases (superseded): changelog-driven-releases.md
       - Release-please release automation: release-please.md
       - CI lint tool pinning: ci-lint-pinning.md
+      - Contributor guide in docs nav: contributing-in-nav.md
       - Distribution & Packaging: distribution-packaging.md
       - Python CI workflow: python-ci-workflow.md
       - Python practices: python.md
@@ -101,7 +102,6 @@ nav:
       - MkDocs build integrity: mkdocs-build.md
       - Module taxonomy scope: module-taxonomy-scope.md
       - Docs site deployment: docs-site-deployment.md
-      - Contributor guide in docs nav: contributing-in-nav.md
       - JavaScript practices: javascript.md
       - PHP practices: php.md
       - Async SQLAlchemy test fixtures: async-sqlalchemy-test-fixtures.md

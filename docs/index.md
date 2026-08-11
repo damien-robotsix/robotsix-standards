@@ -21,6 +21,7 @@ everywhere.
 ## Two scopes
 
 ### Every repository (libraries and deployable components)
+
 - **[Repo baseline](repo-baseline.md)** — distribution tiers, changelog and
   module-registration hygiene, CI and security gates, licensing.
 - **[Towncrier changelog](towncrier.md)** — per-PR newsfragments in

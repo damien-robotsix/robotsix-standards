@@ -1,12 +1,13 @@
 <!-- markdownlint-disable MD013 MD025 MD024 -->
 <!-- towncrier release notes start -->
-## [0.6.0](https://github.com/damien-robotsix/robotsix-standards/compare/v0.5.3...v0.6.0) (2026-08-10)
 
+# Changelog
+
+## [0.6.0](https://github.com/damien-robotsix/robotsix-standards/compare/v0.5.3...v0.6.0) (2026-08-10)
 
 ### Features
 
 * Standardize: pre-commit registration hooks mirror CI's validate + check-registration for robotsix-modules ownership registries (20260806T182929Z-standardize-pre-commit-registration-hook-8002) ([#254](https://github.com/damien-robotsix/robotsix-standards/issues/254)) ([43f349b](https://github.com/damien-robotsix/robotsix-standards/commit/43f349b7c596edac5ddfbada4e5664826a445bbb))
-
 
 ### Documentation
 
@@ -14,18 +15,15 @@
 
 ## [0.5.3](https://github.com/damien-robotsix/robotsix-standards/compare/v0.5.2...v0.5.3) (2026-08-09)
 
-
 ### Bug Fixes
 
 * **release:** don't fail lock-sync when the release branch is gone ([#247](https://github.com/damien-robotsix/robotsix-standards/issues/247)) ([5132bf2](https://github.com/damien-robotsix/robotsix-standards/commit/5132bf22bae19a353f022b0b4861a7bef51d1745))
-
 
 ### Documentation
 
 * the fleet edge has one gate, not two ([#249](https://github.com/damien-robotsix/robotsix-standards/issues/249)) ([726c101](https://github.com/damien-robotsix/robotsix-standards/commit/726c10124d93548a54dad1f4898badd445ba1c09))
 
 ## [0.5.2](https://github.com/damien-robotsix/robotsix-standards/compare/v0.5.1...v0.5.2) (2026-08-09)
-
 
 ### Documentation
 

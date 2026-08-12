@@ -45,4 +45,4 @@ jobs:
       - name: Run actionlint
         run: |
           curl -sSL https://github.com/rhysd/actionlint/releases/download/v1.7.12/actionlint_1.7.12_linux_amd64.tar.gz | tar xz -C /tmp
-          /tmp/actionlint .github/workflows/
+          /tmp/actionlint .github/workflows/*.yml

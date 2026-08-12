@@ -42,3 +42,7 @@ jobs:
           extra_args: --all-files
       - name: Check TOC synchronization
         run: uv run --group docs python scripts/check-toc-sync.py
+      - name: Run actionlint
+        uses: raven-actions/actionlint@b0e0f8e059eabdeb1c9e6e08d01cd6c0a44bd61f  # v2.1.0
+        with:
+          path: .github/workflows

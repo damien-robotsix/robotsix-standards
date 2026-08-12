@@ -86,6 +86,7 @@ release-please to write both locations (see release-please docs for
 ## Build frontend compatibility
 
 This configuration works with any setuptools-compatible build frontend:
+
 - `pip install -e .`
 - `uv pip install -e .`
 - `python -m build`

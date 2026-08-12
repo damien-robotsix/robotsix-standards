@@ -70,13 +70,15 @@ change upstream then breaks resolution out of nowhere.
 
 **Rule:** Libraries version themselves with release-please, which bumps the
 version, generates the changelog, and pushes a `v*` tag — the full mechanism is
-documented in [release-please](release-please.md). The version is declared
-statically in `pyproject.toml`; deriving it from git tags is disallowed
-(release-please rule 3). Consumers pin to those tags (or the underlying SHA).
+documented in [release-please](release-please.md). The version source is
+declared following the [single-source versioning](single-source-versioning.md)
+convention; deriving it from git tags is disallowed (release-please rule 3).
+Consumers pin to those tags (or the underlying SHA).
 
 **Rationale:** Tags give consumers a human-readable version to pin against while
 retaining the auditability of a git SHA. Release-please keeps every repo on the
-same release mechanism rather than each repo inventing its own.
+same release mechanism rather than each repo inventing its own. The single-source
+convention prevents drift between `pyproject.toml` and the package's `__version__`.
 
 > **Failure mode.** A repo without tagged releases forces consumers to pin to
 > arbitrary SHAs with no semantic version signal — a consumer cannot tell at a

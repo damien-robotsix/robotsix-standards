@@ -61,6 +61,8 @@ everywhere.
   sources — one version source, no skew.
 - **[Distribution & Packaging](distribution-packaging.md)** — git-based consumption of
   first-party libraries — no package index, no registry publish step.
+- **[Single-source versioning](single-source-versioning.md)** — one source of truth for the
+  version string, read dynamically by the setuptools build backend.
 - **[Docstring convention](docstrings.md)** — Python docstring style and coverage
   rules for all public modules, classes, and functions.
 - **[HTTP client persistence](http-client-persistence.md)** — one persistent

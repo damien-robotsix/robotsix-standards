@@ -317,7 +317,7 @@ editing it by hand breaks the automation.
 version = "0.4.0"
 ```
 
-It must **not** be computed. Specifically, `dynamic = ["version"]` combined
+It must **not** be computed from VCS. Specifically, `dynamic = ["version"]` combined
 with a VCS-derived source is disallowed:
 
 ```toml
@@ -331,6 +331,23 @@ source = "vcs"
 
 The equivalent `setuptools_scm` configuration is disallowed for the same
 reason.
+
+A **file-based** dynamic source using the setuptools attr pattern is the one
+exception:
+
+```toml
+# ALLOWED — see single-source-versioning.md
+[project]
+dynamic = ["version"]
+
+[tool.setuptools.dynamic]
+version = {attr = "my_package.__version__"}
+```
+
+This is allowed because the version lives in a file (`src/my_package/__init__.py`)
+that release-please already rewrites when told to. The attr path must match the
+`[tool.setuptools.packages.find]` layout. See
+[single-source versioning](single-source-versioning.md) for the full convention.
 
 **Rationale:** Release-please's model is *edit the version files, commit, then
 tag*. Its Python strategy rewrites `[project].version` in `pyproject.toml`,
@@ -593,6 +610,8 @@ If `pyproject.toml` uses `dynamic = ["version"]` with a VCS-derived source
 
 A file-based dynamic source (`[tool.hatch.version] path = "src/.../__init__.py"`)
 is also disallowed — move the literal into `[project]` and delete the block.
+(The setuptools attr pattern `[tool.setuptools.dynamic] version = {attr = "..."}`
+is an exception covered in [single-source versioning](single-source-versioning.md).)
 
 ```toml
 # Before (VCS-derived — disallowed)

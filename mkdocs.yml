@@ -83,6 +83,7 @@ nav:
       - Distribution & Packaging: distribution-packaging.md
       - Python CI workflow: python-ci-workflow.md
       - Python practices: python.md
+      - Single-source versioning: single-source-versioning.md
       - Python __main__.py exit-code forwarding: python-main-py-forward.md
       - Console-script subprocess tests: console-script-subprocess-test.md
       - Python Makefile convention: python-makefile-convention.md

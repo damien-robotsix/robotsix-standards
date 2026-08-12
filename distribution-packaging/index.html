@@ -929,6 +929,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../single-source-versioning/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Single-source versioning
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../python-main-py-forward/" class="md-nav__link">
         
   
@@ -2595,12 +2623,14 @@ arrived silently.</p>
 <h3 id="3-versioning-via-git-tags">3. Versioning via git tags<a class="headerlink" href="#3-versioning-via-git-tags" title="Permanent link">&para;</a></h3>
 <p><strong>Rule:</strong> Libraries version themselves with release-please, which bumps the
 version, generates the changelog, and pushes a <code>v*</code> tag — the full mechanism is
-documented in <a href="../release-please/">release-please</a>. The version is declared
-statically in <code>pyproject.toml</code>; deriving it from git tags is disallowed
-(release-please rule 3). Consumers pin to those tags (or the underlying SHA).</p>
+documented in <a href="../release-please/">release-please</a>. The version source is
+declared following the <a href="../single-source-versioning/">single-source versioning</a>
+convention; deriving it from git tags is disallowed (release-please rule 3).
+Consumers pin to those tags (or the underlying SHA).</p>
 <p><strong>Rationale:</strong> Tags give consumers a human-readable version to pin against while
 retaining the auditability of a git SHA. Release-please keeps every repo on the
-same release mechanism rather than each repo inventing its own.</p>
+same release mechanism rather than each repo inventing its own. The single-source
+convention prevents drift between <code>pyproject.toml</code> and the package's <code>__version__</code>.</p>
 <blockquote>
 <p><strong>Failure mode.</strong> A repo without tagged releases forces consumers to pin to
 arbitrary SHAs with no semantic version signal — a consumer cannot tell at a

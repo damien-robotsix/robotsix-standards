@@ -1222,6 +1222,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../single-source-versioning/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Single-source versioning
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../python-main-py-forward/" class="md-nav__link">
         
   
@@ -3424,7 +3452,7 @@ a mismatch.</p>
 <div class="highlight"><pre><span></span><code><span class="k">[project]</span>
 <span class="n">version</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;0.4.0&quot;</span>
 </code></pre></div>
-<p>It must <strong>not</strong> be computed. Specifically, <code>dynamic = ["version"]</code> combined
+<p>It must <strong>not</strong> be computed from VCS. Specifically, <code>dynamic = ["version"]</code> combined
 with a VCS-derived source is disallowed:</p>
 <div class="highlight"><pre><span></span><code><span class="c1"># DISALLOWED — the version is computed from git tags at build time</span>
 <span class="k">[build-system]</span>
@@ -3435,6 +3463,19 @@ with a VCS-derived source is disallowed:</p>
 </code></pre></div>
 <p>The equivalent <code>setuptools_scm</code> configuration is disallowed for the same
 reason.</p>
+<p>A <strong>file-based</strong> dynamic source using the setuptools attr pattern is the one
+exception:</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># ALLOWED — see single-source-versioning.md</span>
+<span class="k">[project]</span>
+<span class="n">dynamic</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;version&quot;</span><span class="p">]</span>
+
+<span class="k">[tool.setuptools.dynamic]</span>
+<span class="n">version</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="n">attr</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">&quot;my_package.__version__&quot;</span><span class="p">}</span>
+</code></pre></div>
+<p>This is allowed because the version lives in a file (<code>src/my_package/__init__.py</code>)
+that release-please already rewrites when told to. The attr path must match the
+<code>[tool.setuptools.packages.find]</code> layout. See
+<a href="../single-source-versioning/">single-source versioning</a> for the full convention.</p>
 <p><strong>Rationale:</strong> Release-please's model is <em>edit the version files, commit, then
 tag</em>. Its Python strategy rewrites <code>[project].version</code> in <code>pyproject.toml</code>,
 <code>__version__</code> in the package's <code>__init__.py</code>, and
@@ -3645,7 +3686,9 @@ that opens a release PR on every push to the default branch.</p>
 <li>Delete the <code>[tool.hatch.version]</code> (or <code>[tool.setuptools_scm]</code>) block.</li>
 </ol>
 <p>A file-based dynamic source (<code>[tool.hatch.version] path = "src/.../__init__.py"</code>)
-is also disallowed — move the literal into <code>[project]</code> and delete the block.</p>
+is also disallowed — move the literal into <code>[project]</code> and delete the block.
+(The setuptools attr pattern <code>[tool.setuptools.dynamic] version = {attr = "..."}</code>
+is an exception covered in <a href="../single-source-versioning/">single-source versioning</a>.)</p>
 <div class="highlight"><pre><span></span><code><span class="c1"># Before (VCS-derived — disallowed)</span>
 <span class="k">[project]</span>
 <span class="n">dynamic</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;version&quot;</span><span class="p">]</span>

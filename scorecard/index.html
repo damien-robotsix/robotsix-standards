@@ -78,7 +78,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#openssf-scorecard" class="md-skip">
+        <a href="#openssf-scorecard-not-used" class="md-skip">
           Skip to content
         </a>
       
@@ -2113,71 +2113,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#the-workflow" class="md-nav__link">
+  <a href="#the-rule" class="md-nav__link">
     <span class="md-ellipsis">
       
-        The workflow
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="The workflow">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#schedule-and-trigger" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Schedule and trigger
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#action-pinning" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Action pinning
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#sarif-upload" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        SARIF upload
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#permissions" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Permissions
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#score-target" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Score target
+        The rule
       
     </span>
   </a>
@@ -2185,10 +2124,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#how-it-fits-with-the-security-posture-standard" class="md-nav__link">
+  <a href="#what-replaces-it" class="md-nav__link">
     <span class="md-ellipsis">
       
-        How it fits with the security posture standard
+        What replaces it
       
     </span>
   </a>
@@ -2196,10 +2135,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#how-to-verify" class="md-nav__link">
+  <a href="#why-it-was-dropped" class="md-nav__link">
     <span class="md-ellipsis">
       
-        How to verify
+        Why it was dropped
       
     </span>
   </a>
@@ -2476,71 +2415,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#the-workflow" class="md-nav__link">
+  <a href="#the-rule" class="md-nav__link">
     <span class="md-ellipsis">
       
-        The workflow
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="The workflow">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#schedule-and-trigger" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Schedule and trigger
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#action-pinning" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Action pinning
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#sarif-upload" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        SARIF upload
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#permissions" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Permissions
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#score-target" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Score target
+        The rule
       
     </span>
   </a>
@@ -2548,10 +2426,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#how-it-fits-with-the-security-posture-standard" class="md-nav__link">
+  <a href="#what-replaces-it" class="md-nav__link">
     <span class="md-ellipsis">
       
-        How it fits with the security posture standard
+        What replaces it
       
     </span>
   </a>
@@ -2559,10 +2437,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#how-to-verify" class="md-nav__link">
+  <a href="#why-it-was-dropped" class="md-nav__link">
     <span class="md-ellipsis">
       
-        How to verify
+        Why it was dropped
       
     </span>
   </a>
@@ -2611,120 +2489,64 @@
   
 
 
-<h1 id="openssf-scorecard">OpenSSF Scorecard<a class="headerlink" href="#openssf-scorecard" title="Permanent link">&para;</a></h1>
+<h1 id="openssf-scorecard-not-used">OpenSSF Scorecard (not used)<a class="headerlink" href="#openssf-scorecard-not-used" title="Permanent link">&para;</a></h1>
 <blockquote>
-<p><strong>Scope: deployable components only.</strong> This is <em>in addition to</em> the
-<a href="../repo-baseline/">repo baseline</a> and <a href="../security-posture/">security posture</a>,
-which every repo follows.</p>
+<p><strong>Scope: fleet-wide.</strong> robotsix repos <strong>do not</strong> run OpenSSF Scorecard.
+Do not add <code>.github/workflows/scorecard.yml</code> to a repo or to the
+repo-scaffold templates.</p>
 </blockquote>
-<p>The <a href="https://securityscorecards.dev/">OpenSSF Scorecard</a> independently audits
-~20 supply-chain health checks — Dangerous-Workflow patterns, token permissions,
-Branch-Protection, Code-Review, Signed-Releases, dependency update cadence,
-fuzzing, and more — producing a single numeric score. Several of these checks
-are not covered by the fleet's existing security stack (Semgrep, Bandit,
-detect-secrets, Trivy, TruffleHog, pip-audit, dependency-review, zizmor, SBOM), so
-Scorecard closes the last common gap in a mid-2025 Python security stack.</p>
-<p>The fleet's other security gates (Semgrep, dependency-review, Dependabot,
-workflow hardening, secret scanning, SBOM) are each verified independently by
-the <a href="../security-posture/">security posture</a> standard. Scorecard adds an
-<strong>independent, cross-check audit</strong> — it verifies those gates from outside the
-fleet's own tooling, catching drift that a per-gate self-audit would miss.</p>
-<h2 id="the-workflow">The workflow<a class="headerlink" href="#the-workflow" title="Permanent link">&para;</a></h2>
-<p>Every deployable component MUST include <code>.github/workflows/scorecard.yml</code> with
-these properties:</p>
-<h3 id="schedule-and-trigger">Schedule and trigger<a class="headerlink" href="#schedule-and-trigger" title="Permanent link">&para;</a></h3>
+<p><a href="https://securityscorecards.dev/">OpenSSF Scorecard</a> is a supply-chain
+health audit that produces a single numeric score. The fleet evaluated it
+and dropped it (operator decision, 2026-08-13). This page records the
+decision and the replacement coverage, so a future proposal to re-add it
+finds the answer instead of re-litigating it.</p>
+<h2 id="the-rule">The rule<a class="headerlink" href="#the-rule" title="Permanent link">&para;</a></h2>
+<p>robotsix repos <strong>do not</strong> run OpenSSF Scorecard. Do not add
+<code>.github/workflows/scorecard.yml</code> to a repo or to the repo-scaffold
+templates. Companion tickets remove the workflow from the three repos that
+had it (robotsix-chat, robotsix-board, robotsix-calendar-agent).</p>
+<h2 id="what-replaces-it">What replaces it<a class="headerlink" href="#what-replaces-it" title="Permanent link">&para;</a></h2>
+<p>The supply-chain properties Scorecard would score are already gated
+repo-locally, and harder:</p>
 <ul>
-<li><strong>Weekly cron</strong> (e.g. <code>0 0 * * 0</code> — midnight Sunday UTC). The Scorecard
-  checks evolve; a weekly run catches regressions without the noise of a
-  per-commit gate.</li>
-<li><strong>Push to the default branch</strong> (<code>push: branches: [main]</code>). A push to main
-  re-runs the analysis immediately, so a fix or config change is reflected
-  without waiting for the cron.</li>
+<li><strong>zizmor</strong> — workflow security (dangerous-workflow patterns, token
+  permissions, template injection).</li>
+<li><strong>actionlint</strong> — workflow syntax.</li>
+<li><strong>workflow-permissions audit</strong> — least-privilege <code>permissions:</code> blocks.</li>
+<li><strong>Dependabot / <code>uv audit</code></strong> — dependency CVEs.</li>
+<li><strong>Trivy</strong> — container CVEs.</li>
 </ul>
-<h3 id="action-pinning">Action pinning<a class="headerlink" href="#action-pinning" title="Permanent link">&para;</a></h3>
-<p>The <code>ossf/scorecard-action</code> MUST be pinned to a full 40-character commit SHA,
-with a trailing <code># vX.Y.Z</code> version comment. This is the same SHA-pinning rule
-that <a href="../security-posture/#4a-actions-pinned-to-commit-shas">security posture gate 4a</a>
-requires for every third-party action.</p>
-<h3 id="sarif-upload">SARIF upload<a class="headerlink" href="#sarif-upload" title="Permanent link">&para;</a></h3>
-<p>Results MUST be published to the repo's GitHub Security tab via
-<code>github/codeql-action/upload-sarif</code>, also pinned to a full commit SHA. The
-SARIF file is the Scorecard action's output; the upload makes results visible
-in the repository's Security tab alongside other code-scanning findings.</p>
-<h3 id="permissions">Permissions<a class="headerlink" href="#permissions" title="Permanent link">&para;</a></h3>
-<p>The workflow MUST declare a top-level <code>permissions:</code> block with exactly these
-scopes:</p>
-<div class="highlight"><pre><span></span><code><span class="nt">permissions</span><span class="p">:</span>
-<span class="w">  </span><span class="nt">security-events</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">write</span><span class="w">   </span><span class="c1"># for uploading SARIF results</span>
-<span class="w">  </span><span class="nt">id-token</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">write</span><span class="w">          </span><span class="c1"># for publishing results to the OpenSSF REST API (optional but recommended)</span>
-<span class="w">  </span><span class="nt">contents</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">read</span><span class="w">           </span><span class="c1"># for checking out the repo</span>
-</code></pre></div>
-<p>No other permissions. This follows the least-privilege rule in
-<a href="../security-posture/#4c-least-privilege-permissions-blocks">security posture gate 4c</a>.</p>
-<h2 id="score-target">Score target<a class="headerlink" href="#score-target" title="Permanent link">&para;</a></h2>
-<p>The fleet targets a Scorecard score of <strong>≥ 7/10</strong> (out of 10). This is an
-aspirational target, not a hard CI gate — Scorecard runs as an audit, not a
-blocking check. A repo below 7/10 is non-compliant and must be remediated, but
-the Scorecard workflow itself does not fail the build.</p>
-<p>Individual checks that commonly drag the score below 7 in the fleet:</p>
-<ul>
-<li><strong>Branch-Protection</strong> — requires <code>include_admins: true</code> and required status
-  checks (already met by the <a href="../repo-baseline/">repo baseline</a>).</li>
-<li><strong>Code-Review</strong> — requires at least one approving review before merge
-  (already met).</li>
-<li><strong>Token-Permissions</strong> — requires <code>permissions: read-all</code> at the top level
-  of every workflow (already met by gate 4c).</li>
-<li><strong>Dangerous-Workflow</strong> — flagging untrusted <code>pull_request_target</code> usage
-  (already caught by zizmor in gate 4b).</li>
-<li><strong>Signed-Releases</strong> — requires signed release artifacts. Deferred: the
-  fleet does not currently sign releases.</li>
-</ul>
-<p>Checks that are <em>not</em> covered by existing fleet gates and represent new
-surface:</p>
-<ul>
-<li><strong>Fuzzing</strong> — the fleet does not currently require fuzzing. This is a known
-  gap; the Scorecard result documents it without creating a per-repo mandate.</li>
-<li><strong>CII-Best-Practices</strong> — the fleet does not currently require an OpenSSF
-  Best Practices badge. Like fuzzing, this is documented by Scorecard but not
-  mandated by this standard.</li>
-</ul>
-<h2 id="how-it-fits-with-the-security-posture-standard">How it fits with the security posture standard<a class="headerlink" href="#how-it-fits-with-the-security-posture-standard" title="Permanent link">&para;</a></h2>
-<p>The <a href="../security-posture/">security posture</a> standard defines self-enforcing,
-per-gate CI controls. Scorecard is an <strong>independent audit</strong> — it re-verifies
-those controls from the outside:</p>
-<ul>
-<li>Gate 1 (Semgrep SAST) → Scorecard <em>SAST</em> check</li>
-<li>Gate 2 (dependency-review) → Scorecard <em>Dependency-Update-Tool</em> and <em>Vulnerabilities</em> checks</li>
-<li>Gate 3 (Dependabot) → Scorecard <em>Dependency-Update-Tool</em> check</li>
-<li>Gate 4a (SHA-pinned actions) → Scorecard <em>Pinned-Dependencies</em> check</li>
-<li>Gate 4b (workflow linting) → Scorecard <em>Token-Permissions</em> and <em>Dangerous-Workflow</em> checks</li>
-<li>Gate 4c (least-privilege permissions) → Scorecard <em>Token-Permissions</em> check</li>
-<li>Gate 6 (SBOM &amp; vulnerability audit) → Scorecard <em>SBOM</em> and <em>Vulnerabilities</em> checks</li>
-</ul>
-<p>A repo that passes every security-posture gate should score ≥ 7 on Scorecard.
-If it doesn't, either a gate has drifted or Scorecard is checking something the
-fleet doesn't yet cover — both are actionable findings.</p>
-<h2 id="how-to-verify">How to verify<a class="headerlink" href="#how-to-verify" title="Permanent link">&para;</a></h2>
-<ul>
-<li><code>.github/workflows/scorecard.yml</code> exists and matches the schedule, trigger,
-  action pinning, SARIF upload, and permissions requirements above.</li>
-<li>The repo's Security tab shows Scorecard results under "Code scanning."</li>
-<li>The Scorecard badge in the repo README shows ≥ 7/10 (or an open ticket
-  tracks the remediation).</li>
-</ul>
+<p>These gates block a PR; Scorecard only scored it after the fact.</p>
+<h2 id="why-it-was-dropped">Why it was dropped<a class="headerlink" href="#why-it-was-dropped" title="Permanent link">&para;</a></h2>
+<ol>
+<li><strong>It was never a fleet standard — an accident of history.</strong> Scorecard
+   existed on 3 of 14 repos; coverage that partial gives no fleet-wide
+   signal, just three repos carrying a workflow the other eleven do not.</li>
+<li><strong>It duplicates gates the fleet already runs, more weakly.</strong> Its
+   meaningful checks — action pinning, token permissions, dangerous
+   workflow patterns, branch protection — are already enforced repo-locally
+   and harder by zizmor, actionlint, and the workflow-permissions audit.
+   Those block a PR; Scorecard only scores it afterwards.</li>
+<li><strong><code>publish_results</code> has no consumer.</strong> Publishing exists so third
+   parties can read a score on deps.dev or a badge; nothing outside the
+   fleet consumes these repos that way, so the published score is
+   write-only data — while the publish step still depends on the external
+   OpenSSF API and can redden a pipeline when that API is unavailable.</li>
+<li><strong>It is compliance theatre.</strong> The fleet's own stance is "no SLAs, no
+   enterprise ceremony, no compliance theatre."</li>
+</ol>
 <h2 id="failure-prevented">Failure prevented<a class="headerlink" href="#failure-prevented" title="Permanent link">&para;</a></h2>
-<p>A supply-chain weakness that every other fleet security gate misses — e.g. a
-workflow that passes zizmor but still triggers a Scorecard <em>Dangerous-Workflow</em>
-finding, or a dependency-update gap that Dependabot's config doesn't cover —
-goes undetected indefinitely. Scorecard's outside-in audit catches the gaps
-that self-audit inevitably misses.</p>
+<p>Drift between the three repos that carried Scorecard and the other eleven,
+write-only published scores, and pipeline red on an external API the fleet
+does not consume — while the actual supply-chain properties stay gated by
+zizmor, actionlint, the permissions audit, Dependabot/<code>uv audit</code>, and Trivy.</p>
 <h2 id="see-also">See also<a class="headerlink" href="#see-also" title="Permanent link">&para;</a></h2>
 <ul>
-<li><a href="../security-posture/">Security posture</a> — the per-gate security controls
-  Scorecard cross-checks.</li>
+<li><a href="../security-posture/">Security posture</a> — the per-gate controls that
+  replace Scorecard.</li>
+<li><a href="../github-actions-security/">GitHub Actions security</a> — the zizmor
+  workflow audit.</li>
 <li><a href="../repo-baseline/#ci-and-security-gates">Repo baseline — CI and security gates</a></li>
-<li><a href="https://securityscorecards.dev/">OpenSSF Scorecard</a></li>
-<li><a href="https://github.com/ossf/scorecard-action">OpenSSF Scorecard GitHub Action</a></li>
 </ul>
 
 

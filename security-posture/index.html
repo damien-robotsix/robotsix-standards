@@ -534,6 +534,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#openssf-scorecard-not-a-fleet-gate" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        OpenSSF Scorecard — not a fleet gate
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#the-gates" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2598,6 +2609,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#openssf-scorecard-not-a-fleet-gate" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        OpenSSF Scorecard — not a fleet gate
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#the-gates" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2871,6 +2893,18 @@ secret scanning (detect-secrets + TruffleHog, see gate 5), dependency auditing
 that genuinely requires a proprietary tool must justify the exception in the
 standard that introduces it — stating what an OSS alternative was evaluated
 and why it was insufficient.</p>
+<h2 id="openssf-scorecard-not-a-fleet-gate">OpenSSF Scorecard — not a fleet gate<a class="headerlink" href="#openssf-scorecard-not-a-fleet-gate" title="Permanent link">&para;</a></h2>
+<p>robotsix repos <strong>do not</strong> run
+<a href="https://securityscorecards.dev/">OpenSSF Scorecard</a> and must not add
+<code>.github/workflows/scorecard.yml</code> to a repo or to the repo-scaffold
+templates (operator decision, 2026-08-13). The supply-chain properties
+Scorecard would score are gated instead by
+<a href="../github-actions-security/">zizmor</a> (workflow security),
+<a href="./#4b-workflow-linting-actionlint-zizmor">actionlint</a>
+(workflow syntax), the
+<a href="./#4c-least-privilege-permissions-blocks">workflow-permissions audit</a>,
+Dependabot/<code>uv audit</code> (dependency CVEs), and Trivy (container CVEs). See
+<a href="../scorecard/">OpenSSF Scorecard (not used)</a> for the full rationale.</p>
 <h2 id="the-gates">The gates<a class="headerlink" href="#the-gates" title="Permanent link">&para;</a></h2>
 <p>Each gate below is a <strong>required, self-enforcing</strong> control. A repo that ships a
 container image additionally meets the <strong>container-image</strong> gates.</p>

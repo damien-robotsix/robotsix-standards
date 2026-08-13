@@ -2787,11 +2787,11 @@ until the finding is fixed or suppressed with a documented rationale.</p>
   consume it by reference rather than installing it directly.</li>
 <li><strong><a href="../repo-baseline/#ci-and-security-gates">Repo baseline — CI and security gates</a></strong>
   lists zizmor as part of the standard gate set.</li>
-<li><strong><a href="../scorecard/">OpenSSF Scorecard</a></strong> — Scorecard's <em>Token-Permissions</em>
-  and <em>Dangerous-Workflow</em> checks overlap with zizmor's audit surface.
-  zizmor catches workflow-level vulnerabilities at authoring time;
-  Scorecard provides an independent outside-in audit that confirms
-  the gates are effective.</li>
+<li><strong><a href="../scorecard/">OpenSSF Scorecard</a></strong> — not used. Scorecard's
+  <em>Token-Permissions</em> and <em>Dangerous-Workflow</em> checks overlap with zizmor's
+  audit surface, so the fleet dropped Scorecard (operator decision,
+  2026-08-13) and gates those properties with zizmor instead. See
+  <a href="../scorecard/">OpenSSF Scorecard (not used)</a> for the rationale.</li>
 </ul>
 <h2 id="see-also">See also<a class="headerlink" href="#see-also" title="Permanent link">&para;</a></h2>
 <ul>

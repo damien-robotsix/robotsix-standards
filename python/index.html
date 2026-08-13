@@ -3014,12 +3014,27 @@ compatible 0.x patches.</p>
 </ul>
 <h3 id="314-syntax-notes">3.14 syntax notes<a class="headerlink" href="#314-syntax-notes" title="Permanent link">&para;</a></h3>
 <ul>
-<li><strong>PEP 758: parentheses around multiple exception types are optional.</strong>
-  <code>except ValueError, KeyError:</code> is valid 3.14 syntax, exactly equivalent to
-  <code>except (ValueError, KeyError):</code> — and <code>ruff format</code> on a <code>&gt;=3.14</code> target
-  normalises to the parens-free form, making it the tool-enforced style.
-  Don't misread it as the legacy Python-2 <code>except E, var:</code> bind-as form, and
-  don't "fix" it back to parentheses.</li>
+<li><strong>On repos targeting Python 3.14+, write <code>except A, B:</code> (bare comma
+  form), never <code>except (A, B):</code>.</strong> PEP 758 gives the comma form exact tuple
+  semantics — both types are caught and the second name is not rebound — and
+  <code>ruff format</code> under <code>target-version = "py314"</code> strips the parentheses on
+  every run, so writing them is pointless. Don't misread the comma form as
+  the legacy Python-2 <code>except E, var:</code> bind-as form, and don't "fix" it back
+  to parentheses.</li>
+<li><strong>Do not file sweep tickets converting comma-form handlers to the
+  parenthesized form.</strong> A rule the formatter undoes produces tickets that can
+  never pass: the edit reverts on the next <code>ruff format</code>, the diff comes back
+  empty, and the ticket blocks.</li>
+<li><strong>If a repo genuinely must keep the parenthesized form</strong> (e.g. it still
+  supports 3.13), the lever is ruff's <code>target-version</code>, not a style rule —
+  set it to <code>py313</code> and the parens survive. Prefer the fleet default
+  (<code>py314</code>, comma form) unless a real 3.13 consumer exists.</li>
+<li><em>Measured evidence (CPython 3.14.6, ruff 0.16.2):</em> <code>except TypeError,
+  ValueError:</code> catches both and leaves <code>ValueError is builtins.ValueError</code>
+  true. With <code>target-version = "py313"</code>, ruff preserves <code>except (A, B):</code>;
+  with <code>py314</code> it rewrites it to <code>except A, B:</code>. Two repos independently
+  invented opposite rules for this and both were wrong — this section is the
+  written answer; don't re-litigate it in a third direction.</li>
 </ul>
 <h2 id="datetimes">Datetimes<a class="headerlink" href="#datetimes" title="Permanent link">&para;</a></h2>
 <p><strong>UTC everywhere; naive datetimes are forbidden in stored or emitted data.</strong>

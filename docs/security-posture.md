@@ -64,6 +64,20 @@ that genuinely requires a proprietary tool must justify the exception in the
 standard that introduces it — stating what an OSS alternative was evaluated
 and why it was insufficient.
 
+## OpenSSF Scorecard — not a fleet gate
+
+robotsix repos **do not** run
+[OpenSSF Scorecard](https://securityscorecards.dev/) and must not add
+`.github/workflows/scorecard.yml` to a repo or to the repo-scaffold
+templates (operator decision, 2026-08-13). The supply-chain properties
+Scorecard would score are gated instead by
+[zizmor](github-actions-security.md) (workflow security),
+[actionlint](security-posture.md#4b-workflow-linting-actionlint-zizmor)
+(workflow syntax), the
+[workflow-permissions audit](security-posture.md#4c-least-privilege-permissions-blocks),
+Dependabot/`uv audit` (dependency CVEs), and Trivy (container CVEs). See
+[OpenSSF Scorecard (not used)](scorecard.md) for the full rationale.
+
 ## The gates
 
 Each gate below is a **required, self-enforcing** control. A repo that ships a

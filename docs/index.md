@@ -198,9 +198,9 @@ integrates with the deployment system. Beyond the baseline it follows:
 - **[Health endpoints](health-endpoints.md)** — split liveness (`/health`) vs.
   readiness (`/readyz`) endpoints so the orchestrator can restart dead processes
   without gating traffic on a dependency probe, and vice versa.
-- **[OpenSSF Scorecard](scorecard.md)** — independent supply-chain audit
-  (~20 checks) producing a single numeric score; closes the gap the per-gate
-  security stack doesn't cover.
+- **[OpenSSF Scorecard (not used)](scorecard.md)** — fleet-wide decision to
+  NOT run OpenSSF Scorecard; zizmor, actionlint, the permissions audit,
+  Dependabot/`uv audit`, and Trivy gate the same supply-chain properties.
 
 ### The deployment system (bootstrap tier)
 

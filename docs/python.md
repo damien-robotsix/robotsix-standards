@@ -193,12 +193,27 @@ declare it in every Python repo (the baseline-check gate verifies this).
 
 ### 3.14 syntax notes
 
-- **PEP 758: parentheses around multiple exception types are optional.**
-  `except ValueError, KeyError:` is valid 3.14 syntax, exactly equivalent to
-  `except (ValueError, KeyError):` — and `ruff format` on a `>=3.14` target
-  normalises to the parens-free form, making it the tool-enforced style.
-  Don't misread it as the legacy Python-2 `except E, var:` bind-as form, and
-  don't "fix" it back to parentheses.
+- **On repos targeting Python 3.14+, write `except A, B:` (bare comma
+  form), never `except (A, B):`.** PEP 758 gives the comma form exact tuple
+  semantics — both types are caught and the second name is not rebound — and
+  `ruff format` under `target-version = "py314"` strips the parentheses on
+  every run, so writing them is pointless. Don't misread the comma form as
+  the legacy Python-2 `except E, var:` bind-as form, and don't "fix" it back
+  to parentheses.
+- **Do not file sweep tickets converting comma-form handlers to the
+  parenthesized form.** A rule the formatter undoes produces tickets that can
+  never pass: the edit reverts on the next `ruff format`, the diff comes back
+  empty, and the ticket blocks.
+- **If a repo genuinely must keep the parenthesized form** (e.g. it still
+  supports 3.13), the lever is ruff's `target-version`, not a style rule —
+  set it to `py313` and the parens survive. Prefer the fleet default
+  (`py314`, comma form) unless a real 3.13 consumer exists.
+- *Measured evidence (CPython 3.14.6, ruff 0.16.2):* `except TypeError,
+  ValueError:` catches both and leaves `ValueError is builtins.ValueError`
+  true. With `target-version = "py313"`, ruff preserves `except (A, B):`;
+  with `py314` it rewrites it to `except A, B:`. Two repos independently
+  invented opposite rules for this and both were wrong — this section is the
+  written answer; don't re-litigate it in a third direction.
 
 ## Datetimes
 

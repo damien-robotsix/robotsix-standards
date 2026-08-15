@@ -72,15 +72,25 @@ log record, and the immediate `dump_config` rewrite.
 ### 5. Feature-removal checklist
 
 When a PR removes a config-backed feature from a service, the author MUST
-verify one of:
+also migrate or remove the corresponding persisted config in the same change.
+A removal that leaves the model and the live volume out of sync is
+incomplete — the stale block on disk is exactly what crashloops the service
+on the next deploy (the `legal_guardrails` incident). Every removal PR MUST:
 
-- **(a) Library self-heal.** The shared library's strip-on-load behaviour is
-  shipped and active in the target image, so the first boot after deploy
-  strips the stale keys automatically. No further action is required in
-  the removal PR — the library handles it.
-- **(b) Explicit migration.** The removal PR ships a migration (a startup
-  hook, a config-rewrite step, or a deploy-side cleanup) that removes the
-  stale block from persisted config before the new image boots.
+1. **Update the config loader to tolerate/strip the removed key.** The load
+   path must not fail validation on the stale key. Either the shared
+   library's strip-on-load behaviour is shipped and active in the target
+   image, or the removal PR updates the component's load path so the removed
+   key is tolerated and stripped rather than rejected.
+2. **Clear the stored config on deploy (if applicable).** If the removed key
+   is present in the persisted config on the live volume and the library
+   self-heal is not active, the PR ships the deploy-side cleanup — a startup
+   config-rewrite, a deploy hook, or an explicit removal step — so the stale
+   block is removed rather than merely tolerated forever.
+3. **Verify the service starts without error.** Before the removal is
+   complete, the author MUST confirm the new image boots cleanly against a
+   volume that still carries the stale key — the load path strips the key
+   (warning once), the config is rewritten, and the service reaches ready.
 
 A removal MUST **never** assume that stored config is already clean — the
 config file on the live volume is the state that the library's lenient-load

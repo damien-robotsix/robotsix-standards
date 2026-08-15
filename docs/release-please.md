@@ -125,11 +125,20 @@ the tag and release when the release PR is merged).
 
 ## Workflow file
 
-Every repo wires the action in `.github/workflows/release-please.yml`:
+The mechanism lives in the fleet's shared reusable workflow; every repo wires
+a caller stub in `.github/workflows/release-please.yml` that decides only
+*when* it runs:
 
 ```yaml
 name: release-please
 
+# Fleet-wide release automation per robotsix-standards release-please.md.
+# Opens/updates a release PR on every push to main; creates the tag and
+# GitHub Release when that release PR is merged.
+#
+# The mechanism — minting the App token, running release-please, syncing
+# uv.lock — lives in the shared workflow so a fix lands once for the fleet.
+# What stays here is what only this repo can decide: when to run.
 on:
   push:
     branches:
@@ -154,33 +163,21 @@ permissions: {}
 jobs:
   release-please:
     name: Release Please
-    runs-on: ubuntu-latest
-    permissions:
-      contents: write       # create the release commit, tag and GitHub Release
-      pull-requests: write  # open and update the release PR
+    # Only act on a push, or on the merge of release-please's own release PR.
     if: |
       github.event_name == 'push' ||
       github.event_name == 'workflow_dispatch' ||
       (github.event_name == 'pull_request' &&
        github.event.pull_request.merged == true &&
        github.event.pull_request.head.ref == 'release-please--branches--main')
-    steps:
-      # Mint a GitHub App installation token. NOT GITHUB_TOKEN — see below.
-      - name: Mint a GitHub App installation token
-        id: app-token
-        uses: actions/create-github-app-token@fee1f7d63c2ff003460e3d139729b119787bc349  # v2.2.2
-        with:
-          app-id: ${{ vars.RELEASE_APP_ID }}
-          private-key: ${{ secrets.RELEASE_APP_PRIVATE_KEY }}
-          # Scope the token. Without at least one `permission-*` input it
-          # inherits the App's blanket installation permissions, which zizmor
-          # flags as a high-severity finding.
-          permission-contents: write        # release commit, tag, Release
-          permission-pull-requests: write   # open and update the release PR
-
-      - uses: googleapis/release-please-action@<COMMIT_SHA>  # see pinning note below
-        with:
-          token: ${{ steps.app-token.outputs.token }}
+    permissions:
+      contents: write       # create the release commit, tag and GitHub Release
+      pull-requests: write  # open and update the release PR
+    uses: damien-robotsix/robotsix-github-workflows/.github/workflows/release-please.yml@<COMMIT_SHA>  # main
+    with:
+      app-id: ${{ vars.RELEASE_APP_ID }}
+    secrets:
+      app-private-key: ${{ secrets.RELEASE_APP_PRIVATE_KEY }}
 ```
 
 > **The token must not be `GITHUB_TOKEN`.** GitHub deliberately suppresses
@@ -195,19 +192,26 @@ jobs:
 > `robotsix-file-hub` released successfully only because its default branch is
 > unprotected.
 >
-> `RELEASE_APP_ID` (variable) and `RELEASE_APP_PRIVATE_KEY` (secret) are the
-> same fleet App credentials used elsewhere; see the prerequisite section
-> above.
+> This is why the App token is minted *inside* the shared workflow rather than
+> passed in: an installation token lives ~1h, so it cannot be a static secret,
+> and a reusable workflow's `secrets:` cannot carry runtime step outputs. The
+> caller passes the App's identity (`app-id` input) and its PEM
+> (`app-private-key` secret) instead. `RELEASE_APP_ID` (variable) and
+> `RELEASE_APP_PRIVATE_KEY` (secret) are the same fleet App credentials used
+> elsewhere; see the prerequisite section above.
 
 The `if` guard ensures the action only creates tags/releases on merge of its
 own release PR, not on merge of any other PR.
 
-**Every element above is load-bearing** — an earlier version of this template
-omitted four of them and failed the fleet's own `lint-workflows` audit:
+**Every element of the stub is load-bearing** — an earlier version of this
+template omitted four of them and failed the fleet's own `lint-workflows`
+audit:
 
 - **`permissions: {}` at the top with write scopes on the job.** zizmor's
   `excessive-permissions` rejects workflow-level `contents: write` /
-  `pull-requests: write`, because they are then granted to every job.
+  `pull-requests: write`, because they are then granted to every job. A job
+  that calls a reusable workflow still declares its own permissions: the
+  called workflow cannot be granted more than its caller holds.
 - **A comment on each permission.** zizmor's `undocumented-permissions`.
 - **`name:` on the job.** zizmor's `anonymous-definition` is only *info*
   severity, but the shared `lint-workflows` reusable fails on it (exit 11).
@@ -223,31 +227,44 @@ already failed on `main`.
 > `changelog.d/` and `[tool.towncrier]` unconditionally, so they fail the very
 > commit that removes them.
 >
-> **Pinning.** Pin the action to a commit SHA, not a tag. Resolve the SHA
-> with:
->
-> ```bash
-> url=https://github.com/googleapis/release-please-action.git
-> git ls-remote "$url" "refs/tags/v5^{}" "refs/tags/v5" \
->   | awk '/\^\{\}$/{c=$1} !/\^\{\}$/{p=$1} END{print (c!=""?c:p)}'
-> ```
+> **Pinning.** Pin the shared workflow to a commit SHA on its default branch,
+> not a tag or branch name, with a trailing `# main` comment. The
+> release-please action's own pin now lives in the shared workflow, where
+> dependabot maintains it once for the fleet.
 
 ## Shared reusable workflow
 
-Optionally, the fleet may carry a shared reusable workflow in
+The mechanism lives in
 [robotsix-github-workflows](https://github.com/damien-robotsix/robotsix-github-workflows)
-(`release-please.yml`) so member repos adopt it in one `uses:` line —
-mirroring the existing `docker-release.yml` pattern:
+as `release-please.yml`, adopted fleet-wide on 2026-08-15. It owns the token
+minting, the release-please action and the `uv.lock` sync. Full input and
+secret reference: `docs/workflow-reference.md` in that repo.
 
-```yaml
-jobs:
-  release-please:
-    uses: damien-robotsix/robotsix-github-workflows/.github/workflows/release-please.yml@<COMMIT_SHA>
-    secrets: inherit
-```
+The inputs a caller normally touches:
 
-When the shared workflow exists, member repos use it instead of inlining the
-action. Until then, the inline workflow above is the canonical setup.
+| Input | Default | When to set it |
+|---|---|---|
+| `app-id` | — | always; `${{ vars.RELEASE_APP_ID }}` |
+| `sync-uv-lock` | `true` | `false` for a repo with no `uv.lock` |
+| `skip-labeling` | `false` | `true` to skip release-please's PR labels |
+| `harden-runner` | `false` | `true` to audit egress on the release job |
+| `default-branch` | `main` | a repo whose default branch is not `main` |
+
+> **Why the minted token carries `workflows: write`.** Creating the Release
+> creates a tag ref at the release commit, and GitHub treats creating a ref
+> whose `.github/workflows/**` differ from the default branch as *modifying
+> workflow files* — permitted only with `workflows: write`. Dependabot bumping
+> an action while the release PR is open is enough to cause that drift.
+> Without the scope the release fails with `Resource not accessible by
+> integration`, the tag is never cut, and every later push retries the same
+> failure — silently, since the version bump itself has already landed.
+> Diagnosed on `robotsix-invest` 2026-08-15, where v0.4.0 sat untagged for six
+> days. The API names the accepted alternatives in its response header:
+> `x-accepted-github-permissions: contents=write; contents=write,workflows=write`.
+>
+> The tag name is irrelevant to this check — the *target commit* decides it.
+> A release at the default branch's tip succeeds either way, which is what
+> makes the failure look arbitrary.
 
 ## Conventional commits
 
@@ -276,7 +293,7 @@ versioning purposes.
 
 **Rule:** Every robotsix repo carries a `release-please-config.json`, a
 `.release-please-manifest.json`, and a `.github/workflows/release-please.yml`
-(or the shared reusable workflow equivalent).
+calling the shared reusable workflow.
 
 **Rationale:** Without release-please, a repo has no mechanism to create
 version tags or compile changelogs automatically. Tags must be pushed by hand,
@@ -659,19 +676,18 @@ Register both paths in `docs/modules.yaml` under the appropriate module's
 
 ### 6. Add the release-please workflow
 
-Copy the workflow template from the [Workflow file](#workflow-file) section
-into `.github/workflows/release-please.yml`. Pin the action SHA — resolve it
-with:
+Copy the caller stub from the [Workflow file](#workflow-file) section into
+`.github/workflows/release-please.yml`. Pin the shared workflow to a commit
+SHA on its default branch — resolve it with:
 
 ```bash
-url=https://github.com/googleapis/release-please-action.git
-git ls-remote "$url" "refs/tags/v5^{}" "refs/tags/v5" \
-  | awk '/\^\{\}$/{c=$1} !/\^\{\}$/{p=$1} END{print (c!=""?c:p)}'
+url=https://github.com/damien-robotsix/robotsix-github-workflows.git
+git ls-remote "$url" refs/heads/main | cut -f1
 ```
 
-If the repo is not a `uv` project, omit the `uv.lock` sync step. If the repo
-uses the shared reusable workflow from `robotsix-github-workflows`, use that
-instead of inlining.
+If the repo is not a `uv` project, pass `sync-uv-lock: false`. Never inline
+the mechanism: it lived as fourteen diverging copies until 2026-08-15, and a
+fix then had to be made fourteen times.
 
 > **Verification.** The workflow file passes `zizmor` (or the fleet
 > `lint-workflows` gate). The token step uses an App installation token, not

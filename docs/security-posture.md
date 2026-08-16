@@ -252,6 +252,51 @@ and add a self-referential secret-management burden. The OSS stack above
 - **Alignment:** OpenSSF Scorecard *Token-Permissions* check, OWASP
   *Secret Management*.
 
+#### Credential and secret files are never tracked
+
+Secret scanning (above) catches *detected* secrets — API keys, tokens,
+high-entropy strings — but not credential **files**: an `.htpasswd` holds a
+bcrypt hash (no cleartext pattern for a scanner to match), a `wp-config.php`
+may template its credentials, and private-key files only match when the
+scanner knows the format. The defense for these is a deny list, not a
+detector.
+
+**Every repo's `.gitignore` covers, at minimum:**
+
+- `.htpasswd`
+- `.env` and `.env.*`
+- `wp-config.php` and `wp-config*.php`
+- `*.pem`, `*.key`, and other private-key files
+- `*secret*`
+- `*.p12`
+
+Patterns are scoped per repo; a repo that deliberately tracks a file matched
+by one of them (e.g. a public certificate, not a private key) adds a negating
+exception with a comment stating why.
+
+**Out-of-band secret transport.** A secret that must exist on a deploy target
+(an `.htpasswd` protecting an admin area, a `wp-config.php` with production
+credentials) is pushed **out-of-band**, never via the committed tree: read the
+value from a CI/CD secret (`${{ secrets.* }}`) and write it to the server with
+a dedicated transport. The transport must not use a delete-ordering that
+would wipe the file — e.g. `lftp mirror --delete` (or `rsync --delete`) over a
+tree that does not contain the secret deletes it on the target — use a
+non-delete invocation or a dedicated file transfer instead.
+
+- **How to verify:** `git ls-files` lists no credential or secret file;
+  `.gitignore` covers the deny list above; the deploy workflow reads secrets
+  from `${{ secrets.* }}` and writes them via a transport with no
+  delete-ordering.
+- **Failure prevented:** a credential file is committed and tracked. Once in
+  history it survives every later removal — deleting the file (or adding the
+  `.gitignore` entry later) does not purge it from past commits, and the only
+  remediation is a full history rewrite (the robotsix-mill `wp-config.php`
+  incident). A deploy sync with a delete-ordering silently deletes a
+  server-side secret absent from the committed tree, taking the protected
+  service down (the robotsix-mill `lftp mirror --delete` trap).
+- **Alignment:** OWASP *Secret Management*, OpenSSF Scorecard
+  *Token-Permissions* check.
+
 ### 6. SBOM & vulnerability audit
 
 Every repo produces a machine-readable software bill of materials and runs a

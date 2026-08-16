@@ -2963,7 +2963,9 @@ gate set:</p>
   workflow), <code>dependency-review</code> on PRs (<code>fail-on-severity:
   high</code> — this is a <strong>floor</strong>; a repo may set something stricter such as
   <code>moderate</code>. Strictness is per-repo headroom, laxity is not.), and a CycloneDX SBOM generated and uploaded as a workflow
-  artifact.</li>
+  artifact.
+  Credential and secret files are never tracked — see
+  <a href="../security-posture/#credential-and-secret-files-are-never-tracked">security posture</a>.</li>
 <li><strong>Dependency lockfile integrity:</strong> <code>uv lock --check</code> validates that
   <code>uv.lock</code> is consistent with <code>pyproject.toml</code> constraints before
   <code>uv sync --frozen</code> — see <a href="../ci-dependency-standard/">CI dependency management</a>.</li>

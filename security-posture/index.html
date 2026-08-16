@@ -673,6 +673,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#credential-and-secret-files-are-never-tracked" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Credential and secret files are never tracked
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -2748,6 +2759,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#credential-and-secret-files-are-never-tracked" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Credential and secret files are never tracked
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -3087,6 +3109,48 @@ and add a self-referential secret-management burden. The OSS stack above
   the secret existed in the history and must be assumed compromised.</li>
 <li><strong>Alignment:</strong> OpenSSF Scorecard <em>Token-Permissions</em> check, OWASP
   <em>Secret Management</em>.</li>
+</ul>
+<h4 id="credential-and-secret-files-are-never-tracked">Credential and secret files are never tracked<a class="headerlink" href="#credential-and-secret-files-are-never-tracked" title="Permanent link">&para;</a></h4>
+<p>Secret scanning (above) catches <em>detected</em> secrets — API keys, tokens,
+high-entropy strings — but not credential <strong>files</strong>: an <code>.htpasswd</code> holds a
+bcrypt hash (no cleartext pattern for a scanner to match), a <code>wp-config.php</code>
+may template its credentials, and private-key files only match when the
+scanner knows the format. The defense for these is a deny list, not a
+detector.</p>
+<p><strong>Every repo's <code>.gitignore</code> covers, at minimum:</strong></p>
+<ul>
+<li><code>.htpasswd</code></li>
+<li><code>.env</code> and <code>.env.*</code></li>
+<li><code>wp-config.php</code> and <code>wp-config*.php</code></li>
+<li><code>*.pem</code>, <code>*.key</code>, and other private-key files</li>
+<li><code>*secret*</code></li>
+<li><code>*.p12</code></li>
+</ul>
+<p>Patterns are scoped per repo; a repo that deliberately tracks a file matched
+by one of them (e.g. a public certificate, not a private key) adds a negating
+exception with a comment stating why.</p>
+<p><strong>Out-of-band secret transport.</strong> A secret that must exist on a deploy target
+(an <code>.htpasswd</code> protecting an admin area, a <code>wp-config.php</code> with production
+credentials) is pushed <strong>out-of-band</strong>, never via the committed tree: read the
+value from a CI/CD secret (<code>${{ secrets.* }}</code>) and write it to the server with
+a dedicated transport. The transport must not use a delete-ordering that
+would wipe the file — e.g. <code>lftp mirror --delete</code> (or <code>rsync --delete</code>) over a
+tree that does not contain the secret deletes it on the target — use a
+non-delete invocation or a dedicated file transfer instead.</p>
+<ul>
+<li><strong>How to verify:</strong> <code>git ls-files</code> lists no credential or secret file;
+  <code>.gitignore</code> covers the deny list above; the deploy workflow reads secrets
+  from <code>${{ secrets.* }}</code> and writes them via a transport with no
+  delete-ordering.</li>
+<li><strong>Failure prevented:</strong> a credential file is committed and tracked. Once in
+  history it survives every later removal — deleting the file (or adding the
+  <code>.gitignore</code> entry later) does not purge it from past commits, and the only
+  remediation is a full history rewrite (the robotsix-mill <code>wp-config.php</code>
+  incident). A deploy sync with a delete-ordering silently deletes a
+  server-side secret absent from the committed tree, taking the protected
+  service down (the robotsix-mill <code>lftp mirror --delete</code> trap).</li>
+<li><strong>Alignment:</strong> OWASP <em>Secret Management</em>, OpenSSF Scorecard
+  <em>Token-Permissions</em> check.</li>
 </ul>
 <h3 id="6-sbom-vulnerability-audit">6. SBOM &amp; vulnerability audit<a class="headerlink" href="#6-sbom-vulnerability-audit" title="Permanent link">&para;</a></h3>
 <p>Every repo produces a machine-readable software bill of materials and runs a

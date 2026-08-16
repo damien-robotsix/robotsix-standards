@@ -1150,13 +1150,41 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#enforcement-future" class="md-nav__link">
+  <a href="#enforcement" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Enforcement (future)
+        Enforcement
       
     </span>
   </a>
+  
+    <nav class="md-nav" aria-label="Enforcement">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#how-to-add-the-gate-to-your-repository" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How to add the gate to your repository
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#what-the-script-checks" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What the script checks
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -2471,13 +2499,41 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#enforcement-future" class="md-nav__link">
+  <a href="#enforcement" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Enforcement (future)
+        Enforcement
       
     </span>
   </a>
+  
+    <nav class="md-nav" aria-label="Enforcement">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#how-to-add-the-gate-to-your-repository" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How to add the gate to your repository
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#what-the-script-checks" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What the script checks
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -2601,11 +2657,45 @@ will never match because wheel archives use the installed layout. The check
 always fails or always passes depending on the match logic — it provides no
 signal either way.</p>
 </blockquote>
-<h2 id="enforcement-future">Enforcement (future)<a class="headerlink" href="#enforcement-future" title="Permanent link">&para;</a></h2>
-<p>A standards CI lint that scans changed workflow files and <code>pyproject.toml</code> for
-type-aware packages missing the wheel-content assertion, and fails the PR if a
-typed package has neither the installed type-check nor the wheel-content guard.
-This is tracked as a follow-up ticket.</p>
+<h2 id="enforcement">Enforcement<a class="headerlink" href="#enforcement" title="Permanent link">&para;</a></h2>
+<p>The enforcement gate lives at <code>scripts/check-py-typed-guard.py</code> in the
+standards repo.  Every type-aware (PEP 561) Python repository must invoke
+it in CI — it exits non-zero when the repository declares itself typed
+but neither guard rule is present in its workflow files.</p>
+<h3 id="how-to-add-the-gate-to-your-repository">How to add the gate to your repository<a class="headerlink" href="#how-to-add-the-gate-to-your-repository" title="Permanent link">&para;</a></h3>
+<p>Copy the script into your repository's <code>scripts/</code> directory (keep it in
+sync with the upstream standards repo) and add a CI step:</p>
+<div class="highlight"><pre><span></span><code><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Check py.typed wheel guard</span>
+<span class="w">  </span><span class="nt">run</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">uv run python scripts/check-py-typed-guard.py</span>
+</code></pre></div>
+<p>If the check fails the output tells you which guard is missing and how
+to add it, referencing this standard page.</p>
+<h3 id="what-the-script-checks">What the script checks<a class="headerlink" href="#what-the-script-checks" title="Permanent link">&para;</a></h3>
+<ol>
+<li>
+<p><strong>Is the package type-aware?</strong>  It reads <code>pyproject.toml</code> for the
+   <code>Typing :: Typed</code> trove classifier, and scans the source tree for
+   a <code>py.typed</code> marker file (PEP 561).  If neither is present the
+   check passes — no guard is required for untyped packages.</p>
+</li>
+<li>
+<p><strong>Does CI include at least one guard?</strong>  It scans every
+   <code>.github/workflows/*.yml</code> file for either:</p>
+</li>
+<li>an <strong>installed type-check</strong> (build wheel → install in clean venv →
+     run mypy/pyright against the installed package), or</li>
+<li>a <strong>wheel-content assertion</strong> (zipfile inspection explicitly
+     checking for <code>py.typed</code> inside the built wheel).</li>
+</ol>
+<p>If neither pattern is found the check fails with a diagnostic
+   message that links back to this page.</p>
+<blockquote>
+<p><strong>Failure mode prevented.</strong> A typed package whose CI workflow drifts
+away from the guard (e.g. a refactor that removes the installed-check
+step without replacing it) silently loses downstream type-safety. The
+enforcement gate catches the regression at PR time, before the wheel
+is published.</p>
+</blockquote>
 
 
 

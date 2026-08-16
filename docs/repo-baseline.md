@@ -191,6 +191,8 @@ gate set:
   high` — this is a **floor**; a repo may set something stricter such as
   `moderate`. Strictness is per-repo headroom, laxity is not.), and a CycloneDX SBOM generated and uploaded as a workflow
   artifact.
+  Credential and secret files are never tracked — see
+  [security posture](security-posture.md#credential-and-secret-files-are-never-tracked).
 - **Dependency lockfile integrity:** `uv lock --check` validates that
   `uv.lock` is consistent with `pyproject.toml` constraints before
   `uv sync --frozen` — see [CI dependency management](ci-dependency-standard.md).

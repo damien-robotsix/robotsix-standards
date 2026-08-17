@@ -1,1 +1,0 @@
-Retire the deploy API key: mark docs/deploy-api-key.md superseded, drop the chat-access X-API-Key requirement, and state that the chat agent reaches central-deploy over the trusted internal network with no credential.

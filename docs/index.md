@@ -173,9 +173,9 @@ integrates with the deployment system. Beyond the baseline it follows:
 - **[Multi-disk data handling](disk-handling.md)** — disk-agnostic named volumes
   in component repos, deploy-time disk selection, relocatable volumes, and
   per-disk usage reporting.
-- **[Deploy API key provisioning](deploy-api-key.md)** — how central-deploy
-  auto-provisions a deploy API key into any component that opts in — opt-in
-  mechanism, injection path, secret-handling, and lifecycle.
+- **[Deploy API key provisioning](deploy-api-key.md)** — superseded: the
+  deploy API key is retired; components ship no credential and central-deploy
+  checks no per-caller token.
 - **[Entrypoint contract](entrypoint-contract.md)** — how a component's
   container starts up.
 - **[FastAPI Pydantic field descriptions](fastapi-pydantic-field-descriptions.md)** —

@@ -84,7 +84,7 @@ the default.
 | [Docker build & release](docs/docker-standard.md) | One Dockerfile pattern + one shared publish workflow → GHCR, with attestation, scanning, and CI integration tests. |
 | [Deploy contract](docs/deploy-contract.md) | The `deploy/docker-compose.yml` shape the deployment system consumes (canonical copy lives in [central-deploy](https://github.com/damien-robotsix/robotsix-central-deploy/blob/main/docs/DEPLOY_CONTRACT.md)). |
 | [Multi-disk data handling](docs/disk-handling.md) | Disk-agnostic named volumes in component repos, deploy-time disk selection, relocatable volumes, and per-disk usage reporting. |
-| [Deploy API key](docs/deploy-api-key.md) | How central-deploy auto-provisions a deploy API key into any component that opts in — opt-in mechanism, injection path, secret-handling, and lifecycle. |
+| [Deploy API key](docs/deploy-api-key.md) | Superseded — the deploy API key is retired; components ship no credential and central-deploy checks no per-caller token. |
 | [Entrypoint contract](docs/entrypoint-contract.md) | Console script as PID 1 (exec-form `ENTRYPOINT`); `entrypoint.sh` only for genuine startup work. |
 | [FastAPI Pydantic field descriptions](docs/fastapi-pydantic-field-descriptions.md) | Every public request/response Pydantic model field must carry `Field(description=...)` so the generated OpenAPI schema is self-documenting. |
 | [FastAPI test isolation](docs/fastapi-test-isolation.md) | Mutable server state exposed through `Depends()` dependencies so tests can override via `app.dependency_overrides` — never import and mutate the module-level store directly. |

@@ -119,19 +119,20 @@ vulnerable package before the PR merges.
 - **Alignment:** OpenSSF Scorecard *Dependency-Update-Tool* and
   *Vulnerabilities* checks.
 
-### 3. Automated dependency updates — Dependabot
+### 3. Automated dependency updates — Renovate + Dependabot
 
-Every pin the standards mandate has exactly one named bumper. Dependabot covers
-third-party packages, GitHub Actions SHAs, base-image digests, pre-commit hook
-versions, and npm packages. `.github/dependabot.yml` declares the required
-ecosystems, and the baseline-check gate verifies it is present and complete.
-Dependabot PRs auto-merge once required checks pass.
+Every pin the standards mandate has exactly one named bumper. Renovate covers
+Python/uv lockfiles; Dependabot covers GitHub Actions SHAs, base-image digests,
+pre-commit hook versions, and npm packages. `renovate.json` declares the `uv`
+manager in every Python repo, and `.github/dependabot.yml` declares the
+remaining ecosystems; the baseline-check gate verifies both are present and
+complete. Dependabot and Renovate PRs auto-merge once required checks pass.
 
-- **How to verify:** `.github/dependabot.yml` exists and covers
-  `github-actions` and `pre-commit` in every repo, plus the
-  language-specific ecosystem (`uv` in Python repos, `npm` in repos
-  with `package.json`), and `docker` in image-shipping repos. The Dependabot
-  tab shows recent update PRs.
+- **How to verify:** `renovate.json` exists in every Python repo (covering the
+  `uv` manager); `.github/dependabot.yml` exists and covers `github-actions`
+  and `pre-commit` in every repo, plus `npm` in repos with `package.json` and
+  `docker` in image-shipping repos. The Dependabot and Renovate dashboards
+  show recent update PRs.
 - **Failure prevented:** a pinned digest (base image, action SHA) rots silently
   — the image stops receiving base-OS security patches, an action runs an
   unmaintained version — with no alert.
@@ -377,7 +378,7 @@ dashboard-watching:
 |---|---|
 | Semgrep* | CI calls shared Semgrep workflow; latest CI run uploads Semgrep findings artifact |
 | Dependency review* | CI calls shared `dependency-review` workflow; Dependency graph enabled |
-| Dependabot | `.github/dependabot.yml` covers required ecosystems; recent update PRs |
+| Dependabot + Renovate | `.github/dependabot.yml` covers non-uv ecosystems; `renovate.json` present in Python repos; recent update PRs |
 | SHA-pinned actions | `grep -r 'uses:' .github/workflows/` — no mutable refs on third-party actions |
 | Workflow linting | `.pre-commit-config.yaml` includes `actionlint`; CI runs `zizmor` (content-only repos exempt from `zizmor`) |
 | Least-privilege permissions | Every workflow has `permissions:` block; `zizmor` reports clean |

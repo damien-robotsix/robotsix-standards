@@ -59,6 +59,7 @@ the default.
 | [Library internal logging](docs/library-logging.md) | Module-level `logging.getLogger(__name__)`, a single `NullHandler` in `__init__.py`, lazy `%`-style formatting, and DEBUG-for-routine events — library logging that never prints unless the app opts in. |
 | [Logging](docs/logging.md) | Structured JSON logging via structlog, stdout-only output, correlation-id middleware, and level conventions for every deployable service. |
 | [Hypothesis testing](docs/hypothesis.md) | Property-based testing profiles, shared strategies module, and CI integration for repos that use Hypothesis. |
+| [Mutation testing (mutmut)](docs/mutation-testing.md) | Advisory weekly mutmut cron for Python repos with ≥70% coverage — non-blocking by design, HTML report artifact, mutation score in the workflow summary. |
 | [Markdown linting](docs/markdown-linting.md) | markdownlint-cli2 and codespell pre-commit hooks for every repo that publishes MkDocs documentation. |
 | [Prose linting](docs/prose-linting.md) | Vale prose linter for style, readability, and fleet-specific vocabulary consistency — integrated through the existing pre-commit pipeline. |
 | [MkDocs build integrity](docs/mkdocs-build.md) | Strict mode build gating and link-validation configuration for every MkDocs site. |

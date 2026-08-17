@@ -98,6 +98,7 @@ nav:
       - Library internal logging: library-logging.md
       - Logging: logging.md
       - Hypothesis testing: hypothesis.md
+      - Mutation testing (mutmut): mutation-testing.md
       - Markdown linting: markdown-linting.md
       - Prose linting: prose-linting.md
       - MkDocs build integrity: mkdocs-build.md

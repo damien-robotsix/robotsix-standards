@@ -77,6 +77,9 @@ everywhere.
   for every deployable service.
 - **[Hypothesis testing](hypothesis.md)** — property-based testing profiles,
   shared strategies, and CI integration for repos that use Hypothesis.
+- **[Mutation testing (mutmut)](mutation-testing.md)** — advisory weekly
+  mutmut cron for Python repos with ≥70% coverage: non-blocking (`|| true`),
+  HTML report artifact, mutation score in the workflow summary.
 - **[Markdown linting](markdown-linting.md)** — markdownlint-cli2 and codespell
   pre-commit hooks for every repo that publishes MkDocs documentation.
 - **[Prose linting](prose-linting.md)** — Vale prose linter for style,

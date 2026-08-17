@@ -10,13 +10,13 @@
       
       
       
-        <link rel="canonical" href="https://damien-robotsix.github.io/robotsix-standards/changelog-driven-releases/">
+        <link rel="canonical" href="https://damien-robotsix.github.io/robotsix-standards/mutation-testing/">
       
       
-        <link rel="prev" href="../ci-dependency-standard/">
+        <link rel="prev" href="../hypothesis/">
       
       
-        <link rel="next" href="../release-please/">
+        <link rel="next" href="../markdown-linting/">
       
       
         
@@ -27,7 +27,7 @@
     
     
       
-        <title>Changelog & releases (superseded) - Robotsix Standards</title>
+        <title>Mutation testing (mutmut) - Robotsix Standards</title>
       
     
     
@@ -78,7 +78,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#changelog-releases" class="md-skip">
+        <a href="#mutation-testing-mutmut" class="md-skip">
           Skip to content
         </a>
       
@@ -114,7 +114,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Changelog & releases (superseded)
+              Mutation testing (mutmut)
             
           </span>
         </div>
@@ -589,37 +589,10 @@
                 
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Changelog & releases (superseded)
-  
-
-    
-  </span>
-  
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../changelog-driven-releases/" class="md-nav__link">
         
   
   
@@ -635,131 +608,6 @@
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#why-this-convention" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Why this convention
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#rules" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Rules
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Rules">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#1-every-pr-adds-a-newsfragment" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        1. Every PR adds a newsfragment
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#2-ci-enforces-the-fragment-requirement" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        2. CI enforces the fragment requirement
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#3-changelogmd-is-written-only-by-the-release-workflow" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        3. CHANGELOG.md is written only by the release workflow
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#4-releases-are-automated" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        4. Releases are automated
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#5-versions-stay-0x-until-100-is-declared-deliberately" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        5. Versions stay 0.x until 1.0.0 is declared deliberately
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#6-fragment-files-are-not-registered-in-docsmodulesyaml" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        6. Fragment files are NOT registered in docs/modules.yaml
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#reference" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Reference
-      
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -1357,10 +1205,37 @@
                 
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="../mutation-testing/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Mutation testing (mutmut)
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   
@@ -1376,6 +1251,70 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#why-this-exists" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why this exists
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-rule" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The rule
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pyprojecttoml-config" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        pyproject.toml config
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#weekly-cron-workflow" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Weekly cron workflow
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -2493,10 +2432,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#why-this-convention" class="md-nav__link">
+  <a href="#why-this-exists" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Why this convention
+        Why this exists
       
     </span>
   </a>
@@ -2504,93 +2443,32 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#rules" class="md-nav__link">
+  <a href="#the-rule" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Rules
+        The rule
       
     </span>
   </a>
-  
-    <nav class="md-nav" aria-label="Rules">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#1-every-pr-adds-a-newsfragment" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        1. Every PR adds a newsfragment
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#2-ci-enforces-the-fragment-requirement" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        2. CI enforces the fragment requirement
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#3-changelogmd-is-written-only-by-the-release-workflow" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        3. CHANGELOG.md is written only by the release workflow
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#4-releases-are-automated" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        4. Releases are automated
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#5-versions-stay-0x-until-100-is-declared-deliberately" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        5. Versions stay 0.x until 1.0.0 is declared deliberately
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#6-fragment-files-are-not-registered-in-docsmodulesyaml" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        6. Fragment files are NOT registered in docs/modules.yaml
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#reference" class="md-nav__link">
+  <a href="#pyprojecttoml-config" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Reference
+        pyproject.toml config
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#weekly-cron-workflow" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Weekly cron workflow
       
     </span>
   </a>
@@ -2617,152 +2495,124 @@
   
 
 
-<h1 id="changelog-releases">Changelog &amp; releases<a class="headerlink" href="#changelog-releases" title="Permanent link">&para;</a></h1>
+<h1 id="mutation-testing-mutmut">Mutation testing (mutmut)<a class="headerlink" href="#mutation-testing-mutmut" title="Permanent link">&para;</a></h1>
 <blockquote>
-<p><strong>Superseded:</strong> <a href="../release-please/">release-please</a> is the fleet-wide release
-automation. This page documents the prior towncrier convention, kept for
-historical reference.</p>
-<p><strong>Scope: every robotsix repository</strong> — libraries and deployable components
-alike, in any language. This page codifies the fragment-driven release
-convention already in use across the fleet; it is <em>in addition to</em> the
-<a href="../repo-baseline/">repo baseline</a>.</p>
+<p><strong>Scope: every Python repository with ≥70% test coverage and a meaningful
+test suite.</strong> Repos below the threshold — or whose tests exercise no real
+logic — are unaffected.</p>
 </blockquote>
-<p>Releases are driven by towncrier changelog fragments under <code>changelog.d/</code>,
-compiled by the shared auto-release workflow — not by hand-maintaining a
-Keep-a-Changelog file and manually creating tags.</p>
-<p>For a library whose version is derived from git tags via hatch-vcs
-(<code>[tool.hatch.version] source = "vcs"</code>), <strong>creating an annotated git tag IS the
-entire release process</strong> — there is no package to publish. The reference
-implementation lives in
-<a href="https://github.com/damien-robotsix/robotsix-github-workflows">robotsix-github-workflows</a>
-(<code>auto-release.yml</code>).</p>
-<h2 id="why-this-convention">Why this convention<a class="headerlink" href="#why-this-convention" title="Permanent link">&para;</a></h2>
-<p>A repo that maintains a hand-edited <code>CHANGELOG.md</code> with no towncrier fragment
-directory and no auto-release workflow accumulates completed entries under an
-<code>## 0.0.0 (unreleased)</code> heading with no mechanism to ever become a release.
-Because hatch-vcs derives the version from the tag, an untagged project can
-literally never emit a clean release version to downstream <code>uv.sources</code>
-consumers — they always resolve a dirty <code>0.x.dev&lt;distance&gt;+g&lt;sha&gt;</code> version
-instead of the tagged <code>X.Y.Z</code> the library's own <code>pyproject.toml</code> declares.</p>
-<p>Towncrier fragments solve the merge-conflict problem (parallel PRs each have
-their own file — the changelog itself is never a conflict surface) and the
-"what bump?" problem (the fragment type determines the semver bump).</p>
-<h2 id="rules">Rules<a class="headerlink" href="#rules" title="Permanent link">&para;</a></h2>
-<h3 id="1-every-pr-adds-a-newsfragment">1. Every PR adds a newsfragment<a class="headerlink" href="#1-every-pr-adds-a-newsfragment" title="Permanent link">&para;</a></h3>
-<p><strong>Rule:</strong> Every PR that changes user-visible behaviour adds a file to
-<code>changelog.d/</code> with one of these extensions: <code>.breaking.md</code>, <code>.feature.md</code>,
-<code>.bugfix.md</code>, or <code>.misc.md</code>. The filename is the issue/PR identifier followed by
-the extension (e.g. <code>changelog.d/123.bugfix.md</code>). A PR with no user-visible
-effect (CI-only, test-only, tooling-internal) adds the <code>skip-changelog</code> label
-instead.</p>
-<p><strong>Rationale:</strong> Per-PR fragment files eliminate changelog merge conflicts —
-parallel PRs never touch the same file. The extension encodes the bump type so
-the release workflow can compute the semver bump without a human classifying
-every PR at release time.</p>
-<blockquote>
-<p><strong>Failure mode.</strong> A repo without fragment enforcement accumulates unreleased
-changelog entries under <code>## 0.0.0 (unreleased)</code> that never become a release
-because the auto-release workflow sees an empty <code>changelog.d/</code> and does
-nothing. The downstream version stays dirty (<code>0.x.dev</code>) forever, and
-consumers pinning a git SHA never see a clean release version.</p>
-</blockquote>
-<h3 id="2-ci-enforces-the-fragment-requirement">2. CI enforces the fragment requirement<a class="headerlink" href="#2-ci-enforces-the-fragment-requirement" title="Permanent link">&para;</a></h3>
-<p><strong>Rule:</strong> Every repo's CI runs <code>towncrier check --compare-with origin/&lt;base&gt;</code>
-as a blocking gate on PRs. A <code>skip-changelog</code> label exempts the PR from this
-check.</p>
-<p><strong>Rationale:</strong> A fragment directory with no CI gate is a suggestion, not a rule
-— contributors forget, and releases silently skip entries. The CI gate makes the
-requirement mechanical: a PR that changes user-visible behaviour and lacks a
-fragment is blocked until the fragment is added (or the label applied).</p>
-<blockquote>
-<p><strong>Failure mode.</strong> Without CI enforcement, a multi-PR release cycle misses
-several PRs' changelog entries because no one noticed the fragments were never
-written. The compiled <code>CHANGELOG.md</code> is incomplete, and downstream consumers
-cannot audit what changed between two tagged versions.</p>
-</blockquote>
-<h3 id="3-changelogmd-is-written-only-by-the-release-workflow">3. CHANGELOG.md is written only by the release workflow<a class="headerlink" href="#3-changelogmd-is-written-only-by-the-release-workflow" title="Permanent link">&para;</a></h3>
-<p><strong>Rule:</strong> <code>CHANGELOG.md</code> is never edited by hand. The release workflow runs
-<code>towncrier build</code> to regenerate it from <code>changelog.d/</code> fragments, producing
-valid <a href="https://keepachangelog.com/en/1.1.0/">Keep a Changelog</a> output. The one
-exception: a programmatic tool that fixes a bug in <code>CHANGELOG.md</code> itself
-(e.g. an append/insert bug that would otherwise lose history) may write to it
-directly, and only for that fix. The tool must not become a general-purpose
-changelog writer — <code>changelog.d/</code> fragments remain the single source of truth
-for content.</p>
-<p><strong>Rationale:</strong> A hand-edited changelog drifts from the fragments: one gets
-updated, the other doesn't, and neither is reliable. The release workflow as
-sole writer guarantees that <code>CHANGELOG.md</code> is always a faithful compilation of
-the fragments that were present at release time.</p>
-<blockquote>
-<p><strong>Failure mode.</strong> A contributor edits <code>CHANGELOG.md</code> directly to add an entry
-during a PR, then forgets the fragment. The next release rebuilds the
-changelog from fragments and silently drops the hand-edited entry — losing
-history with no warning.</p>
-</blockquote>
-<h3 id="4-releases-are-automated">4. Releases are automated<a class="headerlink" href="#4-releases-are-automated" title="Permanent link">&para;</a></h3>
-<p><strong>Rule:</strong> Every repo wires the shared auto-release workflow from
-<a href="https://github.com/damien-robotsix/robotsix-github-workflows">robotsix-github-workflows</a>.
-The workflow runs weekly (and on demand). It does nothing when <code>changelog.d/</code>
-is empty; otherwise it:</p>
+<h2 id="why-this-exists">Why this exists<a class="headerlink" href="#why-this-exists" title="Permanent link">&para;</a></h2>
+<p>Coverage percentage measures which lines <em>execute</em>, not whether any test
+<em>checks what they do</em>. A test that calls a function and discards its result
+counts as covered; a wrong return value ships at 100% coverage. Mutation
+testing closes that gap by mutating the source — flipping <code>&gt;</code> to <code>&lt;</code>,
+deleting statements, swapping <code>and</code>/<code>or</code> — and re-running the suite. Every
+mutant that survives is a logic path no test asserts on.</p>
+<p>The established pattern in the Python OSS ecosystem (FastAPI, Pydantic,
+httpx, and similar projects) is an <strong>advisory weekly cron</strong>, never a
+per-commit gate, for two reasons:</p>
 <ul>
-<li>classifies fragments (any <code>breaking</code> or <code>feature</code> → minor bump, else patch);</li>
-<li>runs <code>towncrier build</code> to regenerate <code>CHANGELOG.md</code>;</li>
-<li>bumps the version in <code>pyproject.toml</code>;</li>
-<li>commits the changes;</li>
-<li>creates and pushes an annotated tag <code>vX.Y.Z</code>.</li>
+<li><strong>mutmut exits non-zero even when zero mutants survive.</strong> There is no
+  <code>--fail-under</code> threshold
+  (<a href="https://github.com/boxed/mutmut/issues/49">mutmut#49</a>), so a blocking CI
+  step would be permanently red.</li>
+<li><strong>A full-repo run takes 30–90 minutes.</strong> Running it on every push would
+  dominate CI minutes for a signal that changes slowly.</li>
 </ul>
-<p>For a library, creating the annotated tag <strong>is</strong> the entire release — there is
-no package to publish. For a deployable component, the <code>v*</code> tag in turn triggers
-the Docker publish workflow (see <a href="../docker-standard/">Docker build &amp; release</a>).</p>
-<p><strong>Rationale:</strong> A shared workflow keeps every repo on the same release cadence,
-deriving the semver bump from fragment types so no human classifies every PR at
-release time. Weekly (or on-demand) releases keep the cadence regular — repos
-don't drift months without a tag.</p>
-<blockquote>
-<p><strong>Failure mode.</strong> A repo without the auto-release workflow never creates a
-release tag. The version stays <code>0.x.dev</code> forever — consumers pinning a git SHA
-cannot tell at a glance whether an upgrade is a patch or a breaking change,
-and there is no auditable history of what changed between consumer updates. A
-repo with a hand-rolled release workflow diverges from the fleet's shared
-mechanism; every new contributor must learn per-repo release procedures.</p>
-</blockquote>
-<h3 id="5-versions-stay-0x-until-100-is-declared-deliberately">5. Versions stay 0.x until 1.0.0 is declared deliberately<a class="headerlink" href="#5-versions-stay-0x-until-100-is-declared-deliberately" title="Permanent link">&para;</a></h3>
-<p><strong>Rule:</strong> Versions stay <code>0.x</code> under semver. Bumping to <code>1.0.0</code> is a human
-decision — it is never automated. Under 0.x there is no compatibility promise,
-which matches the stack's pre-release, clean-cutover stance.</p>
-<p><strong>Rationale:</strong> Semver <code>0.x</code> means "no stability guarantee" — the public API may
-change at any minor bump. This is the correct posture for a stack under active
-development where clean cutover is the default migration strategy. Automating a
-<code>1.0.0</code> bump would make an unintended stability promise.</p>
-<blockquote>
-<p><strong>Failure mode.</strong> A repo whose auto-release workflow bumps to <code>1.0.0</code>
-automatically signals API stability that does not exist — consumers treat
-minor bumps as safe and are broken by a breaking change that arrived without
-a major-version signal.</p>
-</blockquote>
-<h3 id="6-fragment-files-are-not-registered-in-docsmodulesyaml">6. Fragment files are NOT registered in docs/modules.yaml<a class="headerlink" href="#6-fragment-files-are-not-registered-in-docsmodulesyaml" title="Permanent link">&para;</a></h3>
-<p><strong>Rule:</strong> Do not add <code>changelog.d/</code> fragment paths to <code>docs/modules.yaml</code>. The
-module taxonomy exempts them by default — see
-<a href="../module-taxonomy-scope/">Module taxonomy scope</a>.</p>
-<p><strong>Rationale:</strong> towncrier writes one fragment file per pull request, so requiring
-registration made every changelog entry a second, unrelated taxonomy edit. This
-rule previously mandated exactly that, and its own rationale conceded it was "a
-recurring friction point" — documenting the workaround instead of removing the
-requirement.</p>
-<blockquote>
-<p><strong>Failure mode prevented.</strong> A repo enumerates fragments in the taxonomy
-instead of relying on the exemption. Each PR then needs two edits, the
-enumeration drifts, and the bookkeeping becomes its own ticket class: one such
-ticket sat blocked for a week with a branch proposing 199 explicit fragment
-entries, none of which described a module.</p>
-</blockquote>
-<h2 id="reference">Reference<a class="headerlink" href="#reference" title="Permanent link">&para;</a></h2>
+<p>The weekly cron pipes the run through <code>|| true</code>, saves the HTML report as a
+workflow artifact, and writes the mutation score to the workflow summary —
+the signal stays visible (a score trend across weeks) without ever blocking
+a merge.</p>
+<p><strong>Failure mode:</strong> a repo with high coverage and no mutation testing can carry
+untested logic for years — every unasserted branch, default argument, and
+boundary condition is invisible to <code>coverage.py</code>. Green coverage plus no
+mutation signal equals false confidence in the test suite.</p>
+<h2 id="the-rule">The rule<a class="headerlink" href="#the-rule" title="Permanent link">&para;</a></h2>
+<p>Every Python repository with ≥70% test coverage and a meaningful test suite
+<strong>should</strong> run mutmut as a weekly advisory cron:</p>
+<ol>
+<li>Declare the <code>[tool.mutmut]</code> config in <code>pyproject.toml</code> (below).</li>
+<li>Add mutmut to the <code>dev</code> dependency group so <code>uv run mutmut</code> resolves in
+   CI.</li>
+<li>Ship <code>.github/workflows/mutation-test.yml</code> on a weekly <code>schedule</code>, plus
+   <code>workflow_dispatch</code> for manual runs.</li>
+<li>Pipe <code>uv run mutmut run</code> through <code>|| true</code> — the job must never fail on
+   surviving mutants.</li>
+<li>Upload the <code>html/</code> report as a workflow artifact and write the mutation
+   score to <code>$GITHUB_STEP_SUMMARY</code>.</li>
+</ol>
+<p><strong>Failure mode (blocking gate):</strong> promoting mutmut to a required check makes
+every run red, because mutmut has no threshold knob — there is no
+configuration fix that turns the job green. The gate is either ignored as
+"always red" or deleted outright, both strictly worse than an advisory run.
+The cron must be non-blocking by construction.</p>
+<h2 id="pyprojecttoml-config">pyproject.toml config<a class="headerlink" href="#pyprojecttoml-config" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code><span class="k">[tool.mutmut]</span>
+<span class="n">source_paths</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;src/&quot;</span><span class="p">]</span>
+<span class="n">pytest_add_cli_args_test_selection</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;tests/&quot;</span><span class="p">]</span>
+</code></pre></div>
 <ul>
-<li><strong>towncrier:</strong> <a href="https://towncrier.readthedocs.io">https://towncrier.readthedocs.io</a></li>
-<li><strong>Keep a Changelog:</strong> <a href="https://keepachangelog.com/en/1.1.0/">https://keepachangelog.com/en/1.1.0/</a></li>
-<li><strong>hatch-vcs:</strong> <a href="https://hatch.pypa.io/latest/config/metadata">https://hatch.pypa.io/latest/config/metadata</a></li>
-<li><strong>Reference auto-release workflow:</strong> <a href="https://github.com/damien-robotsix/robotsix-github-workflows/blob/main/.github/workflows/auto-release.yml"><code>robotsix-github-workflows/.github/workflows/auto-release.yml</code></a></li>
+<li><code>source_paths = ["src/"]</code> scopes mutation to the package source, not tests
+  or tooling.</li>
+<li><code>pytest_add_cli_args_test_selection = ["tests/"]</code> selects the test
+  directory when mutmut re-runs the suite per mutant.</li>
 </ul>
+<p>The <code>backup = false</code> line that older mutmut examples show is a <code>setup.cfg</code>-era
+key: mutmut 3.x does not read <code>backup</code> from <code>pyproject.toml</code>, so it is
+omitted here — including it would be silently ignored dead config.</p>
+<p><strong>Failure mode:</strong> without <code>source_paths</code>, mutmut defaults to mutating the
+current directory — including test files — which wastes CI minutes and
+produces nonsense survivors. A mutated test suite that still passes says
+nothing about the product code.</p>
+<h2 id="weekly-cron-workflow">Weekly cron workflow<a class="headerlink" href="#weekly-cron-workflow" title="Permanent link">&para;</a></h2>
+<p>The per-repo caller workflow is:</p>
+<div class="highlight"><pre><span></span><code><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Weekly mutation test</span>
+<span class="nt">on</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">schedule</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">cron</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;0</span><span class="nv"> </span><span class="s">6</span><span class="nv"> </span><span class="s">*</span><span class="nv"> </span><span class="s">*</span><span class="nv"> </span><span class="s">2&#39;</span><span class="w">  </span><span class="c1"># Tuesday 06:00 UTC (offset from Monday container scan)</span>
+<span class="w">  </span><span class="nt">workflow_dispatch</span><span class="p">:</span>
+<span class="nt">permissions</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">contents</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">read</span>
+<span class="nt">jobs</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">mutate</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">runs-on</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ubuntu-latest</span>
+<span class="w">    </span><span class="nt">steps</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">uses</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">actions/checkout@v4</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">uses</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">astral-sh/setup-uv@v5</span>
+<span class="w">        </span><span class="nt">with</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt"> enable-cache</span><span class="p">:</span><span class="w"> </span><span class="nv">true</span><span class="p p-Indicator">,</span><span class="nt"> cache-python</span><span class="p">:</span><span class="w"> </span><span class="nv">true</span><span class="w"> </span><span class="p p-Indicator">}</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">run</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">uv sync --locked --group dev</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">run</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">uv run mutmut run --no-progress || true</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">run</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">uv run mutmut report</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">run</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">uv run mutmut html</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">uses</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">actions/upload-artifact@v4</span>
+<span class="w">        </span><span class="nt">with</span><span class="p">:</span>
+<span class="w">          </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">mutmut-html-report</span>
+<span class="w">          </span><span class="nt">path</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">html/</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">run</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|</span>
+<span class="w">          </span><span class="no">SCORE=$(uv run mutmut results | tail -1 | grep -oP &#39;\d+\.\d+&#39; || echo &quot;N/A&quot;)</span>
+<span class="w">          </span><span class="no">echo &quot;### Mutation score: ${SCORE}%&quot; &gt;&gt; $GITHUB_STEP_SUMMARY</span>
+</code></pre></div>
+<ul>
+<li><strong><code>cron: '0 6 * * 2'</code></strong> — Tuesday 06:00 UTC, deliberately offset from the
+  Monday container-scan cron so the two heavy jobs never compete for runner
+  minutes.</li>
+<li><strong><code>|| true</code></strong> — absorbs the non-zero exit mutmut reports when mutants
+  survive; the job stays green and the report carries the signal.</li>
+<li><strong>The <code>html/</code> artifact</strong> — <code>uv run mutmut html</code> writes the browsable
+  survivor report to <code>html/</code>; uploading it makes every week's result
+  inspectable without re-running the 30–90 minute job.</li>
+<li><strong>The step summary</strong> — the mutation score lands in the run summary so the
+  weekly trend is visible at a glance.</li>
+</ul>
+<p><strong>Failure mode:</strong> without <code>|| true</code>, the first week a mutant survives the job
+goes red and, with no threshold to tune, the workflow gets muted or removed
+— the signal is lost. Without the artifact and summary steps, a completed
+run leaves nothing a human can read — 45 CI minutes spent on no output.</p>
+<p>This workflow is a per-repo copy; there is no shared reusable workflow for
+mutmut. If the fleet later promotes it to a reusable workflow in
+<a href="https://github.com/damien-robotsix/robotsix-github-workflows">robotsix-github-workflows</a>,
+the caller template must move to that repo's README and version with the
+workflow (see <a href="../python-ci-workflow/">Python CI workflow</a>).</p>
 
 
 

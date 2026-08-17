@@ -13,6 +13,8 @@
 2. **Every Python repo's CI must include a `uv lock --check` gate.**
 3. **Repos with git-pinned `[tool.uv.sources]` dependencies must have a
    scheduled refresh workflow.**
+4. **A minimum-dependency CI leg must use `uv sync --resolution
+   lowest-direct`, never `--resolution lowest`.**
 
 ---
 
@@ -189,6 +191,53 @@ the fix sits unused until someone stumbles on the drift.
 
 ---
 
+## 4. Minimum-dependency testing uses `--resolution lowest-direct`
+
+**Every Python library repo that runs a minimum-dependency CI leg must use
+`uv sync --resolution lowest-direct`, never `--resolution lowest`.**
+
+```yaml
+- name: Install minimum dependencies
+  run: uv sync --resolution lowest-direct --group dev --group test
+```
+
+`--resolution lowest` descends the **entire** transitive dependency tree and
+pins every package — direct or transitive — to its floor version.  For a
+library that is the wrong signal: an unrelated transitive package's lower
+bound can conflict with another transitive package's floor, or predate the
+library's `requires-python`, and the min-deps leg fails for a reason the
+owning library does not control.  The failure is amplified when a library
+targets a recent interpreter (`requires-python = ">=3.14"`) while dev/docs
+transitive deps are unpinned — `lowest` floats them down and can resolve to
+releases without Python 3.14 wheels.
+
+`--resolution lowest-direct` (uv >= 0.4.1) honors lower bounds **only on
+directly-declared dependencies** (e.g. `PyYAML>=6`, `jsonschema>=4`) while
+floating transitive deps to their current versions.  That yields a stable
+signal that the library truly supports the minimums it advertises, without
+inheriting unrelated transitive-floor incompatibilities.
+
+### The trade-off
+
+`lowest-direct` is a **weaker** signal than `lowest`: it can mask a deep
+transitive-floor interaction (one direct dependency's floor requiring a
+newer transitive version than another direct dependency's floor).  The
+stable, non-noisy result is the standard choice; `lowest` is reserved for
+projects that deliberately pin their whole transitive floor via a
+constraint file, where descending the full tree is meaningful.
+
+### Why lowest-direct
+
+The failure mode is false-failure noise.  `--resolution lowest` reports a
+break in a transitive package the library does not control as if it were the
+library's breakage; developers learn to ignore the min-deps leg, and the
+signal that *should* catch a real lower-bound regression — the library
+declares `PyYAML>=6` but the code uses an API introduced in 6.1 — gets
+buried.  `lowest-direct` keeps the leg pointed at the library's own declared
+lower bounds.
+
+---
+
 ## Failure modes prevented
 
 - **Broken Dependabot PRs.** Dependabot's `uv` ecosystem generates
@@ -198,6 +247,11 @@ the fix sits unused until someone stumbles on the drift.
 - **Silent lockfile drift.** `uv sync --frozen` does not detect when
   `uv.lock` is stale relative to `pyproject.toml`.  `uv lock --check` is
   the only gate that catches this.
+- **Minimum-dependency false failures.** `--resolution lowest` pins
+  transitive floors the library does not control, breaking CI on unrelated
+  transitive incompatibilities and training developers to ignore the
+  min-deps leg.  `--resolution lowest-direct` keeps the signal on the
+  library's own declared lower bounds.
 - **Stale git pins.** First-party fleet-library pins are invisible to
   dependency bots — without a scheduled refresh, they sit at an ever-staler
   commit and never pick up upstream bug fixes or API additions.

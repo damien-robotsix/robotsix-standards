@@ -46,8 +46,8 @@ everywhere.
   auto-merge group.
 - **[CI dependency management](ci-dependency-standard.md)** — fleet-wide approach
   to automated Python/uv dependency updates via Renovate, lockfile integrity
-  checks (`uv lock --check`), and scheduled refresh for git-pinned
-  dependencies.
+  checks (`uv lock --check`), scheduled refresh for git-pinned dependencies,
+  and `--resolution lowest-direct` for minimum-dependency testing.
 - **[Changelog & releases](changelog-driven-releases.md)** — towncrier fragment-driven
   releases, CI-enforced changelog fragments, and the shared auto-release
   workflow — no hand-edited changelog. *(Superseded by

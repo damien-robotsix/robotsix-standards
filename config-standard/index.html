@@ -1725,6 +1725,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#8-openrouter-configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8. OpenRouter configuration
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -2592,6 +2603,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#8-openrouter-configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8. OpenRouter configuration
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -2852,6 +2874,29 @@ each entry carrying <code>public_key</code>, <code>secret_key</code>, and an opt
 <code>project_id</code>.  Components declare their own Langfuse credentials in their
 own config; there is no central override map.  See the component standard
 for the full model shape, constraints, and rationale.</p>
+<h3 id="8-openrouter-configuration">8. OpenRouter configuration<a class="headerlink" href="#8-openrouter-configuration" title="Permanent link">&para;</a></h3>
+<p>The OpenRouter credential block shape is defined in the
+<a href="../component-standard/">component standard</a>.  The canonical block is a
+top-level <code>openrouter</code> key holding a <code>keys</code> map keyed by the <strong>same
+aliases</strong> as <code>langfuse.projects</code> (see §7).  Each value is an OpenRouter
+API key — declared as <code>SecretStr</code> per §3 so it is masked on read,
+rendered as <code>writeOnly</code> in the JSON Schema, and never echoed by
+<code>GET /config</code>:</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">pydantic</span><span class="w"> </span><span class="kn">import</span> <span class="n">BaseModel</span><span class="p">,</span> <span class="n">SecretStr</span>
+
+<span class="k">class</span><span class="w"> </span><span class="nc">OpenRouterConfig</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Per-component OpenRouter configuration.&quot;&quot;&quot;</span>
+    <span class="n">keys</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">SecretStr</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+</code></pre></div>
+<p>On the root component model:</p>
+<div class="highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">MyComponentConfig</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+    <span class="n">openrouter</span><span class="p">:</span> <span class="n">OpenRouterConfig</span> <span class="o">=</span> <span class="n">OpenRouterConfig</span><span class="p">()</span>
+</code></pre></div>
+<p>The shared alias is what makes provider billing and Langfuse traces
+joinable for reconciliation (see the
+<a href="../component-standard/">component standard</a>).  A provider key must fund
+exactly one function — two functions behind one key produce a single
+usage figure attributable to neither.</p>
 <h2 id="using-the-library">Using the library<a class="headerlink" href="#using-the-library" title="Permanent link">&para;</a></h2>
 <p>Install it (<code>uv add robotsix-config</code>, SHA-pinned via <code>[tool.uv.sources]</code> per
 the <a href="../repo-baseline/">repo baseline</a>), define plain pydantic models, and call

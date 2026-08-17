@@ -1861,65 +1861,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#1-opt-in-mechanism" class="md-nav__link">
+  <a href="#what-robotsix-central-deploy-must-do" class="md-nav__link">
     <span class="md-ellipsis">
       
-        1. Opt-in mechanism
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#2-injection-path" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        2. Injection path
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#3-secret-handling-constraints" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        3. Secret-handling constraints
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#4-lifecycle" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        4. Lifecycle
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#5-capabilities" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        5. Capabilities
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#6-relationship-to-chat-access" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        6. Relationship to chat access
+        What robotsix-central-deploy must do
       
     </span>
   </a>
@@ -2437,65 +2382,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#1-opt-in-mechanism" class="md-nav__link">
+  <a href="#what-robotsix-central-deploy-must-do" class="md-nav__link">
     <span class="md-ellipsis">
       
-        1. Opt-in mechanism
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#2-injection-path" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        2. Injection path
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#3-secret-handling-constraints" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        3. Secret-handling constraints
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#4-lifecycle" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        4. Lifecycle
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#5-capabilities" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        5. Capabilities
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#6-relationship-to-chat-access" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        6. Relationship to chat access
+        What robotsix-central-deploy must do
       
     </span>
   </a>
@@ -2535,112 +2425,40 @@
 
 <h1 id="deploy-api-key-provisioning">Deploy API key provisioning<a class="headerlink" href="#deploy-api-key-provisioning" title="Permanent link">&para;</a></h1>
 <blockquote>
-<p><strong>Scope: any component deployed by robotsix-central-deploy that needs to call
-the deploy lifecycle API.</strong> Deploy API key provisioning is <strong>opt-in</strong> — a
-component that does not declare the opt-in below receives no key, and that is
-a valid choice for components with no need to call the deploy API.</p>
+<p><strong>Superseded.</strong> The deploy API key is <strong>retired</strong>. Components must not ship
+or receive a <code>central_deploy.api_token</code>, and robotsix-central-deploy must
+not provision one. The internal container network is trusted; the fleet
+edge is the only authentication gate.</p>
 </blockquote>
-<h2 id="1-opt-in-mechanism">1. Opt-in mechanism<a class="headerlink" href="#1-opt-in-mechanism" title="Permanent link">&para;</a></h2>
-<p>A component opts into deploy API key provisioning by declaring a
-<code>central_deploy.api_token</code> field (typed as <code>pydantic.SecretStr</code>) in its config
-model:</p>
-<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">pydantic</span><span class="w"> </span><span class="kn">import</span> <span class="n">BaseModel</span><span class="p">,</span> <span class="n">SecretStr</span>
-
-
-<span class="k">class</span><span class="w"> </span><span class="nc">CentralDeployConfig</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Credentials for calling the deploy lifecycle API.&quot;&quot;&quot;</span>
-    <span class="n">url</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
-    <span class="n">api_token</span><span class="p">:</span> <span class="n">SecretStr</span> <span class="o">=</span> <span class="n">SecretStr</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
-
-
-<span class="k">class</span><span class="w"> </span><span class="nc">MyComponentConfig</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
-    <span class="n">central_deploy</span><span class="p">:</span> <span class="n">CentralDeployConfig</span> <span class="o">=</span> <span class="n">CentralDeployConfig</span><span class="p">()</span>
-</code></pre></div>
-<p>The committed <code>config/config.schema.json</code> advertises the field to
-<code>robotsix-central-deploy</code> — the presence of <code>central_deploy.api_token</code> in the
-typed schema is the opt-in signal. A component whose schema does not include
-this field receives no key; central-deploy skips it.</p>
-<p>The field follows the <code>&lt;name&gt;_url</code> + <code>SecretStr</code> pattern defined in the
-<a href="../config-standard/#6-calling-another-service-a-name_url-config-field">config standard §6</a>.</p>
-<h2 id="2-injection-path">2. Injection path<a class="headerlink" href="#2-injection-path" title="Permanent link">&para;</a></h2>
-<p><code>robotsix-central-deploy</code> writes the deploy API key into the component's
-<strong>config volume</strong> at deploy time. The key is injected directly into
-<code>config/config.json</code> under the <code>central_deploy.api_token</code> key before the
-container starts — the same mechanism used for <code>fleet_auth.auth_hosts</code>.</p>
+<p>robotsix-central-deploy previously auto-provisioned a <code>central_deploy.api_token</code>
+into each component's config volume so the component could call the deploy
+lifecycle API. That mechanism is removed. Under the
+<a href="../component-standard/">component standard</a>, a component-issued token checked
+on central-deploy's own routes is a second door, and a caller inside the
+trusted internal network does not need one.</p>
+<p>The chat agent reaches central-deploy's deploy lifecycle API over the internal
+container network (<code>http://central-deploy:8100</code>) with <strong>no credential</strong> — see
+<a href="../chat-access-standard/#3-roster-not-discovery">chat access standard §3</a>.</p>
+<h2 id="what-robotsix-central-deploy-must-do">What robotsix-central-deploy must do<a class="headerlink" href="#what-robotsix-central-deploy-must-do" title="Permanent link">&para;</a></h2>
 <ul>
-<li>The value is <strong>provisioned by robotsix-central-deploy automatically</strong> —
-  components MUST NOT require manual credential paste.</li>
-<li>The component reads the key from its own config file via <code>load_config</code>,
-  exactly like any other config field — no special env-var discovery path.</li>
-<li>central-deploy validates the merged config document against the component's
-  committed <code>config/config.schema.json</code> before writing.</li>
+<li>Remove its auth layer (<code>verify_auth</code>): answer every internal caller, and
+  check no component-issued token on any route.</li>
+<li>Retire <code>_deploy_credential.py</code> (the injector) and stop writing
+  <code>central_deploy.api_token</code> into component config volumes.</li>
+<li>Keep the roster and observability endpoints reachable over the internal
+  network, not behind the operator's web-login session.</li>
 </ul>
-<h2 id="3-secret-handling-constraints">3. Secret-handling constraints<a class="headerlink" href="#3-secret-handling-constraints" title="Permanent link">&para;</a></h2>
-<ul>
-<li>The field is typed as <code>pydantic.SecretStr</code> — masked on read (<code>**********</code>),
-  rendered as <code>writeOnly</code> / <code>format: password</code> in the JSON Schema, per the
-  <a href="../config-standard/#3-one-secret-convention">config standard §3</a>.</li>
-<li>The key is injected by central-deploy at deploy time; it is <strong>never
-  persisted in clear text</strong> in central-deploy's config store or in any repo.</li>
-<li><code>GET /config</code> masks the value — the actual key is never returned to any
-  caller.</li>
-<li>The config file is written with <code>0600</code> permissions in a <code>0700</code> directory,
-  per <code>robotsix_config.dump_config</code>.</li>
-<li>The key is a <strong>first-party secret</strong> and follows the config standard's
-  one-file rule: it lives in <code>config/config.json</code>, never in a compose
-  <code>environment:</code> slot. The config standard's
-  <a href="../config-standard/#5-what-environment-is-for"><code>environment:</code> rule</a> forbids
-  first-party secrets in compose <code>environment:</code> — one channel for the value
-  prevents the "why is this value what it is" ambiguity and keeps the
-  component's config surface uniform.</li>
-</ul>
-<h2 id="4-lifecycle">4. Lifecycle<a class="headerlink" href="#4-lifecycle" title="Permanent link">&para;</a></h2>
-<ul>
-<li>The key is <strong>(re)injected on every deploy and every update</strong>. central-deploy
-  writes the current key into the config volume before starting the container
-  on every deploy, update, and restart operation.</li>
-<li><strong>Enabling the opt-in on an already-deployed component requires a
-  redeploy/restart</strong> for the key to be picked up. The config file is only
-  rewritten when central-deploy starts the container; a component that adds
-  the <code>central_deploy.api_token</code> field to its schema after initial deployment
-  must be redeployed for the key to appear.</li>
-<li>The component reads its config once at startup. A key rotation by
-  central-deploy on a running component takes effect on the next restart —
-  the component does not need to poll for key changes.</li>
-</ul>
-<h2 id="5-capabilities">5. Capabilities<a class="headerlink" href="#5-capabilities" title="Permanent link">&para;</a></h2>
-<p>The deploy API key grants the component the ability to call
-<code>robotsix-central-deploy</code>'s <strong>deploy lifecycle API</strong> within the component's
-permitted scope:</p>
-<ul>
-<li>Read the component's own deployment status, configuration, and metadata.</li>
-<li>Trigger lifecycle operations the component is authorised to perform
-  (e.g. self-restart, self-update, log retrieval).</li>
-<li>Enumerate sibling components visible at the component's access level.</li>
-</ul>
-<p>The key is <strong>scoped to the component's own identity</strong> — it does not grant
-administrative access to central-deploy or cross-component control. The
-operations a component may perform with the key are bounded by
-central-deploy's per-component authorisation, not by the key itself.</p>
-<h2 id="6-relationship-to-chat-access">6. Relationship to chat access<a class="headerlink" href="#6-relationship-to-chat-access" title="Permanent link">&para;</a></h2>
-<p>The <a href="../chat-access-standard/">chat access standard</a> defines a specific
-consumer of this mechanism: when an operator enables chat access for a
-component, central-deploy provisions the deploy API key so the chat agent can
-call the deploy lifecycle API on behalf of that component. The chat access
-standard's §3.1 describes the same <code>central_deploy.api_token</code> injection path
-documented here.</p>
-<p>This page is the <strong>authoritative definition</strong> of the provisioning mechanism;
-the chat access standard is a specific use case that consumes it.</p>
 <h2 id="cross-references">Cross-references<a class="headerlink" href="#cross-references" title="Permanent link">&para;</a></h2>
 <ul>
 <li><a href="../config-standard/">Config standard</a> — the one-file rule, <code>SecretStr</code>
   convention, <code>&lt;name&gt;_url</code> pattern, and what <code>environment:</code> is for.</li>
 <li><a href="../config-ownership/">Config ownership</a> — the boundary between deploy-plane
   and component-owned config.</li>
-<li><a href="../chat-access-standard/">Chat access standard</a> — the chat-agent use case
-  that consumes this mechanism.</li>
+<li><a href="../chat-access-standard/">Chat access standard</a> — how the chat agent reaches
+  the deploy plane without a credential.</li>
 <li><a href="../deploy-contract/">Deploy contract</a> — the <code>deploy/docker-compose.yml</code>
   shape.</li>
+<li><a href="../component-standard/">Component standard</a> — why components ship no auth.</li>
 </ul>
 
 

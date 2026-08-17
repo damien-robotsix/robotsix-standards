@@ -2052,10 +2052,10 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#31-who-provisions-api_token" class="md-nav__link">
+  <a href="#31-no-deploy-credential" class="md-nav__link">
     <span class="md-ellipsis">
       
-        3.1 Who provisions api_token
+        3.1 No deploy credential
       
     </span>
   </a>
@@ -2113,10 +2113,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#authorization-api-key-path-not-operator-web-login" class="md-nav__link">
+  <a href="#authorization-internal-network-not-operator-web-login" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Authorization: API-key path, not operator web-login
+        Authorization: internal network, not operator web-login
       
     </span>
   </a>
@@ -2572,10 +2572,10 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#31-who-provisions-api_token" class="md-nav__link">
+  <a href="#31-no-deploy-credential" class="md-nav__link">
     <span class="md-ellipsis">
       
-        3.1 Who provisions api_token
+        3.1 No deploy credential
       
     </span>
   </a>
@@ -2633,10 +2633,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#authorization-api-key-path-not-operator-web-login" class="md-nav__link">
+  <a href="#authorization-internal-network-not-operator-web-login" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Authorization: API-key path, not operator web-login
+        Authorization: internal network, not operator web-login
       
     </span>
   </a>
@@ -2817,41 +2817,32 @@ DNS enumeration:</p>
   has enabled chat access (the per-component checkbox is on). Each entry
   includes the component's base URL and the skill metadata parsed from its
   <code>/chat-skill</code> endpoint.</li>
-<li>The chat agent reaches central-deploy via explicit configuration fields:
-  <code>central_deploy.url</code> (a <code>str</code>) and <code>central_deploy.api_token</code> (a
-  <code>pydantic.SecretStr</code>), following the same <code>&lt;name&gt;_url</code> + <code>SecretStr</code>
-  pattern in the <a href="../config-standard/#6-calling-another-service-a-name_url-config-field">config standard section 5</a>.
-  No injected addresses, no service discovery — plain config fields are the
-  whole mechanism. This standard does not change section 5; it uses the
-  existing pattern.</li>
+<li>The chat agent reaches central-deploy via one explicit configuration field:
+  <code>central_deploy.url</code> (a <code>str</code>), following the
+  <a href="../config-standard/#6-calling-another-service-a-name_url-config-field"><code>&lt;name&gt;_url</code> pattern</a>.
+  No injected addresses, no service discovery, and no credential — the chat
+  agent calls over the trusted internal container network, so the deploy
+  plane checks no per-caller token (see the
+  <a href="../component-standard/">component standard</a>). This standard does not change
+  the config standard; it uses the existing pattern.</li>
 </ul>
-<h3 id="31-who-provisions-api_token">3.1 Who provisions <code>api_token</code><a class="headerlink" href="#31-who-provisions-api_token" title="Permanent link">&para;</a></h3>
-<p><code>robotsix-central-deploy</code> writes <code>central_deploy.api_token</code> into the
-<strong>config volume</strong> of each chat-agent component — the same mechanism it uses for
-<code>fleet_auth.auth_hosts</code> — validating the merged document against the
-component's committed schema first and skipping any component that does not
-declare the key. A component therefore gets working deploy access by declaring
-the field; no operator paste, and no per-component copy of the value.</p>
-<p>Three rules follow, and they are the point of this section:</p>
+<h3 id="31-no-deploy-credential">3.1 No deploy credential<a class="headerlink" href="#31-no-deploy-credential" title="Permanent link">&para;</a></h3>
+<p>The chat agent needs <strong>no credential</strong> to reach central-deploy: it calls
+<code>central_deploy.url</code> over the trusted internal container network, which never
+passes through the fleet edge, so central-deploy checks no per-caller token.
+This is a direct consequence of the
+<a href="../component-standard/">component standard</a>: a component-issued deploy token
+would be a second door, and a caller inside the network does not need one.</p>
+<p>Two rules follow:</p>
 <ul>
-<li><strong>The credential never travels as an environment variable.</strong> Not
-  <code>DEPLOY_API_KEY</code>, not any other name.
-  <a href="../config-standard/#5-what-environment-is-for">Config standard §5</a> forbids
-  first-party secrets in <code>environment:</code>, and an env channel here is worse than
-  redundant: it is a second source of truth for a credential that grants full
-  control of the deploy plane. A component that reads such a variable is
-  non-conforming.</li>
-<li><strong>The roster carries auth <em>metadata</em>, never credential locations.</strong> A
-  <code>GET /chat/components</code> entry's <code>auth</code> object names the scheme (<code>basic</code> /
-  <code>header</code>) and, for header auth, the header name. It does not name an
-  environment variable or carry a value. The consumer resolves the credential
-  from its own config.</li>
-<li><strong>One value, one place.</strong> <code>central_deploy.api_token</code> is the token for every
-  component fronted by the deploy plane. The optional
-  <code>central_deploy.component_credentials.&lt;id&gt;</code> map is an <em>override</em> for a
-  component with its own credential — not somewhere to copy the shared token.
-  Duplicating it per component is what made earlier revisions fragile: each
-  copy is a value a config rewrite can silently drop.</li>
+<li><strong>No deploy credential in any channel.</strong> Not an environment variable
+  (<code>DEPLOY_API_KEY</code> or any other name), not a <code>central_deploy.api_token</code>
+  config field, and not a per-component override. <code>robotsix-central-deploy</code>
+  MUST NOT write a deploy credential into a component's config volume.</li>
+<li><strong>The roster carries connection <em>metadata</em>, never credentials.</strong> A
+  <code>GET /chat/components</code> entry names the component's base URL and, for
+  components that legitimately front their own callers, the auth scheme.
+  It never names an environment variable or carries a credential.</li>
 </ul>
 <hr />
 <h2 id="4-trust-model">4. Trust model<a class="headerlink" href="#4-trust-model" title="Permanent link">&para;</a></h2>
@@ -2903,15 +2894,16 @@ individual components:</p>
   exposing log/status endpoints, and mounting volumes read-only for
   inspection.</li>
 </ul>
-<h3 id="authorization-api-key-path-not-operator-web-login">Authorization: API-key path, not operator web-login<a class="headerlink" href="#authorization-api-key-path-not-operator-web-login" title="Permanent link">&para;</a></h3>
-<p>All observability endpoints MUST be reachable on the <strong><code>X-API-Key</code></strong> path
-used by the chat agent's tools. Routes that sit behind the operator's
-web-login session (e.g. <code>/services/{name}/status</code> serving a login HTML page
-for unauthenticated requests) are <strong>not</strong> accessible to the chat agent and do
-not satisfy this standard.</p>
-<p>The chat agent reaches these endpoints through the same <code>central_deploy.url</code>
-and <code>central_deploy.api_token</code> fields described in <a href="#3-roster-not-discovery">§3</a>.
-Scope: only components whose chat-access checkbox is enabled.</p>
+<h3 id="authorization-internal-network-not-operator-web-login">Authorization: internal network, not operator web-login<a class="headerlink" href="#authorization-internal-network-not-operator-web-login" title="Permanent link">&para;</a></h3>
+<p>All observability endpoints MUST be reachable over the <strong>internal container
+network</strong> on the same <code>central_deploy.url</code> the chat agent uses. Routes that sit
+behind the operator's web-login session (e.g. <code>/services/{name}/status</code>
+serving a login HTML page for unauthenticated requests) are <strong>not</strong> accessible
+to the chat agent and do not satisfy this standard.</p>
+<p>The chat agent reaches these endpoints with <strong>no credential</strong> — the internal
+network is trusted and central-deploy checks no per-caller token (see
+<a href="#3-roster-not-discovery">§3</a>). Scope: only components whose chat-access
+checkbox is enabled.</p>
 <h3 id="51-logs">5.1 Logs<a class="headerlink" href="#51-logs" title="Permanent link">&para;</a></h3>
 <p><code>robotsix-central-deploy</code> MUST expose:</p>
 <ul>
@@ -2953,8 +2945,8 @@ chat-access components:</p>
 <ul>
 <li><a href="../component-standard/">Component standard</a> — the three deploy modes, auth model,
   health endpoint.</li>
-<li><a href="../config-standard/#6-calling-another-service-a-name_url-config-field">Config standard §5</a> —
-  the <code>&lt;name&gt;_url</code> + <code>SecretStr</code> pattern for service-to-service calls.</li>
+<li><a href="../config-standard/#6-calling-another-service-a-name_url-config-field">Config standard §6</a> —
+  the <code>&lt;name&gt;_url</code> pattern for service-to-service calls.</li>
 <li><a href="../integrating-a-service/">Integrating a service</a> — the end-to-end onboarding
   guide (chat-access checklist items).</li>
 </ul>

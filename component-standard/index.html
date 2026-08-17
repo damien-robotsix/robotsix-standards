@@ -1628,6 +1628,23 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="Authentication is centralized — components ship none">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#csrf-is-handled-at-the-fleet-edge-components-ship-none" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        CSRF is handled at the fleet edge — components ship none
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -2578,6 +2595,23 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="Authentication is centralized — components ship none">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#csrf-is-handled-at-the-fleet-edge-components-ship-none" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        CSRF is handled at the fleet edge — components ship none
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -2875,6 +2909,36 @@ and get wrong, and a second thing to be wrong about when access breaks.</p>
   components from each other is the deployment system's concern, not
   per-component auth.</li>
 </ul>
+<h3 id="csrf-is-handled-at-the-fleet-edge-components-ship-none">CSRF is handled at the fleet edge — components ship none<a class="headerlink" href="#csrf-is-handled-at-the-fleet-edge-components-ship-none" title="Permanent link">&para;</a></h3>
+<p>Cross-site request forgery (CSRF) is an <strong>edge concern</strong>, handled once for
+the entire fleet. The tinyauth SSO session cookie <strong>MUST</strong> be issued with
+<code>SameSite=Lax</code> (or <code>Strict</code>), so cross-site requests do not carry the cookie
+and fail edge authentication before they reach any component.</p>
+<p>A component <strong>MUST NOT</strong> implement CSRF logic of any kind:</p>
+<ul>
+<li><strong>No header-origin matching</strong> — no <code>Origin</code>, <code>Host</code>, or
+  <code>X-Forwarded-Host</code> checks. Running these behind a reverse proxy is
+  fragile in practice: the proxy may rewrite or drop headers, landing
+  the check in the wrong place and rejecting legitimate callers.</li>
+<li><strong>No synchronizer tokens</strong> — no anti-CSRF token embedded in responses
+  and validated on subsequent requests.</li>
+<li><strong>No <code>trusted_origins</code>-style configuration</strong> — no per-component allowlist
+  of acceptable request origins.</li>
+</ul>
+<p>These are caller-gating mechanisms, already covered by the "removed" list
+above. Per-component CSRF is a second lock on the same door: an additional
+source of configuration drift, breakage, and debugging cost.</p>
+<p>Internal callers (fleet services, scripts) reach components over the
+container network without cookies and are <strong>unaffected</strong> by CSRF protection
+at the edge or anywhere else.</p>
+<p><strong>Operational precedent</strong>: the <code>robotsix-auto-mail</code> component shipped a
+header-matching CSRF guard (<code>Origin</code> / <code>Host</code> / <code>X-Forwarded-Host</code>) that
+repeatedly broke behind the reverse proxy — the headers the guard inspected
+were rewritten or absent depending on the proxy path, causing legitimate
+requests to be rejected. That guard is being removed under this rule
+(2026-08-16 operator decision), with the <code>SameSite=Lax</code> session cookie in
+the tinyauth deployment providing fleet-wide CSRF protection instead of
+per-component code.</p>
 <p>Migration sequencing: a component that today ships its own auth removes it
 <strong>only after</strong> it is served exclusively through the fleet edge — otherwise the
 removal window exposes it unauthenticated. Where the auth is already

@@ -203,6 +203,37 @@ each entry carrying `public_key`, `secret_key`, and an optional
 own config; there is no central override map.  See the component standard
 for the full model shape, constraints, and rationale.
 
+### 8. OpenRouter configuration
+
+The OpenRouter credential block shape is defined in the
+[component standard](component-standard.md).  The canonical block is a
+top-level `openrouter` key holding a `keys` map keyed by the **same
+aliases** as `langfuse.projects` (see §7).  Each value is an OpenRouter
+API key — declared as `SecretStr` per §3 so it is masked on read,
+rendered as `writeOnly` in the JSON Schema, and never echoed by
+`GET /config`:
+
+```python
+from pydantic import BaseModel, SecretStr
+
+class OpenRouterConfig(BaseModel):
+    """Per-component OpenRouter configuration."""
+    keys: dict[str, SecretStr] = {}
+```
+
+On the root component model:
+
+```python
+class MyComponentConfig(BaseModel):
+    openrouter: OpenRouterConfig = OpenRouterConfig()
+```
+
+The shared alias is what makes provider billing and Langfuse traces
+joinable for reconciliation (see the
+[component standard](component-standard.md)).  A provider key must fund
+exactly one function — two functions behind one key produce a single
+usage figure attributable to neither.
+
 ## Using the library
 
 Install it (`uv add robotsix-config`, SHA-pinned via `[tool.uv.sources]` per

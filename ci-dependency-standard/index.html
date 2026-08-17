@@ -752,6 +752,45 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#4-minimum-dependency-testing-uses-resolution-lowest-direct" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Minimum-dependency testing uses --resolution lowest-direct
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. Minimum-dependency testing uses --resolution lowest-direct">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-trade-off" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The trade-off
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#why-lowest-direct" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why lowest-direct
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#failure-modes-prevented" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2638,6 +2677,45 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#4-minimum-dependency-testing-uses-resolution-lowest-direct" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Minimum-dependency testing uses --resolution lowest-direct
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. Minimum-dependency testing uses --resolution lowest-direct">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-trade-off" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The trade-off
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#why-lowest-direct" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why lowest-direct
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#failure-modes-prevented" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2694,6 +2772,8 @@ continue to use Dependabot as described in the
 <li><strong>Every Python repo's CI must include a <code>uv lock --check</code> gate.</strong></li>
 <li><strong>Repos with git-pinned <code>[tool.uv.sources]</code> dependencies must have a
    scheduled refresh workflow.</strong></li>
+<li><strong>A minimum-dependency CI leg must use <code>uv sync --resolution
+   lowest-direct</code>, never <code>--resolution lowest</code>.</strong></li>
 </ol>
 <hr />
 <h2 id="1-renovate-for-pythonuv">1. Renovate for Python/uv<a class="headerlink" href="#1-renovate-for-pythonuv" title="Permanent link">&para;</a></h2>
@@ -2837,6 +2917,42 @@ lands upstream in <code>robotsix-config</code>, but every consumer is pinned to 
 commit from six weeks ago.  No automated PR opens, no human notices, and
 the fix sits unused until someone stumbles on the drift.</p>
 <hr />
+<h2 id="4-minimum-dependency-testing-uses-resolution-lowest-direct">4. Minimum-dependency testing uses <code>--resolution lowest-direct</code><a class="headerlink" href="#4-minimum-dependency-testing-uses-resolution-lowest-direct" title="Permanent link">&para;</a></h2>
+<p><strong>Every Python library repo that runs a minimum-dependency CI leg must use
+<code>uv sync --resolution lowest-direct</code>, never <code>--resolution lowest</code>.</strong></p>
+<div class="highlight"><pre><span></span><code><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Install minimum dependencies</span>
+<span class="w">  </span><span class="nt">run</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">uv sync --resolution lowest-direct --group dev --group test</span>
+</code></pre></div>
+<p><code>--resolution lowest</code> descends the <strong>entire</strong> transitive dependency tree and
+pins every package — direct or transitive — to its floor version.  For a
+library that is the wrong signal: an unrelated transitive package's lower
+bound can conflict with another transitive package's floor, or predate the
+library's <code>requires-python</code>, and the min-deps leg fails for a reason the
+owning library does not control.  The failure is amplified when a library
+targets a recent interpreter (<code>requires-python = "&gt;=3.14"</code>) while dev/docs
+transitive deps are unpinned — <code>lowest</code> floats them down and can resolve to
+releases without Python 3.14 wheels.</p>
+<p><code>--resolution lowest-direct</code> (uv &gt;= 0.4.1) honors lower bounds <strong>only on
+directly-declared dependencies</strong> (e.g. <code>PyYAML&gt;=6</code>, <code>jsonschema&gt;=4</code>) while
+floating transitive deps to their current versions.  That yields a stable
+signal that the library truly supports the minimums it advertises, without
+inheriting unrelated transitive-floor incompatibilities.</p>
+<h3 id="the-trade-off">The trade-off<a class="headerlink" href="#the-trade-off" title="Permanent link">&para;</a></h3>
+<p><code>lowest-direct</code> is a <strong>weaker</strong> signal than <code>lowest</code>: it can mask a deep
+transitive-floor interaction (one direct dependency's floor requiring a
+newer transitive version than another direct dependency's floor).  The
+stable, non-noisy result is the standard choice; <code>lowest</code> is reserved for
+projects that deliberately pin their whole transitive floor via a
+constraint file, where descending the full tree is meaningful.</p>
+<h3 id="why-lowest-direct">Why lowest-direct<a class="headerlink" href="#why-lowest-direct" title="Permanent link">&para;</a></h3>
+<p>The failure mode is false-failure noise.  <code>--resolution lowest</code> reports a
+break in a transitive package the library does not control as if it were the
+library's breakage; developers learn to ignore the min-deps leg, and the
+signal that <em>should</em> catch a real lower-bound regression — the library
+declares <code>PyYAML&gt;=6</code> but the code uses an API introduced in 6.1 — gets
+buried.  <code>lowest-direct</code> keeps the leg pointed at the library's own declared
+lower bounds.</p>
+<hr />
 <h2 id="failure-modes-prevented">Failure modes prevented<a class="headerlink" href="#failure-modes-prevented" title="Permanent link">&para;</a></h2>
 <ul>
 <li><strong>Broken Dependabot PRs.</strong> Dependabot's <code>uv</code> ecosystem generates
@@ -2846,6 +2962,11 @@ the fix sits unused until someone stumbles on the drift.</p>
 <li><strong>Silent lockfile drift.</strong> <code>uv sync --frozen</code> does not detect when
   <code>uv.lock</code> is stale relative to <code>pyproject.toml</code>.  <code>uv lock --check</code> is
   the only gate that catches this.</li>
+<li><strong>Minimum-dependency false failures.</strong> <code>--resolution lowest</code> pins
+  transitive floors the library does not control, breaking CI on unrelated
+  transitive incompatibilities and training developers to ignore the
+  min-deps leg.  <code>--resolution lowest-direct</code> keeps the signal on the
+  library's own declared lower bounds.</li>
 <li><strong>Stale git pins.</strong> First-party fleet-library pins are invisible to
   dependency bots — without a scheduled refresh, they sit at an ever-staler
   commit and never pick up upstream bug fixes or API additions.</li>

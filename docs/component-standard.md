@@ -70,6 +70,41 @@ Scope — what this does and doesn't cover:
   components from each other is the deployment system's concern, not
   per-component auth.
 
+### CSRF is handled at the fleet edge — components ship none
+
+Cross-site request forgery (CSRF) is an **edge concern**, handled once for
+the entire fleet. The tinyauth SSO session cookie **MUST** be issued with
+`SameSite=Lax` (or `Strict`), so cross-site requests do not carry the cookie
+and fail edge authentication before they reach any component.
+
+A component **MUST NOT** implement CSRF logic of any kind:
+
+- **No header-origin matching** — no `Origin`, `Host`, or
+  `X-Forwarded-Host` checks. Running these behind a reverse proxy is
+  fragile in practice: the proxy may rewrite or drop headers, landing
+  the check in the wrong place and rejecting legitimate callers.
+- **No synchronizer tokens** — no anti-CSRF token embedded in responses
+  and validated on subsequent requests.
+- **No `trusted_origins`-style configuration** — no per-component allowlist
+  of acceptable request origins.
+
+These are caller-gating mechanisms, already covered by the "removed" list
+above. Per-component CSRF is a second lock on the same door: an additional
+source of configuration drift, breakage, and debugging cost.
+
+Internal callers (fleet services, scripts) reach components over the
+container network without cookies and are **unaffected** by CSRF protection
+at the edge or anywhere else.
+
+**Operational precedent**: the `robotsix-auto-mail` component shipped a
+header-matching CSRF guard (`Origin` / `Host` / `X-Forwarded-Host`) that
+repeatedly broke behind the reverse proxy — the headers the guard inspected
+were rewritten or absent depending on the proxy path, causing legitimate
+requests to be rejected. That guard is being removed under this rule
+(2026-08-16 operator decision), with the `SameSite=Lax` session cookie in
+the tinyauth deployment providing fleet-wide CSRF protection instead of
+per-component code.
+
 Migration sequencing: a component that today ships its own auth removes it
 **only after** it is served exclusively through the fleet edge — otherwise the
 removal window exposes it unauthenticated. Where the auth is already

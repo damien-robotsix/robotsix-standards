@@ -63,6 +63,8 @@ plugins:
         # there (towncrier, hypothesis, changelog-driven-releases,
         # repo-baseline), so an unlucky build fails on all four at once.
         - "https://*.readthedocs.io*"
+        # hatch.pypa.io sometimes returns transient 503 errors.
+        - "https://hatch.pypa.io/*"
 
 nav:
   - Home: index.md

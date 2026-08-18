@@ -579,10 +579,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#3-automated-dependency-updates-dependabot" class="md-nav__link">
+  <a href="#3-automated-dependency-updates-renovate-dependabot" class="md-nav__link">
     <span class="md-ellipsis">
       
-        3. Automated dependency updates — Dependabot
+        3. Automated dependency updates — Renovate + Dependabot
       
     </span>
   </a>
@@ -2693,10 +2693,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#3-automated-dependency-updates-dependabot" class="md-nav__link">
+  <a href="#3-automated-dependency-updates-renovate-dependabot" class="md-nav__link">
     <span class="md-ellipsis">
       
-        3. Automated dependency updates — Dependabot
+        3. Automated dependency updates — Renovate + Dependabot
       
     </span>
   </a>
@@ -2991,18 +2991,19 @@ vulnerable package before the PR merges.</p>
 <li><strong>Alignment:</strong> OpenSSF Scorecard <em>Dependency-Update-Tool</em> and
   <em>Vulnerabilities</em> checks.</li>
 </ul>
-<h3 id="3-automated-dependency-updates-dependabot">3. Automated dependency updates — Dependabot<a class="headerlink" href="#3-automated-dependency-updates-dependabot" title="Permanent link">&para;</a></h3>
-<p>Every pin the standards mandate has exactly one named bumper. Dependabot covers
-third-party packages, GitHub Actions SHAs, base-image digests, pre-commit hook
-versions, and npm packages. <code>.github/dependabot.yml</code> declares the required
-ecosystems, and the baseline-check gate verifies it is present and complete.
-Dependabot PRs auto-merge once required checks pass.</p>
+<h3 id="3-automated-dependency-updates-renovate-dependabot">3. Automated dependency updates — Renovate + Dependabot<a class="headerlink" href="#3-automated-dependency-updates-renovate-dependabot" title="Permanent link">&para;</a></h3>
+<p>Every pin the standards mandate has exactly one named bumper. Renovate covers
+Python/uv lockfiles; Dependabot covers GitHub Actions SHAs, base-image digests,
+pre-commit hook versions, and npm packages. <code>renovate.json</code> declares the <code>uv</code>
+manager in every Python repo, and <code>.github/dependabot.yml</code> declares the
+remaining ecosystems; the baseline-check gate verifies both are present and
+complete. Dependabot and Renovate PRs auto-merge once required checks pass.</p>
 <ul>
-<li><strong>How to verify:</strong> <code>.github/dependabot.yml</code> exists and covers
-  <code>github-actions</code> and <code>pre-commit</code> in every repo, plus the
-  language-specific ecosystem (<code>uv</code> in Python repos, <code>npm</code> in repos
-  with <code>package.json</code>), and <code>docker</code> in image-shipping repos. The Dependabot
-  tab shows recent update PRs.</li>
+<li><strong>How to verify:</strong> <code>renovate.json</code> exists in every Python repo (covering the
+  <code>uv</code> manager); <code>.github/dependabot.yml</code> exists and covers <code>github-actions</code>
+  and <code>pre-commit</code> in every repo, plus <code>npm</code> in repos with <code>package.json</code> and
+  <code>docker</code> in image-shipping repos. The Dependabot and Renovate dashboards
+  show recent update PRs.</li>
 <li><strong>Failure prevented:</strong> a pinned digest (base image, action SHA) rots silently
   — the image stops receiving base-OS security patches, an action runs an
   unmaintained version — with no alert.</li>
@@ -3269,8 +3270,8 @@ dashboard-watching:</p>
 <td>CI calls shared <code>dependency-review</code> workflow; Dependency graph enabled</td>
 </tr>
 <tr>
-<td>Dependabot</td>
-<td><code>.github/dependabot.yml</code> covers required ecosystems; recent update PRs</td>
+<td>Dependabot + Renovate</td>
+<td><code>.github/dependabot.yml</code> covers non-uv ecosystems; <code>renovate.json</code> present in Python repos; recent update PRs</td>
 </tr>
 <tr>
 <td>SHA-pinned actions</td>

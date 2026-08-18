@@ -35,6 +35,11 @@ restart cascade.
   orchestrator, and external uptime monitoring can probe it without
   credentials. The edge gives every component a dedicated highest-priority
   `/health` route carrying no auth middleware.
+- **Container HEALTHCHECK targets liveness only.** The Docker
+  `HEALTHCHECK` instruction and any orchestrator
+  liveness probe must point at `GET /health`, never `/readyz`.
+  A readiness check inside a liveness probe triggers [restart
+  cascades](#failure-modes-this-prevents) when a dependency blips.
 
 ### 2. Readiness: `/readyz` — dependency probe, 503 when degraded
 

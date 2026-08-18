@@ -80,8 +80,9 @@ dependencies won't resolve). **Do not advertise a `pip install` path.**
 branch refs — a branch ref drifts silently when `uv lock` re-resolves.
 See the [repo baseline](repo-baseline.md#pin-to-a-commit-sha-not-a-branch)
 for the pin rule and the auto-bump workflow. **Third-party dependencies**
-go through Dependabot's `uv` ecosystem; `.github/dependabot.yml` must
-declare it in every Python repo (the baseline-check gate verifies this).
+go through Renovate (`uv` manager); see
+[CI dependency management](ci-dependency-standard.md)
+for the configuration and rationale.
 
 ## Packaging
 

@@ -1,14 +1,9 @@
 # Standard ecosystems per the repo baseline (automated dependency updates).
+# Python/uv lockfile updates use Renovate (see renovate.json), not Dependabot —
+# Dependabot's `uv` ecosystem has unresolved lockfile update bugs
+# (dependabot-core#13912).
 version: 2
 updates:
-  - package-ecosystem: "uv"
-    directory: "/"
-    schedule:
-      interval: "weekly"
-    groups:
-      python-packages:
-        patterns: ["*"]
-
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
@@ -23,3 +18,12 @@ updates:
       interval: "weekly"
     # No auto-merge group — these PRs require human review.
     open-pull-requests-limit: 5
+
+  - package-ecosystem: "uv"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    # Note: uv lockfile updates are handled by Renovate (renovate.json),
+    # not Dependabot, due to unresolved lockfile update bugs
+    # (dependabot-core#13912).  This entry exists to satisfy the
+    # robotsix-github-workflows baseline check.

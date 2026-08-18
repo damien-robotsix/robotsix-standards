@@ -1,0 +1,1 @@
+SBOM & vulnerability audit: codify the canonical CycloneDX SBOM generation command (`uv export --frozen --format cyclonedx1.5 --no-emit-project -o sbom.cdx.json` native from the lockfile), add a rule that `uv audit` output is not an SBOM and must not be uploaded under the `sbom` name, and cross-link from python.md.

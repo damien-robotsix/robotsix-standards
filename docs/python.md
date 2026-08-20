@@ -250,8 +250,9 @@ built by mkdocstrings don't silently drop parameter descriptions.
 
 The shared `python-security.yml` workflow is a separate gate that additionally
 runs `pip-audit` (a second CVE audit pass), TruffleHog for secret scanning
-(PR-diff and full-repo), and generates a CycloneDX SBOM uploaded as a workflow
-artifact.
+(PR-diff and full-repo), and generates a CycloneDX SBOM (via `uv export`,
+per the [security posture](security-posture.md#6-sbom-vulnerability-audit))
+uploaded as a workflow artifact.
 
 **Semgrep** runs as a separate SAST gate via the shared security workflow —
 see the [security posture](security-posture.md#1-sast-semgrep) for details.

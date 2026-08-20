@@ -77,7 +77,7 @@ FROM ros:$ROS_DISTRO-ros-base
 
 # System dependencies for building and tooling
 RUN apt-get update && apt-get install -y --no-install-recommends \
-    build-essential cmake git \
+    build-essential cmake git ccache \
     python3-pip python3-vcstool python3-colcon-common-extensions \
     && rm -rf /var/lib/apt/lists/*
 
@@ -98,17 +98,31 @@ RUN echo "source /opt/ros/$ROS_DISTRO/setup.bash" >> ~/.bashrc
   ```json
   "containerEnv": {
     "ROS_DOMAIN_ID": "42",
-    "ROS_AUTOMATIC_DISCOVERY_RANGE": "LOCALHOST"
+    "ROS_AUTOMATIC_DISCOVERY_RANGE": "LOCALHOST",
+    "CCACHE_DIR": "/home/ws/.ccache"
   }
   ```
 
 - `--net=host` and `--ipc=host` for DDS networking.
+- A named `ccache` volume mounted at `${CCACHE_DIR}` so the compiler
+  cache persists across devcontainer rebuilds:
+
+  ```json
+  "mounts": [
+    "source=ros2-ccache,target=${containerEnv:CCACHE_DIR},type=volume"
+  ]
+  ```
+
+  **Why a named volume:** bind-mounting a host directory works locally
+  but breaks in remote (GitHub Codespaces) and CI-hosted devcontainer
+  environments. A named Docker volume works everywhere and is cheap
+  to recreate — the cache is an optimisation, not precious state.
 - `postCreateCommand` runs `vcs import`, `rosdep update`, and
   `rosdep install` so the workspace is ready on first open.
 
 ## Build & test
 
-The standard build pipeline:
+The standard build lifecycle:
 
 ```bash
 # 1. Pull in downstream packages
@@ -118,12 +132,48 @@ vcs import src < repos.yaml
 rosdep update
 rosdep install --from-paths src --ignore-src -y
 
-# 3. Build the workspace
-colcon build --symlink-install
+# 3. Build the workspace (with ccache if configured)
+colcon build --symlink-install \
+    --cmake-args -DCMAKE_C_COMPILER_LAUNCHER=ccache \
+                -DCMAKE_CXX_COMPILER_LAUNCHER=ccache
 
 # 4. Run tests
 colcon test
+
+# 5. (optional) Show test results
+colcon test-result --verbose
 ```
+
+### ccache integration
+
+**ccache is required for all C++ ROS 2 workspace devcontainers.**
+Without it, `colcon build` recompiles every translation unit from scratch
+on each devcontainer rebuild — easily 5–20 minutes of wall-clock time
+for a mid-size workspace.
+
+**Setup (three pieces, all in `.devcontainer/`):**
+
+1. **Install ccache** in the Dockerfile (`apt-get install ccache`).
+2. **Set `CCACHE_DIR`** in `devcontainer.json` `containerEnv` to
+   `/home/ws/.ccache` (or a similar workspace-relative path).
+3. **Mount a named volume** at that path so the cache survives rebuilds.
+
+**colcon CMake args** wire ccache into the build as shown above.
+If a downstream package uses a non-CMake build system (e.g. pure-Python
+packages), the cmake args are ignored — ccache only accelerates C/C++
+compilation, which is the dominant cost in ROS 2 workspaces.
+
+### colcon build lifecycle
+
+The full colcon build lifecycle for development:
+
+| Step | Command | When |
+|------|---------|------|
+| Full build | `colcon build --symlink-install` | First checkout, after `rosdep install` |
+| Incremental build | `colcon build --symlink-install --packages-select <pkg>` | After editing a single package |
+| Clean rebuild | `rm -rf build/ install/ && colcon build --symlink-install` | After dependency changes or stale artifacts |
+| Test all | `colcon test` | After any build |
+| Test one package | `colcon test --packages-select <pkg>` | During development on that package |
 
 - **`colcon build --symlink-install`** is the default — Python packages
   are symlinked so edits take effect without re-building.

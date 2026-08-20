@@ -33,6 +33,9 @@ everywhere.
 - **[Security posture](security-posture.md)** — self-enforcing security gates
   (SAST, dependency review, Dependabot, workflow hardening, secret protection,
   SBOM), auditable per repo.
+- **[CycloneDX SBOM via uv export](sbom-cyclonedx-uv.md)** — standards-conformant
+  CycloneDX SBOMs generated natively from `uv.lock` via `uv export`; keeps
+  vulnerability audit output as a separate, accurately-named artifact.
 - **[GitHub Actions security](github-actions-security.md)** — zizmor static-security
   auditor for GitHub Actions workflows, canonical invocation, and a
   warning-first-then-fail-closed phased rollout policy.

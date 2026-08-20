@@ -34,6 +34,7 @@ the default.
 | [Towncrier changelog](docs/towncrier.md) | Per-PR newsfragments in `changelog.d/`, `pyproject.toml` config, CI enforcement, and automated release compilation. *(Superseded by [release-please](docs/release-please.md).)* |
 | [Free-tier only](docs/free-tier-only.md) | No paid services (LLM agent inference excepted): Actions on a free tier (public or self-hosted runner), public/self-hosted images, permissive licences. |
 | [Security posture](docs/security-posture.md) | Self-enforcing security gates (SAST, dependency review, Dependabot, workflow hardening, secret protection, SBOM), auditable per repo. |
+| [CycloneDX SBOM via uv export](docs/sbom-cyclonedx-uv.md) | Standards-conformant CycloneDX SBOMs generated natively from `uv.lock` via `uv export` — keeps vulnerability audit output as a separate, accurately-named artifact. |
 | [GitHub Actions security](docs/github-actions-security.md) | zizmor static-security auditor for GitHub Actions workflows — canonical invocation, severity policy, phased rollout. |
 | [Stale bot must exempt pull requests](docs/stale-bot-must-exempt-pull-requests.md) | Every `stale.yml` must disable pull-request staling and closing with `days-before-pr-stale: -1` and `days-before-pr-close: -1` — keep issue hygiene, never auto-close PRs. |
 | [Dependabot auto-merge](docs/dependabot-auto-merge.md) | Dependabot auto-merge must be gated on required CI passing (not purely actor-gated), restricted to minor/patch updates, and must exclude docker and pre-commit ecosystems. |

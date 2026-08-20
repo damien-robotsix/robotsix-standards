@@ -141,7 +141,7 @@ everywhere.
   rollback, function-scoped session with savepoints) for clean test isolation
   without dropping tables.
 - **[ROS 2 practices](ros2.md)** — workspace-skeleton layout, vcs2l manifest,
-  devcontainer, colcon/rosdep build, lint gates.
+  devcontainer with ccache, colcon/rosdep build lifecycle, lint gates.
 - **[Pre-commit baseline](pre-commit-baseline.md)** — five zero-config
   file-hygiene hooks (trailing-whitespace, end-of-file-fixer, check-yaml,
   check-toml, check-added-large-files) for every Python repo.

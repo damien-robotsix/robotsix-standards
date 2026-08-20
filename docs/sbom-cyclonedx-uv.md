@@ -128,7 +128,7 @@ than repeating the command.
 | Contents | Matching vulnerabilities (CVE/OSV id, severity, affected ranges) | Component inventory (name, version, purl, dependency graph) |
 | Consumable by | Custom audit dashboards, advisory feeds | Dependency-Track, GitHub Dependabot, grype, trivy sbom, VEX pipelines |
 | Standards body | OpenSSF / OSV | OWASP CycloneDX |
-| CI exit on error | Advisory (`|| true` recommended) | Hard failure (must stop if SBOM cannot be produced) |
+| CI exit on error | Advisory (\|\| true recommended) | Hard failure (must stop if SBOM cannot be produced) |
 
 The two artifacts play complementary roles in supply-chain security: the
 SBOM tells you **what you have**; the audit tells you **what is known wrong

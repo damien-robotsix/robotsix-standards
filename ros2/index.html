@@ -1572,6 +1572,34 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="Build &amp; test">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#ccache-integration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ccache integration
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#colcon-build-lifecycle" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        colcon build lifecycle
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -2528,6 +2556,34 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="Build &amp; test">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#ccache-integration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ccache integration
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#colcon-build-lifecycle" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        colcon build lifecycle
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -2653,7 +2709,7 @@ environment is reproducible:</p>
 
 <span class="c"># System dependencies for building and tooling</span>
 <span class="k">RUN</span><span class="w"> </span>apt-get<span class="w"> </span>update<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>apt-get<span class="w"> </span>install<span class="w"> </span>-y<span class="w"> </span>--no-install-recommends<span class="w"> </span><span class="se">\</span>
-<span class="w">    </span>build-essential<span class="w"> </span>cmake<span class="w"> </span>git<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>build-essential<span class="w"> </span>cmake<span class="w"> </span>git<span class="w"> </span>ccache<span class="w"> </span><span class="se">\</span>
 <span class="w">    </span>python3-pip<span class="w"> </span>python3-vcstool<span class="w"> </span>python3-colcon-common-extensions<span class="w"> </span><span class="se">\</span>
 <span class="w">    </span><span class="o">&amp;&amp;</span><span class="w"> </span>rm<span class="w"> </span>-rf<span class="w"> </span>/var/lib/apt/lists/*
 
@@ -2672,16 +2728,27 @@ environment is reproducible:</p>
 </ul>
 <div class="highlight"><pre><span></span><code><span class="nt">&quot;containerEnv&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
 <span class="w">  </span><span class="nt">&quot;ROS_DOMAIN_ID&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;42&quot;</span><span class="p">,</span>
-<span class="w">  </span><span class="nt">&quot;ROS_AUTOMATIC_DISCOVERY_RANGE&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;LOCALHOST&quot;</span>
+<span class="w">  </span><span class="nt">&quot;ROS_AUTOMATIC_DISCOVERY_RANGE&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;LOCALHOST&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;CCACHE_DIR&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;/home/ws/.ccache&quot;</span>
 <span class="p">}</span>
 </code></pre></div>
 <ul>
 <li><code>--net=host</code> and <code>--ipc=host</code> for DDS networking.</li>
-<li><code>postCreateCommand</code> runs <code>vcs import</code>, <code>rosdep update</code>, and
-  <code>rosdep install</code> so the workspace is ready on first open.</li>
+<li>A named <code>ccache</code> volume mounted at <code>${CCACHE_DIR}</code> so the compiler
+  cache persists across devcontainer rebuilds:</li>
 </ul>
+<div class="highlight"><pre><span></span><code><span class="nt">&quot;mounts&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">  </span><span class="s2">&quot;source=ros2-ccache,target=${containerEnv:CCACHE_DIR},type=volume&quot;</span>
+<span class="p">]</span>
+</code></pre></div>
+<p><strong>Why a named volume:</strong> bind-mounting a host directory works locally
+  but breaks in remote (GitHub Codespaces) and CI-hosted devcontainer
+  environments. A named Docker volume works everywhere and is cheap
+  to recreate — the cache is an optimisation, not precious state.
+- <code>postCreateCommand</code> runs <code>vcs import</code>, <code>rosdep update</code>, and
+  <code>rosdep install</code> so the workspace is ready on first open.</p>
 <h2 id="build-test">Build &amp; test<a class="headerlink" href="#build-test" title="Permanent link">&para;</a></h2>
-<p>The standard build pipeline:</p>
+<p>The standard build lifecycle:</p>
 <div class="highlight"><pre><span></span><code><span class="c1"># 1. Pull in downstream packages</span>
 vcs<span class="w"> </span>import<span class="w"> </span>src<span class="w"> </span>&lt;<span class="w"> </span>repos.yaml
 
@@ -2689,12 +2756,71 @@ vcs<span class="w"> </span>import<span class="w"> </span>src<span class="w"> </s
 rosdep<span class="w"> </span>update
 rosdep<span class="w"> </span>install<span class="w"> </span>--from-paths<span class="w"> </span>src<span class="w"> </span>--ignore-src<span class="w"> </span>-y
 
-<span class="c1"># 3. Build the workspace</span>
-colcon<span class="w"> </span>build<span class="w"> </span>--symlink-install
+<span class="c1"># 3. Build the workspace (with ccache if configured)</span>
+colcon<span class="w"> </span>build<span class="w"> </span>--symlink-install<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--cmake-args<span class="w"> </span>-DCMAKE_C_COMPILER_LAUNCHER<span class="o">=</span>ccache<span class="w"> </span><span class="se">\</span>
+<span class="w">                </span>-DCMAKE_CXX_COMPILER_LAUNCHER<span class="o">=</span>ccache
 
 <span class="c1"># 4. Run tests</span>
 colcon<span class="w"> </span><span class="nb">test</span>
+
+<span class="c1"># 5. (optional) Show test results</span>
+colcon<span class="w"> </span>test-result<span class="w"> </span>--verbose
 </code></pre></div>
+<h3 id="ccache-integration">ccache integration<a class="headerlink" href="#ccache-integration" title="Permanent link">&para;</a></h3>
+<p><strong>ccache is required for all C++ ROS 2 workspace devcontainers.</strong>
+Without it, <code>colcon build</code> recompiles every translation unit from scratch
+on each devcontainer rebuild — easily 5–20 minutes of wall-clock time
+for a mid-size workspace.</p>
+<p><strong>Setup (three pieces, all in <code>.devcontainer/</code>):</strong></p>
+<ol>
+<li><strong>Install ccache</strong> in the Dockerfile (<code>apt-get install ccache</code>).</li>
+<li><strong>Set <code>CCACHE_DIR</code></strong> in <code>devcontainer.json</code> <code>containerEnv</code> to
+   <code>/home/ws/.ccache</code> (or a similar workspace-relative path).</li>
+<li><strong>Mount a named volume</strong> at that path so the cache survives rebuilds.</li>
+</ol>
+<p><strong>colcon CMake args</strong> wire ccache into the build as shown above.
+If a downstream package uses a non-CMake build system (e.g. pure-Python
+packages), the cmake args are ignored — ccache only accelerates C/C++
+compilation, which is the dominant cost in ROS 2 workspaces.</p>
+<h3 id="colcon-build-lifecycle">colcon build lifecycle<a class="headerlink" href="#colcon-build-lifecycle" title="Permanent link">&para;</a></h3>
+<p>The full colcon build lifecycle for development:</p>
+<table>
+<thead>
+<tr>
+<th>Step</th>
+<th>Command</th>
+<th>When</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Full build</td>
+<td><code>colcon build --symlink-install</code></td>
+<td>First checkout, after <code>rosdep install</code></td>
+</tr>
+<tr>
+<td>Incremental build</td>
+<td><code>colcon build --symlink-install --packages-select &lt;pkg&gt;</code></td>
+<td>After editing a single package</td>
+</tr>
+<tr>
+<td>Clean rebuild</td>
+<td><code>rm -rf build/ install/ &amp;&amp; colcon build --symlink-install</code></td>
+<td>After dependency changes or stale artifacts</td>
+</tr>
+<tr>
+<td>Test all</td>
+<td><code>colcon test</code></td>
+<td>After any build</td>
+</tr>
+<tr>
+<td>Test one package</td>
+<td><code>colcon test --packages-select &lt;pkg&gt;</code></td>
+<td>During development on that package</td>
+</tr>
+</tbody>
+</table>
 <ul>
 <li><strong><code>colcon build --symlink-install</code></strong> is the default — Python packages
   are symlinked so edits take effect without re-building.</li>

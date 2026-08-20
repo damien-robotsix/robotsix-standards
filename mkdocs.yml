@@ -84,6 +84,7 @@ nav:
       - Contributor guide in docs nav: contributing-in-nav.md
       - Distribution & Packaging: distribution-packaging.md
       - Python CI workflow: python-ci-workflow.md
+      - CycloneDX SBOM via uv export: sbom-cyclonedx-uv.md
       - Python practices: python.md
       - Single-source versioning: single-source-versioning.md
       - Python __main__.py exit-code forwarding: python-main-py-forward.md

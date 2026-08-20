@@ -13,7 +13,7 @@
         <link rel="canonical" href="https://damien-robotsix.github.io/robotsix-standards/python/">
       
       
-        <link rel="prev" href="../python-ci-workflow/">
+        <link rel="prev" href="../sbom-cyclonedx-uv/">
       
       
         <link rel="next" href="../single-source-versioning/">
@@ -740,6 +740,34 @@
     
   
     Python CI workflow
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../sbom-cyclonedx-uv/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    CycloneDX SBOM via uv export
   
 
     
@@ -3095,8 +3123,9 @@ at lint time — every repo enables the standard rule set so that API docs
 built by mkdocstrings don't silently drop parameter descriptions.</p>
 <p>The shared <code>python-security.yml</code> workflow is a separate gate that additionally
 runs <code>pip-audit</code> (a second CVE audit pass), TruffleHog for secret scanning
-(PR-diff and full-repo), and generates a CycloneDX SBOM uploaded as a workflow
-artifact.</p>
+(PR-diff and full-repo), and generates a CycloneDX SBOM (via <code>uv export</code>,
+per the <a href="../security-posture/#6-sbom-vulnerability-audit">security posture</a>)
+uploaded as a workflow artifact.</p>
 <p><strong>Semgrep</strong> runs as a separate SAST gate via the shared security workflow —
 see the <a href="../security-posture/#1-sast-semgrep">security posture</a> for details.</p>
 <p><strong>Security lint convention:</strong> enable ruff's bandit rules in <code>pyproject.toml</code>

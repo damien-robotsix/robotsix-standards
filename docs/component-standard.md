@@ -77,6 +77,49 @@ the entire fleet. The tinyauth SSO session cookie **MUST** be issued with
 `SameSite=Lax` (or `Strict`), so cross-site requests do not carry the cookie
 and fail edge authentication before they reach any component.
 
+#### Where that guarantee comes from, and how to re-check it
+
+This rule tells components to delete a defence on the promise that something
+else provides it. That promise has one owner: the `tinyauth` service in
+**robotsix-central-deploy's `docker-compose.yml`**. Two things there keep it
+true, and both are load-bearing:
+
+- The **pinned image tag**. `SameSite=Lax` is set in tinyauth's own source, not
+  in our configuration — and it is *absent* in v5.0.0, which emitted no
+  `SameSite` attribute at all. A floating `:v5` tag spans versions that do and
+  do not carry it, so the tag is pinned to a patch version. Bump it
+  deliberately, and re-run the check below afterwards.
+- **`TINYAUTH_AUTH_SECURECOOKIE: "true"`**, so the cookie is never sent over
+  plaintext. tinyauth defaults this to false.
+
+Verify from a logged-in browser on any `*.<base-domain>` page — DevTools →
+Application → Cookies, or:
+
+```js
+// Console on a logged-in page. Expect SameSite=Lax, Secure, HttpOnly.
+document.cookie // HttpOnly cookies are absent here by design — read the
+                // Set-Cookie in the Network tab of the login response instead.
+```
+
+Re-verify after any tinyauth upgrade, and whenever this rule is cited to
+justify deleting a component's CSRF code. A removal that assumes the property
+without checking it is how a component ends up genuinely unprotected.
+
+#### What `SameSite=Lax` does not cover
+
+`SameSite` is scoped to the **registrable domain** (eTLD+1), not the hostname.
+Every fleet host shares one registrable domain, so **sibling components are
+same-site to each other**: a request originating from one component's page to
+another component **does** carry the SSO cookie, and `SameSite` will not stop
+it.
+
+The edge therefore covers the cross-*site* attacker — a hostile third-party
+page forging a request — which is the threat the removed per-component guards
+were nominally for. It does **not** isolate components from one another. A
+component that renders attacker-influenceable HTML on a fleet hostname (file
+previews, user-supplied content) widens this, and is worth raising rather than
+resolving locally.
+
 A component **MUST NOT** implement CSRF logic of any kind:
 
 - **No header-origin matching** — no `Origin`, `Host`, or
@@ -92,6 +135,17 @@ These are caller-gating mechanisms, already covered by the "removed" list
 above. Per-component CSRF is a second lock on the same door: an additional
 source of configuration drift, breakage, and debugging cost.
 
+**Narrow exception — privileged control-plane forms.** A component whose own
+forms can change fleet state (today: `robotsix-central-deploy`'s dashboard,
+which deploys and destroys containers) **MAY** keep a real
+double-submit-cookie or synchronizer-token implementation. That is the one
+mechanism which also closes the sibling-subdomain gap above, and on the
+control plane the extra lock is worth its cost. This exception covers
+**token-based** CSRF only — header-origin matching and `trusted_origins`
+allowlists stay banned everywhere, for every component, because those are the
+mechanisms that break behind the proxy. Anything relying on this exception
+must say so in the module that implements it.
+
 Internal callers (fleet services, scripts) reach components over the
 container network without cookies and are **unaffected** by CSRF protection
 at the edge or anywhere else.
@@ -104,6 +158,13 @@ requests to be rejected. That guard is being removed under this rule
 (2026-08-16 operator decision), with the `SameSite=Lax` session cookie in
 the tinyauth deployment providing fleet-wide CSRF protection instead of
 per-component code.
+
+The precondition attached to that removal — confirm the cookie really is
+`SameSite=Lax` — was checked on 2026-08-21 against the running tinyauth
+(v5.1.3, revision `ad700e75`): all three session-cookie paths in
+`internal/service/auth_service.go` set `http.SameSiteLaxMode`, so the
+precondition holds. The same check found `Secure` unset, which is why
+`TINYAUTH_AUTH_SECURECOOKIE` is now pinned on above.
 
 Migration sequencing: a component that today ships its own auth removes it
 **only after** it is served exclusively through the fleet edge — otherwise the

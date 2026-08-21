@@ -1268,10 +1268,65 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#why-this-exists" class="md-nav__link">
+  <a href="#why-adopt-hypothesis" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Why this exists
+        Why adopt Hypothesis
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#dependency-declaration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Dependency declaration
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#writing-property-based-tests" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Writing property-based tests
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#domain-valid-composite-strategies" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Domain-valid composite strategies
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#stateful-invariants-with-rulebasedstatemachine" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Stateful invariants with RuleBasedStateMachine
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#why-a-shared-profile-convention" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why a shared profile convention
       
     </span>
   </a>
@@ -2499,10 +2554,65 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#why-this-exists" class="md-nav__link">
+  <a href="#why-adopt-hypothesis" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Why this exists
+        Why adopt Hypothesis
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#dependency-declaration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Dependency declaration
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#writing-property-based-tests" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Writing property-based tests
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#domain-valid-composite-strategies" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Domain-valid composite strategies
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#stateful-invariants-with-rulebasedstatemachine" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Stateful invariants with RuleBasedStateMachine
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#why-a-shared-profile-convention" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why a shared profile convention
       
     </span>
   </a>
@@ -2575,11 +2685,132 @@
 
 <h1 id="hypothesis-property-based-testing">Hypothesis property-based testing<a class="headerlink" href="#hypothesis-property-based-testing" title="Permanent link">&para;</a></h1>
 <blockquote>
-<p><strong>Scope: every Python repository that uses
-<a href="https://hypothesis.readthedocs.io/">Hypothesis</a>.</strong> These rules apply
-fleet-wide; repos that do not use Hypothesis are unaffected.</p>
+<p><strong>Scope: every Python repository.</strong> <a href="https://hypothesis.readthedocs.io/">Hypothesis</a>
+is the fleet's recommended tool for property-based testing. The mandatory
+rules below apply to repositories that adopt it; repos that do not use
+Hypothesis are unaffected.</p>
 </blockquote>
-<h2 id="why-this-exists">Why this exists<a class="headerlink" href="#why-this-exists" title="Permanent link">&para;</a></h2>
+<h2 id="why-adopt-hypothesis">Why adopt Hypothesis<a class="headerlink" href="#why-adopt-hypothesis" title="Permanent link">&para;</a></h2>
+<p>Property-based testing catches the edge cases example-based tests miss.
+Instead of asserting a handful of hand-picked inputs, a property test states
+an <em>invariant</em> and lets Hypothesis generate hundreds of random inputs per
+run, shrinking any failure to a minimal reproducer that can be pasted into a
+regression test. Fleet game-engine and simulation projects (Nashpy,
+fastbreak) have already demonstrated the value:</p>
+<ul>
+<li><strong>Nashpy</strong> uses <code>@given</code> plus <code>numpy</code> array strategies to verify
+  payoff-matrix invariants — shape preservation and zero-sum detection —
+  across arbitrary matrix shapes and values.</li>
+<li><strong><code>RuleBasedStateMachine</code></strong> wraps a simulation loop and re-checks its
+  invariants after every state transition — the pattern for repos with
+  complex state: game engines, agent simulators, and data pipelines.</li>
+</ul>
+<p><strong>Hypothesis augments example-based tests; it does not replace them.</strong>
+Example-based tests still cover known edge cases and regression scenarios;
+property-based tests cover the unknown ones. Repos keep both.</p>
+<h2 id="dependency-declaration">Dependency declaration<a class="headerlink" href="#dependency-declaration" title="Permanent link">&para;</a></h2>
+<p>Every Python repo that adopts Hypothesis <strong>must</strong> declare it as a dev/test
+dependency. Dev tooling lives in the PEP 735 <code>[dependency-groups] dev</code> group
+(see <a href="../python/#packaging">Python practices</a> for the canonical dev-tooling
+placement), so <code>hypothesis</code> goes there — not in the unconditional
+<code>[project] dependencies</code>:</p>
+<div class="highlight"><pre><span></span><code><span class="k">[dependency-groups]</span>
+<span class="n">dev</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span>
+<span class="w">    </span><span class="s2">&quot;hypothesis&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="c1"># ... existing dev/test dependencies ...</span>
+<span class="p">]</span>
+</code></pre></div>
+<p><strong>Failure mode:</strong> Hypothesis is a test-only tool. Declaring it in the
+unconditional <code>dependencies</code> ships it in the installed library or service
+image, bloating the production install with a package nothing imports at
+runtime. Declaring it in a bespoke extra instead of the shared <code>dev</code> group
+splits the test toolchain — a contributor syncing <code>dev</code> gets everything
+except Hypothesis, and their property tests fail with <code>ModuleNotFoundError</code>.</p>
+<h2 id="writing-property-based-tests">Writing property-based tests<a class="headerlink" href="#writing-property-based-tests" title="Permanent link">&para;</a></h2>
+<p>Write property-based tests for functions with a clear invariant. State the
+invariant once with <code>@given</code> and let Hypothesis generate the inputs:</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">hypothesis</span><span class="w"> </span><span class="kn">import</span> <span class="n">given</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">hypothesis</span><span class="w"> </span><span class="kn">import</span> <span class="n">strategies</span> <span class="k">as</span> <span class="n">st</span>
+
+<span class="nd">@given</span><span class="p">(</span><span class="n">radius</span><span class="o">=</span><span class="n">st</span><span class="o">.</span><span class="n">integers</span><span class="p">(</span><span class="n">min_value</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">max_value</span><span class="o">=</span><span class="mi">10</span><span class="p">))</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">test_hex_map_has_expected_locations</span><span class="p">(</span><span class="n">radius</span><span class="p">):</span>
+    <span class="n">hexes</span> <span class="o">=</span> <span class="n">generate_hex_map</span><span class="p">(</span><span class="n">radius</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">hexes</span><span class="p">)</span> <span class="o">==</span> <span class="mi">3</span> <span class="o">*</span> <span class="n">radius</span> <span class="o">*</span> <span class="p">(</span><span class="n">radius</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span>
+
+<span class="nd">@given</span><span class="p">(</span><span class="n">radius</span><span class="o">=</span><span class="n">st</span><span class="o">.</span><span class="n">integers</span><span class="p">(</span><span class="n">min_value</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">max_value</span><span class="o">=</span><span class="mi">10</span><span class="p">))</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">test_centre_hex_is_capital</span><span class="p">(</span><span class="n">radius</span><span class="p">):</span>
+    <span class="n">hexes</span> <span class="o">=</span> <span class="n">generate_hex_map</span><span class="p">(</span><span class="n">radius</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="n">hexes</span><span class="p">[(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)]</span> <span class="o">==</span> <span class="n">CAPITAL</span>
+</code></pre></div>
+<p>A good candidate has an invariant that holds for <em>every</em> valid input — a
+round-trip (serialize then parse returns the original), an idempotency
+(wrapping twice equals wrapping once), a shape/size relationship, or a
+conservation law. When you can only enumerate edge cases by hand, you do not
+have a property; keep those as example-based tests instead.</p>
+<p><strong>Failure mode:</strong> property tests written around behaviour without a real
+invariant degrade into weak assertions (e.g. "calling the function does not
+crash") that pass for the wrong reasons and add runtime without adding
+confidence. Property tests pay for themselves only when the property is the
+spec.</p>
+<h2 id="domain-valid-composite-strategies">Domain-valid composite strategies<a class="headerlink" href="#domain-valid-composite-strategies" title="Permanent link">&para;</a></h2>
+<p>Complex inputs often need to respect domain constraints (a valid UID, a
+non-empty name, a reachable hex coordinate). Define those once with
+<code>@st.composite</code> so every generated value is valid, instead of generating
+invalid values and filtering them in the test:</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">hypothesis</span><span class="w"> </span><span class="kn">import</span> <span class="n">strategies</span> <span class="k">as</span> <span class="n">st</span>
+
+<span class="nd">@st</span><span class="o">.</span><span class="n">composite</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">hex_map</span><span class="p">(</span><span class="n">draw</span><span class="p">,</span> <span class="n">max_radius</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">10</span><span class="p">):</span>
+    <span class="n">radius</span> <span class="o">=</span> <span class="n">draw</span><span class="p">(</span><span class="n">st</span><span class="o">.</span><span class="n">integers</span><span class="p">(</span><span class="n">min_value</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">max_value</span><span class="o">=</span><span class="n">max_radius</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">generate_hex_map</span><span class="p">(</span><span class="n">radius</span><span class="p">)</span>
+</code></pre></div>
+<p>Composite strategies compose smaller strategies with <code>draw</code>, keeping the
+domain rules in one place. Reuse them across tests via the
+<a href="#shared-strategies-module">shared strategies module</a> so a constraint change
+is made once, not in every test.</p>
+<p><strong>Failure mode:</strong> strategies that generate mostly-invalid values force tests
+to reject inputs (<code>assume(...)</code> chains) and waste most of their generation
+budget; slow filtering trips Hypothesis health checks and hides real coverage
+gaps.</p>
+<h2 id="stateful-invariants-with-rulebasedstatemachine">Stateful invariants with <code>RuleBasedStateMachine</code><a class="headerlink" href="#stateful-invariants-with-rulebasedstatemachine" title="Permanent link">&para;</a></h2>
+<p>For game engines, agent simulators, and data pipelines — anything whose
+correctness is "no matter what sequence of operations happens, the invariants
+hold" — use <code>RuleBasedStateMachine</code>. It wraps the loop, applies generated
+operations as <code>rule()</code> steps, and re-checks <code>invariant()</code> methods after every
+transition:</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">hypothesis</span><span class="w"> </span><span class="kn">import</span> <span class="n">strategies</span> <span class="k">as</span> <span class="n">st</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">hypothesis.stateful</span><span class="w"> </span><span class="kn">import</span> <span class="n">RuleBasedStateMachine</span><span class="p">,</span> <span class="n">invariant</span><span class="p">,</span> <span class="n">rule</span>
+
+<span class="k">class</span><span class="w"> </span><span class="nc">SimulationMachine</span><span class="p">(</span><span class="n">RuleBasedStateMachine</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sim</span> <span class="o">=</span> <span class="n">Simulation</span><span class="p">()</span>
+
+    <span class="nd">@rule</span><span class="p">(</span><span class="n">steps</span><span class="o">=</span><span class="n">st</span><span class="o">.</span><span class="n">integers</span><span class="p">(</span><span class="n">min_value</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">max_value</span><span class="o">=</span><span class="mi">100</span><span class="p">))</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">advance</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">steps</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sim</span><span class="o">.</span><span class="n">advance</span><span class="p">(</span><span class="n">steps</span><span class="p">)</span>
+
+    <span class="nd">@invariant</span><span class="p">()</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">resources_are_conserved</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">sim</span><span class="o">.</span><span class="n">total_resources</span><span class="p">()</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">sim</span><span class="o">.</span><span class="n">initial_resources</span>
+
+    <span class="nd">@invariant</span><span class="p">()</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">dimensions_are_preserved</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">sim</span><span class="o">.</span><span class="n">world</span><span class="o">.</span><span class="n">width</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">sim</span><span class="o">.</span><span class="n">world</span><span class="o">.</span><span class="n">initial_width</span>
+        <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">sim</span><span class="o">.</span><span class="n">world</span><span class="o">.</span><span class="n">height</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">sim</span><span class="o">.</span><span class="n">world</span><span class="o">.</span><span class="n">initial_height</span>
+
+<span class="n">TestSimulation</span> <span class="o">=</span> <span class="n">SimulationMachine</span><span class="o">.</span><span class="n">TestCase</span>
+</code></pre></div>
+<p>Use stateful machines for <strong>resource conservation</strong>, <strong>dimension
+preservation</strong>, and <strong>consistency across state transitions</strong> — the invariants
+that example-based tests cannot enumerate because the operation sequences are
+unbounded.</p>
+<p><strong>Failure mode:</strong> a stateful simulation tested only with fixed scripted
+scenarios verifies the <em>paths you thought of</em>; a <code>RuleBasedStateMachine</code>
+verifies the invariants across <em>every</em> generated sequence, and Hypothesis
+shrinks a failing sequence to the shortest one that still breaks the
+invariant — a minimal reproducer instead of a 1000-step log.</p>
+<h2 id="why-a-shared-profile-convention">Why a shared profile convention<a class="headerlink" href="#why-a-shared-profile-convention" title="Permanent link">&para;</a></h2>
 <p>Multiple fleet repos use Hypothesis for property-based testing. Without a
 shared convention each repo independently reinvents settings decoration —
 repeating <code>@settings(max_examples=200, derandomize=True, deadline=None,
@@ -2676,6 +2907,23 @@ profile is a baseline, not a straitjacket.</p>
 intended. The bug that would have been caught at 200 examples slips through,
 and the property-based test suite is effectively half-strength in the one
 environment where thoroughness matters most.</p>
+<p>Property-based tests run in the <strong>same</strong> pytest job as example-based tests —
+there is no separate "Hypothesis" CI job. The ordinary <code>pytest</code> invocation
+collects and runs <code>@given</code> tests exactly like any other test, so the existing
+coverage gate and test step cover them automatically.</p>
+<p>Two Hypothesis CLI flags are worth using in CI:</p>
+<ul>
+<li><code>--hypothesis-show-statistics</code> — prints per-test statistics (examples run,
+  health-check status) so reviewers can see how much each property exercised.</li>
+<li><code>--hypothesis-seed &lt;int&gt;</code> — replays a specific generated input sequence.
+  The failing seed is printed on every Hypothesis failure and makes flaky or
+  intermittent property failures reproducible.</li>
+</ul>
+<p><strong>Failure mode:</strong> a dedicated Hypothesis job drifts from the main suite — it
+loses the shared <code>HYPOTHESIS_PROFILE</code> env, the coverage gate, and the
+<code>dev</code>-group install guarantees — and quickly becomes the job nobody runs
+locally. Folding property tests into the ordinary pytest invocation keeps
+them under the same CI contract as every other test.</p>
 
 
 

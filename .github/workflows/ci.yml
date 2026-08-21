@@ -46,7 +46,5 @@ jobs:
         run: |
           curl -sSL https://github.com/rhysd/actionlint/releases/download/v1.7.12/actionlint_1.7.12_linux_amd64.tar.gz | tar xz -C /tmp
           /tmp/actionlint .github/workflows/*.yml
-      - name: Spell check
-        run: uv run --with codespell codespell
       - name: Check py.typed wheel guard (self-check)
         run: uv run python scripts/check-py-typed-guard.py

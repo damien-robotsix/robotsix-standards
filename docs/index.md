@@ -78,8 +78,10 @@ everywhere.
 - **[Logging](logging.md)** — structured JSON logging via structlog,
   stdout-only output, correlation-id middleware, and level conventions
   for every deployable service.
-- **[Hypothesis testing](hypothesis.md)** — property-based testing profiles,
-  shared strategies, and CI integration for repos that use Hypothesis.
+- **[Hypothesis testing](hypothesis.md)** — fleet-recommended property-based
+  testing: adoption guidance, dev-dependency declaration, invariant-based
+  tests, composite strategies, `RuleBasedStateMachine`, profiles, and CI
+  integration.
 - **[Mutation testing (mutmut)](mutation-testing.md)** — advisory weekly
   mutmut cron for Python repos with ≥70% coverage: non-blocking (`|| true`),
   HTML report artifact, mutation score in the workflow summary.

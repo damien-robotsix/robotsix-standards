@@ -345,7 +345,10 @@ production. Full detail: [HTTP error envelope](http-error-envelope.md).
 
   A component keeps reading its own credentials from this block internally —
   the block is the *storage* shape (only `public_key` and `secret_key`), not
-  a new API. The `project_id` is NOT part of the component's config model;
+  a new API. This is the single canonical definition; the
+  [config standard](config-standard.md#7-langfuse-configuration)
+  cross-references it and must not restate the field set. The `project_id`
+  is NOT part of the component's config model;
   the deployment engine enriches each project entry with the Langfuse
   project id through its own API query when it enumerates fleet credentials
   for consumers that need it. Failure prevented: when the component omits

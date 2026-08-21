@@ -195,13 +195,13 @@ are the whole mechanism.
 ### 7. Langfuse configuration
 
 The Langfuse credential block shape is defined in the
-[component standard](component-standard.md).  The canonical block is a
-top-level `langfuse` key holding the instance `host` and a `projects` map
-keyed by the Langfuse project name (`<repo>` / `<repo>-<function>`), with
-each entry carrying `public_key`, `secret_key`, and an optional
-`project_id`.  Components declare their own Langfuse credentials in their
-own config; there is no central override map.  See the component standard
-for the full model shape, constraints, and rationale.
+[component standard](component-standard.md) (LLM tracing section).  The
+canonical block is a top-level `langfuse` key holding the instance `host`
+and a `projects` map keyed by the Langfuse project name
+(`<repo>` / `<repo>-<function>`), with each entry carrying `public_key`
+and `secret_key`.  Components declare their own Langfuse credentials in
+their own config; there is no central override map.  See the component
+standard for the full model shape, constraints, and rationale.
 
 ### 8. OpenRouter configuration
 

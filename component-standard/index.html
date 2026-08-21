@@ -1696,6 +1696,34 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="CSRF is handled at the fleet edge — components ship none">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#where-that-guarantee-comes-from-and-how-to-re-check-it" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Where that guarantee comes from, and how to re-check it
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#what-samesitelax-does-not-cover" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What SameSite=Lax does not cover
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
         
       </ul>
@@ -2691,6 +2719,34 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="CSRF is handled at the fleet edge — components ship none">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#where-that-guarantee-comes-from-and-how-to-re-check-it" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Where that guarantee comes from, and how to re-check it
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#what-samesitelax-does-not-cover" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What SameSite=Lax does not cover
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
         
       </ul>
@@ -2998,6 +3054,41 @@ and get wrong, and a second thing to be wrong about when access breaks.</p>
 the entire fleet. The tinyauth SSO session cookie <strong>MUST</strong> be issued with
 <code>SameSite=Lax</code> (or <code>Strict</code>), so cross-site requests do not carry the cookie
 and fail edge authentication before they reach any component.</p>
+<h4 id="where-that-guarantee-comes-from-and-how-to-re-check-it">Where that guarantee comes from, and how to re-check it<a class="headerlink" href="#where-that-guarantee-comes-from-and-how-to-re-check-it" title="Permanent link">&para;</a></h4>
+<p>This rule tells components to delete a defence on the promise that something
+else provides it. That promise has one owner: the <code>tinyauth</code> service in
+<strong>robotsix-central-deploy's <code>docker-compose.yml</code></strong>. Two things there keep it
+true, and both are load-bearing:</p>
+<ul>
+<li>The <strong>pinned image tag</strong>. <code>SameSite=Lax</code> is set in tinyauth's own source, not
+  in our configuration — and it is <em>absent</em> in v5.0.0, which emitted no
+  <code>SameSite</code> attribute at all. A floating <code>:v5</code> tag spans versions that do and
+  do not carry it, so the tag is pinned to a patch version. Bump it
+  deliberately, and re-run the check below afterwards.</li>
+<li><strong><code>TINYAUTH_AUTH_SECURECOOKIE: "true"</code></strong>, so the cookie is never sent over
+  plaintext. tinyauth defaults this to false.</li>
+</ul>
+<p>Verify from a logged-in browser on any <code>*.&lt;base-domain&gt;</code> page — DevTools →
+Application → Cookies, or:</p>
+<div class="highlight"><pre><span></span><code><span class="c1">// Console on a logged-in page. Expect SameSite=Lax, Secure, HttpOnly.</span>
+<span class="nb">document</span><span class="p">.</span><span class="nx">cookie</span><span class="w"> </span><span class="c1">// HttpOnly cookies are absent here by design — read the</span>
+<span class="w">                </span><span class="c1">// Set-Cookie in the Network tab of the login response instead.</span>
+</code></pre></div>
+<p>Re-verify after any tinyauth upgrade, and whenever this rule is cited to
+justify deleting a component's CSRF code. A removal that assumes the property
+without checking it is how a component ends up genuinely unprotected.</p>
+<h4 id="what-samesitelax-does-not-cover">What <code>SameSite=Lax</code> does not cover<a class="headerlink" href="#what-samesitelax-does-not-cover" title="Permanent link">&para;</a></h4>
+<p><code>SameSite</code> is scoped to the <strong>registrable domain</strong> (eTLD+1), not the hostname.
+Every fleet host shares one registrable domain, so <strong>sibling components are
+same-site to each other</strong>: a request originating from one component's page to
+another component <strong>does</strong> carry the SSO cookie, and <code>SameSite</code> will not stop
+it.</p>
+<p>The edge therefore covers the cross-<em>site</em> attacker — a hostile third-party
+page forging a request — which is the threat the removed per-component guards
+were nominally for. It does <strong>not</strong> isolate components from one another. A
+component that renders attacker-influenceable HTML on a fleet hostname (file
+previews, user-supplied content) widens this, and is worth raising rather than
+resolving locally.</p>
 <p>A component <strong>MUST NOT</strong> implement CSRF logic of any kind:</p>
 <ul>
 <li><strong>No header-origin matching</strong> — no <code>Origin</code>, <code>Host</code>, or
@@ -3012,6 +3103,16 @@ and fail edge authentication before they reach any component.</p>
 <p>These are caller-gating mechanisms, already covered by the "removed" list
 above. Per-component CSRF is a second lock on the same door: an additional
 source of configuration drift, breakage, and debugging cost.</p>
+<p><strong>Narrow exception — privileged control-plane forms.</strong> A component whose own
+forms can change fleet state (today: <code>robotsix-central-deploy</code>'s dashboard,
+which deploys and destroys containers) <strong>MAY</strong> keep a real
+double-submit-cookie or synchronizer-token implementation. That is the one
+mechanism which also closes the sibling-subdomain gap above, and on the
+control plane the extra lock is worth its cost. This exception covers
+<strong>token-based</strong> CSRF only — header-origin matching and <code>trusted_origins</code>
+allowlists stay banned everywhere, for every component, because those are the
+mechanisms that break behind the proxy. Anything relying on this exception
+must say so in the module that implements it.</p>
 <p>Internal callers (fleet services, scripts) reach components over the
 container network without cookies and are <strong>unaffected</strong> by CSRF protection
 at the edge or anywhere else.</p>
@@ -3023,6 +3124,12 @@ requests to be rejected. That guard is being removed under this rule
 (2026-08-16 operator decision), with the <code>SameSite=Lax</code> session cookie in
 the tinyauth deployment providing fleet-wide CSRF protection instead of
 per-component code.</p>
+<p>The precondition attached to that removal — confirm the cookie really is
+<code>SameSite=Lax</code> — was checked on 2026-08-21 against the running tinyauth
+(v5.1.3, revision <code>ad700e75</code>): all three session-cookie paths in
+<code>internal/service/auth_service.go</code> set <code>http.SameSiteLaxMode</code>, so the
+precondition holds. The same check found <code>Secure</code> unset, which is why
+<code>TINYAUTH_AUTH_SECURECOOKIE</code> is now pinned on above.</p>
 <p>Migration sequencing: a component that today ships its own auth removes it
 <strong>only after</strong> it is served exclusively through the fleet edge — otherwise the
 removal window exposes it unauthenticated. Where the auth is already

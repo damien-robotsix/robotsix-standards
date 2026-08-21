@@ -198,6 +198,9 @@ integrates with the deployment system. Beyond the baseline it follows:
 - **[HTTP error envelope](http-error-envelope.md)** — one consistent RFC 9457
   `application/problem+json` envelope for every error response, registered via
   centralized exception handlers.
+- **[SSE response headers](sse-response-headers.md)** — every
+  `text/event-stream` response must carry `Cache-Control: no-cache`,
+  `Connection: keep-alive`, and `X-Accel-Buffering: no` via one shared helper.
 - **[HTTP security headers](http-security-headers.md)** — standard OWASP security
   response headers (CSP, HSTS, X-Frame-Options, etc.) via a single shared
   `secure` middleware, so no service hand-rolls its own headers.

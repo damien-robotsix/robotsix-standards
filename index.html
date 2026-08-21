@@ -2225,6 +2225,34 @@
   
   
     <li class="md-nav__item">
+      <a href="sse-response-headers/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SSE response headers
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="http-security-headers/" class="md-nav__link">
         
   
@@ -2880,6 +2908,9 @@ integrates with the deployment system. Beyond the baseline it follows:</p>
 <li><strong><a href="http-error-envelope/">HTTP error envelope</a></strong> — one consistent RFC 9457
   <code>application/problem+json</code> envelope for every error response, registered via
   centralized exception handlers.</li>
+<li><strong><a href="sse-response-headers/">SSE response headers</a></strong> — every
+  <code>text/event-stream</code> response must carry <code>Cache-Control: no-cache</code>,
+  <code>Connection: keep-alive</code>, and <code>X-Accel-Buffering: no</code> via one shared helper.</li>
 <li><strong><a href="http-security-headers/">HTTP security headers</a></strong> — standard OWASP security
   response headers (CSP, HSTS, X-Frame-Options, etc.) via a single shared
   <code>secure</code> middleware, so no service hand-rolls its own headers.</li>

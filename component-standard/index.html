@@ -3272,7 +3272,10 @@ production. Full detail: <a href="../http-error-envelope/">HTTP error envelope</
 </code></pre></div>
 <p>A component keeps reading its own credentials from this block internally —
   the block is the <em>storage</em> shape (only <code>public_key</code> and <code>secret_key</code>), not
-  a new API. The <code>project_id</code> is NOT part of the component's config model;
+  a new API. This is the single canonical definition; the
+  <a href="../config-standard/#7-langfuse-configuration">config standard</a>
+  cross-references it and must not restate the field set. The <code>project_id</code>
+  is NOT part of the component's config model;
   the deployment engine enriches each project entry with the Langfuse
   project id through its own API query when it enumerates fleet credentials
   for consumers that need it. Failure prevented: when the component omits

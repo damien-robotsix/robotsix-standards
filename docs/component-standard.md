@@ -346,6 +346,34 @@ production. Full detail: [HTTP error envelope](http-error-envelope.md).
   }
   ```
 
+  The canonical pydantic model backing this block:
+
+  ```python
+  from pydantic import BaseModel, SecretStr
+
+  class LangfuseProject(BaseModel):
+      """A single Langfuse project's credentials."""
+      public_key: str
+      secret_key: SecretStr
+
+  class LangfuseConfig(BaseModel):
+      """Per-component Langfuse configuration."""
+      host: str  # Must be a valid URL (e.g. https://langfuse.example.net)
+      projects: dict[str, LangfuseProject]  # At least one entry required
+  ```
+
+  Constraints:
+  - `host` MUST be a valid URL — the Langfuse SDK uses it directly as its
+    base URL and a malformed string is a runtime error, not a configuration
+    nuance.
+  - `projects` MUST have at least one entry — an empty dict means the
+    component declared tracing but provided no credentials, which is
+    indistinguishable from an unconfigured component and wastes the
+    deployment engine's enumeration pass.
+  - `secret_key` is mandatory per project — a project without it silently
+    produces no traces, which is worse than an explicit config error at
+    startup.
+
   A component keeps reading its own credentials from this block internally —
   the block is the *storage* shape (only `public_key` and `secret_key`), not
   a new API. This is the single canonical definition; the

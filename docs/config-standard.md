@@ -197,11 +197,20 @@ are the whole mechanism.
 The Langfuse credential block shape is defined in the
 [component standard](component-standard.md#llm-tracing).  The
 canonical block is a top-level `langfuse` key holding the instance `host`
-and a `projects` map keyed by the Langfuse project name
-(`<repo>` / `<repo>-<function>`), with each entry carrying `public_key`
-and `secret_key`.  Components declare their own Langfuse credentials in
-their own config; there is no central override map.  See the component
-standard for the full model shape, constraints, and rationale.
+(`str` — the Langfuse instance URL) and a `projects` map
+(`dict[str, LangfuseProject]`) keyed by the Langfuse project name
+(`<repo>` / `<repo>-<function>`).  Each project entry carries two fields:
+
+- `public_key: str`
+- `secret_key: pydantic.SecretStr` — masked on read, rendered as
+  `writeOnly` in the JSON Schema, and subject to the full §3 secret
+  convention: the deploy UI redacts it on read, never echoes it, and
+  merges it on partial write so an omitted secret preserves the stored
+  value.
+
+Components declare their own Langfuse credentials in their own config;
+there is no central override map.  See the component standard for the
+full model shape, constraints, and rationale.
 
 ### 8. OpenRouter configuration
 

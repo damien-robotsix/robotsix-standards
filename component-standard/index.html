@@ -1834,19 +1834,30 @@
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="LLM usage">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#security" class="md-nav__link">
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#llm-tracing" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Security
+        LLM tracing
       
     </span>
   </a>
   
 </li>
+      
+        <li class="md-nav__item">
+  <a href="#llm-security" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        LLM security
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="LLM security">
+      <ul class="md-nav__list">
         
           <li class="md-nav__item">
   <a href="#agentic-applications" class="md-nav__link">
@@ -2829,19 +2840,30 @@
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="LLM usage">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#security" class="md-nav__link">
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#llm-tracing" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Security
+        LLM tracing
       
     </span>
   </a>
   
 </li>
+      
+        <li class="md-nav__item">
+  <a href="#llm-security" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        LLM security
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="LLM security">
+      <ul class="md-nav__list">
         
           <li class="md-nav__item">
   <a href="#agentic-applications" class="md-nav__link">
@@ -3219,6 +3241,9 @@ production. Full detail: <a href="../http-error-envelope/">HTTP error envelope</
   deployment system: changing "level 3" from one model to another happens
   once, for every component at once — no component defines its own mapping.
   (Distribution mechanism is central-deploy's; components just call llmio.)</li>
+</ul>
+<h2 id="llm-tracing">LLM tracing<a class="headerlink" href="#llm-tracing" title="Permanent link">&para;</a></h2>
+<ul>
 <li>Tracing is <strong>opt-in, one way</strong>: Langfuse via <code>robotsix-llmio[tracing]</code>,
   a graceful no-op when unconfigured.</li>
 <li><strong>One Langfuse project per repo/function.</strong> A component's main LLM
@@ -3309,7 +3334,7 @@ production. Full detail: <a href="../http-error-envelope/">HTTP error envelope</
   component that has not migrated reports no projects and no keys — a
   visible failure that gets fixed, rather than a silent fallback that hides
   an unmigrated component indefinitely.</p>
-<h3 id="security">Security<a class="headerlink" href="#security" title="Permanent link">&para;</a></h3>
+<h2 id="llm-security">LLM security<a class="headerlink" href="#llm-security" title="Permanent link">&para;</a></h2>
 <blockquote>
 <p>The fleet's core function involves LLM agents — every agent that reads
 untrusted input or acts on model output must apply these defences.  The

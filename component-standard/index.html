@@ -3295,6 +3295,30 @@ production. Full detail: <a href="../http-error-envelope/">HTTP error envelope</
 <span class="w">  </span><span class="p">}</span>
 <span class="p">}</span>
 </code></pre></div>
+<p>The canonical pydantic model backing this block:</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">pydantic</span><span class="w"> </span><span class="kn">import</span> <span class="n">BaseModel</span><span class="p">,</span> <span class="n">SecretStr</span>
+
+<span class="k">class</span><span class="w"> </span><span class="nc">LangfuseProject</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A single Langfuse project&#39;s credentials.&quot;&quot;&quot;</span>
+    <span class="n">public_key</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">secret_key</span><span class="p">:</span> <span class="n">SecretStr</span>
+
+<span class="k">class</span><span class="w"> </span><span class="nc">LangfuseConfig</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Per-component Langfuse configuration.&quot;&quot;&quot;</span>
+    <span class="n">host</span><span class="p">:</span> <span class="nb">str</span>  <span class="c1"># Must be a valid URL (e.g. https://langfuse.example.net)</span>
+    <span class="n">projects</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">LangfuseProject</span><span class="p">]</span>  <span class="c1"># At least one entry required</span>
+</code></pre></div>
+<p>Constraints:
+  - <code>host</code> MUST be a valid URL — the Langfuse SDK uses it directly as its
+    base URL and a malformed string is a runtime error, not a configuration
+    nuance.
+  - <code>projects</code> MUST have at least one entry — an empty dict means the
+    component declared tracing but provided no credentials, which is
+    indistinguishable from an unconfigured component and wastes the
+    deployment engine's enumeration pass.
+  - <code>secret_key</code> is mandatory per project — a project without it silently
+    produces no traces, which is worse than an explicit config error at
+    startup.</p>
 <p>A component keeps reading its own credentials from this block internally —
   the block is the <em>storage</em> shape (only <code>public_key</code> and <code>secret_key</code>), not
   a new API. This is the single canonical definition; the

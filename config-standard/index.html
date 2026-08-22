@@ -2925,11 +2925,20 @@ are the whole mechanism.</p>
 <p>The Langfuse credential block shape is defined in the
 <a href="../component-standard/#llm-tracing">component standard</a>.  The
 canonical block is a top-level <code>langfuse</code> key holding the instance <code>host</code>
-and a <code>projects</code> map keyed by the Langfuse project name
-(<code>&lt;repo&gt;</code> / <code>&lt;repo&gt;-&lt;function&gt;</code>), with each entry carrying <code>public_key</code>
-and <code>secret_key</code>.  Components declare their own Langfuse credentials in
-their own config; there is no central override map.  See the component
-standard for the full model shape, constraints, and rationale.</p>
+(<code>str</code> — the Langfuse instance URL) and a <code>projects</code> map
+(<code>dict[str, LangfuseProject]</code>) keyed by the Langfuse project name
+(<code>&lt;repo&gt;</code> / <code>&lt;repo&gt;-&lt;function&gt;</code>).  Each project entry carries two fields:</p>
+<ul>
+<li><code>public_key: str</code></li>
+<li><code>secret_key: pydantic.SecretStr</code> — masked on read, rendered as
+  <code>writeOnly</code> in the JSON Schema, and subject to the full §3 secret
+  convention: the deploy UI redacts it on read, never echoes it, and
+  merges it on partial write so an omitted secret preserves the stored
+  value.</li>
+</ul>
+<p>Components declare their own Langfuse credentials in their own config;
+there is no central override map.  See the component standard for the
+full model shape, constraints, and rationale.</p>
 <h3 id="8-openrouter-configuration">8. OpenRouter configuration<a class="headerlink" href="#8-openrouter-configuration" title="Permanent link">&para;</a></h3>
 <p>The OpenRouter credential block shape is defined in the
 <a href="../component-standard/">component standard</a>.  The canonical block is a

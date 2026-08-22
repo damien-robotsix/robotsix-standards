@@ -3017,10 +3017,9 @@ gate set:</p>
   (complemented by TruffleHog for PR-diff and full-repo scans in the shared
   security workflow), a dependency CVE audit (<code>uv audit</code> in the CI gate, plus <code>pip-audit</code> in the security
   workflow), <code>dependency-review</code> on PRs (<code>fail-on-severity:
-  moderate</code> — this is a <strong>floor</strong>; a repo may set something stricter (<code>low</code>) or
-  laxer (<code>high</code>, <code>critical</code>) to match its risk tolerance. Strictness is per-repo
-  headroom, laxity is not.), and a CycloneDX SBOM generated and uploaded as a workflow
-  artifact.
+  moderate</code> — this is a <strong>floor</strong>; a repo may apply a stricter severity such as
+  <code>low</code> at its own discretion. Strictness is per-repo headroom, laxity is not.),
+  and a CycloneDX SBOM generated and uploaded as a workflow artifact.
   Credential and secret files are never tracked — see
   <a href="../security-posture/#credential-and-secret-files-are-never-tracked">security posture</a>.</li>
 <li><strong>Dependency lockfile integrity:</strong> <code>uv lock --check</code> validates that

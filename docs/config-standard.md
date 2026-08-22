@@ -195,7 +195,7 @@ are the whole mechanism.
 ### 7. Langfuse configuration
 
 The Langfuse credential block shape is defined in the
-[component standard](component-standard.md) (LLM tracing section).  The
+[component standard](component-standard.md#llm-tracing).  The
 canonical block is a top-level `langfuse` key holding the instance `host`
 and a `projects` map keyed by the Langfuse project name
 (`<repo>` / `<repo>-<function>`), with each entry carrying `public_key`

@@ -290,6 +290,9 @@ production. Full detail: [HTTP error envelope](http-error-envelope.md).
   deployment system: changing "level 3" from one model to another happens
   once, for every component at once — no component defines its own mapping.
   (Distribution mechanism is central-deploy's; components just call llmio.)
+
+## LLM tracing
+
 - Tracing is **opt-in, one way**: Langfuse via `robotsix-llmio[tracing]`,
   a graceful no-op when unconfigured.
 - **One Langfuse project per repo/function.** A component's main LLM
@@ -386,7 +389,7 @@ production. Full detail: [HTTP error envelope](http-error-envelope.md).
   visible failure that gets fixed, rather than a silent fallback that hides
   an unmigrated component indefinitely.
 
-### Security
+## LLM security
 
 > The fleet's core function involves LLM agents — every agent that reads
 > untrusted input or acts on model output must apply these defences.  The

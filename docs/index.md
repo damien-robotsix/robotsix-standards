@@ -71,6 +71,10 @@ everywhere.
 - **[HTTP client persistence](http-client-persistence.md)** — one persistent
   `httpx.Client` (or `requests.Session`) with an explicit timeout, reused for
   all outbound calls — no per-call module-level convenience helpers.
+- **[Issue and PR templates](issue-pr-templates.md)** — every repo ships
+  `.github/ISSUE_TEMPLATE/bug_report.md`, `.github/ISSUE_TEMPLATE/feature_request.md`,
+  `.github/PULL_REQUEST_TEMPLATE.md`, and `CONTRIBUTING.md` so every contributor
+  — human or AI agent — starts from the same structured workflow.
 - **[Library internal logging](library-logging.md)** — module-level
   `logging.getLogger(__name__)`, a single `NullHandler` in `__init__.py`,
   lazy `%`-style formatting, and DEBUG-for-routine events — library logging

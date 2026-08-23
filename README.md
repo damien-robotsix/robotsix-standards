@@ -57,6 +57,7 @@ the default.
 | [py.typed wheel guard](docs/py-typed-wheel-guard.md) | Automated verification that the `py.typed` marker ships in the built wheel — installed type-check + wheel-content assertion. |
 | [Docstring convention](docs/docstrings.md) | Python docstring style and coverage rules for all public modules, classes, and functions. |
 | [HTTP client persistence](docs/http-client-persistence.md) | One persistent `httpx.Client` (or `requests.Session`) with an explicit timeout, reused for all outbound calls — no per-call module-level convenience helpers. |
+| [Issue and PR templates](docs/issue-pr-templates.md) | Every repo ships `.github/ISSUE_TEMPLATE/bug_report.md`, `.github/ISSUE_TEMPLATE/feature_request.md`, `.github/PULL_REQUEST_TEMPLATE.md`, and `CONTRIBUTING.md` so every contributor — human or AI agent — starts from the same structured workflow. |
 | [Library internal logging](docs/library-logging.md) | Module-level `logging.getLogger(__name__)`, a single `NullHandler` in `__init__.py`, lazy `%`-style formatting, and DEBUG-for-routine events — library logging that never prints unless the app opts in. |
 | [Logging](docs/logging.md) | Structured JSON logging via structlog, stdout-only output, correlation-id middleware, and level conventions for every deployable service. |
 | [Hypothesis testing](docs/hypothesis.md) | Fleet-recommended property-based testing: adoption guidance, dev-dependency declaration, invariant-based tests, composite strategies, `RuleBasedStateMachine`, profiles, and CI integration. |

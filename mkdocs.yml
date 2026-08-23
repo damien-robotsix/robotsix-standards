@@ -81,6 +81,7 @@ nav:
       - Changelog & releases (superseded): changelog-driven-releases.md
       - Release-please release automation: release-please.md
       - CI lint tool pinning: ci-lint-pinning.md
+      - Issue and PR templates: issue-pr-templates.md
       - Contributor guide in docs nav: contributing-in-nav.md
       - Distribution & Packaging: distribution-packaging.md
       - Python CI workflow: python-ci-workflow.md

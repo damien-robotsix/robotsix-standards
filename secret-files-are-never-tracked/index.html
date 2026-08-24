@@ -10,13 +10,13 @@
       
       
       
-        <link rel="canonical" href="https://damien-robotsix.github.io/robotsix-standards/markdown-linting/">
+        <link rel="canonical" href="https://damien-robotsix.github.io/robotsix-standards/secret-files-are-never-tracked/">
       
       
-        <link rel="prev" href="../mutation-testing/">
+        <link rel="prev" href="../security-posture/">
       
       
-        <link rel="next" href="../prose-linting/">
+        <link rel="next" href="../github-actions-security/">
       
       
         
@@ -27,7 +27,7 @@
     
     
       
-        <title>Markdown linting - Robotsix Standards</title>
+        <title>Secret files are never tracked - Robotsix Standards</title>
       
     
     
@@ -78,7 +78,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#markdown-linting" class="md-skip">
+        <a href="#secret-files-are-never-tracked" class="md-skip">
           Skip to content
         </a>
       
@@ -114,7 +114,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Markdown linting
+              Secret files are never tracked
             
           </span>
         </div>
@@ -477,10 +477,37 @@
                 
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="../secret-files-are-never-tracked/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Secret files are never tracked
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   
@@ -496,6 +523,131 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#the-rule" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The rule
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#file-format" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        File format
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#where-it-lives" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Where it lives
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#how-it-interacts-with-gitignore" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How it interacts with .gitignore
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#how-the-scanners-consume-it" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How the scanners consume it
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="How the scanners consume it">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#detect-secrets-pre-commit-hook" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        detect-secrets (pre-commit hook)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#trufflehog-ci" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        TruffleHog (CI)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#failure-prevented" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Failure prevented
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#see-also" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        See also
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -1317,37 +1469,10 @@
                 
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Markdown linting
-  
-
-    
-  </span>
-  
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../markdown-linting/" class="md-nav__link">
         
   
   
@@ -1363,137 +1488,6 @@
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#why-this-exists" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Why this exists
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#pre-commit-hooks" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Pre-commit hooks
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Pre-commit hooks">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#markdownlint-cli2-markdown-style-enforcement" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        markdownlint-cli2 — Markdown style enforcement
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#codespell-spell-checking-for-prose" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        codespell — spell-checking for prose
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#ci-invocation" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        CI invocation
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#recommended-config-files" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Recommended config files
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Recommended config files">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#markdownlint-cli2yaml" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        .markdownlint-cli2.yaml
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#toolcodespell-in-pyprojecttoml" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        [tool.codespell] in pyproject.toml
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#fleet-precedent" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Fleet precedent
-      
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -2583,10 +2577,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#why-this-exists" class="md-nav__link">
+  <a href="#the-rule" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Why this exists
+        The rule
       
     </span>
   </a>
@@ -2594,22 +2588,55 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#pre-commit-hooks" class="md-nav__link">
+  <a href="#file-format" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Pre-commit hooks
+        File format
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Pre-commit hooks">
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#where-it-lives" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Where it lives
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#how-it-interacts-with-gitignore" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How it interacts with .gitignore
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#how-the-scanners-consume-it" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How the scanners consume it
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="How the scanners consume it">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#markdownlint-cli2-markdown-style-enforcement" class="md-nav__link">
+  <a href="#detect-secrets-pre-commit-hook" class="md-nav__link">
     <span class="md-ellipsis">
       
-        markdownlint-cli2 — Markdown style enforcement
+        detect-secrets (pre-commit hook)
       
     </span>
   </a>
@@ -2617,10 +2644,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#codespell-spell-checking-for-prose" class="md-nav__link">
+  <a href="#trufflehog-ci" class="md-nav__link">
     <span class="md-ellipsis">
       
-        codespell — spell-checking for prose
+        TruffleHog (CI)
       
     </span>
   </a>
@@ -2633,10 +2660,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#ci-invocation" class="md-nav__link">
+  <a href="#failure-prevented" class="md-nav__link">
     <span class="md-ellipsis">
       
-        CI invocation
+        Failure prevented
       
     </span>
   </a>
@@ -2644,49 +2671,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#recommended-config-files" class="md-nav__link">
+  <a href="#see-also" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Recommended config files
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Recommended config files">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#markdownlint-cli2yaml" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        .markdownlint-cli2.yaml
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#toolcodespell-in-pyprojecttoml" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        [tool.codespell] in pyproject.toml
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#fleet-precedent" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Fleet precedent
+        See also
       
     </span>
   </a>
@@ -2713,105 +2701,137 @@
   
 
 
-<h1 id="markdown-linting">Markdown linting<a class="headerlink" href="#markdown-linting" title="Permanent link">&para;</a></h1>
+<h1 id="secret-files-are-never-tracked">Secret files are never tracked<a class="headerlink" href="#secret-files-are-never-tracked" title="Permanent link">&para;</a></h1>
 <blockquote>
-<p><strong>Scope: every Python repository that publishes MkDocs documentation.</strong>
-Repos without MkDocs (content-only repos, ROS 2 workspaces, deployment-only
-repos) are exempt.</p>
+<p><strong>Scope: every robotsix repository.</strong> A mandatory <code>.secrets-patterns-excluded</code>
+file (not <code>.gitignore</code>) tells TruffleHog and detect-secrets which paths to
+skip — so the scanners don't waste time on directories that never contain
+secrets, and so a false positive in a known-safe file can be suppressed
+without weakening the repo's <code>.gitignore</code> deny list.</p>
 </blockquote>
-<h2 id="why-this-exists">Why this exists<a class="headerlink" href="#why-this-exists" title="Permanent link">&para;</a></h2>
-<p>Without automated Markdown quality gates, each repo's documentation drifts
-independently: broken internal links, inconsistent heading styles, spelling
-errors, and deprecated inline-HTML patterns accumulate over time. The
-fleet publishes docs sites with <code>mkdocs build --strict</code> (see
-<a href="../mkdocs-build/">MkDocs build integrity</a>), which catches structural MkDocs
-errors but does not enforce prose style, heading consistency, or spelling —
-those gaps are filled by the two hooks below (and the prose-style gap
-is covered separately by <a href="../prose-linting/">Vale prose linting</a>).</p>
-<h2 id="pre-commit-hooks">Pre-commit hooks<a class="headerlink" href="#pre-commit-hooks" title="Permanent link">&para;</a></h2>
-<p>Add both hooks to <code>.pre-commit-config.yaml</code>. The <code>markdownlint-cli2</code> hook
-runs on every <code>.md</code> file; <code>codespell</code> runs across the entire repo.</p>
-<h3 id="markdownlint-cli2-markdown-style-enforcement"><code>markdownlint-cli2</code> — Markdown style enforcement<a class="headerlink" href="#markdownlint-cli2-markdown-style-enforcement" title="Permanent link">&para;</a></h3>
-<div class="highlight"><pre><span></span><code><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">repo</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://github.com/DavidAnson/markdownlint-cli2</span>
-<span class="w">    </span><span class="nt">rev</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">v0.17.2</span>
-<span class="w">    </span><span class="nt">hooks</span><span class="p">:</span>
-<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">id</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">markdownlint-cli2</span>
-<span class="w">        </span><span class="nt">args</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&quot;#fix&quot;</span><span class="p p-Indicator">]</span>
+<p>Secret scanning (gate 5 of <a href="../security-posture/">security posture</a>) catches
+<em>detected</em> secrets — API keys, tokens, high-entropy strings — but not all
+credential-shaped files. An <code>.htpasswd</code> holds a bcrypt hash (no cleartext
+pattern for a scanner to match), a <code>wp-config.php</code> may template its
+credentials, and private-key files only match when the scanner recognises the
+format. The defense for those files is a deny list (<code>.gitignore</code> — see gate 5
+for the minimum patterns). The companion defense for the <em>scanners themselves</em>
+is <code>.secrets-patterns-excluded</code> — a separate exclusion file so the scanners
+can be told to skip directories and files that are known-safe without altering
+what git tracks.</p>
+<h2 id="the-rule">The rule<a class="headerlink" href="#the-rule" title="Permanent link">&para;</a></h2>
+<p>Every repo ships a <code>.secrets-patterns-excluded</code> file at the repo root. It
+lists one glob pattern per line, in the syntax that both TruffleHog and
+detect-secrets accept. The file is version-controlled and reviewed — adding a
+pattern is a deliberate decision, not a side effect of a local tool run.</p>
+<h2 id="file-format">File format<a class="headerlink" href="#file-format" title="Permanent link">&para;</a></h2>
+<p>One glob pattern per line. Blank lines are ignored. Lines starting with <code>#</code>
+are comments.</p>
+<div class="highlight"><pre><span></span><code># Directories that never contain secrets — skip them entirely.
+tests/fixtures/*
+docs/examples/*
+# Large vendored test data that triggers high-entropy false positives.
+vendor/*
 </code></pre></div>
-<p><strong>The <code>#fix</code> arg is optional.</strong> When present it auto-fixes fixable violations
-on commit. Remove it if you prefer to fix manually — CI still runs the check (see
-<a href="#ci-invocation">CI invocation</a> below) and fails on any violation.</p>
-<h3 id="codespell-spell-checking-for-prose"><code>codespell</code> — spell-checking for prose<a class="headerlink" href="#codespell-spell-checking-for-prose" title="Permanent link">&para;</a></h3>
-<div class="highlight"><pre><span></span><code><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">repo</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://github.com/codespell-project/codespell</span>
-<span class="w">    </span><span class="nt">rev</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">v2.4.1</span>
-<span class="w">    </span><span class="nt">hooks</span><span class="p">:</span>
-<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">id</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">codespell</span>
-<span class="w">        </span><span class="nt">args</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&quot;--ignore-words-list&quot;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&quot;hist,ist,te,nd&quot;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&quot;--skip&quot;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&quot;*.lock,uv.lock,*.css,*.map,*.min.*,.git/,node_modules/,site/,vendor/&quot;</span><span class="p p-Indicator">]</span>
-</code></pre></div>
-<p><strong>Failure mode prevented:</strong> misspelled words in documentation and comments
-that survive review because reviewers read for meaning, not spelling.</p>
-<h2 id="ci-invocation">CI invocation<a class="headerlink" href="#ci-invocation" title="Permanent link">&para;</a></h2>
-<p>The fleet-wide rule is stated in <a href="../ci-lint-pinning/">CI lint tool pinning</a> —
-CI must run lint tools through the same pinned pre-commit hooks. For
-markdownlint-cli2 and codespell specifically:</p>
-<div class="highlight"><pre><span></span><code>pre-commit<span class="w"> </span>run<span class="w"> </span>--all-files<span class="w"> </span>markdownlint-cli2
-pre-commit<span class="w"> </span>run<span class="w"> </span>--all-files<span class="w"> </span>codespell
-</code></pre></div>
-<h2 id="recommended-config-files">Recommended config files<a class="headerlink" href="#recommended-config-files" title="Permanent link">&para;</a></h2>
-<h3 id="markdownlint-cli2yaml"><code>.markdownlint-cli2.yaml</code><a class="headerlink" href="#markdownlint-cli2yaml" title="Permanent link">&para;</a></h3>
-<p>Create this file at the repo root:</p>
-<div class="highlight"><pre><span></span><code><span class="c1"># .markdownlint-cli2.yaml</span>
-<span class="nt">default</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
-
-<span class="nt">MD013</span><span class="p">:</span>
-<span class="w">  </span><span class="nt">line_length</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">120</span>
-<span class="w">  </span><span class="nt">code_blocks</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span><span class="w">      </span><span class="c1"># long code lines in docs</span>
-<span class="w">  </span><span class="nt">tables</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span><span class="w">           </span><span class="c1"># table cells exceed line length</span>
-
-<span class="nt">MD024</span><span class="p">:</span>
-<span class="w">  </span><span class="nt">allow_different_nesting</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span><span class="w">   </span><span class="c1"># repeated headings under different parents</span>
-
-<span class="nt">MD033</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span><span class="w">              </span><span class="c1"># inline HTML for mkdocs-material admonitions, image sizing</span>
-
-<span class="nt">MD041</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span><span class="w">              </span><span class="c1"># docs pages start with frontmatter, not H1</span>
-
-<span class="nt">MD046</span><span class="p">:</span>
-<span class="w">  </span><span class="nt">style</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;fenced&quot;</span><span class="w">         </span><span class="c1"># enforce fenced code blocks, not indented</span>
-</code></pre></div>
-<p>Each rule override states the failure it prevents:</p>
+<p>Patterns follow <a href="https://git-scm.com/docs/gitignore#_pattern_format">gitignore-style glob
+syntax</a>:</p>
 <ul>
-<li><strong>MD013 (line length):</strong> code blocks and tables routinely exceed 80 or 120
-  characters; silencing them avoids noise without losing heading/paragraph
-  line-length enforcement.</li>
-<li><strong>MD024 (duplicate headings):</strong> MkDocs generates anchor slugs from heading
-  text; identical headings under different parent sections are valid and
-  common (e.g. "Usage" under both "CLI" and "Library").</li>
-<li><strong>MD033 (no inline HTML):</strong> mkdocs-material admonitions (<code>!!! note</code>) and
-  image-sizing attributes require inline HTML; a blanket ban breaks the
-  theme.</li>
-<li><strong>MD041 (first line is H1):</strong> docs pages in MkDocs Material repos
-  frequently start with YAML frontmatter (<code>---</code>), not an H1.</li>
-<li><strong>MD046 (code block style):</strong> fenced blocks (<code>```</code>) are the fleet
-  convention; indented blocks are ambiguous with list items.</li>
+<li><code>*</code> matches anything except <code>/</code>.</li>
+<li><code>**</code> matches anything including <code>/</code>.</li>
+<li>A trailing <code>/</code> matches only directories.</li>
+<li>A leading <code>/</code> anchors to the repo root; otherwise the pattern matches
+  anywhere in the tree.</li>
 </ul>
-<h3 id="toolcodespell-in-pyprojecttoml"><code>[tool.codespell]</code> in <code>pyproject.toml</code><a class="headerlink" href="#toolcodespell-in-pyprojecttoml" title="Permanent link">&para;</a></h3>
-<div class="highlight"><pre><span></span><code><span class="k">[tool.codespell]</span>
-<span class="n">skip</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;*.lock,*.css,*.map,*.min.*,.git/,node_modules/,uv.lock,LICENSE,site/,vendor/&quot;</span>
-<span class="n">ignore-words-list</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;hist,ist,te,nd&quot;</span>
-<span class="n">check-filenames</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">true</span>
-</code></pre></div>
-<p><strong>Failure mode prevented:</strong> <code>codespell</code> without skip patterns scans lock
-files, minified JS/CSS, and vendored code — producing false-positive noise
-that trains contributors to ignore the hook.</p>
-<h2 id="fleet-precedent">Fleet precedent<a class="headerlink" href="#fleet-precedent" title="Permanent link">&para;</a></h2>
+<h2 id="where-it-lives">Where it lives<a class="headerlink" href="#where-it-lives" title="Permanent link">&para;</a></h2>
+<p><strong>Repo root</strong> — the same directory as <code>.gitignore</code>, <code>.pre-commit-config.yaml</code>,
+and <code>pyproject.toml</code>. Both <code>detect-secrets</code> (via the <code>--exclude-files</code> flag in
+<code>.pre-commit-config.yaml</code>) and TruffleHog (via the <code>--exclude-paths</code> flag in
+the CI workflow) read it from this location.</p>
+<h2 id="how-it-interacts-with-gitignore">How it interacts with <code>.gitignore</code><a class="headerlink" href="#how-it-interacts-with-gitignore" title="Permanent link">&para;</a></h2>
+<p><code>.secrets-patterns-excluded</code> is <strong>not</strong> <code>.gitignore</code>. The two files serve
+different purposes and must not be merged:</p>
+<table>
+<thead>
+<tr>
+<th>File</th>
+<th>Purpose</th>
+<th>Effect</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>.gitignore</code></td>
+<td>Tells git which files to never track.</td>
+<td>A file matching a <code>.gitignore</code> pattern cannot be committed (unless force-added).</td>
+</tr>
+<tr>
+<td><code>.secrets-patterns-excluded</code></td>
+<td>Tells secret scanners which paths to skip.</td>
+<td>A file matching a pattern is still tracked and version-controlled; it just isn't scanned for secrets.</td>
+</tr>
+</tbody>
+</table>
+<p>Examples of files that belong in <code>.secrets-patterns-excluded</code> but <strong>not</strong> in
+<code>.gitignore</code>:</p>
 <ul>
-<li><strong>pydantic/pydantic</strong> (the leading Python validation library in the
-  FastAPI ecosystem) uses both <code>markdownlint-cli2</code> and <code>codespell</code> in its
-  <code>.pre-commit-config.yaml</code> — this is a proven, battle-tested combination.</li>
-<li>The ROS 2 fleet already runs <code>markdownlint</code> and <code>codespell</code> via a justfile;
-  this standard brings the same gates to every Python repo via the shared
-  pre-commit mechanism (see <a href="../ros2/">ROS 2 practices</a> for the ROS 2
-  fleet's equivalent).</li>
+<li><strong>Test fixtures</strong> containing synthetic keys (<code>tests/fixtures/fake-certs/</code>).
+  These are version-controlled so CI can run the same tests, but scanning them
+  produces false positives.</li>
+<li><strong>Vendored third-party code</strong> (<code>vendor/</code> or <code>third_party/</code>). The code is
+  tracked, but secret-scanning it is the upstream's responsibility.</li>
+<li><strong>Documentation examples</strong> that embed placeholder credentials
+  (<code>docs/examples/config-with-placeholder-key.yaml</code>). The file is tracked and
+  reviewed, but the placeholder triggers scanners.</li>
+</ul>
+<p>Examples of files that belong in <code>.gitignore</code> but <strong>not</strong> in
+<code>.secrets-patterns-excluded</code>:</p>
+<ul>
+<li>A production <code>.env</code> file (<code>*.env</code>). It must never be tracked; a scanner
+  exclusion is irrelevant because the file shouldn't exist in the working tree
+  at all.</li>
+<li>Private key files (<code>*.pem</code>, <code>*.key</code>). Same reasoning — they must never be
+  committed.</li>
+</ul>
+<h2 id="how-the-scanners-consume-it">How the scanners consume it<a class="headerlink" href="#how-the-scanners-consume-it" title="Permanent link">&para;</a></h2>
+<h3 id="detect-secrets-pre-commit-hook">detect-secrets (pre-commit hook)<a class="headerlink" href="#detect-secrets-pre-commit-hook" title="Permanent link">&para;</a></h3>
+<p>The <code>.pre-commit-config.yaml</code> entry passes the file to detect-secrets via the
+<code>--exclude-files</code> flag:</p>
+<div class="highlight"><pre><span></span><code><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">repo</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://github.com/Yelp/detect-secrets</span>
+<span class="w">  </span><span class="nt">rev</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">v1.5.0</span>
+<span class="w">  </span><span class="nt">hooks</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">id</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">detect-secrets</span>
+<span class="w">      </span><span class="nt">args</span><span class="p">:</span>
+<span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&#39;--exclude-files&#39;</span>
+<span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&#39;.secrets-patterns-excluded&#39;</span>
+<span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&#39;--baseline&#39;</span>
+<span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&#39;.secrets.baseline&#39;</span>
+</code></pre></div>
+<p>detect-secrets reads the file, expands each glob, and skips matching paths
+during its working-tree scan.</p>
+<h3 id="trufflehog-ci">TruffleHog (CI)<a class="headerlink" href="#trufflehog-ci" title="Permanent link">&para;</a></h3>
+<p>The shared security workflow passes the file to TruffleHog via the
+<code>--exclude-paths</code> flag:</p>
+<div class="highlight"><pre><span></span><code>trufflehog<span class="w"> </span>filesystem<span class="w"> </span>--exclude-paths<span class="w"> </span>.secrets-patterns-excluded<span class="w"> </span>.
+</code></pre></div>
+<p>TruffleHog reads the file, expands each glob, and skips matching paths during
+its filesystem scan. The same flag works for <code>trufflehog git</code> (full-history
+scan) — the patterns apply to the checked-out tree, not to historical paths.</p>
+<h2 id="failure-prevented">Failure prevented<a class="headerlink" href="#failure-prevented" title="Permanent link">&para;</a></h2>
+<p>Without <code>.secrets-patterns-excluded</code>, a repo has two bad options when a
+scanner produces a false positive on a tracked file:</p>
+<ol>
+<li><strong>Add the file to <code>.gitignore</code></strong> — the file stops being tracked, breaking
+   CI and local development.</li>
+<li><strong>Accept the false positive</strong> — every scan run flags it, training
+   contributors to ignore scan output.</li>
+</ol>
+<p>With <code>.secrets-patterns-excluded</code>, the file stays tracked and the scanner
+stays quiet. Each pattern addition is reviewed in a PR, so a pattern that
+accidentally excludes a real credential file is caught before it merges.</p>
+<h2 id="see-also">See also<a class="headerlink" href="#see-also" title="Permanent link">&para;</a></h2>
+<ul>
+<li><a href="../security-posture/#5-secret-push-protection">Security posture — gate 5 (Secret push protection)</a></li>
+<li><a href="../repo-baseline/#ci-and-security-gates">Repo baseline — CI and security gates</a></li>
 </ul>
 
 

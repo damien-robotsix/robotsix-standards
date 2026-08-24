@@ -180,7 +180,10 @@ integrates with the deployment system. Beyond the baseline it follows:
 - **[Config self-healing](config-self-healing.md)** — lenient load with
   automatic stale-key stripping and self-heal rewrite — prevents crashloops
   when a config field is removed from the model.
-- **[Docker build & release](docker-standard.md)** — one Dockerfile pattern and
+- **[Shared config shapes](shared-config-shapes.md)** — six canonical
+  cross-cutting config blocks (Langfuse, LLM backend, logging, HTTP bind,
+  data dir, GitHub App) defined once for every component.
+- **[Docker build & release](docker-standard.md) — one Dockerfile pattern and
   one publish workflow to a single registry, with CI image scanning and
   integration tests.
 - **[Deploy contract](deploy-contract.md)** — the `deploy/docker-compose.yml`

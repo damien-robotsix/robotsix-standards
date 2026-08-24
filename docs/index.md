@@ -33,6 +33,9 @@ everywhere.
 - **[Security posture](security-posture.md)** — self-enforcing security gates
   (SAST, dependency review, Dependabot, workflow hardening, secret protection,
   SBOM), auditable per repo.
+- **[Secret files are never tracked](secret-files-are-never-tracked.md)** —
+  the `.secrets-patterns-excluded` file that tells TruffleHog and
+  detect-secrets which paths to skip — separate from `.gitignore`.
 - **[CycloneDX SBOM via uv export](sbom-cyclonedx-uv.md)** — standards-conformant
   CycloneDX SBOMs generated natively from `uv.lock` via `uv export`; keeps
   vulnerability audit output as a separate, accurately-named artifact.

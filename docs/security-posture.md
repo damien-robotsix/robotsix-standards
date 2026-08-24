@@ -298,6 +298,10 @@ non-delete invocation or a dedicated file transfer instead.
 - **Alignment:** OWASP *Secret Management*, OpenSSF Scorecard
   *Token-Permissions* check.
 
+**Full details:** [secret files are never tracked (dedicated doc)](secret-files-are-never-tracked.md)
+— `.secrets-patterns-excluded` format, scanner integration, and the separation
+from `.gitignore`.
+
 ### 6. SBOM & vulnerability audit
 
 Every repo produces a machine-readable software bill of materials and runs a

@@ -121,6 +121,7 @@ nav:
       - Config ownership: config-ownership.md
       - Config-ownership audit: config-ownership-audit.md
       - Config self-healing: config-self-healing.md
+      - Shared config shapes: shared-config-shapes.md
       - Docker build & release: docker-standard.md
       - Deploy contract: deploy-contract.md
       - Multi-disk data handling: disk-handling.md

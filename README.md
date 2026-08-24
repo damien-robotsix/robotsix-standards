@@ -85,6 +85,7 @@ the default.
 | [Config ownership](docs/config-ownership.md) | The hard line between deploy-plane config (central-deploy UI) and component-owned config (the component's own HTTP surface and Settings panel). |
 | [Config-ownership audit](docs/config-ownership-audit.md) | Fleet-wide classification of every deployable component against the config-ownership standard, with remediation tracking. |
 | [Config self-healing](docs/config-self-healing.md) | Lenient load with automatic stale-key stripping and self-heal rewrite — prevents crashloops when a config field is removed. |
+| [Shared config shapes](docs/shared-config-shapes.md) | Six canonical cross-cutting config blocks (Langfuse, LLM backend, logging, HTTP bind, data dir, GitHub App) defined once for every component. |
 | [Docker build & release](docs/docker-standard.md) | One Dockerfile pattern + one shared publish workflow → GHCR, with attestation, scanning, and CI integration tests. |
 | [Deploy contract](docs/deploy-contract.md) | The `deploy/docker-compose.yml` shape the deployment system consumes (canonical copy lives in [central-deploy](https://github.com/damien-robotsix/robotsix-central-deploy/blob/main/docs/DEPLOY_CONTRACT.md)). |
 | [Multi-disk data handling](docs/disk-handling.md) | Disk-agnostic named volumes in component repos, deploy-time disk selection, relocatable volumes, and per-disk usage reporting. |

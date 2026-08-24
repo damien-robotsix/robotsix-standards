@@ -10,13 +10,13 @@
       
       
       
-        <link rel="canonical" href="https://damien-robotsix.github.io/robotsix-standards/single-source-versioning/">
+        <link rel="canonical" href="https://damien-robotsix.github.io/robotsix-standards/shared-config-shapes/">
       
       
-        <link rel="prev" href="../python/">
+        <link rel="prev" href="../config-self-healing/">
       
       
-        <link rel="next" href="../python-main-py-forward/">
+        <link rel="next" href="../docker-standard/">
       
       
         
@@ -27,7 +27,7 @@
     
     
       
-        <title>Single-source versioning - Robotsix Standards</title>
+        <title>Shared config shapes - Robotsix Standards</title>
       
     
     
@@ -78,7 +78,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#single-source-versioning" class="md-skip">
+        <a href="#shared-config-shapes" class="md-skip">
           Skip to content
         </a>
       
@@ -114,7 +114,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Single-source versioning
+              Shared config shapes
             
           </span>
         </div>
@@ -311,8 +311,6 @@
       
   
   
-    
-  
   
   
     
@@ -325,11 +323,13 @@
       
     
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3" >
         
           
           <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
@@ -350,7 +350,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_3">
             <span class="md-nav__icon md-icon"></span>
             
@@ -841,37 +841,10 @@
                 
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Single-source versioning
-  
-
-    
-  </span>
-  
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../single-source-versioning/" class="md-nav__link">
         
   
   
@@ -887,109 +860,6 @@
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#rule-one-version-string-one-source" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Rule: one version string, one source
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#configuration" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Configuration
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Configuration">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#1-define-__version__-in-the-package-init" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        1. Define __version__ in the package init
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#2-wire-pyprojecttoml-to-read-it" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        2. Wire pyproject.toml to read it
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#3-remove-any-other-version-literals" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        3. Remove any other version literals
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#interaction-with-release-please" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Interaction with release-please
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#build-frontend-compatibility" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Build frontend compatibility
-      
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -1734,8 +1604,10 @@
       
   
   
+    
   
   
+  
     
     
     
@@ -1746,13 +1618,11 @@
       
     
     
-    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
       
         
         
-          
-        
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
         
           
           <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
@@ -1773,7 +1643,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_4">
             <span class="md-nav__icon md-icon"></span>
             
@@ -1956,10 +1826,37 @@
                 
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="../shared-config-shapes/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Shared config shapes
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   
@@ -1975,6 +1872,142 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-langfuse-block" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Langfuse block
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-llm-backend-and-model-selection" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. LLM backend and model selection
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-logging" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Logging
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-http-host-and-port" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. HTTP host and port
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-storage-data-directory" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Storage / data directory
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-github-app-credentials" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. GitHub App credentials
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cross-cutting-rules" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Cross-cutting rules
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Cross-cutting rules">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#secrets-are-secretstr-never-env-var-indirection" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Secrets are SecretStr, never env-var indirection
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#shapes-are-embedded-not-imported-from-a-shared-library" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Shapes are embedded, not imported from a shared library
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#one-block-per-component-never-per-account-or-per-user" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        One block per component, never per-account or per-user
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -2583,10 +2616,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#rule-one-version-string-one-source" class="md-nav__link">
+  <a href="#1-langfuse-block" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Rule: one version string, one source
+        1. Langfuse block
       
     </span>
   </a>
@@ -2594,22 +2627,77 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#configuration" class="md-nav__link">
+  <a href="#2-llm-backend-and-model-selection" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Configuration
+        2. LLM backend and model selection
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Configuration">
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-logging" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Logging
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-http-host-and-port" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. HTTP host and port
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-storage-data-directory" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Storage / data directory
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-github-app-credentials" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. GitHub App credentials
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cross-cutting-rules" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Cross-cutting rules
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Cross-cutting rules">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#1-define-__version__-in-the-package-init" class="md-nav__link">
+  <a href="#secrets-are-secretstr-never-env-var-indirection" class="md-nav__link">
     <span class="md-ellipsis">
       
-        1. Define __version__ in the package init
+        Secrets are SecretStr, never env-var indirection
       
     </span>
   </a>
@@ -2617,10 +2705,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#2-wire-pyprojecttoml-to-read-it" class="md-nav__link">
+  <a href="#shapes-are-embedded-not-imported-from-a-shared-library" class="md-nav__link">
     <span class="md-ellipsis">
       
-        2. Wire pyproject.toml to read it
+        Shapes are embedded, not imported from a shared library
       
     </span>
   </a>
@@ -2628,10 +2716,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#3-remove-any-other-version-literals" class="md-nav__link">
+  <a href="#one-block-per-component-never-per-account-or-per-user" class="md-nav__link">
     <span class="md-ellipsis">
       
-        3. Remove any other version literals
+        One block per component, never per-account or per-user
       
     </span>
   </a>
@@ -2640,28 +2728,6 @@
         
       </ul>
     </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#interaction-with-release-please" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Interaction with release-please
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#build-frontend-compatibility" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Build frontend compatibility
-      
-    </span>
-  </a>
   
 </li>
       
@@ -2685,85 +2751,437 @@
   
 
 
-<h1 id="single-source-versioning">Single-source versioning<a class="headerlink" href="#single-source-versioning" title="Permanent link">&para;</a></h1>
+<h1 id="shared-config-shapes">Shared config shapes<a class="headerlink" href="#shared-config-shapes" title="Permanent link">&para;</a></h1>
 <blockquote>
-<p><strong>Scope: every Python repository</strong> that uses setuptools as the build backend
-(hatchling-based repos have their own version convention; see
-<a href="../python/">Python practices</a>). This standard prescribes a single source of
-truth for the version string so that <code>importlib.metadata.version()</code>,
-<code>pkg.__version__</code>, and <code>pip show</code> all agree.</p>
+<p><strong>Scope: every deployable component that carries one of the six
+cross-cutting config blocks defined here.</strong> This page defines the
+canonical shape of each block so that every component models the same
+concept the same way. Per-component migration onto these shapes is
+tracked separately. See the <a href="../config-standard/">config standard</a> for
+how config is modeled, loaded, and persisted, and
+<a href="../config-ownership/">config ownership</a> for the deploy-plane vs
+component-owned boundary.</p>
 </blockquote>
-<h2 id="rule-one-version-string-one-source">Rule: one version string, one source<a class="headerlink" href="#rule-one-version-string-one-source" title="Permanent link">&para;</a></h2>
-<p><strong>Rule:</strong> The version string MUST be defined in exactly one place — the
-package's <code>__init__.py</code> — and read dynamically by the build backend. No other
-file may contain a version literal.</p>
-<p><strong>Rationale:</strong> Every duplication is a drift hazard. A version bump in
-<code>pyproject.toml</code> that misses <code>__init__.py</code> (or vice versa) produces silent
-inconsistencies: <code>importlib.metadata.version("mypkg")</code> returns a different
-value than <code>mypkg.__version__</code>. Docker tags, CLI output (<code>--version</code>), and
-logs become unreliable.</p>
-<blockquote>
-<p><strong>Failure mode.</strong> A repo that hard-codes <code>version = "0.3.1"</code> in both
-<code>pyproject.toml</code> and <code>src/mypkg/__init__.py</code> appears consistent at first.
-When release-please bumps only <code>pyproject.toml</code>, the package reports the new
-version via <code>importlib.metadata</code> but <code>mypkg.__version__</code> still returns the
-old string — consuming code that inspects <code>__version__</code> sees stale data.</p>
-</blockquote>
-<h2 id="configuration">Configuration<a class="headerlink" href="#configuration" title="Permanent link">&para;</a></h2>
-<h3 id="1-define-__version__-in-the-package-init">1. Define <code>__version__</code> in the package init<a class="headerlink" href="#1-define-__version__-in-the-package-init" title="Permanent link">&para;</a></h3>
-<div class="highlight"><pre><span></span><code><span class="c1"># src/my_package/__init__.py</span>
-<span class="sd">&quot;&quot;&quot;My package.&quot;&quot;&quot;</span>
+<p>A fleet-wide settings audit (~480 settings across six config-owning
+components) found the same config concepts duplicated under inconsistent
+names and shapes: Langfuse credentials in four components, LLM backend
+selection in six, logging toggles in three, HTTP bind addresses in three,
+data directories in four, and GitHub App credentials in two. Each
+component reinvents the field names, types, and nesting — so a config
+consumer (the chat UI, cost-monitor, the deploy system) must know
+per-component quirks instead of one contract.</p>
+<p>This page defines the <strong>six canonical shared config shapes</strong>. Every
+component that needs one of these blocks MUST use the shape defined here.
+The shapes are pydantic v2 models (or fragments thereof) that a component
+embeds in its own top-level config model. Field names, types, nesting,
+and secret conventions are fixed — a component MAY add its own
+component-specific fields alongside these blocks, but the shared blocks
+themselves are not extended, renamed, or flattened.</p>
+<h2 id="1-langfuse-block">1. Langfuse block<a class="headerlink" href="#1-langfuse-block" title="Permanent link">&para;</a></h2>
+<p>One <code>langfuse</code> block per component. Never per-account, never per-user.</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">pydantic</span><span class="w"> </span><span class="kn">import</span> <span class="n">BaseModel</span><span class="p">,</span> <span class="n">SecretStr</span>
 
-<span class="n">__version__</span> <span class="o">=</span> <span class="s2">&quot;0.1.0&quot;</span>
-</code></pre></div>
-<p>The <code>__version__</code> string MUST be a plain string literal — no computed values,
-no <code>importlib.metadata</code> fallbacks, no version-file reads. (The build backend
-parses the AST; dynamic expressions are invisible to it.)</p>
-<h3 id="2-wire-pyprojecttoml-to-read-it">2. Wire <code>pyproject.toml</code> to read it<a class="headerlink" href="#2-wire-pyprojecttoml-to-read-it" title="Permanent link">&para;</a></h3>
-<p>Replace the static <code>[project] version</code> field with a dynamic reference:</p>
-<div class="highlight"><pre><span></span><code><span class="k">[project]</span>
-<span class="c1"># Remove: version = &quot;0.1.0&quot;</span>
-<span class="n">dynamic</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;version&quot;</span><span class="p">]</span>
 
-<span class="k">[tool.setuptools.dynamic]</span>
-<span class="n">version</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="n">attr</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">&quot;my_package.__version__&quot;</span><span class="p">}</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">LangfuseProject</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A single Langfuse project the component connects to.&quot;&quot;&quot;</span>
+
+    <span class="n">project_id</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">public_key</span><span class="p">:</span> <span class="n">SecretStr</span>
+    <span class="n">secret_key</span><span class="p">:</span> <span class="n">SecretStr</span>
+
+
+<span class="k">class</span><span class="w"> </span><span class="nc">LangfuseConfig</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Langfuse observability connection.&quot;&quot;&quot;</span>
+
+    <span class="n">host</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;https://cloud.langfuse.com&quot;</span>
+    <span class="n">projects</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">LangfuseProject</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
 </code></pre></div>
-<p>The <code>attr</code> path must match the package's [tool.setuptools.packages.find]
-layout. If <code>packages.find</code> has <code>where = ["src"]</code>, the attribute path is
-<code>my_package.__version__</code> (not <code>src.my_package.__version__</code>).</p>
-<h3 id="3-remove-any-other-version-literals">3. Remove any other version literals<a class="headerlink" href="#3-remove-any-other-version-literals" title="Permanent link">&para;</a></h3>
-<p>Ensure no other file in the repo contains a version string that duplicates
-<code>__init__.py</code> — in particular, remove <code>__version__</code> from <code>__main__.py</code>,
-<code>_version.py</code>, or any other module.</p>
-<h2 id="interaction-with-release-please">Interaction with release-please<a class="headerlink" href="#interaction-with-release-please" title="Permanent link">&para;</a></h2>
-<p><a href="../release-please/">Release-please</a> requires the version to live somewhere it
-can read and write. When configured with <code>release-type: "python"</code>,
-release-please reads the version from the static <code>[project].version</code> field in
-<code>pyproject.toml</code>.</p>
-<p>If you use release-please alongside this standard, the version string lives in
-<code>__init__.py</code> and release-please reads it from <code>pyproject.toml</code>. Release-please
-writes the bumped version back to <code>pyproject.toml</code>'s <code>[project].version</code> field.
-After a release, copy the new version into <code>__init__.py</code> or configure
-release-please to write both locations (see release-please docs for
-<code>extra-files</code> support).</p>
-<blockquote>
-<p><strong>Workflow pattern (future):</strong> Once <code>extra-files</code> support is confirmed for
-all fleet repos, release-please will update <code>__init__.py</code> directly instead of
-<code>pyproject.toml</code>, and <code>pyproject.toml</code> will use <code>dynamic = ["version"]</code> with
-<code>[tool.setuptools.dynamic]</code> exclusively. The static <code>[project].version</code> field
-remains in <code>pyproject.toml</code> today only to satisfy release-please's current
-capabilities.</p>
-</blockquote>
-<h2 id="build-frontend-compatibility">Build frontend compatibility<a class="headerlink" href="#build-frontend-compatibility" title="Permanent link">&para;</a></h2>
-<p>This configuration works with any setuptools-compatible build frontend:</p>
-<ul>
-<li><code>pip install -e .</code></li>
-<li><code>uv pip install -e .</code></li>
-<li><code>python -m build</code></li>
-</ul>
-<p>It does NOT work with hatchling, flit, or pdm — each of those backends has its
-own dynamic-version mechanism (see <a href="../python/">Python practices</a> for hatchling
-convention).</p>
+<p><strong>Fields</strong></p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>host</code></td>
+<td><code>str</code></td>
+<td>No (default: cloud URL)</td>
+<td>Langfuse server base URL.</td>
+</tr>
+<tr>
+<td><code>projects</code></td>
+<td><code>dict[str, LangfuseProject]</code></td>
+<td>No</td>
+<td>Named projects. Each key is a logical name the component uses to select a project; the value carries the Langfuse project id and its keypair.</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th>Field (per project)</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>project_id</code></td>
+<td><code>str</code></td>
+<td>Yes</td>
+<td>Langfuse project identifier.</td>
+</tr>
+<tr>
+<td><code>public_key</code></td>
+<td><code>SecretStr</code></td>
+<td>Yes</td>
+<td>Langfuse public key.</td>
+</tr>
+<tr>
+<td><code>secret_key</code></td>
+<td><code>SecretStr</code></td>
+<td>Yes</td>
+<td>Langfuse secret key.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Failure prevented:</strong> four components each define their own Langfuse
+env-var names (<code>LANGFUSE_PUBLIC_KEY</code>, <code>langfuse.host</code>,
+<code>analyst.langfuse_*</code>, per-account repetition in mail). An operator
+rotating a Langfuse key must find and update every variant; missing one
+silently breaks observability for that component.</p>
+<p><strong>Migration note:</strong> components currently using UPPERCASE <code>LANGFUSE_*</code>
+environment variables MUST migrate to this block in <code>config.json</code> per
+the <a href="../config-standard/">config standard</a> one-file rule. The env-var
+names are retired.</p>
+<h2 id="2-llm-backend-and-model-selection">2. LLM backend and model selection<a class="headerlink" href="#2-llm-backend-and-model-selection" title="Permanent link">&para;</a></h2>
+<p>One <code>llm_backend</code> block for the LLM connection, plus a single canonical
+<code>model_level</code> enum for high-level model selection.</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">enum</span><span class="w"> </span><span class="kn">import</span> <span class="n">Enum</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">pydantic</span><span class="w"> </span><span class="kn">import</span> <span class="n">BaseModel</span><span class="p">,</span> <span class="n">SecretStr</span>
+
+
+<span class="k">class</span><span class="w"> </span><span class="nc">ModelLevel</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">Enum</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Canonical model tiers. Components map these to concrete models.&quot;&quot;&quot;</span>
+
+    <span class="n">level1</span> <span class="o">=</span> <span class="s2">&quot;level1&quot;</span>
+    <span class="n">level2</span> <span class="o">=</span> <span class="s2">&quot;level2&quot;</span>
+    <span class="n">level3</span> <span class="o">=</span> <span class="s2">&quot;level3&quot;</span>
+
+
+<span class="k">class</span><span class="w"> </span><span class="nc">LlmBackendConfig</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;LLM provider connection details.&quot;&quot;&quot;</span>
+
+    <span class="n">provider</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;openai&quot;</span>
+    <span class="n">endpoint_url</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+    <span class="n">model</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+    <span class="n">api_key</span><span class="p">:</span> <span class="n">SecretStr</span> <span class="o">=</span> <span class="n">SecretStr</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+</code></pre></div>
+<p><strong>Fields</strong></p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>provider</code></td>
+<td><code>str</code></td>
+<td>No (default: <code>"openai"</code>)</td>
+<td>LLM provider identifier (e.g. <code>openai</code>, <code>anthropic</code>, <code>ollama</code>).</td>
+</tr>
+<tr>
+<td><code>endpoint_url</code></td>
+<td><code>str</code></td>
+<td>No (default: empty)</td>
+<td>Provider API base URL. Empty means the provider's default.</td>
+</tr>
+<tr>
+<td><code>model</code></td>
+<td><code>str</code></td>
+<td>No (default: empty)</td>
+<td>Concrete model identifier (e.g. <code>gpt-4o</code>, <code>claude-sonnet-4-20250514</code>). Empty means the component's default.</td>
+</tr>
+<tr>
+<td><code>api_key</code></td>
+<td><code>SecretStr</code></td>
+<td>No</td>
+<td>Provider API key.</td>
+</tr>
+</tbody>
+</table>
+<p><strong><code>ModelLevel</code> enum</strong></p>
+<p>The enum is defined <strong>once</strong> in the shared config shapes (or the shared
+config library). Every component that offers tier-based model selection
+imports this enum — it does not redefine its own copy. The enum has three
+tiers; components map them to concrete models in their own runtime code.</p>
+<p><strong>Failure prevented:</strong> six components carry incompatible model-selection
+mechanisms (<code>model_level</code> with six differently-scoped copies, <code>provider</code>/<code>model_id</code>
+in invest, <code>global_model</code>/<code>trace_model</code> in cost-monitor, <code>llm_provider_model</code>
+in mail, <code>enrichment_llm_*</code> in file-hub). An operator switching the fleet's
+default model must update six different config shapes. One enum and one
+backend block eliminate the drift.</p>
+<p><strong>Ban on env-var indirection for keys:</strong> the <code>api_key</code> field holds the
+actual secret value as a <code>SecretStr</code>. Components MUST NOT introduce an
+<code>api_key_env</code> field (or similar) that names an environment variable
+containing the key — that violates the <a href="../config-standard/">config standard</a>
+one-file rule. The key lives in <code>config.json</code>, period.</p>
+<h2 id="3-logging">3. Logging<a class="headerlink" href="#3-logging" title="Permanent link">&para;</a></h2>
+<p>Shared <code>log_level</code> and <code>log_format</code> fields. These are top-level fields on
+the component's config model (not nested in a sub-block) because every
+component carries them and nesting adds no value.</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">enum</span><span class="w"> </span><span class="kn">import</span> <span class="n">Enum</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">pydantic</span><span class="w"> </span><span class="kn">import</span> <span class="n">Field</span>
+
+
+<span class="k">class</span><span class="w"> </span><span class="nc">LogLevel</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">Enum</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Canonical log levels.&quot;&quot;&quot;</span>
+
+    <span class="n">debug</span> <span class="o">=</span> <span class="s2">&quot;debug&quot;</span>
+    <span class="n">info</span> <span class="o">=</span> <span class="s2">&quot;info&quot;</span>
+    <span class="n">warning</span> <span class="o">=</span> <span class="s2">&quot;warning&quot;</span>
+    <span class="n">error</span> <span class="o">=</span> <span class="s2">&quot;error&quot;</span>
+    <span class="n">critical</span> <span class="o">=</span> <span class="s2">&quot;critical&quot;</span>
+
+
+<span class="k">class</span><span class="w"> </span><span class="nc">LogFormat</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">Enum</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Canonical log output formats.&quot;&quot;&quot;</span>
+
+    <span class="n">json</span> <span class="o">=</span> <span class="s2">&quot;json&quot;</span>
+    <span class="n">text</span> <span class="o">=</span> <span class="s2">&quot;text&quot;</span>
+</code></pre></div>
+<p><strong>Fields</strong> (top-level on the component config model)</p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Required</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>log_level</code></td>
+<td><code>LogLevel</code></td>
+<td>No</td>
+<td><code>info</code></td>
+<td>Minimum log severity.</td>
+</tr>
+<tr>
+<td><code>log_format</code></td>
+<td><code>LogFormat</code></td>
+<td>No</td>
+<td><code>json</code></td>
+<td>Output format. <code>json</code> for structured JSON lines (per the <a href="../logging/">logging standard</a>); <code>text</code> for human-readable dev output.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Failure prevented:</strong> chat uses <code>log_json_format: bool</code>, invest uses
+<code>debug: bool</code>, and other components use <code>LOG_LEVEL</code> env vars — three
+incompatible ways to express the same two-axis setting. An operator
+debugging a production issue must guess which toggle to flip per
+component.</p>
+<p><strong>Retired variants:</strong> <code>log_json_format</code> (bool), <code>debug</code> (bool),
+<code>LOG_LEVEL</code> env var. Components MUST migrate to the two-field shape
+above.</p>
+<h2 id="4-http-host-and-port">4. HTTP host and port<a class="headerlink" href="#4-http-host-and-port" title="Permanent link">&para;</a></h2>
+<p>One <code>server</code> block for the component's HTTP bind address.</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">pydantic</span><span class="w"> </span><span class="kn">import</span> <span class="n">BaseModel</span>
+
+
+<span class="k">class</span><span class="w"> </span><span class="nc">ServerConfig</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;HTTP server bind address.&quot;&quot;&quot;</span>
+
+    <span class="n">host</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;0.0.0.0&quot;</span>
+    <span class="n">port</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">8000</span>
+</code></pre></div>
+<p><strong>Fields</strong></p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Required</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>host</code></td>
+<td><code>str</code></td>
+<td>No</td>
+<td><code>"0.0.0.0"</code></td>
+<td>Bind address.</td>
+</tr>
+<tr>
+<td><code>port</code></td>
+<td><code>int</code></td>
+<td>No</td>
+<td><code>8000</code></td>
+<td>Bind port.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Failure prevented:</strong> mill uses <code>api_host</code>/<code>api_port</code>/<code>api_url</code>, chat
+uses <code>server_host</code>/<code>server_port</code>, invest uses bare <code>host</code>/<code>port</code>. An
+operator changing the port must know the per-component field name.
+Derived fields like <code>api_url</code> are dropped — the URL is constructed from
+<code>host</code> and <code>port</code> at runtime.</p>
+<p><strong>Retired fields:</strong> <code>api_host</code>, <code>api_port</code>, <code>api_url</code> (mill),
+<code>server_host</code>, <code>server_port</code> (chat). Components MUST migrate to the
+<code>server.host</code>/<code>server.port</code> block.</p>
+<h2 id="5-storage-data-directory">5. Storage / data directory<a class="headerlink" href="#5-storage-data-directory" title="Permanent link">&para;</a></h2>
+<p>One <code>data_dir</code> field. Database paths, persistence paths, and other
+storage locations are derived from it at runtime.</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">pydantic</span><span class="w"> </span><span class="kn">import</span> <span class="n">Field</span>
+
+<span class="c1"># Top-level field on the component config model:</span>
+<span class="n">data_dir</span><span class="p">:</span> <span class="n">Path</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+    <span class="n">default</span><span class="o">=</span><span class="n">Path</span><span class="p">(</span><span class="s2">&quot;data&quot;</span><span class="p">),</span>
+    <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Root directory for all persistent component data. &quot;</span>
+    <span class="s2">&quot;Database files, caches, and other storage are derived from this path.&quot;</span><span class="p">,</span>
+<span class="p">)</span>
+</code></pre></div>
+<p><strong>Field</strong> (top-level on the component config model)</p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Required</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>data_dir</code></td>
+<td><code>Path</code></td>
+<td>No</td>
+<td><code>data</code></td>
+<td>Root directory for persistent data. All derived paths (database, cache, uploads) are subdirectories of this path.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Failure prevented:</strong> four components define <code>database_url</code>,
+<code>local_storage_path</code>, <code>persist_path</code>, and <code>data_dir</code> as independent
+absolute paths. An operator relocating storage must update N fields per
+component and keep them consistent. One root <code>data_dir</code> with derived
+sub-paths makes relocation a single-field change.</p>
+<p><strong>Retired fields:</strong> <code>database_url</code>, <code>local_storage_path</code>, <code>persist_path</code>
+(when they are absolute paths that could be derived from <code>data_dir</code>).
+Components that need a genuinely external database connection (e.g. a
+remote PostgreSQL URL) MAY keep that as a separate field — <code>data_dir</code> is
+for local filesystem storage only.</p>
+<h2 id="6-github-app-credentials">6. GitHub App credentials<a class="headerlink" href="#6-github-app-credentials" title="Permanent link">&para;</a></h2>
+<p>One <code>github_app</code> block for components that interact with GitHub as an
+app.</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">pydantic</span><span class="w"> </span><span class="kn">import</span> <span class="n">BaseModel</span><span class="p">,</span> <span class="n">SecretStr</span>
+
+
+<span class="k">class</span><span class="w"> </span><span class="nc">GitHubAppConfig</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;GitHub App authentication.&quot;&quot;&quot;</span>
+
+    <span class="n">app_id</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+    <span class="n">installation_id</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+    <span class="n">private_key</span><span class="p">:</span> <span class="n">SecretStr</span> <span class="o">=</span> <span class="n">SecretStr</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+    <span class="n">org</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+</code></pre></div>
+<p><strong>Fields</strong></p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Required</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>app_id</code></td>
+<td><code>str</code></td>
+<td>No</td>
+<td>empty</td>
+<td>GitHub App ID.</td>
+</tr>
+<tr>
+<td><code>installation_id</code></td>
+<td><code>str</code></td>
+<td>No</td>
+<td>empty</td>
+<td>GitHub App installation ID.</td>
+</tr>
+<tr>
+<td><code>private_key</code></td>
+<td><code>SecretStr</code></td>
+<td>No</td>
+<td>empty</td>
+<td>GitHub App private key (PEM).</td>
+</tr>
+<tr>
+<td><code>org</code></td>
+<td><code>str</code></td>
+<td>No</td>
+<td>empty</td>
+<td>GitHub organization the app is installed on.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Failure prevented:</strong> mill uses <code>github_app_id</code>, <code>github_app_key</code>,
+<code>github_installation_id</code>, <code>github_org</code> as flat top-level fields; chat
+uses <code>direct_repo.app_id</code>, <code>direct_repo.private_key</code>, and a separate
+<code>github_org</code>. An operator provisioning a new GitHub App must update two
+different config shapes with different nesting and naming. One block
+eliminates the mapping.</p>
+<p><strong>Retired fields:</strong> <code>github_app_id</code>, <code>github_app_key</code>,
+<code>github_installation_id</code>, <code>github_org</code> (mill flat fields),
+<code>direct_repo.*</code> (chat nested fields). Components MUST migrate to the
+<code>github_app</code> block.</p>
+<h2 id="cross-cutting-rules">Cross-cutting rules<a class="headerlink" href="#cross-cutting-rules" title="Permanent link">&para;</a></h2>
+<h3 id="secrets-are-secretstr-never-env-var-indirection">Secrets are <code>SecretStr</code>, never env-var indirection<a class="headerlink" href="#secrets-are-secretstr-never-env-var-indirection" title="Permanent link">&para;</a></h3>
+<p>Every secret field across all six shapes uses <code>pydantic.SecretStr</code>. No
+component introduces an <code>_env</code> suffix field that names an environment
+variable — the secret value lives in <code>config.json</code> per the
+<a href="../config-standard/">config standard</a> one-file rule.</p>
+<p><em>Failure prevented:</em> an <code>api_key_env</code> field means the actual secret is
+stored in a second location (an env file, a Docker Compose <code>environment</code>
+block), violating the one-file invariant and making secret rotation
+a two-place operation.</p>
+<h3 id="shapes-are-embedded-not-imported-from-a-shared-library">Shapes are embedded, not imported from a shared library<a class="headerlink" href="#shapes-are-embedded-not-imported-from-a-shared-library" title="Permanent link">&para;</a></h3>
+<p>Each component defines these models in its own codebase (or imports them
+from <code>robotsix-config</code> once the shared library publishes them). The
+canonical definition lives in this standards page; the shared library is
+the implementation vehicle, not the source of truth. If the standard and
+the library ever diverge, the standard wins.</p>
+<p><em>Failure prevented:</em> if the shapes lived only in a library, a component
+that pins an older library version would silently use a stale shape — and
+the deploy UI would render fields the component no longer recognises.</p>
+<h3 id="one-block-per-component-never-per-account-or-per-user">One block per component, never per-account or per-user<a class="headerlink" href="#one-block-per-component-never-per-account-or-per-user" title="Permanent link">&para;</a></h3>
+<p>The Langfuse block, LLM backend block, and GitHub App block are
+component-level config. They are defined once in the component's
+<code>config.json</code>, not repeated per account, per user, or per workspace.</p>
+<p><em>Failure prevented:</em> mail currently repeats Langfuse credentials per
+email account. Rotating a key means updating N copies; missing one
+breaks observability for that account silently.</p>
 
 
 

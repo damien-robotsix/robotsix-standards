@@ -2001,6 +2001,34 @@
   
   
     <li class="md-nav__item">
+      <a href="shared-config-shapes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Shared config shapes
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="docker-standard/" class="md-nav__link">
         
   
@@ -2918,7 +2946,10 @@ integrates with the deployment system. Beyond the baseline it follows:</p>
 <li><strong><a href="config-self-healing/">Config self-healing</a></strong> — lenient load with
   automatic stale-key stripping and self-heal rewrite — prevents crashloops
   when a config field is removed from the model.</li>
-<li><strong><a href="docker-standard/">Docker build &amp; release</a></strong> — one Dockerfile pattern and
+<li><strong><a href="shared-config-shapes/">Shared config shapes</a></strong> — six canonical
+  cross-cutting config blocks (Langfuse, LLM backend, logging, HTTP bind,
+  data dir, GitHub App) defined once for every component.</li>
+<li>**<a href="docker-standard/">Docker build &amp; release</a> — one Dockerfile pattern and
   one publish workflow to a single registry, with CI image scanning and
   integration tests.</li>
 <li><strong><a href="deploy-contract/">Deploy contract</a></strong> — the <code>deploy/docker-compose.yml</code>

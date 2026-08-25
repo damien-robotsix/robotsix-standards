@@ -71,7 +71,7 @@ nav:
   - The fleet: fleet.md
   - Every repo:
       - Repo baseline: repo-baseline.md
-      - Towncrier changelog: towncrier.md
+      - Towncrier changelog (superseded): towncrier.md
       - Free-tier only: free-tier-only.md
       - Security posture: security-posture.md
       - Secret files are never tracked: secret-files-are-never-tracked.md

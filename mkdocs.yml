@@ -65,6 +65,8 @@ plugins:
         - "https://*.readthedocs.io*"
         # hatch.pypa.io sometimes returns transient 503 errors.
         - "https://hatch.pypa.io/*"
+        # npmjs.com blocks automated link-checker traffic with 403.
+        - "https://www.npmjs.com/*"
 
 nav:
   - Home: index.md

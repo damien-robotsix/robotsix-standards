@@ -1156,6 +1156,34 @@
   
   
     <li class="md-nav__item">
+      <a href="doc-example-testing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Doc-example testing
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="pytest-shared-state-builders/" class="md-nav__link">
         
   
@@ -2894,6 +2922,10 @@ everywhere.</p>
   <code>xfail_strict = true</code>, <code>--strict-markers</code>/<code>--strict-config</code>, and
   optional-dependency <code>importorskip</code> guards so every test suite fails loudly on
   deprecations and collects cleanly without optional extras.</li>
+<li><strong><a href="doc-example-testing/">Doc-example testing</a></strong> — runnable <code>python</code> code
+  blocks in MkDocs documentation must be executed by pytest so that renaming
+  or removing a public symbol breaks the build instead of silently leaving
+  the docs wrong.</li>
 <li><strong><a href="pytest-shared-state-builders/">Pytest shared state builders</a></strong> —
   root <code>tests/conftest.py</code> for shared fixtures, <code>make_&lt;thing&gt;</code> factory
   fixtures for mutable test state, and value fixtures as thin factory

@@ -10,13 +10,13 @@
       
       
       
-        <link rel="canonical" href="https://damien-robotsix.github.io/robotsix-standards/python-ci-workflow/">
+        <link rel="canonical" href="https://damien-robotsix.github.io/robotsix-standards/doc-example-testing/">
       
       
-        <link rel="prev" href="../distribution-packaging/">
+        <link rel="prev" href="../pytest/">
       
       
-        <link rel="next" href="../sbom-cyclonedx-uv/">
+        <link rel="next" href="../pytest-shared-state-builders/">
       
       
         
@@ -27,7 +27,7 @@
     
     
       
-        <title>Python CI workflow - Robotsix Standards</title>
+        <title>Doc-example testing - Robotsix Standards</title>
       
     
     
@@ -78,7 +78,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#python-ci-workflow" class="md-skip">
+        <a href="#doc-example-testing" class="md-skip">
           Skip to content
         </a>
       
@@ -114,7 +114,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Python CI workflow
+              Doc-example testing
             
           </span>
         </div>
@@ -757,37 +757,10 @@
                 
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Python CI workflow
-  
-
-    
-  </span>
-  
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../python-ci-workflow/" class="md-nav__link">
         
   
   
@@ -803,159 +776,6 @@
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#the-rule" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        The rule
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#why" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Why
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#how-to-comply" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        How to comply
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="How to comply">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#preferred-use-the-shared-reusable-workflow" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Preferred: use the shared reusable workflow
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#fallback-standalone-ciyml" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Fallback: standalone ci.yml
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#jobs-and-ordering" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Jobs and ordering
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Jobs and ordering">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#parallel-auxiliary-gates" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Parallel auxiliary gates
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#job-timeout-minutes" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Job timeout-minutes
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#what-ciyml-does-not-cover" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        What ci.yml does not cover
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#failure-modes-prevented" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Failure modes prevented
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#relationship-to-other-standards" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Relationship to other standards
-      
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -1161,10 +981,37 @@
                 
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="../doc-example-testing/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Doc-example testing
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   
@@ -1180,6 +1027,165 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#why-this-exists" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why this exists
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-rule" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The rule
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#recommended-tooling" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Recommended tooling
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Recommended tooling">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#installation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Installation
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#hermetic-execution" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Hermetic execution
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Hermetic execution">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#autouse-chdir-fixture" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Autouse chdir fixture
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#network-isolation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Network isolation
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ci-integration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        CI integration
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="CI integration">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#shared-reusable-workflow" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Shared reusable workflow
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#which-pages-to-test" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Which pages to test
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#full-example" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Full example
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -2661,6 +2667,17 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
+  <a href="#why-this-exists" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why this exists
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#the-rule" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2672,44 +2689,22 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#why" class="md-nav__link">
+  <a href="#recommended-tooling" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Why
+        Recommended tooling
       
     </span>
   </a>
   
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#how-to-comply" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        How to comply
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="How to comply">
+    <nav class="md-nav" aria-label="Recommended tooling">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#preferred-use-the-shared-reusable-workflow" class="md-nav__link">
+  <a href="#installation" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Preferred: use the shared reusable workflow
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#fallback-standalone-ciyml" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Fallback: standalone ci.yml
+        Installation
       
     </span>
   </a>
@@ -2722,22 +2717,22 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#jobs-and-ordering" class="md-nav__link">
+  <a href="#hermetic-execution" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Jobs and ordering
+        Hermetic execution
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Jobs and ordering">
+    <nav class="md-nav" aria-label="Hermetic execution">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#parallel-auxiliary-gates" class="md-nav__link">
+  <a href="#autouse-chdir-fixture" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Parallel auxiliary gates
+        Autouse chdir fixture
       
     </span>
   </a>
@@ -2745,10 +2740,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#job-timeout-minutes" class="md-nav__link">
+  <a href="#network-isolation" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Job timeout-minutes
+        Network isolation
       
     </span>
   </a>
@@ -2761,10 +2756,38 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#what-ciyml-does-not-cover" class="md-nav__link">
+  <a href="#ci-integration" class="md-nav__link">
     <span class="md-ellipsis">
       
-        What ci.yml does not cover
+        CI integration
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="CI integration">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#shared-reusable-workflow" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Shared reusable workflow
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#which-pages-to-test" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Which pages to test
       
     </span>
   </a>
@@ -2772,21 +2795,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#failure-modes-prevented" class="md-nav__link">
+  <a href="#full-example" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Failure modes prevented
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#relationship-to-other-standards" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Relationship to other standards
+        Full example
       
     </span>
   </a>
@@ -2813,227 +2825,197 @@
   
 
 
-<h1 id="python-ci-workflow">Python CI workflow<a class="headerlink" href="#python-ci-workflow" title="Permanent link">&para;</a></h1>
+<h1 id="doc-example-testing">Doc-example testing<a class="headerlink" href="#doc-example-testing" title="Permanent link">&para;</a></h1>
 <blockquote>
-<p><strong>Scope: every Python repository.</strong> Every Python repo must ship a
-<code>.github/workflows/ci.yml</code> that runs lint, type-check, and test gates on
-every push to <code>main</code> and every pull request. The quality gates declared in
-<code>pyproject.toml</code> and <code>.pre-commit-config.yaml</code> are documentation;
-<code>ci.yml</code> is the enforcement mechanism.</p>
+<p><strong>Scope: every Python repository whose MkDocs documentation contains
+runnable code blocks.</strong> Quick-start, usage, and how-to pages that show
+<code>python</code> fenced code blocks importing or calling the package's public API
+must execute those blocks as part of the CI test suite. A rename or removal
+of a public symbol then breaks the build instead of silently leaving the
+docs wrong.</p>
 </blockquote>
+<h2 id="why-this-exists">Why this exists<a class="headerlink" href="#why-this-exists" title="Permanent link">&para;</a></h2>
+<p>Fleet packages share the same mkdocs + mkdocstrings documentation pattern —
+auto-generated API reference plus hand-written quick-start and usage pages.
+A quick-start snippet that imports a class or calls a function that no longer
+exists is a recurring, cross-repo failure mode: the docs ship with stale
+examples that confuse every new user and erode trust in the documentation.</p>
+<p>Mature typed-Python libraries have already solved this:</p>
+<ul>
+<li><strong>pydantic</strong> tests essentially all of its documentation code blocks with
+  <code>pytest-examples</code>, failing CI when a doc snippet no longer imports or runs —
+  this is why pydantic's docs stay in lockstep with the API across major
+  versions.</li>
+<li><strong>FastAPI</strong> keeps every documentation example as a real importable module
+  under <code>docs_src/</code> and imports and exercises those modules from its test
+  suite, so an example that stops working fails CI.</li>
+</ul>
+<p>Codifying a single doc-example-testing convention (recommended tool +
+hermetic-execution rule) lets every fleet repo adopt one shared approach
+rather than inventing local variants.</p>
 <h2 id="the-rule">The rule<a class="headerlink" href="#the-rule" title="Permanent link">&para;</a></h2>
-<p><strong>Every Python repository must have a <code>ci.yml</code> workflow that runs, in order:
-lint → type-check → test+coverage.</strong> The workflow must trigger on <code>push</code> to
-<code>main</code> and on <code>pull_request</code>. The three gates must run in sequence — a merge
-PR must pass lint and type-check before the test suite runs — because running
-tests when the code is already known to fail lint or type-check wastes CI
-minutes and delays the developer's fix loop.</p>
-<p>The required gates and their minimal invocations:</p>
+<p>Every Python repository whose MkDocs documentation contains <strong>runnable</strong>
+<code>python</code> fenced code blocks (quick-start, usage, how-to) <strong>must</strong> execute
+those blocks as part of the CI test suite.</p>
+<p><strong>Failure mode:</strong> without doc-example testing, renaming or removing a public
+symbol (class, function, constant) silently breaks the documentation — the
+stale snippet ships to users, and the first signal is a confused user, not a
+CI failure.</p>
+<h2 id="recommended-tooling">Recommended tooling<a class="headerlink" href="#recommended-tooling" title="Permanent link">&para;</a></h2>
+<p>Two pytest plugins collect and execute Markdown code blocks:</p>
 <table>
 <thead>
 <tr>
-<th>Gate</th>
-<th>Command</th>
+<th>Plugin</th>
+<th>Collection method</th>
 <th>Notes</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>Lint</td>
-<td><code>uv run ruff check src/ --output-format=github</code></td>
-<td><code>--output-format=github</code> surfaces annotations in the PR diff.</td>
+<td><a href="https://github.com/JohnNilsson/pytest-markdown-docs"><code>pytest-markdown-docs</code></a></td>
+<td>Collects <code>python</code> fenced blocks from <code>.md</code> files via <code>--markdown-docs</code> flag.</td>
+<td>Lightweight; no extra test files needed.</td>
 </tr>
 <tr>
-<td>Format</td>
-<td><code>uv run ruff format --check src/</code></td>
-<td>Fails if any file needs formatting; separate from lint so the developer sees check vs. format failures distinctly.</td>
-</tr>
-<tr>
-<td>Type-check</td>
-<td><code>uv run mypy</code></td>
-<td>Uses per-repo <code>pyproject.toml</code> mypy config (see <a href="../mypy/">mypy strictness</a>). Must run on both <code>src/</code> and <code>tests/</code>.</td>
-</tr>
-<tr>
-<td>Test</td>
-<td><code>uv run pytest tests/ --cov=&lt;pkg&gt; --cov-report=xml --cov-report=term-missing</code></td>
-<td>Coverage floor enforced fleet-wide; <code>coverage.xml</code> uploaded as a workflow artifact.</td>
+<td><a href="https://github.com/mktestdocs/mktestdocs"><code>mktestdocs</code></a></td>
+<td><code>check_md_file</code> fixture runs code blocks from a single Markdown file.</td>
+<td>Fine-grained control; pair one test function per doc page.</td>
 </tr>
 </tbody>
 </table>
-<p>The workflow must use <code>uv</code> for all Python tool invocations — no bare <code>pip
-install</code>, no <code>python -m</code>, no tool installed outside the project's locked
-environment.  <code>astral-sh/setup-uv</code> with <code>enable-cache: true</code> and a tight
-<code>cache-dependency-glob</code> covering <code>pyproject.toml</code> and <code>uv.lock</code> is required
-(see <a href="../python/#ci-uv-setup-caching">Python practices: CI uv setup caching</a>).</p>
-<p>The <code>UV_MALWARE_CHECK</code> environment variable must be set to <code>"1"</code> in every
-Python CI job that runs <code>uv sync</code>.</p>
-<h2 id="why">Why<a class="headerlink" href="#why" title="Permanent link">&para;</a></h2>
-<p>The quality gates declared in <code>pyproject.toml</code> and
-<code>.pre-commit-config.yaml</code> describe what <em>should</em> happen when a developer types
-<code>uv run ruff check</code> or <code>uv run mypy</code>.  Without a <code>ci.yml</code> that runs those same
-commands, the gates are documentation — a wish, not a fact.  A repo that
-declares <code>my_strict = true</code> but has no CI workflow running mypy ships code
-whose type-safety is unknown.</p>
-<p>Several fleet repos (hexarchy and others identified in the 2026-07 survey)
-declare <code>fail_under = 70</code> in their coverage config and <code>[tool.mypy]</code> strict
-blocks in <code>pyproject.toml</code>, but their <code>.github/workflows/</code> directory contains
-only a Docker publish workflow — lint, type-check, and test never execute in
-CI.  The <code>README.md</code> claims "CI runs pytest plus pre-commit hooks (ruff, mypy)
-on every push," but the claim is false because no workflow exists to back it.</p>
-<p>A single canonical <code>ci.yml</code> shape — consumed either as a shared reusable
-workflow or as a per-repo copy — closes this gap.  Every Python repo gets the
-same gates, run the same way, with the same failure signals.  A developer
-moving between repos sees the same CI shape and the same annotations in the PR
-diff.</p>
-<h2 id="how-to-comply">How to comply<a class="headerlink" href="#how-to-comply" title="Permanent link">&para;</a></h2>
-<h3 id="preferred-use-the-shared-reusable-workflow">Preferred: use the shared reusable workflow<a class="headerlink" href="#preferred-use-the-shared-reusable-workflow" title="Permanent link">&para;</a></h3>
-<p>The fleet maintains a shared <code>python-ci.yml</code> reusable workflow in
-<a href="https://github.com/damien-robotsix/robotsix-github-workflows">robotsix-github-workflows</a>.
-Every Python repo should call it from its <code>.github/workflows/ci.yml</code>:</p>
-<ul>
-<li><strong>Do not inline the workflow YAML into this page.</strong> The caller template
-  lives in the robotsix-github-workflows README, alongside the workflow it
-  calls — that is the single source of truth.  This page states the rule;
-  the workflow repo owns the template.</li>
-<li><strong>Pin the reusable workflow to a full commit SHA</strong> (not a branch or tag
-  ref).  The commit SHA in the caller's <code>uses:</code> line ties the repo to a
-  specific, auditable revision of the shared workflow.</li>
-<li><strong>The shared workflow already includes</strong> ruff check + format, mypy (with
-  the <code>tests.*</code> override), pytest with coverage, and <code>coverage.xml</code> upload.
-  A repo calling it gets all required gates automatically.</li>
-</ul>
-<h3 id="fallback-standalone-ciyml">Fallback: standalone <code>ci.yml</code><a class="headerlink" href="#fallback-standalone-ciyml" title="Permanent link">&para;</a></h3>
-<p>When a repo cannot use the shared workflow (e.g. it has an unusual package
-layout that the shared workflow doesn't support), it must ship a standalone
-<code>ci.yml</code> that runs the same four gates in the same order, using the same <code>uv
-run</code> invocations.  The standalone workflow must still follow the
-<a href="../ci-lint-pinning/">CI lint tool pinning</a> rule — every lint tool version
-must match <code>.pre-commit-config.yaml</code>.</p>
-<p>A repo that ships a standalone <code>ci.yml</code> must carry a comment at the top of the
-file explaining why it cannot use the shared workflow, so a future reviewer
-knows the deviation is deliberate.</p>
-<h2 id="jobs-and-ordering">Jobs and ordering<a class="headerlink" href="#jobs-and-ordering" title="Permanent link">&para;</a></h2>
-<p>The workflow must run the gates in order — lint (ruff check + format) before
-type-check, type-check before test — for two reasons:</p>
-<ol>
-<li><strong>Fast-fail.</strong>  If ruff finds a syntax-level problem, there is no point
-   spending CI minutes on type-checking or running tests.  The developer needs
-   the lint failure first, not a test failure three minutes later.</li>
-<li><strong>Signal isolation.</strong>  When lint, type-check, and test run in parallel and
-   all three fail, the developer sees a wall of red and has to disentangle
-   which failure is causal.  Sequential gates surface the root-cause failure
-   first.</li>
-</ol>
-<p>The jobs may run as separate GitHub Actions jobs with <code>needs:</code> dependencies,
-or as sequential steps within a single job.  Either shape is acceptable as
-long as the ordering is enforced.</p>
-<h3 id="parallel-auxiliary-gates">Parallel auxiliary gates<a class="headerlink" href="#parallel-auxiliary-gates" title="Permanent link">&para;</a></h3>
-<p>These gates may run in parallel with the main sequence, as separate jobs (or
-steps) that do not block the main gate chain:</p>
-<ul>
-<li><strong>Security SAST</strong> (Semgrep, bandit) — runs in the shared
-  <code>python-security.yml</code> workflow, not in <code>ci.yml</code>.</li>
-<li><strong>Dependency hygiene</strong> (deptry).</li>
-<li><strong>Dependency audit</strong> (<code>uv audit</code>).</li>
-<li><strong>Pre-commit hooks</strong> (via <code>tox-dev/action-pre-commit-uv</code>) — these run
-  the same hooks as local development, providing a second pass at file-level
-  hygiene beyond ruff.</li>
-</ul>
-<h3 id="job-timeout-minutes">Job timeout-minutes<a class="headerlink" href="#job-timeout-minutes" title="Permanent link">&para;</a></h3>
-<p><strong>Rule:</strong> Every job in a CI workflow MUST declare an explicit
-<code>timeout-minutes</code> ceiling.  The GitHub default is 6 hours (360 minutes);
-without an explicit ceiling a hung or runaway job consumes that full
-window — wasting CI minutes on every subsequent push until someone
-notices and kills it.</p>
-<p>Set <code>timeout-minutes: 15</code> as the fleet-wide default ceiling — generous
-enough for a full test suite on cold cache, tight enough to kill a
-genuinely hung job quickly.  Tune per-job when a specific gate
-legitimately needs longer (an image build that pulls large base layers,
-a large integration test suite that exercises several services):</p>
-<div class="highlight"><pre><span></span><code><span class="nt">jobs</span><span class="p">:</span>
-<span class="w">  </span><span class="nt">lint</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">timeout-minutes</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">5</span><span class="w">   </span><span class="c1"># fast gate, tight ceiling</span>
-<span class="w">  </span><span class="nt">type-check</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">timeout-minutes</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">10</span>
-<span class="w">  </span><span class="nt">test</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">timeout-minutes</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">15</span><span class="w">  </span><span class="c1"># fleet default — generous for a full suite</span>
-<span class="w">  </span><span class="nt">build-image</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">timeout-minutes</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">20</span><span class="w">  </span><span class="c1"># image build needs extra headroom</span>
+<p>Either plugin is acceptable. Pick one and use it consistently across the
+fleet. <code>pytest-markdown-docs</code> is the lower-friction default for repos that
+want whole-directory collection; <code>mktestdocs</code> is the choice when a repo needs
+per-file test functions (e.g. to apply different fixtures to different pages).</p>
+<h3 id="installation">Installation<a class="headerlink" href="#installation" title="Permanent link">&para;</a></h3>
+<p>Add the chosen plugin to the <code>[dependency-groups] dev</code> group (see
+<a href="../python/#packaging">Python practices</a> for the canonical dev-tooling
+placement):</p>
+<div class="highlight"><pre><span></span><code><span class="k">[dependency-groups]</span>
+<span class="n">dev</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span>
+<span class="w">    </span><span class="s2">&quot;pytest-markdown-docs&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="c1"># — or —</span>
+<span class="w">    </span><span class="s2">&quot;mktestdocs&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="c1"># ... existing dev/test dependencies ...</span>
+<span class="p">]</span>
 </code></pre></div>
-<p>A job whose ceiling exceeds 15 minutes must carry a comment explaining
-why the higher value is needed — same pattern as a lint suppression or
-a hand-rolled gate deviation.  This is native GitHub Actions
-configuration; no bespoke tooling is required.</p>
-<blockquote>
-<p><strong>Failure modes prevented:</strong></p>
+<p><strong>Failure mode:</strong> declaring the plugin in the unconditional <code>[project]
+dependencies</code> ships it in the installed library or service image, bloating
+the production install with a package nothing imports at runtime.</p>
+<h2 id="hermetic-execution">Hermetic execution<a class="headerlink" href="#hermetic-execution" title="Permanent link">&para;</a></h2>
+<p>Code blocks that import the package under test are safe to run as-is — they
+only read the package's public API. Blocks that perform <strong>filesystem or
+network side effects</strong> (writing files, making HTTP requests, reading
+environment variables) must run under a hermetic fixture so they do not
+touch the repo tree or leak state between tests.</p>
+<h3 id="autouse-chdir-fixture">Autouse <code>chdir</code> fixture<a class="headerlink" href="#autouse-chdir-fixture" title="Permanent link">&para;</a></h3>
+<p>Add an autouse fixture in <code>tests/conftest.py</code> that redirects the working
+directory to <code>tmp_path</code> for every doc-example test:</p>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pytest</span>
+
+<span class="nd">@pytest</span><span class="o">.</span><span class="n">fixture</span><span class="p">(</span><span class="n">autouse</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_chdir_tmp_path</span><span class="p">(</span><span class="n">tmp_path</span><span class="p">:</span> <span class="n">pytest</span><span class="o">.</span><span class="n">Path</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Run every test in a temporary directory so doc examples are hermetic.&quot;&quot;&quot;</span>
+    <span class="n">os</span><span class="o">.</span><span class="n">chdir</span><span class="p">(</span><span class="n">tmp_path</span><span class="p">)</span>
+</code></pre></div>
+<p>This fixture is scoped to the doc-example test session. If the repo already
+has an autouse <code>chdir</code> fixture (e.g. for integration tests), reuse it — do
+not stack multiple <code>chdir</code> fixtures.</p>
+<p><strong>Failure mode:</strong> without the <code>chdir</code> fixture, a doc-example code block that
+writes a file (e.g. <code>open("output.json", "w")</code>) pollutes the repo tree —
+the file appears as an untracked change, and parallel test workers corrupt
+each other's output.</p>
+<h3 id="network-isolation">Network isolation<a class="headerlink" href="#network-isolation" title="Permanent link">&para;</a></h3>
+<p>Doc-example code blocks <strong>must not</strong> make real network requests. If a block
+demonstrates an HTTP call, it must use a mock or stub (e.g. <code>respx</code> for
+<code>httpx</code>, <code>responses</code> for <code>requests</code>). The <code>chdir</code> fixture above does not
+provide network isolation — that is the responsibility of the code block's
+author.</p>
+<p><strong>Failure mode:</strong> a doc example that calls a real API endpoint fails
+intermittently in CI (network flakiness, rate limits, auth expiry) and
+breaks the build for reasons unrelated to the code change.</p>
+<h2 id="ci-integration">CI integration<a class="headerlink" href="#ci-integration" title="Permanent link">&para;</a></h2>
+<p>The doc-example test gate runs as part of the standard <code>ci.yml</code> test job —
+it is not a separate workflow. The test command already runs <code>pytest tests/</code>,
+and the doc-example tests live alongside the regular test suite:</p>
+<div class="highlight"><pre><span></span><code>uv<span class="w"> </span>run<span class="w"> </span>pytest<span class="w"> </span>tests/<span class="w"> </span>--cov<span class="o">=</span>&lt;pkg&gt;<span class="w"> </span>--cov-report<span class="o">=</span>xml<span class="w"> </span>--cov-report<span class="o">=</span>term-missing
+</code></pre></div>
+<p>If the repo uses <code>pytest-markdown-docs</code>, add the <code>--markdown-docs</code> flag and
+point it at the <code>docs/</code> directory:</p>
+<div class="highlight"><pre><span></span><code>uv<span class="w"> </span>run<span class="w"> </span>pytest<span class="w"> </span>tests/<span class="w"> </span>--markdown-docs<span class="w"> </span>docs/<span class="w"> </span>--cov<span class="o">=</span>&lt;pkg&gt;<span class="w"> </span>--cov-report<span class="o">=</span>xml
+</code></pre></div>
+<p>If the repo uses <code>mktestdocs</code>, the test functions are already collected by
+the standard <code>pytest tests/</code> invocation — no extra flags needed.</p>
+<h3 id="shared-reusable-workflow">Shared reusable workflow<a class="headerlink" href="#shared-reusable-workflow" title="Permanent link">&para;</a></h3>
+<p>The fleet's shared <code>python-ci.yml</code> reusable workflow (in
+<a href="https://github.com/damien-robotsix/robotsix-github-workflows">robotsix-github-workflows</a>)
+runs <code>pytest tests/</code> by default. Repos that use <code>pytest-markdown-docs</code> must
+pass the <code>--markdown-docs</code> flag via <code>addopts</code> in <code>[tool.pytest.ini_options]</code>
+so the shared workflow picks it up without modification:</p>
+<div class="highlight"><pre><span></span><code><span class="k">[tool.pytest.ini_options]</span>
+<span class="n">addopts</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;--strict-markers&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;--markdown-docs&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;docs/&quot;</span><span class="p">]</span>
+</code></pre></div>
+<p>Repos that use <code>mktestdocs</code> need no <code>addopts</code> change — the test functions
+are collected normally.</p>
+<p><strong>Failure mode:</strong> adding <code>--markdown-docs</code> only to the standalone <code>ci.yml</code>
+but not to <code>addopts</code> means local <code>pytest</code> runs skip doc examples — a
+developer sees green locally but CI fails on the same commit.</p>
+<h2 id="which-pages-to-test">Which pages to test<a class="headerlink" href="#which-pages-to-test" title="Permanent link">&para;</a></h2>
+<p>Test every documentation page that contains runnable <code>python</code> code blocks
+that import or call the package's public API. Typical candidates:</p>
 <ul>
-<li><strong>Runaway job burns CI budget.</strong> A job that hangs (network timeout,
-  deadlocked test, infinite loop) runs until the 6-hour GitHub
-  default, consuming the repo's free-tier minutes for the month in one
-  incident.</li>
-<li><strong>Silent queue backlog.</strong> A hung job holds a runner slot, backing up
-  all subsequent CI runs behind it — the repo appears to have no CI
-  running, but the queue is stuck behind the runaway.</li>
-<li><strong>Per-repo timeout drift.</strong> Without a standard ceiling, each repo
-  picks its own (or none), and a developer moving between repos can't
-  predict when a hung job will be killed or whether their push
-  even has a safety net.</li>
+<li>Quick-start / getting-started page</li>
+<li>Usage / how-to pages</li>
+<li>README.md (if it contains runnable code blocks)</li>
 </ul>
-</blockquote>
-<h2 id="what-ciyml-does-not-cover">What <code>ci.yml</code> does not cover<a class="headerlink" href="#what-ciyml-does-not-cover" title="Permanent link">&para;</a></h2>
-<p>The <code>ci.yml</code> workflow is the <em>quality gate</em> — it verifies that the code as
-written is lint-clean, type-safe, and passes its tests.  It does not:</p>
+<p>Do <strong>not</strong> test:</p>
 <ul>
-<li><strong>Build or publish container images.</strong>  That is the Docker publish workflow
-  (<a href="../docker-standard/">docker build &amp; release</a>).</li>
-<li><strong>Run security scans (Semgrep, SBOM, secret scanning).</strong>  Those run in the
-  shared <code>python-security.yml</code> workflow.</li>
-<li><strong>Run integration tests against a live deployment.</strong>  <code>ci.yml</code> runs the
-  unit/functional test suite; integration tests that require a running service
-  belong in a separate workflow triggered on deployment events.</li>
-<li><strong>Auto-release or changelog compilation.</strong>  That is the changelog-driven
-  release workflow (<a href="../changelog-driven-releases/">changelog &amp; releases</a>).</li>
+<li>Pages with <code>python</code> blocks that are illustrative pseudocode (not valid
+  Python, or using placeholder names like <code>my_function()</code>).</li>
+<li>Pages with <code>python</code> blocks that demonstrate shell commands or config
+  snippets (use <code>bash</code> or <code>toml</code> fences instead).</li>
+<li>API reference pages generated by mkdocstrings — those are already
+  validated by the type-checker and test suite.</li>
 </ul>
-<h2 id="failure-modes-prevented">Failure modes prevented<a class="headerlink" href="#failure-modes-prevented" title="Permanent link">&para;</a></h2>
-<ul>
-<li><strong>Silent gate drift.</strong>  The <code>pyproject.toml</code> declares <code>strict = true</code> but
-  no workflow runs mypy — the type-safety of the codebase is unknown and
-  degrades silently with every commit.</li>
-<li><strong>Test rot.</strong>  The test suite exists (<code>tests/</code> with <code>pytest</code>) but the
-  coverage report is never generated in CI — <code>fail_under = 80</code> is a dead
-  letter, and coverage can drop below the floor with no signal.</li>
-<li><strong>False README claims.</strong>  A repo's README asserts that CI runs lint, type,
-  and test gates, but the workflow directory contains only a Docker publish
-  job.  The README becomes a lie the moment the workflow is missing, and no
-  automated check catches the discrepancy.</li>
-<li><strong>Per-repo CI reinvention.</strong>  Without a standard shape, each repo invents
-  its own CI invocation — different tool versions, different ordering,
-  different failure handling.  A developer moving between repos must relearn
-  the CI shape each time, and a shared fix (e.g. a new ruff rule) must be
-  applied to N different workflow files instead of one.</li>
-<li><strong>Cache waste.</strong>  A repo that invokes lint and test through separate,
-  uncached <code>uv sync</code> calls in different workflows pays the full dependency
-  install cost multiple times per push.  The standard <code>ci.yml</code> shape with
-  <code>enable-cache: true</code> amortizes the cost across every CI run.</li>
-</ul>
-<h2 id="relationship-to-other-standards">Relationship to other standards<a class="headerlink" href="#relationship-to-other-standards" title="Permanent link">&para;</a></h2>
-<ul>
-<li><strong><a href="../python/#ci-uv-setup-caching">Python practices</a></strong> — <code>setup-uv</code> caching
-  requirement, pre-commit CI integration, and the
-  <a href="../python/">optional-dependency import guard rule</a> (deptry enforcement).</li>
-<li><strong><a href="../ci-lint-pinning/">CI lint tool pinning</a></strong> — CI lint tools must match
-  <code>.pre-commit-config.yaml</code> versions; applies to both the shared and
-  standalone <code>ci.yml</code> paths.</li>
-<li><strong><a href="../mypy/">Mypy strictness</a></strong> — mypy as a hard CI gate, the <code>tests.*</code>
-  override, and baseline-driven migration.</li>
-<li><strong><a href="../pytest/">Pytest practices</a></strong> — <code>fail_under</code>, coverage configuration,
-  and strict-mode pytest flags.</li>
-<li><strong><a href="../ruff-lint-rules/">Ruff lint rules</a></strong> — the standard ruff rule families.</li>
-<li><strong><a href="../pre-commit-baseline/">Pre-commit baseline</a></strong> — the pre-commit hooks
-  that <code>ci.yml</code>'s pre-commit job verifies.</li>
-<li><strong><a href="../repo-baseline/">Repo baseline</a></strong> — CI and security gates are a
-  language-agnostic requirement; this page defines the Python-specific shape.</li>
-</ul>
+<p><strong>Failure mode:</strong> testing pseudocode blocks produces import errors or
+<code>NameError</code>s that block CI for no real benefit — the blocks were never
+meant to run.</p>
+<h2 id="full-example">Full example<a class="headerlink" href="#full-example" title="Permanent link">&para;</a></h2>
+<p>A minimal setup for a repo using <code>pytest-markdown-docs</code>:</p>
+<p><strong><code>pyproject.toml</code></strong> (additions):</p>
+<div class="highlight"><pre><span></span><code><span class="k">[dependency-groups]</span>
+<span class="n">dev</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span>
+<span class="w">    </span><span class="s2">&quot;pytest-markdown-docs&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="c1"># ... existing dev dependencies ...</span>
+<span class="p">]</span>
+
+<span class="k">[tool.pytest.ini_options]</span>
+<span class="n">addopts</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;--strict-markers&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;--markdown-docs&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;docs/&quot;</span><span class="p">]</span>
+</code></pre></div>
+<p><strong><code>tests/conftest.py</code></strong> (addition):</p>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">pytest</span>
+
+<span class="nd">@pytest</span><span class="o">.</span><span class="n">fixture</span><span class="p">(</span><span class="n">autouse</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_chdir_tmp_path</span><span class="p">(</span><span class="n">tmp_path</span><span class="p">:</span> <span class="n">pytest</span><span class="o">.</span><span class="n">Path</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Run every test in a temporary directory so doc examples are hermetic.&quot;&quot;&quot;</span>
+    <span class="n">os</span><span class="o">.</span><span class="n">chdir</span><span class="p">(</span><span class="n">tmp_path</span><span class="p">)</span>
+</code></pre></div>
+<p><strong><code>tests/test_doc_examples.py</code></strong> (new file, only needed with <code>mktestdocs</code>):</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">mktestdocs</span>
+
+<span class="n">DOCS_DIR</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)</span><span class="o">.</span><span class="n">resolve</span><span class="p">()</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">parent</span> <span class="o">/</span> <span class="s2">&quot;docs&quot;</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">test_quickstart</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="n">mktestdocs</span><span class="o">.</span><span class="n">check_md_file</span><span class="p">(</span><span class="n">DOCS_DIR</span> <span class="o">/</span> <span class="s2">&quot;quickstart.md&quot;</span><span class="p">)</span>
+</code></pre></div>
+<p>With <code>pytest-markdown-docs</code>, no test file is needed — the plugin collects
+blocks automatically from the <code>--markdown-docs</code> target directory.</p>
 
 
 

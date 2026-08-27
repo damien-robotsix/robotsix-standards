@@ -51,6 +51,7 @@ the default.
 | [Console-script subprocess tests](docs/console-script-subprocess-test.md) | Every `[project.scripts]` entry point must be tested as a subprocess through the installed binary, not only in-process or via `python -m`. |
 | [Python Makefile convention](docs/python-makefile-convention.md) | Standard Makefile targets (install, lint, test, clean) for every Python repository using uv. |
 | [Pytest practices](docs/pytest.md) | Pytest strictness configuration (`filterwarnings`, `xfail_strict`, `--strict-markers`, `--strict-config`) and optional-dependency `importorskip` guards so every test suite fails loudly on deprecations and collects cleanly without optional extras. |
+| [Doc-example testing](docs/doc-example-testing.md) | Runnable `python` code blocks in MkDocs documentation must be executed by pytest so that renaming or removing a public symbol breaks the build instead of silently leaving the docs wrong. |
 | [Pytest shared state builders](docs/pytest-shared-state-builders.md) | Root `tests/conftest.py` for shared fixtures, `make_<thing>` factory fixtures for mutable state, and value fixtures as thin factory callers — reusable builders across every test package. |
 | [Ruff lint rules](docs/ruff-lint-rules.md) | Tier 2 ruff rule families (SIM, C4, LOG, G, ERA, PGH, RUF, PT) with the PT006 exclusion. |
 | [Mypy strictness](docs/mypy.md) | Mypy as a hard CI gate (not advisory), baseline snapshots as a bootstrapping scaffold with a defined exit, and strict-mode type-clean new code. |

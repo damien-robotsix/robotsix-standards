@@ -94,6 +94,7 @@ nav:
       - Console-script subprocess tests: console-script-subprocess-test.md
       - Python Makefile convention: python-makefile-convention.md
       - Pytest practices: pytest.md
+      - Doc-example testing: doc-example-testing.md
       - Pytest shared state builders: pytest-shared-state-builders.md
       - Ruff lint rules: ruff-lint-rules.md
       - Mypy strictness: mypy.md

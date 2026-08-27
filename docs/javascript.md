@@ -60,6 +60,82 @@ genuinely outgrows static files — that is the exception, not the default.
 Repos with a `package.json` add the **`npm`** ecosystem to `dependabot.yml`
 (see [automated dependency updates](repo-baseline.md#automated-dependency-updates)).
 
+## Automated accessibility testing
+
+Every frontend repo (defined as any repo with a `playwright.config.mjs` or
+`vitest.config.mjs`) **must** integrate automated accessibility (a11y)
+auditing in CI. *Rationale: manual ARIA correctness alone — verifying
+`setAttribute` calls or focus-trap keyboard behavior in unit/E2E tests — does
+not catch regressions in colour contrast, landmark structure, heading
+hierarchy, or ARIA attribute validity. A commit that silently removes
+`role="dialog"` or sets an incorrect `aria-labelledby` reference passes all
+existing tests without a scanner.*
+
+### Tooling
+
+- **Playwright E2E suites:** use [`@axe-core/playwright`](https://www.npmjs.com/package/@axe-core/playwright).
+  This is the pattern proven by Radix UI and Material UI in their own a11y
+  regression tests.
+- **vitest unit suites:** use [`vitest-axe`](https://www.npmjs.com/package/vitest-axe)
+  for component-level a11y assertions.
+
+### CI integration
+
+The axe-core suite runs **inside the existing E2E CI step** — no new job is
+added. Expand the existing `npm run test:e2e` (or equivalent) to include the
+a11y spec file alongside the functional E2E tests.
+
+### Baseline violation fingerprinting
+
+Repos that already carry known a11y debt (e.g. colour-contrast failures in
+dark-theme custom tokens) use **baseline fingerprinting** to gate only on
+*new* violations:
+
+1. Run axe-core locally and capture every current violation as a JSON
+   baseline file (`a11y-baseline.json`), keyed by `{violationId, CSS
+   selector}`.
+2. Commit the baseline alongside the test.
+3. In CI, the test compares scan results against the baseline and fails
+   only on violations **not** present in the baseline file.
+4. Each baseline entry includes a comment linking to the tracking issue
+   that will eventually resolve it.
+
+When the tracking issue is closed, remove the corresponding baseline entry
+so the violation becomes a hard gate.
+
+### Example (Playwright)
+
+```ts
+// tests/a11y.spec.ts
+import { test, expect } from '@playwright/test';
+import AxeBuilder from '@axe-core/playwright';
+
+test.describe('a11y audit', () => {
+  test('page has no critical a11y violations', async ({ page }) => {
+    await page.goto('/');
+    const results = await new AxeBuilder({ page })
+      .withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa'])
+      .analyze();
+    expect(results.violations).toEqual([]);
+  });
+});
+```
+
+With baseline fingerprinting:
+
+```ts
+const baseline = JSON.parse(
+  fs.readFileSync('a11y-baseline.json', 'utf-8'),
+);
+const newViolations = results.violations.filter(
+  (v) =>
+    !baseline.some(
+      (b) => b.id === v.id && b.target === v.nodes[0]?.target?.[0],
+    ),
+);
+expect(newViolations).toEqual([]);
+```
+
 ## Vulnerability scanning
 
 **A blocking `npm audit` CI gate is intentionally NOT part of this

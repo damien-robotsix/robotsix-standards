@@ -127,6 +127,10 @@ everywhere.
   `xfail_strict = true`, `--strict-markers`/`--strict-config`, and
   optional-dependency `importorskip` guards so every test suite fails loudly on
   deprecations and collects cleanly without optional extras.
+- **[Doc-example testing](doc-example-testing.md)** — runnable `python` code
+  blocks in MkDocs documentation must be executed by pytest so that renaming
+  or removing a public symbol breaks the build instead of silently leaving
+  the docs wrong.
 - **[Pytest shared state builders](pytest-shared-state-builders.md)** —
   root `tests/conftest.py` for shared fixtures, `make_<thing>` factory
   fixtures for mutable test state, and value fixtures as thin factory

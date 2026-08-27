@@ -1586,6 +1586,67 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#automated-accessibility-testing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Automated accessibility testing
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Automated accessibility testing">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#tooling" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Tooling
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ci-integration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        CI integration
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#baseline-violation-fingerprinting" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Baseline violation fingerprinting
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#example-playwright" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Example (Playwright)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#vulnerability-scanning" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2643,6 +2704,67 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#automated-accessibility-testing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Automated accessibility testing
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Automated accessibility testing">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#tooling" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Tooling
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ci-integration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        CI integration
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#baseline-violation-fingerprinting" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Baseline violation fingerprinting
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#example-playwright" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Example (Playwright)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#vulnerability-scanning" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2731,6 +2853,70 @@ genuinely outgrows static files — that is the exception, not the default.</p>
 <h2 id="dependency-updates">Dependency updates<a class="headerlink" href="#dependency-updates" title="Permanent link">&para;</a></h2>
 <p>Repos with a <code>package.json</code> add the <strong><code>npm</code></strong> ecosystem to <code>dependabot.yml</code>
 (see <a href="../repo-baseline/#automated-dependency-updates">automated dependency updates</a>).</p>
+<h2 id="automated-accessibility-testing">Automated accessibility testing<a class="headerlink" href="#automated-accessibility-testing" title="Permanent link">&para;</a></h2>
+<p>Every frontend repo (defined as any repo with a <code>playwright.config.mjs</code> or
+<code>vitest.config.mjs</code>) <strong>must</strong> integrate automated accessibility (a11y)
+auditing in CI. <em>Rationale: manual ARIA correctness alone — verifying
+<code>setAttribute</code> calls or focus-trap keyboard behavior in unit/E2E tests — does
+not catch regressions in colour contrast, landmark structure, heading
+hierarchy, or ARIA attribute validity. A commit that silently removes
+<code>role="dialog"</code> or sets an incorrect <code>aria-labelledby</code> reference passes all
+existing tests without a scanner.</em></p>
+<h3 id="tooling">Tooling<a class="headerlink" href="#tooling" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>Playwright E2E suites:</strong> use <a href="https://www.npmjs.com/package/@axe-core/playwright"><code>@axe-core/playwright</code></a>.
+  This is the pattern proven by Radix UI and Material UI in their own a11y
+  regression tests.</li>
+<li><strong>vitest unit suites:</strong> use <a href="https://www.npmjs.com/package/vitest-axe"><code>vitest-axe</code></a>
+  for component-level a11y assertions.</li>
+</ul>
+<h3 id="ci-integration">CI integration<a class="headerlink" href="#ci-integration" title="Permanent link">&para;</a></h3>
+<p>The axe-core suite runs <strong>inside the existing E2E CI step</strong> — no new job is
+added. Expand the existing <code>npm run test:e2e</code> (or equivalent) to include the
+a11y spec file alongside the functional E2E tests.</p>
+<h3 id="baseline-violation-fingerprinting">Baseline violation fingerprinting<a class="headerlink" href="#baseline-violation-fingerprinting" title="Permanent link">&para;</a></h3>
+<p>Repos that already carry known a11y debt (e.g. colour-contrast failures in
+dark-theme custom tokens) use <strong>baseline fingerprinting</strong> to gate only on
+<em>new</em> violations:</p>
+<ol>
+<li>Run axe-core locally and capture every current violation as a JSON
+   baseline file (<code>a11y-baseline.json</code>), keyed by <code>{violationId, CSS
+   selector}</code>.</li>
+<li>Commit the baseline alongside the test.</li>
+<li>In CI, the test compares scan results against the baseline and fails
+   only on violations <strong>not</strong> present in the baseline file.</li>
+<li>Each baseline entry includes a comment linking to the tracking issue
+   that will eventually resolve it.</li>
+</ol>
+<p>When the tracking issue is closed, remove the corresponding baseline entry
+so the violation becomes a hard gate.</p>
+<h3 id="example-playwright">Example (Playwright)<a class="headerlink" href="#example-playwright" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="c1">// tests/a11y.spec.ts</span>
+<span class="k">import</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">test</span><span class="p">,</span><span class="w"> </span><span class="nx">expect</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="kr">from</span><span class="w"> </span><span class="s1">&#39;@playwright/test&#39;</span><span class="p">;</span>
+<span class="k">import</span><span class="w"> </span><span class="nx">AxeBuilder</span><span class="w"> </span><span class="kr">from</span><span class="w"> </span><span class="s1">&#39;@axe-core/playwright&#39;</span><span class="p">;</span>
+
+<span class="nx">test</span><span class="p">.</span><span class="nx">describe</span><span class="p">(</span><span class="s1">&#39;a11y audit&#39;</span><span class="p">,</span><span class="w"> </span><span class="p">()</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="nx">test</span><span class="p">(</span><span class="s1">&#39;page has no critical a11y violations&#39;</span><span class="p">,</span><span class="w"> </span><span class="k">async</span><span class="w"> </span><span class="p">({</span><span class="w"> </span><span class="nx">page</span><span class="w"> </span><span class="p">})</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">await</span><span class="w"> </span><span class="nx">page</span><span class="p">.</span><span class="kr">goto</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">);</span>
+<span class="w">    </span><span class="kd">const</span><span class="w"> </span><span class="nx">results</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="ow">new</span><span class="w"> </span><span class="nx">AxeBuilder</span><span class="p">({</span><span class="w"> </span><span class="nx">page</span><span class="w"> </span><span class="p">})</span>
+<span class="w">      </span><span class="p">.</span><span class="nx">withTags</span><span class="p">([</span><span class="s1">&#39;wcag2a&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;wcag2aa&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;wcag21a&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;wcag21aa&#39;</span><span class="p">])</span>
+<span class="w">      </span><span class="p">.</span><span class="nx">analyze</span><span class="p">();</span>
+<span class="w">    </span><span class="nx">expect</span><span class="p">(</span><span class="nx">results</span><span class="p">.</span><span class="nx">violations</span><span class="p">).</span><span class="nx">toEqual</span><span class="p">([]);</span>
+<span class="w">  </span><span class="p">});</span>
+<span class="p">});</span>
+</code></pre></div>
+<p>With baseline fingerprinting:</p>
+<div class="highlight"><pre><span></span><code><span class="kd">const</span><span class="w"> </span><span class="nx">baseline</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">JSON</span><span class="p">.</span><span class="nx">parse</span><span class="p">(</span>
+<span class="w">  </span><span class="nx">fs</span><span class="p">.</span><span class="nx">readFileSync</span><span class="p">(</span><span class="s1">&#39;a11y-baseline.json&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;utf-8&#39;</span><span class="p">),</span>
+<span class="p">);</span>
+<span class="kd">const</span><span class="w"> </span><span class="nx">newViolations</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">results</span><span class="p">.</span><span class="nx">violations</span><span class="p">.</span><span class="nx">filter</span><span class="p">(</span>
+<span class="w">  </span><span class="p">(</span><span class="nx">v</span><span class="p">)</span><span class="w"> </span><span class="p">=&gt;</span>
+<span class="w">    </span><span class="o">!</span><span class="nx">baseline</span><span class="p">.</span><span class="nx">some</span><span class="p">(</span>
+<span class="w">      </span><span class="p">(</span><span class="nx">b</span><span class="p">)</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="nx">b</span><span class="p">.</span><span class="nx">id</span><span class="w"> </span><span class="o">===</span><span class="w"> </span><span class="nx">v</span><span class="p">.</span><span class="nx">id</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="nx">b</span><span class="p">.</span><span class="nx">target</span><span class="w"> </span><span class="o">===</span><span class="w"> </span><span class="nx">v</span><span class="p">.</span><span class="nx">nodes</span><span class="p">[</span><span class="mf">0</span><span class="p">]</span><span class="o">?</span><span class="p">.</span><span class="nx">target</span><span class="o">?</span><span class="p">.[</span><span class="mf">0</span><span class="p">],</span>
+<span class="w">    </span><span class="p">),</span>
+<span class="p">);</span>
+<span class="nx">expect</span><span class="p">(</span><span class="nx">newViolations</span><span class="p">).</span><span class="nx">toEqual</span><span class="p">([]);</span>
+</code></pre></div>
 <h2 id="vulnerability-scanning">Vulnerability scanning<a class="headerlink" href="#vulnerability-scanning" title="Permanent link">&para;</a></h2>
 <p><strong>A blocking <code>npm audit</code> CI gate is intentionally NOT part of this
 standard.</strong> Frontend CVE detection is already mandated through Dependabot

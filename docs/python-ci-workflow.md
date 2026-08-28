@@ -119,48 +119,24 @@ steps) that do not block the main gate chain:
 
 ### Job timeout-minutes
 
-**Rule:** Every job in a CI workflow MUST declare an explicit
-`timeout-minutes` ceiling.  The GitHub default is 6 hours (360 minutes);
-without an explicit ceiling a hung or runaway job consumes that full
-window — wasting CI minutes on every subsequent push until someone
-notices and kills it.
+The [repo baseline](repo-baseline.md#job-timeout-minutes) requires
+every job in every workflow to declare an explicit `timeout-minutes`
+ceiling (fleet-wide default: 15 minutes).  This section adds the
+Python-specific defaults — the rule itself, the failure modes, and the
+deviation-comment requirement live in the baseline.
 
-Set `timeout-minutes: 15` as the fleet-wide default ceiling — generous
-enough for a full test suite on cold cache, tight enough to kill a
-genuinely hung job quickly.  Tune per-job when a specific gate
-legitimately needs longer (an image build that pulls large base layers,
-a large integration test suite that exercises several services):
+Recommended ceilings for the standard Python CI gates:
 
-```yaml
-jobs:
-  lint:
-    timeout-minutes: 5   # fast gate, tight ceiling
-  type-check:
-    timeout-minutes: 10
-  test:
-    timeout-minutes: 15  # fleet default — generous for a full suite
-  build-image:
-    timeout-minutes: 20  # image build needs extra headroom
-```
+| Gate | `timeout-minutes` | Rationale |
+|---|---|---|
+| Lint (ruff check + format) | 5 | Fast file-level scan; seconds on warm cache. |
+| Type-check (mypy) | 10 | Whole-program analysis; slower on cold cache. |
+| Test (pytest + coverage) | 15 | Fleet default — generous for a full suite. |
+| Image build | 20 | Large base layers need extra headroom. |
 
 A job whose ceiling exceeds 15 minutes must carry a comment explaining
 why the higher value is needed — same pattern as a lint suppression or
-a hand-rolled gate deviation.  This is native GitHub Actions
-configuration; no bespoke tooling is required.
-
-> **Failure modes prevented:**
->
-> - **Runaway job burns CI budget.** A job that hangs (network timeout,
->   deadlocked test, infinite loop) runs until the 6-hour GitHub
->   default, consuming the repo's free-tier minutes for the month in one
->   incident.
-> - **Silent queue backlog.** A hung job holds a runner slot, backing up
->   all subsequent CI runs behind it — the repo appears to have no CI
->   running, but the queue is stuck behind the runaway.
-> - **Per-repo timeout drift.** Without a standard ceiling, each repo
->   picks its own (or none), and a developer moving between repos can't
->   predict when a hung job will be killed or whether their push
->   even has a safety net.
+a hand-rolled gate deviation.
 
 ## What `ci.yml` does not cover
 

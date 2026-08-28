@@ -3213,15 +3213,48 @@ Per-job permissions contain the blast radius to only the jobs that
 genuinely need the capability.</p>
 </blockquote>
 <h3 id="job-timeout-minutes">Job timeout-minutes<a class="headerlink" href="#job-timeout-minutes" title="Permanent link">&para;</a></h3>
-<p>Every CI job must declare an explicit <code>timeout-minutes</code> ceiling — the
-GitHub default is 6 hours, and a hung job that runs to the default
-burns the repo's free-tier budget.  The rule (fleet-wide default of 15
-minutes, per-job tuning, and the required comment for deviations) is
-defined in <a href="../python-ci-workflow/#job-timeout-minutes">Python CI workflow</a>.
-The rule is language-agnostic — it applies to every GitHub Actions job
-regardless of language — but the Python CI page is the canonical source
-because Python is the fleet's primary language and its workflow template
-is the pattern every repo follows.</p>
+<p><strong>Rule:</strong> Every job in every GitHub Actions workflow MUST declare an
+explicit <code>timeout-minutes</code> ceiling.  The GitHub default is 6 hours
+(360 minutes); without an explicit ceiling a hung or runaway job
+consumes that full window — wasting CI minutes on every subsequent
+push until someone notices and kills it.</p>
+<p>Set <code>timeout-minutes: 15</code> as the fleet-wide default ceiling — generous
+enough for a full test suite on cold cache, tight enough to kill a
+genuinely hung job quickly.  Tune per-job when a specific gate
+legitimately needs longer (an image build that pulls large base layers,
+a large integration test suite that exercises several services):</p>
+<div class="highlight"><pre><span></span><code><span class="nt">jobs</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">lint</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">timeout-minutes</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">5</span><span class="w">   </span><span class="c1"># fast gate, tight ceiling</span>
+<span class="w">  </span><span class="nt">type-check</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">timeout-minutes</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">10</span>
+<span class="w">  </span><span class="nt">test</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">timeout-minutes</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">15</span><span class="w">  </span><span class="c1"># fleet default — generous for a full suite</span>
+<span class="w">  </span><span class="nt">build-image</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">timeout-minutes</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">20</span><span class="w">  </span><span class="c1"># image build needs extra headroom</span>
+</code></pre></div>
+<p>A job whose ceiling exceeds 15 minutes must carry a comment explaining
+why the higher value is needed — same pattern as a lint suppression or
+a hand-rolled gate deviation.  This is native GitHub Actions
+configuration; no bespoke tooling is required.</p>
+<blockquote>
+<p><strong>Failure modes prevented:</strong></p>
+<ul>
+<li><strong>Runaway job burns CI budget.</strong> A job that hangs (network timeout,
+  deadlocked test, infinite loop) runs until the 6-hour GitHub
+  default, consuming the repo's free-tier minutes for the month in one
+  incident.</li>
+<li><strong>Silent queue backlog.</strong> A hung job holds a runner slot, backing up
+  all subsequent CI runs behind it — the repo appears to have no CI
+  running, but the queue is stuck behind the runaway.</li>
+<li><strong>Per-repo timeout drift.</strong> Without a standard ceiling, each repo
+  picks its own (or none), and a developer moving between repos can't
+  predict when a hung job will be killed or whether their push
+  even has a safety net.</li>
+</ul>
+</blockquote>
+<p>Python-specific timeout defaults (lint: 5, type-check: 10, test: 15)
+are listed in <a href="../python-ci-workflow/#job-timeout-minutes">Python CI workflow</a>.</p>
 <h2 id="branch-protection">Branch protection<a class="headerlink" href="#branch-protection" title="Permanent link">&para;</a></h2>
 <p><code>main</code> is protected identically in every repo — several standards are
 silently vacuous without it (auto-merge merges instantly, direct pushes

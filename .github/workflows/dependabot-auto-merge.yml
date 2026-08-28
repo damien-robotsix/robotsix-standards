@@ -19,4 +19,5 @@ jobs:
     permissions:
       contents: write  # approve and merge the PR
       pull-requests: write  # label and merge the PR
+    timeout-minutes: 5  # quick approve-and-merge; well under 15-minute default
     uses: damien-robotsix/robotsix-github-workflows/.github/workflows/dependabot-auto-merge.yml@e33f19f0657947c239ffcbaf3b47f149571e2bc1  # main

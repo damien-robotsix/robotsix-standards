@@ -11,6 +11,7 @@ jobs:
   baseline:
     permissions:
       contents: read
+    timeout-minutes: 10  # reusable workflow; generous for multi-gate baseline
     uses: damien-robotsix/robotsix-github-workflows/.github/workflows/baseline-check.yml@86dae89b637dad27ddba0aaa5f9430e083288365 # main
     with:
       has-docker: false

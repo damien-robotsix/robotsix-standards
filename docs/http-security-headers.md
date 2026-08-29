@@ -7,7 +7,10 @@
 Every fleet service that serves HTTP responses emits the standard OWASP security
 response headers via a single, shared middleware. Hand-rolling these headers per
 service — or leaving them unset — exposes every HTML surface to clickjacking,
-MIME-sniffing, and referrer-leak classes of issues.
+MIME-sniffing, and referrer-leak classes of issues. Missing or misconfigured
+security response headers are the canonical example of
+[OWASP Top 10 A05:2021 — Security Misconfiguration](https://owasp.org/Top10/A05_2021-Security_Misconfiguration/),
+which this standard exists to close fleet-wide.
 
 ## The rule
 
@@ -70,6 +73,28 @@ The `Strict-Transport-Security` header is only emitted when the service is
 behind TLS. The `secure` library detects this from the request scheme and
 suppresses the header on plain-HTTP requests automatically — the service does
 not need to branch on this itself.
+
+## How this is enforced
+
+This standard governs downstream deployable components, not this repo, so there
+is no CI gate here that can inspect a component's ASGI app. Enforcement is by
+**audit** — checked at component code review and by the periodic
+standards-audit agent — against the criteria below. Each criterion maps to one
+of the four rules and is verifiable by reading the component's application-setup
+module (the same place [`SecureASGIMiddleware`](#2-integration-one-middleware-registered-once)
+is registered).
+
+| Rule | Audit criterion |
+|---|---|
+| 1. `secure` ≥2.0.1 baseline | The component depends on `secure` (≥2.0.1) in its manifest and builds its header object from `Secure.with_default_headers()` (`Preset.BALANCED`) or `Preset.STRICT` — not a hand-rolled `BaseHTTPMiddleware`. |
+| 2. One middleware, registered once | Code review verifies the ASGI app calls `app.add_middleware(SecureASGIMiddleware, ...)` exactly once during application construction, and that no route handler sets security headers itself. |
+| 3. CSP relaxation is explicit | Every CSP relaxation is a method call on the `Secure`/CSP object at the single registration site — `grep` for `csp` in the app-setup module surfaces all relaxations; a hand-built CSP string or a disabled header is a violation. |
+| 4. HSTS conditional on TLS | The service does not branch on the request scheme to set `Strict-Transport-Security` itself; it relies on the `secure` library's automatic TLS detection. |
+
+A component that serves HTTP responses and fails any criterion is
+non-compliant; the fix is always the same — register the shared
+`SecureASGIMiddleware` at application construction and route every header
+change through the `Secure` object.
 
 ## Failure modes this prevents
 

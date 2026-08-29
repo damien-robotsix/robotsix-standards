@@ -1380,6 +1380,34 @@
   
   
     <li class="md-nav__item">
+      <a href="ssrf-hardened-fetchers/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SSRF-hardened httpx fetchers
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="issue-pr-templates/" class="md-nav__link">
         
   
@@ -2869,6 +2897,10 @@ everywhere.</p>
 <li><strong><a href="http-client-persistence/">HTTP client persistence</a></strong> — one persistent
   <code>httpx.Client</code> (or <code>requests.Session</code>) with an explicit timeout, reused for
   all outbound calls — no per-call module-level convenience helpers.</li>
+<li><strong><a href="ssrf-hardened-fetchers/">SSRF-hardened httpx fetchers</a></strong> — tools that
+  fetch attacker-influenced URLs must validate and pin the resolved IP at the
+  connection layer (a guarded <code>httpcore</code> pool), not in a pre-flight DNS check —
+  closing the DNS-rebinding TOCTOU gap and re-validating every redirect hop.</li>
 <li><strong><a href="issue-pr-templates/">Issue and PR templates</a></strong> — every repo ships
   <code>.github/ISSUE_TEMPLATE/bug_report.md</code>, <code>.github/ISSUE_TEMPLATE/feature_request.md</code>,
   <code>.github/PULL_REQUEST_TEMPLATE.md</code>, and <code>CONTRIBUTING.md</code> so every contributor

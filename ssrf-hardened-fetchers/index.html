@@ -10,13 +10,13 @@
       
       
       
-        <link rel="canonical" href="https://damien-robotsix.github.io/robotsix-standards/config-standard/">
+        <link rel="canonical" href="https://damien-robotsix.github.io/robotsix-standards/ssrf-hardened-fetchers/">
       
       
-        <link rel="prev" href="../component-standard/">
+        <link rel="prev" href="../http-client-persistence/">
       
       
-        <link rel="next" href="../default-config-location/">
+        <link rel="next" href="../issue-pr-templates/">
       
       
         
@@ -27,7 +27,7 @@
     
     
       
-        <title>Config standard - Robotsix Standards</title>
+        <title>SSRF-hardened httpx fetchers - Robotsix Standards</title>
       
     
     
@@ -78,7 +78,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#config-standard" class="md-skip">
+        <a href="#ssrf-hardened-httpx-fetchers" class="md-skip">
           Skip to content
         </a>
       
@@ -114,7 +114,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Config standard
+              SSRF-hardened httpx fetchers
             
           </span>
         </div>
@@ -311,8 +311,10 @@
       
   
   
+    
   
   
+  
     
     
     
@@ -323,13 +325,11 @@
       
     
     
-    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
       
         
         
-          
-        
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
         
           
           <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
@@ -350,7 +350,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_3">
             <span class="md-nav__icon md-icon"></span>
             
@@ -1205,10 +1205,37 @@
                 
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="../ssrf-hardened-fetchers/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SSRF-hardened httpx fetchers
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   
@@ -1224,6 +1251,98 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#the-rule" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The rule
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="The rule">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-validate-and-pin-the-resolved-ip-at-the-connection-layer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Validate and pin the resolved IP at the connection layer
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-re-validate-every-redirect-hop" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Re-validate every redirect hop
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#why-this-is-a-fleet-standard" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why this is a fleet standard
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#failure-modes-this-prevents" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Failure modes this prevents
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#reference" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Reference
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -1660,8 +1779,6 @@
       
   
   
-    
-  
   
   
     
@@ -1674,11 +1791,13 @@
       
     
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4" >
         
           
           <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
@@ -1699,7 +1818,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_4">
             <span class="md-nav__icon md-icon"></span>
             
@@ -1742,37 +1861,10 @@
                 
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Config standard
-  
-
-    
-  </span>
-  
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../config-standard/" class="md-nav__link">
         
   
   
@@ -1788,181 +1880,6 @@
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#the-rule" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        The rule
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="The rule">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#1-one-file-the-single-source-of-config-values" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        1. One file — the single source of config values
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#2-typed-schema-defined-once-reflected-in-the-deploy-ui" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        2. Typed schema — defined once, reflected in the deploy UI
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#3-one-secret-convention" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        3. One secret convention
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#4-advanced-settings-flag" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        4. Advanced settings flag
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#5-what-environment-is-for" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        5. What environment: is for
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#6-calling-another-service-a-name_url-config-field" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        6. Calling another service: a &lt;name&gt;_url config field
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#7-langfuse-configuration" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        7. Langfuse configuration
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#8-openrouter-configuration" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        8. OpenRouter configuration
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#using-the-library" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Using the library
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#why-one-file-a-typed-schema" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Why one file + a typed schema
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#rollout-incremental-clean-cutover" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Rollout (incremental, clean cutover)
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Rollout (incremental, clean cutover)">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#advanced-flag-rollout" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Advanced-flag rollout
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -2723,10 +2640,10 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#1-one-file-the-single-source-of-config-values" class="md-nav__link">
+  <a href="#1-validate-and-pin-the-resolved-ip-at-the-connection-layer" class="md-nav__link">
     <span class="md-ellipsis">
       
-        1. One file — the single source of config values
+        1. Validate and pin the resolved IP at the connection layer
       
     </span>
   </a>
@@ -2734,76 +2651,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#2-typed-schema-defined-once-reflected-in-the-deploy-ui" class="md-nav__link">
+  <a href="#2-re-validate-every-redirect-hop" class="md-nav__link">
     <span class="md-ellipsis">
       
-        2. Typed schema — defined once, reflected in the deploy UI
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#3-one-secret-convention" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        3. One secret convention
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#4-advanced-settings-flag" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        4. Advanced settings flag
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#5-what-environment-is-for" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        5. What environment: is for
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#6-calling-another-service-a-name_url-config-field" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        6. Calling another service: a &lt;name&gt;_url config field
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#7-langfuse-configuration" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        7. Langfuse configuration
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#8-openrouter-configuration" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        8. OpenRouter configuration
+        2. Re-validate every redirect hop
       
     </span>
   </a>
@@ -2816,10 +2667,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#using-the-library" class="md-nav__link">
+  <a href="#why-this-is-a-fleet-standard" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Using the library
+        Why this is a fleet standard
       
     </span>
   </a>
@@ -2827,10 +2678,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#why-one-file-a-typed-schema" class="md-nav__link">
+  <a href="#failure-modes-this-prevents" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Why one file + a typed schema
+        Failure modes this prevents
       
     </span>
   </a>
@@ -2838,30 +2689,13 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#rollout-incremental-clean-cutover" class="md-nav__link">
+  <a href="#reference" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Rollout (incremental, clean cutover)
+        Reference
       
     </span>
   </a>
-  
-    <nav class="md-nav" aria-label="Rollout (incremental, clean cutover)">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#advanced-flag-rollout" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Advanced-flag rollout
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
   
 </li>
       
@@ -2885,356 +2719,128 @@
   
 
 
-<h1 id="config-standard">Config standard<a class="headerlink" href="#config-standard" title="Permanent link">&para;</a></h1>
+<h1 id="ssrf-hardened-httpx-fetchers">SSRF-hardened httpx fetchers<a class="headerlink" href="#ssrf-hardened-httpx-fetchers" title="Permanent link">&para;</a></h1>
 <blockquote>
-<p><strong>Scope: deployable components</strong> (and any package that reads a runtime config
-file). A library takes its configuration through its own API — constructor
-arguments or an explicit config object — not a config file. See the
-<a href="../repo-baseline/">repo baseline</a> and <a href="../component-standard/">component standard</a>.</p>
-<p><strong>Which config key goes where?</strong> This page defines <em>how</em> component config is
-modeled, loaded, and persisted. The boundary between deploy-plane settings
-(central-deploy UI) and component-owned settings (the component's own HTTP
-surface) is defined in the companion <a href="../config-ownership/">config ownership</a>
-page.</p>
+<p><strong>Scope: every fleet tool that fetches attacker-influenced URLs over httpx.</strong>
+Any tool that takes a URL from a user, a chat message, a webhook payload, or
+any other untrusted source and fetches, probes, or renders it (today:
+<code>robotsix_chat</code>'s <code>public_fetch</code> and <code>http_probe</code>; the pattern applies to any
+future fetch/probe/render tool). This applies <em>in addition to</em> the
+<a href="../http-client-persistence/">HTTP client persistence</a> standard and the
+<a href="../security-posture/">security posture</a>.</p>
 </blockquote>
-<p><strong>One config schema per component, defined once as a pydantic model, loaded from
-one JSON file, and reflected as a typed JSON Schema the deploy UI can render.</strong>
-The shared configuration library
-(<a href="https://github.com/damien-robotsix/robotsix-config"><code>robotsix-config</code></a>)
-implements it: a component defines one pydantic model and calls <code>load_config</code>.</p>
+<p>A tool that fetches an attacker-supplied URL is a Server-Side Request Forgery
+(SSRF) sink: without a guard, an attacker points it at <code>169.254.169.254</code>
+(cloud metadata), <code>127.0.0.1</code>, or an internal service and reads a response the
+attacker could never reach directly. The common defence — resolve the hostname
+with <code>socket.getaddrinfo</code>, check the IP is public, then hand the hostname to
+httpx — is <strong>not sufficient</strong>. It leaves a time-of-check-to-time-of-use
+(TOCTOU) gap: httpx re-resolves the hostname independently when it opens the
+connection, so an attacker-controlled DNS server with a sub-second TTL can
+return a public IP for the pre-flight check and <code>169.254.169.254</code> /
+<code>127.0.0.1</code> for the actual connection. This is classic DNS-rebinding, and
+OWASP's SSRF Prevention Cheat Sheet calls it out explicitly: <em>"a DNS
+resolution will be made when the business code will be executed"</em>.</p>
 <h2 id="the-rule">The rule<a class="headerlink" href="#the-rule" title="Permanent link">&para;</a></h2>
-<h3 id="1-one-file-the-single-source-of-config-values">1. One file — the single source of config values<a class="headerlink" href="#1-one-file-the-single-source-of-config-values" title="Permanent link">&para;</a></h3>
-<ul>
-<li>Runtime config is a <strong>single JSON file</strong>, default path <code>config/config.json</code>,
-  located by <strong>one</strong> environment variable, <strong><code>ROBOTSIX_CONFIG_FILE</code></strong>. That
-  variable only <em>locates</em> the file (for a mounted deploy) — <strong>it never carries
-  config values</strong>.</li>
-<li><strong>The file is the only source of config values.</strong> Config uses <strong>no
-  environment overlay and no CLI-merge.</strong> Config does not come from
-  <code>ROBOTSIX_*</code> value
-  variables, from <code>--flag</code> overrides, or from any second place — only the file.
-  Multiple config entry points are the main source of "why is this value what it
-  is" confusion and cross-mode drift; one file removes it.</li>
-<li>The model's own <strong>field defaults</strong> fill anything the file omits (a missing
-  file means "all defaults"). Defaults live in the schema, not in a separate
-  layer.</li>
-<li>The <strong>same filename in every mode</strong> — <code>config.json</code> in local dev <em>and</em> under
-  the deployment system.</li>
-</ul>
-<h3 id="2-typed-schema-defined-once-reflected-in-the-deploy-ui">2. Typed schema — defined once, reflected in the deploy UI<a class="headerlink" href="#2-typed-schema-defined-once-reflected-in-the-deploy-ui" title="Permanent link">&para;</a></h3>
-<ul>
-<li>The schema is a <strong>pydantic v2 model</strong>. From it the library emits a <strong>JSON
-  Schema</strong> (<code>config_schema_json</code>) that encodes every field's <strong>type</strong>, whether
-  it is <strong>required</strong>, its <strong>enum</strong> values, <strong>defaults</strong>, and nested structure.</li>
-<li>The component <strong>commits that schema as <code>config/config.schema.json</code></strong>. The
-  deploy UI reads it and renders <strong>typed, validated inputs</strong> — a number field
-  for an <code>int</code>, a checkbox for a <code>bool</code>, a dropdown for an enum, a masked input
-  for a secret — and <strong>rejects wrong types before deploy</strong> instead of writing an
-  untyped string blob.</li>
-<li>A CI check keeps <code>config/config.schema.json</code> in sync with the model
-  (regenerate and diff), so the types the UI shows can never drift from the code.</li>
-</ul>
-<h3 id="3-one-secret-convention">3. One secret convention<a class="headerlink" href="#3-one-secret-convention" title="Permanent link">&para;</a></h3>
-<p><strong>Model layer — component code</strong></p>
-<ul>
-<li>A secret field is declared with <strong><code>pydantic.SecretStr</code></strong>: <strong>masked on read</strong>
-  (<code>repr</code>/<code>str</code> show <code>**********</code>, never the value), and rendered in the JSON
-  Schema as <code>{"type": "string", "format": "password", "writeOnly": true}</code> — so
-  the deploy UI knows to mask the input and never echo it back. Secrets are
-  <strong>typed</strong>, not guessed from an empty slot.</li>
-<li>Secrets live in the <strong>same <code>config.json</code></strong> as ordinary settings — no
-  separate secrets file, no <code>EnvStore</code> or env-var injection for component
-  config. The one-file rule applies to secrets too: <code>ROBOTSIX_CONFIG_FILE</code>
-  only locates the file, and the file is the only source of config values.</li>
-<li>Any config file written with real secrets is created <strong><code>0600</code> in a <code>0700</code>
-  directory</strong>, enforced in shared loader code (<code>dump_config</code>) — not per-repo,
-  not docstring-only. No real credentials are committed anywhere.</li>
-</ul>
-<p><strong>Management-surface layer — central-deploy config API + Configure UI</strong></p>
-<p>These rules apply to any surface that reads, writes, or displays component
-config. They are <strong>not</strong> library concerns (<code>robotsix-config</code> does not
-implement redaction or merge); they are the deploy system's responsibility.</p>
-<ul>
-<li><strong>Redact on read.</strong> Any GET endpoint, config version history, audit log,
-  or UI that reads component config MUST redact every field marked
-  <code>writeOnly</code> in the committed <code>config.schema.json</code>. The secret value is
-  never echoed — only the key name and its set/unset status may be exposed.</li>
-<li><strong>Merge on write.</strong> Partial-update semantics: a write that omits a secret
-  field (or submits it blank / with an unchanged sentinel value) MUST
-  preserve the stored value. Only an explicitly submitted, non-blank,
-  non-sentinel secret key overwrites the stored secret. Secret values MUST
-  NOT be stored in config version history — history records that a secret
-  key changed (e.g. "secret <code>password</code> updated"), never its content.</li>
-<li><strong>UI rendering.</strong> Forms are generated from the committed
-  <code>config.schema.json</code>. Every <code>writeOnly</code> field renders as a blank masked
-  (password) input with a set/unset badge — the badge is the only
-  indication of whether a value exists, since the value itself is never
-  echoed. The operator types a new value to set or change the secret;
-  leaving it blank preserves the existing value.</li>
-</ul>
-<h3 id="4-advanced-settings-flag">4. Advanced settings flag<a class="headerlink" href="#4-advanced-settings-flag" title="Permanent link">&para;</a></h3>
-<p>A per-setting <strong><code>advanced</code></strong> annotation (boolean, default <code>false</code>) lets the
-deploy UI hide rarely-changed or expert-only settings behind a "Show advanced
-settings" toggle — off by default. It is <strong>purely presentational</strong>: marking a
-field <code>advanced: true</code> does not change validation, serialization, or runtime
-behavior in any way. The application never sees the flag; only the deploy UI
-consumes it from the committed <code>config/config.schema.json</code>.</p>
-<p><strong>Model layer — component code</strong></p>
-<p>Annotate a field as advanced with pydantic's <code>Field(json_schema_extra=…)</code>:</p>
-<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">pydantic</span><span class="w"> </span><span class="kn">import</span> <span class="n">BaseModel</span><span class="p">,</span> <span class="n">Field</span>
+<p><strong>SSRF-hardened httpx fetchers MUST enforce the allow/deny decision at the
+<em>connection</em> layer, not (only) in a pre-flight check, so the address that is
+validated is provably the address that is connected to.</strong> A pre-flight
+<code>getaddrinfo</code> check is defence-in-depth at best; it is never the sole control.</p>
+<h3 id="1-validate-and-pin-the-resolved-ip-at-the-connection-layer">1. Validate and pin the resolved IP at the connection layer<a class="headerlink" href="#1-validate-and-pin-the-resolved-ip-at-the-connection-layer" title="Permanent link">&para;</a></h3>
+<p>Subclass <code>httpcore.AsyncConnectionPool</code> and override <code>_resolve_host</code> to reject
+private, loopback, link-local, multicast, unspecified, and IPv4-mapped
+addresses, returning only the validated entries. httpcore caches the resolved
+entry keyed by <code>(host, port, ssl)</code>, so httpx connects to exactly the validated
+IP — while the <code>Host</code> header and TLS SNI keep the original hostname, so
+certificate verification stays intact. Install the guarded pool via
+<code>httpx.AsyncHTTPTransport(pool=...)</code>.</p>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">ipaddress</span>
 
-<span class="k">class</span><span class="w"> </span><span class="nc">MailConfig</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
-    <span class="n">log_level</span><span class="p">:</span> <span class="n">LogLevel</span> <span class="o">=</span> <span class="n">LogLevel</span><span class="o">.</span><span class="n">info</span>
-    <span class="n">connection_pool_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
-        <span class="n">default</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
-        <span class="n">json_schema_extra</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;advanced&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">},</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">httpcore</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">httpx</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_is_blocked</span><span class="p">(</span><span class="n">ip</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+    <span class="n">addr</span> <span class="o">=</span> <span class="n">ipaddress</span><span class="o">.</span><span class="n">ip_address</span><span class="p">(</span><span class="n">ip</span><span class="p">)</span>
+    <span class="k">return</span> <span class="p">(</span>
+        <span class="n">addr</span><span class="o">.</span><span class="n">is_private</span>
+        <span class="ow">or</span> <span class="n">addr</span><span class="o">.</span><span class="n">is_loopback</span>
+        <span class="ow">or</span> <span class="n">addr</span><span class="o">.</span><span class="n">is_link_local</span>
+        <span class="ow">or</span> <span class="n">addr</span><span class="o">.</span><span class="n">is_multicast</span>
+        <span class="ow">or</span> <span class="n">addr</span><span class="o">.</span><span class="n">is_unspecified</span>
+        <span class="ow">or</span> <span class="n">addr</span><span class="o">.</span><span class="n">is_reserved</span>
+        <span class="ow">or</span> <span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">addr</span><span class="p">,</span> <span class="n">ipaddress</span><span class="o">.</span><span class="n">IPv6Address</span><span class="p">)</span> <span class="ow">and</span> <span class="n">addr</span><span class="o">.</span><span class="n">ipv4_mapped</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">)</span>
     <span class="p">)</span>
+
+
+<span class="k">class</span><span class="w"> </span><span class="nc">SSRFGuardPool</span><span class="p">(</span><span class="n">httpcore</span><span class="o">.</span><span class="n">AsyncConnectionPool</span><span class="p">):</span>
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">_resolve_host</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">origin</span><span class="p">:</span> <span class="n">httpcore</span><span class="o">.</span><span class="n">Origin</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">]:</span>
+        <span class="n">entries</span> <span class="o">=</span> <span class="k">await</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">_resolve_host</span><span class="p">(</span><span class="n">origin</span><span class="p">)</span>
+        <span class="n">allowed</span> <span class="o">=</span> <span class="p">[</span><span class="n">e</span> <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">entries</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">_is_blocked</span><span class="p">(</span><span class="n">e</span><span class="p">[</span><span class="s2">&quot;addr&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">])]</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">allowed</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">httpx</span><span class="o">.</span><span class="n">ConnectError</span><span class="p">(</span><span class="s2">&quot;blocked by SSRF guard: no public address&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">allowed</span>
+
+
+<span class="n">_transport</span> <span class="o">=</span> <span class="n">httpx</span><span class="o">.</span><span class="n">AsyncHTTPTransport</span><span class="p">(</span><span class="n">pool</span><span class="o">=</span><span class="n">SSRFGuardPool</span><span class="p">())</span>
+<span class="n">_client</span> <span class="o">=</span> <span class="n">httpx</span><span class="o">.</span><span class="n">AsyncClient</span><span class="p">(</span><span class="n">transport</span><span class="o">=</span><span class="n">_transport</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">httpx</span><span class="o">.</span><span class="n">Timeout</span><span class="p">(</span><span class="mf">10.0</span><span class="p">))</span>
 </code></pre></div>
-<p>The library emits this into the JSON Schema as a top-level property on the
-field's schema object:</p>
-<div class="highlight"><pre><span></span><code><span class="p">{</span>
-<span class="w">  </span><span class="nt">&quot;properties&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">    </span><span class="nt">&quot;log_level&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;string&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;enum&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;info&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;debug&quot;</span><span class="p">],</span><span class="w"> </span><span class="nt">&quot;default&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;info&quot;</span><span class="p">},</span>
-<span class="w">    </span><span class="nt">&quot;connection_pool_size&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">      </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;integer&quot;</span><span class="p">,</span>
-<span class="w">      </span><span class="nt">&quot;default&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">10</span><span class="p">,</span>
-<span class="w">      </span><span class="nt">&quot;advanced&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span>
-<span class="w">    </span><span class="p">}</span>
-<span class="w">  </span><span class="p">}</span>
-<span class="p">}</span>
+<p>Because the validated entry is what httpcore caches and connects to, there is
+no window between the check and the connection for DNS to change under the
+tool's feet. Pinning the IP — not re-resolving the hostname — is what closes
+the TOCTOU gap.</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># ❌  Pre-flight check only — TOCTOU / DNS-rebinding gap</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">socket</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">httpx</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">fetch</span><span class="p">(</span><span class="n">url</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">httpx</span><span class="o">.</span><span class="n">Response</span><span class="p">:</span>
+    <span class="n">host</span> <span class="o">=</span> <span class="n">httpx</span><span class="o">.</span><span class="n">URL</span><span class="p">(</span><span class="n">url</span><span class="p">)</span><span class="o">.</span><span class="n">host</span>
+    <span class="n">ip</span> <span class="o">=</span> <span class="n">socket</span><span class="o">.</span><span class="n">getaddrinfo</span><span class="p">(</span><span class="n">host</span><span class="p">,</span> <span class="kc">None</span><span class="p">)[</span><span class="mi">0</span><span class="p">][</span><span class="mi">4</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>  <span class="c1"># checked here...</span>
+    <span class="k">if</span> <span class="n">_is_blocked</span><span class="p">(</span><span class="n">ip</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;blocked&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">httpx</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>  <span class="c1"># ...but httpx re-resolves here — different answer</span>
 </code></pre></div>
-<p><strong>Deploy-UI layer — central-deploy Configure screen</strong></p>
+<h3 id="2-re-validate-every-redirect-hop">2. Re-validate every redirect hop<a class="headerlink" href="#2-re-validate-every-redirect-hop" title="Permanent link">&para;</a></h3>
+<p>An auto-followed redirect to an internal endpoint bypasses a check that only
+looks at the original URL. Every fetcher MUST either:</p>
 <ul>
-<li><strong>Hidden by default.</strong> Every field with <code>"advanced": true</code> is hidden when the
-  "Show advanced settings" toggle is off. Fields without the flag (or with
-  <code>"advanced": false</code>) are always visible — schemas without the flag behave
-  exactly as today (all settings visible).</li>
-<li><strong>Fully editable when revealed.</strong> Toggling "Show advanced settings" on reveals
-  the advanced fields inline with their typed inputs (number, bool, dropdown,
-  etc.). No separate "advanced mode" form exists — the toggle only controls
-  visibility; once visible, advanced fields are first-class settings.</li>
-<li><strong>Backward compatible.</strong> Omitting <code>advanced</code> from a field's schema is
-  equivalent to <code>"advanced": false</code>. Existing schemas require no changes and
-  render identically to before.</li>
+<li>rely on the guarded pool, so that <strong>every</strong> connection — including each
+  redirect hop — flows through <code>_resolve_host</code> and is re-validated for free; or</li>
+<li>set <code>follow_redirects=False</code> and re-run the connection-layer check on each
+  hop explicitly before following it.</li>
 </ul>
-<p><strong>Classifying settings (guidance for fleet repos)</strong></p>
-<p>These heuristics help decide which fields to mark <code>advanced: true</code>:</p>
+<p>Never combine <code>follow_redirects=True</code> with an unguarded transport and a
+pre-flight-only check: the redirect target is fetched without ever being
+validated.</p>
+<h2 id="why-this-is-a-fleet-standard">Why this is a fleet standard<a class="headerlink" href="#why-this-is-a-fleet-standard" title="Permanent link">&para;</a></h2>
+<p>The shared helper <code>robotsix_chat/common/http_fetch.py</code> already consolidates
+SSRF logic for two tools, and any new outbound-fetch tool in any fleet repo
+faces the same TOCTOU and redirect surface. Codifying "validate at the
+connection layer, pin the resolved IP, re-validate redirects" as a single
+standard prevents each tool from re-implementing a subtly-unsafe pre-flight
+check.</p>
+<h2 id="failure-modes-this-prevents">Failure modes this prevents<a class="headerlink" href="#failure-modes-this-prevents" title="Permanent link">&para;</a></h2>
 <ul>
-<li><strong>Rarely changed.</strong> A setting the operator sets once at onboarding and never
-  touches again (e.g. a worker thread count, a database pool size) is a good
-  candidate.</li>
-<li><strong>Expert-only.</strong> Settings whose meaning requires deep knowledge of the
-  component's internals (e.g. a GC tuning knob, a buffer size in bytes).</li>
-<li><strong>Safe default exists.</strong> If the default is sensible for nearly all deployments
-  and changing it is purely an optimisation, mark it advanced. If the operator
-  <em>must</em> set it for the component to work, keep it visible.</li>
-<li><strong>Conversely, keep visible:</strong> anything the operator must set for the component
-  to function (e.g. a hostname, an external URL), anything they will
-  deliberately change day-to-day (e.g. a log level), and anything that is a
-  security boundary (e.g. a secret field — <code>SecretStr</code> is already masked, and
-  hiding it behind a second toggle risks the operator missing it).</li>
+<li><strong>DNS rebinding (TOCTOU).</strong> An attacker DNS server returns a public IP for
+  the pre-flight <code>getaddrinfo</code> and a private IP (<code>169.254.169.254</code>,
+  <code>127.0.0.1</code>) for the connection httpx opens a moment later. Connection-layer
+  validation pins the address that was checked, so the two can never diverge.</li>
+<li><strong>Redirect-based SSRF.</strong> A public URL 302-redirects to an internal endpoint.
+  A check that only inspects the original URL follows the redirect blindly; a
+  guarded pool re-validates the redirect target's address before connecting.</li>
+<li><strong>Cloud metadata exfiltration.</strong> <code>169.254.169.254</code> (link-local) and other
+  internal ranges are rejected at the moment of connection, so instance
+  credentials and metadata cannot be read through the fetcher.</li>
+<li><strong>IPv4-mapped IPv6 bypass.</strong> An address like <code>::ffff:127.0.0.1</code> sneaks a
+  loopback target past an IPv4-only string check; unwrapping the mapped
+  address and re-checking it closes that hole.</li>
 </ul>
-<h3 id="5-what-environment-is-for">5. What <code>environment:</code> is for<a class="headerlink" href="#5-what-environment-is-for" title="Permanent link">&para;</a></h3>
-<p>The one-file rule means <code>environment:</code> in a compose file is <strong>never</strong> a config
-channel for first-party code. Three cases:</p>
+<h2 id="reference">Reference<a class="headerlink" href="#reference" title="Permanent link">&para;</a></h2>
 <ul>
-<li><strong>Allowed — infrastructure wiring.</strong> Variables the <em>deploy topology</em> needs,
-  not app settings: <code>ROBOTSIX_CONFIG_FILE</code> locating the file, <code>DOCKER_HOST</code>
-  pointing a service at its socket-proxy sibling. Rule of thumb: if the value
-  only makes sense inside a compose file, it's wiring.</li>
-<li><strong>Allowed — third-party images.</strong> A sibling you don't control (a database,
-  a proxy) takes its config and secrets however it takes them; the deploy
-  contract's env secret slots (<code>KEY: ""</code>) exist for exactly this.</li>
-<li><strong>Forbidden — first-party app config and secrets.</strong> Anything the
-  component's own code reads as a setting or credential lives in the config
-  file (<code>SecretStr</code> for secrets, masked in the deploy UI via the typed
-  schema). No <code>API_KEY: ""</code>-style slots on first-party services — two open
-  channels for the same value is precisely the "why is this value what it is"
-  ambiguity the one-file rule exists to kill.</li>
+<li>OWASP — <a href="https://cheatsheetseries.owasp.org/cheatsheets/Server_Side_Request_Forgery_Prevention_Cheat_Sheet.html">Server-Side Request Forgery Prevention Cheat Sheet</a>.</li>
 </ul>
-<h3 id="6-calling-another-service-a-name_url-config-field">6. Calling another service: a <code>&lt;name&gt;_url</code> config field<a class="headerlink" href="#6-calling-another-service-a-name_url-config-field" title="Permanent link">&para;</a></h3>
-<p>A component that calls another service declares its dependency's base URL as
-an <strong>ordinary config field</strong> — <code>&lt;name&gt;_url</code>, typed in the model, with a
-sensible localhost default for dev — and the operator sets the real value in
-the deploy UI like any other field. Credentials for that call are <code>SecretStr</code>
-fields next to the URL. Explicitly <strong>not</strong> part of the stack, added
-deliberately only if ever needed: service discovery, a registry,
-central-deploy-injected addresses, DNS-name conventions. Plain config fields
-are the whole mechanism.</p>
-<h3 id="7-langfuse-configuration">7. Langfuse configuration<a class="headerlink" href="#7-langfuse-configuration" title="Permanent link">&para;</a></h3>
-<p>The Langfuse credential block shape is defined in the
-<a href="../component-standard/#llm-tracing">component standard</a>.  The
-canonical block is a top-level <code>langfuse</code> key holding the instance <code>host</code>
-(<code>str</code> — the Langfuse instance URL) and a <code>projects</code> map
-(<code>dict[str, LangfuseProject]</code>) keyed by the Langfuse project name
-(<code>&lt;repo&gt;</code> / <code>&lt;repo&gt;-&lt;function&gt;</code>).  Each project entry carries two fields:</p>
-<ul>
-<li><code>public_key: str</code></li>
-<li><code>secret_key: pydantic.SecretStr</code> — masked on read, rendered as
-  <code>writeOnly</code> in the JSON Schema, and subject to the full §3 secret
-  convention: the deploy UI redacts it on read, never echoes it, and
-  merges it on partial write so an omitted secret preserves the stored
-  value.</li>
-</ul>
-<p>Components declare their own Langfuse credentials in their own config;
-there is no central override map.  See the component standard for the
-full model shape, constraints, and rationale.</p>
-<h3 id="8-openrouter-configuration">8. OpenRouter configuration<a class="headerlink" href="#8-openrouter-configuration" title="Permanent link">&para;</a></h3>
-<p>The OpenRouter credential block shape is defined in the
-<a href="../component-standard/">component standard</a>.  The canonical block is a
-top-level <code>openrouter</code> key holding a <code>keys</code> map keyed by the <strong>same
-aliases</strong> as <code>langfuse.projects</code> (see §7).  Each value is an OpenRouter
-API key — declared as <code>SecretStr</code> per §3 so it is masked on read,
-rendered as <code>writeOnly</code> in the JSON Schema, and never echoed by
-<code>GET /config</code>:</p>
-<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">pydantic</span><span class="w"> </span><span class="kn">import</span> <span class="n">BaseModel</span><span class="p">,</span> <span class="n">SecretStr</span>
-
-<span class="k">class</span><span class="w"> </span><span class="nc">OpenRouterConfig</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Per-component OpenRouter configuration.&quot;&quot;&quot;</span>
-    <span class="n">keys</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">SecretStr</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
-</code></pre></div>
-<p>On the root component model:</p>
-<div class="highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">MyComponentConfig</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
-    <span class="n">openrouter</span><span class="p">:</span> <span class="n">OpenRouterConfig</span> <span class="o">=</span> <span class="n">OpenRouterConfig</span><span class="p">()</span>
-</code></pre></div>
-<p>The shared alias is what makes provider billing and Langfuse traces
-joinable for reconciliation (see the
-<a href="../component-standard/">component standard</a>).  A provider key must fund
-exactly one function — two functions behind one key produce a single
-usage figure attributable to neither.</p>
-<h2 id="using-the-library">Using the library<a class="headerlink" href="#using-the-library" title="Permanent link">&para;</a></h2>
-<p>Install it (<code>uv add robotsix-config</code>, SHA-pinned via <code>[tool.uv.sources]</code> per
-the <a href="../repo-baseline/">repo baseline</a>), define plain pydantic models, and call
-<code>load_config</code>:</p>
-<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">enum</span><span class="w"> </span><span class="kn">import</span> <span class="n">StrEnum</span>
-
-<span class="kn">from</span><span class="w"> </span><span class="nn">pydantic</span><span class="w"> </span><span class="kn">import</span> <span class="n">BaseModel</span><span class="p">,</span> <span class="n">SecretStr</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">robotsix_config</span><span class="w"> </span><span class="kn">import</span> <span class="n">config_schema_json</span><span class="p">,</span> <span class="n">dump_config</span><span class="p">,</span> <span class="n">load_config</span>
-
-
-<span class="k">class</span><span class="w"> </span><span class="nc">LogLevel</span><span class="p">(</span><span class="n">StrEnum</span><span class="p">):</span>
-    <span class="n">info</span> <span class="o">=</span> <span class="s2">&quot;info&quot;</span>
-    <span class="n">debug</span> <span class="o">=</span> <span class="s2">&quot;debug&quot;</span>
-
-
-<span class="k">class</span><span class="w"> </span><span class="nc">ImapConfig</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
-    <span class="n">host</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;localhost&quot;</span>
-    <span class="n">port</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">993</span>
-
-
-<span class="k">class</span><span class="w"> </span><span class="nc">MailConfig</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
-    <span class="n">log_level</span><span class="p">:</span> <span class="n">LogLevel</span> <span class="o">=</span> <span class="n">LogLevel</span><span class="o">.</span><span class="n">info</span>
-    <span class="n">password</span><span class="p">:</span> <span class="n">SecretStr</span> <span class="o">=</span> <span class="n">SecretStr</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
-    <span class="n">imap</span><span class="p">:</span> <span class="n">ImapConfig</span> <span class="o">=</span> <span class="n">ImapConfig</span><span class="p">()</span>
-
-
-<span class="c1"># The one file (ROBOTSIX_CONFIG_FILE or config/config.json) is the only source</span>
-<span class="c1"># of values; the model&#39;s defaults fill the gaps. No env overlay, no CLI merge.</span>
-<span class="n">cfg</span> <span class="o">=</span> <span class="n">load_config</span><span class="p">(</span><span class="n">MailConfig</span><span class="p">)</span>
-
-<span class="c1"># Emit the typed schema the deploy UI renders (commit as config/config.schema.json):</span>
-<span class="n">schema_json</span> <span class="o">=</span> <span class="n">config_schema_json</span><span class="p">(</span><span class="n">MailConfig</span><span class="p">)</span>
-
-<span class="c1"># Persist config with 0600 perms (e.g. the deploy system writing the volume):</span>
-<span class="n">dump_config</span><span class="p">(</span><span class="n">cfg</span><span class="p">)</span>
-</code></pre></div>
-<p>The library API:</p>
-<table>
-<thead>
-<tr>
-<th>Symbol</th>
-<th>Purpose</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>load_config(model_cls, path=None)</code></td>
-<td>Load <strong>the one</strong> JSON config file and validate into the model (no env, no CLI-merge).</td>
-</tr>
-<tr>
-<td><code>config_schema(model_cls)</code></td>
-<td>The model's typed <strong>JSON Schema</strong> for the deploy UI (dict).</td>
-</tr>
-<tr>
-<td><code>config_schema_json(model_cls)</code></td>
-<td>The same, serialized — write to <code>config/config.schema.json</code>.</td>
-</tr>
-<tr>
-<td><code>dump_config(model, path=None)</code></td>
-<td>Write the model to the JSON file, <code>0600</code> in a <code>0700</code> dir (secrets in cleartext, for the app to read back).</td>
-</tr>
-<tr>
-<td><code>resolve_config_path()</code></td>
-<td>The <code>ROBOTSIX_CONFIG_FILE</code>-or-default path (locate only).</td>
-</tr>
-<tr>
-<td><code>CONFIG_FILE_ENV</code>, <code>DEFAULT_CONFIG_PATH</code></td>
-<td>The standard var name and default path (<code>config/config.json</code>).</td>
-</tr>
-<tr>
-<td><code>ConfigError</code>, <code>MissingConfigError</code>, <code>InvalidConfigError</code></td>
-<td>Error types (bad JSON, failed validation).</td>
-</tr>
-</tbody>
-</table>
-<h2 id="why-one-file-a-typed-schema">Why one file + a typed schema<a class="headerlink" href="#why-one-file-a-typed-schema" title="Permanent link">&para;</a></h2>
-<p>Two failure modes the old setup allowed, and how this closes them:</p>
-<ul>
-<li><strong>Value drift across sources.</strong> When config can come from a file <em>and</em> env
-  <em>and</em> CLI, "why is this value what it is" depends on the union of all three,
-  and the answer differs between dev, a <code>uv</code> run, and the deploy system. <strong>One
-  file</strong> makes the file the whole answer, identically in every mode.</li>
-<li><strong>Untyped deploy config.</strong> When the deploy UI treats config as free-text
-  strings, an operator can put <code>"yes"</code> in an <code>int</code> field or mistype an enum, and
-  it only fails at container start. <strong>The typed schema</strong> lets the UI validate
-  before deploy and render the right control per type — and because the schema
-  is generated from the same model the app loads, the UI and the runtime can
-  never disagree about the shape.</li>
-</ul>
-<h2 id="rollout-incremental-clean-cutover">Rollout (incremental, clean cutover)<a class="headerlink" href="#rollout-incremental-clean-cutover" title="Permanent link">&para;</a></h2>
-<p>The stack is pre-release with no external users, so migrations are a <strong>clean
-cutover</strong> — no deprecated aliases or compatibility shims.</p>
-<ol>
-<li>~~Ship the schema layer in the shared config library~~ — done: the library
-   is <code>robotsix-config</code> (renamed from <code>robotsix-yaml-config</code> and rewritten:
-   pydantic + JSON, no YAML, no env overlay).</li>
-<li>Migrate components one at a time to <code>robotsix_config.load_config</code>: move any
-   non-pydantic schema to a pydantic model, load from the one file (drop every
-   <code>ROBOTSIX_*</code> value variable, CLI-override path, <em>and</em> first-party env
-   secret slot in the deploy compose — no aliases), align the config filename
-   across dev and deploy (<code>config.json</code>), and use the <code>0600</code> writer.
-   <strong>The old YAML path is deleted in the same change</strong> — no backward
-   compatibility, no dual-config window; any data/format migration is handled
-   by hand, case by case. Do the ones furthest from the standard first.</li>
-<li>Commit <code>config/config.schema.json</code> (from <code>config_schema_json</code>) and add the
-   CI drift check so the typed schema stays in sync with the model.</li>
-<li>The deployment system consumes the schema: central-deploy's contract § 8
-   reads <code>config/config.json</code> + <code>config/config.schema.json</code> and renders typed
-   inputs; the old YAML empty-leaf heuristic is removed outright, not aliased.</li>
-</ol>
-<p>Each component migrates in one step — there's no dual-config transition to
-manage.</p>
-<h3 id="advanced-flag-rollout">Advanced-flag rollout<a class="headerlink" href="#advanced-flag-rollout" title="Permanent link">&para;</a></h3>
-<p>The <code>advanced</code> flag is backward-compatible by design — schemas without it
-behave exactly as before (all fields visible). Fleet repos can adopt it
-incrementally:</p>
-<ol>
-<li>The flag is defined here and available in the library's JSON Schema
-   output immediately (any <code>Field(json_schema_extra={"advanced": True})</code> on a
-   pydantic model is passed through to <code>config.schema.json</code>).</li>
-<li><strong>central-deploy</strong> implements the toggle in its Configure screen (separate
-   ticket). Until that toggle ships, <code>"advanced": true</code> annotations in
-   schemas are harmless — they are an unrecognised JSON Schema keyword that
-   existing deploy-UI versions ignore.</li>
-<li><strong>Fleet repos</strong> classify their settings per the heuristics in §4. Each
-   repo adds <code>json_schema_extra={"advanced": True}</code> to the relevant fields,
-   regenerates <code>config/config.schema.json</code>, and the CI drift check confirms
-   the schema is in sync. This is per-repo follow-up work — the flag is
-   optional and repos can adopt it on their own schedule.</li>
-<li>No data migration, breaking change, or flag day is required. An
-   unmarked field is visible; a marked field is hidden behind the toggle
-   once central-deploy supports it; nothing else changes.</li>
-</ol>
 
 
 

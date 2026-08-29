@@ -2314,6 +2314,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#how-this-is-enforced" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How this is enforced
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#failure-modes-this-prevents" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2689,6 +2700,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#how-this-is-enforced" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How this is enforced
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#failure-modes-this-prevents" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2728,7 +2750,10 @@ rendering an HTML web UI. This applies <em>in addition to</em> the
 <p>Every fleet service that serves HTTP responses emits the standard OWASP security
 response headers via a single, shared middleware. Hand-rolling these headers per
 service — or leaving them unset — exposes every HTML surface to clickjacking,
-MIME-sniffing, and referrer-leak classes of issues.</p>
+MIME-sniffing, and referrer-leak classes of issues. Missing or misconfigured
+security response headers are the canonical example of
+<a href="https://owasp.org/Top10/A05_2021-Security_Misconfiguration/">OWASP Top 10 A05:2021 — Security Misconfiguration</a>,
+which this standard exists to close fleet-wide.</p>
 <h2 id="the-rule">The rule<a class="headerlink" href="#the-rule" title="Permanent link">&para;</a></h2>
 <h3 id="1-use-the-secure-library-with-presetbalanced-as-the-baseline">1. Use the <code>secure</code> library with Preset.BALANCED as the baseline<a class="headerlink" href="#1-use-the-secure-library-with-presetbalanced-as-the-baseline" title="Permanent link">&para;</a></h3>
 <p>All services use the maintained <a href="https://pypi.org/project/secure/"><code>secure</code></a>
@@ -2802,6 +2827,44 @@ modification traceable to a single, grep-able location.</p>
 behind TLS. The <code>secure</code> library detects this from the request scheme and
 suppresses the header on plain-HTTP requests automatically — the service does
 not need to branch on this itself.</p>
+<h2 id="how-this-is-enforced">How this is enforced<a class="headerlink" href="#how-this-is-enforced" title="Permanent link">&para;</a></h2>
+<p>This standard governs downstream deployable components, not this repo, so there
+is no CI gate here that can inspect a component's ASGI app. Enforcement is by
+<strong>audit</strong> — checked at component code review and by the periodic
+standards-audit agent — against the criteria below. Each criterion maps to one
+of the four rules and is verifiable by reading the component's application-setup
+module (the same place <a href="#2-integration-one-middleware-registered-once"><code>SecureASGIMiddleware</code></a>
+is registered).</p>
+<table>
+<thead>
+<tr>
+<th>Rule</th>
+<th>Audit criterion</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1. <code>secure</code> ≥2.0.1 baseline</td>
+<td>The component depends on <code>secure</code> (≥2.0.1) in its manifest and builds its header object from <code>Secure.with_default_headers()</code> (<code>Preset.BALANCED</code>) or <code>Preset.STRICT</code> — not a hand-rolled <code>BaseHTTPMiddleware</code>.</td>
+</tr>
+<tr>
+<td>2. One middleware, registered once</td>
+<td>Code review verifies the ASGI app calls <code>app.add_middleware(SecureASGIMiddleware, ...)</code> exactly once during application construction, and that no route handler sets security headers itself.</td>
+</tr>
+<tr>
+<td>3. CSP relaxation is explicit</td>
+<td>Every CSP relaxation is a method call on the <code>Secure</code>/CSP object at the single registration site — <code>grep</code> for <code>csp</code> in the app-setup module surfaces all relaxations; a hand-built CSP string or a disabled header is a violation.</td>
+</tr>
+<tr>
+<td>4. HSTS conditional on TLS</td>
+<td>The service does not branch on the request scheme to set <code>Strict-Transport-Security</code> itself; it relies on the <code>secure</code> library's automatic TLS detection.</td>
+</tr>
+</tbody>
+</table>
+<p>A component that serves HTTP responses and fails any criterion is
+non-compliant; the fix is always the same — register the shared
+<code>SecureASGIMiddleware</code> at application construction and route every header
+change through the <code>Secure</code> object.</p>
 <h2 id="failure-modes-this-prevents">Failure modes this prevents<a class="headerlink" href="#failure-modes-this-prevents" title="Permanent link">&para;</a></h2>
 <ul>
 <li><strong>Clickjacking.</strong> Without <code>X-Frame-Options</code> or CSP <code>frame-ancestors</code>, an

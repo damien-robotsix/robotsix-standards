@@ -305,7 +305,10 @@ jobs:
 A job whose ceiling exceeds 15 minutes must carry a comment explaining
 why the higher value is needed — same pattern as a lint suppression or
 a hand-rolled gate deviation.  This is native GitHub Actions
-configuration; no bespoke tooling is required.
+configuration, enforced in CI by
+[`scripts/check-workflow-timeouts.py`](https://github.com/damien-robotsix/robotsix-standards/blob/main/scripts/check-workflow-timeouts.py),
+which fails the build when a step-running job omits `timeout-minutes`
+or a ceiling above 15 lacks an explanatory comment.
 
 **Exception — reusable-workflow caller jobs.** A job that invokes a
 reusable workflow with `uses:` (for example the fleet callers of

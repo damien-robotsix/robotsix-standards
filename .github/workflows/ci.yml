@@ -44,6 +44,8 @@ jobs:
           extra_args: --all-files
       - name: Check TOC synchronization
         run: uv run --group docs python scripts/check-toc-sync.py
+      - name: Check job timeout-minutes rule
+        run: uv run --group docs python scripts/check-workflow-timeouts.py
       - name: Run actionlint
         run: |
           curl -sSL https://github.com/rhysd/actionlint/releases/download/v1.7.12/actionlint_1.7.12_linux_amd64.tar.gz | tar xz -C /tmp

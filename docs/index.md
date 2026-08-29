@@ -74,6 +74,10 @@ everywhere.
 - **[HTTP client persistence](http-client-persistence.md)** — one persistent
   `httpx.Client` (or `requests.Session`) with an explicit timeout, reused for
   all outbound calls — no per-call module-level convenience helpers.
+- **[SSRF-hardened httpx fetchers](ssrf-hardened-fetchers.md)** — tools that
+  fetch attacker-influenced URLs must validate and pin the resolved IP at the
+  connection layer (a guarded `httpcore` pool), not in a pre-flight DNS check —
+  closing the DNS-rebinding TOCTOU gap and re-validating every redirect hop.
 - **[Issue and PR templates](issue-pr-templates.md)** — every repo ships
   `.github/ISSUE_TEMPLATE/bug_report.md`, `.github/ISSUE_TEMPLATE/feature_request.md`,
   `.github/PULL_REQUEST_TEMPLATE.md`, and `CONTRIBUTING.md` so every contributor

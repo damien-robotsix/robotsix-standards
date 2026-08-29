@@ -307,6 +307,18 @@ why the higher value is needed — same pattern as a lint suppression or
 a hand-rolled gate deviation.  This is native GitHub Actions
 configuration; no bespoke tooling is required.
 
+**Exception — reusable-workflow caller jobs.** A job that invokes a
+reusable workflow with `uses:` (for example the fleet callers of
+[robotsix-github-workflows](https://github.com/damien-robotsix/robotsix-github-workflows))
+is exempt: GitHub Actions does not support `timeout-minutes` on a job
+that calls a reusable workflow, and a ceiling set on the caller would
+not apply to the called workflow's steps in any case.  The ceiling
+belongs *inside* the reusable workflow, where each of its own jobs
+declares `timeout-minutes`.  For a caller job the timeout is therefore
+the called workflow's responsibility — do not add `timeout-minutes` to
+the caller, and read "every job" above as "every job that runs steps
+directly."
+
 > **Failure modes prevented:**
 >
 > - **Runaway job burns CI budget.** A job that hangs (network timeout,

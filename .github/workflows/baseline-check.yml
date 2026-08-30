@@ -34,6 +34,23 @@ jobs:
           }
           echo "README.md standards link: OK"
 
+  workflow-timeout-enforcement:
+    # Enforcement gate for the docs/repo-baseline.md timeout-minutes rule:
+    # every job with a `uses:` reusable-workflow caller must carry a
+    # timeout-minutes (with a justification comment when > 15), and the
+    # script flags jobs that exceed the 15-minute default without either
+    # a timeout or a documented exception. See:
+    #   - scripts/check-workflow-timeouts.py (the gate logic)
+    #   - docs/repo-baseline.md (the timeout-minutes standard)
+    permissions:
+      contents: read
+    runs-on: ubuntu-latest
+    timeout-minutes: 5  # fast grep/parse check; well under 15-minute default
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
+      - name: Check workflow timeout-minutes rule
+        run: uv run --group docs python scripts/check-workflow-timeouts.py
+
   license-check:
     permissions:
       contents: read

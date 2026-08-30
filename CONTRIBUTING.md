@@ -28,7 +28,7 @@ uv run mkdocs build --strict  # CI-accurate gate
 2. Run pre-commit (`uv run pre-commit run --all-files`).
 3. Run `uv run mkdocs build --strict` — the build gate in CI.
 4. Push, open a PR. Every PR is squash-merged to `main`.
-5. Add a changelog fragment (`changelog.d/<ticket>.misc.md`) — CI enforces it.
+5. Use conventional commit subjects (`feat:`/`fix:`/`chore:`/`docs:`/`refactor:`/`test:`/`ci:`) — release-please generates `CHANGELOG.md` from them.
 
 ## Code rules
 

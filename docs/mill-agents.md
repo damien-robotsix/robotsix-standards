@@ -42,7 +42,7 @@ be auditable.
 - Downstream repos' compliance with these standards.
 - The implementation of security tooling (robotsix-github-workflows,
   robotsix-mill agents) — those are separate repos.
-- Non-security repo hygiene (changelog format, README skeleton, towncrier).
+- Non-security repo hygiene (changelog format, README skeleton, release-please).
 
 **Output:** Draft tickets filed on the robotsix-standards board for gaps or
 outdated requirements it finds. A clean pass with no findings is a valid

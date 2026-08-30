@@ -107,7 +107,7 @@ duplicate copy into `docs/`. Two patterns are acceptable:
 Either way, the file referenced in `nav` must be the canonical root
 `CHANGELOG.md` — not a manually-maintained copy that can drift.
 
-**Failure mode prevented:** a repo has a well-maintained changelog (towncrier,
+**Failure mode prevented:** a repo has a well-maintained changelog (release-please,
 Keep a Changelog format) but users browsing the docs site never see it because
 it isn't in the nav. Release notes that require navigating away from the docs
 to the GitHub repo are functionally hidden from most readers.

@@ -17,7 +17,7 @@ Without structured templates the same failure modes repeat across the fleet:
 
 - Bug reports arrive as one-line descriptions with no stack, version, or
   reproduction steps; the maintainer has to ask for every detail individually.
-- PRs land without pre-commit passes, tests, or changelog fragments; CI catches
+- PRs land without pre-commit passes, tests, or conventional commit messages; CI catches
   some of this but the contributor never sees the checklist that would have
   prevented the round-trip.
 - New contributors (human and AI alike) guess at local setup, PR workflow, and
@@ -72,7 +72,7 @@ Every `CONTRIBUTING.md` must include:
 |---|---|
 | **Setup** | Clone command, install command (`uv sync`, `npm install`, etc.) — the 2–4 commands that produce a working dev environment. |
 | **Lint and test** | The exact commands CI runs (`pre-commit run --all-files`, `pytest`, language-specific type-checkers). |
-| **PR workflow** | Branch → pre-commit → push → PR → squash-merge flow. Mention the changelog-fragment requirement and the `skip-changelog` label. |
+| **PR workflow** | Branch → pre-commit → push → PR → squash-merge flow. Mention the conventional commit requirement. |
 | **Code rules** | A single sentence pointing to `AGENT.md` as the canonical rules source — never restate rules here. |
 
 **Failure mode prevented:** a `CONTRIBUTING.md` that restates code rules

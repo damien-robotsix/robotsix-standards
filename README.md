@@ -31,7 +31,7 @@ the default.
 | Doc | What it covers |
 |---|---|
 | [Repo baseline](docs/repo-baseline.md) | Distribution tiers, changelog/module hygiene, CI & security gates, license — language-agnostic. |
-| [Towncrier changelog](docs/towncrier.md) | Per-PR newsfragments in `changelog.d/`, `pyproject.toml` config, CI enforcement, and automated release compilation. *(Superseded by [release-please](docs/release-please.md).)* |
+| [Towncrier changelog (superseded)](docs/towncrier.md) | Historical reference: the prior towncrier-based changelog mechanism. Superseded by [release-please](docs/release-please.md) + conventional commits. |
 | [Free-tier only](docs/free-tier-only.md) | No paid services (LLM agent inference excepted): Actions on a free tier (public or self-hosted runner), public/self-hosted images, permissive licences. |
 | [Security posture](docs/security-posture.md) | Self-enforcing security gates (SAST, dependency review, Dependabot, workflow hardening, secret protection, SBOM), auditable per repo. |
 | [Secret files are never tracked](docs/secret-files-are-never-tracked.md) | The `.secrets-patterns-excluded` file that tells TruffleHog and detect-secrets which paths to skip — separate from `.gitignore`. |
@@ -40,8 +40,8 @@ the default.
 | [Stale bot must exempt pull requests](docs/stale-bot-must-exempt-pull-requests.md) | Every `stale.yml` must disable pull-request staling and closing with `days-before-pr-stale: -1` and `days-before-pr-close: -1` — keep issue hygiene, never auto-close PRs. |
 | [Dependabot auto-merge](docs/dependabot-auto-merge.md) | Dependabot auto-merge must be gated on required CI passing (not purely actor-gated), restricted to minor/patch updates, and must exclude docker and pre-commit ecosystems. |
 | [CI dependency management](docs/ci-dependency-standard.md) | Renovate over Dependabot for Python/uv lockfile updates, `uv lock --check` CI gate, scheduled refresh for git-pinned dependencies, and `--resolution lowest-direct` for minimum-dependency testing. |
-| [Changelog & releases](docs/changelog-driven-releases.md) | Towncrier fragment-driven releases, CI-enforced changelog fragments, and the shared auto-release workflow — no hand-edited changelog. *(Superseded by [release-please](docs/release-please.md).)* |
-| [Release-please release automation](docs/release-please.md) | Conventional-commit-driven release PRs, automated version bump, changelog generation, git tag, and GitHub Release — the fleet-wide replacement for towncrier. |
+| [Changelog & releases (superseded)](docs/changelog-driven-releases.md) | Historical reference: the prior towncrier fragment-driven release workflow. Superseded by [release-please](docs/release-please.md) + conventional commits. |
+| [Release-please release automation](docs/release-please.md) | Conventional-commit-driven release PRs, automated version bump, changelog generation, git tag, and GitHub Release — the fleet-wide release mechanism. |
 | [CI lint tool pinning](docs/ci-lint-pinning.md) | CI lint jobs must run the same version-pinned tools as `.pre-commit-config.yaml` — no floating/latest installs, one version source. |
 | [Distribution & Packaging](docs/distribution-packaging.md) | Git-based consumption of first-party libraries — no package index, no registry publish step. |
 | [Single-source versioning](docs/single-source-versioning.md) | One source of truth for the version string, read dynamically by the setuptools build backend — prevents `pyproject.toml` / `__init__.py` drift. |

@@ -75,38 +75,14 @@ copies, and repo AGENT.mds link rather than restate.
 
 ## Changelog & releases
 
-One mechanism, fleet-wide: **[towncrier](https://towncrier.readthedocs.io)
-newsfragments, compiled by the shared auto-release workflow.**
+One mechanism, fleet-wide: **conventional commits + release-please.**
 The full configuration standard lives in the dedicated
-[towncrier changelog](towncrier.md) page.
+[release-please](release-please.md) page.
 
-- **Every PR adds a newsfragment** in `changelog.d/` (`.breaking.md`,
-  `.feature.md`, `.bugfix.md`, `.misc.md`); CI enforces it via `towncrier
-  check --compare-with origin/<base>` (a `skip-changelog` PR label exempts
-  changes with nothing to record). Fragments are per-PR files, so parallel
-  PRs never conflict on the changelog.
-- **`CHANGELOG.md` is written only by the release workflow** — never by hand.
-  It stays in [Keep a Changelog](https://keepachangelog.com) form. The one
-  exception: a programmatic tool that fixes a bug in `CHANGELOG.md` itself
-  (e.g., an append/insert bug that would otherwise lose history) may write
-  to it directly, and only for that fix. The tool must not become a
-  general-purpose changelog writer — `changelog.d/` fragments remain the
-  single source of truth for content.
-- **Releases are automated.** The shared auto-release workflow (in
-  [robotsix-github-workflows](https://github.com/damien-robotsix/robotsix-github-workflows);
-  runs weekly plus on demand) does nothing when `changelog.d/` is empty;
-  otherwise it derives the bump from the fragment types (any `breaking` or
-  `feature` → minor, else patch), runs `towncrier build`, bumps the version in
-  `pyproject.toml`, commits, and tags `v0.X.Y`. For deployable components the
-  `v*` tag in turn publishes the `X.Y.Z` image tag (see
-  [Docker build & release](docker-standard.md)). The release workflow also
-  attaches a CycloneDX SBOM (`sbom.cyclonedx.json`) as a release asset,
-  optionally with a Sigstore attestation — see
-  [SBOM & vulnerability audit](security-posture.md#6-sbom-vulnerability-audit).
-- **Versions stay `0.x`** until a repo deliberately declares `1.0.0` — that is
-  a human statement about stability, never automated. Under semver 0.x there
-  is no compatibility promise, which matches the stack's pre-release,
-  clean-cutover stance.
+- **Commit subjects and PR titles must be conventional** (`feat:`/`fix:`/`chore:`/`docs:`/`refactor:`/`test:`/`ci:`). The commit type drives the semver bump and the changelog section. No fragment files, no CI gate, no `skip-changelog` label — the commit message is the changelog entry and the bump signal.
+- **`CHANGELOG.md` is written only by release-please** — never by hand. It stays in [Keep a Changelog](https://keepachangelog.com) form. The one exception: a programmatic tool that fixes a bug in `CHANGELOG.md` itself (e.g., an append/insert bug that would otherwise lose history) may write to it directly, and only for that fix.
+- **Releases are automated.** Release-please opens a release PR on every push to `main`, bumping the version and regenerating `CHANGELOG.md`. When the release PR is merged, it creates the git tag and GitHub Release. For deployable components the `v*` tag in turn publishes the `X.Y.Z` image tag (see [Docker build & release](docker-standard.md)). The release workflow also attaches a CycloneDX SBOM (`sbom.cyclonedx.json`) as a release asset, optionally with a Sigstore attestation — see [SBOM & vulnerability audit](security-posture.md#6-sbom-vulnerability-audit).
+- **Versions stay `0.x`** until a repo deliberately declares `1.0.0` — that is a human statement about stability, never automated. Under semver 0.x there is no compatibility promise, which matches the stack's pre-release, clean-cutover stance.
 
 ## Repo hygiene
 
@@ -369,7 +345,7 @@ transient, not a standing exemption.
 New repos start from the language's template repository —
 **`robotsix-template-python`** (a GitHub template) carries the full baseline
 pre-assembled: pyproject skeleton, `dependabot.yml`, the standard pre-commit
-set, shared-workflow callers, towncrier config, `AGENT.md` skeleton,
+set, shared-workflow callers, `AGENT.md` skeleton,
 `docs/modules.yaml`, LICENSE — plus a component overlay (Dockerfile, the two
 composes, `config/` scaffolding) for deployable services. The template is a
 fleet member like any other: the baseline-check gates it, dependabot bumps

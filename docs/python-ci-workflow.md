@@ -150,8 +150,8 @@ written is lint-clean, type-safe, and passes its tests.  It does not:
 - **Run integration tests against a live deployment.**  `ci.yml` runs the
   unit/functional test suite; integration tests that require a running service
   belong in a separate workflow triggered on deployment events.
-- **Auto-release or changelog compilation.**  That is the changelog-driven
-  release workflow ([changelog & releases](changelog-driven-releases.md)).
+- **Auto-release or changelog compilation.**  That is the release-please
+  release workflow ([release-please](release-please.md)).
 
 ## Failure modes prevented
 

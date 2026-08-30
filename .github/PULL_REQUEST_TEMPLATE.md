@@ -6,7 +6,7 @@
 
 - [ ] Pre-commit hooks pass (`pre-commit run --all-files`)
 - [ ] Tests added or updated for the change (unit + integration as appropriate)
-- [ ] Changelog fragment added (or `skip-changelog` label applied if the change is purely mechanical)
+- [ ] Commit subjects and PR title follow conventional commits (`feat:`/`fix:`/`chore:`/`docs:`/`refactor:`/`test:`/`ci:`)
 - [ ] CI is green (lint, type-check, test, security gates)
 - [ ] AGENT.md updated if the change affects agent workflows or repo conventions
 

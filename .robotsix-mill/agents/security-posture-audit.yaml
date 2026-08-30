@@ -80,7 +80,7 @@ system_prompt: |
     robotsix-mill agents). The mill and workflows are separate repos;
     standards define the requirement, they implement it.
   - Repo hygiene rules that are not security-related (changelog format,
-    README skeleton, towncrier).
+    README skeleton, release-please).
 
   ## How to inspect
 

@@ -3,9 +3,9 @@
 > **Scope: every robotsix repository** — libraries and deployable components
 > alike. This page prescribes
 > [release-please](https://github.com/googleapis/release-please) as the
-> fleet-wide release-automation tool — replacing the previous towncrier-based
-> workflow documented in [changelog & releases](changelog-driven-releases.md)
-> and [towncrier](towncrier.md).
+> fleet-wide release mechanism. The previous towncrier-based workflow
+> documented in [changelog & releases](changelog-driven-releases.md)
+> and [towncrier](towncrier.md) is fully superseded — kept as historical reference only.
 
 Release-please owns the entire release pipeline: it reads the static version
 from `pyproject.toml`, opens a release PR that bumps the version and generates
@@ -21,7 +21,7 @@ that ran weekly to classify fragments, bump the version, compile the changelog,
 and push a tag. This worked but added friction: every PR needed a fragment file
 with the right extension, the CI gate blocked PRs that forgot one, and the
 release workflow was a separate scheduled job whose output (tag, changelog,
-version bump) was opaque until it ran.
+version bump) was opaque until it ran. The fleet has fully migrated away from this workflow.
 
 Release-please replaces this with **conventional commits** — the commit message
 itself is the changelog entry and the bump signal. No fragment files, no

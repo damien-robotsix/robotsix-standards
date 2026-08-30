@@ -24,9 +24,7 @@ everywhere.
 
 - **[Repo baseline](repo-baseline.md)** — distribution tiers, changelog and
   module-registration hygiene, CI and security gates, licensing.
-- **[Towncrier changelog](towncrier.md)** — per-PR newsfragments in
-  `changelog.d/`, `pyproject.toml` config, CI enforcement, and automated
-  release compilation — the fleet-wide changelog tool.
+- **[Towncrier changelog (superseded)](towncrier.md)** — historical reference: the prior towncrier-based changelog mechanism. Superseded by [release-please](release-please.md) + conventional commits.
 - **[Free-tier only](free-tier-only.md)** — no paid services (LLM agent
   inference excepted): free-tier CI (public repo or self-hosted runner),
   public/self-hosted container images, permissive licences only.
@@ -54,14 +52,13 @@ everywhere.
   to automated Python/uv dependency updates via Renovate, lockfile integrity
   checks (`uv lock --check`), scheduled refresh for git-pinned dependencies,
   and `--resolution lowest-direct` for minimum-dependency testing.
-- **[Changelog & releases](changelog-driven-releases.md)** — towncrier fragment-driven
-  releases, CI-enforced changelog fragments, and the shared auto-release
-  workflow — no hand-edited changelog. *(Superseded by
-  [release-please](release-please.md).)*
+- **[Changelog & releases (superseded)](changelog-driven-releases.md)** — historical
+  reference: the prior towncrier fragment-driven release workflow. Superseded by
+  [release-please](release-please.md) + conventional commits.
 - **[Release-please release automation](release-please.md)** — conventional-commit-driven
   release PRs, automated version bump, changelog generation, git tag, and
   GitHub Release via `googleapis/release-please-action` — the fleet-wide
-  release-automation tool replacing towncrier.
+  release mechanism.
 - **[CI lint tool pinning](ci-lint-pinning.md)** — CI lint jobs must run the same
   version-pinned tools as `.pre-commit-config.yaml`, not floating/latest
   sources — one version source, no skew.

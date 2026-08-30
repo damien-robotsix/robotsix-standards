@@ -3,10 +3,10 @@
 # Exclude the build-time copy of CHANGELOG.md produced by docs/hooks.py.
 # Root CHANGELOG.md is already outside the lint glob ('docs/**/*.md' README.md);
 # linting the copied duplicate adds no signal and is the vector for
-# release-time failures when towncrier rebuilds displace the disable guard.
+# release-time failures when the changelog is rebuilt.
 ignores:
   - docs/CHANGELOG.md
-  - changelog.d/
+
 
 config:
   MD013:

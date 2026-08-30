@@ -25,10 +25,10 @@ Measured on the fleet in August 2026, before this rule existed:
 | robotsix-agent-comm | — | 43 unclassified, 32 of them scaffolding |
 
 So most of a taxonomy described something other than modules. And because
-towncrier writes **one fragment file per pull request**, every changelog entry
+the prior towncrier workflow wrote **one fragment file per pull request**, every changelog entry
 became a taxonomy edit — which is how *"register this fragment in
 `docs/modules.yaml`"* became a recurring ticket class. One such ticket sat
-blocked for a week; its branch proposed **199** explicit fragment entries.
+blocked for a week; its branch proposed **199** explicit fragment entries. The fleet has since moved to release-please + conventional commits, eliminating fragment files entirely.
 
 ## Rules
 
@@ -47,7 +47,7 @@ almost nothing else is.
 | `docs/*.md` prose | `pyproject.toml`, `uv.lock`, `package.json` |
 | runtime assets (templates, static CSS/JS) | `Dockerfile`, `docker-compose*.yml`, `Makefile` |
 | | linter/formatter config, `mkdocs.yml`, `codecov.yml` |
-| | `changelog.d/**`, `CHANGELOG.md`, `LICENSE`, `README.md` |
+| | `CHANGELOG.md`, `LICENSE`, `README.md` |
 
 **Rationale:** The dividing line is *purpose*, not file type. `.markdownlint.json`
 is not a logical module: it has no dependencies on other modules, and nothing
@@ -64,8 +64,7 @@ entry that must be maintained and tells no reader anything.
 
 **Rule:** `robotsix-modules` ships `DEFAULT_EXCLUDED_PATHS` covering the exempt
 column above. Repos must **not** add module `paths` entries for those files, and
-must not work around the check with a catch-all glob such as
-`changelog.d/*.md`.
+must not work around the check with a catch-all glob.
 
 **Rationale:** Before the defaults existed, every repo independently invented
 the same glob workaround. A workaround repeated in seven repos is a missing

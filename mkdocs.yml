@@ -103,7 +103,7 @@ nav:
       - py.typed wheel guard: py-typed-wheel-guard.md
       - Docstring convention: docstrings.md
       - HTTP client persistence: http-client-persistence.md
-      - SSRF-hardened httpx fetchers: ssrf-hardened-fetchers.md
+      - SSRF-hardened httpx fetchers (URL-fetching tools only): ssrf-hardened-fetchers.md
       - Issue and PR templates: issue-pr-templates.md
       - Library internal logging: library-logging.md
       - Logging: logging.md

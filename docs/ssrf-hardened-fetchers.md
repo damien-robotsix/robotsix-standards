@@ -130,6 +130,31 @@ check.
   loopback target past an IPv4-only string check; unwrapping the mapped
   address and re-checking it closes that hole.
 
+## How this is enforced
+
+Enforcement is by code review and the periodic standards-audit agent; there is
+no standalone machine check, because "the address validated is the address
+connected to" is a property of the transport wiring, not a grep-able string.
+An auditor (human or agent) applies these criteria to every tool that fetches
+an attacker-influenced URL:
+
+- **Connection-layer validation.** The fetcher's `httpx` client is wired to a
+  guarded pool — an `httpcore.AsyncConnectionPool` subclass (e.g.
+  `SSRFGuardPool`) that overrides `_resolve_host` to reject private, loopback,
+  link-local, multicast, unspecified, reserved, and IPv4-mapped addresses — or
+  an equivalent connection-layer control. A tool that only performs a
+  pre-flight `getaddrinfo`/`socket` check before an unguarded transport fails
+  this criterion.
+- **Redirect re-validation.** Redirect hops are re-validated: either the
+  guarded pool handles every hop (so `_resolve_host` runs on each redirect
+  target), or the tool sets `follow_redirects=False` and re-runs the
+  connection-layer check on each hop explicitly. A tool that combines
+  `follow_redirects=True` with an unguarded transport fails this criterion.
+
+New outbound-fetch tools MUST route through the shared
+`robotsix_chat/common/http_fetch.py` helper (or reproduce its guarded pool);
+reviewers reject a fetcher that opens its own unguarded client.
+
 ## Reference
 
 - OWASP — [Server-Side Request Forgery Prevention Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/Server_Side_Request_Forgery_Prevention_Cheat_Sheet.html).

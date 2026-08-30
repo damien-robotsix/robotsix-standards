@@ -193,3 +193,10 @@ app = FastAPI(lifespan=lifespan)
   amplify a transient backend overload into a sustained outage — the retries
   add load to an already-struggling service. Caller-side retry decisions
   keep the blast radius small.
+
+## SSRF hardening for URL-fetching tools
+
+For tools that fetch attacker-supplied URLs, the additional SSRF-hardening
+requirements in [SSRF-hardened httpx fetchers](ssrf-hardened-fetchers.md) are
+also mandatory. Timeouts and connection reuse alone do not prevent a fetcher
+from being pointed at internal or cloud-metadata endpoints.

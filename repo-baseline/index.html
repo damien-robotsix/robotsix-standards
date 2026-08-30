@@ -3046,38 +3046,31 @@ language conventions live <strong>only</strong> on these pages — agent systems
 implement/refine/review agents) point here rather than carrying their own
 copies, and repo AGENT.mds link rather than restate.</p>
 <h2 id="changelog-releases">Changelog &amp; releases<a class="headerlink" href="#changelog-releases" title="Permanent link">&para;</a></h2>
-<p>One mechanism, fleet-wide: <strong><a href="https://towncrier.readthedocs.io">towncrier</a>
-newsfragments, compiled by the shared auto-release workflow.</strong>
+<p>One mechanism, fleet-wide: <strong>conventional commits + release-please.</strong>
 The full configuration standard lives in the dedicated
-<a href="../towncrier/">towncrier changelog</a> page.</p>
+<a href="../release-please/">release-please</a> page.</p>
 <ul>
-<li><strong>Every PR adds a newsfragment</strong> in <code>changelog.d/</code> (<code>.breaking.md</code>,
-  <code>.feature.md</code>, <code>.bugfix.md</code>, <code>.misc.md</code>); CI enforces it via <code>towncrier
-  check --compare-with origin/&lt;base&gt;</code> (a <code>skip-changelog</code> PR label exempts
-  changes with nothing to record). Fragments are per-PR files, so parallel
-  PRs never conflict on the changelog.</li>
-<li><strong><code>CHANGELOG.md</code> is written only by the release workflow</strong> — never by hand.
-  It stays in <a href="https://keepachangelog.com">Keep a Changelog</a> form. The one
-  exception: a programmatic tool that fixes a bug in <code>CHANGELOG.md</code> itself
-  (e.g., an append/insert bug that would otherwise lose history) may write
-  to it directly, and only for that fix. The tool must not become a
-  general-purpose changelog writer — <code>changelog.d/</code> fragments remain the
-  single source of truth for content.</li>
-<li><strong>Releases are automated.</strong> The shared auto-release workflow (in
-  <a href="https://github.com/damien-robotsix/robotsix-github-workflows">robotsix-github-workflows</a>;
-  runs weekly plus on demand) does nothing when <code>changelog.d/</code> is empty;
-  otherwise it derives the bump from the fragment types (any <code>breaking</code> or
-  <code>feature</code> → minor, else patch), runs <code>towncrier build</code>, bumps the version in
-  <code>pyproject.toml</code>, commits, and tags <code>v0.X.Y</code>. For deployable components the
-  <code>v*</code> tag in turn publishes the <code>X.Y.Z</code> image tag (see
-  <a href="../docker-standard/">Docker build &amp; release</a>). The release workflow also
-  attaches a CycloneDX SBOM (<code>sbom.cyclonedx.json</code>) as a release asset,
-  optionally with a Sigstore attestation — see
+<li><strong>Commit subjects and PR titles must be conventional</strong>
+  (<code>feat:</code>/<code>fix:</code>/<code>chore:</code>/<code>docs:</code>/<code>refactor:</code>/<code>test:</code>/<code>ci:</code>). The commit type drives
+  the semver bump and the changelog section. No fragment files, no CI gate, no
+  <code>skip-changelog</code> label — the commit message is the changelog entry and the bump
+  signal.</li>
+<li><strong><code>CHANGELOG.md</code> is written only by release-please</strong> — never by hand. It stays in
+  <a href="https://keepachangelog.com">Keep a Changelog</a> form. The one exception: a
+  programmatic tool that fixes a bug in <code>CHANGELOG.md</code> itself (e.g., an append/insert
+  bug that would otherwise lose history) may write to it directly, and only for that
+  fix.</li>
+<li><strong>Releases are automated.</strong> Release-please opens a release PR on every push to
+  <code>main</code>, bumping the version and regenerating <code>CHANGELOG.md</code>. When the release PR is
+  merged, it creates the git tag and GitHub Release. For deployable components the
+  <code>v*</code> tag in turn publishes the <code>X.Y.Z</code> image tag
+  (see <a href="../docker-standard/">Docker build &amp; release</a>). The release workflow also
+  attaches a CycloneDX SBOM (<code>sbom.cyclonedx.json</code>) as a release asset, optionally
+  with a Sigstore attestation — see
   <a href="../security-posture/#6-sbom-vulnerability-audit">SBOM &amp; vulnerability audit</a>.</li>
-<li><strong>Versions stay <code>0.x</code></strong> until a repo deliberately declares <code>1.0.0</code> — that is
-  a human statement about stability, never automated. Under semver 0.x there
-  is no compatibility promise, which matches the stack's pre-release,
-  clean-cutover stance.</li>
+<li><strong>Versions stay <code>0.x</code></strong> until a repo deliberately declares <code>1.0.0</code> — that is a human
+  statement about stability, never automated. Under semver 0.x there is no
+  compatibility promise, which matches the stack's pre-release, clean-cutover stance.</li>
 </ul>
 <h2 id="repo-hygiene">Repo hygiene<a class="headerlink" href="#repo-hygiene" title="Permanent link">&para;</a></h2>
 <ul>
@@ -3323,7 +3316,7 @@ transient, not a standing exemption.</p>
 <p>New repos start from the language's template repository —
 <strong><code>robotsix-template-python</code></strong> (a GitHub template) carries the full baseline
 pre-assembled: pyproject skeleton, <code>dependabot.yml</code>, the standard pre-commit
-set, shared-workflow callers, towncrier config, <code>AGENT.md</code> skeleton,
+set, shared-workflow callers, <code>AGENT.md</code> skeleton,
 <code>docs/modules.yaml</code>, LICENSE — plus a component overlay (Dockerfile, the two
 composes, <code>config/</code> scaffolding) for deployable services. The template is a
 fleet member like any other: the baseline-check gates it, dependabot bumps

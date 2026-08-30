@@ -2847,9 +2847,7 @@ everywhere.</p>
 <ul>
 <li><strong><a href="repo-baseline/">Repo baseline</a></strong> — distribution tiers, changelog and
   module-registration hygiene, CI and security gates, licensing.</li>
-<li><strong><a href="towncrier/">Towncrier changelog</a></strong> — per-PR newsfragments in
-  <code>changelog.d/</code>, <code>pyproject.toml</code> config, CI enforcement, and automated
-  release compilation — the fleet-wide changelog tool.</li>
+<li><strong><a href="towncrier/">Towncrier changelog (superseded)</a></strong> — historical reference: the prior towncrier-based changelog mechanism. Superseded by <a href="release-please/">release-please</a> + conventional commits.</li>
 <li><strong><a href="free-tier-only/">Free-tier only</a></strong> — no paid services (LLM agent
   inference excepted): free-tier CI (public repo or self-hosted runner),
   public/self-hosted container images, permissive licences only.</li>
@@ -2877,14 +2875,13 @@ everywhere.</p>
   to automated Python/uv dependency updates via Renovate, lockfile integrity
   checks (<code>uv lock --check</code>), scheduled refresh for git-pinned dependencies,
   and <code>--resolution lowest-direct</code> for minimum-dependency testing.</li>
-<li><strong><a href="changelog-driven-releases/">Changelog &amp; releases</a></strong> — towncrier fragment-driven
-  releases, CI-enforced changelog fragments, and the shared auto-release
-  workflow — no hand-edited changelog. <em>(Superseded by
-  <a href="release-please/">release-please</a>.)</em></li>
+<li><strong><a href="changelog-driven-releases/">Changelog &amp; releases (superseded)</a></strong> — historical
+  reference: the prior towncrier fragment-driven release workflow. Superseded by
+  <a href="release-please/">release-please</a> + conventional commits.</li>
 <li><strong><a href="release-please/">Release-please release automation</a></strong> — conventional-commit-driven
   release PRs, automated version bump, changelog generation, git tag, and
   GitHub Release via <code>googleapis/release-please-action</code> — the fleet-wide
-  release-automation tool replacing towncrier.</li>
+  release mechanism.</li>
 <li><strong><a href="ci-lint-pinning/">CI lint tool pinning</a></strong> — CI lint jobs must run the same
   version-pinned tools as <code>.pre-commit-config.yaml</code>, not floating/latest
   sources — one version source, no skew.</li>

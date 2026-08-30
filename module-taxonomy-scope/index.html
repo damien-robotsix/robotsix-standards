@@ -2802,10 +2802,10 @@ anyway, purely to satisfy a completeness count.</p>
 </tbody>
 </table>
 <p>So most of a taxonomy described something other than modules. And because
-towncrier writes <strong>one fragment file per pull request</strong>, every changelog entry
+the prior towncrier workflow wrote <strong>one fragment file per pull request</strong>, every changelog entry
 became a taxonomy edit — which is how <em>"register this fragment in
 <code>docs/modules.yaml</code>"</em> became a recurring ticket class. One such ticket sat
-blocked for a week; its branch proposed <strong>199</strong> explicit fragment entries.</p>
+blocked for a week; its branch proposed <strong>199</strong> explicit fragment entries. The fleet has since moved to release-please + conventional commits, eliminating fragment files entirely.</p>
 <h2 id="rules">Rules<a class="headerlink" href="#rules" title="Permanent link">&para;</a></h2>
 <h3 id="1-the-taxonomy-covers-product-code-not-repo-operation">1. The taxonomy covers product code, not repo operation<a class="headerlink" href="#1-the-taxonomy-covers-product-code-not-repo-operation" title="Permanent link">&para;</a></h3>
 <p><strong>Rule:</strong> A file belongs in the taxonomy when it describes <strong>what the software
@@ -2839,7 +2839,7 @@ almost nothing else is.</p>
 </tr>
 <tr>
 <td></td>
-<td><code>changelog.d/**</code>, <code>CHANGELOG.md</code>, <code>LICENSE</code>, <code>README.md</code></td>
+<td><code>CHANGELOG.md</code>, <code>LICENSE</code>, <code>README.md</code></td>
 </tr>
 </tbody>
 </table>
@@ -2857,8 +2857,7 @@ about the software.</p>
 <h3 id="2-exemption-is-the-tools-default-do-not-re-claim-scaffolding">2. Exemption is the tool's default — do not re-claim scaffolding<a class="headerlink" href="#2-exemption-is-the-tools-default-do-not-re-claim-scaffolding" title="Permanent link">&para;</a></h3>
 <p><strong>Rule:</strong> <code>robotsix-modules</code> ships <code>DEFAULT_EXCLUDED_PATHS</code> covering the exempt
 column above. Repos must <strong>not</strong> add module <code>paths</code> entries for those files, and
-must not work around the check with a catch-all glob such as
-<code>changelog.d/*.md</code>.</p>
+must not work around the check with a catch-all glob.</p>
 <p><strong>Rationale:</strong> Before the defaults existed, every repo independently invented
 the same glob workaround. A workaround repeated in seven repos is a missing
 feature, and muting the check per-repo hides the same category error in a

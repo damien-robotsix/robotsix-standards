@@ -686,3 +686,4 @@ optional — components with no chat-operable surface skip it. Full detail:
 - [Integrating a service](integrating-a-service.md) — the end-to-end how-to.
 - [Chat access standard](chat-access-standard.md) — the opt-in skill endpoint + label.
 - [HTTP security response headers](http-security-headers.md) — the shared `SecureASGIMiddleware` every HTTP-serving component registers.
+- [SSE response headers](sse-response-headers.md) — the three proxy-safety headers every `text/event-stream` response carries, via one shared helper.

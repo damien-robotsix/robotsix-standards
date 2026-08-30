@@ -13,7 +13,11 @@ proxy-safety headers: `Cache-Control: no-cache`, `Connection: keep-alive`, and
 uses when it needs a manual heartbeat plus a `request.is_disconnected()` loop —
 silently loses these headers unless they are added explicitly, and the first
 symptom is usually production-only: events accumulating in a reverse proxy's
-buffer while clients wait.
+buffer while clients wait. A missing or misconfigured proxy-safety header on a
+streaming response is a
+[Security Misconfiguration (OWASP Top 10 A05:2021)](https://owasp.org/Top10/A05_2021-Security_Misconfiguration/);
+the `Cache-Control` and `Connection` header semantics this standard relies on
+are defined by [RFC 9110 — HTTP Semantics](https://www.rfc-editor.org/rfc/rfc9110).
 
 ## The rule
 
@@ -70,6 +74,27 @@ this standard. What the standard forbids is a hand-rolled
 `StreamingResponse` that goes out with the default header set: the three
 headers are added at the response boundary (the `sse_response` factory), not
 inside the generator.
+
+## How this is enforced
+
+This standard governs downstream deployable components, not this repo, so there
+is no CI gate here that can inspect a component's SSE endpoints. Enforcement is
+by **audit** — checked at component code review and by the periodic
+standards-audit agent — against the criteria below. Each criterion maps to one
+of the three rules and is verifiable by reading the component's response module:
+`grep` for `text/event-stream` and `StreamingResponse` surfaces every SSE
+response the component emits.
+
+| Rule | Audit criterion |
+|---|---|
+| 1. Three headers on every stream | Every `text/event-stream` response carries `Cache-Control` (`no-cache` or the stronger `no-store`), `Connection: keep-alive`, and `X-Accel-Buffering: no`. A hand-rolled `StreamingResponse(media_type="text/event-stream")` that goes out with the default header set is a violation. |
+| 2. One shared helper | The header set is defined once — a single `sse_response(...)` factory or `sse-starlette`'s `EventSourceResponse` — and every SSE endpoint routes through it. A `grep` for `text/event-stream` that returns more than one header-setting site (each with its own literal header dict) is a violation. |
+| 3. Hand-rolled loops set headers explicitly | Where a component hand-rolls the streaming loop (manual heartbeat plus `request.is_disconnected()`), the three headers are added at the response boundary — the `sse_response` factory — not omitted because the loop is custom. |
+
+A component that emits `text/event-stream` responses and fails any criterion is
+non-compliant; the fix is always the same — route every SSE response through the
+single shared helper (or `EventSourceResponse`) so the correct header set is the
+default for every endpoint.
 
 ## Failure modes this prevents
 

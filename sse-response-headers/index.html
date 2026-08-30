@@ -2275,6 +2275,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#how-this-is-enforced" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How this is enforced
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#failure-modes-this-prevents" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2667,6 +2678,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#how-this-is-enforced" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How this is enforced
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#failure-modes-this-prevents" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2712,7 +2734,11 @@ proxy-safety headers: <code>Cache-Control: no-cache</code>, <code>Connection: ke
 uses when it needs a manual heartbeat plus a <code>request.is_disconnected()</code> loop —
 silently loses these headers unless they are added explicitly, and the first
 symptom is usually production-only: events accumulating in a reverse proxy's
-buffer while clients wait.</p>
+buffer while clients wait. A missing or misconfigured proxy-safety header on a
+streaming response is a
+<a href="https://owasp.org/Top10/A05_2021-Security_Misconfiguration/">Security Misconfiguration (OWASP Top 10 A05:2021)</a>;
+the <code>Cache-Control</code> and <code>Connection</code> header semantics this standard relies on
+are defined by <a href="https://www.rfc-editor.org/rfc/rfc9110">RFC 9110 — HTTP Semantics</a>.</p>
 <h2 id="the-rule">The rule<a class="headerlink" href="#the-rule" title="Permanent link">&para;</a></h2>
 <h3 id="1-every-textevent-stream-response-carries-the-three-headers">1. Every <code>text/event-stream</code> response carries the three headers<a class="headerlink" href="#1-every-textevent-stream-response-carries-the-three-headers" title="Permanent link">&para;</a></h3>
 <table>
@@ -2779,6 +2805,40 @@ this standard. What the standard forbids is a hand-rolled
 <code>StreamingResponse</code> that goes out with the default header set: the three
 headers are added at the response boundary (the <code>sse_response</code> factory), not
 inside the generator.</p>
+<h2 id="how-this-is-enforced">How this is enforced<a class="headerlink" href="#how-this-is-enforced" title="Permanent link">&para;</a></h2>
+<p>This standard governs downstream deployable components, not this repo, so there
+is no CI gate here that can inspect a component's SSE endpoints. Enforcement is
+by <strong>audit</strong> — checked at component code review and by the periodic
+standards-audit agent — against the criteria below. Each criterion maps to one
+of the three rules and is verifiable by reading the component's response module:
+<code>grep</code> for <code>text/event-stream</code> and <code>StreamingResponse</code> surfaces every SSE
+response the component emits.</p>
+<table>
+<thead>
+<tr>
+<th>Rule</th>
+<th>Audit criterion</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1. Three headers on every stream</td>
+<td>Every <code>text/event-stream</code> response carries <code>Cache-Control</code> (<code>no-cache</code> or the stronger <code>no-store</code>), <code>Connection: keep-alive</code>, and <code>X-Accel-Buffering: no</code>. A hand-rolled <code>StreamingResponse(media_type="text/event-stream")</code> that goes out with the default header set is a violation.</td>
+</tr>
+<tr>
+<td>2. One shared helper</td>
+<td>The header set is defined once — a single <code>sse_response(...)</code> factory or <code>sse-starlette</code>'s <code>EventSourceResponse</code> — and every SSE endpoint routes through it. A <code>grep</code> for <code>text/event-stream</code> that returns more than one header-setting site (each with its own literal header dict) is a violation.</td>
+</tr>
+<tr>
+<td>3. Hand-rolled loops set headers explicitly</td>
+<td>Where a component hand-rolls the streaming loop (manual heartbeat plus <code>request.is_disconnected()</code>), the three headers are added at the response boundary — the <code>sse_response</code> factory — not omitted because the loop is custom.</td>
+</tr>
+</tbody>
+</table>
+<p>A component that emits <code>text/event-stream</code> responses and fails any criterion is
+non-compliant; the fix is always the same — route every SSE response through the
+single shared helper (or <code>EventSourceResponse</code>) so the correct header set is the
+default for every endpoint.</p>
 <h2 id="failure-modes-this-prevents">Failure modes this prevents<a class="headerlink" href="#failure-modes-this-prevents" title="Permanent link">&para;</a></h2>
 <ul>
 <li><strong>Proxy-buffering stalls.</strong> nginx buffers responses by default. Without

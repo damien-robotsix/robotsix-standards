@@ -1322,6 +1322,17 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#ssrf-hardening-for-url-fetching-tools" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        SSRF hardening for URL-fetching tools
+      
+    </span>
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -1345,7 +1356,7 @@
   <span class="md-ellipsis">
     
   
-    SSRF-hardened httpx fetchers
+    SSRF-hardened httpx fetchers (URL-fetching tools only)
   
 
     
@@ -2721,6 +2732,17 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#ssrf-hardening-for-url-fetching-tools" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        SSRF hardening for URL-fetching tools
+      
+    </span>
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -2906,6 +2928,11 @@ client per request, defeating connection pooling.</p>
   add load to an already-struggling service. Caller-side retry decisions
   keep the blast radius small.</li>
 </ul>
+<h2 id="ssrf-hardening-for-url-fetching-tools">SSRF hardening for URL-fetching tools<a class="headerlink" href="#ssrf-hardening-for-url-fetching-tools" title="Permanent link">&para;</a></h2>
+<p>For tools that fetch attacker-supplied URLs, the additional SSRF-hardening
+requirements in <a href="../ssrf-hardened-fetchers/">SSRF-hardened httpx fetchers</a> are
+also mandatory. Timeouts and connection reuse alone do not prevent a fetcher
+from being pointed at internal or cloud-metadata endpoints.</p>
 
 
 

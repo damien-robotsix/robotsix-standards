@@ -27,7 +27,7 @@
     
     
       
-        <title>SSRF-hardened httpx fetchers - Robotsix Standards</title>
+        <title>SSRF-hardened httpx fetchers (URL-fetching tools only) - Robotsix Standards</title>
       
     
     
@@ -114,7 +114,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              SSRF-hardened httpx fetchers
+              SSRF-hardened httpx fetchers (URL-fetching tools only)
             
           </span>
         </div>
@@ -1224,7 +1224,7 @@
   <span class="md-ellipsis">
     
   
-    SSRF-hardened httpx fetchers
+    SSRF-hardened httpx fetchers (URL-fetching tools only)
   
 
     
@@ -1242,7 +1242,7 @@
   <span class="md-ellipsis">
     
   
-    SSRF-hardened httpx fetchers
+    SSRF-hardened httpx fetchers (URL-fetching tools only)
   
 
     
@@ -1322,6 +1322,17 @@
     <span class="md-ellipsis">
       
         Failure modes this prevents
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#how-this-is-enforced" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How this is enforced
       
     </span>
   </a>
@@ -2689,6 +2700,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#how-this-is-enforced" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How this is enforced
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#reference" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2837,6 +2859,29 @@ check.</p>
   loopback target past an IPv4-only string check; unwrapping the mapped
   address and re-checking it closes that hole.</li>
 </ul>
+<h2 id="how-this-is-enforced">How this is enforced<a class="headerlink" href="#how-this-is-enforced" title="Permanent link">&para;</a></h2>
+<p>Enforcement is by code review and the periodic standards-audit agent; there is
+no standalone machine check, because "the address validated is the address
+connected to" is a property of the transport wiring, not a grep-able string.
+An auditor (human or agent) applies these criteria to every tool that fetches
+an attacker-influenced URL:</p>
+<ul>
+<li><strong>Connection-layer validation.</strong> The fetcher's <code>httpx</code> client is wired to a
+  guarded pool — an <code>httpcore.AsyncConnectionPool</code> subclass (e.g.
+  <code>SSRFGuardPool</code>) that overrides <code>_resolve_host</code> to reject private, loopback,
+  link-local, multicast, unspecified, reserved, and IPv4-mapped addresses — or
+  an equivalent connection-layer control. A tool that only performs a
+  pre-flight <code>getaddrinfo</code>/<code>socket</code> check before an unguarded transport fails
+  this criterion.</li>
+<li><strong>Redirect re-validation.</strong> Redirect hops are re-validated: either the
+  guarded pool handles every hop (so <code>_resolve_host</code> runs on each redirect
+  target), or the tool sets <code>follow_redirects=False</code> and re-runs the
+  connection-layer check on each hop explicitly. A tool that combines
+  <code>follow_redirects=True</code> with an unguarded transport fails this criterion.</li>
+</ul>
+<p>New outbound-fetch tools MUST route through the shared
+<code>robotsix_chat/common/http_fetch.py</code> helper (or reproduce its guarded pool);
+reviewers reject a fetcher that opens its own unguarded client.</p>
 <h2 id="reference">Reference<a class="headerlink" href="#reference" title="Permanent link">&para;</a></h2>
 <ul>
 <li>OWASP — <a href="https://cheatsheetseries.owasp.org/cheatsheets/Server_Side_Request_Forgery_Prevention_Cheat_Sheet.html">Server-Side Request Forgery Prevention Cheat Sheet</a>.</li>

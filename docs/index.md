@@ -287,4 +287,3 @@ This repo carries its own [mill agents](mill-agents.md) — bespoke periodic
 passes that keep the standards themselves healthy. The security-posture-audit
 agent checks the security pages for completeness, consistency, currency, and
 enforceability, filing draft tickets for gaps it finds.
-ng draft tickets for gaps it finds.

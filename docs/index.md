@@ -52,7 +52,9 @@ everywhere.
   to automated Python/uv dependency updates via Renovate, lockfile integrity
   checks (`uv lock --check`), scheduled refresh for git-pinned dependencies,
   and `--resolution lowest-direct` for minimum-dependency testing.
-- **[Changelog & releases (superseded)](changelog-driven-releases.md)** — historical reference: the prior towncrier fragment-driven release workflow. Superseded by [release-please](release-please.md) + conventional commits.
+- **[Changelog & releases (superseded)](changelog-driven-releases.md)** — historical
+  reference: the prior towncrier fragment-driven release workflow. Superseded by
+  [release-please](release-please.md) + conventional commits.
 - **[Release-please release automation](release-please.md)** — conventional-commit-driven
   release PRs, automated version bump, changelog generation, git tag, and
   GitHub Release via `googleapis/release-please-action` — the fleet-wide

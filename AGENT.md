@@ -75,4 +75,6 @@ from the README, and the three lists drift apart when the row is added later
 or not at all.
 
 **Rule:** Commit subjects and PR titles must be conventional (`feat:`/`fix:`/`chore:`/`docs:`/`refactor:`/`test:`/`ci:`); release-please generates `CHANGELOG.md` from them.
-**Rationale:** the fleet uses release-please + conventional commits as the sole changelog mechanism — towncrier fragments were removed as a redundant second layer that caused recurring CI red and wasted agent turns.
+**Rationale:** the fleet uses release-please + conventional commits as the sole
+changelog mechanism — towncrier fragments were removed as a redundant second layer
+that caused recurring CI red and wasted agent turns.

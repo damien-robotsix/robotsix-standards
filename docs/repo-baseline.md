@@ -79,10 +79,27 @@ One mechanism, fleet-wide: **conventional commits + release-please.**
 The full configuration standard lives in the dedicated
 [release-please](release-please.md) page.
 
-- **Commit subjects and PR titles must be conventional** (`feat:`/`fix:`/`chore:`/`docs:`/`refactor:`/`test:`/`ci:`). The commit type drives the semver bump and the changelog section. No fragment files, no CI gate, no `skip-changelog` label — the commit message is the changelog entry and the bump signal.
-- **`CHANGELOG.md` is written only by release-please** — never by hand. It stays in [Keep a Changelog](https://keepachangelog.com) form. The one exception: a programmatic tool that fixes a bug in `CHANGELOG.md` itself (e.g., an append/insert bug that would otherwise lose history) may write to it directly, and only for that fix.
-- **Releases are automated.** Release-please opens a release PR on every push to `main`, bumping the version and regenerating `CHANGELOG.md`. When the release PR is merged, it creates the git tag and GitHub Release. For deployable components the `v*` tag in turn publishes the `X.Y.Z` image tag (see [Docker build & release](docker-standard.md)). The release workflow also attaches a CycloneDX SBOM (`sbom.cyclonedx.json`) as a release asset, optionally with a Sigstore attestation — see [SBOM & vulnerability audit](security-posture.md#6-sbom-vulnerability-audit).
-- **Versions stay `0.x`** until a repo deliberately declares `1.0.0` — that is a human statement about stability, never automated. Under semver 0.x there is no compatibility promise, which matches the stack's pre-release, clean-cutover stance.
+- **Commit subjects and PR titles must be conventional**
+  (`feat:`/`fix:`/`chore:`/`docs:`/`refactor:`/`test:`/`ci:`). The commit type drives
+  the semver bump and the changelog section. No fragment files, no CI gate, no
+  `skip-changelog` label — the commit message is the changelog entry and the bump
+  signal.
+- **`CHANGELOG.md` is written only by release-please** — never by hand. It stays in
+  [Keep a Changelog](https://keepachangelog.com) form. The one exception: a
+  programmatic tool that fixes a bug in `CHANGELOG.md` itself (e.g., an append/insert
+  bug that would otherwise lose history) may write to it directly, and only for that
+  fix.
+- **Releases are automated.** Release-please opens a release PR on every push to
+  `main`, bumping the version and regenerating `CHANGELOG.md`. When the release PR is
+  merged, it creates the git tag and GitHub Release. For deployable components the
+  `v*` tag in turn publishes the `X.Y.Z` image tag
+  (see [Docker build & release](docker-standard.md)). The release workflow also
+  attaches a CycloneDX SBOM (`sbom.cyclonedx.json`) as a release asset, optionally
+  with a Sigstore attestation — see
+  [SBOM & vulnerability audit](security-posture.md#6-sbom-vulnerability-audit).
+- **Versions stay `0.x`** until a repo deliberately declares `1.0.0` — that is a human
+  statement about stability, never automated. Under semver 0.x there is no
+  compatibility promise, which matches the stack's pre-release, clean-cutover stance.
 
 ## Repo hygiene
 

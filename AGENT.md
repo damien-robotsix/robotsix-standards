@@ -63,3 +63,13 @@ a bottleneck (2026-07 standards review).
 pages in either direction, but ordering drift between the three lists is
 still invisible to CI; registering the nav entry in the same PR keeps the
 lists aligned from the start.
+
+**Rule:** When adding a standards page or a substantial section, add a row to
+the appropriate README TOC table (**Every repository** / **Deployable
+components** / **Deployment system**) — with the title, the relative link and
+a one-sentence description matching the format of existing rows — in the same
+change that also updates the `mkdocs.yml` nav and `docs/index.md`.
+**Rationale:** the README TOC is the human entry point; a page reachable only
+through `mkdocs.yml` nav and `docs/index.md` is invisible to readers who start
+from the README, and the three lists drift apart when the row is added later
+or not at all.

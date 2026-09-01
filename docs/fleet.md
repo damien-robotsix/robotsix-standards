@@ -10,7 +10,7 @@ created; remove it when one is archived.
 |---|---|---|
 | [robotsix-standards](https://github.com/damien-robotsix/robotsix-standards) | This site — the fleet's shared conventions. | [site](https://damien-robotsix.github.io/robotsix-standards/) |
 | [robotsix-config](https://github.com/damien-robotsix/robotsix-config) | The shared configuration library implementing the [config standard](config-standard.md). | [repo](https://github.com/damien-robotsix/robotsix-config) |
-| [robotsix-llmio](https://github.com/damien-robotsix/robotsix-llmio) | LLM provider abstraction — capability levels, cost tracking, tracing. | [repo](https://github.com/damien-robotsix/robotsix-llmio) |
+| [robotsix-llmio](https://github.com/damien-robotsix/robotsix-llmio) | LLM provider abstraction — capability levels × provider slots with automatic failover, cost tracking, tracing. | [repo](https://github.com/damien-robotsix/robotsix-llmio) |
 | [robotsix-modules](https://github.com/damien-robotsix/robotsix-modules) | `docs/modules.yaml` tooling — module map, drift gate. | [repo](https://github.com/damien-robotsix/robotsix-modules) |
 | [robotsix-github-workflows](https://github.com/damien-robotsix/robotsix-github-workflows) | The shared reusable workflows (the fleet's CI gates). | [repo](https://github.com/damien-robotsix/robotsix-github-workflows) |
 | [robotsix-board](https://github.com/damien-robotsix/robotsix-board) | Ticket-board UI library. | [repo](https://github.com/damien-robotsix/robotsix-board) |

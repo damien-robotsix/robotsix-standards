@@ -276,20 +276,36 @@ production. Full detail: [HTTP error envelope](http-error-envelope.md).
 > Only for components that call LLMs — most repos never need this section.
 
 - LLM calls go through **robotsix-llmio**, and the consumer only ever picks
-  a **capability level** — llmio's `level1`–`level4` scale (1 = cheap and
-  repetitive, 2 = intermediate, 3 = high-level organisation, 4 = frontier
-  reasoning). Which model/provider backs each level is llmio's tier
-  configuration, not the component's business.
+  a **capability level** — llmio's `level1`–`level3` scale (1 = cheap and
+  frequent: monitors, classifiers, summaries; 2 = workhorse: implementing
+  code, main assistant turns; 3 = frontier reasoning). Which model/provider
+  backs each level is llmio's tier configuration, not the component's
+  business.
+- **Levels never fall back to one another.** Provider redundancy is a
+  separate axis: llmio binds every level in two provider *slots* — the
+  `default` slot (Anthropic via the Claude SDK) and the `fallback` slot
+  (DeepSeek via OpenRouter) — and fails over between them automatically:
+  after a threshold of consecutive provider-shaped failures on the default
+  slot (exhaustion immediately), calls run the *same level* on the fallback
+  slot for a window (15 minutes by default), then return to the default.
+  Components must not implement their own level- or model-fallback walks on
+  top of this.
 - **The level is a config field, always** — a typed llmio-level enum in the
   component's pydantic model (per-call-site fields where a component makes
   differently-hard calls), set in the deploy UI like any other option. Never
   hard-code a level, and never take it from env (`LLMIO_MODEL_LEVEL`-style
   variables are the pre-standard form). Operators tune capability vs. cost
   per deployment without touching code.
-- **The level→model tier mapping is fleet-global**, managed through the
-  deployment system: changing "level 3" from one model to another happens
-  once, for every component at once — no component defines its own mapping.
-  (Distribution mechanism is central-deploy's; components just call llmio.)
+- **The level→model binding is fleet-global**, managed through the
+  deployment system: changing what backs "level 2" — or either provider
+  slot — happens once, for every component at once, via central-deploy's
+  `llmio_tier_config`. No component defines its own mapping; components
+  just call llmio.
+- **Failover must be visible.** Every component with a user-facing UI or
+  status API surfaces llmio's `get_failover_status()` — which provider slot
+  is currently serving calls and, during failover, when the default slot
+  returns — so operators can tell at a glance that they are running on the
+  fallback provider.
 
 ## LLM tracing
 

@@ -736,6 +736,23 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="Audit">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#llm-agentic-security-audit" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        LLM &amp; agentic security audit
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -3018,6 +3035,23 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="Audit">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#llm-agentic-security-audit" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        LLM &amp; agentic security audit
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -3498,11 +3532,85 @@ dashboard-watching:</p>
 <td>Vulnerability disclosure</td>
 <td><code>SECURITY.md</code> present at repo root with contact method, response-time expectation, and coordinated-disclosure statement</td>
 </tr>
+<tr>
+<td>LLM &amp; agentic security</td>
+<td>Repos whose core function involves LLM agents: <code>robotsix-llmio</code> pinned to a commit SHA in <code>pyproject.toml</code>; llmio level/model selection is an explicit config field (not hard-coded, not env); tracing/provider credentials are <code>SecretStr</code> in the canonical <code>langfuse</code>/<code>openrouter</code> config blocks; destructive git ops default to dry-run; scoped single-repo token (no org/admin scopes). Non-mechanical controls (LLM01/02/07/08/10, ASI01–ASI10) are covered by the periodic standards-audit agent — see below</td>
+</tr>
 </tbody>
 </table>
 <p>*Content-only repos are exempt per the preamble above.</p>
 <p>A repo that fails any gate is non-compliant; the fix is always the same — call
 the shared workflow, or enable the GitHub setting.</p>
+<h3 id="llm-agentic-security-audit">LLM &amp; agentic security audit<a class="headerlink" href="#llm-agentic-security-audit" title="Permanent link">&para;</a></h3>
+<p>This governs repos whose core function involves LLM agents — the fleet's
+implement/refine agents, <code>robotsix-chat</code>, and any component that calls a model
+through <code>robotsix-llmio</code>. The requirements live in the
+<a href="../component-standard/#llm-security">component standard's LLM security section</a>
+and its <a href="../component-standard/#agentic-applications">Agentic Applications mapping</a>.
+Most of its MUST/MUST NOT controls are design-level rules with no CI gate, so
+enforcement is by <strong>audit</strong> — checked at component code review and by the
+periodic standards-audit agent — against the criteria below, mirroring the
+pattern in <a href="../http-security-headers/#how-this-is-enforced">HTTP security headers</a>,
+<a href="../sse-response-headers/#how-this-is-enforced">SSE response headers</a>, and
+<a href="../ssrf-hardened-fetchers/#how-this-is-enforced">SSRF-hardened fetchers</a>.</p>
+<p><strong>Mechanically verifiable subset</strong> — checked by the SHA-pin, config-schema, and
+code-review gates already in this standard:</p>
+<table>
+<thead>
+<tr>
+<th>Control</th>
+<th>Audit criterion</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>LLM04 — supply chain</td>
+<td><code>robotsix-llmio</code> is pinned to a full commit SHA (not a branch or tag) in <code>pyproject.toml</code>; llmio level/model selection is an explicit config field, not hard-coded in code or read from env.</td>
+</tr>
+<tr>
+<td>LLM02/03/08 — secrets &amp; least privilege</td>
+<td>Tracing/provider credentials are <code>SecretStr</code> fields in the canonical <code>langfuse</code>/<code>openrouter</code> config blocks; destructive git operations (<code>push</code>, <code>force-push</code>, branch deletion) default to dry-run; git uses a scoped single-repo token with no org/admin scopes.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Periodic standards-audit-agent checks</strong> — design-level controls an auditor
+reads against the criteria below:</p>
+<table>
+<thead>
+<tr>
+<th>Rule</th>
+<th>Audit criterion</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>LLM01 — prompt injection</td>
+<td>Every path where untrusted data (ticket bodies, PR diffs, chat messages) reaches a prompt delimits or parameterises it; model output is never concatenated into a new prompt without sanitisation.</td>
+</tr>
+<tr>
+<td>LLM02 — sensitive information</td>
+<td>PII/secrets are scrubbed or tokenised before prompt assembly; raw model context is never logged.</td>
+</tr>
+<tr>
+<td>LLM07 — misinformation</td>
+<td>Output a human would rely on carries a provenance tag; output that commits a side-effect is verified by a secondary system or human before it lands.</td>
+</tr>
+<tr>
+<td>LLM08 — hidden context</td>
+<td>System prompts contain no operational secrets (stored in <code>SecretStr</code> config instead); embedded instructions and metadata fields are reviewed for disclosure risk.</td>
+</tr>
+<tr>
+<td>LLM10 — improper output handling</td>
+<td>Model output rendered to a user or fed into an action is validated/sanitised before use.</td>
+</tr>
+<tr>
+<td>ASI01–ASI10</td>
+<td>Each agentic control maps to the fleet control it relies on (LLM01–LLM10, scoped tokens, dry-run gates, ephemeral job identity) as documented in the component standard.</td>
+</tr>
+</tbody>
+</table>
+<p>A repo whose core function involves LLM agents that fails any criterion is
+non-compliant.</p>
 <h2 id="see-also">See also<a class="headerlink" href="#see-also" title="Permanent link">&para;</a></h2>
 <ul>
 <li><a href="../repo-baseline/#ci-and-security-gates">Repo baseline — CI and security gates</a></li>
@@ -3512,6 +3620,9 @@ the shared workflow, or enable the GitHub setting.</p>
 <li><a href="https://securityscorecards.dev/">OpenSSF Scorecard</a></li>
 <li><a href="https://slsa.dev/">SLSA Supply-chain Levels for Software Artifacts</a></li>
 <li><a href="https://owasp.org/www-project-top-10-ci-cd-security-risks/">OWASP Top 10 CI/CD Security Risks</a></li>
+<li><a href="../component-standard/#llm-security">Component standard — LLM security</a></li>
+<li><a href="../component-standard/#agentic-applications">Component standard — Agentic Applications</a></li>
+<li><a href="../config-standard/#7-langfuse-configuration">Config standard — Langfuse configuration</a></li>
 </ul>
 
 

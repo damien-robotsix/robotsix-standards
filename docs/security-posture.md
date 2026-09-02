@@ -418,11 +418,49 @@ dashboard-watching:
 | CVE audit* | `uv audit` / `pip-audit` passes in CI |
 | Container image scan | Trivy PR-scan and publish workflows present and passing (image-shipping repos only) |
 | Vulnerability disclosure | `SECURITY.md` present at repo root with contact method, response-time expectation, and coordinated-disclosure statement |
+| LLM & agentic security | Repos whose core function involves LLM agents: `robotsix-llmio` pinned to a commit SHA in `pyproject.toml`; llmio level/model selection is an explicit config field (not hard-coded, not env); tracing/provider credentials are `SecretStr` in the canonical `langfuse`/`openrouter` config blocks; destructive git ops default to dry-run; scoped single-repo token (no org/admin scopes). Non-mechanical controls (LLM01/02/07/08/10, ASI01–ASI10) are covered by the periodic standards-audit agent — see below |
 
 *Content-only repos are exempt per the preamble above.
 
 A repo that fails any gate is non-compliant; the fix is always the same — call
 the shared workflow, or enable the GitHub setting.
+
+### LLM & agentic security audit
+
+This governs repos whose core function involves LLM agents — the fleet's
+implement/refine agents, `robotsix-chat`, and any component that calls a model
+through `robotsix-llmio`. The requirements live in the
+[component standard's LLM security section](component-standard.md#llm-security)
+and its [Agentic Applications mapping](component-standard.md#agentic-applications).
+Most of its MUST/MUST NOT controls are design-level rules with no CI gate, so
+enforcement is by **audit** — checked at component code review and by the
+periodic standards-audit agent — against the criteria below, mirroring the
+pattern in [HTTP security headers](http-security-headers.md#how-this-is-enforced),
+[SSE response headers](sse-response-headers.md#how-this-is-enforced), and
+[SSRF-hardened fetchers](ssrf-hardened-fetchers.md#how-this-is-enforced).
+
+**Mechanically verifiable subset** — checked by the SHA-pin, config-schema, and
+code-review gates already in this standard:
+
+| Control | Audit criterion |
+|---|---|
+| LLM04 — supply chain | `robotsix-llmio` is pinned to a full commit SHA (not a branch or tag) in `pyproject.toml`; llmio level/model selection is an explicit config field, not hard-coded in code or read from env. |
+| LLM02/03/08 — secrets & least privilege | Tracing/provider credentials are `SecretStr` fields in the canonical `langfuse`/`openrouter` config blocks; destructive git operations (`push`, `force-push`, branch deletion) default to dry-run; git uses a scoped single-repo token with no org/admin scopes. |
+
+**Periodic standards-audit-agent checks** — design-level controls an auditor
+reads against the criteria below:
+
+| Rule | Audit criterion |
+|---|---|
+| LLM01 — prompt injection | Every path where untrusted data (ticket bodies, PR diffs, chat messages) reaches a prompt delimits or parameterises it; model output is never concatenated into a new prompt without sanitisation. |
+| LLM02 — sensitive information | PII/secrets are scrubbed or tokenised before prompt assembly; raw model context is never logged. |
+| LLM07 — misinformation | Output a human would rely on carries a provenance tag; output that commits a side-effect is verified by a secondary system or human before it lands. |
+| LLM08 — hidden context | System prompts contain no operational secrets (stored in `SecretStr` config instead); embedded instructions and metadata fields are reviewed for disclosure risk. |
+| LLM10 — improper output handling | Model output rendered to a user or fed into an action is validated/sanitised before use. |
+| ASI01–ASI10 | Each agentic control maps to the fleet control it relies on (LLM01–LLM10, scoped tokens, dry-run gates, ephemeral job identity) as documented in the component standard. |
+
+A repo whose core function involves LLM agents that fails any criterion is
+non-compliant.
 
 ## See also
 
@@ -433,3 +471,6 @@ the shared workflow, or enable the GitHub setting.
 - [OpenSSF Scorecard](https://securityscorecards.dev/)
 - [SLSA Supply-chain Levels for Software Artifacts](https://slsa.dev/)
 - [OWASP Top 10 CI/CD Security Risks](https://owasp.org/www-project-top-10-ci-cd-security-risks/)
+- [Component standard — LLM security](component-standard.md#llm-security)
+- [Component standard — Agentic Applications](component-standard.md#agentic-applications)
+- [Config standard — Langfuse configuration](config-standard.md#7-langfuse-configuration)

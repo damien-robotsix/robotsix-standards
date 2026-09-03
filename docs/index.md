@@ -68,6 +68,10 @@ everywhere.
   version string, read dynamically by the setuptools build backend.
 - **[Docstring convention](docstrings.md)** — Python docstring style and coverage
   rules for all public modules, classes, and functions.
+- **[Deprecation lifecycle](deprecation-policy.md)** — public-library deprecation
+  policy: deprecate in version N and remove no earlier than the next major, with a
+  runtime `DeprecationWarning`, a `.. deprecated::` docstring block, a
+  `Deprecation:` commit footer, and a test asserting the warning.
 - **[HTTP client persistence](http-client-persistence.md)** — one persistent
   `httpx.Client` (or `requests.Session`) with an explicit timeout, reused for
   all outbound calls — no per-call module-level convenience helpers.

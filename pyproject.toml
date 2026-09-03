@@ -10,6 +10,7 @@ authors = [{ name = "Damien SIX", email = "damien.robotsix@gmail.com" }]
 
 [dependency-groups]
 docs = ["mkdocs-htmlproofer-plugin", "mkdocs-material"]
+test = ["pytest"]
 
 [tool.setuptools.packages.find]
 exclude = ["config*", "styles*"]

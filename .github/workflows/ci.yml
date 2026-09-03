@@ -52,3 +52,5 @@ jobs:
           /tmp/actionlint .github/workflows/*.yml
       - name: Check py.typed wheel guard (self-check)
         run: uv run python scripts/check-py-typed-guard.py
+      - name: Run unit tests
+        run: uv run --group docs --group test python -m pytest

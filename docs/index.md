@@ -148,6 +148,10 @@ everywhere.
 - **[py.typed wheel guard](py-typed-wheel-guard.md)** — automated verification
   that the `py.typed` marker ships in the built wheel, so a packaging
   regression cannot silently strip type information from downstream consumers.
+- **[Dependency typing metadata](dependency-typing-metadata.md)** — a
+  `[tool.robotsix.typing]` table declaring which runtime dependencies are typed
+  or untyped, so downstream consumers generate their mypy/pyright exemptions
+  from an upstream source of truth instead of rediscovering `py.typed` by hand.
 - **[JavaScript practices](javascript.md)** — vanilla frontend JS as static
   assets, lockfile discipline, vitest coverage floor, eslint/stylelint.
 - **[PHP practices](php.md)** — native `php -l` syntax-check over all `.php`

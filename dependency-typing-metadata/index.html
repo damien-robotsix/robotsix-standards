@@ -10,13 +10,13 @@
       
       
       
-        <link rel="canonical" href="https://damien-robotsix.github.io/robotsix-standards/logging/">
+        <link rel="canonical" href="https://damien-robotsix.github.io/robotsix-standards/dependency-typing-metadata/">
       
       
-        <link rel="prev" href="../library-logging/">
+        <link rel="prev" href="../py-typed-wheel-guard/">
       
       
-        <link rel="next" href="../hypothesis/">
+        <link rel="next" href="../docstrings/">
       
       
         
@@ -27,7 +27,7 @@
     
     
       
-        <title>Logging - Robotsix Standards</title>
+        <title>Dependency typing metadata - Robotsix Standards</title>
       
     
     
@@ -78,7 +78,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#logging" class="md-skip">
+        <a href="#dependency-typing-metadata" class="md-skip">
           Skip to content
         </a>
       
@@ -114,7 +114,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Logging
+              Dependency typing metadata
             
           </span>
         </div>
@@ -1149,10 +1149,37 @@
                 
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="../dependency-typing-metadata/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Dependency typing metadata
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   
@@ -1168,6 +1195,92 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#why-this-exists" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why this exists
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-declaration-mandatory" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The declaration (mandatory)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#maintainer-obligations" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Maintainer obligations
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#downstream-consumption" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Downstream consumption
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#precedent" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Precedent
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#companion-standards" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Companion standards
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -1317,37 +1430,10 @@
                 
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Logging
-  
-
-    
-  </span>
-  
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../logging/" class="md-nav__link">
         
   
   
@@ -1363,120 +1449,6 @@
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#the-rules" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        The rules
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="The rules">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#1-structured-json-via-structlog" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        1. Structured JSON via structlog
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#2-json-to-stdout-never-a-direct-shipper" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        2. JSON to stdout, never a direct shipper
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#3-log-level-convention" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        3. Log-level convention
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#4-request-logging-correlation-middleware" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        4. Request-logging / correlation middleware
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#5-disable-or-redirect-uvicorns-own-handlers" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        5. Disable or redirect uvicorn's own handlers
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#failure-modes-this-prevents" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Failure modes this prevents
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#relationship-to-other-standards" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Relationship to other standards
-      
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -2678,82 +2650,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#the-rules" class="md-nav__link">
+  <a href="#why-this-exists" class="md-nav__link">
     <span class="md-ellipsis">
       
-        The rules
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="The rules">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#1-structured-json-via-structlog" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        1. Structured JSON via structlog
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#2-json-to-stdout-never-a-direct-shipper" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        2. JSON to stdout, never a direct shipper
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#3-log-level-convention" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        3. Log-level convention
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#4-request-logging-correlation-middleware" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        4. Request-logging / correlation middleware
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#5-disable-or-redirect-uvicorns-own-handlers" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        5. Disable or redirect uvicorn's own handlers
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#failure-modes-this-prevents" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Failure modes this prevents
+        Why this exists
       
     </span>
   </a>
@@ -2761,10 +2661,54 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#relationship-to-other-standards" class="md-nav__link">
+  <a href="#the-declaration-mandatory" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Relationship to other standards
+        The declaration (mandatory)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#maintainer-obligations" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Maintainer obligations
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#downstream-consumption" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Downstream consumption
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#precedent" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Precedent
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#companion-standards" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Companion standards
       
     </span>
   </a>
@@ -2791,264 +2735,128 @@
   
 
 
-<h1 id="logging">Logging<a class="headerlink" href="#logging" title="Permanent link">&para;</a></h1>
+<h1 id="dependency-typing-metadata">Dependency typing metadata<a class="headerlink" href="#dependency-typing-metadata" title="Permanent link">&para;</a></h1>
 <blockquote>
-<p><strong>Scope: every deployable component that emits logs while serving requests.</strong>
-Libraries MAY adopt the structlog conventions described here but are not
-required to — they follow the lighter-weight <a href="../library-logging/">library internal logging</a>
-standard instead. This applies <em>in addition to</em> the <a href="../repo-baseline/">repo baseline</a>
-and <a href="../component-standard/">component standard</a>.</p>
+<p><strong>Scope: every Python repository.</strong> A package declares the typing status of
+its own runtime dependencies in a <code>[tool.robotsix.typing]</code> table in
+<code>pyproject.toml</code>, so downstream consumers can generate their mypy and pyright
+exemption lists from an upstream source of truth instead of rediscovering
+<code>py.typed</code> status by hand.</p>
 </blockquote>
-<p>Every deployable service in the fleet emits <strong>structured JSON logs to stdout</strong>
-through a single <code>structlog</code> pipeline that covers both application code and
-framework access logs. A shared convention means every log event is parseable
-by the same aggregator query, every request carries a <code>correlation_id</code> that
-ties error responses (per the <a href="../http-error-envelope/">HTTP error envelope</a>
-standard) to their server-side log lines, and operators never hunt through
-mixed plain-text and JSON streams trying to reconstruct a request's lifecycle.</p>
-<h2 id="the-rules">The rules<a class="headerlink" href="#the-rules" title="Permanent link">&para;</a></h2>
-<h3 id="1-structured-json-via-structlog">1. Structured JSON via structlog<a class="headerlink" href="#1-structured-json-via-structlog" title="Permanent link">&para;</a></h3>
-<p>Every log record is a single JSON line emitted through <code>structlog</code>. The
-application configures <code>structlog.stdlib.ProcessorFormatter</code> so that both
-structlog-native calls AND third-party stdlib-logging calls (including
-uvicorn's access log) render through the same JSON pipeline.</p>
-<div class="highlight"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">structlog</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">structlog.stdlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">ProcessorFormatter</span>
-
-<span class="c1"># structlog processors — the chain that builds each event</span>
-<span class="n">structlog</span><span class="o">.</span><span class="n">configure</span><span class="p">(</span>
-    <span class="n">processors</span><span class="o">=</span><span class="p">[</span>
-        <span class="n">structlog</span><span class="o">.</span><span class="n">contextvars</span><span class="o">.</span><span class="n">merge_contextvars</span><span class="p">,</span>
-        <span class="n">structlog</span><span class="o">.</span><span class="n">stdlib</span><span class="o">.</span><span class="n">add_log_level</span><span class="p">,</span>
-        <span class="n">structlog</span><span class="o">.</span><span class="n">stdlib</span><span class="o">.</span><span class="n">add_logger_name</span><span class="p">,</span>
-        <span class="n">structlog</span><span class="o">.</span><span class="n">stdlib</span><span class="o">.</span><span class="n">PositionalArgumentsFormatter</span><span class="p">(),</span>
-        <span class="n">structlog</span><span class="o">.</span><span class="n">processors</span><span class="o">.</span><span class="n">TimeStamper</span><span class="p">(</span><span class="n">fmt</span><span class="o">=</span><span class="s2">&quot;iso&quot;</span><span class="p">),</span>
-        <span class="n">structlog</span><span class="o">.</span><span class="n">processors</span><span class="o">.</span><span class="n">StackInfoRenderer</span><span class="p">(),</span>
-        <span class="n">structlog</span><span class="o">.</span><span class="n">dev</span><span class="o">.</span><span class="n">set_exc_info</span><span class="p">,</span>
-        <span class="n">structlog</span><span class="o">.</span><span class="n">processors</span><span class="o">.</span><span class="n">format_exc_info</span><span class="p">,</span>
-        <span class="n">structlog</span><span class="o">.</span><span class="n">stdlib</span><span class="o">.</span><span class="n">ProcessorFormatter</span><span class="o">.</span><span class="n">wrap_for_formatter</span><span class="p">,</span>
-    <span class="p">],</span>
-    <span class="n">context_class</span><span class="o">=</span><span class="nb">dict</span><span class="p">,</span>
-    <span class="n">logger_factory</span><span class="o">=</span><span class="n">structlog</span><span class="o">.</span><span class="n">stdlib</span><span class="o">.</span><span class="n">LoggerFactory</span><span class="p">(),</span>
-    <span class="n">cache_logger_on_first_use</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-<span class="p">)</span>
-
-<span class="c1"># The formatter that produces JSON from the processed event dict</span>
-<span class="n">formatter</span> <span class="o">=</span> <span class="n">ProcessorFormatter</span><span class="p">(</span>
-    <span class="n">processor</span><span class="o">=</span><span class="n">structlog</span><span class="o">.</span><span class="n">processors</span><span class="o">.</span><span class="n">JSONRenderer</span><span class="p">(),</span>
-    <span class="c1"># The foreign_pre_chain is applied to stdlib-logging records BEFORE</span>
-    <span class="c1"># they enter the structlog processor chain — it extracts the event</span>
-    <span class="c1"># dict that the JSON renderer expects.</span>
-    <span class="n">foreign_pre_chain</span><span class="o">=</span><span class="p">[</span>
-        <span class="n">structlog</span><span class="o">.</span><span class="n">stdlib</span><span class="o">.</span><span class="n">add_log_level</span><span class="p">,</span>
-        <span class="n">structlog</span><span class="o">.</span><span class="n">stdlib</span><span class="o">.</span><span class="n">add_logger_name</span><span class="p">,</span>
-        <span class="n">structlog</span><span class="o">.</span><span class="n">processors</span><span class="o">.</span><span class="n">TimeStamper</span><span class="p">(</span><span class="n">fmt</span><span class="o">=</span><span class="s2">&quot;iso&quot;</span><span class="p">),</span>
-    <span class="p">],</span>
-<span class="p">)</span>
-
-<span class="c1"># Attach to the root handler — covers uvicorn, sqlalchemy, and any other</span>
-<span class="c1"># library that uses stdlib logging</span>
-<span class="n">handler</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">StreamHandler</span><span class="p">()</span>
-<span class="n">handler</span><span class="o">.</span><span class="n">setFormatter</span><span class="p">(</span><span class="n">formatter</span><span class="p">)</span>
-<span class="n">logging</span><span class="o">.</span><span class="n">basicConfig</span><span class="p">(</span><span class="n">handlers</span><span class="o">=</span><span class="p">[</span><span class="n">handler</span><span class="p">],</span> <span class="n">level</span><span class="o">=</span><span class="n">logging</span><span class="o">.</span><span class="n">INFO</span><span class="p">)</span>
-</code></pre></div>
-<p><strong>Accepted simpler alternative: <code>python-json-logger</code>.</strong> Repos that do not
-need structlog's context-binding and processor chain may use
-<a href="https://pypi.org/project/python-json-logger/"><code>python-json-logger</code></a> as a
-drop-in stdlib-logging formatter. The output is still structured JSON to
-stdout; the trade-off is no <code>structlog.contextvars</code> binding for per-request
-context.</p>
-<p><strong>Failure prevented:</strong> mixed ad-hoc <code>print()</code> calls and plain-text
-<code>logging.Formatter</code> output that the aggregator cannot parse. A stream of
-<code>"Fetching /api/foo … done"</code> lines carries no machine-readable fields —
-filtering by level, service, or request id requires regex guesswork that
-breaks on the next log-format change.</p>
-<h3 id="2-json-to-stdout-never-a-direct-shipper">2. JSON to stdout, never a direct shipper<a class="headerlink" href="#2-json-to-stdout-never-a-direct-shipper" title="Permanent link">&para;</a></h3>
-<p>The application appends structured JSON events to stdout via a
-<code>StreamHandler</code>. It never calls Elasticsearch, Loki, CloudWatch, or any
-other log aggregator directly. The orchestration and log-shipper layer
-(Docker's json-file driver, journald, or a sidecar collector) owns the
-transport.</p>
-<p><strong>Why this matters:</strong> a component that opens a socket to Loki hard-codes
-an assumption about the fleet's observability stack. When the operator
-switches aggregators or adds a new pipeline stage (enrichment, sampling,
-archival), every component must be updated in lockstep. stdout is the
-universal interface — every container runtime captures it, and the
-shipper configuration lives in one place (the host or the compose file),
-not in N application codebases.</p>
-<p>The <code>correlation_id</code> (and <code>request_id</code>) bound to every event by the
-middleware (rule 4) is what enables cross-service tracing at the
-aggregator: the shipper doesn't need to understand the application —
-it just forwards JSON, and the aggregator joins on the correlation id.</p>
-<p><strong>Failure prevented:</strong> per-component aggregator dependencies that turn a
-shipper migration into an all-hands fleet change; a component that ships
-to Loki when the fleet has standardized on a different backend, producing
-a silent log gap.</p>
-<h3 id="3-log-level-convention">3. Log-level convention<a class="headerlink" href="#3-log-level-convention" title="Permanent link">&para;</a></h3>
-<ul>
-<li><strong>Production default is <code>INFO</code></strong> at the root logger. The fleet's
-  production config sets <code>log_level = "INFO"</code> in every component's config
-  model (per the <a href="../component-standard/#logging">component standard</a>).</li>
-<li><strong>DEBUG is gated behind config, never a hard-coded default.</strong> No
-  <code>logging.basicConfig(level=logging.DEBUG)</code> in application code. The
-  component reads its log level from the config model and applies it via
-  <code>logging.getLogger().setLevel(…)</code> at startup.</li>
-<li><strong>Per-request level override via <code>structlog.contextvars</code>.</strong> The
-  correlation middleware (rule 4) can optionally bind
-  <code>add_log_level</code> per-request — e.g. a <code>?debug=1</code> query parameter or an
-  <code>X-Debug: true</code> header that the middleware reads and binds to the
-  context, lowering the effective level for that request's span.</li>
-</ul>
-<div class="highlight"><pre><span></span><code><span class="c1"># In the config model</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">pydantic</span><span class="w"> </span><span class="kn">import</span> <span class="n">BaseModel</span>
-
-<span class="k">class</span><span class="w"> </span><span class="nc">Config</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
-    <span class="n">log_level</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;DEBUG&quot;</span><span class="p">,</span> <span class="s2">&quot;INFO&quot;</span><span class="p">,</span> <span class="s2">&quot;WARNING&quot;</span><span class="p">,</span> <span class="s2">&quot;ERROR&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;INFO&quot;</span>
-</code></pre></div>
-<p><strong>Failure prevented:</strong> DEBUG-on-by-default in production flooding the log
-stream with per-retry and per-query records, exhausting the log-shipper's
-throughput budget and burying actionable ERROR and WARNING events under
-noise.</p>
-<h3 id="4-request-logging-correlation-middleware">4. Request-logging / correlation middleware<a class="headerlink" href="#4-request-logging-correlation-middleware" title="Permanent link">&para;</a></h3>
-<p>Every deployable HTTP service installs an ASGI middleware that:</p>
+<h2 id="why-this-exists">Why this exists<a class="headerlink" href="#why-this-exists" title="Permanent link">&para;</a></h2>
+<p>The <a href="../mypy/">mypy strictness</a> and <a href="../pyright/">pyright strict mode</a> standards
+require every package to run type-checking as a hard CI gate, and both allow a
+narrow exemption for <strong>proven-untyped third-party dependencies</strong> — mypy through
+<code>[tool.mypy.overrides]</code> with <code>ignore_missing_imports = true</code>, pyright through
+<code>reportMissingTypeStubs = "none"</code>. Pyright's standard already requires the two
+exemption sets to mirror each other.</p>
+<p>But nothing tells a downstream consumer <em>which</em> dependencies belong in that set.
+Today a consumer must:</p>
 <ol>
-<li><strong>Reads the correlation id from the <code>X-Request-ID</code> header</strong> (validating
-   it as a UUID) via <code>asgi-correlation-id</code>'s <code>ContextVar</code>.</li>
-<li><strong>Binds <code>request_id</code>, <code>correlation_id</code>, <code>path</code>, and <code>method</code></strong> to
-   <code>structlog.contextvars.bind_contextvars()</code> at the start of every
-   request.</li>
-<li><strong>Clears the contextvars</strong> at the end of every request so no state
-   leaks between requests.</li>
+<li>Install each dependency and inspect it for a <code>py.typed</code> marker to learn
+   whether it ships inline types.</li>
+<li>Guess whether an untyped dependency has stubs on typeshed or a separate
+   <code>types-*</code> distribution.</li>
+<li>Hand-maintain the mypy and pyright exemption lists with no upstream
+   documentation, and re-audit them by hand every time a dependency is bumped.</li>
 </ol>
-<div class="highlight"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">uuid</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">starlette.middleware.base</span><span class="w"> </span><span class="kn">import</span> <span class="n">BaseHTTPMiddleware</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">starlette.requests</span><span class="w"> </span><span class="kn">import</span> <span class="n">Request</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">structlog</span>
-
-<span class="n">logger</span> <span class="o">=</span> <span class="n">structlog</span><span class="o">.</span><span class="n">get_logger</span><span class="p">()</span>
-
-<span class="k">class</span><span class="w"> </span><span class="nc">LoggingMiddleware</span><span class="p">(</span><span class="n">BaseHTTPMiddleware</span><span class="p">):</span>
-    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">dispatch</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">:</span> <span class="n">Request</span><span class="p">,</span> <span class="n">call_next</span><span class="p">):</span>
-        <span class="c1"># Clear any stale context from a previous request on the same</span>
-        <span class="c1"># event-loop task (the per-event-loop gotcha — see note below)</span>
-        <span class="n">structlog</span><span class="o">.</span><span class="n">contextvars</span><span class="o">.</span><span class="n">clear_contextvars</span><span class="p">()</span>
-
-        <span class="c1"># Read and validate the correlation id</span>
-        <span class="n">correlation_id</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">headers</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;X-Request-ID&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
-        <span class="k">try</span><span class="p">:</span>
-            <span class="n">uuid</span><span class="o">.</span><span class="n">UUID</span><span class="p">(</span><span class="n">correlation_id</span><span class="p">)</span>
-        <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
-            <span class="n">correlation_id</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">uuid</span><span class="o">.</span><span class="n">uuid4</span><span class="p">())</span>
-
-        <span class="n">structlog</span><span class="o">.</span><span class="n">contextvars</span><span class="o">.</span><span class="n">bind_contextvars</span><span class="p">(</span>
-            <span class="n">request_id</span><span class="o">=</span><span class="n">correlation_id</span><span class="p">,</span>
-            <span class="n">correlation_id</span><span class="o">=</span><span class="n">correlation_id</span><span class="p">,</span>
-            <span class="n">path</span><span class="o">=</span><span class="n">request</span><span class="o">.</span><span class="n">url</span><span class="o">.</span><span class="n">path</span><span class="p">,</span>
-            <span class="n">method</span><span class="o">=</span><span class="n">request</span><span class="o">.</span><span class="n">method</span><span class="p">,</span>
-        <span class="p">)</span>
-
-        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;request_start&quot;</span><span class="p">)</span>
-
-        <span class="k">try</span><span class="p">:</span>
-            <span class="n">response</span> <span class="o">=</span> <span class="k">await</span> <span class="n">call_next</span><span class="p">(</span><span class="n">request</span><span class="p">)</span>
-        <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
-            <span class="n">logger</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="s2">&quot;request_failed&quot;</span><span class="p">)</span>
-            <span class="k">raise</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;request_finished&quot;</span><span class="p">,</span> <span class="n">status_code</span><span class="o">=</span><span class="n">response</span><span class="o">.</span><span class="n">status_code</span><span class="p">)</span>
-            <span class="k">return</span> <span class="n">response</span>
-        <span class="k">finally</span><span class="p">:</span>
-            <span class="n">structlog</span><span class="o">.</span><span class="n">contextvars</span><span class="o">.</span><span class="n">clear_contextvars</span><span class="p">()</span>
+<p>When a dependency version change adds or removes <code>py.typed</code>, the consumer gets
+a silent type-checking regression — either new <code>reportMissingTypeStubs</code> errors
+that were previously suppressed, or a stale <code>ignore_missing_imports</code> entry that
+<code>warn_unused_ignores</code> will (correctly) flag — until someone manually re-checks.</p>
+<p>This standard closes the gap: each package publishes the typing status of its
+own dependencies as structured data, and downstream tooling reads that data
+instead of re-deriving it.</p>
+<h2 id="the-declaration-mandatory">The declaration (mandatory)<a class="headerlink" href="#the-declaration-mandatory" title="Permanent link">&para;</a></h2>
+<p>Every Python package <strong>must</strong> declare the typing status of its runtime
+dependencies in a <code>[tool.robotsix.typing]</code> table in <code>pyproject.toml</code>:</p>
+<div class="highlight"><pre><span></span><code><span class="k">[tool.robotsix.typing]</span>
+<span class="c1"># Dependencies that ship inline types (a py.typed marker, PEP 561).</span>
+<span class="n">typed-dependencies</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span>
+<span class="w">  </span><span class="s2">&quot;httpx &gt;= 0.24&quot;</span><span class="p">,</span><span class="w">   </span><span class="c1"># py.typed since v0.24</span>
+<span class="w">  </span><span class="s2">&quot;pydantic &gt;= 2.0&quot;</span><span class="p">,</span>
+<span class="p">]</span>
+<span class="c1"># Dependencies with no inline types. A trailing comment names the stub</span>
+<span class="c1"># source (typeshed / a types-* distribution) or states &quot;no types or stubs&quot;.</span>
+<span class="n">untyped-dependencies</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span>
+<span class="w">  </span><span class="s2">&quot;requests&quot;</span><span class="p">,</span><span class="w">  </span><span class="c1"># typeshed provides types-requests</span>
+<span class="w">  </span><span class="s2">&quot;cognee&quot;</span><span class="p">,</span><span class="w">    </span><span class="c1"># no types or stubs</span>
+<span class="p">]</span>
 </code></pre></div>
-<p><strong>Contextvars-per-event-loop gotcha.</strong> <code>structlog.contextvars</code> uses
-<code>contextvars.ContextVar</code>, which is tied to the <code>asyncio.Task</code>, not the
-event loop. In practice this means context propagates correctly through
-<code>await</code> calls within the same task. However, frameworks that spawn
-background tasks or use thread pools (Starlette's <code>BackgroundTasks</code>,
-<code>run_in_executor</code>) create new tasks/threads that do NOT inherit the
-parent's contextvars. Prefer async handlers and dependencies so the
-correlation context stays with the request; when a background task must
-emit log records tied to the originating request, pass the correlation
-id explicitly.</p>
-<p><strong>Failure prevented:</strong> an error in service B that the operator cannot
-trace back to the originating request in service A. Without a
-<code>correlation_id</code> on every log event across every service, reconstructing
-a request's path through the fleet requires aligning timestamps across
-N log streams by hand — and clock skew makes that unreliable. With a
-single id carried in the <code>X-Request-ID</code> header and bound to every log
-event, the aggregator's query is <code>correlation_id = "&lt;id&gt;"</code> across all
-services.</p>
-<h3 id="5-disable-or-redirect-uvicorns-own-handlers">5. Disable or redirect uvicorn's own handlers<a class="headerlink" href="#5-disable-or-redirect-uvicorns-own-handlers" title="Permanent link">&para;</a></h3>
-<p>Uvicorn ships with its own logging configuration — it attaches a
-<code>StreamHandler</code> with a plain-text formatter to the <code>uvicorn.access</code>
-and <code>uvicorn.error</code> loggers at startup. When the application also
-configures structlog as the root handler (rule 1), every access log
-event is formatted TWICE: once by uvicorn's plain-text handler and
-once by structlog's JSON handler.</p>
-<p>To prevent double-formatting, pass <code>log_config=None</code> to <code>uvicorn.run()</code>
-and configure logging entirely in the application:</p>
-<div class="highlight"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">uvicorn</span>
-
-<span class="n">uvicorn</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">app</span><span class="p">,</span> <span class="n">log_config</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
-</code></pre></div>
-<p>This tells uvicorn to skip its own logging setup entirely. The
-application's structlog configuration (rule 1) is the single handler
-for ALL loggers — application, uvicorn, and third-party.</p>
-<p><strong>Failure prevented:</strong> every access log event appearing twice in the
-log stream — once as uvicorn's <code>"127.0.0.1:12345 - "GET /health HTTP/1.1" 200"</code>
-plain-text line and once as structlog's <code>{"event": "request finished",
-"status_code": 200, ...}</code> JSON object. The aggregator sees duplicate
-events, and the plain-text line carries none of the structured context
-(request id, correlation id) the middleware bound.</p>
-<h2 id="failure-modes-this-prevents">Failure modes this prevents<a class="headerlink" href="#failure-modes-this-prevents" title="Permanent link">&para;</a></h2>
+<p>Rules:</p>
+<ol>
+<li><strong>Every runtime dependency in <code>[project.dependencies]</code> must appear in exactly
+   one of the two lists.</strong> A dependency that is neither declared typed nor
+   declared untyped is undeclared, and a downstream consumer cannot tell which
+   bucket it belongs to.</li>
+</ol>
+<p><em>Failure prevented:</em> an undeclared dependency forces the consumer back to the
+   manual install-and-inspect discovery this standard exists to eliminate — the
+   declaration is only useful if it is complete.</p>
+<ol>
+<li><strong>Each <code>untyped-dependencies</code> entry carries a trailing comment naming the
+   stub source or its absence</strong> — <code># typeshed provides types-&lt;name&gt;</code>, <code>#
+   stubs: &lt;name&gt;-stubs</code>, or <code># no types or stubs</code>.</li>
+</ol>
+<p><em>Failure prevented:</em> "untyped" alone does not tell the consumer whether to
+   add a <code>types-*</code> dev dependency (stubs exist) or to add an
+   <code>ignore_missing_imports</code> exemption (no stubs anywhere). The comment is the
+   difference between a fixable gap and a permanent one.</p>
+<ol>
+<li><strong>Pin the version boundary at which typing status holds</strong> for <code>typed</code>
+   entries whose <code>py.typed</code> status changed at a known release (e.g.
+   <code>httpx &gt;= 0.24</code>). Where a dependency has always shipped types, the bare name
+   is sufficient.</li>
+</ol>
+<p><em>Failure prevented:</em> without the boundary, a resolver that pulls an older
+   pre-<code>py.typed</code> release silently drops the dependency's types and the
+   consumer's exemption list no longer matches reality.</p>
+<h2 id="maintainer-obligations">Maintainer obligations<a class="headerlink" href="#maintainer-obligations" title="Permanent link">&para;</a></h2>
+<p>The declaration is only trustworthy if it stays in step with the dependency
+set. A package maintainer <strong>must</strong>:</p>
 <ul>
-<li><strong>Unparsable log stream.</strong> Mixed <code>print()</code>, <code>logging.info("done")</code>,
-  and traceback text in the container log stream forces the aggregator
-  to parse ad-hoc formats. Structured JSON eliminates the parser —
-  every field is addressable by key.</li>
-<li><strong>Untraceable cross-service errors.</strong> Without a <code>correlation_id</code> on
-  every log event, matching a client-side error response to the
-  server-side log lines that produced it requires timestamp alignment
-  and guesswork. The correlation id ties them together directly.</li>
-<li><strong>Double-formatted access logs.</strong> Uvicorn's default handler and
-  structlog's handler both emit every access event, producing duplicate
-  log lines — one structured, one plain-text. Disabling uvicorn's
-  handler (<code>log_config=None</code>) prevents this.</li>
-<li><strong>Production log floods.</strong> DEBUG-level-by-default produces
-  per-retry, per-query, and per-SQL-statement records that exhaust
-  log-shipper throughput and bury actionable events.</li>
-<li><strong>Aggregator lock-in.</strong> A component that ships directly to a specific
-  backend (Loki, Elasticsearch, CloudWatch) hard-codes an observability
-  stack assumption. stdout decouples the application from the shipper,
-  so the fleet can change aggregators without touching application code.</li>
-<li><strong>Context leakage between requests.</strong> structlog contextvars bound
-  during one request persisting into the next (when the ASGI server
-  reuses a task) produces log events with a stale <code>request_id</code>,
-  corrupting trace reconstruction.</li>
+<li><strong>Add an entry when adding a runtime dependency.</strong> The same PR that adds a
+  line to <code>[project.dependencies]</code> adds the matching <code>typed</code>/<code>untyped</code> entry —
+  never in a follow-up.</li>
+<li><strong>Move an entry when a dependency's typing status changes.</strong> When a bump
+  crosses the release where a dependency added (or dropped) <code>py.typed</code>, move it
+  between the two lists and update the version boundary and comment.</li>
+<li><strong>Remove an entry when removing the dependency</strong>, so the declaration never
+  lists a dependency the package no longer uses.</li>
 </ul>
-<h2 id="relationship-to-other-standards">Relationship to other standards<a class="headerlink" href="#relationship-to-other-standards" title="Permanent link">&para;</a></h2>
+<p><em>Failure prevented:</em> a declaration that drifts from <code>[project.dependencies]</code> is
+worse than none — a consumer that trusts a stale list ships exemptions for
+dependencies that are gone and misses exemptions for ones that were added.</p>
+<h2 id="downstream-consumption">Downstream consumption<a class="headerlink" href="#downstream-consumption" title="Permanent link">&para;</a></h2>
+<p>Downstream consumers generate their mypy <code>[tool.mypy.overrides]</code> and pyright
+<code>reportMissingTypeStubs</code> exemptions from the upstream <code>untyped-dependencies</code>
+declarations rather than curating them by hand. The exemption set a consumer
+derives this way is exactly the mirrored mypy/pyright set the
+<a href="../pyright/">pyright strict mode</a> standard already requires — this standard
+supplies its upstream source of truth.</p>
+<p>A fleet-wide helper reads the <code>[tool.robotsix.typing]</code> tables of a repo's
+first-party dependencies and emits the exemption stanzas; consumers run it
+instead of maintaining the lists manually, so a dependency bump that changes a
+typing status updates the exemptions from the upstream declaration in the same
+step.</p>
+<h2 id="precedent">Precedent<a class="headerlink" href="#precedent" title="Permanent link">&para;</a></h2>
+<p>FastAPI, Pydantic, and Litestar — the projects cited in the
+<a href="../mypy/#precedent">mypy</a> and <a href="../pyright/#precedent">pyright</a> standards — keep
+strict type-checking green in CI by curating, out of band, which dependencies
+are typed and which need stubs. That knowledge lives in maintainers' heads and
+their CI config, not in a machine-readable form a downstream consumer can read.
+<code>[tool.robotsix.typing]</code> makes the same knowledge explicit and consumable, so
+the fleet does not re-derive it once per consuming repo.</p>
+<h2 id="companion-standards">Companion standards<a class="headerlink" href="#companion-standards" title="Permanent link">&para;</a></h2>
 <ul>
-<li><strong><a href="../http-error-envelope/">HTTP error envelope</a></strong> — mandates that every
-  error response carry a <code>correlation_id</code> matching the <code>X-Correlation-ID</code>
-  (<code>x-correlation-id</code>) header. This logging standard defines where that
-  correlation id originates and how it is bound to every log event,
-  making the error-envelope requirement actionable.</li>
-<li><strong><a href="../ruff-lint-rules/">Ruff lint rules</a></strong> — the <code>LOG</code> and <code>G</code> rule
-  families enforce logging hygiene (no <code>logging.warn</code>, no f-strings in
-  logging calls, lazy formatting). This logging standard is the
-  convention those rules protect — without a logging standard, the
-  rules have no anchoring context.</li>
-<li><strong><a href="../library-logging/">Library internal logging</a></strong> — the lighter-weight
-  convention for libraries: <code>logging.getLogger(__name__)</code>, <code>NullHandler</code>,
-  lazy <code>%</code>-style formatting, no configuration. Libraries that follow the
-  library standard still interoperate with the structlog pipeline because
-  <code>ProcessorFormatter.foreign_pre_chain</code> bridges stdlib records into the
-  JSON renderer.</li>
-<li><strong><a href="../component-standard/#logging">Component standard</a></strong> — the component
-  standard's logging section requires stdout/stderr (never files) and UTC
-  ISO-8601 timestamps. This standard builds on that foundation with the
-  structured-JSON, correlation, and level-convention rules.</li>
+<li><strong><a href="../mypy/">Mypy strictness</a></strong> — the mypy gate and its
+  <code>ignore_missing_imports</code> exemption for untyped dependencies.</li>
+<li><strong><a href="../pyright/">Pyright strict mode</a></strong> — the matching pyright gate; its
+  <code>reportMissingTypeStubs</code> exemption set must mirror mypy's, and both are
+  generated from the <code>untyped-dependencies</code> declaration above.</li>
+<li><strong><a href="../python/#packaging">Python practices</a></strong> — the <code>py.typed</code> marker and
+  <code>Typing :: Typed</code> classifier every first-party package must ship, which is
+  what makes a first-party dependency <code>typed</code> in this declaration.</li>
 </ul>
 
 

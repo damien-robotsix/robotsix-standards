@@ -1324,6 +1324,34 @@
   
   
     <li class="md-nav__item">
+      <a href="dependency-typing-metadata/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Dependency typing metadata
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="docstrings/" class="md-nav__link">
         
   
@@ -2971,6 +2999,10 @@ everywhere.</p>
 <li><strong><a href="py-typed-wheel-guard/">py.typed wheel guard</a></strong> — automated verification
   that the <code>py.typed</code> marker ships in the built wheel, so a packaging
   regression cannot silently strip type information from downstream consumers.</li>
+<li><strong><a href="dependency-typing-metadata/">Dependency typing metadata</a></strong> — a
+  <code>[tool.robotsix.typing]</code> table declaring which runtime dependencies are typed
+  or untyped, so downstream consumers generate their mypy/pyright exemptions
+  from an upstream source of truth instead of rediscovering <code>py.typed</code> by hand.</li>
 <li><strong><a href="javascript/">JavaScript practices</a></strong> — vanilla frontend JS as static
   assets, lockfile discipline, vitest coverage floor, eslint/stylelint.</li>
 <li><strong><a href="php/">PHP practices</a></strong> — native <code>php -l</code> syntax-check over all <code>.php</code>

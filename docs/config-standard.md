@@ -90,77 +90,90 @@ implement redaction or merge); they are the deploy system's responsibility.
   echoed. The operator types a new value to set or change the secret;
   leaving it blank preserves the existing value.
 
-### 4. Advanced settings flag
+### 4. Grouping settings into foldable groups
 
-A per-setting **`advanced`** annotation (boolean, default `false`) lets the
-deploy UI hide rarely-changed or expert-only settings behind a "Show advanced
-settings" toggle — off by default. It is **purely presentational**: marking a
-field `advanced: true` does not change validation, serialization, or runtime
-behavior in any way. The application never sees the flag; only the deploy UI
-consumes it from the committed `config/config.schema.json`.
+**The `advanced` flag is repealed.** Earlier revisions of this standard defined
+a per-setting **`advanced`** boolean that let the deploy UI hide rarely-changed
+or expert-only settings behind a global "Show advanced settings" toggle. That
+mechanism is **removed**: components MUST NOT mark settings `advanced`, and the
+shared `@robotsix/ui` ConfigPanel no longer honours the flag. An
+`"advanced": true` annotation left in a committed `config/config.schema.json`
+is dead cruft — an unrecognised JSON Schema keyword the panel silently ignores
+— and MUST be stripped (see the [repeal sweep](#repealing-the-advanced-flag)).
+
+*Failure it prevents:* one global hide/show toggle scaled badly. A component
+with a dozen expert-only keys dumped them all into a single flat "advanced"
+bucket with no relation to one another, so operators flipped the toggle on to
+find the one field they wanted — defeating the point of hiding anything.
+
+**Group related keys instead.** Config settings SHOULD be organised into
+logical, **foldable groups**, driven from the schema's structure rather than a
+per-field hide flag. The panel renders each group as a collapsible section with
+a header; related keys live together and the group folds or unfolds as a unit.
+Every field stays a first-class, always-reachable setting — reached by
+unfolding its group, never gated behind an expert-mode switch.
 
 **Model layer — component code**
 
-Annotate a field as advanced with pydantic's `Field(json_schema_extra=…)`:
+Express a group by nesting its related keys under a sub-model — the natural
+pydantic idiom — so the emitted JSON Schema carries the grouping as a nested
+`object` property the panel renders as one foldable section:
 
 ```python
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, SecretStr
 
-class MailConfig(BaseModel):
+
+class OpenRouterConfig(BaseModel):
+    """All OpenRouter / LLM keys under one group."""
+    keys: dict[str, SecretStr] = {}
+
+
+class MyComponentConfig(BaseModel):
     log_level: LogLevel = LogLevel.info
-    connection_pool_size: int = Field(
-        default=10,
-        json_schema_extra={"advanced": True},
-    )
+    openrouter: OpenRouterConfig = OpenRouterConfig()
 ```
 
-The library emits this into the JSON Schema as a top-level property on the
-field's schema object:
+The library emits the sub-model as a nested object the panel folds as a group:
 
 ```json
 {
   "properties": {
     "log_level": {"type": "string", "enum": ["info", "debug"], "default": "info"},
-    "connection_pool_size": {
-      "type": "integer",
-      "default": 10,
-      "advanced": true
+    "openrouter": {
+      "type": "object",
+      "title": "openrouter",
+      "properties": {
+        "keys": {"type": "object"}
+      }
     }
   }
 }
 ```
 
+**Grouping guidance (for fleet repos)**
+
+- **Keep genuinely related keys in one group.** All LLM/OpenRouter credentials
+  under one `openrouter` group (§8); the Langfuse block under `langfuse` (§7);
+  a database's host, port and pool size under one `db` group. The test is "are
+  these edited together?" — if yes, they belong in the same foldable section.
+- **Name the group for its domain, not its audience.** `openrouter`,
+  `langfuse`, `db` — never `advanced` or `expert`. Grouping is about *what a
+  setting relates to* (stable), not *how often* it changes (the old flag's
+  brittle axis).
+- **Flat, unrelated top-level keys** (a lone `log_level`, a single
+  `<name>_url`) need no group — they render as ungrouped top-level fields.
+- **Never hide a security boundary.** A secret field (`SecretStr`) is already
+  masked; keep it visible inside its group so the operator cannot miss it.
+
 **Deploy-UI layer — central-deploy Configure screen**
 
-- **Hidden by default.** Every field with `"advanced": true` is hidden when the
-  "Show advanced settings" toggle is off. Fields without the flag (or with
-  `"advanced": false`) are always visible — schemas without the flag behave
-  exactly as today (all settings visible).
-- **Fully editable when revealed.** Toggling "Show advanced settings" on reveals
-  the advanced fields inline with their typed inputs (number, bool, dropdown,
-  etc.). No separate "advanced mode" form exists — the toggle only controls
-  visibility; once visible, advanced fields are first-class settings.
-- **Backward compatible.** Omitting `advanced` from a field's schema is
-  equivalent to `"advanced": false`. Existing schemas require no changes and
-  render identically to before.
-
-**Classifying settings (guidance for fleet repos)**
-
-These heuristics help decide which fields to mark `advanced: true`:
-
-- **Rarely changed.** A setting the operator sets once at onboarding and never
-  touches again (e.g. a worker thread count, a database pool size) is a good
-  candidate.
-- **Expert-only.** Settings whose meaning requires deep knowledge of the
-  component's internals (e.g. a GC tuning knob, a buffer size in bytes).
-- **Safe default exists.** If the default is sensible for nearly all deployments
-  and changing it is purely an optimisation, mark it advanced. If the operator
-  *must* set it for the component to work, keep it visible.
-- **Conversely, keep visible:** anything the operator must set for the component
-  to function (e.g. a hostname, an external URL), anything they will
-  deliberately change day-to-day (e.g. a log level), and anything that is a
-  security boundary (e.g. a secret field — `SecretStr` is already masked, and
-  hiding it behind a second toggle risks the operator missing it).
+- **Foldable groups, no global toggle.** Each schema group renders as a
+  collapsible section; there is no "Show advanced settings" switch and no
+  `advanced` keyword is consumed. Folding is per-group and presentational only
+  — it changes nothing about validation, serialization, or runtime behavior.
+- **Data-driven.** Grouping comes entirely from the committed
+  `config/config.schema.json` structure, so the UI and the runtime model can
+  never disagree about which keys belong together.
 
 ### 5. What `environment:` is for
 
@@ -335,24 +348,25 @@ cutover** — no deprecated aliases or compatibility shims.
 Each component migrates in one step — there's no dual-config transition to
 manage.
 
-### Advanced-flag rollout
+### Repealing the advanced flag
 
-The `advanced` flag is backward-compatible by design — schemas without it
-behave exactly as before (all fields visible). Fleet repos can adopt it
-incrementally:
+The `advanced` flag (former §4) is **withdrawn** in lockstep with the shared
+`@robotsix/ui` ConfigPanel dropping the "Show advanced settings" mechanism.
+The panel now ignores the keyword, so any `"advanced": true` left in a schema
+is dead cruft. The cutover is a **clean sweep** — per-repo follow-up work that
+does not block this amendment:
 
-1. The flag is defined here and available in the library's JSON Schema
-   output immediately (any `Field(json_schema_extra={"advanced": True})` on a
-   pydantic model is passed through to `config.schema.json`).
-2. **central-deploy** implements the toggle in its Configure screen (separate
-   ticket). Until that toggle ships, `"advanced": true` annotations in
-   schemas are harmless — they are an unrecognised JSON Schema keyword that
-   existing deploy-UI versions ignore.
-3. **Fleet repos** classify their settings per the heuristics in §4. Each
-   repo adds `json_schema_extra={"advanced": True}` to the relevant fields,
-   regenerates `config/config.schema.json`, and the CI drift check confirms
-   the schema is in sync. This is per-repo follow-up work — the flag is
-   optional and repos can adopt it on their own schedule.
-4. No data migration, breaking change, or flag day is required. An
-   unmarked field is visible; a marked field is hidden behind the toggle
-   once central-deploy supports it; nothing else changes.
+1. **Panel** removes the advanced toggle and honours foldable groups instead
+   (robotsix-ui ConfigPanel rework — separate ticket).
+2. **Fleet repos** strip every `json_schema_extra={"advanced": True}` (or
+   equivalent `"advanced": true`) from their pydantic models, regenerate
+   `config/config.schema.json`, and reorganise related keys into groups per
+   §4. The CI drift check confirms the regenerated schema is in sync.
+3. Each affected component is tracked by a linked follow-up ticket; the sweep
+   is mechanical (drop a dead annotation) and carries no data migration,
+   breaking change, or flag day.
+
+The affected-component list is enumerated by scanning every fleet component's
+committed schema for the keyword — e.g.
+`grep -rl '"advanced"' */config/config.schema.json` across the fleet — and
+filing one strip-the-flag ticket per hit.

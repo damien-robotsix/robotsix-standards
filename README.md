@@ -57,6 +57,7 @@ the default.
 | [Mypy strictness](docs/mypy.md) | Mypy as a hard CI gate (not advisory), baseline snapshots as a bootstrapping scaffold with a defined exit, and strict-mode type-clean new code. |
 | [Pyright strict mode](docs/pyright.md) | Pyright must run at `typeCheckingMode = "strict"` so it enforces the same type-safety baseline as mypy `--strict`. |
 | [py.typed wheel guard](docs/py-typed-wheel-guard.md) | Automated verification that the `py.typed` marker ships in the built wheel — installed type-check + wheel-content assertion. |
+| [Dependency typing metadata](docs/dependency-typing-metadata.md) | A `[tool.robotsix.typing]` table declaring which runtime dependencies are typed or untyped, so downstream consumers generate their mypy/pyright exemptions from an upstream source of truth instead of rediscovering `py.typed` by hand. |
 | [Docstring convention](docs/docstrings.md) | Python docstring style and coverage rules for all public modules, classes, and functions. |
 | [HTTP client persistence](docs/http-client-persistence.md) | One persistent `httpx.Client` (or `requests.Session`) with an explicit timeout, reused for all outbound calls — no per-call module-level convenience helpers. |
 | [SSRF-hardened httpx fetchers](docs/ssrf-hardened-fetchers.md) | Tools fetching attacker-influenced URLs must validate and pin the resolved IP at the connection layer (guarded `httpcore` pool), not in a pre-flight DNS check — closes the DNS-rebinding TOCTOU gap and re-validates redirect hops. |

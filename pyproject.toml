@@ -18,3 +18,26 @@ exclude = ["config*", "styles*"]
 [tool.codespell]
 skip = "*.lock,*.json,*.svg,*.png,.git,*.secrets.baseline,site,styles"
 ignore-words-list = "addopt,bu,ro,te,ser,fo,tha,thru,coo,ans,ist,nd"
+
+[tool.ruff]
+target-version = "py314"
+
+[tool.ruff.lint]
+# Scoped to the CI-gate scripts under scripts/ (the only Python in this docs
+# repo). The default E4/E7/E9/F set plus the pragmatic extras that caught real
+# issues here (RUF015, PERF102, ISC004). E5/E501 is deliberately omitted —
+# ruff format owns line length and the scripts' long docstring prose is left
+# untouched.
+select = ["E4", "E7", "E9", "F", "EXE", "RUF", "PERF", "ISC"]
+
+[tool.ruff.lint.per-file-ignores]
+# EXE001: the scripts carry a shebang but CI invokes them as
+# `uv run ... python scripts/<name>.py` (never executed directly), so they are
+# intentionally not executable.
+"scripts/*.py" = ["EXE001"]
+
+[tool.mypy]
+strict = true
+# Allow bare generic types (e.g. `list[dict]`, `dict | None`) in the small CI
+# gate scripts instead of forcing full type parameterization throughout.
+disallow_any_generics = false

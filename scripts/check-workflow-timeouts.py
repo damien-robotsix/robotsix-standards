@@ -153,8 +153,10 @@ def _analyse_job(job: dict) -> tuple[bool, str]:
         if not line or "#" not in line.split("timeout-minutes:", 1)[-1]:
             return (
                 False,
-                f"{name}: timeout-minutes > 15 requires an inline # comment "
-                "explaining why (docs/repo-baseline.md)",
+                (
+                    f"{name}: timeout-minutes > 15 requires an inline # comment "
+                    "explaining why (docs/repo-baseline.md)"
+                ),
             )
 
     return True, f"{name}: timeout-minutes OK"

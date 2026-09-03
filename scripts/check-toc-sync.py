@@ -73,7 +73,7 @@ def extract_pages(nav: list[object], section_name: str) -> list[str]:
             if key != section_name:
                 continue
             if isinstance(value, list):
-                return [list(sub.values())[0] for sub in value]
+                return [next(iter(sub.values())) for sub in value]
             if isinstance(value, str):
                 return [value]
             break
@@ -101,13 +101,17 @@ def _extract_section_text(content: str, marker: str, all_markers: list[str]) -> 
     return content[start:end]
 
 
-def _extract_readme_pages(content: str, marker: str, all_markers: list[str]) -> list[str]:
+def _extract_readme_pages(
+    content: str, marker: str, all_markers: list[str]
+) -> list[str]:
     """Extract page filenames from links like ``[text](docs/<page>.md)`` in a README section."""
     section = _extract_section_text(content, marker, all_markers)
     return re.findall(r"\]\(docs/([^)]+\.md)\)", section)
 
 
-def _extract_index_pages(content: str, marker: str, all_markers: list[str]) -> list[str]:
+def _extract_index_pages(
+    content: str, marker: str, all_markers: list[str]
+) -> list[str]:
     """Extract page filenames from links like ``[text](<page>.md)`` in an index section."""
     section = _extract_section_text(content, marker, all_markers)
     return re.findall(r"\]\(([^)]+\.md)\)", section)
@@ -119,7 +123,7 @@ def _all_nav_pages(nav: list[object]) -> set[str]:
     for item in nav:
         if not isinstance(item, dict):
             continue
-        for _key, value in item.items():
+        for value in item.values():
             if isinstance(value, list):
                 for sub in value:
                     if isinstance(sub, dict):

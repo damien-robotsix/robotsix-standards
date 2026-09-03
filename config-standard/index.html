@@ -1850,10 +1850,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#4-advanced-settings-flag" class="md-nav__link">
+  <a href="#4-grouping-settings-into-foldable-groups" class="md-nav__link">
     <span class="md-ellipsis">
       
-        4. Advanced settings flag
+        4. Grouping settings into foldable groups
       
     </span>
   </a>
@@ -1944,10 +1944,10 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#advanced-flag-rollout" class="md-nav__link">
+  <a href="#repealing-the-advanced-flag" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Advanced-flag rollout
+        Repealing the advanced flag
       
     </span>
   </a>
@@ -2756,10 +2756,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#4-advanced-settings-flag" class="md-nav__link">
+  <a href="#4-grouping-settings-into-foldable-groups" class="md-nav__link">
     <span class="md-ellipsis">
       
-        4. Advanced settings flag
+        4. Grouping settings into foldable groups
       
     </span>
   </a>
@@ -2850,10 +2850,10 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#advanced-flag-rollout" class="md-nav__link">
+  <a href="#repealing-the-advanced-flag" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Advanced-flag rollout
+        Repealing the advanced flag
       
     </span>
   </a>
@@ -2972,67 +2972,79 @@ implement redaction or merge); they are the deploy system's responsibility.</p>
   echoed. The operator types a new value to set or change the secret;
   leaving it blank preserves the existing value.</li>
 </ul>
-<h3 id="4-advanced-settings-flag">4. Advanced settings flag<a class="headerlink" href="#4-advanced-settings-flag" title="Permanent link">&para;</a></h3>
-<p>A per-setting <strong><code>advanced</code></strong> annotation (boolean, default <code>false</code>) lets the
-deploy UI hide rarely-changed or expert-only settings behind a "Show advanced
-settings" toggle — off by default. It is <strong>purely presentational</strong>: marking a
-field <code>advanced: true</code> does not change validation, serialization, or runtime
-behavior in any way. The application never sees the flag; only the deploy UI
-consumes it from the committed <code>config/config.schema.json</code>.</p>
+<h3 id="4-grouping-settings-into-foldable-groups">4. Grouping settings into foldable groups<a class="headerlink" href="#4-grouping-settings-into-foldable-groups" title="Permanent link">&para;</a></h3>
+<p><strong>The <code>advanced</code> flag is repealed.</strong> Earlier revisions of this standard defined
+a per-setting <strong><code>advanced</code></strong> boolean that let the deploy UI hide rarely-changed
+or expert-only settings behind a global "Show advanced settings" toggle. That
+mechanism is <strong>removed</strong>: components MUST NOT mark settings <code>advanced</code>, and the
+shared <code>@robotsix/ui</code> ConfigPanel no longer honours the flag. An
+<code>"advanced": true</code> annotation left in a committed <code>config/config.schema.json</code>
+is dead cruft — an unrecognised JSON Schema keyword the panel silently ignores
+— and MUST be stripped (see the <a href="#repealing-the-advanced-flag">repeal sweep</a>).</p>
+<p><em>Failure it prevents:</em> one global hide/show toggle scaled badly. A component
+with a dozen expert-only keys dumped them all into a single flat "advanced"
+bucket with no relation to one another, so operators flipped the toggle on to
+find the one field they wanted — defeating the point of hiding anything.</p>
+<p><strong>Group related keys instead.</strong> Config settings SHOULD be organised into
+logical, <strong>foldable groups</strong>, driven from the schema's structure rather than a
+per-field hide flag. The panel renders each group as a collapsible section with
+a header; related keys live together and the group folds or unfolds as a unit.
+Every field stays a first-class, always-reachable setting — reached by
+unfolding its group, never gated behind an expert-mode switch.</p>
 <p><strong>Model layer — component code</strong></p>
-<p>Annotate a field as advanced with pydantic's <code>Field(json_schema_extra=…)</code>:</p>
-<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">pydantic</span><span class="w"> </span><span class="kn">import</span> <span class="n">BaseModel</span><span class="p">,</span> <span class="n">Field</span>
+<p>Express a group by nesting its related keys under a sub-model — the natural
+pydantic idiom — so the emitted JSON Schema carries the grouping as a nested
+<code>object</code> property the panel renders as one foldable section:</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">pydantic</span><span class="w"> </span><span class="kn">import</span> <span class="n">BaseModel</span><span class="p">,</span> <span class="n">SecretStr</span>
 
-<span class="k">class</span><span class="w"> </span><span class="nc">MailConfig</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+
+<span class="k">class</span><span class="w"> </span><span class="nc">OpenRouterConfig</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;All OpenRouter / LLM keys under one group.&quot;&quot;&quot;</span>
+    <span class="n">keys</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">SecretStr</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+
+
+<span class="k">class</span><span class="w"> </span><span class="nc">MyComponentConfig</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
     <span class="n">log_level</span><span class="p">:</span> <span class="n">LogLevel</span> <span class="o">=</span> <span class="n">LogLevel</span><span class="o">.</span><span class="n">info</span>
-    <span class="n">connection_pool_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
-        <span class="n">default</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
-        <span class="n">json_schema_extra</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;advanced&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">},</span>
-    <span class="p">)</span>
+    <span class="n">openrouter</span><span class="p">:</span> <span class="n">OpenRouterConfig</span> <span class="o">=</span> <span class="n">OpenRouterConfig</span><span class="p">()</span>
 </code></pre></div>
-<p>The library emits this into the JSON Schema as a top-level property on the
-field's schema object:</p>
+<p>The library emits the sub-model as a nested object the panel folds as a group:</p>
 <div class="highlight"><pre><span></span><code><span class="p">{</span>
 <span class="w">  </span><span class="nt">&quot;properties&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
 <span class="w">    </span><span class="nt">&quot;log_level&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;string&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;enum&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;info&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;debug&quot;</span><span class="p">],</span><span class="w"> </span><span class="nt">&quot;default&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;info&quot;</span><span class="p">},</span>
-<span class="w">    </span><span class="nt">&quot;connection_pool_size&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">      </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;integer&quot;</span><span class="p">,</span>
-<span class="w">      </span><span class="nt">&quot;default&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">10</span><span class="p">,</span>
-<span class="w">      </span><span class="nt">&quot;advanced&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span>
+<span class="w">    </span><span class="nt">&quot;openrouter&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;object&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;openrouter&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;properties&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;keys&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;object&quot;</span><span class="p">}</span>
+<span class="w">      </span><span class="p">}</span>
 <span class="w">    </span><span class="p">}</span>
 <span class="w">  </span><span class="p">}</span>
 <span class="p">}</span>
 </code></pre></div>
+<p><strong>Grouping guidance (for fleet repos)</strong></p>
+<ul>
+<li><strong>Keep genuinely related keys in one group.</strong> All LLM/OpenRouter credentials
+  under one <code>openrouter</code> group (§8); the Langfuse block under <code>langfuse</code> (§7);
+  a database's host, port and pool size under one <code>db</code> group. The test is "are
+  these edited together?" — if yes, they belong in the same foldable section.</li>
+<li><strong>Name the group for its domain, not its audience.</strong> <code>openrouter</code>,
+  <code>langfuse</code>, <code>db</code> — never <code>advanced</code> or <code>expert</code>. Grouping is about <em>what a
+  setting relates to</em> (stable), not <em>how often</em> it changes (the old flag's
+  brittle axis).</li>
+<li><strong>Flat, unrelated top-level keys</strong> (a lone <code>log_level</code>, a single
+  <code>&lt;name&gt;_url</code>) need no group — they render as ungrouped top-level fields.</li>
+<li><strong>Never hide a security boundary.</strong> A secret field (<code>SecretStr</code>) is already
+  masked; keep it visible inside its group so the operator cannot miss it.</li>
+</ul>
 <p><strong>Deploy-UI layer — central-deploy Configure screen</strong></p>
 <ul>
-<li><strong>Hidden by default.</strong> Every field with <code>"advanced": true</code> is hidden when the
-  "Show advanced settings" toggle is off. Fields without the flag (or with
-  <code>"advanced": false</code>) are always visible — schemas without the flag behave
-  exactly as today (all settings visible).</li>
-<li><strong>Fully editable when revealed.</strong> Toggling "Show advanced settings" on reveals
-  the advanced fields inline with their typed inputs (number, bool, dropdown,
-  etc.). No separate "advanced mode" form exists — the toggle only controls
-  visibility; once visible, advanced fields are first-class settings.</li>
-<li><strong>Backward compatible.</strong> Omitting <code>advanced</code> from a field's schema is
-  equivalent to <code>"advanced": false</code>. Existing schemas require no changes and
-  render identically to before.</li>
-</ul>
-<p><strong>Classifying settings (guidance for fleet repos)</strong></p>
-<p>These heuristics help decide which fields to mark <code>advanced: true</code>:</p>
-<ul>
-<li><strong>Rarely changed.</strong> A setting the operator sets once at onboarding and never
-  touches again (e.g. a worker thread count, a database pool size) is a good
-  candidate.</li>
-<li><strong>Expert-only.</strong> Settings whose meaning requires deep knowledge of the
-  component's internals (e.g. a GC tuning knob, a buffer size in bytes).</li>
-<li><strong>Safe default exists.</strong> If the default is sensible for nearly all deployments
-  and changing it is purely an optimisation, mark it advanced. If the operator
-  <em>must</em> set it for the component to work, keep it visible.</li>
-<li><strong>Conversely, keep visible:</strong> anything the operator must set for the component
-  to function (e.g. a hostname, an external URL), anything they will
-  deliberately change day-to-day (e.g. a log level), and anything that is a
-  security boundary (e.g. a secret field — <code>SecretStr</code> is already masked, and
-  hiding it behind a second toggle risks the operator missing it).</li>
+<li><strong>Foldable groups, no global toggle.</strong> Each schema group renders as a
+  collapsible section; there is no "Show advanced settings" switch and no
+  <code>advanced</code> keyword is consumed. Folding is per-group and presentational only
+  — it changes nothing about validation, serialization, or runtime behavior.</li>
+<li><strong>Data-driven.</strong> Grouping comes entirely from the committed
+  <code>config/config.schema.json</code> structure, so the UI and the runtime model can
+  never disagree about which keys belong together.</li>
 </ul>
 <h3 id="5-what-environment-is-for">5. What <code>environment:</code> is for<a class="headerlink" href="#5-what-environment-is-for" title="Permanent link">&para;</a></h3>
 <p>The one-file rule means <code>environment:</code> in a compose file is <strong>never</strong> a config
@@ -3214,27 +3226,27 @@ cutover</strong> — no deprecated aliases or compatibility shims.</p>
 </ol>
 <p>Each component migrates in one step — there's no dual-config transition to
 manage.</p>
-<h3 id="advanced-flag-rollout">Advanced-flag rollout<a class="headerlink" href="#advanced-flag-rollout" title="Permanent link">&para;</a></h3>
-<p>The <code>advanced</code> flag is backward-compatible by design — schemas without it
-behave exactly as before (all fields visible). Fleet repos can adopt it
-incrementally:</p>
+<h3 id="repealing-the-advanced-flag">Repealing the advanced flag<a class="headerlink" href="#repealing-the-advanced-flag" title="Permanent link">&para;</a></h3>
+<p>The <code>advanced</code> flag (former §4) is <strong>withdrawn</strong> in lockstep with the shared
+<code>@robotsix/ui</code> ConfigPanel dropping the "Show advanced settings" mechanism.
+The panel now ignores the keyword, so any <code>"advanced": true</code> left in a schema
+is dead cruft. The cutover is a <strong>clean sweep</strong> — per-repo follow-up work that
+does not block this amendment:</p>
 <ol>
-<li>The flag is defined here and available in the library's JSON Schema
-   output immediately (any <code>Field(json_schema_extra={"advanced": True})</code> on a
-   pydantic model is passed through to <code>config.schema.json</code>).</li>
-<li><strong>central-deploy</strong> implements the toggle in its Configure screen (separate
-   ticket). Until that toggle ships, <code>"advanced": true</code> annotations in
-   schemas are harmless — they are an unrecognised JSON Schema keyword that
-   existing deploy-UI versions ignore.</li>
-<li><strong>Fleet repos</strong> classify their settings per the heuristics in §4. Each
-   repo adds <code>json_schema_extra={"advanced": True}</code> to the relevant fields,
-   regenerates <code>config/config.schema.json</code>, and the CI drift check confirms
-   the schema is in sync. This is per-repo follow-up work — the flag is
-   optional and repos can adopt it on their own schedule.</li>
-<li>No data migration, breaking change, or flag day is required. An
-   unmarked field is visible; a marked field is hidden behind the toggle
-   once central-deploy supports it; nothing else changes.</li>
+<li><strong>Panel</strong> removes the advanced toggle and honours foldable groups instead
+   (robotsix-ui ConfigPanel rework — separate ticket).</li>
+<li><strong>Fleet repos</strong> strip every <code>json_schema_extra={"advanced": True}</code> (or
+   equivalent <code>"advanced": true</code>) from their pydantic models, regenerate
+   <code>config/config.schema.json</code>, and reorganise related keys into groups per
+   §4. The CI drift check confirms the regenerated schema is in sync.</li>
+<li>Each affected component is tracked by a linked follow-up ticket; the sweep
+   is mechanical (drop a dead annotation) and carries no data migration,
+   breaking change, or flag day.</li>
 </ol>
+<p>The affected-component list is enumerated by scanning every fleet component's
+committed schema for the keyword — e.g.
+<code>grep -rl '"advanced"' */config/config.schema.json</code> across the fleet — and
+filing one strip-the-flag ticket per hit.</p>
 
 
 

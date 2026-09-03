@@ -10,13 +10,13 @@
       
       
       
-        <link rel="canonical" href="https://damien-robotsix.github.io/robotsix-standards/single-source-versioning/">
+        <link rel="canonical" href="https://damien-robotsix.github.io/robotsix-standards/deprecation-policy/">
       
       
-        <link rel="prev" href="../python/">
+        <link rel="prev" href="../docstrings/">
       
       
-        <link rel="next" href="../python-main-py-forward/">
+        <link rel="next" href="../http-client-persistence/">
       
       
         
@@ -27,7 +27,7 @@
     
     
       
-        <title>Single-source versioning - Robotsix Standards</title>
+        <title>Deprecation lifecycle - Robotsix Standards</title>
       
     
     
@@ -78,7 +78,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#single-source-versioning" class="md-skip">
+        <a href="#deprecation-lifecycle" class="md-skip">
           Skip to content
         </a>
       
@@ -114,7 +114,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Single-source versioning
+              Deprecation lifecycle
             
           </span>
         </div>
@@ -841,37 +841,10 @@
                 
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Single-source versioning
-  
-
-    
-  </span>
-  
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../single-source-versioning/" class="md-nav__link">
         
   
   
@@ -887,109 +860,6 @@
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#rule-one-version-string-one-source" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Rule: one version string, one source
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#configuration" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Configuration
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Configuration">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#1-define-__version__-in-the-package-init" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        1. Define __version__ in the package init
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#2-wire-pyprojecttoml-to-read-it" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        2. Wire pyproject.toml to read it
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#3-remove-any-other-version-literals" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        3. Remove any other version literals
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#interaction-with-release-please" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Interaction with release-please
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#build-frontend-compatibility" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Build frontend compatibility
-      
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -1335,10 +1205,37 @@
                 
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="../deprecation-policy/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Deprecation lifecycle
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   
@@ -1354,6 +1251,103 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#why-this-exists" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why this exists
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-lifecycle-mandatory" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The lifecycle (mandatory)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#runtime-warning-mandatory" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Runtime warning (mandatory)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#docstring-convention-mandatory" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Docstring convention (mandatory)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#changelog-signal-mandatory" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Changelog signal (mandatory)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#testing-mandatory" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Testing (mandatory)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#companion-standards" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Companion standards
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -2695,10 +2689,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#rule-one-version-string-one-source" class="md-nav__link">
+  <a href="#why-this-exists" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Rule: one version string, one source
+        Why this exists
       
     </span>
   </a>
@@ -2706,60 +2700,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#configuration" class="md-nav__link">
+  <a href="#the-lifecycle-mandatory" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Configuration
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Configuration">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#1-define-__version__-in-the-package-init" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        1. Define __version__ in the package init
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#2-wire-pyprojecttoml-to-read-it" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        2. Wire pyproject.toml to read it
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#3-remove-any-other-version-literals" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        3. Remove any other version literals
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#interaction-with-release-please" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Interaction with release-please
+        The lifecycle (mandatory)
       
     </span>
   </a>
@@ -2767,10 +2711,54 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#build-frontend-compatibility" class="md-nav__link">
+  <a href="#runtime-warning-mandatory" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Build frontend compatibility
+        Runtime warning (mandatory)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#docstring-convention-mandatory" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Docstring convention (mandatory)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#changelog-signal-mandatory" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Changelog signal (mandatory)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#testing-mandatory" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Testing (mandatory)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#companion-standards" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Companion standards
       
     </span>
   </a>
@@ -2797,85 +2785,131 @@
   
 
 
-<h1 id="single-source-versioning">Single-source versioning<a class="headerlink" href="#single-source-versioning" title="Permanent link">&para;</a></h1>
+<h1 id="deprecation-lifecycle">Deprecation lifecycle<a class="headerlink" href="#deprecation-lifecycle" title="Permanent link">&para;</a></h1>
 <blockquote>
-<p><strong>Scope: every Python repository</strong> that uses setuptools as the build backend
-(hatchling-based repos have their own version convention; see
-<a href="../python/">Python practices</a>). This standard prescribes a single source of
-truth for the version string so that <code>importlib.metadata.version()</code>,
-<code>pkg.__version__</code>, and <code>pip show</code> all agree.</p>
+<p><strong>Scope: every Python library with a public API.</strong> A public library removes
+an API only after it has shipped at least one release cycle marked as
+deprecated — announced in the docstring, emitted at runtime as a
+<code>DeprecationWarning</code>, and signalled in the changelog — so a consumer gets a
+migration window instead of a break with no notice.</p>
 </blockquote>
-<h2 id="rule-one-version-string-one-source">Rule: one version string, one source<a class="headerlink" href="#rule-one-version-string-one-source" title="Permanent link">&para;</a></h2>
-<p><strong>Rule:</strong> The version string MUST be defined in exactly one place — the
-package's <code>__init__.py</code> — and read dynamically by the build backend. No other
-file may contain a version literal.</p>
-<p><strong>Rationale:</strong> Every duplication is a drift hazard. A version bump in
-<code>pyproject.toml</code> that misses <code>__init__.py</code> (or vice versa) produces silent
-inconsistencies: <code>importlib.metadata.version("mypkg")</code> returns a different
-value than <code>mypkg.__version__</code>. Docker tags, CLI output (<code>--version</code>), and
-logs become unreliable.</p>
-<blockquote>
-<p><strong>Failure mode.</strong> A repo that hard-codes <code>version = "0.3.1"</code> in both
-<code>pyproject.toml</code> and <code>src/mypkg/__init__.py</code> appears consistent at first.
-When release-please bumps only <code>pyproject.toml</code>, the package reports the new
-version via <code>importlib.metadata</code> but <code>mypkg.__version__</code> still returns the
-old string — consuming code that inspects <code>__version__</code> sees stale data.</p>
-</blockquote>
-<h2 id="configuration">Configuration<a class="headerlink" href="#configuration" title="Permanent link">&para;</a></h2>
-<h3 id="1-define-__version__-in-the-package-init">1. Define <code>__version__</code> in the package init<a class="headerlink" href="#1-define-__version__-in-the-package-init" title="Permanent link">&para;</a></h3>
-<div class="highlight"><pre><span></span><code><span class="c1"># src/my_package/__init__.py</span>
-<span class="sd">&quot;&quot;&quot;My package.&quot;&quot;&quot;</span>
-
-<span class="n">__version__</span> <span class="o">=</span> <span class="s2">&quot;0.1.0&quot;</span>
-</code></pre></div>
-<p>The <code>__version__</code> string MUST be a plain string literal — no computed values,
-no <code>importlib.metadata</code> fallbacks, no version-file reads. (The build backend
-parses the AST; dynamic expressions are invisible to it.)</p>
-<h3 id="2-wire-pyprojecttoml-to-read-it">2. Wire <code>pyproject.toml</code> to read it<a class="headerlink" href="#2-wire-pyprojecttoml-to-read-it" title="Permanent link">&para;</a></h3>
-<p>Replace the static <code>[project] version</code> field with a dynamic reference:</p>
-<div class="highlight"><pre><span></span><code><span class="k">[project]</span>
-<span class="c1"># Remove: version = &quot;0.1.0&quot;</span>
-<span class="n">dynamic</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;version&quot;</span><span class="p">]</span>
-
-<span class="k">[tool.setuptools.dynamic]</span>
-<span class="n">version</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="n">attr</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">&quot;my_package.__version__&quot;</span><span class="p">}</span>
-</code></pre></div>
-<p>The <code>attr</code> path must match the package's [tool.setuptools.packages.find]
-layout. If <code>packages.find</code> has <code>where = ["src"]</code>, the attribute path is
-<code>my_package.__version__</code> (not <code>src.my_package.__version__</code>).</p>
-<h3 id="3-remove-any-other-version-literals">3. Remove any other version literals<a class="headerlink" href="#3-remove-any-other-version-literals" title="Permanent link">&para;</a></h3>
-<p>Ensure no other file in the repo contains a version string that duplicates
-<code>__init__.py</code> — in particular, remove <code>__version__</code> from <code>__main__.py</code>,
-<code>_version.py</code>, or any other module.</p>
-<h2 id="interaction-with-release-please">Interaction with release-please<a class="headerlink" href="#interaction-with-release-please" title="Permanent link">&para;</a></h2>
-<p><a href="../release-please/">Release-please</a> requires the version to live somewhere it
-can read and write. When configured with <code>release-type: "python"</code>,
-release-please reads the version from the static <code>[project].version</code> field in
-<code>pyproject.toml</code>.</p>
-<p>If you use release-please alongside this standard, the version string lives in
-<code>__init__.py</code> and release-please reads it from <code>pyproject.toml</code>. Release-please
-writes the bumped version back to <code>pyproject.toml</code>'s <code>[project].version</code> field.
-After a release, copy the new version into <code>__init__.py</code> or configure
-release-please to write both locations (see release-please docs for
-<code>extra-files</code> support).</p>
-<blockquote>
-<p><strong>Workflow pattern (future):</strong> Once <code>extra-files</code> support is confirmed for
-all fleet repos, release-please will update <code>__init__.py</code> directly instead of
-<code>pyproject.toml</code>, and <code>pyproject.toml</code> will use <code>dynamic = ["version"]</code> with
-<code>[tool.setuptools.dynamic]</code> exclusively. The static <code>[project].version</code> field
-remains in <code>pyproject.toml</code> today only to satisfy release-please's current
-capabilities.</p>
-</blockquote>
-<h2 id="build-frontend-compatibility">Build frontend compatibility<a class="headerlink" href="#build-frontend-compatibility" title="Permanent link">&para;</a></h2>
-<p>This configuration works with any setuptools-compatible build frontend:</p>
+<h2 id="why-this-exists">Why this exists<a class="headerlink" href="#why-this-exists" title="Permanent link">&para;</a></h2>
+<p>Fleet libraries version with <a href="../release-please/">release-please</a> and
+conventional commits: a <code>BREAKING CHANGE:</code> footer bumps the major version and
+lands the removal in the changelog. That mechanism is binary — an API is
+supported until the release where it is deleted, with no intermediate phase.</p>
+<p>Without a deprecation phase between "supported" and "removed":</p>
 <ul>
-<li><code>pip install -e .</code></li>
-<li><code>uv pip install -e .</code></li>
-<li><code>python -m build</code></li>
+<li>A library removes an API with no advance notice, forcing every consumer to
+  update in lockstep with the major release.</li>
+<li>A consumer cannot tell "still works, but plan ahead" from "gone, act now" —
+  both arrive as a breaking release.</li>
+<li>Nothing shows up in the consumer's own test run before the removal, so the
+  break is discovered only after upgrading.</li>
 </ul>
-<p>It does NOT work with hatchling, flit, or pdm — each of those backends has its
-own dynamic-version mechanism (see <a href="../python/">Python practices</a> for hatchling
-convention).</p>
+<p>This standard adds the missing phase: an API is first marked deprecated (it
+still works and still passes tests, but warns), and is removed no earlier than
+the next major release. Consumers get a release cycle to migrate, and a runtime
+signal they can catch in CI.</p>
+<h2 id="the-lifecycle-mandatory">The lifecycle (mandatory)<a class="headerlink" href="#the-lifecycle-mandatory" title="Permanent link">&para;</a></h2>
+<p><strong>Deprecate in version N; remove no earlier than the next major release.</strong> A
+public API that is going away must first ship a release in which it is marked
+deprecated but still functions. Its removal lands in a later major release —
+never in the same release that first deprecates it.</p>
+<p><em>Failure prevented:</em> deprecating and removing in the same release gives the
+consumer zero migration window — the deprecation notice and the break arrive
+together, which is exactly the no-notice removal this standard exists to
+prevent.</p>
+<h2 id="runtime-warning-mandatory">Runtime warning (mandatory)<a class="headerlink" href="#runtime-warning-mandatory" title="Permanent link">&para;</a></h2>
+<p>A deprecated callable emits a <code>DeprecationWarning</code> via <code>warnings.warn</code> on use,
+naming the replacement and the version in which removal is planned:</p>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">warnings</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">old_function</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Compute the widget total.</span>
+
+<span class="sd">    .. deprecated:: 0.7.0</span>
+<span class="sd">        Use :func:`new_function` instead. Will be removed in 1.0.0.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
+        <span class="s2">&quot;old_function() is deprecated since 0.7.0 and will be removed in &quot;</span>
+        <span class="s2">&quot;1.0.0; use new_function() instead.&quot;</span><span class="p">,</span>
+        <span class="ne">DeprecationWarning</span><span class="p">,</span>
+        <span class="n">stacklevel</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="k">return</span> <span class="n">new_function</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+</code></pre></div>
+<ul>
+<li>Use <code>DeprecationWarning</code> (not <code>UserWarning</code> or a bare <code>print</code>) so consumers
+  can filter, silence, or escalate it through the standard <code>warnings</code>
+  machinery.</li>
+<li>Pass <code>stacklevel=2</code> so the warning points at the <strong>caller's</strong> line, not the
+  line inside the deprecated function — a warning that blames the library's own
+  source tells the consumer nothing about where to fix their code.</li>
+</ul>
+<p><em>Failure prevented:</em> an API that is documented as deprecated but emits no
+runtime warning is invisible to a consumer who does not re-read the changelog —
+the deprecation cannot surface in their test run, so the first signal they get
+is the removal.</p>
+<h2 id="docstring-convention-mandatory">Docstring convention (mandatory)<a class="headerlink" href="#docstring-convention-mandatory" title="Permanent link">&para;</a></h2>
+<p>Mark the deprecated object with a reStructuredText <code>.. deprecated::</code> block (as
+above) naming the version it was deprecated in, the replacement, and the
+version in which it will be removed. This follows the fleet
+<a href="../docstrings/">docstring convention</a> and renders as a highlighted admonition
+in the built docs.</p>
+<p><em>Failure prevented:</em> a deprecation recorded only in a commit message or a
+changelog entry is not visible at the point of use — a developer reading the
+API reference or their editor's hover tooltip sees no signal that the function
+is on its way out.</p>
+<h2 id="changelog-signal-mandatory">Changelog signal (mandatory)<a class="headerlink" href="#changelog-signal-mandatory" title="Permanent link">&para;</a></h2>
+<p>Ship the deprecation in a conventional commit (<code>feat:</code>, <code>fix:</code>, or <code>refactor:</code>
+as appropriate) and add a <code>Deprecation:</code> footer — analogous to
+<code>BREAKING CHANGE:</code> — naming the deprecated API and its planned removal version:</p>
+<div class="highlight"><pre><span></span><code>refactor: route widget totals through new_function
+
+Deprecation: old_function() is deprecated as of this release and will be
+removed in 1.0.0. Use new_function() instead.
+</code></pre></div>
+<p>The <code>Deprecation:</code> footer is a greppable marker across history that lets a
+maintainer enumerate outstanding deprecations and confirm each is removed on
+schedule. The matching <code>BREAKING CHANGE:</code> footer is added by the later commit
+that performs the removal, so <a href="../release-please/">release-please</a> records the
+removal as the major-version-bumping changelog entry.</p>
+<p><em>Failure prevented:</em> a deprecation that leaves no durable trail in history
+cannot be audited — no one can answer "which deprecated APIs are due for
+removal in the next major?" without reading every docstring by hand.</p>
+<h2 id="testing-mandatory">Testing (mandatory)<a class="headerlink" href="#testing-mandatory" title="Permanent link">&para;</a></h2>
+<p>Add a test that asserts the deprecated API both <strong>still works</strong> and <strong>emits a
+<code>DeprecationWarning</code></strong>:</p>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">pytest</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">test_old_function_warns_and_works</span><span class="p">():</span>
+    <span class="k">with</span> <span class="n">pytest</span><span class="o">.</span><span class="n">warns</span><span class="p">(</span><span class="ne">DeprecationWarning</span><span class="p">,</span> <span class="n">match</span><span class="o">=</span><span class="s2">&quot;removed in 1.0.0&quot;</span><span class="p">):</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">old_function</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="n">result</span> <span class="o">==</span> <span class="n">expected</span>  <span class="c1"># still functions during the deprecation window</span>
+</code></pre></div>
+<p>The fleet <a href="../pytest/">pytest practices</a> set <code>filterwarnings = ["error"]</code>, which
+turns every un-asserted warning into a test failure. A <code>pytest.warns</code> block
+is therefore required: it both proves the warning fires and scopes the
+error-on-warning filter so the deprecated call does not fail the suite.</p>
+<p><em>Failure prevented:</em> without a test, the <code>warnings.warn</code> call can be dropped in
+a refactor with nothing to catch it, and the deprecation silently stops warning
+before the API is removed — reopening the no-notice-removal gap.</p>
+<h2 id="companion-standards">Companion standards<a class="headerlink" href="#companion-standards" title="Permanent link">&para;</a></h2>
+<ul>
+<li><strong><a href="../release-please/">Release-please release automation</a></strong> — the
+  conventional-commit + <code>BREAKING CHANGE:</code> mechanism this policy layers a
+  deprecation phase on top of.</li>
+<li><strong><a href="../docstrings/">Docstring convention</a></strong> — the docstring style the
+  <code>.. deprecated::</code> block conforms to.</li>
+<li><strong><a href="../pytest/">Pytest practices</a></strong> — the <code>filterwarnings = ["error"]</code> setting
+  that makes the <code>pytest.warns</code> assertion mandatory.</li>
+<li><strong><a href="../single-source-versioning/">Single-source versioning</a></strong> — the version
+  string a deprecation notice references for its "deprecated since" and
+  "removed in" versions.</li>
+</ul>
 
 
 

@@ -1380,6 +1380,34 @@
   
   
     <li class="md-nav__item">
+      <a href="deprecation-policy/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Deprecation lifecycle
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="http-client-persistence/" class="md-nav__link">
         
   
@@ -2919,6 +2947,10 @@ everywhere.</p>
   version string, read dynamically by the setuptools build backend.</li>
 <li><strong><a href="docstrings/">Docstring convention</a></strong> — Python docstring style and coverage
   rules for all public modules, classes, and functions.</li>
+<li><strong><a href="deprecation-policy/">Deprecation lifecycle</a></strong> — public-library deprecation
+  policy: deprecate in version N and remove no earlier than the next major, with a
+  runtime <code>DeprecationWarning</code>, a <code>.. deprecated::</code> docstring block, a
+  <code>Deprecation:</code> commit footer, and a test asserting the warning.</li>
 <li><strong><a href="http-client-persistence/">HTTP client persistence</a></strong> — one persistent
   <code>httpx.Client</code> (or <code>requests.Session</code>) with an explicit timeout, reused for
   all outbound calls — no per-call module-level convenience helpers.</li>

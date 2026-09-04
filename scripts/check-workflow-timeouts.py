@@ -1,24 +1,28 @@
 #!/usr/bin/env python3
-"""Check that workflow jobs carrying a `uses:` reusable-workflow caller satisfy
-the repo-baseline timeout-minutes rule.
+"""Check that workflow jobs honour the repo-baseline timeout-minutes rule.
 
 This script is the automated enforcement gate referenced by the
-reusable-workflow timeout exception in docs/repo-baseline.md.  It runs in CI
-on PRs (see .github/workflows/baseline-check.yml and .github/workflows/ci.yml)
-and exits non-zero when a caller job lacks a `timeout-minutes` declaration.
+timeout-minutes rule in docs/repo-baseline.md.  It runs in CI on PRs
+(see .github/workflows/baseline-check.yml and .github/workflows/ci.yml)
+and exits non-zero when a step-running job lacks a `timeout-minutes`
+declaration or carries an unexplained ceiling above 15.
 
 Rules enforced (per docs/repo-baseline.md):
-  - A job whose steps call a reusable workflow via `uses:` (a reusable-workflow
-    caller) MUST declare `timeout-minutes`, because a reusable workflow does
-    not inherit the caller's own step timeout and could otherwise run up to
-    GitHub's 6-hour job limit.
+  - Every job that runs steps directly MUST declare an explicit
+    `timeout-minutes` ceiling, so a hung or runaway job is killed quickly
+    instead of consuming the 6-hour GitHub default.
   - A job whose `timeout-minutes` exceeds 15 MUST carry a same-line `#`
     comment explaining why, so the deviation from the 15-minute default is
     auditable.
+  - Reusable-workflow caller jobs (job-level `uses:`) are exempt: GitHub
+    Actions does not support `timeout-minutes` on a caller job, and the
+    ceiling belongs inside the called workflow, where each of its own jobs
+    declares `timeout-minutes`.
 
 Exit codes:
   0 — all workflow jobs satisfy the rule
-  1 — a caller job lacks timeout-minutes, or a >15 timeout has no explanation
+  1 — a step-running job lacks timeout-minutes, or a >15 timeout has no
+      explanation
   2 — script error (cannot read a workflow file, etc.)
 """
 
@@ -33,14 +37,29 @@ WORKFLOWS_DIR = REPO_ROOT / ".github" / "workflows"
 
 _TIMEOUT_RE = re.compile(r"^\s*timeout-minutes:\s*(\d+)\s*(#.*)?$")
 
-# Comments that document why the called workflow provides its own timing
-# and therefore needs no timeout-minutes on the caller job.
-_EXCEPTION_COMMENTS = (
-    "called workflow",
-    "reusable workflow",
-    "reusable-workflow",
-    "timeout",
-)
+
+def _new_job(name: str) -> dict:
+    return {
+        "name": name,
+        "timeout_value": None,
+        "timeout_line": None,
+        "has_runs_on": False,
+        "has_job_uses": False,
+    }
+
+
+def _apply_attribute(job: dict, line: str) -> None:
+    """Record one job-level attribute ``line`` (already stripped) on ``job``."""
+    key = line.split(":", 1)[0]
+    if key == "timeout-minutes":
+        m = _TIMEOUT_RE.match(line)
+        if m:
+            job["timeout_value"] = int(m.group(1))
+            job["timeout_line"] = line
+    elif key == "runs-on":
+        job["has_runs_on"] = True
+    elif key == "uses":
+        job["has_job_uses"] = True
 
 
 def _parse_jobs(text: str) -> list[dict]:
@@ -49,73 +68,63 @@ def _parse_jobs(text: str) -> list[dict]:
     This is intentionally a grep-based structural scan rather than a full YAML
     parse: jobs have arbitrary names and nested steps, and we only need each
     top-level job's `name`, `runs-on`, `timeout-minutes`, and any job-level
-    `uses:` / `with:` attributes.  A line is treated as starting a new job when
-    it is a two-space-indented (top-level) key whose previous non-blank line
-    was below the `jobs:` mapping (or the top of the file).
+    `uses:` / `with:` attributes.  Only lines inside the top-level `jobs:`
+    mapping are considered.  A job header is a bare two-space-indented
+    `<job-id>:` key under `jobs:`; its attributes are the following
+    four-space-indented keys (standard GitHub Actions layout) or, in the
+    legacy flat layout, two-space `key: value` lines written directly under
+    the header.  Deeper nesting (steps, `with:`, `env:`, matrices, `on:`
+    triggers) is ignored.
     """
     jobs: list[dict] = []
     current: dict | None = None
-    prev: str = ""
+    in_jobs = False  # the most recent top-level key was `jobs:`
 
     for raw in text.splitlines():
         stripped = raw.strip()
         if not stripped or stripped.startswith("#"):
-            prev = stripped
             continue
 
-        # Only columns 0-3 indentation can be a job/step/attribute we care
-        # about; anything deeper is a nested list or mapping we ignore.
+        # Only columns 0-4 can be a top-level key, job header or job
+        # attribute; anything deeper is a nested list or mapping we ignore.
         indent = len(raw) - len(raw.lstrip())
-        if indent > 3:
-            prev = stripped
+        if indent > 4:
             continue
 
-        if indent == 0 and stripped.endswith(":"):
-            # A top-level key (workflow `name`, `on`, `jobs`, ...); a job
-            # cannot appear directly at column 0, so only reset the "prev"
-            # bookkeeping that decides whether a 2-space key starts a job.
-            prev = stripped
+        if indent == 0:
+            # A top-level mapping key (workflow `name`, `on`, `jobs`, ...).
+            # Job headers only exist directly under `jobs:`, so track that
+            # and forget the in-flight job on every top-level key.
+            in_jobs = stripped.startswith("jobs:")
+            current = None
             continue
 
-        if indent == 2 and not stripped.startswith("-"):
-            # '  <key>: <value>' — inside `jobs:` this is a job's attribute
-            # (maps: {timeout-minutes, runs-on, ...}); at the top level of a
-            # step it would be `- ...` (filtered above) or a nested key we
-            # treat as an attribute.  A job attribute is only attributed to
-            # the current job.
-            key = stripped.split(":", 1)[0]
-            value = stripped.split(":", 1)[1].strip() if ":" in stripped else ""
-
-            # A bare top-level key inside `jobs:` is a *new job header* —
-            # e.g. `  docs:` with no value (job name), or `  job-id:`.
-            if value == "" and prev.endswith(":"):
-                jobs.append(
-                    {"name": key, "timeout_value": None, "timeout_line": None,
-                     "has_runs_on": False, "has_job_uses": False}
-                )
-                current = jobs[-1]
-                prev = stripped
+        if indent == 2 and in_jobs:
+            # Under `jobs:`, a 2-space line is either a job header (a bare
+            # `<job-id>:` key) or, in the legacy flat layout, a job attribute
+            # (`uses: ...`) written at the same indent as the header.
+            key, sep, value = stripped.partition(":")
+            if sep and value.strip():
+                # `  key: value` — flat-layout job attribute.
+                if current is not None:
+                    _apply_attribute(current, stripped)
                 continue
-
-            if current is None:
-                prev = stripped
-                continue
-
-            if key == "timeout-minutes":
-                m = _TIMEOUT_RE.match(stripped)
-                if m:
-                    current["timeout_value"] = int(m.group(1))
-                    current["timeout_line"] = stripped
-            elif key == "runs-on":
-                current["has_runs_on"] = True
-            elif key == "uses":
-                current["has_job_uses"] = True
-            prev = stripped
+            # Bare `  <job-id>:` — starts a new job.
+            jobs.append(_new_job(key))
+            current = jobs[-1]
             continue
 
-        # indent 0 non-key (unlikely) or indent 2/3 list item / attribute —
-        # step-level `- uses:` lines and `  with:` keys are filtered above.
-        prev = stripped
+        if indent == 4 and in_jobs and current is not None:
+            # Standard GitHub Actions layout: job attributes sit at 4-space
+            # indent under the header.  Nested blocks (`steps:`, `with:`,
+            # `env:`, `if:`, `permissions:`, ...) are deeper and filtered
+            # above; only the attributes we track are matched.
+            _apply_attribute(current, stripped)
+            continue
+
+        # indent 2/4 keys outside `jobs:` (`on:` triggers, `env:`,
+        # `permissions:`, `concurrency:`) and indents 1-3/5 are not job
+        # structure we track.
 
     return jobs
 
@@ -124,17 +133,19 @@ def _analyse_job(job: dict) -> tuple[bool, str]:
     """Return (ok, reason) for one job against the timeout-minutes rule."""
     name = job["name"]
 
-    # Only jobs that call a reusable workflow via job-level `uses:` are
-    # required to declare a timeout.  Regular jobs (no `uses:`) are free to
-    # rely on the platform default, exactly as the exception documents.
-    if not job["has_job_uses"]:
-        return True, f"{name}: regular job, no timeout required"
+    # Reusable-workflow caller jobs are exempt from declaring their own
+    # timeout-minutes: GitHub Actions does not support the setting on a caller
+    # job, and the ceiling belongs inside the called workflow
+    # (docs/repo-baseline.md, "Exception — reusable-workflow caller jobs").
+    if job["has_job_uses"]:
+        return True, f"{name}: reusable-workflow caller; timeout-minutes exempt"
 
+    # Every job that runs steps directly MUST declare a timeout ceiling.
     if job["timeout_value"] is None:
         return (
             False,
-            f"{name}: reusable-workflow caller jobs MUST declare "
-            "timeout-minutes (docs/repo-baseline.md)",
+            f"{name}: jobs that run steps MUST declare timeout-minutes "
+            "(docs/repo-baseline.md)",
         )
 
     if job["timeout_value"] > 15:
@@ -177,14 +188,14 @@ def main() -> int:
             "ERROR: actionable timeout-minutes violations found:\n  "
             + "\n  ".join(problems)
             + "\n\nAdd a `timeout-minutes` (with an inline # comment when "
-            "> 15) to every job\nthat calls a reusable workflow via `uses:` — "
-            "see docs/repo-baseline.md.\n"
+            "> 15) to every job that runs steps directly — see "
+            "docs/repo-baseline.md.\n"
         )
         return 1
 
     print(
-        f"OK — {ok_count} job(s) checked: every reusable-workflow caller "
-        "carries timeout-minutes."
+        f"OK — {ok_count} job(s) checked: every step-running job carries an "
+        "auditable timeout-minutes."
     )
     return 0
 

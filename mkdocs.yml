@@ -68,6 +68,9 @@ plugins:
         - "https://hatch.pypa.io/*"
         # npmjs.com blocks automated link-checker traffic with 403.
         - "https://www.npmjs.com/*"
+        # slsa.dev sometimes returns transient 504 gateway timeouts;
+        # security-posture.md links to the SLSA spec.
+        - "https://slsa.dev/*"
 
 nav:
   - Home: index.md

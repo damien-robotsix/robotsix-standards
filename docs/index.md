@@ -165,6 +165,10 @@ everywhere.
   test fixture pattern (session-scoped engine, function-scoped connection with
   rollback, function-scoped session with savepoints) for clean test isolation
   without dropping tables.
+- **[Alembic migration validation](alembic-migration-validation.md)** — every repo that ships Alembic
+  migrations must validate them in CI by executing `upgrade head` /
+  `downgrade base` against a fresh test database, rather than relying on
+  `Base.metadata.create_all` alone.
 - **[ROS 2 practices](ros2.md)** — workspace-skeleton layout, vcs2l manifest,
   devcontainer with ccache, colcon/rosdep build lifecycle, lint gates.
 - **[Pre-commit baseline](pre-commit-baseline.md)** — five zero-config

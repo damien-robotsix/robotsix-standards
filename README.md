@@ -76,6 +76,7 @@ the default.
 | [JavaScript practices](docs/javascript.md) | Vanilla frontend JS as static assets, lockfile discipline, vitest coverage floor, eslint/stylelint. |
 | [PHP practices](docs/php.md) | Native `php -l` syntax-check over all `.php` files as a blocking CI gate — no custom scanners, no parse errors in production. |
 | [Async SQLAlchemy test fixtures](docs/async-sqlalchemy-test-fixtures.md) | Three-layer database test fixture pattern — session-scoped engine, function-scoped connection with rollback, function-scoped session with savepoints — for clean isolation without dropping tables. |
+| [Alembic migration validation](docs/alembic-migration-validation.md) | Every repo that ships Alembic migrations must validate them in CI by running `upgrade head` / `downgrade base` against a fresh test database, not just `Base.metadata.create_all`. |
 | [ROS 2 practices](docs/ros2.md) | Workspace-skeleton layout, vcs2l manifest, devcontainer with ccache, colcon/rosdep build lifecycle, lint gates. |
 | [Pre-commit baseline](docs/pre-commit-baseline.md) | Five zero-config file-hygiene hooks (trailing-whitespace, end-of-file-fixer, check-yaml, check-toml, check-added-large-files) for every Python repo. |
 

@@ -10,13 +10,13 @@
       
       
       
-        <link rel="canonical" href="https://damien-robotsix.github.io/robotsix-standards/distribution-packaging/">
+        <link rel="canonical" href="https://damien-robotsix.github.io/robotsix-standards/alembic-migration-validation/">
       
       
-        <link rel="prev" href="../contributing-in-nav/">
+        <link rel="prev" href="../async-sqlalchemy-test-fixtures/">
       
       
-        <link rel="next" href="../python-ci-workflow/">
+        <link rel="next" href="../ros2/">
       
       
         
@@ -27,7 +27,7 @@
     
     
       
-        <title>Distribution & Packaging - Robotsix Standards</title>
+        <title>Alembic migration validation - Robotsix Standards</title>
       
     
     
@@ -78,7 +78,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#distribution-packaging" class="md-skip">
+        <a href="#alembic-migration-validation-in-ci" class="md-skip">
           Skip to content
         </a>
       
@@ -114,7 +114,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Distribution & Packaging
+              Alembic migration validation
             
           </span>
         </div>
@@ -729,37 +729,10 @@
                 
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Distribution & Packaging
-  
-
-    
-  </span>
-  
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../distribution-packaging/" class="md-nav__link">
         
   
   
@@ -775,120 +748,6 @@
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#rules" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Rules
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Rules">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#1-git-based-consumption-is-the-preferred-path" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        1. Git-based consumption is the preferred path
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#2-pin-to-a-commit-sha-not-a-branch" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        2. Pin to a commit SHA, not a branch
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#3-versioning-via-git-tags" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        3. Versioning via git tags
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#4-public-package-indexes-are-disallowed" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        4. Public package indexes are disallowed
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#5-internal-registry-is-the-only-acceptable-alternative" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        5. Internal registry is the only acceptable alternative
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#6-document-the-distribution-method" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        6. Document the distribution method
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#enforcement-future" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Enforcement (future)
-      
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -1794,10 +1653,37 @@
                 
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="../alembic-migration-validation/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Alembic migration validation
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   
@@ -1813,6 +1699,98 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#the-rule" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The rule
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#why" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#how-to-comply" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How to comply
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="How to comply">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#example-invocation-informative" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Example invocation (informative)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#what-this-does-not-cover" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What this does not cover
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#failure-modes-prevented" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Failure modes prevented
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -2734,77 +2712,44 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#rules" class="md-nav__link">
+  <a href="#the-rule" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Rules
+        The rule
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Rules">
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#why" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#how-to-comply" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How to comply
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="How to comply">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#1-git-based-consumption-is-the-preferred-path" class="md-nav__link">
+  <a href="#example-invocation-informative" class="md-nav__link">
     <span class="md-ellipsis">
       
-        1. Git-based consumption is the preferred path
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#2-pin-to-a-commit-sha-not-a-branch" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        2. Pin to a commit SHA, not a branch
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#3-versioning-via-git-tags" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        3. Versioning via git tags
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#4-public-package-indexes-are-disallowed" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        4. Public package indexes are disallowed
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#5-internal-registry-is-the-only-acceptable-alternative" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        5. Internal registry is the only acceptable alternative
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#6-document-the-distribution-method" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        6. Document the distribution method
+        Example invocation (informative)
       
     </span>
   </a>
@@ -2817,10 +2762,21 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#enforcement-future" class="md-nav__link">
+  <a href="#what-this-does-not-cover" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Enforcement (future)
+        What this does not cover
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#failure-modes-prevented" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Failure modes prevented
       
     </span>
   </a>
@@ -2847,126 +2803,96 @@
   
 
 
-<h1 id="distribution-packaging">Distribution &amp; Packaging<a class="headerlink" href="#distribution-packaging" title="Permanent link">&para;</a></h1>
+<h1 id="alembic-migration-validation-in-ci">Alembic migration validation in CI<a class="headerlink" href="#alembic-migration-validation-in-ci" title="Permanent link">&para;</a></h1>
 <blockquote>
-<p><strong>Scope: every robotsix repository</strong> — libraries and deployable components
-alike. This standard codifies how robotsix-built code is distributed to
-consumers; it is <em>in addition to</em> the <a href="../repo-baseline/">repo baseline</a>.</p>
+<p><strong>Scope: every Python repository that manages its database schema with
+Alembic</strong> (typically a FastAPI or other web-service backend deployed to
+production with a specific schema). Such a repo must validate its
+migrations in CI by executing them against a fresh test database — never
+by relying on <code>Base.metadata.create_all</code> alone.</p>
 </blockquote>
-<p>The stack distributes first-party libraries <strong>directly from git</strong> — no package
-index, no registry publish step. This is the same model
-<a href="https://github.com/damien-robotsix/robotsix-llmio"><code>robotsix-llmio</code></a> already
-uses: release-please bumps the version, generates the changelog, and pushes a
-<code>v*</code> tag; consumers pull it from GitHub pinned to a commit SHA. Every robotsix
-library follows the same path.</p>
-<h2 id="rules">Rules<a class="headerlink" href="#rules" title="Permanent link">&para;</a></h2>
-<h3 id="1-git-based-consumption-is-the-preferred-path">1. Git-based consumption is the preferred path<a class="headerlink" href="#1-git-based-consumption-is-the-preferred-path" title="Permanent link">&para;</a></h3>
-<p><strong>Rule:</strong> robotsix libraries are consumed directly from their GitHub repository,
-pinned to a tag or commit SHA. No registry publish step is required.</p>
-<p><strong>Rationale:</strong> A single-org, first-party set of repositories does not benefit
-from the overhead of a package index — publishing accounts, release machinery,
-token rotation — when every consumer already has access to the source. Git-based
-consumption is simpler, auditable, and removes an entire class of
-supply-chain risk (registry-account compromise, dependency confusion).</p>
-<blockquote>
-<p><strong>Failure mode.</strong> A library published to a public registry creates a
-supply-chain surface the org does not control: registry credentials must be
-provisioned, rotated, and protected; a compromised token lets an attacker
-publish malicious packages under the org's name. A registry also enables
-dependency confusion — an attacker publishing a same-named package to a public
-registry that a misconfigured resolver picks up instead of the org's internal
-one.</p>
-</blockquote>
-<p><strong>Python consumers</strong> use a git source in <code>pyproject.toml</code>:</p>
-<div class="highlight"><pre><span></span><code><span class="k">[tool.uv.sources]</span>
-<span class="n">robotsix-llmio</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">git</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">&quot;https://github.com/damien-robotsix/robotsix-llmio.git&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">rev</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">&quot;abc123def456&quot;</span><span class="w"> </span><span class="p">}</span>
+<h2 id="the-rule">The rule<a class="headerlink" href="#the-rule" title="Permanent link">&para;</a></h2>
+<p><strong>Any repo that ships Alembic migrations must run a CI job that executes the
+migrations against a fresh test database, on every push and pull request.</strong> The
+job must:</p>
+<ol>
+<li>Create a fresh test database (in-memory SQLite for repos with no DB-specific
+   feature requirements, or a Docker-backed Postgres/MySQL service otherwise).</li>
+<li>Run <code>alembic upgrade head</code> to validate the forward migrations end-to-end.</li>
+<li>Run <code>alembic downgrade base</code> (optional but recommended) to validate that the
+   reverse migrations are also executable.</li>
+<li>Fail the job if any migration step fails.</li>
+</ol>
+<p>The test suite must not be the sole source of the schema. A repo whose tests
+build the schema via <code>Base.metadata.create_all</code> must still run the migration
+job, because <code>create_all</code> and <code>upgrade head</code> are not the same operation.</p>
+<h2 id="why">Why<a class="headerlink" href="#why" title="Permanent link">&para;</a></h2>
+<p>A repo that builds its test schema with <code>Base.metadata.create_all</code>
+(SQLAlchemy's direct DDL path) and never runs Alembic in CI ships with several
+silent defects:</p>
+<ul>
+<li><strong>Migration syntax and logic errors are never caught before deployment.</strong>
+  A migration that is valid SQLAlchemy metadata but malformed as an Alembic
+  <code>op</code> sequence, or that depends on a state introduced by an earlier revision,
+  only fails at deploy time — after the code is already in production.</li>
+<li><strong><code>upgrade</code> and <code>downgrade</code> are never exercised.</strong> Neither the forward nor
+  the reverse path is executed anywhere, so a broken <code>downgrade</code> (or an
+  <code>upgrade</code> that leaves the DB in a state the app cannot use) goes unnoticed
+  until an operator runs <code>alembic</code> against a real database.</li>
+<li><strong>Production deployments can fail silently.</strong> A migration issue surfaces as a
+  deploy-time or first-request-time failure, often with an opaque stack trace
+  and no signal that the schema, not the app code, is at fault.</li>
+<li><strong>The test schema diverges from the production schema.</strong> <code>create_all</code> only
+  creates tables that exist in the current ORM metadata; it does not apply
+  migration <em>side effects</em> (backfills, data transforms, index changes,
+  renames) or respect migration <em>ordering dependencies</em>. Tests can pass against
+  a schema that production migrations never produce.</li>
+</ul>
+<p>This pattern is standard in industry projects (Django, Rails, and FastAPI +
+Alembic templates all validate migrations in CI) precisely because it turns a
+deploy-time surprise into a fast, local CI failure.</p>
+<h2 id="how-to-comply">How to comply<a class="headerlink" href="#how-to-comply" title="Permanent link">&para;</a></h2>
+<p>The caller template for the migration-validation job lives in the
+<a href="https://github.com/damien-robotsix/robotsix-github-workflows">robotsix-github-workflows</a>
+README, alongside the workflow it calls — that is the single source of truth.
+<strong>Do not inline the workflow YAML into this page.</strong></p>
+<ul>
+<li>A repo with a Docker-backed database service (Postgres/MySQL) should run the
+  migration job against that service so DB-specific features are exercised.</li>
+<li>A repo with no DB-specific feature requirements may use an in-memory SQLite
+  database. In-memory SQLite must be a <em>fresh, per-run</em> database so migrations
+  run against a clean schema every time.</li>
+<li>The migration job is an auxiliary gate: it does not replace the lint /
+  type-check / test sequence described in <a href="../python-ci-workflow/">Python CI workflow</a>,
+  and the shared <code>python-ci.yml</code> workflow does not (by default) run migrations.
+  Add the migration job alongside it.</li>
+</ul>
+<h3 id="example-invocation-informative">Example invocation (informative)<a class="headerlink" href="#example-invocation-informative" title="Permanent link">&para;</a></h3>
+<p>The rule above — not this snippet — is normative; the exact invocation is the
+workflow template's job. In outline, the job runs the migrations against the
+fresh database and fails the job on any error:</p>
+<div class="highlight"><pre><span></span><code>uv run alembic -c alembic.ini upgrade head   # validate forward migrations
+uv run alembic -c alembic.ini downgrade base # validate reverse migrations
 </code></pre></div>
-<p>Or a PEP 508 git URL in <code>[project] dependencies</code>:</p>
-<div class="highlight"><pre><span></span><code>robotsix-llmio @ git+https://github.com/damien-robotsix/robotsix-llmio@abc123def456
-</code></pre></div>
-<p><strong>npm consumers</strong> use a git URL:</p>
-<div class="highlight"><pre><span></span><code>git+https://github.com/damien-robotsix/robotsix-ui#v0.4.0
-</code></pre></div>
-<h3 id="2-pin-to-a-commit-sha-not-a-branch">2. Pin to a commit SHA, not a branch<a class="headerlink" href="#2-pin-to-a-commit-sha-not-a-branch" title="Permanent link">&para;</a></h3>
-<p><strong>Rule:</strong> Every first-party git source is pinned to a <strong>commit SHA</strong> (or an
-annotated tag, which resolves to a SHA). Branch refs like <code>main</code> are disallowed.</p>
-<p><strong>Rationale:</strong> A branch ref drifts silently — a fresh lock (or any lock-refresh)
-can pull in unrelated upstream changes with no PR, and a rename or breaking
-change upstream then breaks resolution out of nowhere.</p>
-<blockquote>
-<p><strong>Failure mode.</strong> A <code>pyproject.toml</code> that pins <code>robotsix-llmio</code> to <code>main</code>
-works today but breaks tomorrow when <code>main</code> receives a breaking change the
-consumer never reviewed. The failure lands in CI with no bisectable culprit
-commit in the consumer's repo — the root cause is an upstream change that
-arrived silently.</p>
-</blockquote>
-<h3 id="3-versioning-via-git-tags">3. Versioning via git tags<a class="headerlink" href="#3-versioning-via-git-tags" title="Permanent link">&para;</a></h3>
-<p><strong>Rule:</strong> Libraries version themselves with release-please, which bumps the
-version, generates the changelog, and pushes a <code>v*</code> tag — the full mechanism is
-documented in <a href="../release-please/">release-please</a>. The version source is
-declared following the <a href="../single-source-versioning/">single-source versioning</a>
-convention; deriving it from git tags is disallowed (release-please rule 3).
-Consumers pin to those tags (or the underlying SHA).</p>
-<p><strong>Rationale:</strong> Tags give consumers a human-readable version to pin against while
-retaining the auditability of a git SHA. Release-please keeps every repo on the
-same release mechanism rather than each repo inventing its own. The single-source
-convention prevents drift between <code>pyproject.toml</code> and the package's <code>__version__</code>.</p>
-<blockquote>
-<p><strong>Failure mode.</strong> A repo without tagged releases forces consumers to pin to
-arbitrary SHAs with no semantic version signal — a consumer cannot tell at a
-glance whether an upgrade is a patch or a breaking change. A repo with
-hand-cut releases diverges from the fleet's shared release workflow, creating
-per-repo release procedures that new contributors must learn.</p>
-</blockquote>
-<h3 id="4-public-package-indexes-are-disallowed">4. Public package indexes are disallowed<a class="headerlink" href="#4-public-package-indexes-are-disallowed" title="Permanent link">&para;</a></h3>
-<p><strong>Rule:</strong> Publishing to public registries — <code>registry.npmjs.org</code>, public PyPI
-(<code>pypi.org</code>), or any other public package index — is prohibited. Any exception
-requires explicit written approval from the Platform Owner, documenting the
-security and legal justification.</p>
-<p><strong>Rationale:</strong> Public registries expose the org to credential-theft risk,
-dependency confusion, and accidental publication of internal code. The git-based
-model already covers every legitimate consumption pattern without those risks.</p>
-<blockquote>
-<p><strong>Failure mode.</strong> A CI workflow that publishes to public npm with an
-<code>NPM_TOKEN</code> secret creates a persistent credential target. If that token is
-leaked (log output, compromised runner, misconfigured secret), an attacker can
-publish packages under the org's npm scope — indistinguishable from legitimate
-releases to downstream consumers.</p>
-</blockquote>
-<h3 id="5-internal-registry-is-the-only-acceptable-alternative">5. Internal registry is the only acceptable alternative<a class="headerlink" href="#5-internal-registry-is-the-only-acceptable-alternative" title="Permanent link">&para;</a></h3>
-<p><strong>Rule:</strong> If a use case genuinely requires a registry (not just git
-consumption), it MUST target an org-internal registry — e.g. GitHub Packages
-under the <code>damien-robotsix</code> org. CI publish jobs must resolve their registry
-environment variable or <code>publishConfig</code> to an approved internal domain; a
-hard-coded public endpoint is never acceptable. Publish secrets must be
-internal-registry credentials only.</p>
-<p><strong>Rationale:</strong> An internal registry keeps packages within the org boundary while
-still providing the registry features (version ranges, discovery) that some
-toolchains require. GitHub Packages is already available under the org's GitHub
-plan and requires no additional infrastructure.</p>
-<blockquote>
-<p><strong>Failure mode.</strong> A CI workflow that hard-codes <code>registry.npmjs.org</code> in a
-<code>publishConfig</code> or registry URL cannot be redirected to an internal registry
-without a code change — and by the time someone notices, packages may already
-be on the public registry.</p>
-</blockquote>
-<h3 id="6-document-the-distribution-method">6. Document the distribution method<a class="headerlink" href="#6-document-the-distribution-method" title="Permanent link">&para;</a></h3>
-<p><strong>Rule:</strong> Each library's README must state how it is distributed and show the
-exact pin syntax consumers should use. The default is git-based; if an internal
-registry is used, document that instead.</p>
-<p><strong>Rationale:</strong> A consumer reading a library's README should not have to guess or
-search workflow files to determine how to depend on it. The pin syntax shown in
-the README is the canonical, copy-pasteable instruction.</p>
-<blockquote>
-<p><strong>Failure mode.</strong> A library README that omits distribution instructions forces
-every new consumer to discover the pin syntax by reading <code>pyproject.toml</code> or
-<code>package.json</code> of an existing consumer — a wasteful and error-prone process
-that leads to consumers pinning to <code>main</code> or guessing at the syntax.</p>
-</blockquote>
-<h2 id="enforcement-future">Enforcement (future)<a class="headerlink" href="#enforcement-future" title="Permanent link">&para;</a></h2>
-<p>A standards CI lint that scans changed workflows, <code>package.json</code>, and
-<code>pyproject.toml</code> for public-registry endpoints (<code>registry.npmjs.org</code>, public
-PyPI) and fails the PR if found. This is tracked as a follow-up ticket.</p>
+<h2 id="what-this-does-not-cover">What this does not cover<a class="headerlink" href="#what-this-does-not-cover" title="Permanent link">&para;</a></h2>
+<ul>
+<li><strong>Schema drift detection</strong> between the ORM metadata and the migrated schema
+  (<code>alembic check</code> / <code>autogenerate</code> diffs) is a separate concern and not
+  required by this rule.</li>
+<li><strong>Running migrations against a live production database.</strong> This rule is about
+  validating migrations in CI on a throwaway database; production schema
+  migration is a deploy-time concern covered by the
+  <a href="../deploy-contract/">deploy contract</a>.</li>
+</ul>
+<h2 id="failure-modes-prevented">Failure modes prevented<a class="headerlink" href="#failure-modes-prevented" title="Permanent link">&para;</a></h2>
+<ul>
+<li><strong>Deploy-time migration failure.</strong> A migration error that would have failed
+  <code>alembic upgrade head</code> is caught in CI instead of during a production deploy.</li>
+<li><strong>Un-tested reverse migrations.</strong> A broken <code>downgrade</code> (which matters for
+  rollbacks) is caught before it is ever needed.</li>
+<li><strong>Silent test/production schema divergence.</strong> Tests no longer pass against a
+  <code>create_all</code>-only schema that production migrations would never produce.</li>
+</ul>
 
 
 

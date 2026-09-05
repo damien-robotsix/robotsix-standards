@@ -51,9 +51,21 @@ def _has_typed_classifier(pyproject: Path) -> bool:
 # Directories that should never be scanned for a project's own py.typed marker.
 # These contain third-party packages, build artifacts, or tool caches whose
 # py.typed files belong to other packages — not the repository itself.
-_EXCLUDE_DIRS = {".venv", "venv", ".tox", "__pycache__", "node_modules",
-                 ".git", "site-packages", "dist", "build", "site", ".mypy_cache",
-                 ".pytest_cache", ".ruff_cache"}
+_EXCLUDE_DIRS = {
+    ".venv",
+    "venv",
+    ".tox",
+    "__pycache__",
+    "node_modules",
+    ".git",
+    "site-packages",
+    "dist",
+    "build",
+    "site",
+    ".mypy_cache",
+    ".pytest_cache",
+    ".ruff_cache",
+}
 
 
 def _has_py_typed_marker(root: Path) -> bool:
@@ -73,6 +85,7 @@ def _has_py_typed_marker(root: Path) -> bool:
 # ---------------------------------------------------------------------------
 # Guard detection: does the CI workflow contain the required assertion?
 # ---------------------------------------------------------------------------
+
 
 def _workflow_file_has_installed_typecheck(text: str) -> bool:
     """Return True if the workflow type-checks an *installed* package.
@@ -95,9 +108,7 @@ def _workflow_file_has_wheel_content_assertion(text: str) -> bool:
     """Return True if the workflow explicitly checks for py.typed inside a wheel."""
     # Must mention both py.typed and zipfile (or similar archive inspection)
     has_py_typed = bool(re.search(r"py\.typed", text))
-    has_zip_inspection = bool(
-        re.search(r"zipfile|ZipFile|namelist|unzip\s+-l", text)
-    )
+    has_zip_inspection = bool(re.search(r"zipfile|ZipFile|namelist|unzip\s+-l", text))
     return has_py_typed and has_zip_inspection
 
 
@@ -106,10 +117,7 @@ def _gather_workflow_texts(root: Path) -> list[tuple[Path, str]]:
     workflows_dir = root / ".github" / "workflows"
     if not workflows_dir.is_dir():
         return []
-    result: list[tuple[Path, str]] = []
-    for wf in sorted(workflows_dir.glob("*.yml")):
-        result.append((wf, wf.read_text()))
-    return result
+    return [(wf, wf.read_text()) for wf in sorted(workflows_dir.glob("*.yml"))]
 
 
 # ---------------------------------------------------------------------------

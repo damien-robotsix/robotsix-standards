@@ -144,8 +144,10 @@ def _analyse_job(job: dict) -> tuple[bool, str]:
     if job["timeout_value"] is None:
         return (
             False,
-            f"{name}: jobs that run steps MUST declare timeout-minutes "
-            "(docs/repo-baseline.md)",
+            (
+                f"{name}: jobs that run steps MUST declare timeout-minutes "
+                "(docs/repo-baseline.md)"
+            ),
         )
 
     if job["timeout_value"] > 15:
@@ -153,8 +155,10 @@ def _analyse_job(job: dict) -> tuple[bool, str]:
         if not line or "#" not in line.split("timeout-minutes:", 1)[-1]:
             return (
                 False,
-                f"{name}: timeout-minutes > 15 requires an inline # comment "
-                "explaining why (docs/repo-baseline.md)",
+                (
+                    f"{name}: timeout-minutes > 15 requires an inline # comment "
+                    "explaining why (docs/repo-baseline.md)"
+                ),
             )
 
     return True, f"{name}: timeout-minutes OK"

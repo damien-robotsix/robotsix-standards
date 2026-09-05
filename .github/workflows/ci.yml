@@ -20,7 +20,7 @@ jobs:
     # python-docs.yml reusable causes 'Deployment failed, try again later'
     # from the Pages API for this repo).
     runs-on: ubuntu-latest
-    timeout-minutes: 10  # docs build; well under 15-minute default
+    timeout-minutes: 20  # docs build × up to 3 strict attempts (transient 5xx/429 retry)
     permissions:
       contents: read
     steps:
@@ -35,7 +35,43 @@ jobs:
       - name: Check lockfile consistency
         run: uv lock --check
       - name: Build docs (strict)
-        run: uv run --group docs mkdocs build --strict
+        # htmlproofer (raise_error_after_finish) hard-fails the build on any invalid
+        # link. A single transient external 5xx/429 (e.g. slsa.dev 504, hatch.pypa.io
+        # 503, readthedocs 429) used to stall unrelated tickets for hours, and each
+        # host was only added to mkdocs.yml ignore_urls after it had already broken
+        # CI. Retry the whole build (with backoff) only when every reported failure
+        # is a transient 5xx/429; a permanent 4xx (404 etc.), a -1 connection error,
+        # or a non-link build error still fails immediately so the link-integrity
+        # gate is preserved. (The plugin's own retry_max_times can't be used here:
+        # it lru-caches each URL's status, so a retry never re-fetches the URL.)
+        run: |
+          set -o pipefail
+          for attempt in 1 2 3; do
+            if uv run --group docs mkdocs build --strict 2>&1 | tee /tmp/mkdocs-build.log; then
+              exit 0
+            fi
+
+            # htmlproofer logs each failed link as:
+            #   invalid url - <url> [<status>] [<src>]
+            # Only 429 / 5xx are transient; any other status (-1, 4xx, ...) is a
+            # permanent failure that must not be retried.
+            permanent=0
+            while read -r status; do
+              case "$status" in
+                429|5[0-9][0-9]) ;;   # transient external 5xx / 429
+                *) permanent=1 ;;    # 404/4xx, -1 connection error, ...
+              esac
+            done < <(grep -oE 'invalid url - .* \[[0-9-]+\]' /tmp/mkdocs-build.log | grep -oE '\[[0-9-]+\]' | tr -d '[]')
+
+            # No failed links at all => the failure is not an external-link issue;
+            # any permanent status => fail now rather than burn retries.
+            if [ "$permanent" = "1" ] || ! grep -qE 'invalid url - ' /tmp/mkdocs-build.log; then
+              exit 1
+            fi
+            echo "Transient external failure (5xx/429) detected; retrying docs build (attempt $attempt of 3)..."
+            sleep $((attempt * 5))
+          done
+          exit 1
       - name: Run pre-commit hooks (ruff, mypy, markdownlint-cli2, codespell)
         uses: tox-dev/action-pre-commit-uv@e09b8958484dfe71f4ac3bc7afb230ba506402ec  # v1
         env:

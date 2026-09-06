@@ -77,3 +77,35 @@ jobs:
             exit 1
           fi
           echo "LICENSE (MIT): OK"
+
+  security-md-check:
+    # Enforcement gate for the repo-baseline.md 'Vulnerability disclosure'
+    # MUST: every repo ships a root SECURITY.md carrying a reporting contact,
+    # a response-time expectation, and a coordinated-disclosure statement.
+    # This replaces the (unused) OpenSSF Scorecard Security-Policy check — see
+    # docs/security-posture.md 'OpenSSF Scorecard — not a fleet gate'.
+    permissions:
+      contents: read
+    runs-on: ubuntu-latest
+    timeout-minutes: 5  # fast grep check; well under 15-minute default
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
+      - name: Verify SECURITY.md exists and carries the required elements
+        run: |
+          if [ ! -f SECURITY.md ]; then
+            echo "::error::SECURITY.md is missing at repo root"
+            exit 1
+          fi
+          if ! grep -qiE 'mailto:|[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}' SECURITY.md; then
+            echo "::error::SECURITY.md lacks a reporting contact (no email / mailto: link found)"
+            exit 1
+          fi
+          if ! grep -qiE 'response time|business day|within [0-9]+ (business )?(day|hour|week)' SECURITY.md; then
+            echo "::error::SECURITY.md lacks a response-time expectation"
+            exit 1
+          fi
+          if ! grep -qi 'coordinated disclosure' SECURITY.md; then
+            echo "::error::SECURITY.md lacks a coordinated-disclosure statement"
+            exit 1
+          fi
+          echo "SECURITY.md (vulnerability disclosure): OK"

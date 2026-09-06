@@ -142,7 +142,10 @@ Every deployable HTTP service installs an ASGI middleware that:
 2. **Binds `request_id`, `correlation_id`, `path`, and `method`** to
    `structlog.contextvars.bind_contextvars()` at the start of every
    request.
-3. **Clears the contextvars** at the end of every request so no state
+3. **Echoes the correlation id back to the client** in the `X-Request-ID`
+   response header, so a caller can quote the id when reporting a problem
+   and a cross-service caller can propagate the same id on its next hop.
+4. **Clears the contextvars** at the end of every request so no state
    leaks between requests.
 
 ```python
@@ -181,6 +184,8 @@ class LoggingMiddleware(BaseHTTPMiddleware):
             logger.exception("request_failed")
             raise
         else:
+            # Echo the id back so the client can reference it
+            response.headers["X-Request-ID"] = correlation_id
             logger.info("request_finished", status_code=response.status_code)
             return response
         finally:
@@ -197,6 +202,23 @@ parent's contextvars. Prefer async handlers and dependencies so the
 correlation context stays with the request; when a background task must
 emit log records tied to the originating request, pass the correlation
 id explicitly.
+
+**Optional: expose the id to endpoints via a dependency.** Endpoints that
+need the correlation id in their own logic (to return it in a body, or to
+forward it on an outbound call) read it from the same context rather than
+re-parsing the header — a one-line FastAPI dependency keeps a single source
+of truth:
+
+```python
+from typing import Annotated
+from fastapi import Depends
+import structlog
+
+def request_id() -> str:
+    return structlog.contextvars.get_contextvars().get("request_id", "")
+
+RequestId = Annotated[str, Depends(request_id)]
+```
 
 **Failure prevented:** an error in service B that the operator cannot
 trace back to the originating request in service A. Without a

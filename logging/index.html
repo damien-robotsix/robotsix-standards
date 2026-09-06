@@ -2974,6 +2974,9 @@ noise.</p>
 <li><strong>Binds <code>request_id</code>, <code>correlation_id</code>, <code>path</code>, and <code>method</code></strong> to
    <code>structlog.contextvars.bind_contextvars()</code> at the start of every
    request.</li>
+<li><strong>Echoes the correlation id back to the client</strong> in the <code>X-Request-ID</code>
+   response header, so a caller can quote the id when reporting a problem
+   and a cross-service caller can propagate the same id on its next hop.</li>
 <li><strong>Clears the contextvars</strong> at the end of every request so no state
    leaks between requests.</li>
 </ol>
@@ -3012,6 +3015,8 @@ noise.</p>
             <span class="n">logger</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="s2">&quot;request_failed&quot;</span><span class="p">)</span>
             <span class="k">raise</span>
         <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># Echo the id back so the client can reference it</span>
+            <span class="n">response</span><span class="o">.</span><span class="n">headers</span><span class="p">[</span><span class="s2">&quot;X-Request-ID&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">correlation_id</span>
             <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;request_finished&quot;</span><span class="p">,</span> <span class="n">status_code</span><span class="o">=</span><span class="n">response</span><span class="o">.</span><span class="n">status_code</span><span class="p">)</span>
             <span class="k">return</span> <span class="n">response</span>
         <span class="k">finally</span><span class="p">:</span>
@@ -3027,6 +3032,20 @@ parent's contextvars. Prefer async handlers and dependencies so the
 correlation context stays with the request; when a background task must
 emit log records tied to the originating request, pass the correlation
 id explicitly.</p>
+<p><strong>Optional: expose the id to endpoints via a dependency.</strong> Endpoints that
+need the correlation id in their own logic (to return it in a body, or to
+forward it on an outbound call) read it from the same context rather than
+re-parsing the header — a one-line FastAPI dependency keeps a single source
+of truth:</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Annotated</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">fastapi</span><span class="w"> </span><span class="kn">import</span> <span class="n">Depends</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">structlog</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">request_id</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="k">return</span> <span class="n">structlog</span><span class="o">.</span><span class="n">contextvars</span><span class="o">.</span><span class="n">get_contextvars</span><span class="p">()</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;request_id&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+
+<span class="n">RequestId</span> <span class="o">=</span> <span class="n">Annotated</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Depends</span><span class="p">(</span><span class="n">request_id</span><span class="p">)]</span>
+</code></pre></div>
 <p><strong>Failure prevented:</strong> an error in service B that the operator cannot
 trace back to the originating request in service A. Without a
 <code>correlation_id</code> on every log event across every service, reconstructing

@@ -78,8 +78,10 @@ Scorecard would score are gated instead by
 Dependabot/`uv audit` (dependency CVEs), and Trivy (container CVEs). The
 Scorecard *Security-Policy* check is replaced by the
 [baseline gate's `SECURITY.md` check](repo-baseline.md#ci-and-security-gates),
-which fails when a repo lacks a root `SECURITY.md` carrying the three required
-elements (see the [Vulnerability disclosure row](#audit) below). See
+which reports a warning (but does not fail the job) when a repo lacks a root
+`SECURITY.md` carrying the three required elements. A future follow-up will
+convert this to a fail-closed gate once the fleet is fully compliant (see the
+[Vulnerability disclosure row](#audit) below). See
 [OpenSSF Scorecard (not used)](scorecard.md) for the full rationale.
 
 ## The gates

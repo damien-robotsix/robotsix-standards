@@ -15,7 +15,7 @@ silently loses these headers unless they are added explicitly, and the first
 symptom is usually production-only: events accumulating in a reverse proxy's
 buffer while clients wait. A missing or misconfigured proxy-safety header on a
 streaming response is a
-[Security Misconfiguration (OWASP Top 10 A05:2021)](https://owasp.org/Top10/A05_2021-Security_Misconfiguration/);
+[Security Misconfiguration (OWASP Top 10 A02:2025)](https://owasp.org/Top10/A02_2025-Security_Misconfiguration/);
 the `Cache-Control` and `Connection` header semantics this standard relies on
 are defined by [RFC 9110 — HTTP Semantics](https://www.rfc-editor.org/rfc/rfc9110).
 

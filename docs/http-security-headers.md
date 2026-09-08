@@ -9,7 +9,7 @@ response headers via a single, shared middleware. Hand-rolling these headers per
 service — or leaving them unset — exposes every HTML surface to clickjacking,
 MIME-sniffing, and referrer-leak classes of issues. Missing or misconfigured
 security response headers are the canonical example of
-[OWASP Top 10 A05:2021 — Security Misconfiguration](https://owasp.org/Top10/A05_2021-Security_Misconfiguration/),
+[OWASP Top 10 A02:2025 — Security Misconfiguration](https://owasp.org/Top10/A02_2025-Security_Misconfiguration/),
 which this standard exists to close fleet-wide.
 
 ## The rule

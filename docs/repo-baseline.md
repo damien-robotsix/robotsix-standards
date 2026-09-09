@@ -184,6 +184,9 @@ gate set:
   moderate` — this is a **floor**; a repo may apply a stricter severity such as
   `low` at its own discretion. Strictness is per-repo headroom, laxity is not.),
   and a CycloneDX SBOM generated and uploaded as a workflow artifact.
+  Content-only repos (no `src/` directory, no container image) are exempt from
+  the code-analysis gates — Semgrep, `dependency-review`, SBOM, CVE audit — see
+  [security posture](security-posture.md).
   Credential and secret files are never tracked — see
   [security posture](security-posture.md#credential-and-secret-files-are-never-tracked).
 - **Dependency lockfile integrity:** `uv lock --check` validates that
@@ -391,7 +394,11 @@ The mirror image, exercised by the broker decommission (2026-07-03):
 > on this repository"* until the repo's **Dependency graph** is turned on
 > (enable Dependabot alerts / automated security fixes, which turn it on).
 > Enable it once per repo — a GitHub setting no workflow can automate — or the
-> gate can never go green.
+> gate can never go green. Content-only repos (no `src/` directory, no
+> container image) are exempt from this prerequisite: they are exempt from the
+> code-analysis gates — Semgrep, `dependency-review`, SBOM, CVE audit — so they
+> need no Dependency graph for the gate to pass — see
+> [security posture](security-posture.md).
 
 ## Automated dependency updates
 

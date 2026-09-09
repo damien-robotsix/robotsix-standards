@@ -145,6 +145,7 @@ nav:
       - HTTP error envelope: http-error-envelope.md
       - SSE response headers: sse-response-headers.md
       - HTTP security headers: http-security-headers.md
+      - CORS policy: cors-policy.md
       - Health endpoints: health-endpoints.md
       - OpenSSF Scorecard: scorecard.md
   - Deployment system:

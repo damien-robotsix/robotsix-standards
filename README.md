@@ -102,6 +102,7 @@ the default.
 | [HTTP error envelope](docs/http-error-envelope.md) | One consistent RFC 9457 `application/problem+json` envelope for every error response, registered via centralized exception handlers. |
 | [SSE response headers](docs/sse-response-headers.md) | Every `text/event-stream` response must carry `Cache-Control: no-cache`, `Connection: keep-alive`, and `X-Accel-Buffering: no` — via one shared helper so the header set cannot drift per-endpoint. |
 | [HTTP security headers](docs/http-security-headers.md) | Standard OWASP security response headers (CSP, HSTS, X-Frame-Options, etc.) via a single shared `secure` middleware — no hand-rolled per-service headers. |
+| [CORS policy](docs/cors-policy.md) | No CORS headers by default (same-origin via the edge); genuine cross-origin needs a static origin allowlist through the framework's standard middleware — never wildcard or reflected origins with credentials. |
 | [Health endpoints](docs/health-endpoints.md) | Split liveness (`/health`) vs. readiness (`/readyz`) endpoints so the orchestrator can restart dead processes without gating traffic on a dependency probe, and vice versa. |
 | [OpenSSF Scorecard (not used)](docs/scorecard.md) | Fleet-wide decision to NOT run OpenSSF Scorecard; zizmor, actionlint, the permissions audit, Dependabot/`uv audit`, and Trivy gate the same supply-chain properties. |
 

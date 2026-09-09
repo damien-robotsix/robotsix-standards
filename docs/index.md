@@ -230,6 +230,10 @@ integrates with the deployment system. Beyond the baseline it follows:
 - **[HTTP security headers](http-security-headers.md)** — standard OWASP security
   response headers (CSP, HSTS, X-Frame-Options, etc.) via a single shared
   `secure` middleware, so no service hand-rolls its own headers.
+- **[CORS policy](cors-policy.md)** — No CORS headers by default (same-origin via
+  the edge); genuine cross-origin needs a static origin allowlist through the
+  framework's standard middleware — never wildcard or reflected origins with
+  credentials.
 - **[Health endpoints](health-endpoints.md)** — split liveness (`/health`) vs.
   readiness (`/readyz`) endpoints so the orchestrator can restart dead processes
   without gating traffic on a dependency probe, and vice versa.

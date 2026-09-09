@@ -3265,6 +3265,9 @@ gate set:</p>
   moderate</code> — this is a <strong>floor</strong>; a repo may apply a stricter severity such as
   <code>low</code> at its own discretion. Strictness is per-repo headroom, laxity is not.),
   and a CycloneDX SBOM generated and uploaded as a workflow artifact.
+  Content-only repos (no <code>src/</code> directory, no container image) are exempt from
+  the code-analysis gates — Semgrep, <code>dependency-review</code>, SBOM, CVE audit — see
+  <a href="../security-posture/">security posture</a>.
   Credential and secret files are never tracked — see
   <a href="../security-posture/#credential-and-secret-files-are-never-tracked">security posture</a>.</li>
 <li><strong>Dependency lockfile integrity:</strong> <code>uv lock --check</code> validates that
@@ -3456,7 +3459,11 @@ standards page <em>and</em> a template before its first repo lands.</p>
 on this repository"</em> until the repo's <strong>Dependency graph</strong> is turned on
 (enable Dependabot alerts / automated security fixes, which turn it on).
 Enable it once per repo — a GitHub setting no workflow can automate — or the
-gate can never go green.</p>
+gate can never go green. Content-only repos (no <code>src/</code> directory, no
+container image) are exempt from this prerequisite: they are exempt from the
+code-analysis gates — Semgrep, <code>dependency-review</code>, SBOM, CVE audit — so they
+need no Dependency graph for the gate to pass — see
+<a href="../security-posture/">security posture</a>.</p>
 </blockquote>
 <h2 id="automated-dependency-updates">Automated dependency updates<a class="headerlink" href="#automated-dependency-updates" title="Permanent link">&para;</a></h2>
 <p>Every pin the standards mandate has exactly one named bumper — a pin without a

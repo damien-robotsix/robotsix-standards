@@ -10,13 +10,13 @@
       
       
       
-        <link rel="canonical" href="https://damien-robotsix.github.io/robotsix-standards/alembic-migration-validation/">
+        <link rel="canonical" href="https://damien-robotsix.github.io/robotsix-standards/cors-policy/">
       
       
-        <link rel="prev" href="../async-sqlalchemy-test-fixtures/">
+        <link rel="prev" href="../http-security-headers/">
       
       
-        <link rel="next" href="../ros2/">
+        <link rel="next" href="../health-endpoints/">
       
       
         
@@ -27,7 +27,7 @@
     
     
       
-        <title>Alembic migration validation - Robotsix Standards</title>
+        <title>CORS policy - Robotsix Standards</title>
       
     
     
@@ -78,7 +78,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#alembic-migration-validation-in-ci" class="md-skip">
+        <a href="#cors-policy" class="md-skip">
           Skip to content
         </a>
       
@@ -114,7 +114,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Alembic migration validation
+              CORS policy
             
           </span>
         </div>
@@ -311,8 +311,6 @@
       
   
   
-    
-  
   
   
     
@@ -325,11 +323,13 @@
       
     
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3" >
         
           
           <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
@@ -350,7 +350,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_3">
             <span class="md-nav__icon md-icon"></span>
             
@@ -1653,37 +1653,10 @@
                 
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Alembic migration validation
-  
-
-    
-  </span>
-  
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../alembic-migration-validation/" class="md-nav__link">
         
   
   
@@ -1699,98 +1672,6 @@
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#the-rule" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        The rule
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#why" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Why
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#how-to-comply" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        How to comply
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="How to comply">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#example-invocation-informative" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Example invocation (informative)
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#what-this-does-not-cover" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        What this does not cover
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#failure-modes-prevented" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Failure modes prevented
-      
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -1863,8 +1744,10 @@
       
   
   
+    
   
   
+  
     
     
     
@@ -1875,13 +1758,11 @@
       
     
     
-    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
       
         
         
-          
-        
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
         
           
           <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
@@ -1902,7 +1783,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_4">
             <span class="md-nav__icon md-icon"></span>
             
@@ -2421,10 +2302,37 @@
                 
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="../cors-policy/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    CORS policy
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   
@@ -2440,6 +2348,109 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#the-rule" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The rule
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="The rule">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-default-posture-no-cors-headers-at-all" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Default posture: no CORS headers at all
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-wildcard-and-reflection-are-disallowed-on-authenticated-surfaces" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Wildcard and reflection are disallowed on authenticated surfaces
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-genuine-cross-origin-need-is-an-explicit-declared-exception" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Genuine cross-origin need is an explicit, declared exception
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-preflight-follows-the-same-allowlist" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Preflight follows the same allowlist
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#how-this-is-enforced" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How this is enforced
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#failure-modes-this-prevents" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Failure modes this prevents
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -2748,36 +2759,47 @@
     </span>
   </a>
   
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#why" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Why
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#how-to-comply" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        How to comply
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="How to comply">
+    <nav class="md-nav" aria-label="The rule">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#example-invocation-informative" class="md-nav__link">
+  <a href="#1-default-posture-no-cors-headers-at-all" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Example invocation (informative)
+        1. Default posture: no CORS headers at all
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-wildcard-and-reflection-are-disallowed-on-authenticated-surfaces" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Wildcard and reflection are disallowed on authenticated surfaces
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-genuine-cross-origin-need-is-an-explicit-declared-exception" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Genuine cross-origin need is an explicit, declared exception
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-preflight-follows-the-same-allowlist" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Preflight follows the same allowlist
       
     </span>
   </a>
@@ -2790,10 +2812,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#what-this-does-not-cover" class="md-nav__link">
+  <a href="#how-this-is-enforced" class="md-nav__link">
     <span class="md-ellipsis">
       
-        What this does not cover
+        How this is enforced
       
     </span>
   </a>
@@ -2801,10 +2823,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#failure-modes-prevented" class="md-nav__link">
+  <a href="#failure-modes-this-prevents" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Failure modes prevented
+        Failure modes this prevents
       
     </span>
   </a>
@@ -2831,95 +2853,98 @@
   
 
 
-<h1 id="alembic-migration-validation-in-ci">Alembic migration validation in CI<a class="headerlink" href="#alembic-migration-validation-in-ci" title="Permanent link">&para;</a></h1>
+<h1 id="cors-policy">CORS policy<a class="headerlink" href="#cors-policy" title="Permanent link">&para;</a></h1>
 <blockquote>
-<p><strong>Scope: every Python repository that manages its database schema with
-Alembic</strong> (typically a FastAPI or other web-service backend deployed to
-production with a specific schema). Such a repo must validate its
-migrations in CI by executing them against a fresh test database — never
-by relying on <code>Base.metadata.create_all</code> alone.</p>
+<p><strong>Scope: deployable components serving HTTP</strong> — especially those consumed by a
+browser. This applies <em>in addition to</em> the <a href="../repo-baseline/">repo baseline</a>
+and <a href="../component-standard/">component standard</a>.</p>
 </blockquote>
+<p>Fleet components are reached same-origin through the edge domain, and
+cross-site request forgery is already closed at that edge (the <code>SameSite=Lax</code>
+tinyauth session cookie). A component that silently adds a permissive
+Cross-Origin Resource Sharing (CORS) middleware — <code>Access-Control-Allow-Origin: *</code>,
+blind origin reflection, or <code>Access-Control-Allow-Credentials: true</code> on a
+reflected origin — re-opens the exact cross-site request channel that stance
+closed. Missing or misconfigured CORS is a case of
+<a href="https://owasp.org/Top10/A02_2025-Security_Misconfiguration/">OWASP Top 10 A02:2025 — Security Misconfiguration</a>,
+which this standard exists to close fleet-wide. Absence of a stated policy reads
+as "anything goes"; this page states the policy so it does not.</p>
 <h2 id="the-rule">The rule<a class="headerlink" href="#the-rule" title="Permanent link">&para;</a></h2>
-<p><strong>Any repo that ships Alembic migrations must run a CI job that executes the
-migrations against a fresh test database, on every push and pull request.</strong> The
-job must:</p>
-<ol>
-<li>Create a fresh test database (in-memory SQLite for repos with no DB-specific
-   feature requirements, or a Docker-backed Postgres/MySQL service otherwise).</li>
-<li>Run <code>alembic upgrade head</code> to validate the forward migrations end-to-end.</li>
-<li>Run <code>alembic downgrade base</code> (optional but recommended) to validate that the
-   reverse migrations are also executable.</li>
-<li>Fail the job if any migration step fails.</li>
-</ol>
-<p>The test suite must not be the sole source of the schema. A repo whose tests
-build the schema via <code>Base.metadata.create_all</code> must still run the migration
-job, because <code>create_all</code> and <code>upgrade head</code> are not the same operation.</p>
-<h2 id="why">Why<a class="headerlink" href="#why" title="Permanent link">&para;</a></h2>
-<p>A repo that builds its test schema with <code>Base.metadata.create_all</code>
-(SQLAlchemy's direct DDL path) and never runs Alembic in CI ships with several
-silent defects:</p>
+<h3 id="1-default-posture-no-cors-headers-at-all">1. Default posture: no CORS headers at all<a class="headerlink" href="#1-default-posture-no-cors-headers-at-all" title="Permanent link">&para;</a></h3>
+<p>Fleet components are consumed same-origin through the edge domain. A component
+that serves no cross-origin browser client <strong>MUST NOT</strong> register a CORS
+middleware or emit any <code>Access-Control-*</code> header. Absence is the secure default
+— the browser's same-origin policy does the work, and there is nothing to
+misconfigure. A component adds CORS only when it has a concrete, declared
+cross-origin need (rule 3); until then, the correct number of CORS headers is
+zero.</p>
+<h3 id="2-wildcard-and-reflection-are-disallowed-on-authenticated-surfaces">2. Wildcard and reflection are disallowed on authenticated surfaces<a class="headerlink" href="#2-wildcard-and-reflection-are-disallowed-on-authenticated-surfaces" title="Permanent link">&para;</a></h3>
+<p><code>Access-Control-Allow-Origin: *</code> and blind reflection of the request <code>Origin</code>
+header are prohibited. <code>Access-Control-Allow-Credentials: true</code> <strong>MUST NEVER</strong>
+be combined with a wildcard or a reflected origin.</p>
+<p>The fleet's CSRF protection is the <code>SameSite=Lax</code> tinyauth session cookie set at
+the edge — the <a href="../component-standard/#csrf-is-handled-at-the-fleet-edge-components-ship-none">component standard</a>
+states that "Cross-site request forgery (CSRF) is an <strong>edge concern</strong>," handled
+once for the whole fleet so that cross-site requests do not carry the cookie and
+fail edge authentication before they reach any component. A credentialed
+permissive CORS policy re-opens exactly the cross-site request channel that
+stance closed: a hostile third-party page can now make the browser send the
+authenticated request and <em>read the response</em>, which <code>SameSite=Lax</code> alone would
+have blocked. Wildcard-plus-credentials is not merely discouraged — browsers
+reject the combination — but a reflected origin with credentials achieves the
+same breach while passing the browser's check, so both are banned.</p>
+<h3 id="3-genuine-cross-origin-need-is-an-explicit-declared-exception">3. Genuine cross-origin need is an explicit, declared exception<a class="headerlink" href="#3-genuine-cross-origin-need-is-an-explicit-declared-exception" title="Permanent link">&para;</a></h3>
+<p>A component that must serve cross-origin browsers declares the need explicitly:</p>
 <ul>
-<li><strong>Migration syntax and logic errors are never caught before deployment.</strong>
-  A migration that is valid SQLAlchemy metadata but malformed as an Alembic
-  <code>op</code> sequence, or that depends on a state introduced by an earlier revision,
-  only fails at deploy time — after the code is already in production.</li>
-<li><strong><code>upgrade</code> and <code>downgrade</code> are never exercised.</strong> Neither the forward nor
-  the reverse path is executed anywhere, so a broken <code>downgrade</code> (or an
-  <code>upgrade</code> that leaves the DB in a state the app cannot use) goes unnoticed
-  until an operator runs <code>alembic</code> against a real database.</li>
-<li><strong>Production deployments can fail silently.</strong> A migration issue surfaces as a
-  deploy-time or first-request-time failure, often with an opaque stack trace
-  and no signal that the schema, not the app code, is at fault.</li>
-<li><strong>The test schema diverges from the production schema.</strong> <code>create_all</code> only
-  creates tables that exist in the current ORM metadata; it does not apply
-  migration <em>side effects</em> (backfills, data transforms, index changes,
-  renames) or respect migration <em>ordering dependencies</em>. Tests can pass against
-  a schema that production migrations never produce.</li>
+<li>A <strong>static allowlist of exact origins</strong> — full scheme-host-port strings, no
+  regex, no suffix or substring matching — in its config model, per the
+  <a href="../config-standard/">config standard</a>.</li>
+<li>The <strong>framework's standard middleware</strong> (e.g. Starlette/FastAPI
+  <code>CORSMiddleware</code>) — no hand-rolled <code>Access-Control-*</code> header code, mirroring
+  the "single shared <code>secure</code> middleware" pattern of
+  <a href="../http-security-headers/">HTTP security headers</a>.</li>
+<li><code>allow_methods</code> and <code>allow_headers</code> <strong>restricted to what the client actually
+  needs</strong> — not <code>*</code>.</li>
+<li>The <strong>justification recorded in the component's <code>AGENT.md</code></strong> — the same
+  declared-deviation discipline the fleet applies to a lint suppression or a
+  hand-rolled auth gate.</li>
 </ul>
-<p>This pattern is standard in industry projects (Django, Rails, and FastAPI +
-Alembic templates all validate migrations in CI) precisely because it turns a
-deploy-time surprise into a fast, local CI failure.</p>
-<h2 id="how-to-comply">How to comply<a class="headerlink" href="#how-to-comply" title="Permanent link">&para;</a></h2>
-<p>The caller template for the migration-validation job lives in the
-<a href="https://github.com/damien-robotsix/robotsix-github-workflows">robotsix-github-workflows</a>
-README, alongside the workflow it calls — that is the single source of truth.
-<strong>Do not inline the workflow YAML into this page.</strong></p>
+<p>An allowlisted, non-wildcard origin MAY use <code>allow_credentials=true</code> when the
+cross-origin client genuinely needs the session cookie; the allowlist is what
+makes that safe.</p>
+<h3 id="4-preflight-follows-the-same-allowlist">4. Preflight follows the same allowlist<a class="headerlink" href="#4-preflight-follows-the-same-allowlist" title="Permanent link">&para;</a></h3>
+<p>Preflight (<code>OPTIONS</code>) responses follow the same static allowlist as actual
+requests — a preflight <strong>MUST NOT</strong> be satisfiable by a wildcard. A bounded
+<code>Access-Control-Max-Age</code> (e.g. <code>600</code> seconds) is acceptable to cut preflight
+chatter; an unbounded or very long max-age is not, because it delays the effect
+of tightening the allowlist.</p>
+<h2 id="how-this-is-enforced">How this is enforced<a class="headerlink" href="#how-this-is-enforced" title="Permanent link">&para;</a></h2>
+<p>This standard governs downstream deployable components, not this repo, so there
+is no CI gate here that can inspect a component's ASGI app. Enforcement is by
+<strong>audit</strong> — advisory for now, with no new script added by this standard —
+checked at component code review and by the periodic standards-audit agent. The
+fleet sweep greps each component for <code>CORSMiddleware</code> and
+<code>Access-Control-Allow-Origin</code>. Any hit must match rule 3: a static allowlist of
+exact origins wired through the framework's standard middleware, with the
+justification recorded in the component's <code>AGENT.md</code>. A hit that uses a
+wildcard, reflects the request origin, combines credentials with either, or
+carries no <code>AGENT.md</code> justification is a finding. No hit at all is the expected,
+compliant state (rule 1).</p>
+<h2 id="failure-modes-this-prevents">Failure modes this prevents<a class="headerlink" href="#failure-modes-this-prevents" title="Permanent link">&para;</a></h2>
 <ul>
-<li>A repo with a Docker-backed database service (Postgres/MySQL) should run the
-  migration job against that service so DB-specific features are exercised.</li>
-<li>A repo with no DB-specific feature requirements may use an in-memory SQLite
-  database. In-memory SQLite must be a <em>fresh, per-run</em> database so migrations
-  run against a clean schema every time.</li>
-<li>The migration job is an auxiliary gate: it does not replace the lint /
-  type-check / test sequence described in <a href="../python-ci-workflow/">Python CI workflow</a>,
-  and the shared <code>python-ci.yml</code> workflow does not (by default) run migrations.
-  Add the migration job alongside it.</li>
-</ul>
-<h3 id="example-invocation-informative">Example invocation (informative)<a class="headerlink" href="#example-invocation-informative" title="Permanent link">&para;</a></h3>
-<p>The rule above — not this snippet — is normative; the exact invocation is the
-workflow template's job. In outline, the job runs the migrations against the
-fresh database and fails the job on any error:</p>
-<div class="highlight"><pre><span></span><code>uv run alembic -c alembic.ini upgrade head   # validate forward migrations
-uv run alembic -c alembic.ini downgrade base # validate reverse migrations
-</code></pre></div>
-<h2 id="what-this-does-not-cover">What this does not cover<a class="headerlink" href="#what-this-does-not-cover" title="Permanent link">&para;</a></h2>
-<ul>
-<li><strong>Schema drift detection</strong> between the ORM metadata and the migrated schema
-  (<code>alembic check</code> / <code>autogenerate</code> diffs) is a separate concern and not
-  required by this rule.</li>
-<li><strong>Running migrations against a live production database.</strong> This rule is about
-  validating migrations in CI on a throwaway database; production schema
-  migration is a deploy-time concern covered by the
-  <a href="../deploy-contract/">deploy contract</a>.</li>
-</ul>
-<h2 id="failure-modes-prevented">Failure modes prevented<a class="headerlink" href="#failure-modes-prevented" title="Permanent link">&para;</a></h2>
-<ul>
-<li><strong>Deploy-time migration failure.</strong> A migration error that would have failed
-  <code>alembic upgrade head</code> is caught in CI instead of during a production deploy.</li>
-<li><strong>Un-tested reverse migrations.</strong> A broken <code>downgrade</code> (which matters for
-  rollbacks) is caught before it is ever needed.</li>
-<li><strong>Silent test/production schema divergence.</strong> Tests no longer pass against a
-  <code>create_all</code>-only schema that production migrations would never produce.</li>
+<li><strong>Silent CSRF-stance bypass.</strong> A credentialed wildcard or reflected-origin
+  CORS policy re-opens the cross-site request channel that the edge's
+  <code>SameSite=Lax</code> cookie closed, letting a hostile page read authenticated
+  responses.</li>
+<li><strong>Origin-reflection exfiltration.</strong> Blind reflection of the request <code>Origin</code>
+  turns every attacker-controlled page into an allowed origin, exfiltrating
+  tokens or data from the authenticated surface.</li>
+<li><strong>Per-service header drift.</strong> Hand-rolled <code>Access-Control-*</code> headers produce
+  slightly different, inconsistent policies across the fleet — the same drift
+  the shared-middleware pattern exists to eliminate.</li>
+<li><strong>Undocumented cross-origin surfaces.</strong> A CORS allowance added without an
+  <code>AGENT.md</code> justification is invisible to review and audit, so nobody can tell
+  whether the cross-origin need is real or a copy-pasted default.</li>
 </ul>
 
 

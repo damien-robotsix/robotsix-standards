@@ -126,7 +126,10 @@ Python/uv lockfiles; Dependabot covers GitHub Actions SHAs, base-image digests,
 pre-commit hook versions, and npm packages. `renovate.json` declares the `uv`
 manager in every Python repo, and `.github/dependabot.yml` declares the
 remaining ecosystems; the baseline-check gate verifies both are present and
-complete. Dependabot and Renovate PRs auto-merge once required checks pass.
+complete. Dependabot and Renovate PRs auto-merge once required checks pass —
+restricted to `minor`/`patch` updates, with the `docker` and `pre-commit`
+ecosystems excluded from auto-merge (those PRs always require human review);
+see [Dependabot auto-merge](dependabot-auto-merge.md).
 
 - **How to verify:** `renovate.json` exists in every Python repo (covering the
   `uv` manager); `.github/dependabot.yml` exists and covers `github-actions`

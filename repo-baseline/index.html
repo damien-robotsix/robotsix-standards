@@ -3502,7 +3502,9 @@ and <strong><code>npm</code></strong> in repos with a <code>package.json</code>
 (GitHub only reads the file per-repo — it cannot be centralized, so the
 baseline-check gate verifies its contents instead). Dependabot PRs auto-merge
 once required checks pass, via the shared <code>dependabot-auto-merge.yml</code> caller
-from robotsix-github-workflows.</p>
+from robotsix-github-workflows — but only for <code>minor</code>/<code>patch</code> updates, and the
+<code>docker</code> and <code>pre-commit</code> ecosystems are excluded from auto-merge (those PRs
+require human review); see <a href="../dependabot-auto-merge/">Dependabot auto-merge</a>.</p>
 <p>Python/uv lockfile updates use <strong>Renovate</strong> instead of Dependabot — see
 <a href="../ci-dependency-standard/">CI dependency management</a> for the configuration
 and rationale.</p>

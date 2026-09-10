@@ -196,8 +196,14 @@ gate set:
   [Docker build & release](docker-standard.md).
 - **Baseline conformance:** the baseline gate verifies the mechanical rules
   of this page — `README.md` and `AGENT.md` present and linking the
-  standards, `LICENSE` (MIT) present, `dependabot.yml` covering the [required
-  ecosystems](#automated-dependency-updates).
+  standards, `LICENSE` (MIT) present, `SECURITY.md` present at the root and
+  carrying the three required elements (a reporting contact, a response-time
+  expectation, and a coordinated-disclosure statement), `dependabot.yml`
+  covering the [required ecosystems](#automated-dependency-updates). The
+  `SECURITY.md` check is currently **warning-first** — it reports a missing or
+  non-compliant `SECURITY.md` as a CI annotation but does not fail the job; a
+  future follow-up will flip it to fail-closed once the fleet is fully
+  compliant (see [security posture](security-posture.md)).
 - **Required-artifact uploads use `if: always()`.** A step that uploads an
   artifact the gate depends on (SBOM, coverage report) must run even when an
   earlier step failed — otherwise the failure skips the upload and the
@@ -366,7 +372,7 @@ New repos start from the language's template repository —
 **`robotsix-template-python`** (a GitHub template) carries the full baseline
 pre-assembled: pyproject skeleton, `dependabot.yml`, the standard pre-commit
 set, shared-workflow callers, `AGENT.md` skeleton,
-`docs/modules.yaml`, LICENSE — plus a component overlay (Dockerfile, the two
+`docs/modules.yaml`, LICENSE, `SECURITY.md` — plus a component overlay (Dockerfile, the two
 composes, `config/` scaffolding) for deployable services. The template is a
 fleet member like any other: the baseline-check gates it, dependabot bumps
 it, standards changes land there as tickets — so it cannot rot. Templates

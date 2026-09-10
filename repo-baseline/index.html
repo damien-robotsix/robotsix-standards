@@ -3277,8 +3277,14 @@ gate set:</p>
   <a href="../docker-standard/">Docker build &amp; release</a>.</li>
 <li><strong>Baseline conformance:</strong> the baseline gate verifies the mechanical rules
   of this page — <code>README.md</code> and <code>AGENT.md</code> present and linking the
-  standards, <code>LICENSE</code> (MIT) present, <code>dependabot.yml</code> covering the <a href="#automated-dependency-updates">required
-  ecosystems</a>.</li>
+  standards, <code>LICENSE</code> (MIT) present, <code>SECURITY.md</code> present at the root and
+  carrying the three required elements (a reporting contact, a response-time
+  expectation, and a coordinated-disclosure statement), <code>dependabot.yml</code>
+  covering the <a href="#automated-dependency-updates">required ecosystems</a>. The
+  <code>SECURITY.md</code> check is currently <strong>warning-first</strong> — it reports a missing or
+  non-compliant <code>SECURITY.md</code> as a CI annotation but does not fail the job; a
+  future follow-up will flip it to fail-closed once the fleet is fully
+  compliant (see <a href="../security-posture/">security posture</a>).</li>
 <li><strong>Required-artifact uploads use <code>if: always()</code>.</strong> A step that uploads an
   artifact the gate depends on (SBOM, coverage report) must run even when an
   earlier step failed — otherwise the failure skips the upload and the
@@ -3432,7 +3438,7 @@ transient, not a standing exemption.</p>
 <strong><code>robotsix-template-python</code></strong> (a GitHub template) carries the full baseline
 pre-assembled: pyproject skeleton, <code>dependabot.yml</code>, the standard pre-commit
 set, shared-workflow callers, <code>AGENT.md</code> skeleton,
-<code>docs/modules.yaml</code>, LICENSE — plus a component overlay (Dockerfile, the two
+<code>docs/modules.yaml</code>, LICENSE, <code>SECURITY.md</code> — plus a component overlay (Dockerfile, the two
 composes, <code>config/</code> scaffolding) for deployable services. The template is a
 fleet member like any other: the baseline-check gates it, dependabot bumps
 it, standards changes land there as tickets — so it cannot rot. Templates

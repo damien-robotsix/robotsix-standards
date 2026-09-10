@@ -3267,7 +3267,13 @@ Scorecard would score are gated instead by
 <a href="./#4b-workflow-linting-actionlint-zizmor">actionlint</a>
 (workflow syntax), the
 <a href="./#4c-least-privilege-permissions-blocks">workflow-permissions audit</a>,
-Dependabot/<code>uv audit</code> (dependency CVEs), and Trivy (container CVEs). See
+Dependabot/<code>uv audit</code> (dependency CVEs), and Trivy (container CVEs). The
+Scorecard <em>Security-Policy</em> check is replaced by the
+<a href="../repo-baseline/#ci-and-security-gates">baseline gate's <code>SECURITY.md</code> check</a>,
+which reports a warning (but does not fail the job) when a repo lacks a root
+<code>SECURITY.md</code> carrying the three required elements. A future follow-up will
+convert this to a fail-closed gate once the fleet is fully compliant (see the
+<a href="#audit">Vulnerability disclosure row</a> below). See
 <a href="../scorecard/">OpenSSF Scorecard (not used)</a> for the full rationale.</p>
 <h2 id="the-gates">The gates<a class="headerlink" href="#the-gates" title="Permanent link">&para;</a></h2>
 <p>Each gate below is a <strong>required, self-enforcing</strong> control. A repo that ships a

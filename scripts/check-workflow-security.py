@@ -70,10 +70,7 @@ def _check_4a_uses(value: str, has_comment: bool) -> list[str]:
     # Container actions must pin a digest; a mutable tag is drift-prone.
     if value.startswith("docker://"):
         if "@sha256:" not in value:
-            return [
-                "4a: docker:// ref must pin @sha256:<digest> "
-                f"(got: {value})"
-            ]
+            return [f"4a: docker:// ref must pin @sha256:<digest> (got: {value})"]
         return []
 
     # Everything else is `owner/repo[/path]@<ref>`: the ref must be a full
@@ -129,8 +126,9 @@ def check_workflow(text: str) -> list[str]:
         if m:
             value = m.group(1)
             has_comment = m.group(2) is not None
-            for msg in _check_4a_uses(value, has_comment):
-                problems.append(f"{lineno}:{msg}")
+            problems.extend(
+                f"{lineno}:{msg}" for msg in _check_4a_uses(value, has_comment)
+            )
 
     if not has_top_permissions:
         problems.append(
@@ -150,9 +148,7 @@ def main() -> int:
     ok_count = 0
     problems: list[str] = []
 
-    files = sorted(workflows_dir.glob("*.yml")) + sorted(
-        workflows_dir.glob("*.yaml")
-    )
+    files = sorted(workflows_dir.glob("*.yml")) + sorted(workflows_dir.glob("*.yaml"))
     for wf in files:
         try:
             text = wf.read_text()
@@ -162,8 +158,7 @@ def main() -> int:
 
         violations = check_workflow(text)
         if violations:
-            for v in violations:
-                problems.append(f"{wf.name}: {v}")
+            problems.extend(f"{wf.name}: {v}" for v in violations)
         else:
             ok_count += 1
 

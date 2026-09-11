@@ -85,6 +85,12 @@ repos:
     rev: v1.99.0
     hooks:
       - id: semgrep
+        # semgrep's opentelemetry → google-protobuf dependency chain does not
+        # support Python 3.14 yet (upb crashes at import with 'Metaclasses
+        # with custom tp_new are not supported'), and this repo's CI runs
+        # pre-commit under 3.14 (see .github/workflows/ci.yml). Pin the hook
+        # to 3.13, where protobuf's upb extension loads cleanly.
+        language_version: python3.13
         args:
           - --config
           - p/python

@@ -73,3 +73,27 @@ repos:
           --minAlertLevel=error,
           --glob=*.md,
         ]
+  # Semgrep (SAST) — mandated by docs/repo-baseline.md 'CI and security gates'
+  # and docs/security-posture.md gate 1. The fleet's shared security workflow
+  # only runs bandit/pip-audit/trufflehog, so this docs repo carries its own
+  # pre-commit hook (the docs-repo equivalent of python-security.yml) scoped
+  # to scripts/ — the only first-party Python here (same scope as ruff/mypy).
+  # p/python + p/security-audit resolve anonymously from the Semgrep Registry
+  # (no SEMGREP_APP_TOKEN needed); findings fail the hook so a vulnerable
+  # pattern cannot merge (OWASP ASVS 14.2.1, OWASP Top 10 A06:2021).
+  - repo: https://github.com/semgrep/semgrep
+    rev: v1.99.0
+    hooks:
+      - id: semgrep
+        # semgrep's opentelemetry → google-protobuf dependency chain does not
+        # support Python 3.14 yet (upb crashes at import with 'Metaclasses
+        # with custom tp_new are not supported'), and this repo's CI runs
+        # pre-commit under 3.14 (see .github/workflows/ci.yml). Pin the hook
+        # to 3.13, where protobuf's upb extension loads cleanly.
+        language_version: python3.13
+        args:
+          - --config
+          - p/python
+          - --config
+          - p/security-audit
+        files: ^scripts/

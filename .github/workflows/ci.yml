@@ -82,6 +82,8 @@ jobs:
         run: uv run --group docs python scripts/check-toc-sync.py
       - name: Check job timeout-minutes rule
         run: uv run --group docs python scripts/check-workflow-timeouts.py
+      - name: Check workflow security (4a SHA-pinning + 4c least-privilege permissions)
+        run: uv run --group docs python scripts/check-workflow-security.py
       - name: Run actionlint
         run: |
           curl -sSL https://github.com/rhysd/actionlint/releases/download/v1.7.12/actionlint_1.7.12_linux_amd64.tar.gz | tar xz -C /tmp

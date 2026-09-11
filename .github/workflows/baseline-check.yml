@@ -55,6 +55,26 @@ jobs:
       - name: Check workflow timeout-minutes rule
         run: uv run --group docs python scripts/check-workflow-timeouts.py
 
+  workflow-security-enforcement:
+    # Enforcement gate for the docs/security-posture.md 4a/4c rules
+    # (SHA-pinned `uses:` + least-privilege `permissions:` blocks). This is the
+    # self-enforcing gate for content-only repos, which are exempt from the
+    # zizmor workflow audit (gate 4b) but must still meet 4a and 4c. See:
+    #   - scripts/check-workflow-security.py (the gate logic)
+    #   - docs/security-posture.md (the workflow-permissions audit)
+    permissions:
+      contents: read
+    runs-on: ubuntu-latest
+    timeout-minutes: 5  # fast grep/parse check; well under 15-minute default
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
+      - uses: astral-sh/setup-uv@20cfd1bf945f4377ade1205e4dbc17946fc9a30d # v10.0.1
+        with:
+          enable-cache: true
+          python-version: "3.14"
+      - name: Check workflow security (4a SHA-pinning + 4c least-privilege permissions)
+        run: uv run --group docs python scripts/check-workflow-security.py
+
   license-check:
     permissions:
       contents: read

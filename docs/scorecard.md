@@ -25,7 +25,9 @@ repo-locally, and harder:
 - **zizmor** — workflow security (dangerous-workflow patterns, token
   permissions, template injection).
 - **actionlint** — workflow syntax.
-- **workflow-permissions audit** — least-privilege `permissions:` blocks.
+- **workflow-permissions audit** — least-privilege `permissions:` blocks and
+  SHA-pinned `uses:`, enforced by `scripts/check-workflow-security.py` (see
+  [Security posture — workflow-permissions audit](security-posture.md#workflow-permissions-audit)).
 - **Dependabot / `uv audit`** — dependency CVEs.
 - **Trivy** — container CVEs.
 
@@ -39,7 +41,8 @@ These gates block a PR; Scorecard only scored it after the fact.
 2. **It duplicates gates the fleet already runs, more weakly.** Its
    meaningful checks — action pinning, token permissions, dangerous
    workflow patterns, branch protection — are already enforced repo-locally
-   and harder by zizmor, actionlint, and the workflow-permissions audit.
+   and harder by zizmor, actionlint, and the
+   [workflow-permissions audit](security-posture.md#workflow-permissions-audit).
    Those block a PR; Scorecard only scores it afterwards.
 3. **`publish_results` has no consumer.** Publishing exists so third
    parties can read a score on deps.dev or a badge; nothing outside the
@@ -54,7 +57,9 @@ These gates block a PR; Scorecard only scored it after the fact.
 Drift between the three repos that carried Scorecard and the other eleven,
 write-only published scores, and pipeline red on an external API the fleet
 does not consume — while the actual supply-chain properties stay gated by
-zizmor, actionlint, the permissions audit, Dependabot/`uv audit`, and Trivy.
+zizmor, actionlint, the
+[workflow-permissions audit](security-posture.md#workflow-permissions-audit),
+Dependabot/`uv audit`, and Trivy.
 
 ## See also
 

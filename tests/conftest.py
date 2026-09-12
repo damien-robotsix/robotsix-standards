@@ -1,9 +1,9 @@
 """Shared fixtures for the CI-gate script unit tests.
 
-The three gating scripts under scripts/ use dashes in their filenames
-(check-toc-sync.py, check-workflow-timeouts.py, check-py-typed-guard.py),
-which are not valid Python module identifiers, so each is loaded by file
-path via importlib instead of a plain ``import``.
+The gating scripts under scripts/ use dashes in their filenames
+(check-toc-sync.py, check-workflow-timeouts.py, check-py-typed-guard.py,
+check-workflow-security.py), which are not valid Python module identifiers,
+so each is loaded by file path via importlib instead of a plain ``import``.
 """
 
 from __future__ import annotations
@@ -50,3 +50,10 @@ def check_py_typed_guard() -> ModuleType:
 @pytest.fixture
 def check_secret_str() -> ModuleType:
     return _load_script("check-secret-str.py", "check_secret_str")
+
+
+@pytest.fixture
+def check_workflow_security() -> ModuleType:
+    return _load_script(
+        "check-workflow-security.py", "check_workflow_security"
+    )

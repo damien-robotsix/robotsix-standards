@@ -237,6 +237,10 @@ integrates with the deployment system. Beyond the baseline it follows:
 - **[Health endpoints](health-endpoints.md)** — split liveness (`/health`) vs.
   readiness (`/readyz`) endpoints so the orchestrator can restart dead processes
   without gating traffic on a dependency probe, and vice versa.
+- **[API versioning & OpenAPI schema](api-versioning-openapi.md)** — URL-prefix
+  versioning (`/api/v1/...`, owned by the app via a router prefix) plus a served
+  OpenAPI schema for every HTTP API; no header versioning, and no plain
+  `Starlette()` shipped without a schema layer.
 - **[OpenSSF Scorecard (not used)](scorecard.md)** — fleet-wide decision to
   NOT run OpenSSF Scorecard; zizmor, actionlint, the permissions audit,
   Dependabot/`uv audit`, and Trivy gate the same supply-chain properties.

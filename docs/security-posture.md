@@ -319,17 +319,11 @@ dependency vulnerability audit on every CI run.
 - **CycloneDX SBOM** generated and uploaded as a workflow artifact on every
   CI run (via the shared security workflow). The SBOM MUST be a
   standards-conformant CycloneDX document generated **natively by `uv export`
-  from the lockfile**:
-
-  ```bash
-  uv export --frozen --format cyclonedx1.5 --no-emit-project -o sbom.cdx.json
-  ```
-
-  `uv export` reads `uv.lock` and emits the component inventory in
-  CycloneDX 1.5 JSON (see the
-  [uv docs](https://docs.astral.sh/uv/concepts/projects/export/#cyclonedx-sbom-format));
-  no extra tool (cyclonedx-py, syft, trivy) is required. The upload step uses
-  `if: always()` so a failed scan never silently drops the artifact.
+  from the lockfile** — the exact command, rationale, and artifact naming are
+  defined in [CycloneDX SBOM via `uv export`](sbom-cyclonedx-uv.md), which is
+  the single source of truth for lockfile-based SBOMs and must not be
+  duplicated here. The upload step uses `if: always()` so a failed scan never
+  silently drops the artifact.
 - **`uv audit` output is not an SBOM.** `uv audit --output-format json`
   (or `pip-audit`) emits a vulnerability/advisory report — OSV matches,
   severities, affected/fixed ranges — that contains no component inventory.

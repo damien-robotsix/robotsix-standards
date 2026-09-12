@@ -104,6 +104,7 @@ the default.
 | [HTTP security headers](docs/http-security-headers.md) | Standard OWASP security response headers (CSP, HSTS, X-Frame-Options, etc.) via a single shared `secure` middleware — no hand-rolled per-service headers. |
 | [CORS policy](docs/cors-policy.md) | No CORS headers by default (same-origin via the edge); genuine cross-origin needs a static origin allowlist through the framework's standard middleware — never wildcard or reflected origins with credentials. |
 | [Health endpoints](docs/health-endpoints.md) | Split liveness (`/health`) vs. readiness (`/readyz`) endpoints so the orchestrator can restart dead processes without gating traffic on a dependency probe, and vice versa. |
+| [API versioning & OpenAPI schema](docs/api-versioning-openapi.md) | URL-prefix versioning (`/api/v1/...`, owned by the app) plus a served OpenAPI schema for every HTTP API — no header versioning, no plain `Starlette()` shipped without a schema layer. |
 | [OpenSSF Scorecard (not used)](docs/scorecard.md) | Fleet-wide decision to NOT run OpenSSF Scorecard; zizmor, actionlint, the permissions audit, Dependabot/`uv audit`, and Trivy gate the same supply-chain properties. |
 
 **The deployment system** (central-deploy only):

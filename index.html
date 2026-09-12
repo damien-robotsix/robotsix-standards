@@ -2533,6 +2533,34 @@
   
   
     <li class="md-nav__item">
+      <a href="api-versioning-openapi/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    API versioning & OpenAPI schema
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="scorecard/" class="md-nav__link">
         
   
@@ -3171,6 +3199,10 @@ integrates with the deployment system. Beyond the baseline it follows:</p>
 <li><strong><a href="health-endpoints/">Health endpoints</a></strong> — split liveness (<code>/health</code>) vs.
   readiness (<code>/readyz</code>) endpoints so the orchestrator can restart dead processes
   without gating traffic on a dependency probe, and vice versa.</li>
+<li><strong><a href="api-versioning-openapi/">API versioning &amp; OpenAPI schema</a></strong> — URL-prefix
+  versioning (<code>/api/v1/...</code>, owned by the app via a router prefix) plus a served
+  OpenAPI schema for every HTTP API; no header versioning, and no plain
+  <code>Starlette()</code> shipped without a schema layer.</li>
 <li><strong><a href="scorecard/">OpenSSF Scorecard (not used)</a></strong> — fleet-wide decision to
   NOT run OpenSSF Scorecard; zizmor, actionlint, the permissions audit,
   Dependabot/<code>uv audit</code>, and Trivy gate the same supply-chain properties.</li>

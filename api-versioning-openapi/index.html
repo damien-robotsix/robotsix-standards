@@ -10,13 +10,13 @@
       
       
       
-        <link rel="canonical" href="https://damien-robotsix.github.io/robotsix-standards/hypothesis/">
+        <link rel="canonical" href="https://damien-robotsix.github.io/robotsix-standards/api-versioning-openapi/">
       
       
-        <link rel="prev" href="../logging/">
+        <link rel="prev" href="../health-endpoints/">
       
       
-        <link rel="next" href="../mutation-testing/">
+        <link rel="next" href="../scorecard/">
       
       
         
@@ -27,7 +27,7 @@
     
     
       
-        <title>Hypothesis testing - Robotsix Standards</title>
+        <title>API versioning & OpenAPI schema - Robotsix Standards</title>
       
     
     
@@ -78,7 +78,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#hypothesis-property-based-testing" class="md-skip">
+        <a href="#api-versioning-openapi-schema" class="md-skip">
           Skip to content
         </a>
       
@@ -114,7 +114,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Hypothesis testing
+              API versioning & OpenAPI schema
             
           </span>
         </div>
@@ -311,8 +311,6 @@
       
   
   
-    
-  
   
   
     
@@ -325,11 +323,13 @@
       
     
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3" >
         
           
           <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
@@ -350,7 +350,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_3">
             <span class="md-nav__icon md-icon"></span>
             
@@ -1373,37 +1373,10 @@
                 
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Hypothesis testing
-  
-
-    
-  </span>
-  
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../hypothesis/" class="md-nav__link">
         
   
   
@@ -1419,136 +1392,6 @@
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#why-adopt-hypothesis" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Why adopt Hypothesis
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#dependency-declaration" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Dependency declaration
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#writing-property-based-tests" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Writing property-based tests
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#domain-valid-composite-strategies" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Domain-valid composite strategies
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#stateful-invariants-with-rulebasedstatemachine" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Stateful invariants with RuleBasedStateMachine
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#why-a-shared-profile-convention" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Why a shared profile convention
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#profile-registration" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Profile registration
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#shared-strategies-module" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Shared strategies module
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#per-test-overrides" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Per-test overrides
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#ci-workflow" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        CI workflow
-      
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -1901,8 +1744,10 @@
       
   
   
+    
   
   
+  
     
     
     
@@ -1913,13 +1758,11 @@
       
     
     
-    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
       
         
         
-          
-        
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
         
           
           <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
@@ -1940,7 +1783,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_4">
             <span class="md-nav__icon md-icon"></span>
             
@@ -2515,10 +2358,37 @@
                 
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="../api-versioning-openapi/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    API versioning & OpenAPI schema
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   
@@ -2534,6 +2404,98 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#the-rule" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The rule
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="The rule">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-url-prefix-versioning-the-app-owns-apiv1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. URL-prefix versioning — the app owns /api/v1
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-openapi-schema-every-route-and-body-model-described" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. OpenAPI schema — every route and body model described
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-correct-reverse-proxy-topology-servers-matches-reality" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Correct reverse-proxy topology — servers matches reality
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#fastapi-reference-implementation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        FastAPI reference implementation
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#failure-modes-this-prevents" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Failure modes this prevents
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -2806,10 +2768,60 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#why-adopt-hypothesis" class="md-nav__link">
+  <a href="#the-rule" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Why adopt Hypothesis
+        The rule
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="The rule">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-url-prefix-versioning-the-app-owns-apiv1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. URL-prefix versioning — the app owns /api/v1
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-openapi-schema-every-route-and-body-model-described" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. OpenAPI schema — every route and body model described
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-correct-reverse-proxy-topology-servers-matches-reality" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Correct reverse-proxy topology — servers matches reality
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#fastapi-reference-implementation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        FastAPI reference implementation
       
     </span>
   </a>
@@ -2817,98 +2829,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#dependency-declaration" class="md-nav__link">
+  <a href="#failure-modes-this-prevents" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Dependency declaration
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#writing-property-based-tests" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Writing property-based tests
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#domain-valid-composite-strategies" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Domain-valid composite strategies
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#stateful-invariants-with-rulebasedstatemachine" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Stateful invariants with RuleBasedStateMachine
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#why-a-shared-profile-convention" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Why a shared profile convention
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#profile-registration" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Profile registration
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#shared-strategies-module" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Shared strategies module
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#per-test-overrides" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Per-test overrides
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#ci-workflow" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        CI workflow
+        Failure modes this prevents
       
     </span>
   </a>
@@ -2935,247 +2859,146 @@
   
 
 
-<h1 id="hypothesis-property-based-testing">Hypothesis property-based testing<a class="headerlink" href="#hypothesis-property-based-testing" title="Permanent link">&para;</a></h1>
+<h1 id="api-versioning-openapi-schema">API versioning &amp; OpenAPI schema<a class="headerlink" href="#api-versioning-openapi-schema" title="Permanent link">&para;</a></h1>
 <blockquote>
-<p><strong>Scope: every Python repository.</strong> <a href="https://hypothesis.readthedocs.io/">Hypothesis</a>
-is the fleet's recommended tool for property-based testing. The mandatory
-rules below apply to repositories that adopt it; repos that do not use
-Hypothesis are unaffected.</p>
+<p><strong>Scope: deployable components that expose an HTTP API.</strong> A component whose
+only HTTP surface is the mandatory <code>/health</code> and <code>/readyz</code> endpoints (see the
+<a href="../component-standard/">component standard</a> and
+<a href="../health-endpoints/">health endpoints</a>) does not need this — probe endpoints
+carry no versioned contract and no request/response body models. This applies
+<em>in addition to</em> the <a href="../repo-baseline/">repo baseline</a> and
+<a href="../component-standard/">component standard</a>.</p>
 </blockquote>
-<h2 id="why-adopt-hypothesis">Why adopt Hypothesis<a class="headerlink" href="#why-adopt-hypothesis" title="Permanent link">&para;</a></h2>
-<p>Property-based testing catches the edge cases example-based tests miss.
-Instead of asserting a handful of hand-picked inputs, a property test states
-an <em>invariant</em> and lets Hypothesis generate hundreds of random inputs per
-run, shrinking any failure to a minimal reproducer that can be pasted into a
-regression test. Fleet game-engine and simulation projects (Nashpy,
-fastbreak) have already demonstrated the value:</p>
+<p>Every HTTP API in the fleet exposes its stable contract under a <strong>URL-prefix
+version</strong> (<code>/api/v1/...</code>) and serves a <strong>machine-readable OpenAPI schema</strong>
+describing every route and body model. Header-based versioning
+(<code>Accept</code>-negotiation, an <code>X-API-Version</code> header) and a service that ships no
+schema at all are both out — a URL prefix is trivially matched by
+nginx/Traefik/Caddy, gives distinct cache keys, is visible in logs without
+header parsing, and is debuggable with plain <code>curl</code>; an OpenAPI schema makes the
+contract discoverable and verifiable instead of something every integration
+reverse-engineers from example responses.</p>
+<p>Every mature Python ASGI agent/chat server settles on this shape — the
+<code>full-stack-fastapi-template</code> (<code>API_V1_STR = "/api/v1"</code>), LangGraph Platform
+(<code>/api/v1/runs/stream</code>), vLLM (<code>/v1/chat/completions</code>), Langflow (<code>/api/v1/...</code>),
+and Agenta (<code>APIRouter(prefix="/v1")</code>). None of them version by header.</p>
+<h2 id="the-rule">The rule<a class="headerlink" href="#the-rule" title="Permanent link">&para;</a></h2>
+<h3 id="1-url-prefix-versioning-the-app-owns-apiv1">1. URL-prefix versioning — the app owns <code>/api/v1</code><a class="headerlink" href="#1-url-prefix-versioning-the-app-owns-apiv1" title="Permanent link">&para;</a></h3>
+<p>The stable API is mounted under a version prefix, and the <strong>application owns
+that prefix</strong> via a router prefix — never via proxy path stripping that the app
+is unaware of.</p>
 <ul>
-<li><strong>Nashpy</strong> uses <code>@given</code> plus <code>numpy</code> array strategies to verify
-  payoff-matrix invariants — shape preservation and zero-sum detection —
-  across arbitrary matrix shapes and values.</li>
-<li><strong><code>RuleBasedStateMachine</code></strong> wraps a simulation loop and re-checks its
-  invariants after every state transition — the pattern for repos with
-  complex state: game engines, agent simulators, and data pipelines.</li>
+<li><strong>Path shape:</strong> <code>GET /api/v1/&lt;resource&gt;</code>. The <code>v1</code> segment is the contract
+  version; a breaking change ships as <code>/api/v2/...</code> alongside <code>v1</code>, not as a
+  mutated <code>v1</code>.</li>
+<li><strong>Owned in the app, not the proxy:</strong> the prefix comes from the router
+  (<code>APIRouter(prefix=settings.API_V1_STR)</code> / <code>app.include_router(..., prefix=...)</code>),
+  so the same paths work whether the service is hit directly, behind the fleet
+  edge, or from a test client. A prefix that exists only because the reverse
+  proxy rewrites the path is invisible to the app and to its own OpenAPI schema.</li>
+<li><strong>No header versioning:</strong> the contract version is never selected by an
+  <code>Accept</code> media-type parameter or an <code>X-API-Version</code> request header. Header
+  versioning is invisible to path-based routers, splits no cache key, and hides
+  the version from logs and <code>curl</code>.</li>
+<li><strong>Unversioned operational paths stay unversioned:</strong> <code>/health</code>, <code>/readyz</code>, and
+  <code>/openapi.json</code> / <code>/docs</code> are infrastructure, not the versioned contract, and
+  keep their fixed top-level paths.</li>
 </ul>
-<p><strong>Hypothesis augments example-based tests; it does not replace them.</strong>
-Example-based tests still cover known edge cases and regression scenarios;
-property-based tests cover the unknown ones. Repos keep both.</p>
-<h2 id="dependency-declaration">Dependency declaration<a class="headerlink" href="#dependency-declaration" title="Permanent link">&para;</a></h2>
-<p>Every Python repo that adopts Hypothesis <strong>must</strong> declare it as a dev/test
-dependency. Dev tooling lives in the PEP 735 <code>[dependency-groups] dev</code> group
-(see <a href="../python/#packaging">Python practices</a> for the canonical dev-tooling
-placement), so <code>hypothesis</code> goes there — not in the unconditional
-<code>[project] dependencies</code>:</p>
-<div class="highlight"><pre><span></span><code><span class="k">[dependency-groups]</span>
-<span class="n">dev</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span>
-<span class="w">    </span><span class="s2">&quot;hypothesis&quot;</span><span class="p">,</span>
-<span class="w">    </span><span class="c1"># ... existing dev/test dependencies ...</span>
-<span class="p">]</span>
-</code></pre></div>
-<p><strong>Failure mode:</strong> Hypothesis is a test-only tool. Declaring it in the
-unconditional <code>dependencies</code> ships it in the installed library or service
-image, bloating the production install with a package nothing imports at
-runtime. Declaring it in a bespoke extra instead of the shared <code>dev</code> group
-splits the test toolchain — a contributor syncing <code>dev</code> gets everything
-except Hypothesis, and their property tests fail with <code>ModuleNotFoundError</code>.</p>
-<h2 id="writing-property-based-tests">Writing property-based tests<a class="headerlink" href="#writing-property-based-tests" title="Permanent link">&para;</a></h2>
-<p>Write property-based tests for functions with a clear invariant. State the
-invariant once with <code>@given</code> and let Hypothesis generate the inputs:</p>
-<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">hypothesis</span><span class="w"> </span><span class="kn">import</span> <span class="n">given</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">hypothesis</span><span class="w"> </span><span class="kn">import</span> <span class="n">strategies</span> <span class="k">as</span> <span class="n">st</span>
-
-<span class="nd">@given</span><span class="p">(</span><span class="n">radius</span><span class="o">=</span><span class="n">st</span><span class="o">.</span><span class="n">integers</span><span class="p">(</span><span class="n">min_value</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">max_value</span><span class="o">=</span><span class="mi">10</span><span class="p">))</span>
-<span class="k">def</span><span class="w"> </span><span class="nf">test_hex_map_has_expected_locations</span><span class="p">(</span><span class="n">radius</span><span class="p">):</span>
-    <span class="n">hexes</span> <span class="o">=</span> <span class="n">generate_hex_map</span><span class="p">(</span><span class="n">radius</span><span class="p">)</span>
-    <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">hexes</span><span class="p">)</span> <span class="o">==</span> <span class="mi">3</span> <span class="o">*</span> <span class="n">radius</span> <span class="o">*</span> <span class="p">(</span><span class="n">radius</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span>
-
-<span class="nd">@given</span><span class="p">(</span><span class="n">radius</span><span class="o">=</span><span class="n">st</span><span class="o">.</span><span class="n">integers</span><span class="p">(</span><span class="n">min_value</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">max_value</span><span class="o">=</span><span class="mi">10</span><span class="p">))</span>
-<span class="k">def</span><span class="w"> </span><span class="nf">test_centre_hex_is_capital</span><span class="p">(</span><span class="n">radius</span><span class="p">):</span>
-    <span class="n">hexes</span> <span class="o">=</span> <span class="n">generate_hex_map</span><span class="p">(</span><span class="n">radius</span><span class="p">)</span>
-    <span class="k">assert</span> <span class="n">hexes</span><span class="p">[(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)]</span> <span class="o">==</span> <span class="n">CAPITAL</span>
-</code></pre></div>
-<p>A good candidate has an invariant that holds for <em>every</em> valid input — a
-round-trip (serialize then parse returns the original), an idempotency
-(wrapping twice equals wrapping once), a shape/size relationship, or a
-conservation law. When you can only enumerate edge cases by hand, you do not
-have a property; keep those as example-based tests instead.</p>
-<p><strong>Failure mode:</strong> property tests written around behaviour without a real
-invariant degrade into weak assertions (e.g. "calling the function does not
-crash") that pass for the wrong reasons and add runtime without adding
-confidence. Property tests pay for themselves only when the property is the
-spec.</p>
-<h2 id="domain-valid-composite-strategies">Domain-valid composite strategies<a class="headerlink" href="#domain-valid-composite-strategies" title="Permanent link">&para;</a></h2>
-<p>Complex inputs often need to respect domain constraints (a valid UID, a
-non-empty name, a reachable hex coordinate). Define those once with
-<code>@st.composite</code> so every generated value is valid, instead of generating
-invalid values and filtering them in the test:</p>
-<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">hypothesis</span><span class="w"> </span><span class="kn">import</span> <span class="n">strategies</span> <span class="k">as</span> <span class="n">st</span>
-
-<span class="nd">@st</span><span class="o">.</span><span class="n">composite</span>
-<span class="k">def</span><span class="w"> </span><span class="nf">hex_map</span><span class="p">(</span><span class="n">draw</span><span class="p">,</span> <span class="n">max_radius</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">10</span><span class="p">):</span>
-    <span class="n">radius</span> <span class="o">=</span> <span class="n">draw</span><span class="p">(</span><span class="n">st</span><span class="o">.</span><span class="n">integers</span><span class="p">(</span><span class="n">min_value</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">max_value</span><span class="o">=</span><span class="n">max_radius</span><span class="p">))</span>
-    <span class="k">return</span> <span class="n">generate_hex_map</span><span class="p">(</span><span class="n">radius</span><span class="p">)</span>
-</code></pre></div>
-<p>Composite strategies compose smaller strategies with <code>draw</code>, keeping the
-domain rules in one place. Reuse them across tests via the
-<a href="#shared-strategies-module">shared strategies module</a> so a constraint change
-is made once, not in every test.</p>
-<p><strong>Failure mode:</strong> strategies that generate mostly-invalid values force tests
-to reject inputs (<code>assume(...)</code> chains) and waste most of their generation
-budget; slow filtering trips Hypothesis health checks and hides real coverage
-gaps.</p>
-<h2 id="stateful-invariants-with-rulebasedstatemachine">Stateful invariants with <code>RuleBasedStateMachine</code><a class="headerlink" href="#stateful-invariants-with-rulebasedstatemachine" title="Permanent link">&para;</a></h2>
-<p>For game engines, agent simulators, and data pipelines — anything whose
-correctness is "no matter what sequence of operations happens, the invariants
-hold" — use <code>RuleBasedStateMachine</code>. It wraps the loop, applies generated
-operations as <code>rule()</code> steps, and re-checks <code>invariant()</code> methods after every
-transition:</p>
-<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">hypothesis</span><span class="w"> </span><span class="kn">import</span> <span class="n">strategies</span> <span class="k">as</span> <span class="n">st</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">hypothesis.stateful</span><span class="w"> </span><span class="kn">import</span> <span class="n">RuleBasedStateMachine</span><span class="p">,</span> <span class="n">invariant</span><span class="p">,</span> <span class="n">rule</span>
-
-<span class="k">class</span><span class="w"> </span><span class="nc">SimulationMachine</span><span class="p">(</span><span class="n">RuleBasedStateMachine</span><span class="p">):</span>
-    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">sim</span> <span class="o">=</span> <span class="n">Simulation</span><span class="p">()</span>
-
-    <span class="nd">@rule</span><span class="p">(</span><span class="n">steps</span><span class="o">=</span><span class="n">st</span><span class="o">.</span><span class="n">integers</span><span class="p">(</span><span class="n">min_value</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">max_value</span><span class="o">=</span><span class="mi">100</span><span class="p">))</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">advance</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">steps</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">sim</span><span class="o">.</span><span class="n">advance</span><span class="p">(</span><span class="n">steps</span><span class="p">)</span>
-
-    <span class="nd">@invariant</span><span class="p">()</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">resources_are_conserved</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">sim</span><span class="o">.</span><span class="n">total_resources</span><span class="p">()</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">sim</span><span class="o">.</span><span class="n">initial_resources</span>
-
-    <span class="nd">@invariant</span><span class="p">()</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">dimensions_are_preserved</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">sim</span><span class="o">.</span><span class="n">world</span><span class="o">.</span><span class="n">width</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">sim</span><span class="o">.</span><span class="n">world</span><span class="o">.</span><span class="n">initial_width</span>
-        <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">sim</span><span class="o">.</span><span class="n">world</span><span class="o">.</span><span class="n">height</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">sim</span><span class="o">.</span><span class="n">world</span><span class="o">.</span><span class="n">initial_height</span>
-
-<span class="n">TestSimulation</span> <span class="o">=</span> <span class="n">SimulationMachine</span><span class="o">.</span><span class="n">TestCase</span>
-</code></pre></div>
-<p>Use stateful machines for <strong>resource conservation</strong>, <strong>dimension
-preservation</strong>, and <strong>consistency across state transitions</strong> — the invariants
-that example-based tests cannot enumerate because the operation sequences are
-unbounded.</p>
-<p><strong>Failure mode:</strong> a stateful simulation tested only with fixed scripted
-scenarios verifies the <em>paths you thought of</em>; a <code>RuleBasedStateMachine</code>
-verifies the invariants across <em>every</em> generated sequence, and Hypothesis
-shrinks a failing sequence to the shortest one that still breaks the
-invariant — a minimal reproducer instead of a 1000-step log.</p>
-<h2 id="why-a-shared-profile-convention">Why a shared profile convention<a class="headerlink" href="#why-a-shared-profile-convention" title="Permanent link">&para;</a></h2>
-<p>Multiple fleet repos use Hypothesis for property-based testing. Without a
-shared convention each repo independently reinvents settings decoration —
-repeating <code>@settings(max_examples=200, derandomize=True, deadline=None,
-suppress_health_check=[...])</code> on every test — and has no shared strategy
-module for reusable generators. New contributors waste time hunting for
-"what settings do I need?" and copy-pasting boilerplate from nearby tests.</p>
-<p>Hypothesis ships a built-in <code>ci</code> profile that auto-activates when the <code>CI</code>
-environment variable is truthy, but it sets <code>max_examples=100</code> — too low for
-serious property-based coverage. Adopting a custom profile per repo gives CI
-thorough coverage without slowing local development.</p>
-<h2 id="profile-registration">Profile registration<a class="headerlink" href="#profile-registration" title="Permanent link">&para;</a></h2>
-<p>Every repo that uses Hypothesis <strong>must</strong> register two profiles in
-<code>tests/conftest.py</code> — one for CI, one for local development — and load the
-active profile from an environment variable.</p>
-<div class="highlight"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
-
-<span class="kn">from</span><span class="w"> </span><span class="nn">hypothesis</span><span class="w"> </span><span class="kn">import</span> <span class="n">HealthCheck</span><span class="p">,</span> <span class="n">settings</span>
-
-<span class="n">settings</span><span class="o">.</span><span class="n">register_profile</span><span class="p">(</span>
-    <span class="s2">&quot;ci&quot;</span><span class="p">,</span>
-    <span class="n">max_examples</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span>          <span class="c1"># tunable per-project; must be higher than the built-in 100</span>
-    <span class="n">derandomize</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-    <span class="n">deadline</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-    <span class="n">database</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-    <span class="n">suppress_health_check</span><span class="o">=</span><span class="p">[</span><span class="n">HealthCheck</span><span class="o">.</span><span class="n">too_slow</span><span class="p">],</span>
-<span class="p">)</span>
-<span class="n">settings</span><span class="o">.</span><span class="n">register_profile</span><span class="p">(</span>
-    <span class="s2">&quot;dev&quot;</span><span class="p">,</span>
-    <span class="n">max_examples</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span>
-    <span class="n">deadline</span><span class="o">=</span><span class="mi">5000</span><span class="p">,</span>
-    <span class="n">database</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-    <span class="n">suppress_health_check</span><span class="o">=</span><span class="p">[</span><span class="n">HealthCheck</span><span class="o">.</span><span class="n">too_slow</span><span class="p">,</span> <span class="n">HealthCheck</span><span class="o">.</span><span class="n">filter_too_much</span><span class="p">],</span>
-<span class="p">)</span>
-<span class="n">settings</span><span class="o">.</span><span class="n">load_profile</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s2">&quot;HYPOTHESIS_PROFILE&quot;</span><span class="p">,</span> <span class="s2">&quot;dev&quot;</span><span class="p">))</span>
-</code></pre></div>
+<h3 id="2-openapi-schema-every-route-and-body-model-described">2. OpenAPI schema — every route and body model described<a class="headerlink" href="#2-openapi-schema-every-route-and-body-model-described" title="Permanent link">&para;</a></h3>
+<p>The service serves a JSON OpenAPI document describing all request/response body
+models and route contracts, plus interactive docs.</p>
 <ul>
-<li><strong>Default is <code>"dev"</code></strong> — fast and local-friendly. <code>database=None</code> keeps
-  the example database in memory so it does not survive test sessions (the
-  persistent <code>~/.hypothesis/examples/</code> directory causes false regressions
-  when examples from a stale run are replayed in a later one).</li>
-<li><strong>CI profile sets <code>max_examples=200</code></strong> (or higher, tuned per-project),
-  <code>derandomize=True</code> for reproducible failures, and <code>deadline=None</code> to avoid
-  timing flake in shared CI runners.</li>
-<li><strong>CI workflows set <code>HYPOTHESIS_PROFILE=ci</code></strong> via an <code>env:</code> block on the
-  test step. The <code>--hypothesis-profile ci</code> CLI flag also works for manual
-  overrides.</li>
+<li><strong>FastAPI-based services get it automatically.</strong> FastAPI generates
+  <code>/openapi.json</code> and serves <code>/docs</code> out of the box. <code>docs_url</code> and
+  <code>openapi_url</code> must <strong>not</strong> be disabled — the only exception is a surface
+  gated behind gateway auth, where the docs are reachable through the
+  authenticated edge rather than removed. Pair this with
+  <a href="../fastapi-pydantic-field-descriptions/">FastAPI Pydantic field descriptions</a>
+  so the generated schema is self-documenting.</li>
+<li><strong>Bare-Starlette services must add a schema layer.</strong> Plain <code>Starlette()</code> has
+  <strong>no</strong> OpenAPI support — it ships neither <code>/openapi.json</code> nor <code>/docs</code>. A
+  Starlette service must add a schema-generation layer (Starlette's own
+  <code>SchemaGenerator</code>, or a decorator library such as FastOpenAPI) rather than
+  shipping with no schema. A service that would otherwise ship plain
+  <code>Starlette()</code> should prefer FastAPI unless there is a concrete reason not to.</li>
+<li><strong>The schema is part of the contract:</strong> it describes the versioned routes, so
+  its <code>paths</code> carry the <code>/api/v1</code> prefix the app owns.</li>
 </ul>
-<p><strong>Failure mode:</strong> without a registered profile, a repo either uses the
-built-in <code>ci</code> profile (<code>max_examples=100</code>, inadequate) or carries no profile
-at all — every test author must repeat the same <code>@settings(...)</code> decoration
-by hand, and missed settings cause CI flake (missing <code>deadline=None</code>) or
-false passes (too few examples).</p>
-<h2 id="shared-strategies-module">Shared strategies module<a class="headerlink" href="#shared-strategies-module" title="Permanent link">&para;</a></h2>
-<p>Strategies reused across multiple test modules <strong>must</strong> live in a single
-<code>tests/strategies.py</code> module, imported by any test file that needs them.</p>
-<div class="highlight"><pre><span></span><code><span class="c1"># tests/strategies.py</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">hypothesis</span><span class="w"> </span><span class="kn">import</span> <span class="n">strategies</span> <span class="k">as</span> <span class="n">st</span>
-
-<span class="n">text_no_control_chars</span> <span class="o">=</span> <span class="n">st</span><span class="o">.</span><span class="n">text</span><span class="p">(</span>
-    <span class="n">st</span><span class="o">.</span><span class="n">characters</span><span class="p">(</span><span class="n">blacklist_categories</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;Cc&quot;</span><span class="p">,</span> <span class="s2">&quot;Cs&quot;</span><span class="p">}),</span> <span class="n">min_size</span><span class="o">=</span><span class="mi">1</span>
-<span class="p">)</span>
-<span class="n">valid_uids</span> <span class="o">=</span> <span class="n">st</span><span class="o">.</span><span class="n">from_regex</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;^[a-f0-9]</span><span class="si">{24}</span><span class="s2">$&quot;</span><span class="p">)</span>
-<span class="n">iso_dates</span> <span class="o">=</span> <span class="n">st</span><span class="o">.</span><span class="n">dates</span><span class="p">(</span><span class="n">min_value</span><span class="o">=</span><span class="n">date</span><span class="p">(</span><span class="mi">2000</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span>
-</code></pre></div>
-<p><strong>Failure mode:</strong> strategies copy-pasted across test modules drift (one file
-adds a blacklist category, the other doesn't) and make it unclear which
-version is canonical. A single shared module is the single source of truth
-and makes it easy to discover existing strategies when writing new tests.</p>
-<h2 id="per-test-overrides">Per-test overrides<a class="headerlink" href="#per-test-overrides" title="Permanent link">&para;</a></h2>
-<p>Tests that need different <code>max_examples</code>, additional health-check
-suppression, or a specific filter <strong>still use <code>@settings(...)</code> directly</strong> —
-the profile fills defaults; the decorator overrides.</p>
-<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">hypothesis</span><span class="w"> </span><span class="kn">import</span> <span class="n">given</span><span class="p">,</span> <span class="n">settings</span>
-
-<span class="nd">@given</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">st</span><span class="o">.</span><span class="n">integers</span><span class="p">())</span>
-<span class="nd">@settings</span><span class="p">(</span><span class="n">max_examples</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span> <span class="n">suppress_health_check</span><span class="o">=</span><span class="p">[</span><span class="n">HealthCheck</span><span class="o">.</span><span class="n">filter_too_much</span><span class="p">])</span>
-<span class="k">def</span><span class="w"> </span><span class="nf">test_expensive_property</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
-    <span class="o">...</span>
-</code></pre></div>
-<p><strong>No need to remove existing <code>@settings</code> decorations.</strong> The profile sets
-saner defaults so that new tests do not have to repeat boilerplate.</p>
-<p><strong>Failure mode:</strong> stripping <code>@settings</code> from every test that already has it
-is unnecessary churn and risks dropping legitimate per-test overrides. The
-profile is a baseline, not a straitjacket.</p>
-<h2 id="ci-workflow">CI workflow<a class="headerlink" href="#ci-workflow" title="Permanent link">&para;</a></h2>
-<p>Every repo's CI test step <strong>must</strong> set <code>HYPOTHESIS_PROFILE=ci</code>:</p>
-<div class="highlight"><pre><span></span><code><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Run tests</span>
-<span class="w">  </span><span class="nt">run</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">uv run pytest</span>
-<span class="w">  </span><span class="nt">env</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">HYPOTHESIS_PROFILE</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ci</span>
-</code></pre></div>
-<p><strong>Failure mode:</strong> without the env var, CI runs the <code>dev</code> profile
-(<code>max_examples=50</code>), giving one-quarter the statistical power the project
-intended. The bug that would have been caught at 200 examples slips through,
-and the property-based test suite is effectively half-strength in the one
-environment where thoroughness matters most.</p>
-<p>Property-based tests run in the <strong>same</strong> pytest job as example-based tests —
-there is no separate "Hypothesis" CI job. The ordinary <code>pytest</code> invocation
-collects and runs <code>@given</code> tests exactly like any other test, so the existing
-coverage gate and test step cover them automatically.</p>
-<p>Two Hypothesis CLI flags are worth using in CI:</p>
+<h3 id="3-correct-reverse-proxy-topology-servers-matches-reality">3. Correct reverse-proxy topology — <code>servers</code> matches reality<a class="headerlink" href="#3-correct-reverse-proxy-topology-servers-matches-reality" title="Permanent link">&para;</a></h3>
+<p>The OpenAPI <code>servers</code> block and the paths a client actually calls must agree,
+even when the fleet edge sits in front.</p>
 <ul>
-<li><code>--hypothesis-show-statistics</code> — prints per-test statistics (examples run,
-  health-check status) so reviewers can see how much each property exercised.</li>
-<li><code>--hypothesis-seed &lt;int&gt;</code> — replays a specific generated input sequence.
-  The failing seed is printed on every Hypothesis failure and makes flaky or
-  intermittent property failures reproducible.</li>
+<li><strong>Prefer forwarding the full path unchanged</strong> and letting the app own the
+  <code>/api/v1</code> prefix — the simplest topology, and the one where the generated
+  schema is correct with no extra configuration.</li>
+<li><strong>If the gateway strips a prefix</strong>, set the app's <code>root_path</code> (FastAPI/ASGI
+  <code>root_path</code>, or an explicit <code>servers</code> entry) so the OpenAPI <code>servers</code> URL
+  reflects the externally visible base path. A schema whose <code>servers</code>/<code>paths</code>
+  disagree with the real external URL sends every generated client to a 404.</li>
 </ul>
-<p><strong>Failure mode:</strong> a dedicated Hypothesis job drifts from the main suite — it
-loses the shared <code>HYPOTHESIS_PROFILE</code> env, the coverage gate, and the
-<code>dev</code>-group install guarantees — and quickly becomes the job nobody runs
-locally. Folding property tests into the ordinary pytest invocation keeps
-them under the same CI contract as every other test.</p>
+<h2 id="fastapi-reference-implementation">FastAPI reference implementation<a class="headerlink" href="#fastapi-reference-implementation" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">fastapi</span><span class="w"> </span><span class="kn">import</span> <span class="n">APIRouter</span><span class="p">,</span> <span class="n">FastAPI</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pydantic_settings</span><span class="w"> </span><span class="kn">import</span> <span class="n">BaseSettings</span>
+
+
+<span class="k">class</span><span class="w"> </span><span class="nc">Settings</span><span class="p">(</span><span class="n">BaseSettings</span><span class="p">):</span>
+    <span class="n">API_V1_STR</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;/api/v1&quot;</span>
+    <span class="c1"># Set when the fleet edge strips the prefix before forwarding; leave &quot;&quot; when</span>
+    <span class="c1"># the full path is forwarded unchanged (the preferred topology).</span>
+    <span class="n">ROOT_PATH</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+
+
+<span class="n">settings</span> <span class="o">=</span> <span class="n">Settings</span><span class="p">()</span>
+
+<span class="c1"># docs_url / openapi_url are left at their defaults — never disabled.</span>
+<span class="n">app</span> <span class="o">=</span> <span class="n">FastAPI</span><span class="p">(</span>
+    <span class="n">title</span><span class="o">=</span><span class="s2">&quot;example-component&quot;</span><span class="p">,</span>
+    <span class="n">root_path</span><span class="o">=</span><span class="n">settings</span><span class="o">.</span><span class="n">ROOT_PATH</span><span class="p">,</span>  <span class="c1"># so OpenAPI `servers` matches the edge</span>
+<span class="p">)</span>
+
+<span class="n">api_v1</span> <span class="o">=</span> <span class="n">APIRouter</span><span class="p">(</span><span class="n">prefix</span><span class="o">=</span><span class="n">settings</span><span class="o">.</span><span class="n">API_V1_STR</span><span class="p">)</span>
+
+
+<span class="nd">@api_v1</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;/things/</span><span class="si">{thing_id}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">get_thing</span><span class="p">(</span><span class="n">thing_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]:</span>
+    <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="n">thing_id</span><span class="p">}</span>
+
+
+<span class="n">app</span><span class="o">.</span><span class="n">include_router</span><span class="p">(</span><span class="n">api_v1</span><span class="p">)</span>
+
+
+<span class="c1"># Operational endpoints stay unversioned (see the health-endpoints standard).</span>
+<span class="nd">@app</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;/health&quot;</span><span class="p">)</span>
+<span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">health</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]:</span>
+    <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;status&quot;</span><span class="p">:</span> <span class="s2">&quot;ok&quot;</span><span class="p">}</span>
+</code></pre></div>
+<p>This serves the contract at <code>/api/v1/things/{thing_id}</code>, exposes
+<code>/openapi.json</code> and <code>/docs</code> automatically, and — with <code>ROOT_PATH</code> set to the
+stripped prefix — emits a <code>servers</code> entry a generated client can call directly.</p>
+<h2 id="failure-modes-this-prevents">Failure modes this prevents<a class="headerlink" href="#failure-modes-this-prevents" title="Permanent link">&para;</a></h2>
+<ul>
+<li><strong>Un-discoverable contracts.</strong> A service that ships no <code>/openapi.json</code>
+  forces every integration to reverse-engineer request and response shapes from
+  example payloads, which drift silently as the code changes. A served schema is
+  the single source of truth a client can generate against and a test can assert
+  on.</li>
+<li><strong>Plain-<code>Starlette()</code> blind spots.</strong> A bare <code>Starlette()</code> app ships zero
+  schema and zero docs, and nothing in CI notices — the gap is invisible until a
+  consumer needs the contract. Requiring a schema layer closes it fleet-wide.</li>
+<li><strong>Header-versioning fragility.</strong> With the version in an <code>Accept</code> parameter or
+  <code>X-API-Version</code> header, path routers can't split traffic by version, caches
+  collapse every version onto one key, and the version never appears in access
+  logs or a <code>curl</code> command — making a versioned request indistinguishable from an
+  unversioned one at every layer between client and app.</li>
+<li><strong>Proxy-owned prefixes.</strong> When the <code>/api/v1</code> prefix exists only because the
+  reverse proxy rewrites the path, the app's own routes, tests, and OpenAPI
+  schema all disagree with the external URL — the schema advertises paths the
+  edge never serves, and a direct call from a sibling container 404s.</li>
+<li><strong>Wrong <code>servers</code> after prefix stripping.</strong> A gateway that strips the prefix
+  without a matching <code>root_path</code> yields an OpenAPI document whose <code>servers</code>/<code>paths</code>
+  point at the internal base path, so every client generated from the schema
+  targets a URL that returns 404 from outside.</li>
+</ul>
 
 
 

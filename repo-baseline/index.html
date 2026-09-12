@@ -3457,6 +3457,16 @@ bypass every gate, the changelog check never runs):</p>
 idempotent apply-script in robotsix-github-workflows (<code>gh api</code> loop over the
 fleet, setting <code>enforce_admins: true</code> on every protected branch) — run it when
 a repo is created or the required-check set changes.</p>
+<p><strong>Enforcement.</strong> The apply-script is trigger-based; it never re-verifies that
+protection stayed intact. Because branch protection is load-bearing (without it
+the standards above are silently vacuous), the
+<a href="../mill-agents/#branch-protection-check"><code>branch-protection-check</code></a> periodic
+agent sweeps the fleet monthly and confirms every non-archived repo's default
+branch still keeps PR-only, required status checks, required approving review,
+force-push disabled, and <code>enforce_admins: true</code> — filing a drift ticket through
+the mill for any control that weakened (emergency bypass left on, a repo added
+without the script, a required-check set that drifted). The branch-protection
+MUSTs are therefore machine-checkable — protection can't silently erode.</p>
 <p>If an operational emergency requires admin bypass (e.g. a hotfix during CI
 outage), temporarily disable branch protection with a reason recorded,
 apply the fix, and re-enable immediately afterward. The bypass must be

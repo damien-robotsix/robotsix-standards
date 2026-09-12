@@ -3569,23 +3569,29 @@ dependency vulnerability audit on every CI run.</p>
 <li><strong>Detail:</strong> <a href="../docker-standard/#ci-time-image-scan">Docker build &amp; release — CI-time image scan</a>.</li>
 </ul>
 <h2 id="slsa-source-track">SLSA Source Track<a class="headerlink" href="#slsa-source-track" title="Permanent link">&para;</a></h2>
-<p><a href="https://slsa.dev/spec/v1.2/">SLSA v1.2</a> introduces a <strong>Source Track</strong>
-(Source L1–L4) alongside the existing Build Track. The fleet's posture against
-each Source level:</p>
+<p>The <a href="https://slsa.dev/spec/v1.2/source-requirements">SLSA v1.2 source track</a>
+defines four cumulative levels (Source L1–L4) that apply to the change history
+of the source itself, alongside the existing Build track. SLSA levels are
+cumulative: a level counts as met only when every lower level is also met. The
+fleet's posture against each Source level:</p>
 <ul>
-<li><strong>Source L1 (version-controlled source):</strong> met — all source lives in GitHub,
-  and every dependency is referenced by an immutable commit SHA.</li>
-<li><strong>Source L2 (signed source provenance):</strong> gap — releases do not yet produce
-  signed source provenance attestations. Adoption is deferred pending tooling
-  maturity and upstream ecosystem support.</li>
-<li><strong>Source L3 (continuous enforcement of branch protection):</strong> met — branch
-  protection with <code>include_admins: true</code> enforces required status checks on
-  every commit to <code>main</code>. No commit merges without passing CI.</li>
-<li><strong>Source L4 (two-person review):</strong> deferred — SLSA Source L4 requires an
-  informed two-person review on every change. The fleet's branch-protection
-  rule mandates one required approving review. Requiring two reviewers on
-  every PR is impractical for a small team and is a deliberate, documented
-  tradeoff.</li>
+<li><strong>Source L1 (version controlled):</strong> met — all source lives in GitHub, and
+  every dependency is referenced by an immutable commit SHA.</li>
+<li><strong>Source L2 (history &amp; provenance):</strong> gap — SLSA Source L2 requires verified,
+  hosted change history and contemporaneous, tamper-resistant source provenance
+  attestations. Releases do not yet produce signed source provenance
+  attestations; adoption is deferred pending tooling maturity and upstream
+  ecosystem support.</li>
+<li><strong>Source L3 (continuous technical controls):</strong> not met — branch protection
+  with <code>include_admins: true</code> enforces required status checks on every commit
+  to <code>main</code>, so the underlying control is in place. Because SLSA levels are
+  cumulative and Source L2 remains a gap, Source L3 is not reached even though
+  the branch-protection control itself is enforced.</li>
+<li><strong>Source L4 (two-party review):</strong> not met — SLSA Source L4 requires an
+  informed review by two distinct trusted persons on every change to a
+  protected branch. The fleet's branch-protection rule mandates one required
+  approving review. Requiring two reviewers on every PR is impractical for a
+  small team and is a deliberate, documented tradeoff.</li>
 </ul>
 <h2 id="how-the-gates-are-delivered">How the gates are delivered<a class="headerlink" href="#how-the-gates-are-delivered" title="Permanent link">&para;</a></h2>
 <p>The gates are <strong>not implemented per-repo</strong> — they are delivered through shared

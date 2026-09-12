@@ -150,7 +150,7 @@ def scan_file(path: Path) -> list[Finding]:
     """Scan one Python file and return secret-named ``str`` field findings."""
     try:
         tree = ast.parse(path.read_text(encoding="utf-8"), filename=str(path))
-    except (OSError, SyntaxError, UnicodeDecodeError):
+    except OSError, SyntaxError, UnicodeDecodeError:
         return []
     classes = {
         node.name: node for node in ast.walk(tree) if isinstance(node, ast.ClassDef)

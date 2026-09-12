@@ -59,6 +59,18 @@ implements it: a component defines one pydantic model and calls `load_config`.
   Schema as `{"type": "string", "format": "password", "writeOnly": true}` — so
   the deploy UI knows to mask the input and never echo it back. Secrets are
   **typed**, not guessed from an empty slot.
+- The SecretStr typing is **machine-checked**. The `check-secret-str`
+  pre-commit hook — defined in this repo's `.pre-commit-config.yaml` as part
+  of the standard pre-commit set — fails on any config-model field whose name
+  matches a secret pattern (`api_key`, `token`, `password`, `secret`, ...)
+  but is annotated `str` (or `Optional[str]`) instead of `SecretStr`. Fleet
+  repos run it as part of their pre-commit set so this MUST is enforced at
+  commit time, not aspirational.
+
+  *Failure it prevents:* a secret field declared as plain `str` passes mypy,
+  ruff, and the schema-drift check with no signal, so the masked-on-read /
+  `writeOnly` guarantee silently disappears and the secret is stored and
+  logged as plaintext (OWASP Secrets Management).
 - Secrets live in the **same `config.json`** as ordinary settings — no
   separate secrets file, no `EnvStore` or env-var injection for component
   config. The one-file rule applies to secrets too: `ROBOTSIX_CONFIG_FILE`

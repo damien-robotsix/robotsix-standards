@@ -372,23 +372,29 @@ dependency vulnerability audit on every CI run.
 
 ## SLSA Source Track
 
-[SLSA v1.2](https://slsa.dev/spec/v1.2/) introduces a **Source Track**
-(Source L1–L4) alongside the existing Build Track. The fleet's posture against
-each Source level:
+The [SLSA v1.2 source track](https://slsa.dev/spec/v1.2/source-requirements)
+defines four cumulative levels (Source L1–L4) that apply to the change history
+of the source itself, alongside the existing Build track. SLSA levels are
+cumulative: a level counts as met only when every lower level is also met. The
+fleet's posture against each Source level:
 
-- **Source L1 (version-controlled source):** met — all source lives in GitHub,
-  and every dependency is referenced by an immutable commit SHA.
-- **Source L2 (signed source provenance):** gap — releases do not yet produce
-  signed source provenance attestations. Adoption is deferred pending tooling
-  maturity and upstream ecosystem support.
-- **Source L3 (continuous enforcement of branch protection):** met — branch
-  protection with `include_admins: true` enforces required status checks on
-  every commit to `main`. No commit merges without passing CI.
-- **Source L4 (two-person review):** deferred — SLSA Source L4 requires an
-  informed two-person review on every change. The fleet's branch-protection
-  rule mandates one required approving review. Requiring two reviewers on
-  every PR is impractical for a small team and is a deliberate, documented
-  tradeoff.
+- **Source L1 (version controlled):** met — all source lives in GitHub, and
+  every dependency is referenced by an immutable commit SHA.
+- **Source L2 (history & provenance):** gap — SLSA Source L2 requires verified,
+  hosted change history and contemporaneous, tamper-resistant source provenance
+  attestations. Releases do not yet produce signed source provenance
+  attestations; adoption is deferred pending tooling maturity and upstream
+  ecosystem support.
+- **Source L3 (continuous technical controls):** not met — branch protection
+  with `include_admins: true` enforces required status checks on every commit
+  to `main`, so the underlying control is in place. Because SLSA levels are
+  cumulative and Source L2 remains a gap, Source L3 is not reached even though
+  the branch-protection control itself is enforced.
+- **Source L4 (two-party review):** not met — SLSA Source L4 requires an
+  informed review by two distinct trusted persons on every change to a
+  protected branch. The fleet's branch-protection rule mandates one required
+  approving review. Requiring two reviewers on every PR is impractical for a
+  small team and is a deliberate, documented tradeoff.
 
 ## How the gates are delivered
 

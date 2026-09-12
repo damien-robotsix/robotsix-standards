@@ -98,3 +98,46 @@ judging what counts as real activity requires more than a level-1 lookup).
 roster, queries last default-branch commit dates via the mill's GitHub access,
 and files draft tickets. It cannot archive, privatize, or edit any repo; all
 retirement actions flow through the normal ticket pipeline.
+
+## Branch protection check
+
+**Agent:** `branch-protection-check` (defined in
+`.robotsix-mill/agents/branch-protection-check.yaml`).
+
+**Purpose:** Enforce the
+[repo-baseline](repo-baseline.md#branch-protection) branch-protection MUSTs —
+confirm every non-archived fleet repo's default branch still keeps them intact.
+
+**Why it exists:** branch protection is applied by a trigger-based apply-script
+in robotsix-github-workflows that runs only when a repo is created or the
+required-check set changes; nothing re-verifies it afterward. Protection is
+load-bearing — without it the standards are silently vacuous (auto-merge merges
+instantly, direct pushes bypass every gate) — so it needs a periodic watchdog.
+
+**Invariant it checks:** for each non-archived repo, the default branch keeps
+PR-only, required status checks, required approving review, squash-merge,
+force-push disabled, and `enforce_admins: true`. It catches drift the
+apply-script can't: an emergency admin bypass left disabled, a repo added
+without the script, or a required-check set that silently changed.
+
+**What it does NOT do:** it never edits protection settings or runs the
+apply-script. It reads each repo's live protection state, flags drift, and
+files draft tickets; the operator remediates.
+
+**Output:** one draft ticket per repo with drifted protection, naming the repo,
+the specific control(s) that weakened, observed vs. required state, and the
+recommended action. A clean pass with no findings is a valid result.
+
+**Cadence:** monthly (2592000 seconds).
+
+**Capability level:** 2 (intermediate reasoning — mapping live GitHub
+protection settings against the MUSTs and judging what counts as drift requires
+more than a level-1 lookup).
+
+**Web knowledge:** Disabled — the check is fleet-internal, not upstream-driven.
+
+**Tools:** Read-only with respect to the fleet — reads `docs/fleet.md` for the
+roster, queries default-branch protection settings via the mill's GitHub
+access, and files draft tickets. It cannot edit protection, run the
+apply-script, or change any repo; all remediation flows through the normal
+ticket pipeline.

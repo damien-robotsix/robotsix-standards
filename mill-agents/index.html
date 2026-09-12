@@ -2609,6 +2609,17 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#repo-retirement-check" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Repo retirement check
+      
+    </span>
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -2683,6 +2694,17 @@
     <span class="md-ellipsis">
       
         Security posture audit (security-posture-audit)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#repo-retirement-check" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Repo retirement check
       
     </span>
   </a>
@@ -2771,6 +2793,30 @@ needs to verify currency.</p>
 <p><strong>Tools:</strong> Read-only — <code>read_file</code>, <code>list_dir</code>. The agent cannot modify
 standards content; all findings go through the normal ticket pipeline so an
 operator reviews every proposed change.</p>
+<h2 id="repo-retirement-check">Repo retirement check<a class="headerlink" href="#repo-retirement-check" title="Permanent link">&para;</a></h2>
+<p><strong>Agent:</strong> <code>repo-retirement-check</code> (defined in
+<code>.robotsix-mill/agents/repo-retirement-check.yaml</code>).</p>
+<p><strong>Purpose:</strong> Enforce the <a href="../repo-baseline/#retiring-a-repo">repo-baseline</a>
+retirement threshold — flag fleet repos that are past it and not yet retired.</p>
+<p><strong>Threshold it enforces:</strong> a repo is past the retirement threshold when it has
+had no merged commit to its default branch for 12 consecutive months. Such a
+repo must be retired or carry an explicit, dated maintenance declaration in
+its README.</p>
+<p><strong>What it does NOT do:</strong> it never retires a repo. It measures each fleet
+repo's last default-branch activity, flags repos past the threshold, and files
+draft retirement tickets; the operator decides retire vs. redeclare
+maintained.</p>
+<p><strong>Output:</strong> one draft ticket per repo past the threshold, naming the repo, its
+last default-branch commit date, and the recommended action. A clean pass with
+no findings is a valid result.</p>
+<p><strong>Cadence:</strong> monthly (2592000 seconds).</p>
+<p><strong>Capability level:</strong> 2 (intermediate reasoning — reading the fleet roster and
+judging what counts as real activity requires more than a level-1 lookup).</p>
+<p><strong>Web knowledge:</strong> Disabled — the check is fleet-internal, not upstream-driven.</p>
+<p><strong>Tools:</strong> Read-only with respect to the fleet — reads <code>docs/fleet.md</code> for the
+roster, queries last default-branch commit dates via the mill's GitHub access,
+and files draft tickets. It cannot archive, privatize, or edit any repo; all
+retirement actions flow through the normal ticket pipeline.</p>
 
 
 

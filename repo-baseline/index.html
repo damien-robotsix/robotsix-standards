@@ -3445,6 +3445,18 @@ it, standards changes land there as tickets — so it cannot rot. Templates
 are per-language, parallel to the language pages: a new language earns a
 standards page <em>and</em> a template before its first repo lands.</p>
 <h2 id="retiring-a-repo">Retiring a repo<a class="headerlink" href="#retiring-a-repo" title="Permanent link">&para;</a></h2>
+<p><strong>Retirement threshold.</strong> A repo is <strong>past the retirement threshold</strong> when it
+has had <strong>no merged commit to its default branch for 12 consecutive months</strong>
+(abandonment signal — upstream: OpenSSF Scorecard <em>Maintained</em> activity
+signal, OWASP supply-chain guidance). A repo past the threshold <strong>MUST</strong>
+either be retired (procedure below) or carry an explicit, dated maintenance
+declaration in its README. A standing unmaintained repo is an attack surface:
+unpatched dependencies, stale credentials, abandoned CI tokens.</p>
+<p><strong>Enforcement.</strong> The
+<a href="../mill-agents/#repo-retirement-check"><code>repo-retirement-check</code></a> periodic agent
+sweeps the fleet monthly and flags every non-archived repo past the threshold,
+filing a retirement ticket through the mill. The retirement MUST is therefore
+machine-checkable — an unmaintained repo can't silently decay.</p>
 <p>The mirror image, exercised by the broker decommission (2026-07-03):</p>
 <ol>
 <li><strong>Deprecate first.</strong> File removal tickets in every consumer — find them

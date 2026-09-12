@@ -107,3 +107,48 @@ jobs:
             echo "SECURITY.md (vulnerability disclosure): OK"
           fi
           exit 0
+
+  sbom-scope-check:
+    # Enforcement gate for the repo-baseline.md SBOM-scope rule. This repo is
+    # content-only (no src/ tree, no container image), so per docs/security-posture.md
+    # it is EXEMPT from SBOM generation — there is no distributable artifact to bill
+    # of materials. That scope is made machine-checkable here so an audit can verify
+    # mechanically (rather than reading prose) that the exemption holds:
+    #   - fail if the repo is reclassified (gains src/ or a Dockerfile) without
+    #     dropping the exemption;
+    #   - fail if an SBOM-generating step ever appears in a workflow — the audit gap
+    #     this gate closes is 'no workflow generates the mandated SBOM'; a content-only
+    #     repo should ship none, and one that does is scope creep.
+    # See docs/repo-baseline.md (release-SBOM asset, content-only exemption) and
+    # docs/security-posture.md (content-only exemption from the SBOM gate).
+    permissions:
+      contents: read
+    runs-on: ubuntu-latest
+    timeout-minutes: 5  # fast grep check; well under 15-minute default
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
+      - name: Verify content-only SBOM exemption holds
+        run: |
+          # Content-only classification (docs/security-posture.md): no src/ tree
+          # and no container-image marker.
+          if [ -d src ] || find . -maxdepth 3 -iname 'Dockerfile*' -not -path './.git/*' | grep -q .; then
+            echo "::error::Repo is no longer content-only (src/ or Dockerfile present); the SBOM exemption does not apply — add SBOM generation per docs/security-posture.md"
+            exit 1
+          fi
+          # SBOM exemption applies: content-only repos must not carry an
+          # SBOM-generating step or SBOM artifact upload. Match concrete
+          # generator invocations and artifact names (not the bare word) so a
+          # comment cannot trip it. baseline-check.yml itself is excluded from
+          # the scan so this gate's own prose never self-matches.
+          found=0
+          for f in .github/workflows/*.yml; do
+            case "$f" in
+              */baseline-check.yml) continue ;;
+            esac
+            if grep -iqE 'anchore/sbom-action|spdx-sbom-generator|anchore/syft|trivy[[:space:]]+sbom|cyclonedx1\.[0-9]|sbom\.(cdx|cyclonedx)\.json|name:[[:space:]]*sbom' "$f"; then
+              echo "::error::$f carries an SBOM-generating step in a content-only repo (docs/security-posture.md SBOM exemption)"
+              found=1
+            fi
+          done
+          [ "$found" -eq 0 ] || exit 1
+          echo "SBOM scope (content-only, exempt): OK"

@@ -97,6 +97,9 @@ The full configuration standard lives in the dedicated
   attaches a CycloneDX SBOM (`sbom.cyclonedx.json`) as a release asset, optionally
   with a Sigstore attestation — see
   [SBOM & vulnerability audit](security-posture.md#6-sbom-vulnerability-audit).
+  Content-only repos — exempt from SBOM generation per the
+  [CI and security gates](#ci-and-security-gates) section and
+  [security posture](security-posture.md) — ship no SBOM release asset.
 - **Versions stay `0.x`** until a repo deliberately declares `1.0.0` — that is a human
   statement about stability, never automated. Under semver 0.x there is no
   compatibility promise, which matches the stack's pre-release, clean-cutover stance.

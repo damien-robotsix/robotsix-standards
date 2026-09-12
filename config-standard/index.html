@@ -3054,14 +3054,25 @@ implements it: a component defines one pydantic model and calls <code>load_confi
   Schema as <code>{"type": "string", "format": "password", "writeOnly": true}</code> — so
   the deploy UI knows to mask the input and never echo it back. Secrets are
   <strong>typed</strong>, not guessed from an empty slot.</li>
-<li>Secrets live in the <strong>same <code>config.json</code></strong> as ordinary settings — no
+<li>The SecretStr typing is <strong>machine-checked</strong>. The <code>check-secret-str</code>
+  pre-commit hook — defined in this repo's <code>.pre-commit-config.yaml</code> as part
+  of the standard pre-commit set — fails on any config-model field whose name
+  matches a secret pattern (<code>api_key</code>, <code>token</code>, <code>password</code>, <code>secret</code>, ...)
+  but is annotated <code>str</code> (or <code>Optional[str]</code>) instead of <code>SecretStr</code>. Fleet
+  repos run it as part of their pre-commit set so this MUST is enforced at
+  commit time, not aspirational.</li>
+</ul>
+<p><em>Failure it prevents:</em> a secret field declared as plain <code>str</code> passes mypy,
+  ruff, and the schema-drift check with no signal, so the masked-on-read /
+  <code>writeOnly</code> guarantee silently disappears and the secret is stored and
+  logged as plaintext (OWASP Secrets Management).
+- Secrets live in the <strong>same <code>config.json</code></strong> as ordinary settings — no
   separate secrets file, no <code>EnvStore</code> or env-var injection for component
   config. The one-file rule applies to secrets too: <code>ROBOTSIX_CONFIG_FILE</code>
-  only locates the file, and the file is the only source of config values.</li>
-<li>Any config file written with real secrets is created <strong><code>0600</code> in a <code>0700</code>
+  only locates the file, and the file is the only source of config values.
+- Any config file written with real secrets is created <strong><code>0600</code> in a <code>0700</code>
   directory</strong>, enforced in shared loader code (<code>dump_config</code>) — not per-repo,
-  not docstring-only. No real credentials are committed anywhere.</li>
-</ul>
+  not docstring-only. No real credentials are committed anywhere.</p>
 <p><strong>Management-surface layer — central-deploy config API + Configure UI</strong></p>
 <p>These rules apply to any surface that reads, writes, or displays component
 config. They are <strong>not</strong> library concerns (<code>robotsix-config</code> does not

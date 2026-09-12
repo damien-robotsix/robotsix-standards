@@ -147,6 +147,7 @@ nav:
       - HTTP security headers: http-security-headers.md
       - CORS policy: cors-policy.md
       - Health endpoints: health-endpoints.md
+      - API versioning & OpenAPI schema: api-versioning-openapi.md
       - OpenSSF Scorecard: scorecard.md
   - Deployment system:
       - Bootstrap tier: deployment-system.md

@@ -381,6 +381,20 @@ standards page *and* a template before its first repo lands.
 
 ## Retiring a repo
 
+**Retirement threshold.** A repo is **past the retirement threshold** when it
+has had **no merged commit to its default branch for 12 consecutive months**
+(abandonment signal — upstream: OpenSSF Scorecard *Maintained* activity
+signal, OWASP supply-chain guidance). A repo past the threshold **MUST**
+either be retired (procedure below) or carry an explicit, dated maintenance
+declaration in its README. A standing unmaintained repo is an attack surface:
+unpatched dependencies, stale credentials, abandoned CI tokens.
+
+**Enforcement.** The
+[`repo-retirement-check`](mill-agents.md#repo-retirement-check) periodic agent
+sweeps the fleet monthly and flags every non-archived repo past the threshold,
+filing a retirement ticket through the mill. The retirement MUST is therefore
+machine-checkable — an unmaintained repo can't silently decay.
+
 The mirror image, exercised by the broker decommission (2026-07-03):
 
 1. **Deprecate first.** File removal tickets in every consumer — find them

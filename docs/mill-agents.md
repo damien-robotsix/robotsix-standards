@@ -64,3 +64,37 @@ needs to verify currency.
 **Tools:** Read-only — `read_file`, `list_dir`. The agent cannot modify
 standards content; all findings go through the normal ticket pipeline so an
 operator reviews every proposed change.
+
+## Repo retirement check
+
+**Agent:** `repo-retirement-check` (defined in
+`.robotsix-mill/agents/repo-retirement-check.yaml`).
+
+**Purpose:** Enforce the [repo-baseline](repo-baseline.md#retiring-a-repo)
+retirement threshold — flag fleet repos that are past it and not yet retired.
+
+**Threshold it enforces:** a repo is past the retirement threshold when it has
+had no merged commit to its default branch for 12 consecutive months. Such a
+repo must be retired or carry an explicit, dated maintenance declaration in
+its README.
+
+**What it does NOT do:** it never retires a repo. It measures each fleet
+repo's last default-branch activity, flags repos past the threshold, and files
+draft retirement tickets; the operator decides retire vs. redeclare
+maintained.
+
+**Output:** one draft ticket per repo past the threshold, naming the repo, its
+last default-branch commit date, and the recommended action. A clean pass with
+no findings is a valid result.
+
+**Cadence:** monthly (2592000 seconds).
+
+**Capability level:** 2 (intermediate reasoning — reading the fleet roster and
+judging what counts as real activity requires more than a level-1 lookup).
+
+**Web knowledge:** Disabled — the check is fleet-internal, not upstream-driven.
+
+**Tools:** Read-only with respect to the fleet — reads `docs/fleet.md` for the
+roster, queries last default-branch commit dates via the mill's GitHub access,
+and files draft tickets. It cannot archive, privatize, or edit any repo; all
+retirement actions flow through the normal ticket pipeline.

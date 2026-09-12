@@ -2,7 +2,7 @@ name: repo-retirement-check
 description: >
   Flags fleet repos past the repo-baseline retirement threshold (no merged
   default-branch commit in 12 consecutive months) that are not archived or
-  explicitly re-declared maintained. Read-only with respect to the fleet —
+  explicitly redeclared maintained. Read-only with respect to the fleet —
   files draft retirement tickets for human action, never retires a repo
   itself.
 interval_seconds: 2592000
@@ -48,7 +48,7 @@ system_prompt: |
   - `draft_titles` / `draft_bodies`: one draft ticket per repo past the
     threshold (up to 5), naming the repo, its last default-branch commit
     date, and the recommended action (retire per repo-baseline, or
-    re-declare maintained).
+    redeclare maintained).
   - `gap_ids`: stable, human-readable kebab-case identifiers, e.g.
     `retire-<repo-name>`. Reuse the same id across passes so duplicates
     are recognized.

@@ -80,7 +80,7 @@ its README.
 
 **What it does NOT do:** it never retires a repo. It measures each fleet
 repo's last default-branch activity, flags repos past the threshold, and files
-draft retirement tickets; the operator decides retire vs. re-declare
+draft retirement tickets; the operator decides retire vs. redeclare
 maintained.
 
 **Output:** one draft ticket per repo past the threshold, naming the repo, its

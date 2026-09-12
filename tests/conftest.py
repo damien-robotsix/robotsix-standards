@@ -9,6 +9,7 @@ path via importlib instead of a plain ``import``.
 from __future__ import annotations
 
 import importlib.util
+import sys
 from pathlib import Path
 from types import ModuleType
 
@@ -22,6 +23,9 @@ def _load_script(filename: str, module_name: str) -> ModuleType:
     spec = importlib.util.spec_from_file_location(module_name, path)
     assert spec is not None and spec.loader is not None
     module = importlib.util.module_from_spec(spec)
+    # Register in sys.modules before exec_module — importlib semantics and
+    # required by stdlib consumers that look up cls.__module__ (e.g. dataclass).
+    sys.modules[module_name] = module
     spec.loader.exec_module(module)
     return module
 
@@ -41,3 +45,8 @@ def check_workflow_timeouts() -> ModuleType:
 @pytest.fixture
 def check_py_typed_guard() -> ModuleType:
     return _load_script("check-py-typed-guard.py", "check_py_typed_guard")
+
+
+@pytest.fixture
+def check_secret_str() -> ModuleType:
+    return _load_script("check-secret-str.py", "check_secret_str")

@@ -36,6 +36,16 @@ repos:
         pass_filenames: false
         args: [scripts/]
         additional_dependencies: [PyYAML==6.0.3]
+  # SecretStr gate (docs/config-standard.md §3): fails on any pydantic
+  # config-model field whose name matches a secret pattern (api_key, token,
+  # password, secret, ...) but is annotated `str` instead of SecretStr.
+  - repo: local
+    hooks:
+      - id: check-secret-str
+        name: reject str-typed secret fields in config models
+        entry: python scripts/check-secret-str.py
+        language: system
+        types: [python]
   - repo: https://github.com/Yelp/detect-secrets
     rev: v1.5.0
     hooks:

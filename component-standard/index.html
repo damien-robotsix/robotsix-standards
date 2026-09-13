@@ -2072,6 +2072,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#how-this-pages-security-rules-are-enforced" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How this page's security rules are enforced
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#build-release" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -3162,6 +3173,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#how-this-pages-security-rules-are-enforced" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How this page's security rules are enforced
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#build-release" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -3867,6 +3889,49 @@ timeout) and a bounded request budget.  A decommissioned agent has no
 persistent process to remain active.  <em>Failure prevented:</em> a stale agent
 cannot linger and exfiltrate data — its job terminates, its token expires,
 and no persistent process survives the pipeline run.</p>
+<h2 id="how-this-pages-security-rules-are-enforced">How this page's security rules are enforced<a class="headerlink" href="#how-this-pages-security-rules-are-enforced" title="Permanent link">&para;</a></h2>
+<p>This page's security MUSTs govern downstream deployable components, not this
+repo, so there is no CI gate here that can inspect a component's application
+code. Most of them are also not covered by any pre-commit hook or CI job in the
+component repo, so enforcement is by <strong>audit</strong> — checked at component code
+review and by the periodic standards-audit agent — against the criteria below,
+mirroring the pattern in
+<a href="../http-security-headers/#how-this-is-enforced">HTTP security headers</a>,
+<a href="../sse-response-headers/#how-this-is-enforced">SSE response headers</a>,
+<a href="../cors-policy/#how-this-is-enforced">CORS policy</a>, and
+<a href="../ssrf-hardened-fetchers/#how-this-is-enforced">SSRF-hardened fetchers</a>. The
+<a href="../security-posture/#llm-agentic-security-audit">security posture</a> page carries
+the fleet-wide roll-up of these same checks.</p>
+<p>The three rules below were previously report-only — the page stated the MUST
+but named no verifier — so their audit criteria are called out explicitly.
+Where a signal is grep-able it is named; the rest are design-level properties an
+auditor reads at code review.</p>
+<table>
+<thead>
+<tr>
+<th>Rule</th>
+<th>Audit criterion</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="#exception-message-sanitisation">Exception message sanitisation</a></td>
+<td>The component registers the centralized catch-all exception handler (per <a href="../http-error-envelope/">HTTP error envelope</a>) so HTTP error bodies are sanitised in one place — <code>grep</code> the app-setup module for that handler registration. For the non-HTTP paths the rule names — WebSocket close reasons and <strong>LLM model prompts</strong> — the auditor confirms every site that puts an exception message into a close reason or a prompt string routes it through the sanitisation wrapper first, never a bare <code>str(exc)</code>/<code>f"...{exc}"</code>. A raw exception message reaching a response body, a close reason, or a prompt is a violation.</td>
+</tr>
+<tr>
+<td><a href="#llm-security">LLM02 — sensitive information disclosure</a></td>
+<td>A PII/secret scrub-or-tokenise step runs at prompt assembly, <em>before</em> untrusted data (ticket bodies, PR diffs, chat messages) enters a prompt, and raw model context is never handed to a log call. This is the same criterion the <a href="../security-posture/#llm-agentic-security-audit">security-posture LLM audit</a> tracks fleet-wide; the auditor verifies the scrub layer exists and sits upstream of every prompt-assembly site.</td>
+</tr>
+<tr>
+<td><a href="#llm-tracing">LLM tracing credentials — no fallback</a></td>
+<td>Tracing/provider credentials are <code>SecretStr</code>-typed fields inside the canonical <code>langfuse</code>/<code>openrouter</code> config blocks — the <a href="../config-standard/#3-one-secret-convention"><code>check-secret-str</code> pre-commit hook</a> mechanically fails a <code>str</code>-typed <code>secret_key</code>, so that half is grep-able already. For the <em>no-fallback</em> half, the audit agent runs a companion grep over the component for deploy-plane <code>LANGFUSE_*</code> environment reads (<code>os.environ["LANGFUSE_</code>, <code>getenv("LANGFUSE_</code>) and pre-standard credential field names (<code>llmio_api_key</code>, <code>secrets.openrouter_api_key</code>); any hit is a silent fallback that hides an unmigrated component and is a violation — the engine reads the canonical blocks and nothing else.</td>
+</tr>
+</tbody>
+</table>
+<p>A component that fails any criterion is non-compliant; the fix is to route the
+signal through the named mechanism — the centralized handler / sanitisation
+wrapper, the prompt-assembly scrub layer, or the canonical <code>SecretStr</code> config
+blocks with no fallback path.</p>
 <h2 id="build-release">Build &amp; release<a class="headerlink" href="#build-release" title="Permanent link">&para;</a></h2>
 <p>Every component builds and publishes its image the same way — one Dockerfile
 pattern and one shared reusable publish workflow, to a single registry (GHCR),

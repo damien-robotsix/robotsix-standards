@@ -666,6 +666,37 @@ persistent process to remain active.  *Failure prevented:* a stale agent
 cannot linger and exfiltrate data — its job terminates, its token expires,
 and no persistent process survives the pipeline run.
 
+## How this page's security rules are enforced
+
+This page's security MUSTs govern downstream deployable components, not this
+repo, so there is no CI gate here that can inspect a component's application
+code. Most of them are also not covered by any pre-commit hook or CI job in the
+component repo, so enforcement is by **audit** — checked at component code
+review and by the periodic standards-audit agent — against the criteria below,
+mirroring the pattern in
+[HTTP security headers](http-security-headers.md#how-this-is-enforced),
+[SSE response headers](sse-response-headers.md#how-this-is-enforced),
+[CORS policy](cors-policy.md#how-this-is-enforced), and
+[SSRF-hardened fetchers](ssrf-hardened-fetchers.md#how-this-is-enforced). The
+[security posture](security-posture.md#llm-agentic-security-audit) page carries
+the fleet-wide roll-up of these same checks.
+
+The three rules below were previously report-only — the page stated the MUST
+but named no verifier — so their audit criteria are called out explicitly.
+Where a signal is grep-able it is named; the rest are design-level properties an
+auditor reads at code review.
+
+| Rule | Audit criterion |
+|---|---|
+| [Exception message sanitisation](#exception-message-sanitisation) | The component registers the centralized catch-all exception handler (per [HTTP error envelope](http-error-envelope.md)) so HTTP error bodies are sanitised in one place — `grep` the app-setup module for that handler registration. For the non-HTTP paths the rule names — WebSocket close reasons and **LLM model prompts** — the auditor confirms every site that puts an exception message into a close reason or a prompt string routes it through the sanitisation wrapper first, never a bare `str(exc)`/`f"...{exc}"`. A raw exception message reaching a response body, a close reason, or a prompt is a violation. |
+| [LLM02 — sensitive information disclosure](#llm-security) | A PII/secret scrub-or-tokenise step runs at prompt assembly, *before* untrusted data (ticket bodies, PR diffs, chat messages) enters a prompt, and raw model context is never handed to a log call. This is the same criterion the [security-posture LLM audit](security-posture.md#llm-agentic-security-audit) tracks fleet-wide; the auditor verifies the scrub layer exists and sits upstream of every prompt-assembly site. |
+| [LLM tracing credentials — no fallback](#llm-tracing) | Tracing/provider credentials are `SecretStr`-typed fields inside the canonical `langfuse`/`openrouter` config blocks — the [`check-secret-str` pre-commit hook](config-standard.md#3-one-secret-convention) mechanically fails a `str`-typed `secret_key`, so that half is grep-able already. For the *no-fallback* half, the audit agent runs a companion grep over the component for deploy-plane `LANGFUSE_*` environment reads (`os.environ["LANGFUSE_`, `getenv("LANGFUSE_`) and pre-standard credential field names (`llmio_api_key`, `secrets.openrouter_api_key`); any hit is a silent fallback that hides an unmigrated component and is a violation — the engine reads the canonical blocks and nothing else. |
+
+A component that fails any criterion is non-compliant; the fix is to route the
+signal through the named mechanism — the centralized handler / sanitisation
+wrapper, the prompt-assembly scrub layer, or the canonical `SecretStr` config
+blocks with no fallback path.
+
 ## Build & release
 
 Every component builds and publishes its image the same way — one Dockerfile

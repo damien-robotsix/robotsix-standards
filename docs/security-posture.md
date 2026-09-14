@@ -330,10 +330,13 @@ would wipe the file — e.g. `lftp mirror --delete` (or `rsync --delete`) over a
 tree that does not contain the secret deletes it on the target — use a
 non-delete invocation or a dedicated file transfer instead.
 
-- **How to verify:** `git ls-files` lists no credential or secret file;
-  `.gitignore` covers the deny list above; the deploy workflow reads secrets
-  from `${{ secrets.* }}` and writes them via a transport with no
-  delete-ordering.
+- **How to verify:** `git ls-files` lists no credential or secret file; the
+  `.gitignore` deny-list coverage is checked mechanically by
+  `scripts/check-gitignore-denylist.py` (run from `baseline-check.yml`), which
+  reports any missing pattern and honors per-repo negating exceptions —
+  warning-first today, fail-closed once the fleet is compliant; the deploy
+  workflow reads secrets from `${{ secrets.* }}` and writes them via a
+  transport with no delete-ordering.
 - **Failure prevented:** a credential file is committed and tracked. Once in
   history it survives every later removal — deleting the file (or adding the
   `.gitignore` entry later) does not purge it from past commits, and the only
@@ -460,6 +463,7 @@ dashboard-watching:
 | Workflow linting | `.pre-commit-config.yaml` includes `actionlint`; CI runs `zizmor` (content-only repos exempt from `zizmor`) |
 | Least-privilege permissions | Every workflow has `permissions:` block; `scripts/check-workflow-security.py` passes in CI; `zizmor` reports clean (code repos) |
 | Secret push protection | Push protection enabled in repo Security settings; `detect-secrets` in pre-commit; CI runs TruffleHog (content-only repos exempt from TruffleHog) |
+| Credential-file deny list | `.gitignore` covers `.htpasswd`, `.env`/`.env.*`, `wp-config*.php`, `*.pem`, `*.key`, `*secret*`, `*.p12` — verified by `scripts/check-gitignore-denylist.py` in `baseline-check.yml` (warning-first, honors per-repo negating exceptions) |
 | SBOM* | CI uploads CycloneDX artifact |
 | CVE audit* | `uv audit` / `pip-audit` passes in CI |
 | Container image scan | Trivy PR-scan and publish workflows present and passing (image-shipping repos only) |

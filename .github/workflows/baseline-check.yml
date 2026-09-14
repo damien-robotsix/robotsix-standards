@@ -128,6 +128,29 @@ jobs:
           fi
           exit 0
 
+  gitignore-denylist-check:
+    # Enforcement gate for docs/security-posture.md gate 5, 'Credential and
+    # secret files are never tracked': every repo's .gitignore must cover the
+    # credential-file deny list (.htpasswd, .env/.env.*, wp-config*.php, *.pem,
+    # *.key, *secret*, *.p12). This is the sole defense for credential FILES
+    # that content scanners (detect-secrets/TruffleHog/push protection) cannot
+    # match, so it must be checked mechanically rather than by eye.
+    # NOTE: currently warning-first (2026-09) — reports missing patterns as
+    # annotations but does not fail. A follow-up gate flips it to fail-closed
+    # once the fleet is compliant, mirroring the SECURITY.md gate above.
+    permissions:
+      contents: read
+    runs-on: ubuntu-latest
+    timeout-minutes: 5  # fast grep/parse check; well under 15-minute default
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
+      - uses: astral-sh/setup-uv@20cfd1bf945f4377ade1205e4dbc17946fc9a30d # v10.0.1
+        with:
+          enable-cache: true
+          python-version: "3.14"
+      - name: Check .gitignore credential/secret-file deny list
+        run: uv run --group docs python scripts/check-gitignore-denylist.py
+
   sbom-scope-check:
     # Enforcement gate for the repo-baseline.md SBOM-scope rule. This repo is
     # content-only (no src/ tree, no container image), so per docs/security-posture.md

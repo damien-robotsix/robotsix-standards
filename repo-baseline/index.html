@@ -3207,7 +3207,10 @@ The full configuration standard lives in the dedicated
   (see <a href="../docker-standard/">Docker build &amp; release</a>). The release workflow also
   attaches a CycloneDX SBOM (<code>sbom.cyclonedx.json</code>) as a release asset, optionally
   with a Sigstore attestation — see
-  <a href="../security-posture/#6-sbom-vulnerability-audit">SBOM &amp; vulnerability audit</a>.</li>
+  <a href="../security-posture/#6-sbom-vulnerability-audit">SBOM &amp; vulnerability audit</a>.
+  Content-only repos — exempt from SBOM generation per the
+  <a href="#ci-and-security-gates">CI and security gates</a> section and
+  <a href="../security-posture/">security posture</a> — ship no SBOM release asset.</li>
 <li><strong>Versions stay <code>0.x</code></strong> until a repo deliberately declares <code>1.0.0</code> — that is a human
   statement about stability, never automated. Under semver 0.x there is no
   compatibility promise, which matches the stack's pre-release, clean-cutover stance.</li>

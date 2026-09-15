@@ -11,8 +11,10 @@ zizmor workflow audit (gate 4b). The zizmor checks (script injection via
 `${{ }}`, untrusted `pull_request_target` checkout, overly broad permissions)
 are lower-risk for a repo with no deployable artifacts and few, simple
 workflows. Content-only repos must still meet SHA-pinning (4a), least-privilege
-permissions (4c), push-protection + detect-secrets (the commit-time and
-push-time parts of gate 5), and Dependabot gates. The TruffleHog full-history
+permissions (4c) — both enforced by the
+[workflow-permissions audit](#workflow-permissions-audit) — plus
+push-protection + detect-secrets (the commit-time and push-time parts of gate
+5), and Dependabot gates. The TruffleHog full-history
 scan is exempt — a docs-only repo with no deployable artifacts and few
 contributors has minimal secret-exposure surface beyond what push protection
 and detect-secrets already catch.
@@ -74,7 +76,7 @@ Scorecard would score are gated instead by
 [zizmor](github-actions-security.md) (workflow security),
 [actionlint](security-posture.md#4b-workflow-linting-actionlint-zizmor)
 (workflow syntax), the
-[workflow-permissions audit](security-posture.md#4c-least-privilege-permissions-blocks),
+[workflow-permissions audit](security-posture.md#workflow-permissions-audit),
 Dependabot/`uv audit` (dependency CVEs), and Trivy (container CVEs). The
 Scorecard *Security-Policy* check is replaced by the
 [baseline gate's `SECURITY.md` check](repo-baseline.md#ci-and-security-gates),
@@ -157,10 +159,14 @@ robotsix-github-workflows org) is pinned to its full 40-character commit SHA,
 with a trailing `# vX.Y.Z` version comment. A tag or branch ref drifts silently
 when the publisher moves it; a SHA is immutable.
 
-- **How to verify:** `grep -r 'uses:' .github/workflows/` produces no
-  `@main`, `@master`, `@v1`, or other mutable refs on third-party actions.
-  (Reusable workflows from robotsix-github-workflows use the full commit SHA
-  of that repo's HEAD.)
+- **How to verify:** the [workflow-permissions audit](#workflow-permissions-audit)
+  — `scripts/check-workflow-security.py`, run in CI — enforces this
+  mechanically: every `uses:` (step-level and job-level reusable-workflow
+  callers) must be pinned to a full 40-character commit SHA with a trailing
+  `# <version>` comment. (Reusable workflows from robotsix-github-workflows
+  use the full commit SHA of that repo's HEAD.) `grep -r 'uses:' .github/workflows/`
+  additionally produces no `@main`, `@master`, `@v1`, or other mutable refs on
+  third-party actions.
 - **Failure prevented:** a compromised or broken action release replaces a
   trusted tag, and every CI run pulls the replacement with no review.
 - **Alignment:** OpenSSF Scorecard *Pinned-Dependencies* check, SLSA
@@ -195,14 +201,45 @@ blast radius to the minimum.
   only `contents: read` (or `contents: write` when the workflow creates
   releases). A hand-rolled workflow must declare its own `permissions:` block
   and justify every `write` scope.
-- **How to verify:** `grep -A5 'permissions:' .github/workflows/*.yml` —
-  every file has one, and no file uses `write-all`. `zizmor` flags missing or
-  overly broad blocks.
+- **How to verify:** the [workflow-permissions audit](#workflow-permissions-audit)
+  — `scripts/check-workflow-security.py`, run in CI — enforces this
+  mechanically: every workflow file must declare a top-level `permissions:`
+  block, and no `permissions: write-all` may appear at workflow or job level.
+  `grep -A5 'permissions:' .github/workflows/*.yml` additionally confirms every
+  file has one with no `write-all`; `zizmor` flags missing or overly broad
+  blocks for code repos.
 - **Failure prevented:** a compromised third-party action in a workflow with
   `write-all` can push to `main`, exfiltrate secrets, or modify releases with
   no audit trail.
 - **Alignment:** OpenSSF Scorecard *Token-Permissions* check, SLSA
   *Build L3* requirement, [GitHub's own guidance](https://docs.github.com/en/actions/security-for-github-actions/security-guides/automatic-token-authentication#permissions-for-the-github_token).
+
+#### Workflow-permissions audit
+
+The **workflow-permissions audit** is the concrete, repo-local enforcement
+mechanism that makes gates 4a and 4c self-enforcing — including for
+**content-only repos**, which are exempt from the zizmor workflow audit (gate
+4b) but must still meet 4a and 4c. For code repos, zizmor mechanically
+enforces both properties; for content-only repos this script is the equivalent
+gate, so every repo's 4a/4c requirement stays checkable without human review.
+
+It is implemented as `scripts/check-workflow-security.py`, run in CI on every
+PR (see `.github/workflows/ci.yml` and `.github/workflows/baseline-check.yml`),
+and enforced on this repo as its reference implementation. It scans every
+`.github/workflows/*.yml` / `*.yaml` file and fails (exit 1) on any violation:
+
+- **4a — SHA-pinned `uses:`:** every `uses:` value (step-level and job-level
+  reusable-workflow callers) must be pinned to a full 40-character commit SHA
+  and carry a trailing `# <version>` comment. Local refs starting with `./`
+  are exempt; `docker://` refs must pin `@sha256:<digest>` (a mutable tag
+  fails). First-party robotsix reusable workflows use the full commit SHA of
+  that repo's HEAD, so they must be pinned too.
+- **4c — least-privilege `permissions:`:** every workflow file must declare a
+  top-level `permissions:` block, and no `permissions: write-all` may appear
+  at workflow or job level.
+
+This is the mechanism referenced whenever the "workflow-permissions audit" is
+cited as an existing control (e.g. [scorecard.md](scorecard.md), this page).
 
 ### 5. Secret push protection
 
@@ -419,9 +456,9 @@ dashboard-watching:
 | Semgrep* | CI calls shared Semgrep workflow; latest CI run uploads Semgrep findings artifact |
 | Dependency review* | CI calls shared `dependency-review` workflow; Dependency graph enabled |
 | Dependabot + Renovate | `.github/dependabot.yml` covers non-uv ecosystems; `renovate.json` present in Python repos; recent update PRs |
-| SHA-pinned actions | `grep -r 'uses:' .github/workflows/` — no mutable refs on third-party actions |
+| SHA-pinned actions | `grep -r 'uses:' .github/workflows/` — no mutable refs on third-party actions; `scripts/check-workflow-security.py` passes in CI |
 | Workflow linting | `.pre-commit-config.yaml` includes `actionlint`; CI runs `zizmor` (content-only repos exempt from `zizmor`) |
-| Least-privilege permissions | Every workflow has `permissions:` block; `zizmor` reports clean |
+| Least-privilege permissions | Every workflow has `permissions:` block; `scripts/check-workflow-security.py` passes in CI; `zizmor` reports clean (code repos) |
 | Secret push protection | Push protection enabled in repo Security settings; `detect-secrets` in pre-commit; CI runs TruffleHog (content-only repos exempt from TruffleHog) |
 | SBOM* | CI uploads CycloneDX artifact |
 | CVE audit* | `uv audit` / `pip-audit` passes in CI |

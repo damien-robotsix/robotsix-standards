@@ -242,7 +242,8 @@ integrates with the deployment system. Beyond the baseline it follows:
   OpenAPI schema for every HTTP API; no header versioning, and no plain
   `Starlette()` shipped without a schema layer.
 - **[OpenSSF Scorecard (not used)](scorecard.md)** — fleet-wide decision to
-  NOT run OpenSSF Scorecard; zizmor, actionlint, the permissions audit,
+  NOT run OpenSSF Scorecard; zizmor, actionlint, the
+  [workflow-permissions audit](security-posture.md#workflow-permissions-audit),
   Dependabot/`uv audit`, and Trivy gate the same supply-chain properties.
 
 ### The deployment system (bootstrap tier)

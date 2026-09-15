@@ -2848,7 +2848,9 @@ repo-locally, and harder:</p>
 <li><strong>zizmor</strong> — workflow security (dangerous-workflow patterns, token
   permissions, template injection).</li>
 <li><strong>actionlint</strong> — workflow syntax.</li>
-<li><strong>workflow-permissions audit</strong> — least-privilege <code>permissions:</code> blocks.</li>
+<li><strong>workflow-permissions audit</strong> — least-privilege <code>permissions:</code> blocks and
+  SHA-pinned <code>uses:</code>, enforced by <code>scripts/check-workflow-security.py</code> (see
+  <a href="../security-posture/#workflow-permissions-audit">Security posture — workflow-permissions audit</a>).</li>
 <li><strong>Dependabot / <code>uv audit</code></strong> — dependency CVEs.</li>
 <li><strong>Trivy</strong> — container CVEs.</li>
 </ul>
@@ -2861,7 +2863,8 @@ repo-locally, and harder:</p>
 <li><strong>It duplicates gates the fleet already runs, more weakly.</strong> Its
    meaningful checks — action pinning, token permissions, dangerous
    workflow patterns, branch protection — are already enforced repo-locally
-   and harder by zizmor, actionlint, and the workflow-permissions audit.
+   and harder by zizmor, actionlint, and the
+   <a href="../security-posture/#workflow-permissions-audit">workflow-permissions audit</a>.
    Those block a PR; Scorecard only scores it afterwards.</li>
 <li><strong><code>publish_results</code> has no consumer.</strong> Publishing exists so third
    parties can read a score on deps.dev or a badge; nothing outside the
@@ -2875,7 +2878,9 @@ repo-locally, and harder:</p>
 <p>Drift between the three repos that carried Scorecard and the other eleven,
 write-only published scores, and pipeline red on an external API the fleet
 does not consume — while the actual supply-chain properties stay gated by
-zizmor, actionlint, the permissions audit, Dependabot/<code>uv audit</code>, and Trivy.</p>
+zizmor, actionlint, the
+<a href="../security-posture/#workflow-permissions-audit">workflow-permissions audit</a>,
+Dependabot/<code>uv audit</code>, and Trivy.</p>
 <h2 id="see-also">See also<a class="headerlink" href="#see-also" title="Permanent link">&para;</a></h2>
 <ul>
 <li><a href="../security-posture/">Security posture</a> — the per-gate controls that

@@ -2991,8 +2991,8 @@ lockfile-based SBOM. This keeps CI bootstrapping minimal — <code>setup-uv</cod
 already manages the uv binary that runs every other step.</p>
 <h2 id="cross-reference-with-security-posture-standard">Cross-reference with security posture standard<a class="headerlink" href="#cross-reference-with-security-posture-standard" title="Permanent link">&para;</a></h2>
 <p>The <a href="../security-posture/">security posture standard</a> lists SBOM generation
-as part of the required security gates (gate 5, secret protection and
-supply-chain artifacts). The <code>uv export</code> command defined on this page is the
+as part of the required security gates (gate 6, SBOM &amp; vulnerability
+audit). The <code>uv export</code> command defined on this page is the
 canonical implementation of that gate for uv-based repos.</p>
 <p><strong>Failure mode:</strong> two pages prescribing different SBOM commands (one via
 <code>uv audit</code>, one via <code>uv export</code>) forces each repo to guess which is

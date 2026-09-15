@@ -3574,10 +3574,13 @@ would wipe the file — e.g. <code>lftp mirror --delete</code> (or <code>rsync -
 tree that does not contain the secret deletes it on the target — use a
 non-delete invocation or a dedicated file transfer instead.</p>
 <ul>
-<li><strong>How to verify:</strong> <code>git ls-files</code> lists no credential or secret file;
-  <code>.gitignore</code> covers the deny list above; the deploy workflow reads secrets
-  from <code>${{ secrets.* }}</code> and writes them via a transport with no
-  delete-ordering.</li>
+<li><strong>How to verify:</strong> <code>git ls-files</code> lists no credential or secret file; the
+  <code>.gitignore</code> deny-list coverage is checked mechanically by
+  <code>scripts/check-gitignore-denylist.py</code> (run from <code>baseline-check.yml</code>), which
+  reports any missing pattern and honors per-repo negating exceptions —
+  warning-first today, fail-closed once the fleet is compliant; the deploy
+  workflow reads secrets from <code>${{ secrets.* }}</code> and writes them via a
+  transport with no delete-ordering.</li>
 <li><strong>Failure prevented:</strong> a credential file is committed and tracked. Once in
   history it survives every later removal — deleting the file (or adding the
   <code>.gitignore</code> entry later) does not purge it from past commits, and the only
@@ -3725,6 +3728,10 @@ dashboard-watching:</p>
 <tr>
 <td>Secret push protection</td>
 <td>Push protection enabled in repo Security settings; <code>detect-secrets</code> in pre-commit; CI runs TruffleHog (content-only repos exempt from TruffleHog)</td>
+</tr>
+<tr>
+<td>Credential-file deny list</td>
+<td><code>.gitignore</code> covers <code>.htpasswd</code>, <code>.env</code>/<code>.env.*</code>, <code>wp-config*.php</code>, <code>*.pem</code>, <code>*.key</code>, <code>*secret*</code>, <code>*.p12</code> — verified by <code>scripts/check-gitignore-denylist.py</code> in <code>baseline-check.yml</code> (warning-first, honors per-repo negating exceptions)</td>
 </tr>
 <tr>
 <td>SBOM*</td>

@@ -110,8 +110,8 @@ already manages the uv binary that runs every other step.
 ## Cross-reference with security posture standard
 
 The [security posture standard](security-posture.md) lists SBOM generation
-as part of the required security gates (gate 5, secret protection and
-supply-chain artifacts). The `uv export` command defined on this page is the
+as part of the required security gates (gate 6, SBOM & vulnerability
+audit). The `uv export` command defined on this page is the
 canonical implementation of that gate for uv-based repos.
 
 **Failure mode:** two pages prescribing different SBOM commands (one via

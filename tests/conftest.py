@@ -37,9 +37,7 @@ def check_toc_sync() -> ModuleType:
 
 @pytest.fixture
 def check_workflow_timeouts() -> ModuleType:
-    return _load_script(
-        "check-workflow-timeouts.py", "check_workflow_timeouts"
-    )
+    return _load_script("check-workflow-timeouts.py", "check_workflow_timeouts")
 
 
 @pytest.fixture
@@ -57,3 +55,8 @@ def check_workflow_security() -> ModuleType:
     return _load_script(
         "check-workflow-security.py", "check_workflow_security"
     )
+
+
+@pytest.fixture
+def check_gitignore_denylist() -> ModuleType:
+    return _load_script("check-gitignore-denylist.py", "check_gitignore_denylist")

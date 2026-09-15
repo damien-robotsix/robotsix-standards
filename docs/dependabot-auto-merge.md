@@ -79,12 +79,20 @@ permissions: {}
 
 jobs:
   auto-merge:
-    if: github.actor == 'dependabot[bot]'
+    if: github.event.pull_request.user.login == 'dependabot[bot]'
     permissions:
       contents: write
       pull-requests: write
     uses: damien-robotsix/robotsix-github-workflows/.github/workflows/dependabot-auto-merge.yml@<pinned-sha>
 ```
+
+Gate on `github.event.pull_request.user.login`, not `github.actor`:
+`github.actor` reflects the last actor to trigger the run and can be
+manipulated so a non-Dependabot push satisfies the check, whereas the
+trigger-verified `github.event.pull_request.user.login` cannot. This is the
+bot-condition spoofing pattern the fleet's zizmor gate rejects (see the
+zizmor [`bot-conditions` audit](https://woodruffw.github.io/zizmor/audits/)
+and [GitHub Actions security](github-actions-security.md)).
 
 The reusable workflow triggers on `pull_request_target` (so it has write
 access to merge), accepts a `target` input (`minor` or `patch`), and

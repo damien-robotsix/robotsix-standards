@@ -83,3 +83,37 @@ repos:
           --minAlertLevel=error,
           --glob=*.md,
         ]
+  # Semgrep (SAST) — mandated by docs/repo-baseline.md 'CI and security gates'
+  # and docs/security-posture.md gate 1. The fleet's shared security workflow
+  # only runs bandit/pip-audit/trufflehog, so this docs repo carries its own
+  # pre-commit hook (the docs-repo equivalent of python-security.yml) scoped
+  # to scripts/ — the only first-party Python here (same scope as ruff/mypy).
+  # p/python + p/security-audit resolve anonymously from the Semgrep Registry
+  # (no SEMGREP_APP_TOKEN needed); findings fail the hook so a vulnerable
+  # pattern cannot merge (OWASP ASVS 14.2.1, OWASP Top 10 A06:2021).
+  #
+  # Implementation note — why this is a `local` `system` hook rather than the
+  # upstream `semgrep/semgrep` pre-commit hook:
+  #   1. semgrep's opentelemetry → google-protobuf (upb) chain crashes at
+  #      import under Python 3.14 with 'Metaclasses with custom tp_new are not
+  #      supported'. It must run under 3.13.
+  #   2. This repo's CI (astral-sh/setup-uv) exports UV_PYTHON=3.14, and
+  #      pre-commit-uv honours UV_PYTHON *over* a hook's `language_version:`,
+  #      so pinning the upstream hook to 3.13 does not stick (the env is still
+  #      built as py_env-python3.14 and crashes).
+  # So run semgrep out-of-band via `uv tool run` with an explicit `--python
+  # 3.13` — the flag beats the UV_PYTHON env var — in an ephemeral env. semgrep
+  # 1.99.0 is pinned; `setuptools<81` restores `pkg_resources` (removed in
+  # setuptools 81) which semgrep's opentelemetry.instrumentation still imports.
+  # `--error` makes any finding fail the hook so a vulnerable pattern cannot
+  # merge; `uv` is on PATH in CI (setup-uv) so `language: system` needs no env.
+  - repo: local
+    hooks:
+      - id: semgrep
+        name: semgrep (SAST, scripts/)
+        language: system
+        entry: uv tool run --python 3.13 --with setuptools<81 --from semgrep==1.99.0 semgrep --config p/python --config p/security-audit --error --disable-version-check --quiet
+        pass_filenames: true
+        require_serial: true
+        types: [python]
+        files: ^scripts/

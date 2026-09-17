@@ -73,7 +73,7 @@ workflow:
 name: Dependabot auto-merge
 
 on:
-  pull_request:
+  pull_request_target:
 
 permissions: {}
 

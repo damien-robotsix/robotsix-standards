@@ -5,7 +5,7 @@
 ```bash
 git clone git@github.com:damien-robotsix/robotsix-standards.git
 cd robotsix-standards
-uv sync --group dev --group docs
+uv sync --group docs
 ```
 
 ## Lint and type-check

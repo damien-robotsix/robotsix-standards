@@ -211,3 +211,17 @@ def test_main_no_workflows_dir(tmp_path, check_workflow_timeouts, monkeypatch):
         check_workflow_timeouts, "WORKFLOWS_DIR", tmp_path / ".github" / "workflows"
     )
     assert check_workflow_timeouts.main() == 0
+
+
+def test_main_yaml_workflow_is_checked(
+    tmp_path, check_workflow_timeouts, monkeypatch, capsys
+):
+    # A .yaml workflow must be timeout-checked too — regression for the drift
+    # where the timeout gate globbed only *.yml while the security gate also
+    # globbed *.yaml (shared walk now lives in scripts/_workflow_utils.py).
+    wf_dir = tmp_path / ".github" / "workflows"
+    wf_dir.mkdir(parents=True)
+    (wf_dir / "test.yaml").write_text(REGULAR_NO_TIMEOUT)
+    monkeypatch.setattr(check_workflow_timeouts, "WORKFLOWS_DIR", wf_dir)
+    assert check_workflow_timeouts.main() == 1
+    assert "timeout-minutes" in capsys.readouterr().out

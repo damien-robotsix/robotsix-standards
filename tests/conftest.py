@@ -16,6 +16,10 @@ from types import ModuleType
 import pytest
 
 SCRIPTS_DIR = Path(__file__).resolve().parent.parent / "scripts"
+# Make scripts/ importable so a gate script loaded by path (via importlib
+# below) can import its shared helper module (_workflow_utils).
+if str(SCRIPTS_DIR) not in sys.path:
+    sys.path.insert(0, str(SCRIPTS_DIR))
 
 
 def _load_script(filename: str, module_name: str) -> ModuleType:

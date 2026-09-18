@@ -38,10 +38,8 @@ from __future__ import annotations
 
 import re
 import sys
-from pathlib import Path
 
-REPO_ROOT = Path(__file__).resolve().parent.parent
-WORKFLOWS_DIR = REPO_ROOT / ".github" / "workflows"
+from _workflow_utils import WORKFLOWS_DIR, iter_workflow_files, read_workflow
 
 # A pinned ref is exactly 40 hex characters (a full commit SHA).
 _SHA_RE = re.compile(r"^[0-9a-f]{40}$")
@@ -140,20 +138,16 @@ def check_workflow(text: str) -> list[str]:
 
 
 def main() -> int:
-    workflows_dir = WORKFLOWS_DIR
-    if not workflows_dir.is_dir():
+    if not WORKFLOWS_DIR.is_dir():
         print("No .github/workflows/ directory — nothing to check.")
         return 0
 
     ok_count = 0
     problems: list[str] = []
 
-    files = sorted(workflows_dir.glob("*.yml")) + sorted(workflows_dir.glob("*.yaml"))
-    for wf in files:
-        try:
-            text = wf.read_text()
-        except OSError as exc:  # pragma: no cover - defensive
-            print(f"ERROR: cannot read {wf.name}: {exc}")
+    for wf in iter_workflow_files(WORKFLOWS_DIR):
+        text = read_workflow(wf)
+        if text is None:
             return 2
 
         violations = check_workflow(text)

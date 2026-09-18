@@ -81,6 +81,7 @@ nav:
       - Free-tier only: free-tier-only.md
       - Security posture: security-posture.md
       - Secret files are never tracked: secret-files-are-never-tracked.md
+      - REUSE compliance & SPDX headers: reuse-spdx-compliance.md
       - GitHub Actions security: github-actions-security.md
       - Stale bot must exempt pull requests: stale-bot-must-exempt-pull-requests.md
       - Dependabot auto-merge: dependabot-auto-merge.md

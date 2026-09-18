@@ -36,6 +36,7 @@ the default.
 | [Security posture](docs/security-posture.md) | Self-enforcing security gates (SAST, dependency review, Dependabot, workflow hardening, secret protection, SBOM), auditable per repo. |
 | [Secret files are never tracked](docs/secret-files-are-never-tracked.md) | The `.secrets-patterns-excluded` file that tells TruffleHog and detect-secrets which paths to skip — separate from `.gitignore`. |
 | [CycloneDX SBOM via uv export](docs/sbom-cyclonedx-uv.md) | Standards-conformant CycloneDX SBOMs generated natively from `uv.lock` via `uv export` — keeps vulnerability audit output as a separate, accurately-named artifact. |
+| [REUSE compliance & SPDX headers](docs/reuse-spdx-compliance.md) | Machine-readable per-file licensing (REUSE): `LICENSES/` texts, `.reuse/dep5` default policy, SPDX headers on every source file, and a blocking `reuse lint` CI gate. |
 | [GitHub Actions security](docs/github-actions-security.md) | zizmor static-security auditor for GitHub Actions workflows — canonical invocation, severity policy, phased rollout. |
 | [Stale bot must exempt pull requests](docs/stale-bot-must-exempt-pull-requests.md) | Every `stale.yml` must disable pull-request staling and closing with `days-before-pr-stale: -1` and `days-before-pr-close: -1` — keep issue hygiene, never auto-close PRs. |
 | [Dependabot auto-merge](docs/dependabot-auto-merge.md) | Dependabot auto-merge must be gated on required CI passing (not purely actor-gated), restricted to minor/patch updates, and must exclude docker and pre-commit ecosystems. |

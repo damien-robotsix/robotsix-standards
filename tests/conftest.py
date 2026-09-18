@@ -40,6 +40,11 @@ def check_toc_sync() -> ModuleType:
 
 
 @pytest.fixture
+def check_doc_structure() -> ModuleType:
+    return _load_script("check-doc-structure.py", "check_doc_structure")
+
+
+@pytest.fixture
 def check_workflow_timeouts() -> ModuleType:
     return _load_script("check-workflow-timeouts.py", "check_workflow_timeouts")
 

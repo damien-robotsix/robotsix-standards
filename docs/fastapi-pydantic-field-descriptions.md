@@ -99,6 +99,17 @@ This check is **optional** today; a repo that adds it signals that its API
 surface is fully documented. The fleet convention is the requirement — the
 automated gate is the enforcement.
 
+## Failure modes this prevents
+
+- **An OpenAPI schema that documents nothing.** Without explicit field
+  descriptions, `/openapi.json` shows only each field's Python name and type —
+  every operator, downstream tool, and Swagger UI reader must guess at
+  semantics, and the generated client SDKs carry no field docs.
+- **Descriptions that silently vanish.** Pydantic v2 does not read inline
+  trailing `#` comments, and its `Attributes:` docstring parser drops
+  multi-line and inherited-field descriptions. `Field(description=...)`
+  guarantees the description reaches the JSON schema instead of being lost.
+
 ## Cross-reference
 
 - **[FastAPI test isolation](fastapi-test-isolation.md)** — the other

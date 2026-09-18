@@ -80,6 +80,8 @@ jobs:
           extra_args: --all-files
       - name: Check TOC synchronization
         run: uv run --group docs python scripts/check-toc-sync.py
+      - name: Check doc structure
+        run: uv run --group docs python scripts/check-doc-structure.py
       - name: Check job timeout-minutes rule
         run: uv run --group docs python scripts/check-workflow-timeouts.py
       - name: Check workflow security (4a SHA-pinning + 4c least-privilege permissions)

@@ -157,3 +157,19 @@ the sanctioned mechanism.
 - If a team wants PR-time visibility, `npm audit` may be run as an
   **advisory-only / non-blocking** job (e.g. `npm audit || true`), never
   as a gate.
+
+## Failure modes this prevents
+
+- **Untestable code.** A module-level function missing from the export
+  surface can't be reached by a unit test — exactly the one function of 29
+  that couldn't be tested directly in robotsix-board.
+- **Themable UI broken by inline styles.** Setting colours, fonts, or layout
+  via `element.style.*` overrides the stylesheet, making class-based theming
+  impossible — a recurring incident class in robotsix-board.
+- **CI red on a stale lockfile.** `npm ci` fails by design when
+  `package-lock.json` doesn't match `package.json`; regenerating and
+  committing the lockfile in the same change keeps installs reproducible.
+- **a11y regressions that pass every functional test.** Removing
+  `role="dialog"` or mis-wiring `aria-labelledby` breaks no unit or E2E
+  assertion; the axe-core scanner catches contrast, landmark, and ARIA-validity
+  regressions a scanner-free suite never sees.

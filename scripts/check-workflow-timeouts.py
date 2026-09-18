@@ -30,10 +30,8 @@ from __future__ import annotations
 
 import re
 import sys
-from pathlib import Path
 
-REPO_ROOT = Path(__file__).resolve().parent.parent
-WORKFLOWS_DIR = REPO_ROOT / ".github" / "workflows"
+from _workflow_utils import WORKFLOWS_DIR, iter_workflow_files, read_workflow
 
 _TIMEOUT_RE = re.compile(r"^\s*timeout-minutes:\s*(\d+)\s*(#.*)?$")
 
@@ -165,19 +163,16 @@ def _analyse_job(job: dict) -> tuple[bool, str]:
 
 
 def main() -> int:
-    workflows_dir = WORKFLOWS_DIR
-    if not workflows_dir.is_dir():
+    if not WORKFLOWS_DIR.is_dir():
         print("No .github/workflows/ directory — nothing to check.")
         return 0
 
     ok_count = 0
     problems: list[str] = []
 
-    for wf in sorted(workflows_dir.glob("*.yml")):
-        try:
-            text = wf.read_text()
-        except OSError as exc:  # pragma: no cover - defensive
-            print(f"ERROR: cannot read {wf.name}: {exc}")
+    for wf in iter_workflow_files(WORKFLOWS_DIR):
+        text = read_workflow(wf)
+        if text is None:
             return 2
 
         for job in _parse_jobs(text):

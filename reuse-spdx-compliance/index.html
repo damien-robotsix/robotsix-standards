@@ -10,13 +10,13 @@
       
       
       
-        <link rel="canonical" href="https://damien-robotsix.github.io/robotsix-standards/ci-lint-pinning/">
+        <link rel="canonical" href="https://damien-robotsix.github.io/robotsix-standards/reuse-spdx-compliance/">
       
       
-        <link rel="prev" href="../release-please/">
+        <link rel="prev" href="../secret-files-are-never-tracked/">
       
       
-        <link rel="next" href="../contributing-in-nav/">
+        <link rel="next" href="../github-actions-security/">
       
       
         
@@ -27,7 +27,7 @@
     
     
       
-        <title>CI lint tool pinning - Robotsix Standards</title>
+        <title>REUSE compliance & SPDX headers - Robotsix Standards</title>
       
     
     
@@ -78,7 +78,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#ci-lint-tool-pinning" class="md-skip">
+        <a href="#reuse-compliance-and-spdx-headers" class="md-skip">
           Skip to content
         </a>
       
@@ -114,7 +114,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              CI lint tool pinning
+              REUSE compliance & SPDX headers
             
           </span>
         </div>
@@ -505,10 +505,37 @@
                 
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="../reuse-spdx-compliance/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    REUSE compliance & SPDX headers
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   
@@ -524,6 +551,120 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#why-this-exists" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why this exists
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-rule" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The rule
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="The rule">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#licenses" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        LICENSES/
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#reusedep5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        .reuse/dep5
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#spdx-headers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        SPDX headers
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ci-gate" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        CI gate
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#adoption" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Adoption
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#source" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Source
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -701,37 +842,10 @@
                 
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    CI lint tool pinning
-  
-
-    
-  </span>
-  
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../ci-lint-pinning/" class="md-nav__link">
         
   
   
@@ -747,131 +861,6 @@
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#the-rule" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        The rule
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#why" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Why
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#how" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        How
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="How">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#approach-a-run-the-tool-through-pre-commit-preferred" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Approach A: run the tool through pre-commit (preferred)
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#approach-b-pin-the-ci-install-to-the-pre-commit-rev-version" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Approach B: pin the CI install to the pre-commit rev: version
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#anti-patterns-never-install-from-floatinglatest-sources" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Anti-patterns: never install from floating/latest sources
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#exceptions" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Exceptions
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#failure-modes-prevented" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Failure modes prevented
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#relationship-to-other-standards" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Relationship to other standards
-      
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -2857,6 +2846,17 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
+  <a href="#why-this-exists" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why this exists
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#the-rule" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2865,36 +2865,14 @@
     </span>
   </a>
   
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#why" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Why
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#how" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        How
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="How">
+    <nav class="md-nav" aria-label="The rule">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#approach-a-run-the-tool-through-pre-commit-preferred" class="md-nav__link">
+  <a href="#licenses" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Approach A: run the tool through pre-commit (preferred)
+        LICENSES/
       
     </span>
   </a>
@@ -2902,10 +2880,32 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#approach-b-pin-the-ci-install-to-the-pre-commit-rev-version" class="md-nav__link">
+  <a href="#reusedep5" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Approach B: pin the CI install to the pre-commit rev: version
+        .reuse/dep5
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#spdx-headers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        SPDX headers
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ci-gate" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        CI gate
       
     </span>
   </a>
@@ -2918,10 +2918,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#anti-patterns-never-install-from-floatinglatest-sources" class="md-nav__link">
+  <a href="#adoption" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Anti-patterns: never install from floating/latest sources
+        Adoption
       
     </span>
   </a>
@@ -2929,32 +2929,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#exceptions" class="md-nav__link">
+  <a href="#source" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Exceptions
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#failure-modes-prevented" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Failure modes prevented
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#relationship-to-other-standards" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Relationship to other standards
+        Source
       
     </span>
   </a>
@@ -2981,149 +2959,122 @@
   
 
 
-<h1 id="ci-lint-tool-pinning">CI lint tool pinning<a class="headerlink" href="#ci-lint-tool-pinning" title="Permanent link">&para;</a></h1>
+<h1 id="reuse-compliance-and-spdx-headers">REUSE compliance and SPDX headers<a class="headerlink" href="#reuse-compliance-and-spdx-headers" title="Permanent link">&para;</a></h1>
 <blockquote>
-<p><strong>Scope: every repository with a <code>.pre-commit-config.yaml</code>.</strong> The
-pre-commit config is the single source of truth for lint-tool versions;
-every CI lint job that runs a tool already covered by a pre-commit hook
-must consume that same pinned version.</p>
+<p><strong>Scope: every robotsix repository that tracks source files</strong> — Python
+packages, shell scripts, YAML/CI configs, Dockerfiles, and Markdown docs.
+Pure content repos (this standards site included) still track source files,
+so the same rules apply there.</p>
 </blockquote>
+<h2 id="why-this-exists">Why this exists<a class="headerlink" href="#why-this-exists" title="Permanent link">&para;</a></h2>
+<p>The fleet's licensing story ends at the <a href="../repo-baseline/">repo baseline</a>'s
+License rule: a MIT <code>LICENSE</code> file at the repo root. That declares the
+project's license once, but it is not machine-readable <em>per file</em> — a tool asked
+"what license covers <code>scripts/backup.sh</code>?" must guess that the root <code>LICENSE</code>
+applies and that every file is original fleet code. REUSE
+(<a href="https://reuse.software">reuse.software</a>) closes that gap: a standardized
+machine-readable copyright-and-licensing convention maintained by the Free
+Software Foundation ecosystem and adopted by FSF/GNU projects (GNU Guix,
+GNU Taler) and CNCF projects (Kubernetes, containerd).</p>
+<p><strong>Failure mode:</strong> a compliance audit, SBOM consumer, or downstream
+redistribution check asks which license covers a specific file and no tool can
+answer without a human reading the root <code>LICENSE</code> and guessing. Every consumer
+re-implements that guess differently, and licensing drift — a vendored file
+under a different license, a new file with no declaration — ships silently
+because nothing checks.</p>
 <h2 id="the-rule">The rule<a class="headerlink" href="#the-rule" title="Permanent link">&para;</a></h2>
-<p><strong>CI lint jobs must run the same version-pinned tools as
-<code>.pre-commit-config.yaml</code>.</strong> The pre-commit <code>rev:</code> field is the single
-source of truth for every lint-tool version. A CI job that runs the same
-tool from a different source — floating, latest, unpinned — is a
-reproducibility bug: the gate validates against a <strong>different tool version</strong>
-than the one local developers and pre-commit run.</p>
-<p>This applies to every tool that appears in both places: yamllint,
-shellcheck, hadolint, actionlint, codespell, markdownlint-cli, ruff,
-mypy, and any future lint hook added to the standard pre-commit set.</p>
-<h2 id="why">Why<a class="headerlink" href="#why" title="Permanent link">&para;</a></h2>
-<p>When CI installs <code>yamllint</code> from <code>pip install yamllint</code> (latest) while
-<code>.pre-commit-config.yaml</code> pins <code>rev: v1.35.1</code>, the two runs use different
-versions. A check can pass in CI and fail locally — or vice versa — purely
-because of version skew. The developer sees a red X on their PR, runs the
-same tool locally, and gets a green pass, because their local version is
-pinned and CI's isn't. The debugging loop is: update the tool, re-learn the
-new rule set, and hope the versions converge. It never does for long.</p>
-<p>Dependabot already bumps pre-commit <code>rev:</code> tags (the <code>pre-commit</code> ecosystem
-block in <code>.github/dependabot.yml</code>). When CI consumes those same pins,
-Dependabot keeps <strong>both</strong> paths in lockstep — one PR updates the pre-commit
-config, and the next CI run automatically uses the new version.</p>
-<h2 id="how">How<a class="headerlink" href="#how" title="Permanent link">&para;</a></h2>
-<p>Two approaches are acceptable. Both satisfy the rule — choose the one
-that fits the repo's CI workflow shape:</p>
-<h3 id="approach-a-run-the-tool-through-pre-commit-preferred">Approach A: run the tool through pre-commit (preferred)<a class="headerlink" href="#approach-a-run-the-tool-through-pre-commit-preferred" title="Permanent link">&para;</a></h3>
-<p>Run <code>pre-commit run &lt;hook-id&gt; --all-files</code> in CI. This is the simplest
-path and the one the fleet's shared workflows use. The pre-commit runtime
-installs exactly the <code>rev:</code>-pinned version into its own isolated
-environment — CI and local dev are literally the same invocation.</p>
-<div class="highlight"><pre><span></span><code><span class="c1"># In a CI job:</span>
-<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">uses</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">astral-sh/setup-uv@v6</span>
-<span class="w">  </span><span class="nt">with</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">enable-cache</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
-<span class="w">    </span><span class="nt">cache-dependency-glob</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;pyproject.toml&quot;</span>
-<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">uses</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">tox-dev/action-pre-commit-uv@v1</span>
-<span class="w">  </span><span class="nt">with</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">extra_args</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">--show-diff-on-failure --all-files</span>
+<p>Every robotsix repository <strong>must</strong> make its licensing machine-readable and
+enforced:</p>
+<ol>
+<li><strong><code>LICENSES/</code> directory</strong> — the full text of each license in use, one file
+   per SPDX identifier, copied verbatim from
+   <a href="https://spdx.org/licenses/">spdx.org/licenses</a> (e.g. <code>LICENSES/MIT.txt</code>).</li>
+<li><strong><code>.reuse/dep5</code></strong> — project-level default policy declaring MIT for all files
+   that carry no individual annotation.</li>
+<li><strong>SPDX headers</strong> — <code>SPDX-FileCopyrightText</code> and <code>SPDX-License-Identifier</code> on
+   every tracked source file.</li>
+<li><strong><code>reuse lint</code> in CI</strong> — a blocking gate on every pull request.</li>
+</ol>
+<p><code>reuse</code> is available without modifying the repo (e.g. <code>uv tool run reuse lint</code>,
+or <code>pipx run reuse lint</code>), so the CI step needs no bootstrapping.</p>
+<h3 id="licenses">LICENSES/<a class="headerlink" href="#licenses" title="Permanent link">&para;</a></h3>
+<p>Each license a repo uses gets its full reference text at <code>LICENSES/&lt;SPDX
+identifier&gt;.txt</code>; the fleet default is <code>LICENSES/MIT.txt</code>. Do not hand-edit the
+text — copy the SPDX reference text so the file matches what <code>reuse lint</code>
+expects byte-for-byte.</p>
+<p><strong>Failure mode:</strong> without the matching text, <code>reuse lint</code> cannot resolve a
+header's license identifier and fails; redistributed copies also lack the
+license text recipients are entitled to.</p>
+<h3 id="reusedep5"><code>.reuse/dep5</code><a class="headerlink" href="#reusedep5" title="Permanent link">&para;</a></h3>
+<p>The project-level default policy covers every file that cannot or does not
+carry an individual header (JSON configs, generated files, binary assets). The
+minimal form for a fleet repo:</p>
+<div class="highlight"><pre><span></span><code>Format: https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
+Files: *
+Copyright: 2026 Robotsix contributors
+License: MIT
 </code></pre></div>
-<h3 id="approach-b-pin-the-ci-install-to-the-pre-commit-rev-version">Approach B: pin the CI install to the pre-commit <code>rev:</code> version<a class="headerlink" href="#approach-b-pin-the-ci-install-to-the-pre-commit-rev-version" title="Permanent link">&para;</a></h3>
-<p>When a tool must run outside pre-commit (e.g. as a standalone CI step for
-reporting reasons), pin its install command to the <strong>exact same version</strong>
-declared in <code>.pre-commit-config.yaml</code>. Extract the version from the
-pre-commit config — do not guess, do not round, do not default to latest:</p>
-<div class="highlight"><pre><span></span><code><span class="c1"># Good — pinned to the pre-commit rev:</span>
-<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">run</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">pip install yamllint==1.35.1</span>
-
-<span class="c1"># Good — action pinned to a release tag that matches the pre-commit rev:</span>
-<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">uses</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">hadolint/hadolint-action@v3.1.0</span>
+<p><code>License: MIT</code> refers to <code>LICENSES/MIT.txt</code>; the <code>Files: *</code> stanza makes the
+default explicit so <code>reuse lint</code> never sees an "uncovered file" for a licensed
+MIT file.</p>
+<p><strong>Failure mode:</strong> without a default policy, files that cannot carry comments
+(JSON, binaries, generated output) have no way to declare their license, so the
+repo either exempts them from the policy (an invisible gap) or fails <code>reuse
+lint</code> with no clean way to comply.</p>
+<h3 id="spdx-headers">SPDX headers<a class="headerlink" href="#spdx-headers" title="Permanent link">&para;</a></h3>
+<p>Every tracked source file declares copyright and license at the top, after any
+shebang/encoding line:</p>
+<div class="highlight"><pre><span></span><code><span class="ch">#!/usr/bin/env bash</span>
+<span class="c1"># SPDX-FileCopyrightText: 2026 Robotsix contributors</span>
+<span class="c1"># SPDX-License-Identifier: MIT</span>
 </code></pre></div>
-<p>When the Dependabot PR bumps the pre-commit <code>rev:</code>, it must also bump
-any standalone CI install lines that reference the same tool. A CI job
-that references a version literal must carry a comment pointing back to
-the pre-commit config so the reviewer of the Dependabot PR knows to update
-both:</p>
-<div class="highlight"><pre><span></span><code><span class="c1"># Keep in sync with .pre-commit-config.yaml → hadolint rev:</span>
-<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">uses</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">hadolint/hadolint-action@v3.1.0</span>
+<div class="highlight"><pre><span></span><code><span class="c1"># SPDX-FileCopyrightText: 2026 Robotsix contributors</span>
+<span class="c1"># SPDX-License-Identifier: MIT</span>
 </code></pre></div>
-<h2 id="anti-patterns-never-install-from-floatinglatest-sources">Anti-patterns: never install from floating/latest sources<a class="headerlink" href="#anti-patterns-never-install-from-floatinglatest-sources" title="Permanent link">&para;</a></h2>
-<p>Every one of these patterns is forbidden in CI lint jobs for tools that
-also appear in <code>.pre-commit-config.yaml</code>:</p>
-<table>
-<thead>
-<tr>
-<th>Forbidden</th>
-<th>Why it drifts</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>pip install &lt;tool&gt;</code></td>
-<td>Installs latest from PyPI — unrelated to the pre-commit <code>rev:</code>.</td>
-</tr>
-<tr>
-<td><code>npm install -g &lt;tool&gt;</code></td>
-<td>Installs latest from npm — same problem.</td>
-</tr>
-<tr>
-<td><code>apt-get install &lt;tool&gt;</code></td>
-<td>Installs whatever version the runner image ships — drifts across image updates.</td>
-</tr>
-<tr>
-<td><code>curl .../releases/latest/download/...</code></td>
-<td>Always fetches the latest release — the opposite of pinned.</td>
-</tr>
-<tr>
-<td><code>bash &lt;(curl ...download-actionlint.bash)</code></td>
-<td>Unpinned download script — version is whatever the script resolves.</td>
-</tr>
-<tr>
-<td><code>docker run &lt;image&gt;:latest</code></td>
-<td>The <code>latest</code> tag moves — a moving target.</td>
-</tr>
-</tbody>
-</table>
-<h2 id="exceptions">Exceptions<a class="headerlink" href="#exceptions" title="Permanent link">&para;</a></h2>
-<p>A CI job may deviate from the pre-commit pin when:</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># SPDX-FileCopyrightText: 2026 Robotsix contributors</span>
+<span class="c1"># SPDX-License-Identifier: MIT</span>
+<span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ci</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code>&lt;!-- SPDX-FileCopyrightText: 2026 Robotsix contributors --&gt;
+&lt;!-- SPDX-License-Identifier: MIT --&gt;
+</code></pre></div>
+<p>Headers are declarative, not literary: the copyright line names the body of
+contributors, the identifier comes from the <a href="https://spdx.org/licenses/">SPDX license list</a>,
+and both are stable. <code>reuse annotate</code> can add them mechanically:</p>
+<div class="highlight"><pre><span></span><code>reuse<span class="w"> </span>annotate<span class="w"> </span>--license<span class="w"> </span>MIT<span class="w"> </span>--copyright<span class="w"> </span><span class="s2">&quot;Robotsix contributors&quot;</span><span class="w"> </span>--year<span class="w"> </span><span class="m">2026</span>
+</code></pre></div>
+<p><strong>Failure mode:</strong> a file with no header and no <code>.reuse/dep5</code> coverage is
+"licensed by assumption"; <code>reuse lint</code> reports it as having no license, which
+is a hard failure once the CI gate exists — so a human must retroactively
+decide who owns an unmarked file.</p>
+<h3 id="ci-gate">CI gate<a class="headerlink" href="#ci-gate" title="Permanent link">&para;</a></h3>
+<p><code>reuse lint</code> runs as a blocking step in the shared CI workflow, the same way
+other lint gates do:</p>
+<div class="highlight"><pre><span></span><code><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">REUSE compliance</span>
+<span class="w">  </span><span class="nt">run</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">uv tool run reuse lint</span>
+</code></pre></div>
+<p>The full workflow caller template ships with the other workflow templates —
+standards pages do not embed workflow YAML, so the exact step wiring lives
+there. The step runs on every push and pull request and must fail the job;
+advisory <code>|| true</code> is never used here, because an unlicensed file is a
+compliance defect, not a transient condition.</p>
+<p><strong>Failure mode:</strong> without the gate, a pull request that adds an unlicensed or
+mislabelled file goes green, and compliance is discovered exactly once — at
+audit time, when the fix is expensive and touches files the original author
+cannot identify.</p>
+<h2 id="adoption">Adoption<a class="headerlink" href="#adoption" title="Permanent link">&para;</a></h2>
+<p>The fleet does not use REUSE today: repos ship the root <code>LICENSE</code> and
+nothing else (this page is written for them). Adopting repos land the four
+pieces in one change — <code>LICENSES/MIT.txt</code>, <code>.reuse/dep5</code>, the per-file headers,
+and the CI step — after running <code>reuse lint</code> locally until it passes. The
+<code>reuse annotate</code> command exists exactly to make that bulk pass mechanical.</p>
+<h2 id="source">Source<a class="headerlink" href="#source" title="Permanent link">&para;</a></h2>
 <ul>
-<li><strong>The tool runs exclusively in CI and has no pre-commit hook.</strong> No
-  conflict exists — there is no pre-commit version to stay in sync with.
-  The tool must still be pinned (never <code>latest</code>), but the pin lives in the
-  CI workflow itself rather than in <code>.pre-commit-config.yaml</code>.</li>
-<li><strong>The tool version is determined by an external constraint</strong> (e.g. a
-  language runtime version that the pre-commit hook doesn't cover). Document
-  the constraint in a comment in the CI workflow.</li>
-</ul>
-<p>Both exceptions are narrow and deliberate. The default is: if the tool has
-a pre-commit hook, CI runs that same version.</p>
-<h2 id="failure-modes-prevented">Failure modes prevented<a class="headerlink" href="#failure-modes-prevented" title="Permanent link">&para;</a></h2>
-<ul>
-<li><strong>Version-skew debugging loops.</strong> Developer runs pre-commit locally
-  (pinned), CI runs latest (different). The PR fails with a lint error the
-  developer cannot reproduce — or passes a check that should have failed,
-  because CI's newer version hasn't yet learned the rule that the pinned
-  version enforces.</li>
-<li><strong>Dependabot drift.</strong> Dependabot bumps the pre-commit <code>rev:</code> but the CI
-  job still runs the old version. The local pre-commit hook enforces new
-  rules that CI never checks — a false sense of gate coverage.</li>
-<li><strong>Runner-image drift.</strong> <code>apt-get install shellcheck</code> on
-  <code>ubuntu-24.04</code> installs a different version than <code>ubuntu-22.04</code>. A repo
-  that upgrades its runner image gets a different lint tool — and
-  potentially different results — with no code change.</li>
-<li><strong>Silent rule changes.</strong> A tool's latest release adds a new check that
-  fails on existing code. The pre-commit hook (pinned, unchanged) passes
-  but CI (latest, freshly installed) fails — a broken build with no
-  apparent cause.</li>
-</ul>
-<h2 id="relationship-to-other-standards">Relationship to other standards<a class="headerlink" href="#relationship-to-other-standards" title="Permanent link">&para;</a></h2>
-<ul>
-<li>The pre-commit hook set is defined in <a href="../python/#pre-commit-hooks">Python practices</a>
-  and the <a href="../pre-commit-baseline/">pre-commit baseline</a>.</li>
-<li>The Dependabot <code>pre-commit</code> ecosystem block is referenced in
-  <a href="../python/#tooling-uv">Python practices</a> and the
-  <a href="../security-posture/">security posture</a>.</li>
-<li>CI workflow standards (shared workflows, caching) live in
-  <a href="../python/#ci-uv-setup-caching">Python practices</a>.</li>
+<li><a href="https://reuse.software/spec/">REUSE specification</a></li>
+<li><a href="https://spdx.org/licenses/">SPDX license list</a></li>
+<li>FSF/GNU projects (GNU Guix, GNU Taler) and CNCF projects (Kubernetes,
+  containerd) use REUSE for machine-readable licensing; this page's rule set
+  follows their file-level practice.</li>
 </ul>
 
 

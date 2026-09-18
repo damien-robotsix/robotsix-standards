@@ -16,7 +16,7 @@ nothing at all.
 **robotsix-config** shows the failure mode this standard prevents. The README
 documents
 
-```
+```bash
 roboticsix-config schema myapp.config:Settings
 ```
 

@@ -37,6 +37,9 @@ everywhere.
 - **[CycloneDX SBOM via uv export](sbom-cyclonedx-uv.md)** — standards-conformant
   CycloneDX SBOMs generated natively from `uv.lock` via `uv export`; keeps
   vulnerability audit output as a separate, accurately-named artifact.
+- **[REUSE compliance & SPDX headers](reuse-spdx-compliance.md)** — machine-readable
+  per-file licensing: `LICENSES/` license texts, `.reuse/dep5` default policy,
+  SPDX headers on every source file, and a blocking `reuse lint` CI gate.
 - **[GitHub Actions security](github-actions-security.md)** — zizmor static-security
   auditor for GitHub Actions workflows, canonical invocation, and a
   warning-first-then-fail-closed phased rollout policy.

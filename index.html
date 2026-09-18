@@ -1184,6 +1184,34 @@
   
   
     <li class="md-nav__item">
+      <a href="cli-documentation-validation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    CLI documentation validation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="pytest-shared-state-builders/" class="md-nav__link">
         
   
@@ -3099,6 +3127,10 @@ everywhere.</p>
   blocks in MkDocs documentation must be executed by pytest so that renaming
   or removing a public symbol breaks the build instead of silently leaving
   the docs wrong.</li>
+<li><strong><a href="cli-documentation-validation/">CLI documentation validation</a></strong> — CLI
+  command examples in public documentation must match the real argument
+  parser and be validated by subprocess tests, so a documented invocation
+  that no longer parses fails CI instead of confusing users at runtime.</li>
 <li><strong><a href="pytest-shared-state-builders/">Pytest shared state builders</a></strong> —
   root <code>tests/conftest.py</code> for shared fixtures, <code>make_&lt;thing&gt;</code> factory
   fixtures for mutable test state, and value fixtures as thin factory

@@ -58,7 +58,7 @@ The project-level default policy covers every file that cannot or does not
 carry an individual header (JSON configs, generated files, binary assets). The
 minimal form for a fleet repo:
 
-```
+```text
 Format: https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
 Files: *
 Copyright: 2026 Robotsix contributors
@@ -105,8 +105,8 @@ Headers are declarative, not literary: the copyright line names the body of
 contributors, the identifier comes from the [SPDX license list](https://spdx.org/licenses/),
 and both are stable. `reuse annotate` can add them mechanically:
 
-```console
-$ reuse annotate --license MIT --copyright "Robotsix contributors" --year 2026
+```bash
+reuse annotate --license MIT --copyright "Robotsix contributors" --year 2026
 ```
 
 **Failure mode:** a file with no header and no `.reuse/dep5` coverage is

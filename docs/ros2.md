@@ -251,3 +251,18 @@ applies:
 
 These rules will be refined once the fleet has more than one ROS 2
 package repo to observe consistency across.
+
+## Failure modes this prevents
+
+- **Vendored source drifting from upstream.** Committing `src/` instead of
+  git-ignoring it and populating it from `repos.yaml` lets the workspace copy
+  silently diverge from the downstream package repos, so builds no longer
+  reflect the real sources. `vcs import` from the single manifest keeps them
+  the source of truth.
+- **Multi-minute cold rebuilds.** Without ccache (installed, `CCACHE_DIR` set,
+  and backed by a named volume that survives rebuilds), `colcon build`
+  recompiles every C++ translation unit from scratch — 5–20 minutes per
+  devcontainer rebuild for a mid-size workspace.
+- **A cache that breaks off the local machine.** Bind-mounting a host
+  directory for ccache works locally but fails in Codespaces and CI-hosted
+  devcontainers; a named Docker volume works everywhere.

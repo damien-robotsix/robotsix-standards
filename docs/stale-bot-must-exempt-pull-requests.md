@@ -38,3 +38,13 @@ action's documented default `days-before-stale` / `days-before-close`
 global pair without the PR-specific overrides: `actions/stale` applies
 those values to pull requests as well, and contributed PRs begin
 disappearing after two weeks of inactivity.
+
+## Failure modes this prevents
+
+- **Contributed work auto-discarded.** Inheriting the global
+  `days-before-stale` / `days-before-close` pair without the PR-specific
+  `-1` overrides lets the stale bot close a real pull request after a period
+  of inactivity — a mid-review PR is closed, its review thread lost and the
+  contributor told their work will be discarded, actively discouraging
+  contribution. The `-1` overrides preserve issue-hygiene triage while
+  exempting PRs entirely.

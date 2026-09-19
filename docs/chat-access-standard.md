@@ -251,6 +251,22 @@ The volume access path is **strictly read-only**:
 
 ---
 
+## Failure modes this prevents
+
+- **A second, weaker auth door.** If a component stored a deploy credential
+  (env var, `central_deploy.api_token`, or a token written into its config
+  volume), that credential becomes a second attack surface the edge SSO never
+  guards. Reaching central-deploy with **no credential** over the trusted
+  internal network keeps the fleet edge the single authentication boundary.
+- **Volume reads that escape the volume.** A volume-inspection endpoint that
+  accepts `..`, absolute paths, or escaping symlinks lets the chat agent read
+  arbitrary host files. The strictly read-only, traversal-rejecting contract
+  keeps inspection inside the named volume.
+- **Observability the chat agent can't actually use.** An endpoint hidden
+  behind the operator's web-login session returns a login HTML page to the
+  agent instead of logs or status — silently unusable. Requiring the routes
+  on the internal network with non-HTML responses keeps them agent-reachable.
+
 ## Reference
 
 - [Component standard](component-standard.md) — the three deploy modes, auth model,

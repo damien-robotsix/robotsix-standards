@@ -198,6 +198,16 @@ This grep-awk one-liner extracts every `## Description` comment and prints
 a formatted table. It has no dependencies beyond `grep` and `awk`, which are
 available on every runner.
 
+## Failure modes this prevents
+
+- **CI that breaks on a renamed target.** A workflow invoking `make lock-check`
+  fails outright in a repo that named the target `check-lock` — the
+  inconsistency this convention eliminates. One documented name per task keeps
+  `make <target>` portable across every repo.
+- **Contributors re-learning the interface per repo.** Divergent target names
+  (`test-unit` vs `unit-test`) force anyone moving between repos to re-read
+  each Makefile; a single convention lets `make help` self-document.
+
 ## Full example
 
 ```makefile

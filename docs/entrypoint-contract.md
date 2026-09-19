@@ -56,3 +56,18 @@ Rules for such a script:
    real bug found in the stack). Delete any `envsubst` block.
 4. **Keep it short, and comment why it exists** — the script is an exception;
    the comment is its justification.
+
+## Failure modes this prevents
+
+- **Containers that never shut down cleanly.** A shell that runs the app as a
+  child process (instead of `exec`-ing it) stays PID 1 and swallows SIGTERM,
+  so `docker stop` can't reach the Python process; the container is SIGKILLed
+  after the grace period with no drain and no clean stop line.
+- **A fresh operator locked out of bootstrap.** Gating every subcommand on a
+  loaded config means bootstrap commands (`detect`, `--help`, `--version`)
+  fail before any config exists — the operator can't run the very commands
+  that create the first config.
+- **Silent config templating that does nothing.** An `envsubst` block relies
+  on `gettext-base`, which is absent from the runtime image, so it fails
+  silently and leaves placeholders unsubstituted — a real bug found in the
+  stack. Deleting the block removes the false sense of templating.

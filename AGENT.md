@@ -24,7 +24,13 @@ document the fleet's proven pattern rather than inventing one.
 class in the 2026-07 review (a Dockerfile example that never built, a curl
 healthcheck the image can't run, three different claude-mount targets).
 
-**Rule:** Every rule added to a standard states the failure it prevents.
+**Rule:** Every rule added to a standard states the failure it prevents. This
+is gate-enforced by `scripts/check-doc-structure.py` (a CI step): every
+non-exempt page in the `mkdocs.yml` nav must state at least one failure mode.
+Any phrasing is accepted — a `## Failure modes this prevents` heading, a
+`**Failure mode:**` bold marker, a `*Failure prevented:*` italic marker, or
+inline prose — the gate matches the phrase `failure mode(s)` / `failure
+prevented`, not a single rigid structure.
 **Rationale:** rules without stated failure modes read as bureaucracy and get
 half-followed; the stated failure is also what lets a future edit decide
 whether the rule still applies.

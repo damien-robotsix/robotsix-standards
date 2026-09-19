@@ -1915,6 +1915,17 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#failure-modes-this-prevents" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Failure modes this prevents
+      
+    </span>
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -2983,6 +2994,17 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#failure-modes-this-prevents" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Failure modes this prevents
+      
+    </span>
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -3281,6 +3303,21 @@ applies:</p>
 </ul>
 <p>These rules will be refined once the fleet has more than one ROS 2
 package repo to observe consistency across.</p>
+<h2 id="failure-modes-this-prevents">Failure modes this prevents<a class="headerlink" href="#failure-modes-this-prevents" title="Permanent link">&para;</a></h2>
+<ul>
+<li><strong>Vendored source drifting from upstream.</strong> Committing <code>src/</code> instead of
+  git-ignoring it and populating it from <code>repos.yaml</code> lets the workspace copy
+  silently diverge from the downstream package repos, so builds no longer
+  reflect the real sources. <code>vcs import</code> from the single manifest keeps them
+  the source of truth.</li>
+<li><strong>Multi-minute cold rebuilds.</strong> Without ccache (installed, <code>CCACHE_DIR</code> set,
+  and backed by a named volume that survives rebuilds), <code>colcon build</code>
+  recompiles every C++ translation unit from scratch — 5–20 minutes per
+  devcontainer rebuild for a mid-size workspace.</li>
+<li><strong>A cache that breaks off the local machine.</strong> Bind-mounting a host
+  directory for ccache works locally but fails in Codespaces and CI-hosted
+  devcontainers; a named Docker volume works everywhere.</li>
+</ul>
 
 
 

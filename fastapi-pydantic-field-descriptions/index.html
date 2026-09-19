@@ -2286,6 +2286,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#failure-modes-this-prevents" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Failure modes this prevents
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#cross-reference" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2885,6 +2896,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#failure-modes-this-prevents" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Failure modes this prevents
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#cross-reference" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2999,6 +3021,17 @@ has no description:</p>
 <p>This check is <strong>optional</strong> today; a repo that adds it signals that its API
 surface is fully documented. The fleet convention is the requirement — the
 automated gate is the enforcement.</p>
+<h2 id="failure-modes-this-prevents">Failure modes this prevents<a class="headerlink" href="#failure-modes-this-prevents" title="Permanent link">&para;</a></h2>
+<ul>
+<li><strong>An OpenAPI schema that documents nothing.</strong> Without explicit field
+  descriptions, <code>/openapi.json</code> shows only each field's Python name and type —
+  every operator, downstream tool, and Swagger UI reader must guess at
+  semantics, and the generated client SDKs carry no field docs.</li>
+<li><strong>Descriptions that silently vanish.</strong> Pydantic v2 does not read inline
+  trailing <code>#</code> comments, and its <code>Attributes:</code> docstring parser drops
+  multi-line and inherited-field descriptions. <code>Field(description=...)</code>
+  guarantees the description reaches the JSON schema instead of being lost.</li>
+</ul>
 <h2 id="cross-reference">Cross-reference<a class="headerlink" href="#cross-reference" title="Permanent link">&para;</a></h2>
 <ul>
 <li><strong><a href="../fastapi-test-isolation/">FastAPI test isolation</a></strong> — the other

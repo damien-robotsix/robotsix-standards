@@ -1825,6 +1825,17 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#failure-modes-this-prevents" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Failure modes this prevents
+      
+    </span>
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -3027,6 +3038,17 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#failure-modes-this-prevents" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Failure modes this prevents
+      
+    </span>
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -3189,6 +3211,22 @@ the sanctioned mechanism.</p>
 <li>If a team wants PR-time visibility, <code>npm audit</code> may be run as an
   <strong>advisory-only / non-blocking</strong> job (e.g. <code>npm audit || true</code>), never
   as a gate.</li>
+</ul>
+<h2 id="failure-modes-this-prevents">Failure modes this prevents<a class="headerlink" href="#failure-modes-this-prevents" title="Permanent link">&para;</a></h2>
+<ul>
+<li><strong>Untestable code.</strong> A module-level function missing from the export
+  surface can't be reached by a unit test — exactly the one function of 29
+  that couldn't be tested directly in robotsix-board.</li>
+<li><strong>Themable UI broken by inline styles.</strong> Setting colours, fonts, or layout
+  via <code>element.style.*</code> overrides the stylesheet, making class-based theming
+  impossible — a recurring incident class in robotsix-board.</li>
+<li><strong>CI red on a stale lockfile.</strong> <code>npm ci</code> fails by design when
+  <code>package-lock.json</code> doesn't match <code>package.json</code>; regenerating and
+  committing the lockfile in the same change keeps installs reproducible.</li>
+<li><strong>a11y regressions that pass every functional test.</strong> Removing
+  <code>role="dialog"</code> or mis-wiring <code>aria-labelledby</code> breaks no unit or E2E
+  assertion; the axe-core scanner catches contrast, landmark, and ARIA-validity
+  regressions a scanner-free suite never sees.</li>
 </ul>
 
 

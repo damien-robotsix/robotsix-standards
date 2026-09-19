@@ -2459,6 +2459,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#failure-modes-this-prevents" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Failure modes this prevents
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#reference" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -3063,6 +3074,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#failure-modes-this-prevents" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Failure modes this prevents
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#reference" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -3333,6 +3355,22 @@ chat-access components:</p>
   gate — no separate volume permission toggle.</li>
 </ul>
 <hr />
+<h2 id="failure-modes-this-prevents">Failure modes this prevents<a class="headerlink" href="#failure-modes-this-prevents" title="Permanent link">&para;</a></h2>
+<ul>
+<li><strong>A second, weaker auth door.</strong> If a component stored a deploy credential
+  (env var, <code>central_deploy.api_token</code>, or a token written into its config
+  volume), that credential becomes a second attack surface the edge SSO never
+  guards. Reaching central-deploy with <strong>no credential</strong> over the trusted
+  internal network keeps the fleet edge the single authentication boundary.</li>
+<li><strong>Volume reads that escape the volume.</strong> A volume-inspection endpoint that
+  accepts <code>..</code>, absolute paths, or escaping symlinks lets the chat agent read
+  arbitrary host files. The strictly read-only, traversal-rejecting contract
+  keeps inspection inside the named volume.</li>
+<li><strong>Observability the chat agent can't actually use.</strong> An endpoint hidden
+  behind the operator's web-login session returns a login HTML page to the
+  agent instead of logs or status — silently unusable. Requiring the routes
+  on the internal network with non-HTML responses keeps them agent-reachable.</li>
+</ul>
 <h2 id="reference">Reference<a class="headerlink" href="#reference" title="Permanent link">&para;</a></h2>
 <ul>
 <li><a href="../component-standard/">Component standard</a> — the three deploy modes, auth model,

@@ -645,6 +645,17 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#failure-modes-this-prevents" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Failure modes this prevents
+      
+    </span>
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -2795,6 +2806,17 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#failure-modes-this-prevents" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Failure modes this prevents
+      
+    </span>
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -2847,6 +2869,16 @@ action's documented default <code>days-before-stale</code> / <code>days-before-c
 global pair without the PR-specific overrides: <code>actions/stale</code> applies
 those values to pull requests as well, and contributed PRs begin
 disappearing after two weeks of inactivity.</p>
+<h2 id="failure-modes-this-prevents">Failure modes this prevents<a class="headerlink" href="#failure-modes-this-prevents" title="Permanent link">&para;</a></h2>
+<ul>
+<li><strong>Contributed work auto-discarded.</strong> Inheriting the global
+  <code>days-before-stale</code> / <code>days-before-close</code> pair without the PR-specific
+  <code>-1</code> overrides lets the stale bot close a real pull request after a period
+  of inactivity — a mid-review PR is closed, its review thread lost and the
+  contributor told their work will be discarded, actively discouraging
+  contribution. The <code>-1</code> overrides preserve issue-hygiene triage while
+  exempting PRs entirely.</li>
+</ul>
 
 
 

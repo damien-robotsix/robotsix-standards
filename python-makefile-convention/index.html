@@ -1226,6 +1226,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#failure-modes-this-prevents" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Failure modes this prevents
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#full-example" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -3183,6 +3194,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#failure-modes-this-prevents" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Failure modes this prevents
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#full-example" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -3379,6 +3401,16 @@ can discover available targets without reading the Makefile source:</p>
 <p>This grep-awk one-liner extracts every <code>## Description</code> comment and prints
 a formatted table. It has no dependencies beyond <code>grep</code> and <code>awk</code>, which are
 available on every runner.</p>
+<h2 id="failure-modes-this-prevents">Failure modes this prevents<a class="headerlink" href="#failure-modes-this-prevents" title="Permanent link">&para;</a></h2>
+<ul>
+<li><strong>CI that breaks on a renamed target.</strong> A workflow invoking <code>make lock-check</code>
+  fails outright in a repo that named the target <code>check-lock</code> — the
+  inconsistency this convention eliminates. One documented name per task keeps
+  <code>make &lt;target&gt;</code> portable across every repo.</li>
+<li><strong>Contributors re-learning the interface per repo.</strong> Divergent target names
+  (<code>test-unit</code> vs <code>unit-test</code>) force anyone moving between repos to re-read
+  each Makefile; a single convention lets <code>make help</code> self-document.</li>
+</ul>
 <h2 id="full-example">Full example<a class="headerlink" href="#full-example" title="Permanent link">&para;</a></h2>
 <div class="highlight"><pre><span></span><code><span class="c"># ==========================================================================</span>
 <span class="c"># Makefile — robotsix fleet convention (Python / uv)</span>

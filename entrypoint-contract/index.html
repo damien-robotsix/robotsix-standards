@@ -2218,6 +2218,17 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#failure-modes-this-prevents" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Failure modes this prevents
+      
+    </span>
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -2795,6 +2806,17 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#failure-modes-this-prevents" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Failure modes this prevents
+      
+    </span>
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -2867,6 +2889,21 @@ don't.</p>
 <li><strong>Keep it short, and comment why it exists</strong> — the script is an exception;
    the comment is its justification.</li>
 </ol>
+<h2 id="failure-modes-this-prevents">Failure modes this prevents<a class="headerlink" href="#failure-modes-this-prevents" title="Permanent link">&para;</a></h2>
+<ul>
+<li><strong>Containers that never shut down cleanly.</strong> A shell that runs the app as a
+  child process (instead of <code>exec</code>-ing it) stays PID 1 and swallows SIGTERM,
+  so <code>docker stop</code> can't reach the Python process; the container is SIGKILLed
+  after the grace period with no drain and no clean stop line.</li>
+<li><strong>A fresh operator locked out of bootstrap.</strong> Gating every subcommand on a
+  loaded config means bootstrap commands (<code>detect</code>, <code>--help</code>, <code>--version</code>)
+  fail before any config exists — the operator can't run the very commands
+  that create the first config.</li>
+<li><strong>Silent config templating that does nothing.</strong> An <code>envsubst</code> block relies
+  on <code>gettext-base</code>, which is absent from the runtime image, so it fails
+  silently and leaves placeholders unsubstituted — a real bug found in the
+  stack. Deleting the block removes the false sense of templating.</li>
+</ul>
 
 
 

@@ -65,60 +65,24 @@ before the merge lands.
 
 The fleet's shared reusable workflow
 (`damien-robotsix/robotsix-github-workflows/.github/workflows/dependabot-auto-merge.yml`)
-implements this convention. Every repo consumes it via a thin caller
-workflow:
+implements this convention: it accepts a `target` input (`minor` or
+`patch`) and internally polls `mergeable_state` until it reports
+`"clean"` before calling the merge API, so the merge is CI-gated rather
+than actor-gated.
 
-```yaml
-# .github/workflows/dependabot-auto-merge.yml
-name: Dependabot auto-merge
+Every repo consumes it via a thin caller workflow. The copy-paste caller
+template lives in the
+[robotsix-github-workflows](https://github.com/damien-robotsix/robotsix-github-workflows)
+README — standards pages deliberately do not embed workflow YAML, so the
+template versions with the workflow it calls and cannot drift from it.
 
-on:
-  pull_request_target:
-
-permissions: {}
-
-jobs:
-  auto-merge:
-    if: github.actor == 'dependabot[bot]'
-    permissions:
-      contents: write
-      pull-requests: write
-    uses: damien-robotsix/robotsix-github-workflows/.github/workflows/dependabot-auto-merge.yml@<pinned-sha>
-```
-
-The reusable workflow triggers on `pull_request_target` (so it has write
-access to merge), accepts a `target` input (`minor` or `patch`), and
-internally polls `mergeable_state` until it reports `"clean"` before
-calling the merge API.
-
-The calling repo's `.github/dependabot.yml` must additionally exclude
+The calling repo's `.github/dependabot.yml` must additionally exclude the
 `docker` and `pre-commit` ecosystems from the auto-merge group so those
-bumps never reach the auto-merge workflow:
-
-```yaml
-# In .github/dependabot.yml — exclude docker and pre-commit from auto-merge
-version: 2
-updates:
-  # ... other ecosystems ...
-  - package-ecosystem: "docker"
-    directory: "/"
-    schedule:
-      interval: "weekly"
-    # No auto-merge group — these PRs require human review.
-    open-pull-requests-limit: 5
-
-  - package-ecosystem: "pre-commit"
-    directory: "/"
-    schedule:
-      interval: "weekly"
-    # No auto-merge group — these PRs require human review.
-    open-pull-requests-limit: 5
-```
-
-When the `docker` or `pre-commit` ecosystem blocks have no `groups:` key
-(or are absent from the auto-merge group), Dependabot still opens PRs for
-them, but those PRs are not eligible for auto-merge — they land in the
-review queue like any normal PR.
+bumps never reach the auto-merge workflow — those ecosystems still get
+Dependabot PRs, but they land in the review queue like any normal PR
+rather than being eligible for auto-merge. The Dependabot configuration
+shape is defined in the
+[repo baseline](repo-baseline.md#automated-dependency-updates).
 
 ## Anti-patterns
 

@@ -69,3 +69,10 @@ def check_workflow_security() -> ModuleType:
 @pytest.fixture
 def check_gitignore_denylist() -> ModuleType:
     return _load_script("check-gitignore-denylist.py", "check_gitignore_denylist")
+
+
+@pytest.fixture
+def check_secrets_patterns_excluded() -> ModuleType:
+    return _load_script(
+        "check-secrets-patterns-excluded.py", "check_secrets_patterns_excluded"
+    )

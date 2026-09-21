@@ -151,6 +151,32 @@ jobs:
       - name: Check .gitignore credential/secret-file deny list
         run: uv run --group docs python scripts/check-gitignore-denylist.py
 
+  secrets-patterns-excluded-check:
+    # Enforcement gate for docs/secret-files-are-never-tracked.md: every repo
+    # ships a reviewed .secrets-patterns-excluded file (newline-separated
+    # regexes that TruffleHog reads via --exclude-paths), and detect-secrets is
+    # NOT wired with the no-op `--exclude-files .secrets-patterns-excluded`
+    # form (--exclude-files takes a regex, not a file, so that spelling
+    # silently ignores every pattern). The gate also rejects gitignore-glob
+    # lines that will not compile as a regex. See:
+    #   - scripts/check-secrets-patterns-excluded.py (the gate logic)
+    #   - docs/secret-files-are-never-tracked.md (the standard)
+    # NOTE: currently warning-first (2026-09) — reports problems as annotations
+    # but does not fail, mirroring the gitignore-denylist gate above. A
+    # follow-up gate flips it to fail-closed once the fleet is compliant.
+    permissions:
+      contents: read
+    runs-on: ubuntu-latest
+    timeout-minutes: 5  # fast grep/parse check; well under 15-minute default
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
+      - uses: astral-sh/setup-uv@bec219d24cd3e171d82865faccec33120bb574f4 # v10.1.0
+        with:
+          enable-cache: true
+          python-version: "3.14"
+      - name: Check .secrets-patterns-excluded presence and wiring
+        run: uv run --group docs python scripts/check-secrets-patterns-excluded.py
+
   sbom-scope-check:
     # Enforcement gate for the repo-baseline.md SBOM-scope rule. This repo is
     # content-only (no src/ tree, no container image), so per docs/security-posture.md

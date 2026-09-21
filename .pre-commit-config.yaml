@@ -49,10 +49,14 @@ repos:
   - repo: https://github.com/Yelp/detect-secrets
     rev: v1.5.0
     hooks:
+      # detect-secrets' --exclude-files takes a SINGLE regex, not a path to a
+      # pattern file — feeding it `.secrets-patterns-excluded` was a silent
+      # no-op (it matched the literal filename as a regex and never read the
+      # file). Path exclusions belong in the pre-commit-native `exclude:` regex
+      # below, kept in sync with .secrets-patterns-excluded (which TruffleHog
+      # reads directly). See docs/secret-files-are-never-tracked.md.
       - id: detect-secrets
         args:
-          - '--exclude-files'
-          - '.secrets-patterns-excluded'
           - '--baseline'
           - '.secrets.baseline'
         exclude: '\.secrets\.baseline$'

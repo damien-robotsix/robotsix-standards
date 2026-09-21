@@ -2078,6 +2078,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#how-this-is-enforced" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How this is enforced
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#using-the-library" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -3040,6 +3051,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#how-this-is-enforced" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How this is enforced
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#using-the-library" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -3349,6 +3371,42 @@ joinable for reconciliation (see the
 <a href="../component-standard/">component standard</a>).  A provider key must fund
 exactly one function — two functions behind one key produce a single
 usage figure attributable to neither.</p>
+<h2 id="how-this-is-enforced">How this is enforced<a class="headerlink" href="#how-this-is-enforced" title="Permanent link">&para;</a></h2>
+<p>The management-surface MUSTs in <a href="#3-one-secret-convention">§3</a> govern
+central-deploy's config API and Configure UI, not this repo — there is no CI
+gate here that can inspect that code, and no pre-commit hook or CI job covers
+them in central-deploy either. Enforcement is therefore by <strong>audit</strong> — checked
+at code review and by the periodic standards-audit agent — against the criteria
+below, mirroring the pattern in
+<a href="../http-security-headers/#how-this-is-enforced">HTTP security headers</a>,
+<a href="../sse-response-headers/#how-this-is-enforced">SSE response headers</a>,
+<a href="../cors-policy/#how-this-is-enforced">CORS policy</a>,
+<a href="../ssrf-hardened-fetchers/#how-this-is-enforced">SSRF-hardened fetchers</a>, and the
+<a href="../component-standard/#how-this-pages-security-rules-are-enforced">component standard</a>.</p>
+<table>
+<thead>
+<tr>
+<th>Rule</th>
+<th>Audit criterion</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Redact on read</td>
+<td>Every config-read path — <code>GET /config</code>, version-history reads, audit-log serialization — routes through <code>mask_secrets()</code> (or an equivalent redaction wrapper) <em>before</em> serialization. <code>grep</code> the deploy system's config-API module for <code>mask_secrets</code>; any GET path that serializes a <code>writeOnly</code> field without it is a violation.</td>
+</tr>
+<tr>
+<td>Merge on write</td>
+<td>Config writes route through <code>apply_update()</code> merge semantics (per the <a href="../config-ownership/">config-ownership</a> helper table), so a partial write that omits a secret preserves the stored value. Version-history persistence stores only the fact that a secret key changed, never its value — <code>grep</code> history-write sites for raw secret values reaching storage.</td>
+</tr>
+<tr>
+<td>UI rendering</td>
+<td>The Configure UI form is generated from the committed <code>config/config.schema.json</code>; every <code>writeOnly</code> field renders masked with a set/unset badge and the value is never echoed in any API response the form consumes. This is a design-level property the auditor reads at code review.</td>
+</tr>
+</tbody>
+</table>
+<p>The <a href="../security-posture/#audit">security posture</a> page carries the fleet-wide
+roll-up of this check.</p>
 <h2 id="using-the-library">Using the library<a class="headerlink" href="#using-the-library" title="Permanent link">&para;</a></h2>
 <p>Install it (<code>uv add robotsix-config</code>, SHA-pinned via <code>[tool.uv.sources]</code> per
 the <a href="../repo-baseline/">repo baseline</a>), define plain pydantic models, and call

@@ -178,6 +178,10 @@ everywhere.
   `Base.metadata.create_all` alone.
 - **[ROS 2 practices](ros2.md)** — workspace-skeleton layout, vcs2l manifest,
   devcontainer with ccache, colcon/rosdep build lifecycle, lint gates.
+- **[Dart/Flutter network resilience](dart-network-resilience.md)** — retry
+  transient HTTP failures (socket/5xx/timeout) with exponential backoff,
+  explicit connect/read timeouts, and a transient-vs-fatal exception hierarchy
+  for Dart/Flutter services.
 - **[Pre-commit baseline](pre-commit-baseline.md)** — five zero-config
   file-hygiene hooks (trailing-whitespace, end-of-file-fixer, check-yaml,
   check-toml, check-added-large-files) for every Python repo.

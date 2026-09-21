@@ -80,6 +80,7 @@ the default.
 | [Async SQLAlchemy test fixtures](docs/async-sqlalchemy-test-fixtures.md) | Three-layer database test fixture pattern — session-scoped engine, function-scoped connection with rollback, function-scoped session with savepoints — for clean isolation without dropping tables. |
 | [Alembic migration validation](docs/alembic-migration-validation.md) | Every repo that ships Alembic migrations must validate them in CI by running `upgrade head` / `downgrade base` against a fresh test database, not just `Base.metadata.create_all`. |
 | [ROS 2 practices](docs/ros2.md) | Workspace-skeleton layout, vcs2l manifest, devcontainer with ccache, colcon/rosdep build lifecycle, lint gates. |
+| [Dart/Flutter network resilience](docs/dart-network-resilience.md) | Retry transient HTTP failures (socket/5xx/timeout) with exponential backoff, explicit connect/read timeouts, and a transient-vs-fatal exception hierarchy for Dart/Flutter services. |
 | [Pre-commit baseline](docs/pre-commit-baseline.md) | Five zero-config file-hygiene hooks (trailing-whitespace, end-of-file-fixer, check-yaml, check-toml, check-added-large-files) for every Python repo. |
 
 **Deployable components** (additionally):

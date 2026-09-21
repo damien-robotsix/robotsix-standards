@@ -468,6 +468,7 @@ dashboard-watching:
 | CVE audit* | `uv audit` / `pip-audit` passes in CI |
 | Container image scan | Trivy PR-scan and publish workflows present and passing (image-shipping repos only) |
 | Vulnerability disclosure | `SECURITY.md` present at repo root with contact method, response-time expectation, and coordinated-disclosure statement |
+| Config API secret redaction | Deployment system / management surfaces: central-deploy config-read endpoints (`GET /config`, version-history reads, audit-log serialization) route through `mask_secrets()` before serialization; config writes use `apply_update()` merge-on-write; version history stores no secret values — audited per [config standard §3](config-standard.md#how-this-is-enforced) |
 | LLM & agentic security | Repos whose core function involves LLM agents: `robotsix-llmio` pinned to a commit SHA in `pyproject.toml`; llmio level/model selection is an explicit config field (not hard-coded, not env); tracing/provider credentials are `SecretStr` in the canonical `langfuse`/`openrouter` config blocks; destructive git ops default to dry-run; scoped single-repo token (no org/admin scopes). Non-mechanical controls (LLM01/02/07/08/10, ASI01–ASI10) are covered by the periodic standards-audit agent — see below |
 
 *Content-only repos are exempt per the preamble above.

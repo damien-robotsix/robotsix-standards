@@ -268,6 +268,29 @@ joinable for reconciliation (see the
 exactly one function — two functions behind one key produce a single
 usage figure attributable to neither.
 
+## How this is enforced
+
+The management-surface MUSTs in [§3](#3-one-secret-convention) govern
+central-deploy's config API and Configure UI, not this repo — there is no CI
+gate here that can inspect that code, and no pre-commit hook or CI job covers
+them in central-deploy either. Enforcement is therefore by **audit** — checked
+at code review and by the periodic standards-audit agent — against the criteria
+below, mirroring the pattern in
+[HTTP security headers](http-security-headers.md#how-this-is-enforced),
+[SSE response headers](sse-response-headers.md#how-this-is-enforced),
+[CORS policy](cors-policy.md#how-this-is-enforced),
+[SSRF-hardened fetchers](ssrf-hardened-fetchers.md#how-this-is-enforced), and the
+[component standard](component-standard.md#how-this-pages-security-rules-are-enforced).
+
+| Rule | Audit criterion |
+|---|---|
+| Redact on read | Every config-read path — `GET /config`, version-history reads, audit-log serialization — routes through `mask_secrets()` (or an equivalent redaction wrapper) *before* serialization. `grep` the deploy system's config-API module for `mask_secrets`; any GET path that serializes a `writeOnly` field without it is a violation. |
+| Merge on write | Config writes route through `apply_update()` merge semantics (per the [config-ownership](config-ownership.md) helper table), so a partial write that omits a secret preserves the stored value. Version-history persistence stores only the fact that a secret key changed, never its value — `grep` history-write sites for raw secret values reaching storage. |
+| UI rendering | The Configure UI form is generated from the committed `config/config.schema.json`; every `writeOnly` field renders masked with a set/unset badge and the value is never echoed in any API response the form consumes. This is a design-level property the auditor reads at code review. |
+
+The [security posture](security-posture.md#audit) page carries the fleet-wide
+roll-up of this check.
+
 ## Using the library
 
 Install it (`uv add robotsix-config`, SHA-pinned via `[tool.uv.sources]` per

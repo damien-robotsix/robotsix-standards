@@ -17,9 +17,9 @@ for making Dart/Flutter HTTP calls resilient.
 - **HTTP calls MUST retry transient failures with exponential backoff.** The
   fleet default is **3 retries** with delays growing from **~100 ms to ~1000 ms**
   (jittered). Retry only the errors that a retry can plausibly fix:
-    - Socket/connection errors (`SocketException`, connection reset/refused).
-    - `5xx` server errors.
-    - Timeout errors (the request exceeded its deadline).
+  - Socket/connection errors (`SocketException`, connection reset/refused).
+  - `5xx` server errors.
+  - Timeout errors (the request exceeded its deadline).
 - **Never retry errors a retry cannot fix.** Do **not** retry `4xx` client
   errors (with the optional exception of `408 Request Timeout`), and never retry
   `401`/`403` authentication or authorization failures — retrying an unauthorized
@@ -34,8 +34,8 @@ for making Dart/Flutter HTTP calls resilient.
 
 - **Every HTTP client MUST set explicit timeouts** — never rely on the platform
   default (which is often unbounded). The fleet defaults are:
-    - Connection timeout: **10–15 s**.
-    - Read timeout: **30 s**.
+  - Connection timeout: **10–15 s**.
+  - Read timeout: **30 s**.
 - Apply per-request overrides where a specific call has a different deadline
   (e.g. a long-running upload). A request without a timeout is not a resilient
   request: it can hang indefinitely, and a hung request cannot be retried

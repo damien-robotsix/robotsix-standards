@@ -426,7 +426,7 @@ fleet's posture against each Source level:
   attestations; adoption is deferred pending tooling maturity and upstream
   ecosystem support.
 - **Source L3 (continuous technical controls):** not met — branch protection
-  with `include_admins: true` enforces required status checks on every commit
+  with `enforce_admins: true` enforces required status checks on every commit
   to `main`, so the underlying control is in place. Because SLSA levels are
   cumulative and Source L2 remains a gap, Source L3 is not reached even though
   the branch-protection control itself is enforced.

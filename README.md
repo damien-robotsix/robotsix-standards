@@ -34,7 +34,7 @@ the default.
 | [Towncrier changelog (superseded)](docs/towncrier.md) | Historical reference: the prior towncrier-based changelog mechanism. Superseded by [release-please](docs/release-please.md) + conventional commits. |
 | [Free-tier only](docs/free-tier-only.md) | No paid services (LLM agent inference excepted): Actions on a free tier (public or self-hosted runner), public/self-hosted images, permissive licences. |
 | [Security posture](docs/security-posture.md) | Self-enforcing security gates (SAST, dependency review, Dependabot, workflow hardening, secret protection, SBOM), auditable per repo. |
-| [Secret files are never tracked](docs/secret-files-are-never-tracked.md) | The `.secrets-patterns-excluded` file that tells TruffleHog and detect-secrets which paths to skip — separate from `.gitignore`. |
+| [Secret files are never tracked](docs/secret-files-are-never-tracked.md) | The `.secrets-patterns-excluded` file (read by TruffleHog; mirrored in detect-secrets' `.pre-commit-config.yaml` exclude regex) that tells scanners which paths to skip — separate from `.gitignore`. |
 | [CycloneDX SBOM via uv export](docs/sbom-cyclonedx-uv.md) | Standards-conformant CycloneDX SBOMs generated natively from `uv.lock` via `uv export` — keeps vulnerability audit output as a separate, accurately-named artifact. |
 | [REUSE compliance & SPDX headers](docs/reuse-spdx-compliance.md) | Machine-readable per-file licensing (REUSE): `LICENSES/` texts, `.reuse/dep5` default policy, SPDX headers on every source file, and a blocking `reuse lint` CI gate. |
 | [GitHub Actions security](docs/github-actions-security.md) | zizmor static-security auditor for GitHub Actions workflows — canonical invocation, severity policy, phased rollout. |

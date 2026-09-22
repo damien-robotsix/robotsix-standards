@@ -84,3 +84,16 @@ or not at all.
 **Rationale:** the fleet uses release-please + conventional commits as the sole
 changelog mechanism — towncrier fragments were removed as a redundant second layer
 that caused recurring CI red and wasted agent turns.
+
+**Rule:** When a standards page documents a CLI command a fleet repo copies
+into its CI (a dependency CVE gate, SBOM export, etc.), verify the command is
+valid on the current pinned tool version and note any preview-only status and
+required opt-in flags inline — never present a bare invocation that errors on
+the current release, and never state a schema/version (e.g. CycloneDX 1.6) the
+tool cannot actually emit.
+**Rationale:** two consecutive enforceability gaps on the same SBOM/CVE pages
+— bare `uv audit` non-portable, preview-only through uv 0.12.8; and
+`uv export --format cyclonedx1.6+json` invalid, only cyclonedx1.5 available in
+preview — shipped gates that could not be reproduced from the standard as
+written. Mandating version-pin + preview-status verification prevents this
+defect class.

@@ -3077,15 +3077,20 @@ distinguish the two. A dependency-track ingestion that receives a
 vulnerability report instead of an SBOM silently produces an empty
 component inventory — no alerts, no warnings, just no data.</p>
 <h3 id="artifact-upload">Artifact upload<a class="headerlink" href="#artifact-upload" title="Permanent link">&para;</a></h3>
-<p>The SBOM artifact follows the shared security-audit workflow pattern:</p>
-<div class="highlight"><pre><span></span><code><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">uses</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">actions/upload-artifact@v4</span>
-<span class="w">  </span><span class="nt">with</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">sbom-cdx</span>
-<span class="w">    </span><span class="nt">path</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">sbom.cdx.json</span>
-</code></pre></div>
-<p>The artifact name (<code>sbom-cdx</code>) is distinct from any other SBOM artifact a
-repo might publish (e.g. a container-image SBOM from syft or <code>grype</code>),
-preventing upload-name collisions in multi-artifact workflows.</p>
+<p>Upload of the SBOM artifact is handled by the shared security workflow
+(whose <code>actions/upload-artifact</code> step runs <code>if: always()</code> so a failed scan
+never drops the artifact — see the <a href="../security-posture/#6-sbom-vulnerability-audit">security posture standard</a>).
+The copy-paste caller template lives in the
+<a href="https://github.com/damien-robotsix/robotsix-github-workflows">robotsix-github-workflows</a>
+README — standards pages deliberately do not embed workflow YAML, so the
+template versions with the workflow it calls and cannot drift from it.
+<strong>Failure mode prevented:</strong> embedding an unpinned
+<code>actions/upload-artifact@v4</code> copy here (a mutable major-version tag) would
+land a repo-baseline 4a pin violation in any repo that pasted it verbatim,
+and silently drift from the workflow the page claims to describe.</p>
+<p>The artifact is uploaded under the name <code>sbom-cdx</code> — distinct from any other
+SBOM artifact a repo might publish (e.g. a container-image SBOM from syft or
+<code>grype</code>), preventing upload-name collisions in multi-artifact workflows.</p>
 <h3 id="no-extra-tooling-required">No extra tooling required<a class="headerlink" href="#no-extra-tooling-required" title="Permanent link">&para;</a></h3>
 <p>CycloneDX SBOM export is native to uv (<code>uv export --format cyclonedx1.5</code>).
 No additional tool (cyclonedx-py, syft, or trivy) is required for a

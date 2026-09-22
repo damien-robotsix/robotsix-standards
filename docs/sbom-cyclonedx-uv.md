@@ -104,18 +104,21 @@ component inventory — no alerts, no warnings, just no data.
 
 ### Artifact upload
 
-The SBOM artifact follows the shared security-audit workflow pattern:
+Upload of the SBOM artifact is handled by the shared security workflow
+(whose `actions/upload-artifact` step runs `if: always()` so a failed scan
+never drops the artifact — see the [security posture standard](security-posture.md#6-sbom-vulnerability-audit)).
+The copy-paste caller template lives in the
+[robotsix-github-workflows](https://github.com/damien-robotsix/robotsix-github-workflows)
+README — standards pages deliberately do not embed workflow YAML, so the
+template versions with the workflow it calls and cannot drift from it.
+**Failure mode prevented:** embedding an unpinned
+`actions/upload-artifact@v4` copy here (a mutable major-version tag) would
+land a repo-baseline 4a pin violation in any repo that pasted it verbatim,
+and silently drift from the workflow the page claims to describe.
 
-```yaml
-- uses: actions/upload-artifact@v4
-  with:
-    name: sbom-cdx
-    path: sbom.cdx.json
-```
-
-The artifact name (`sbom-cdx`) is distinct from any other SBOM artifact a
-repo might publish (e.g. a container-image SBOM from syft or `grype`),
-preventing upload-name collisions in multi-artifact workflows.
+The artifact is uploaded under the name `sbom-cdx` — distinct from any other
+SBOM artifact a repo might publish (e.g. a container-image SBOM from syft or
+`grype`), preventing upload-name collisions in multi-artifact workflows.
 
 ### No extra tooling required
 

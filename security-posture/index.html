@@ -3690,9 +3690,10 @@ dependency vulnerability audit on every CI run.</p>
   the single source of truth for lockfile-based SBOMs and must not be
   duplicated here. The upload step uses <code>if: always()</code> so a failed scan never
   silently drops the artifact.</li>
-<li><strong><code>uv audit</code> output is not an SBOM.</strong> <code>uv audit --output-format json</code>
-  (or <code>pip-audit</code>) emits a vulnerability/advisory report — OSV matches,
-  severities, affected/fixed ranges — that contains no component inventory.
+<li><strong><code>uv audit</code> output is not an SBOM.</strong> <code>uv audit --preview-features
+  audit-command,json-output --output-format json</code> (or <code>pip-audit</code>) emits a
+  vulnerability/advisory report — OSV matches, severities, affected/fixed
+  ranges — that contains no component inventory.
   It is <strong>not</strong> a Software Bill of Materials and MUST NOT be uploaded under
   the <code>sbom</code> artifact name or fed to SBOM consumers. The CVE audit report and
   the CycloneDX SBOM are distinct artifacts with distinct names (e.g.
@@ -3707,7 +3708,22 @@ dependency vulnerability audit on every CI run.</p>
   from 5/10 (SBOM present somewhere in the pipeline) to 10/10 (SBOM published
   as a release artifact).</li>
 <li><strong>Dependency CVE audit</strong> — <code>uv audit</code> (or <code>pip-audit</code>) gates in CI, blocking
-  on known vulnerabilities in the dependency tree.</li>
+  on known vulnerabilities in the dependency tree. <code>uv audit</code> is a
+  <strong>preview-only</strong> command (introduced in preview in uv 0.10.10, still
+  preview through at least uv 0.12.8): it MUST be invoked as
+  <code>uv audit --preview-features audit-command</code> — never as bare <code>uv audit</code>,
+  whose availability, flags and behaviour change per release — and JSON
+  output additionally requires the <code>json-output</code> preview feature
+  (<code>uv audit --preview-features audit-command,json-output --output-format json</code>;
+  the JSON schema is explicitly versioned <code>preview</code>). Running the gate also
+  requires a pinned uv version floor: <code>[tool.uv] required-version =
+  "&gt;=0.12.8"</code> (or the <code>version:</code> input on <code>astral-sh/setup-uv</code>, which honors
+  <code>required-version</code> automatically). Re-verify the flags whenever the pin is
+  bumped — preview status and flag names change per release.
+  <strong>Failure prevented:</strong> a fleet repo or a copied gate cannot run the CVE
+  gate from the standard as written — bare <code>uv audit</code> is not a valid
+  invocation on current uv and an unpinned uv changes the preview surface
+  mid-lifecycle, silently weakening or reddening the gate per environment.</li>
 <li>
 <p><strong>Container image scan</strong> <em>(image-shipping repos only)</em> — Trivy scans the
   built image on every PR and on every publish, blocking on fixable
@@ -3721,7 +3737,8 @@ dependency vulnerability audit on every CI run.</p>
   where the audit output is uploaded, a separately named vulnerability audit
   artifact (<code>audit-report.json</code>). The latest GitHub Release includes
   <code>sbom.cyclonedx.json</code> as an asset (and optionally a Sigstore attestation
-  bundle). <code>uv audit</code> (or <code>pip-audit</code>) passes in the latest CI run.
+  bundle). <code>uv audit --preview-features audit-command</code> (or <code>pip-audit</code>)
+  passes in the latest CI run.
   Image-shipping repos: the PR-scan and publish workflows both call the Trivy
   reusable workflow.</p>
 </li>
@@ -3823,7 +3840,7 @@ dashboard-watching:</p>
 </tr>
 <tr>
 <td>CVE audit*</td>
-<td><code>uv audit</code> / <code>pip-audit</code> passes in CI</td>
+<td><code>uv audit --preview-features audit-command</code> at the pinned uv version / <code>pip-audit</code> passes in CI</td>
 </tr>
 <tr>
 <td>Container image scan</td>

@@ -3375,7 +3375,9 @@ gate set:</p>
   anchors.</li>
 <li><strong>Security:</strong> Semgrep (SAST), zizmor workflow audit, GitHub secret scanning + push protection
   (complemented by TruffleHog for PR-diff and full-repo scans in the shared
-  security workflow), a dependency CVE audit (<code>uv audit</code> in the CI gate, plus <code>pip-audit</code> in the security
+  security workflow), a dependency CVE audit (<code>uv audit --preview-features audit-command</code> at a pinned
+  uv version in the CI gate — preview-only, see
+  <a href="../security-posture/#6-sbom-vulnerability-audit">security posture</a> — plus <code>pip-audit</code> in the security
   workflow), <code>dependency-review</code> on PRs (<code>fail-on-severity:
   moderate</code> — this is a <strong>floor</strong>; a repo may apply a stricter severity such as
   <code>low</code> at its own discretion. Strictness is per-repo headroom, laxity is not.),

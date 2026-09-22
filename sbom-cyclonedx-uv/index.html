@@ -2996,9 +2996,9 @@ docs repos, pure-static sites) are unaffected.</p>
 <h2 id="why-this-exists">Why this exists<a class="headerlink" href="#why-this-exists" title="Permanent link">&para;</a></h2>
 <p>Before this standard, several fleet repos emitted an SBOM via:</p>
 <div class="highlight"><pre><span></span><code><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Generate SBOM</span>
-<span class="w">  </span><span class="nt">run</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">uv audit --frozen --output-format json &gt; sbom.json || true</span>
+<span class="w">  </span><span class="nt">run</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">uv audit --frozen --preview-features audit-command,json-output --output-format json &gt; sbom.json || true</span>
 </code></pre></div>
-<p><code>uv audit --output-format json</code> produces a <strong>vulnerability/advisory report</strong> —
+<p><code>uv audit --preview-features audit-command,json-output --output-format json</code> produces a <strong>vulnerability/advisory report</strong> —
 OSV advisory matches, severities, affected and fixed ranges. It is not a
 Software Bill of Materials. It contains no standards-conformant component
 inventory, so the artifact cannot be consumed by intended downstream tooling:</p>
@@ -3016,6 +3016,17 @@ the repo provides a vulnerability report. The consumer rejects it as
 non-conformant, creating a blocking compliance gap that must be resolved
 ad-hoc (often by hand-generating a CycloneDX document) rather than
 automatically from the existing lockfile.</p>
+<blockquote>
+<p><strong><code>uv audit</code> is a preview command.</strong> Every <code>uv audit</code> invocation on this
+page includes the mandatory preview opt-in — <code>--preview-features
+audit-command</code>, plus <code>json-output</code> for JSON output — and the gate also
+requires a pinned uv version floor (<code>[tool.uv] required-version</code> or the
+<code>setup-uv</code> <code>version:</code> input). Bare <code>uv audit</code> is not portable: the command
+is preview-only (introduced in uv 0.10.10, still preview through at least
+uv 0.12.8) and its flags and JSON schema change per release. The canonical
+rule and the exact version floor are
+<a href="../security-posture/#6-sbom-vulnerability-audit">security posture gate 6</a>.</p>
+</blockquote>
 <h2 id="the-rule">The rule<a class="headerlink" href="#the-rule" title="Permanent link">&para;</a></h2>
 <p>Every uv-based repo that publishes or uploads an SBOM in CI <strong>must</strong> generate
 a standards-conformant CycloneDX document natively from the lockfile:</p>
@@ -3054,7 +3065,7 @@ named accurately — for example <code>audit-report.json</code> — so consumers
 distinguish "this is the inventory" from "these are the known vulnerabilities
 in that inventory":</p>
 <div class="highlight"><pre><span></span><code><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Vulnerability audit</span>
-<span class="w">  </span><span class="nt">run</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">uv audit --frozen --output-format json &gt; audit-report.json || true</span>
+<span class="w">  </span><span class="nt">run</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">uv audit --frozen --preview-features audit-command,json-output --output-format json &gt; audit-report.json || true</span>
 </code></pre></div>
 <p>The <code>|| true</code> guard is appropriate for an advisory audit that should not
 block the workflow on a newly published CVE; the CycloneDX SBOM step
@@ -3095,7 +3106,7 @@ than repeating the command.</p>
 <thead>
 <tr>
 <th>Property</th>
-<th><code>uv audit --output-format json</code></th>
+<th><code>uv audit --preview-features audit-command,json-output --output-format json</code></th>
 <th><code>uv export --format cyclonedx1.5</code></th>
 </tr>
 </thead>

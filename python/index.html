@@ -3480,7 +3480,8 @@ concern (see the <a href="../component-standard/#logging">component standard</a>
 <li><code>ruff check</code> + <code>ruff format --check</code></li>
 <li><code>mypy --strict</code></li>
 <li><code>deptry</code> (dependency hygiene)</li>
-<li><code>bandit</code> (security SAST) and a dependency CVE audit (<code>uv audit</code>)</li>
+<li><code>bandit</code> (security SAST) and a dependency CVE audit (<code>uv audit --preview-features audit-command</code> at a
+  pinned uv version — preview-only, see <a href="../security-posture/#6-sbom-vulnerability-audit">security posture</a>)</li>
 </ul>
 <p>Ruff's pydocstyle rules (<code>D</code>) enforce the fleet <a href="../docstrings/">docstring convention</a>
 at lint time — every repo enables the standard rule set so that API docs

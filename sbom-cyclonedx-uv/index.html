@@ -3020,13 +3020,17 @@ automatically from the existing lockfile.</p>
 <p>Every uv-based repo that publishes or uploads an SBOM in CI <strong>must</strong> generate
 a standards-conformant CycloneDX document natively from the lockfile:</p>
 <div class="highlight"><pre><span></span><code><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Generate SBOM</span>
-<span class="w">  </span><span class="nt">run</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">uv export --frozen --format cyclonedx1.6+json --no-emit-project -o sbom.cdx.json</span>
+<span class="w">  </span><span class="nt">run</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">uv export --frozen --format cyclonedx1.5 --no-emit-project -o sbom.cdx.json</span>
 </code></pre></div>
 <ul>
 <li><strong><code>--frozen</code></strong> — reads <code>uv.lock</code> as-is; does not re-resolve. Ensures the
   SBOM matches the exact pinned dependency set used in CI.</li>
-<li><strong><code>--format cyclonedx1.6+json</code></strong> — emits CycloneDX 1.6 JSON, the latest
-  standard version that uv supports natively.</li>
+<li><strong><code>--format cyclonedx1.5</code></strong> — emits a CycloneDX 1.5 JSON document, the
+  newest schema version that uv's native export accepts
+  (<code>cyclonedx1.6+json</code> is not a valid format value — see the failure mode
+  below). uv still flags the 1.5 export as experimental and prints a
+  warning (silence it with <code>--preview-features sbom-export</code>); the output
+  itself is a standards-conformant CycloneDX 1.5 BOM.</li>
 <li><strong><code>--no-emit-project</code></strong> — omits the project itself from the SBOM
   (CycloneDX metadata). The project is the consuming entity, not a component
   of its own supply chain; omitting it avoids a self-referential entry that
@@ -3035,11 +3039,14 @@ a standards-conformant CycloneDX document natively from the lockfile:</p>
   CycloneDX document, distinguishing it from a JSON vulnerability report or
   a <code>requirements.txt</code>-style lock export.</li>
 </ul>
-<p><strong>Failure mode (wrong format flag):</strong> <code>--format cyclonedx</code> without the
-version suffix emits CycloneDX 1.5, which uv supports but which some
-consumers (e.g. Dependency-Track &lt; 4.12) handle with reduced schema
-validation. Pinning to <code>1.6+json</code> is forward-compatible and avoids version
-ambiguity.</p>
+<p><strong>Failure mode (wrong format flag):</strong> <code>uv export</code> rejects any format value
+other than <code>requirements.txt</code>, <code>pylock.toml</code>, and <code>cyclonedx1.5</code> with a
+hard error, so a copy-pasted <code>--format cyclonedx1.6+json</code> — or a bare
+<code>--format cyclonedx</code> — fails the step and produces no SBOM at all, silently
+breaking the gate downstream ingestion depends on. A "CycloneDX 1.6" claim
+is only achievable with a converter (e.g. cyclonedx-py) plus a schema check
+of the generated document; with uv's native export the conformant claim is
+1.5.</p>
 <h3 id="audit-output-is-a-separate-artifact">Audit output is a separate artifact<a class="headerlink" href="#audit-output-is-a-separate-artifact" title="Permanent link">&para;</a></h3>
 <p>The vulnerability audit report (<code>uv audit</code>) is a distinct artifact with a
 different schema and purpose. It must be kept <strong>separate</strong> from the SBOM and
@@ -3069,7 +3076,7 @@ component inventory — no alerts, no warnings, just no data.</p>
 repo might publish (e.g. a container-image SBOM from syft or <code>grype</code>),
 preventing upload-name collisions in multi-artifact workflows.</p>
 <h3 id="no-extra-tooling-required">No extra tooling required<a class="headerlink" href="#no-extra-tooling-required" title="Permanent link">&para;</a></h3>
-<p>CycloneDX SBOM export is native to uv (<code>uv export --format cyclonedx1.6+json</code>).
+<p>CycloneDX SBOM export is native to uv (<code>uv export --format cyclonedx1.5</code>).
 No additional tool (cyclonedx-py, syft, or trivy) is required for a
 lockfile-based SBOM. This keeps CI bootstrapping minimal — <code>setup-uv</code>
 already manages the uv binary that runs every other step.</p>
@@ -3089,14 +3096,14 @@ than repeating the command.</p>
 <tr>
 <th>Property</th>
 <th><code>uv audit --output-format json</code></th>
-<th><code>uv export --format cyclonedx1.6+json</code></th>
+<th><code>uv export --format cyclonedx1.5</code></th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td>Schema</td>
 <td>OSV advisory response</td>
-<td>CycloneDX 1.6 BOM</td>
+<td>CycloneDX 1.5 BOM</td>
 </tr>
 <tr>
 <td>Contents</td>

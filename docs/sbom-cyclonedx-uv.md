@@ -40,13 +40,17 @@ a standards-conformant CycloneDX document natively from the lockfile:
 
 ```yaml
 - name: Generate SBOM
-  run: uv export --frozen --format cyclonedx1.6+json --no-emit-project -o sbom.cdx.json
+  run: uv export --frozen --format cyclonedx1.5 --no-emit-project -o sbom.cdx.json
 ```
 
 - **`--frozen`** — reads `uv.lock` as-is; does not re-resolve. Ensures the
   SBOM matches the exact pinned dependency set used in CI.
-- **`--format cyclonedx1.6+json`** — emits CycloneDX 1.6 JSON, the latest
-  standard version that uv supports natively.
+- **`--format cyclonedx1.5`** — emits a CycloneDX 1.5 JSON document, the
+  newest schema version that uv's native export accepts
+  (`cyclonedx1.6+json` is not a valid format value — see the failure mode
+  below). uv still flags the 1.5 export as experimental and prints a
+  warning (silence it with `--preview-features sbom-export`); the output
+  itself is a standards-conformant CycloneDX 1.5 BOM.
 - **`--no-emit-project`** — omits the project itself from the SBOM
   (CycloneDX metadata). The project is the consuming entity, not a component
   of its own supply chain; omitting it avoids a self-referential entry that
@@ -55,11 +59,14 @@ a standards-conformant CycloneDX document natively from the lockfile:
   CycloneDX document, distinguishing it from a JSON vulnerability report or
   a `requirements.txt`-style lock export.
 
-**Failure mode (wrong format flag):** `--format cyclonedx` without the
-version suffix emits CycloneDX 1.5, which uv supports but which some
-consumers (e.g. Dependency-Track < 4.12) handle with reduced schema
-validation. Pinning to `1.6+json` is forward-compatible and avoids version
-ambiguity.
+**Failure mode (wrong format flag):** `uv export` rejects any format value
+other than `requirements.txt`, `pylock.toml`, and `cyclonedx1.5` with a
+hard error, so a copy-pasted `--format cyclonedx1.6+json` — or a bare
+`--format cyclonedx` — fails the step and produces no SBOM at all, silently
+breaking the gate downstream ingestion depends on. A "CycloneDX 1.6" claim
+is only achievable with a converter (e.g. cyclonedx-py) plus a schema check
+of the generated document; with uv's native export the conformant claim is
+1.5.
 
 ### Audit output is a separate artifact
 
@@ -102,7 +109,7 @@ preventing upload-name collisions in multi-artifact workflows.
 
 ### No extra tooling required
 
-CycloneDX SBOM export is native to uv (`uv export --format cyclonedx1.6+json`).
+CycloneDX SBOM export is native to uv (`uv export --format cyclonedx1.5`).
 No additional tool (cyclonedx-py, syft, or trivy) is required for a
 lockfile-based SBOM. This keeps CI bootstrapping minimal — `setup-uv`
 already manages the uv binary that runs every other step.
@@ -122,9 +129,9 @@ than repeating the command.
 
 ## Vulnerability audit is not an SBOM
 
-| Property | `uv audit --output-format json` | `uv export --format cyclonedx1.6+json` |
+| Property | `uv audit --output-format json` | `uv export --format cyclonedx1.5` |
 |---|---|---|
-| Schema | OSV advisory response | CycloneDX 1.6 BOM |
+| Schema | OSV advisory response | CycloneDX 1.5 BOM |
 | Contents | Matching vulnerabilities (CVE/OSV id, severity, affected ranges) | Component inventory (name, version, purl, dependency graph) |
 | Consumable by | Custom audit dashboards, advisory feeds | Dependency-Track, GitHub Dependabot, grype, trivy sbom, VEX pipelines |
 | Standards body | OpenSSF / OSV | OWASP CycloneDX |

@@ -242,7 +242,8 @@ Run via the shared `python-ci.yml` reusable workflow:
 - `ruff check` + `ruff format --check`
 - `mypy --strict`
 - `deptry` (dependency hygiene)
-- `bandit` (security SAST) and a dependency CVE audit (`uv audit`)
+- `bandit` (security SAST) and a dependency CVE audit (`uv audit --preview-features audit-command` at a
+  pinned uv version — preview-only, see [security posture](security-posture.md#6-sbom-vulnerability-audit))
 
 Ruff's pydocstyle rules (`D`) enforce the fleet [docstring convention](docstrings.md)
 at lint time — every repo enables the standard rule set so that API docs

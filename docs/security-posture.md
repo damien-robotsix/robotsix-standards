@@ -364,9 +364,10 @@ dependency vulnerability audit on every CI run.
   the single source of truth for lockfile-based SBOMs and must not be
   duplicated here. The upload step uses `if: always()` so a failed scan never
   silently drops the artifact.
-- **`uv audit` output is not an SBOM.** `uv audit --output-format json`
-  (or `pip-audit`) emits a vulnerability/advisory report — OSV matches,
-  severities, affected/fixed ranges — that contains no component inventory.
+- **`uv audit` output is not an SBOM.** `uv audit --preview-features
+  audit-command,json-output --output-format json` (or `pip-audit`) emits a
+  vulnerability/advisory report — OSV matches, severities, affected/fixed
+  ranges — that contains no component inventory.
   It is **not** a Software Bill of Materials and MUST NOT be uploaded under
   the `sbom` artifact name or fed to SBOM consumers. The CVE audit report and
   the CycloneDX SBOM are distinct artifacts with distinct names (e.g.
@@ -381,7 +382,22 @@ dependency vulnerability audit on every CI run.
   from 5/10 (SBOM present somewhere in the pipeline) to 10/10 (SBOM published
   as a release artifact).
 - **Dependency CVE audit** — `uv audit` (or `pip-audit`) gates in CI, blocking
-  on known vulnerabilities in the dependency tree.
+  on known vulnerabilities in the dependency tree. `uv audit` is a
+  **preview-only** command (introduced in preview in uv 0.10.10, still
+  preview through at least uv 0.12.8): it MUST be invoked as
+  `uv audit --preview-features audit-command` — never as bare `uv audit`,
+  whose availability, flags and behaviour change per release — and JSON
+  output additionally requires the `json-output` preview feature
+  (`uv audit --preview-features audit-command,json-output --output-format json`;
+  the JSON schema is explicitly versioned `preview`). Running the gate also
+  requires a pinned uv version floor: `[tool.uv] required-version =
+  ">=0.12.8"` (or the `version:` input on `astral-sh/setup-uv`, which honors
+  `required-version` automatically). Re-verify the flags whenever the pin is
+  bumped — preview status and flag names change per release.
+  **Failure prevented:** a fleet repo or a copied gate cannot run the CVE
+  gate from the standard as written — bare `uv audit` is not a valid
+  invocation on current uv and an unpinned uv changes the preview surface
+  mid-lifecycle, silently weakening or reddening the gate per environment.
 - **Container image scan** *(image-shipping repos only)* — Trivy scans the
   built image on every PR and on every publish, blocking on fixable
   CRITICAL/HIGH findings. A `.trivyignore` with commented entries suppresses
@@ -393,7 +409,8 @@ dependency vulnerability audit on every CI run.
   where the audit output is uploaded, a separately named vulnerability audit
   artifact (`audit-report.json`). The latest GitHub Release includes
   `sbom.cyclonedx.json` as an asset (and optionally a Sigstore attestation
-  bundle). `uv audit` (or `pip-audit`) passes in the latest CI run.
+  bundle). `uv audit --preview-features audit-command` (or `pip-audit`)
+  passes in the latest CI run.
   Image-shipping repos: the PR-scan and publish workflows both call the Trivy
   reusable workflow.
 - **Failure prevented:** a dependency with a published, fixable CVE ships in
@@ -465,7 +482,7 @@ dashboard-watching:
 | Secret push protection | Push protection enabled in repo Security settings; `detect-secrets` in pre-commit; CI runs TruffleHog (content-only repos exempt from TruffleHog) |
 | Credential-file deny list | `.gitignore` covers `.htpasswd`, `.env`/`.env.*`, `wp-config*.php`, `*.pem`, `*.key`, `*secret*`, `*.p12` — verified by `scripts/check-gitignore-denylist.py` in `baseline-check.yml` (warning-first, honors per-repo negating exceptions) |
 | SBOM* | CI uploads CycloneDX artifact |
-| CVE audit* | `uv audit` / `pip-audit` passes in CI |
+| CVE audit* | `uv audit --preview-features audit-command` at the pinned uv version / `pip-audit` passes in CI |
 | Container image scan | Trivy PR-scan and publish workflows present and passing (image-shipping repos only) |
 | Vulnerability disclosure | `SECURITY.md` present at repo root with contact method, response-time expectation, and coordinated-disclosure statement |
 | Config API secret redaction | Deployment system / management surfaces: central-deploy config-read endpoints (`GET /config`, version-history reads, audit-log serialization) route through `mask_secrets()` before serialization; config writes use `apply_update()` merge-on-write; version history stores no secret values — audited per [config standard §3](config-standard.md#how-this-is-enforced) |

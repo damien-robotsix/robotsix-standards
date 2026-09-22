@@ -10,10 +10,10 @@ Before this standard, several fleet repos emitted an SBOM via:
 
 ```yaml
 - name: Generate SBOM
-  run: uv audit --frozen --output-format json > sbom.json || true
+  run: uv audit --frozen --preview-features audit-command,json-output --output-format json > sbom.json || true
 ```
 
-`uv audit --output-format json` produces a **vulnerability/advisory report** —
+`uv audit --preview-features audit-command,json-output --output-format json` produces a **vulnerability/advisory report** —
 OSV advisory matches, severities, affected and fixed ranges. It is not a
 Software Bill of Materials. It contains no standards-conformant component
 inventory, so the artifact cannot be consumed by intended downstream tooling:
@@ -32,6 +32,16 @@ the repo provides a vulnerability report. The consumer rejects it as
 non-conformant, creating a blocking compliance gap that must be resolved
 ad-hoc (often by hand-generating a CycloneDX document) rather than
 automatically from the existing lockfile.
+
+> **`uv audit` is a preview command.** Every `uv audit` invocation on this
+> page includes the mandatory preview opt-in — `--preview-features
+> audit-command`, plus `json-output` for JSON output — and the gate also
+> requires a pinned uv version floor (`[tool.uv] required-version` or the
+> `setup-uv` `version:` input). Bare `uv audit` is not portable: the command
+> is preview-only (introduced in uv 0.10.10, still preview through at least
+> uv 0.12.8) and its flags and JSON schema change per release. The canonical
+> rule and the exact version floor are
+> [security posture gate 6](security-posture.md#6-sbom-vulnerability-audit).
 
 ## The rule
 
@@ -78,7 +88,7 @@ in that inventory":
 
 ```yaml
 - name: Vulnerability audit
-  run: uv audit --frozen --output-format json > audit-report.json || true
+  run: uv audit --frozen --preview-features audit-command,json-output --output-format json > audit-report.json || true
 ```
 
 The `|| true` guard is appropriate for an advisory audit that should not
@@ -129,7 +139,7 @@ than repeating the command.
 
 ## Vulnerability audit is not an SBOM
 
-| Property | `uv audit --output-format json` | `uv export --format cyclonedx1.5` |
+| Property | `uv audit --preview-features audit-command,json-output --output-format json` | `uv export --format cyclonedx1.5` |
 |---|---|---|
 | Schema | OSV advisory response | CycloneDX 1.5 BOM |
 | Contents | Matching vulnerabilities (CVE/OSV id, severity, affected ranges) | Component inventory (name, version, purl, dependency graph) |

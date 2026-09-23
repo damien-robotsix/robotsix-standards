@@ -136,44 +136,33 @@ They need a dedicated workflow.
 
 ### Workflow shape
 
-```yaml
-name: Refresh git-pinned dependencies
-on:
-  schedule:
-    - cron: "0 6 * * 1"  # Monday 06:00 UTC
-  workflow_dispatch:
+A scheduled weekly GitHub Actions workflow drives the refresh. The caller
+template lives in the
+[robotsix-github-workflows](https://github.com/damien-robotsix/robotsix-github-workflows)
+README — standards pages deliberately do not embed workflow YAML, so the
+template versions with the workflow it calls and cannot drift from it.
 
-jobs:
-  refresh:
-    runs-on: ubuntu-latest
-    timeout-minutes: 10
-    steps:
-      - uses: actions/checkout@<sha>  # v4.x
-      - uses: astral-sh/setup-uv@<sha>  # v6.x
-        with:
-          enable-cache: true
-          cache-dependency-glob: "pyproject.toml"
-      - name: Upgrade git-pinned dependencies
-        run: |
-          uv lock --upgrade-package robotsix-config
-          uv lock --upgrade-package robotsix-llmio
-      - uses: peter-evans/create-pull-request@<sha>  # v7.x
-        with:
-          title: "chore: refresh git-pinned dependencies"
-          branch: "chore/refresh-git-pins"
-          commit-message: "chore: refresh git-pinned dependencies"
-          body: |
-            Weekly refresh of `[tool.uv.sources]` git-pinned dependencies.
-            Updates each pinned commit SHA to the latest commit on its
-            default branch.
-          labels: "dependencies"
-```
+The workflow shape is:
 
-Each `--upgrade-package` line names one git-pinned dependency.  The list
-must be repo-specific — a repo with two git-pinned deps runs two
-`--upgrade-package` commands.  The schedule (Monday morning) runs before
-any scheduled release workflow so refreshed pins land in a release PR if
-one opens that week.
+1. **Schedule the run** with a cron cadence (Monday 06:00 UTC) plus a
+   `workflow_dispatch` trigger for manual runs.
+2. **Check out the repo** and set up uv (with caching).
+3. **Run one `uv lock --upgrade-package <pkg>` per git-pinned package**
+   in `[tool.uv.sources]`.  The list is repo-specific — a repo with two
+   git-pinned deps runs two `--upgrade-package` commands.
+4. **Open a PR** with `peter-evans/create-pull-request`, titled
+   `chore: refresh git-pinned dependencies`.  The schedule runs before any
+   scheduled release workflow so refreshed pins land in a release PR if
+   one opens that week.
+
+**Failure mode prevented:** embedding a runnable workflow here would leave
+the `@<sha>` action refs unpinned and omit the top-level `permissions:`
+block — the exact violations the [security posture standard](security-posture.md#4-workflow-hardening)
+(4a SHA-pinning / 4c least-privilege) and its own tooling
+(`check-workflow-security.py`, `zizmor`) forbid — and a pasted copy would
+drift from the workflow it claims to describe. Keeping the caller template
+in robotsix-github-workflows lets the real workflow carry the pinned,
+least-privilege shape.
 
 ### Why scheduled refresh
 

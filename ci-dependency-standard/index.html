@@ -3289,42 +3289,32 @@ commit SHAs (see the
 <a href="../repo-baseline/#pin-to-a-commit-sha-not-a-branch">repo baseline: pin to a commit SHA</a>).
 They need a dedicated workflow.</p>
 <h3 id="workflow-shape">Workflow shape<a class="headerlink" href="#workflow-shape" title="Permanent link">&para;</a></h3>
-<div class="highlight"><pre><span></span><code><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Refresh git-pinned dependencies</span>
-<span class="nt">on</span><span class="p">:</span>
-<span class="w">  </span><span class="nt">schedule</span><span class="p">:</span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">cron</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;0</span><span class="nv"> </span><span class="s">6</span><span class="nv"> </span><span class="s">*</span><span class="nv"> </span><span class="s">*</span><span class="nv"> </span><span class="s">1&quot;</span><span class="w">  </span><span class="c1"># Monday 06:00 UTC</span>
-<span class="w">  </span><span class="nt">workflow_dispatch</span><span class="p">:</span>
-
-<span class="nt">jobs</span><span class="p">:</span>
-<span class="w">  </span><span class="nt">refresh</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">runs-on</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ubuntu-latest</span>
-<span class="w">    </span><span class="nt">timeout-minutes</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">10</span>
-<span class="w">    </span><span class="nt">steps</span><span class="p">:</span>
-<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">uses</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">actions/checkout@&lt;sha&gt;</span><span class="w">  </span><span class="c1"># v4.x</span>
-<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">uses</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">astral-sh/setup-uv@&lt;sha&gt;</span><span class="w">  </span><span class="c1"># v6.x</span>
-<span class="w">        </span><span class="nt">with</span><span class="p">:</span>
-<span class="w">          </span><span class="nt">enable-cache</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
-<span class="w">          </span><span class="nt">cache-dependency-glob</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;pyproject.toml&quot;</span>
-<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Upgrade git-pinned dependencies</span>
-<span class="w">        </span><span class="nt">run</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|</span>
-<span class="w">          </span><span class="no">uv lock --upgrade-package robotsix-config</span>
-<span class="w">          </span><span class="no">uv lock --upgrade-package robotsix-llmio</span>
-<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">uses</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">peter-evans/create-pull-request@&lt;sha&gt;</span><span class="w">  </span><span class="c1"># v7.x</span>
-<span class="w">        </span><span class="nt">with</span><span class="p">:</span>
-<span class="w">          </span><span class="nt">title</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;chore:</span><span class="nv"> </span><span class="s">refresh</span><span class="nv"> </span><span class="s">git-pinned</span><span class="nv"> </span><span class="s">dependencies&quot;</span>
-<span class="w">          </span><span class="nt">branch</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;chore/refresh-git-pins&quot;</span>
-<span class="w">          </span><span class="nt">commit-message</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;chore:</span><span class="nv"> </span><span class="s">refresh</span><span class="nv"> </span><span class="s">git-pinned</span><span class="nv"> </span><span class="s">dependencies&quot;</span>
-<span class="w">          </span><span class="nt">body</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|</span>
-<span class="w">            </span><span class="no">Weekly refresh of `[tool.uv.sources]` git-pinned dependencies.</span>
-<span class="w">            </span><span class="no">Updates each pinned commit SHA to the latest commit on its</span>
-<span class="w">            </span><span class="no">default branch.</span>
-<span class="w">          </span><span class="nt">labels</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;dependencies&quot;</span>
-</code></pre></div>
-<p>Each <code>--upgrade-package</code> line names one git-pinned dependency.  The list
-must be repo-specific — a repo with two git-pinned deps runs two
-<code>--upgrade-package</code> commands.  The schedule (Monday morning) runs before
-any scheduled release workflow so refreshed pins land in a release PR if
-one opens that week.</p>
+<p>A scheduled weekly GitHub Actions workflow drives the refresh. The caller
+template lives in the
+<a href="https://github.com/damien-robotsix/robotsix-github-workflows">robotsix-github-workflows</a>
+README — standards pages deliberately do not embed workflow YAML, so the
+template versions with the workflow it calls and cannot drift from it.</p>
+<p>The workflow shape is:</p>
+<ol>
+<li><strong>Schedule the run</strong> with a cron cadence (Monday 06:00 UTC) plus a
+   <code>workflow_dispatch</code> trigger for manual runs.</li>
+<li><strong>Check out the repo</strong> and set up uv (with caching).</li>
+<li><strong>Run one <code>uv lock --upgrade-package &lt;pkg&gt;</code> per git-pinned package</strong>
+   in <code>[tool.uv.sources]</code>.  The list is repo-specific — a repo with two
+   git-pinned deps runs two <code>--upgrade-package</code> commands.</li>
+<li><strong>Open a PR</strong> with <code>peter-evans/create-pull-request</code>, titled
+   <code>chore: refresh git-pinned dependencies</code>.  The schedule runs before any
+   scheduled release workflow so refreshed pins land in a release PR if
+   one opens that week.</li>
+</ol>
+<p><strong>Failure mode prevented:</strong> embedding a runnable workflow here would leave
+the <code>@&lt;sha&gt;</code> action refs unpinned and omit the top-level <code>permissions:</code>
+block — the exact violations the <a href="../security-posture/#4-workflow-hardening">security posture standard</a>
+(4a SHA-pinning / 4c least-privilege) and its own tooling
+(<code>check-workflow-security.py</code>, <code>zizmor</code>) forbid — and a pasted copy would
+drift from the workflow it claims to describe. Keeping the caller template
+in robotsix-github-workflows lets the real workflow carry the pinned,
+least-privilege shape.</p>
 <h3 id="why-scheduled-refresh">Why scheduled refresh<a class="headerlink" href="#why-scheduled-refresh" title="Permanent link">&para;</a></h3>
 <p>Git-pinned dependencies are opaque to standard dependency bots — neither
 Dependabot nor Renovate understands <code>[tool.uv.sources]</code> git references.

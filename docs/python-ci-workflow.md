@@ -112,7 +112,12 @@ steps) that do not block the main gate chain:
 - **Security SAST** (Semgrep, bandit) — runs in the shared
   `python-security.yml` workflow, not in `ci.yml`.
 - **Dependency hygiene** (deptry).
-- **Dependency audit** (`uv audit`).
+- **Dependency audit** (`uv audit --preview-features audit-command`; add
+  `,json-output` and `--output-format json` for JSON output). `uv audit` is
+  preview-only — bare `uv audit` is not a valid invocation on current uv —
+  and the uv version must be pinned (a `>=0.12.8` floor or
+  `astral-sh/setup-uv` `version:` input), per the canonical
+  [security posture gate 6](security-posture.md#6-sbom-vulnerability-audit).
 - **Pre-commit hooks** (via `tox-dev/action-pre-commit-uv`) — these run
   the same hooks as local development, providing a second pass at file-level
   hygiene beyond ruff.

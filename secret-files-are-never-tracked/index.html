@@ -596,17 +596,6 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#detect-secrets-pre-commit-hook" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        detect-secrets (pre-commit hook)
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
   <a href="#trufflehog-ci" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -617,8 +606,30 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#detect-secrets-pre-commit-hook" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        detect-secrets (pre-commit hook)
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#how-this-is-enforced" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How this is enforced
+      
+    </span>
+  </a>
   
 </li>
       
@@ -2941,17 +2952,6 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#detect-secrets-pre-commit-hook" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        detect-secrets (pre-commit hook)
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
   <a href="#trufflehog-ci" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2962,8 +2962,30 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#detect-secrets-pre-commit-hook" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        detect-secrets (pre-commit hook)
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#how-this-is-enforced" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How this is enforced
+      
+    </span>
+  </a>
   
 </li>
       
@@ -3012,10 +3034,12 @@
 <h1 id="secret-files-are-never-tracked">Secret files are never tracked<a class="headerlink" href="#secret-files-are-never-tracked" title="Permanent link">&para;</a></h1>
 <blockquote>
 <p><strong>Scope: every robotsix repository.</strong> A mandatory <code>.secrets-patterns-excluded</code>
-file (not <code>.gitignore</code>) tells TruffleHog and detect-secrets which paths to
-skip — so the scanners don't waste time on directories that never contain
-secrets, and so a false positive in a known-safe file can be suppressed
-without weakening the repo's <code>.gitignore</code> deny list.</p>
+file (not <code>.gitignore</code>) is the single reviewed record of paths the secret
+scanners skip. TruffleHog reads it directly; detect-secrets' own exclusion
+config is kept in sync with it — so the scanners don't waste time on
+directories that never contain secrets, and so a false positive in a
+known-safe file can be suppressed without weakening the repo's <code>.gitignore</code>
+deny list.</p>
 </blockquote>
 <p>Secret scanning (gate 5 of <a href="../security-posture/">security posture</a>) catches
 <em>detected</em> secrets — API keys, tokens, high-entropy strings — but not all
@@ -3028,33 +3052,33 @@ is <code>.secrets-patterns-excluded</code> — a separate exclusion file so the 
 can be told to skip directories and files that are known-safe without altering
 what git tracks.</p>
 <h2 id="the-rule">The rule<a class="headerlink" href="#the-rule" title="Permanent link">&para;</a></h2>
-<p>Every repo ships a <code>.secrets-patterns-excluded</code> file at the repo root. It
-lists one glob pattern per line, in the syntax that both TruffleHog and
-detect-secrets accept. The file is version-controlled and reviewed — adding a
-pattern is a deliberate decision, not a side effect of a local tool run.</p>
+<p>Every repo ships a <code>.secrets-patterns-excluded</code> file at the repo root. It lists
+one regular expression per line — the format TruffleHog's <code>--exclude-paths</code>
+flag parses. The file is version-controlled and reviewed — adding a pattern is
+a deliberate decision, not a side effect of a local tool run.</p>
 <h2 id="file-format">File format<a class="headerlink" href="#file-format" title="Permanent link">&para;</a></h2>
-<p>One glob pattern per line. Blank lines are ignored. Lines starting with <code>#</code>
-are comments.</p>
+<p>One regular expression per line. Blank lines are ignored. Lines starting with
+<code>#</code> are comments. Each pattern is matched against a file's path.</p>
 <div class="highlight"><pre><span></span><code># Directories that never contain secrets — skip them entirely.
-tests/fixtures/*
-docs/examples/*
+^tests/fixtures/
+^docs/examples/
 # Large vendored test data that triggers high-entropy false positives.
-vendor/*
+^vendor/
 </code></pre></div>
-<p>Patterns follow <a href="https://git-scm.com/docs/gitignore#_pattern_format">gitignore-style glob
-syntax</a>:</p>
-<ul>
-<li><code>*</code> matches anything except <code>/</code>.</li>
-<li><code>**</code> matches anything including <code>/</code>.</li>
-<li>A trailing <code>/</code> matches only directories.</li>
-<li>A leading <code>/</code> anchors to the repo root; otherwise the pattern matches
-  anywhere in the tree.</li>
-</ul>
+<p>The patterns are <a href="https://github.com/google/re2/wiki/Syntax">RE2 / Go regular
+expressions</a> (TruffleHog is written
+in Go); the common subset also compiles under Python's <code>re</code>, which is what the
+enforcement gate (below) uses to validate each line. Anchor with <code>^</code> to match
+from the start of a path, use <code>.*</code> for "match anything", and escape a literal
+dot as <code>\.</code>. This is <strong>not</strong> gitignore-glob syntax — a bare <code>*</code> is a
+quantifier, not a wildcard, so a glob such as <code>*secret*</code> is not a valid regex
+and the gate rejects it (a directory prefix is <code>^vendor/</code>, not <code>vendor/*</code>).</p>
 <h2 id="where-it-lives">Where it lives<a class="headerlink" href="#where-it-lives" title="Permanent link">&para;</a></h2>
 <p><strong>Repo root</strong> — the same directory as <code>.gitignore</code>, <code>.pre-commit-config.yaml</code>,
-and <code>pyproject.toml</code>. Both <code>detect-secrets</code> (via the <code>--exclude-files</code> flag in
-<code>.pre-commit-config.yaml</code>) and TruffleHog (via the <code>--exclude-paths</code> flag in
-the CI workflow) read it from this location.</p>
+and <code>pyproject.toml</code>. TruffleHog reads it from this location via the
+<code>--exclude-paths</code> flag (the CI workflow); detect-secrets' exclusions (see
+below) are configured in <code>.pre-commit-config.yaml</code>, which lives in the same
+directory.</p>
 <h2 id="how-it-interacts-with-gitignore">How it interacts with <code>.gitignore</code><a class="headerlink" href="#how-it-interacts-with-gitignore" title="Permanent link">&para;</a></h2>
 <p><code>.secrets-patterns-excluded</code> is <strong>not</strong> <code>.gitignore</code>. The two files serve
 different purposes and must not be merged:</p>
@@ -3101,41 +3125,75 @@ different purposes and must not be merged:</p>
   committed.</li>
 </ul>
 <h2 id="how-the-scanners-consume-it">How the scanners consume it<a class="headerlink" href="#how-the-scanners-consume-it" title="Permanent link">&para;</a></h2>
-<h3 id="detect-secrets-pre-commit-hook">detect-secrets (pre-commit hook)<a class="headerlink" href="#detect-secrets-pre-commit-hook" title="Permanent link">&para;</a></h3>
-<p>The <code>.pre-commit-config.yaml</code> entry passes the file to detect-secrets via the
-<code>--exclude-files</code> flag:</p>
-<div class="highlight"><pre><span></span><code><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">repo</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://github.com/Yelp/detect-secrets</span>
-<span class="w">  </span><span class="nt">rev</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">v1.5.0</span>
-<span class="w">  </span><span class="nt">hooks</span><span class="p">:</span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">id</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">detect-secrets</span>
-<span class="w">      </span><span class="nt">args</span><span class="p">:</span>
-<span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&#39;--exclude-files&#39;</span>
-<span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&#39;.secrets-patterns-excluded&#39;</span>
-<span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&#39;--baseline&#39;</span>
-<span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&#39;.secrets.baseline&#39;</span>
-</code></pre></div>
-<p>detect-secrets reads the file, expands each glob, and skips matching paths
-during its working-tree scan.</p>
+<p>The two scanners take path exclusions in different ways. Only TruffleHog reads
+<code>.secrets-patterns-excluded</code> directly; detect-secrets does not read any pattern
+file, so its exclusions are configured separately and kept in sync with it.</p>
 <h3 id="trufflehog-ci">TruffleHog (CI)<a class="headerlink" href="#trufflehog-ci" title="Permanent link">&para;</a></h3>
 <p>The shared security workflow passes the file to TruffleHog via the
 <code>--exclude-paths</code> flag:</p>
 <div class="highlight"><pre><span></span><code>trufflehog<span class="w"> </span>filesystem<span class="w"> </span>--exclude-paths<span class="w"> </span>.secrets-patterns-excluded<span class="w"> </span>.
 </code></pre></div>
-<p>TruffleHog reads the file, expands each glob, and skips matching paths during
-its filesystem scan. The same flag works for <code>trufflehog git</code> (full-history
-scan) — the patterns apply to the checked-out tree, not to historical paths.</p>
+<p>TruffleHog reads the file, compiles each line as a regular expression, and
+skips paths that match during its filesystem scan. The same flag works for
+<code>trufflehog git</code> (full-history scan) — the patterns apply to the checked-out
+tree, not to historical paths.</p>
+<h3 id="detect-secrets-pre-commit-hook">detect-secrets (pre-commit hook)<a class="headerlink" href="#detect-secrets-pre-commit-hook" title="Permanent link">&para;</a></h3>
+<p>detect-secrets does <strong>not</strong> read <code>.secrets-patterns-excluded</code>. Its
+<code>--exclude-files</code> flag takes a <strong>single regular expression</strong> matched against
+file paths — not a path to a file of patterns. Passing the filename
+(<code>--exclude-files .secrets-patterns-excluded</code>) is a silent no-op: detect-secrets
+treats the literal string as a regex, matches it against nothing useful, and
+never opens the file. The globs the file lists are therefore ignored, and the
+pre-commit-layer exclusion the standard promises never happens.</p>
+<p>Configure detect-secrets' path exclusions with the mechanisms it actually
+supports, kept in sync with <code>.secrets-patterns-excluded</code>:</p>
+<ul>
+<li>the pre-commit hook's own <code>exclude:</code> regex (a pre-commit-native file filter), and</li>
+<li>the <code>.secrets.baseline</code> (which records reviewed findings per file).</li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">repo</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://github.com/Yelp/detect-secrets</span>
+<span class="w">  </span><span class="nt">rev</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">v1.5.0</span>
+<span class="w">  </span><span class="nt">hooks</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">id</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">detect-secrets</span>
+<span class="w">      </span><span class="nt">args</span><span class="p">:</span>
+<span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&#39;--baseline&#39;</span>
+<span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&#39;.secrets.baseline&#39;</span>
+<span class="w">      </span><span class="c1"># Path exclusions go here as a single regex, mirroring</span>
+<span class="w">      </span><span class="c1"># .secrets-patterns-excluded — NOT `--exclude-files &lt;that file&gt;`.</span>
+<span class="w">      </span><span class="nt">exclude</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;\.secrets\.baseline$&#39;</span>
+</code></pre></div>
+<h2 id="how-this-is-enforced">How this is enforced<a class="headerlink" href="#how-this-is-enforced" title="Permanent link">&para;</a></h2>
+<p><code>scripts/check-secrets-patterns-excluded.py</code> (the
+<code>secrets-patterns-excluded-check</code> job in
+<code>.github/workflows/baseline-check.yml</code>) makes the rule mechanically checkable.
+It verifies that:</p>
+<ul>
+<li><code>.secrets-patterns-excluded</code> exists at the repo root;</li>
+<li>every non-comment line compiles as a regular expression (a gitignore-style
+  glob such as <code>*secret*</code> fails this check); and</li>
+<li><code>.pre-commit-config.yaml</code> does not wire the file into detect-secrets via the
+  no-op <code>--exclude-files .secrets-patterns-excluded</code> form.</li>
+</ul>
+<p>Like the <code>.gitignore</code> deny-list gate, it is <strong>warning-first</strong> (2026-09): it
+emits <code>::warning::</code> annotations but does not fail the build, so the fleet can
+converge before a follow-up gate flips it to fail-closed.</p>
 <h2 id="failure-prevented">Failure prevented<a class="headerlink" href="#failure-prevented" title="Permanent link">&para;</a></h2>
-<p>Without <code>.secrets-patterns-excluded</code>, a repo has two bad options when a
-scanner produces a false positive on a tracked file:</p>
+<p><em>Failure mode 1 — silent no-op wiring.</em> Feeding the glob file to detect-secrets
+via <code>--exclude-files</code> (which expects a regex, not a file) silently ignores
+every pattern in it: the promised pre-commit exclusion never runs and nobody
+notices, because a no-op produces no error. The enforcement gate above catches
+that exact miswiring.</p>
+<p><em>Failure mode 2 — false positives with no safe escape.</em> Without a reviewed
+exclusion file, a repo has two bad options when a scanner flags a tracked file:</p>
 <ol>
 <li><strong>Add the file to <code>.gitignore</code></strong> — the file stops being tracked, breaking
    CI and local development.</li>
 <li><strong>Accept the false positive</strong> — every scan run flags it, training
    contributors to ignore scan output.</li>
 </ol>
-<p>With <code>.secrets-patterns-excluded</code>, the file stays tracked and the scanner
-stays quiet. Each pattern addition is reviewed in a PR, so a pattern that
-accidentally excludes a real credential file is caught before it merges.</p>
+<p>With <code>.secrets-patterns-excluded</code>, the file stays tracked and the scanner stays
+quiet. Each pattern addition is reviewed in a PR, so a pattern that accidentally
+excludes a real credential file is caught before it merges.</p>
 <h2 id="see-also">See also<a class="headerlink" href="#see-also" title="Permanent link">&para;</a></h2>
 <ul>
 <li><a href="../security-posture/#5-secret-push-protection">Security posture — gate 5 (Secret push protection)</a></li>

@@ -11,7 +11,7 @@ jobs:
   baseline:
     permissions:
       contents: read
-    uses: damien-robotsix/robotsix-github-workflows/.github/workflows/baseline-check.yml@0584b087d3ae384050ef06723d3f4e6e06d523da # main
+    uses: damien-robotsix/robotsix-github-workflows/.github/workflows/baseline-check.yml@188518bece972d7d5f1c4e2a0f2226d2526dc0fa # main
     with:
       has-docker: false
       # This repo has a mill board but is docs-only: nothing consumes a
@@ -48,7 +48,7 @@ jobs:
     timeout-minutes: 5  # fast grep/parse check; well under 15-minute default
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
-      - uses: astral-sh/setup-uv@bec219d24cd3e171d82865faccec33120bb574f4 # v10.1.0
+      - uses: astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7 # v10.2.0
         with:
           enable-cache: true
           python-version: "3.14"
@@ -68,7 +68,7 @@ jobs:
     timeout-minutes: 5  # fast grep/parse check; well under 15-minute default
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
-      - uses: astral-sh/setup-uv@bec219d24cd3e171d82865faccec33120bb574f4 # v10.1.0
+      - uses: astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7 # v10.2.0
         with:
           enable-cache: true
           python-version: "3.14"
@@ -144,7 +144,7 @@ jobs:
     timeout-minutes: 5  # fast grep/parse check; well under 15-minute default
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
-      - uses: astral-sh/setup-uv@bec219d24cd3e171d82865faccec33120bb574f4 # v10.1.0
+      - uses: astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7 # v10.2.0
         with:
           enable-cache: true
           python-version: "3.14"
@@ -170,7 +170,7 @@ jobs:
     timeout-minutes: 5  # fast grep/parse check; well under 15-minute default
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
-      - uses: astral-sh/setup-uv@bec219d24cd3e171d82865faccec33120bb574f4 # v10.1.0
+      - uses: astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7 # v10.2.0
         with:
           enable-cache: true
           python-version: "3.14"

@@ -100,6 +100,7 @@ the default.
 | [Entrypoint contract](docs/entrypoint-contract.md) | Console script as PID 1 (exec-form `ENTRYPOINT`); `entrypoint.sh` only for genuine startup work. |
 | [FastAPI Pydantic field descriptions](docs/fastapi-pydantic-field-descriptions.md) | Every public request/response Pydantic model field must carry `Field(description=...)` so the generated OpenAPI schema is self-documenting. |
 | [FastAPI test isolation](docs/fastapi-test-isolation.md) | Mutable server state exposed through `Depends()` dependencies so tests can override via `app.dependency_overrides` — never import and mutate the module-level store directly. |
+| [Performance baseline testing (pytest-benchmark)](docs/performance-testing.md) | Advisory pytest-benchmark baselines for high-impact HTTP endpoints — non-blocking comparison in CI, JSON artifact, summary report. |
 | [Integrating a service](docs/integrating-a-service.md) | Task-oriented how-to: zero to a one-click deploy. |
 | [Chat access](docs/chat-access-standard.md) | A standard skill endpoint so the chat agent (`robotsix-chat`) can invoke operations on the component. |
 | [HTTP error envelope](docs/http-error-envelope.md) | One consistent RFC 9457 `application/problem+json` envelope for every error response, registered via centralized exception handlers. |

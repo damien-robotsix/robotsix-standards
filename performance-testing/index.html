@@ -10,13 +10,13 @@
       
       
       
-        <link rel="canonical" href="https://damien-robotsix.github.io/robotsix-standards/javascript/">
+        <link rel="canonical" href="https://damien-robotsix.github.io/robotsix-standards/performance-testing/">
       
       
-        <link rel="prev" href="../docs-site-deployment/">
+        <link rel="prev" href="../fastapi-test-isolation/">
       
       
-        <link rel="next" href="../php/">
+        <link rel="next" href="../integrating-a-service/">
       
       
         
@@ -27,7 +27,7 @@
     
     
       
-        <title>JavaScript practices - Robotsix Standards</title>
+        <title>Performance baseline testing (pytest-benchmark) - Robotsix Standards</title>
       
     
     
@@ -78,7 +78,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#javascript-practices-frontend" class="md-skip">
+        <a href="#performance-baseline-testing-pytest-benchmark" class="md-skip">
           Skip to content
         </a>
       
@@ -114,7 +114,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              JavaScript practices
+              Performance baseline testing (pytest-benchmark)
             
           </span>
         </div>
@@ -311,8 +311,6 @@
       
   
   
-    
-  
   
   
     
@@ -325,11 +323,13 @@
       
     
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3" >
         
           
           <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
@@ -350,7 +350,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_3">
             <span class="md-nav__icon md-icon"></span>
             
@@ -1625,37 +1625,10 @@
                 
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    JavaScript practices
-  
-
-    
-  </span>
-  
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../javascript/" class="md-nav__link">
         
   
   
@@ -1671,175 +1644,6 @@
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#scope-of-the-language" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Scope of the language
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#manifest-lockfile" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Manifest &amp; lockfile
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#tests" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Tests
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#style" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Style
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#lint-hooks" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Lint &amp; hooks
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#dependency-updates" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Dependency updates
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#automated-accessibility-testing" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Automated accessibility testing
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Automated accessibility testing">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#tooling" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Tooling
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#ci-integration" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        CI integration
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#baseline-violation-fingerprinting" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Baseline violation fingerprinting
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#example-playwright" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Example (Playwright)
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#vulnerability-scanning" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Vulnerability scanning
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#failure-modes-this-prevents" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Failure modes this prevents
-      
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -2024,8 +1828,10 @@
       
   
   
+    
   
   
+  
     
     
     
@@ -2036,13 +1842,11 @@
       
     
     
-    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
       
         
         
-          
-        
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
         
           
           <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
@@ -2063,7 +1867,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_4">
             <span class="md-nav__icon md-icon"></span>
             
@@ -2442,10 +2246,37 @@
                 
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="../performance-testing/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Performance baseline testing (pytest-benchmark)
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   
@@ -2461,6 +2292,120 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#why-this-exists" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why this exists
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-rule" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The rule
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#dependency" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Dependency
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#test-pattern" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Test pattern
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ci-integration-advisory-non-blocking-by-construction" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        CI integration — advisory, non-blocking by construction
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="CI integration — advisory, non-blocking by construction">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#why-not-a-blocking-5-gate" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why not a blocking &gt;5% gate
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#opt-out" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Opt-out
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#see-also" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        See also
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -2957,10 +2902,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#scope-of-the-language" class="md-nav__link">
+  <a href="#why-this-exists" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Scope of the language
+        Why this exists
       
     </span>
   </a>
@@ -2968,10 +2913,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#manifest-lockfile" class="md-nav__link">
+  <a href="#the-rule" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Manifest &amp; lockfile
+        The rule
       
     </span>
   </a>
@@ -2979,10 +2924,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#tests" class="md-nav__link">
+  <a href="#dependency" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Tests
+        Dependency
       
     </span>
   </a>
@@ -2990,10 +2935,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#style" class="md-nav__link">
+  <a href="#test-pattern" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Style
+        Test pattern
       
     </span>
   </a>
@@ -3001,77 +2946,22 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#lint-hooks" class="md-nav__link">
+  <a href="#ci-integration-advisory-non-blocking-by-construction" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Lint &amp; hooks
+        CI integration — advisory, non-blocking by construction
       
     </span>
   </a>
   
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#dependency-updates" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Dependency updates
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#automated-accessibility-testing" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Automated accessibility testing
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Automated accessibility testing">
+    <nav class="md-nav" aria-label="CI integration — advisory, non-blocking by construction">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#tooling" class="md-nav__link">
+  <a href="#why-not-a-blocking-5-gate" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Tooling
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#ci-integration" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        CI integration
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#baseline-violation-fingerprinting" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Baseline violation fingerprinting
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#example-playwright" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Example (Playwright)
+        Why not a blocking &gt;5% gate
       
     </span>
   </a>
@@ -3084,10 +2974,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#vulnerability-scanning" class="md-nav__link">
+  <a href="#opt-out" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Vulnerability scanning
+        Opt-out
       
     </span>
   </a>
@@ -3095,10 +2985,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#failure-modes-this-prevents" class="md-nav__link">
+  <a href="#see-also" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Failure modes this prevents
+        See also
       
     </span>
   </a>
@@ -3125,164 +3015,178 @@
   
 
 
-<h1 id="javascript-practices-frontend">JavaScript practices (frontend)<a class="headerlink" href="#javascript-practices-frontend" title="Permanent link">&para;</a></h1>
+<h1 id="performance-baseline-testing-pytest-benchmark">Performance baseline testing (pytest-benchmark)<a class="headerlink" href="#performance-baseline-testing-pytest-benchmark" title="Permanent link">&para;</a></h1>
 <blockquote>
-<p><strong>Scope: every repository that ships browser JavaScript.</strong> These are the
-language-specific practices; the language-agnostic rules live in the
-<a href="../repo-baseline/">repo baseline</a>. Conventions here were proven out in
-robotsix-board; other frontends align to them.</p>
+<p><strong>Scope: deployable components that serve HTTP APIs.</strong> The rule is a
+recommendation (<code>should</code>), not a mandate. Libraries with hot code paths <em>may</em>
+adopt the same pattern for those paths, but they are out of this rule's scope.
+Low-traffic services <em>may</em> defer adoption — see <a href="#opt-out">Opt-out</a>.</p>
 </blockquote>
-<h2 id="scope-of-the-language">Scope of the language<a class="headerlink" href="#scope-of-the-language" title="Permanent link">&para;</a></h2>
-<p>Frontend JavaScript in the stack is <strong>vanilla JS served as static assets from
-the Python package</strong> (<code>src/&lt;pkg&gt;/static/</code>) — no bundler, no build step, no
-TypeScript, no framework. A build pipeline is machinery nobody asked for;
-like PyPI publishing, one can be added back deliberately if a frontend
-genuinely outgrows static files — that is the exception, not the default.</p>
-<h2 id="manifest-lockfile">Manifest &amp; lockfile<a class="headerlink" href="#manifest-lockfile" title="Permanent link">&para;</a></h2>
-<ul>
-<li><code>package.json</code> <strong>and</strong> <code>package-lock.json</code> are committed; the lockfile is
-  the source of truth for reproducible installs.</li>
-<li><strong>Never hand-edit <code>package-lock.json</code></strong> — it is generated from
-  <code>package.json</code> by <code>npm install</code>.</li>
-<li>When dependency lines change (<code>dependencies</code>, <code>devDependencies</code>,
-  <code>peerDependencies</code>), regenerate the lockfile (<code>npm install</code> or
-  <code>npm install --package-lock-only</code>) and commit it <strong>in the same change</strong> —
-  CI uses <code>npm ci</code>, which fails on a stale lockfile, by design.</li>
-<li>Metadata-only <code>package.json</code> edits (a <code>scripts</code> entry, config sections)
-  don't require lockfile regeneration.</li>
-</ul>
-<h2 id="tests">Tests<a class="headerlink" href="#tests" title="Permanent link">&para;</a></h2>
-<ul>
-<li><strong>vitest</strong> with <code>@vitest/coverage-v8</code>, run in CI (<code>vitest run --coverage</code>).</li>
-<li>The <code>thresholds</code> in <code>vitest.config.mjs</code> are the <strong>same fleet-wide floor as
-  Python: 80</strong> (see <a href="../python/#tests">Tests</a>) — one number, never lowered to
-  make a PR pass; add tests instead. The floor moves only fleet-wide.</li>
-<li><strong>Every module-level function is attached to an explicit export surface</strong>
-  (e.g. a public <code>window.&lt;pkg&gt;*</code> assignment or a <code>…Internals</code> object for
-  testable helpers), so every function is unit-testable. <em>Rationale: a
-  function missing from the export surfaces was the one function (of 29)
-  that couldn't be unit-tested directly (robotsix-board, ticket
-  <code>20260618T142122Z</code>).</em></li>
-</ul>
-<h2 id="style">Style<a class="headerlink" href="#style" title="Permanent link">&para;</a></h2>
-<ul>
-<li><strong>No presentational styles from JS.</strong> Never set colors, fonts, margins,
-  layout, or initial visibility via <code>element.style.*</code> / <code>cssText</code> — apply a
-  class name and define the appearance in the stylesheet. Behavioral
-  visibility toggles on events (<code>el.style.display = 'none'</code> to show/hide)
-  and <code>el.id</code> selector hooks are permitted. <em>Rationale: inline styles
-  override the stylesheet, making class-based theming impossible; recurring
-  incident class in robotsix-board.</em></li>
-<li><strong>camelCase</strong> for all function names.</li>
-</ul>
-<h2 id="lint-hooks">Lint &amp; hooks<a class="headerlink" href="#lint-hooks" title="Permanent link">&para;</a></h2>
-<ul>
-<li><code>eslint</code> (JS) and <code>stylelint</code> (CSS), as pre-commit hooks alongside the
-  <a href="../python/#pre-commit-hooks">standard Python set</a>.</li>
-</ul>
-<h2 id="dependency-updates">Dependency updates<a class="headerlink" href="#dependency-updates" title="Permanent link">&para;</a></h2>
-<p>Repos with a <code>package.json</code> add the <strong><code>npm</code></strong> ecosystem to <code>dependabot.yml</code>
-(see <a href="../repo-baseline/#automated-dependency-updates">automated dependency updates</a>).</p>
-<h2 id="automated-accessibility-testing">Automated accessibility testing<a class="headerlink" href="#automated-accessibility-testing" title="Permanent link">&para;</a></h2>
-<p>Every frontend repo (defined as any repo with a <code>playwright.config.mjs</code> or
-<code>vitest.config.mjs</code>) <strong>must</strong> integrate automated accessibility (a11y)
-auditing in CI. <em>Rationale: manual ARIA correctness alone — verifying
-<code>setAttribute</code> calls or focus-trap keyboard behavior in unit/E2E tests — does
-not catch regressions in colour contrast, landmark structure, heading
-hierarchy, or ARIA attribute validity. A commit that silently removes
-<code>role="dialog"</code> or sets an incorrect <code>aria-labelledby</code> reference passes all
-existing tests without a scanner.</em></p>
-<h3 id="tooling">Tooling<a class="headerlink" href="#tooling" title="Permanent link">&para;</a></h3>
-<ul>
-<li><strong>Playwright E2E suites:</strong> use <a href="https://www.npmjs.com/package/@axe-core/playwright"><code>@axe-core/playwright</code></a>.
-  This is the pattern proven by Radix UI and Material UI in their own a11y
-  regression tests.</li>
-<li><strong>vitest unit suites:</strong> use <a href="https://www.npmjs.com/package/vitest-axe"><code>vitest-axe</code></a>
-  for component-level a11y assertions.</li>
-</ul>
-<h3 id="ci-integration">CI integration<a class="headerlink" href="#ci-integration" title="Permanent link">&para;</a></h3>
-<p>The axe-core suite runs <strong>inside the existing E2E CI step</strong> — no new job is
-added. Expand the existing <code>npm run test:e2e</code> (or equivalent) to include the
-a11y spec file alongside the functional E2E tests.</p>
-<h3 id="baseline-violation-fingerprinting">Baseline violation fingerprinting<a class="headerlink" href="#baseline-violation-fingerprinting" title="Permanent link">&para;</a></h3>
-<p>Repos that already carry known a11y debt (e.g. colour-contrast failures in
-dark-theme custom tokens) use <strong>baseline fingerprinting</strong> to gate only on
-<em>new</em> violations:</p>
+<h2 id="why-this-exists">Why this exists<a class="headerlink" href="#why-this-exists" title="Permanent link">&para;</a></h2>
+<p>Coverage and correctness gates tell you a change still <em>works</em>; they say nothing
+about whether it got <em>slower</em>. A refactor that adds an N+1 query, drops an index
+hint, or serialises a response the slow way ships green — the response-time
+regression is invisible until it reaches production traffic. High-impact
+endpoints (list aggregations, summary/rollup endpoints) are where this hurts
+most and where nobody notices until a dashboard is already red.</p>
+<p>A survey of the fleet (robotsix-cost-monitor: 24 test modules, 80% coverage
+floor) confirmed there is no <code>pytest-benchmark</code> dependency, no performance
+tests, and no CI performance step anywhere. Without a documented baseline
+pattern each service either invents its own or, more commonly, ships nothing —
+so regressions merge fleet-wide undetected.</p>
+<p><a href="https://pytest-benchmark.readthedocs.io/">pytest-benchmark</a> closes that gap: it
+times a function across many rounds, records the statistics, and can compare a
+run against a saved baseline. Run in-process against a FastAPI <code>TestClient</code>, it
+gives a repeatable per-endpoint latency number without standing up a server.</p>
+<p><strong>Failure mode:</strong> a service with high coverage and no performance baselines can
+accumulate response-time regressions for months — every added query, extra
+serialization pass, and unindexed filter is invisible to <code>coverage.py</code> and to
+correctness tests. Green tests plus no timing signal equals false confidence
+that performance is stable.</p>
+<h2 id="the-rule">The rule<a class="headerlink" href="#the-rule" title="Permanent link">&para;</a></h2>
+<p>Every deployable component serving an HTTP API <strong>should</strong> carry a
+pytest-benchmark baseline for its high-impact endpoints and run it as an
+<strong>advisory, non-blocking</strong> CI signal:</p>
 <ol>
-<li>Run axe-core locally and capture every current violation as a JSON
-   baseline file (<code>a11y-baseline.json</code>), keyed by <code>{violationId, CSS
-   selector}</code>.</li>
-<li>Commit the baseline alongside the test.</li>
-<li>In CI, the test compares scan results against the baseline and fails
-   only on violations <strong>not</strong> present in the baseline file.</li>
-<li>Each baseline entry includes a comment linking to the tracking issue
-   that will eventually resolve it.</li>
+<li>Declare <code>pytest-benchmark&gt;=4.0</code> (or the current major) in the test/dev
+   dependency group and lock it via <code>uv.lock</code> like every other dev dependency.</li>
+<li>Put benchmark tests under <code>tests/</code> in a dedicated module
+   (<code>tests/benchmarks/test_bench_&lt;area&gt;.py</code>), using the <code>benchmark</code> fixture
+   against in-process endpoints (FastAPI <code>TestClient</code>).</li>
+<li>Target the repo's high-impact endpoints — list aggregations and
+   summary/rollup endpoints — not every route.</li>
+<li>Exclude benchmarks from the normal (blocking) test run so they never inflate
+   the test gate's runtime.</li>
+<li>Run the benchmarks in a <strong>scheduled or non-required</strong> CI job that reports a
+   comparison to the workflow summary and <strong>never</strong> as a required status check.</li>
 </ol>
-<p>When the tracking issue is closed, remove the corresponding baseline entry
-so the violation becomes a hard gate.</p>
-<h3 id="example-playwright">Example (Playwright)<a class="headerlink" href="#example-playwright" title="Permanent link">&para;</a></h3>
-<div class="highlight"><pre><span></span><code><span class="c1">// tests/a11y.spec.ts</span>
-<span class="k">import</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">test</span><span class="p">,</span><span class="w"> </span><span class="nx">expect</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="kr">from</span><span class="w"> </span><span class="s1">&#39;@playwright/test&#39;</span><span class="p">;</span>
-<span class="k">import</span><span class="w"> </span><span class="nx">AxeBuilder</span><span class="w"> </span><span class="kr">from</span><span class="w"> </span><span class="s1">&#39;@axe-core/playwright&#39;</span><span class="p">;</span>
-
-<span class="nx">test</span><span class="p">.</span><span class="nx">describe</span><span class="p">(</span><span class="s1">&#39;a11y audit&#39;</span><span class="p">,</span><span class="w"> </span><span class="p">()</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">{</span>
-<span class="w">  </span><span class="nx">test</span><span class="p">(</span><span class="s1">&#39;page has no critical a11y violations&#39;</span><span class="p">,</span><span class="w"> </span><span class="k">async</span><span class="w"> </span><span class="p">({</span><span class="w"> </span><span class="nx">page</span><span class="w"> </span><span class="p">})</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">{</span>
-<span class="w">    </span><span class="k">await</span><span class="w"> </span><span class="nx">page</span><span class="p">.</span><span class="kr">goto</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">);</span>
-<span class="w">    </span><span class="kd">const</span><span class="w"> </span><span class="nx">results</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="ow">new</span><span class="w"> </span><span class="nx">AxeBuilder</span><span class="p">({</span><span class="w"> </span><span class="nx">page</span><span class="w"> </span><span class="p">})</span>
-<span class="w">      </span><span class="p">.</span><span class="nx">withTags</span><span class="p">([</span><span class="s1">&#39;wcag2a&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;wcag2aa&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;wcag21a&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;wcag21aa&#39;</span><span class="p">])</span>
-<span class="w">      </span><span class="p">.</span><span class="nx">analyze</span><span class="p">();</span>
-<span class="w">    </span><span class="nx">expect</span><span class="p">(</span><span class="nx">results</span><span class="p">.</span><span class="nx">violations</span><span class="p">).</span><span class="nx">toEqual</span><span class="p">([]);</span>
-<span class="w">  </span><span class="p">});</span>
-<span class="p">});</span>
+<p>Timing-sensitive CI jobs still declare <code>timeout-minutes</code> per the
+<a href="../repo-baseline/">repo baseline</a>.</p>
+<h2 id="dependency">Dependency<a class="headerlink" href="#dependency" title="Permanent link">&para;</a></h2>
+<p>Add pytest-benchmark to the same test/dev dependency group as pytest, and lock
+it:</p>
+<div class="highlight"><pre><span></span><code><span class="k">[dependency-groups]</span>
+<span class="n">dev</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span>
+<span class="w">  </span><span class="c1"># ...existing dev deps...</span>
+<span class="w">  </span><span class="s2">&quot;pytest-benchmark&gt;=4.0&quot;</span><span class="p">,</span>
+<span class="p">]</span>
 </code></pre></div>
-<p>With baseline fingerprinting:</p>
-<div class="highlight"><pre><span></span><code><span class="kd">const</span><span class="w"> </span><span class="nx">baseline</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">JSON</span><span class="p">.</span><span class="nx">parse</span><span class="p">(</span>
-<span class="w">  </span><span class="nx">fs</span><span class="p">.</span><span class="nx">readFileSync</span><span class="p">(</span><span class="s1">&#39;a11y-baseline.json&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;utf-8&#39;</span><span class="p">),</span>
-<span class="p">);</span>
-<span class="kd">const</span><span class="w"> </span><span class="nx">newViolations</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">results</span><span class="p">.</span><span class="nx">violations</span><span class="p">.</span><span class="nx">filter</span><span class="p">(</span>
-<span class="w">  </span><span class="p">(</span><span class="nx">v</span><span class="p">)</span><span class="w"> </span><span class="p">=&gt;</span>
-<span class="w">    </span><span class="o">!</span><span class="nx">baseline</span><span class="p">.</span><span class="nx">some</span><span class="p">(</span>
-<span class="w">      </span><span class="p">(</span><span class="nx">b</span><span class="p">)</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="nx">b</span><span class="p">.</span><span class="nx">id</span><span class="w"> </span><span class="o">===</span><span class="w"> </span><span class="nx">v</span><span class="p">.</span><span class="nx">id</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="nx">b</span><span class="p">.</span><span class="nx">target</span><span class="w"> </span><span class="o">===</span><span class="w"> </span><span class="nx">v</span><span class="p">.</span><span class="nx">nodes</span><span class="p">[</span><span class="mf">0</span><span class="p">]</span><span class="o">?</span><span class="p">.</span><span class="nx">target</span><span class="o">?</span><span class="p">.[</span><span class="mf">0</span><span class="p">],</span>
-<span class="w">    </span><span class="p">),</span>
-<span class="p">);</span>
-<span class="nx">expect</span><span class="p">(</span><span class="nx">newViolations</span><span class="p">).</span><span class="nx">toEqual</span><span class="p">([]);</span>
-</code></pre></div>
-<h2 id="vulnerability-scanning">Vulnerability scanning<a class="headerlink" href="#vulnerability-scanning" title="Permanent link">&para;</a></h2>
-<p><strong>A blocking <code>npm audit</code> CI gate is intentionally NOT part of this
-standard.</strong> Frontend CVE detection is already mandated through Dependabot
-(above), which detects vulnerable dependencies and opens fix PRs — that is
-the sanctioned mechanism.</p>
 <ul>
-<li><strong><code>npm audit</code> MUST NOT be wired as a required/blocking CI check.</strong>
-  npm advisories can fire on transitive dependencies outside the team's
-  control; a newly-published advisory turns CI red on unrelated PRs until
-  someone bumps the dep or raises the audit level threshold. This
-  "flaky-red" tax blocks unrelated work for low marginal safety: the
-  vulnerability is already visible to Dependabot, and the fix PR is the
-  correct channel.</li>
-<li><strong>Contrast with Python:</strong> the <a href="../python/">Python standard</a> mandates a
-  blocking <code>pip-audit</code> gate paired with a commented suppression allow-list
-  for CVEs that have no fix. The frontend standard deliberately relies on
-  Dependabot instead of a blocking audit gate.</li>
-<li>If a team wants PR-time visibility, <code>npm audit</code> may be run as an
-  <strong>advisory-only / non-blocking</strong> job (e.g. <code>npm audit || true</code>), never
-  as a gate.</li>
+<li><code>pytest-benchmark&gt;=4.0</code> — a lower bound on the current major; pin the upper
+  bound only if a specific release breaks. It resolves through <code>uv sync
+  --locked</code> in CI exactly like every other dev dependency.</li>
 </ul>
-<h2 id="failure-modes-this-prevents">Failure modes this prevents<a class="headerlink" href="#failure-modes-this-prevents" title="Permanent link">&para;</a></h2>
+<p><strong>Failure mode:</strong> an unlocked or missing benchmark dependency means the
+scheduled job either fails to resolve or silently installs a floating version,
+so the "baseline" it records is not reproducible against the previous run.</p>
+<h2 id="test-pattern">Test pattern<a class="headerlink" href="#test-pattern" title="Permanent link">&para;</a></h2>
+<p>Benchmark tests live under <code>tests/benchmarks/</code> and drive the app in-process
+through a <code>TestClient</code>, so there is no network or server-startup variance in the
+measured number:</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># tests/benchmarks/test_bench_summary.py</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pytest</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">fastapi.testclient</span><span class="w"> </span><span class="kn">import</span> <span class="n">TestClient</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">myservice.app</span><span class="w"> </span><span class="kn">import</span> <span class="n">app</span>
+
+
+<span class="nd">@pytest</span><span class="o">.</span><span class="n">fixture</span><span class="p">(</span><span class="n">scope</span><span class="o">=</span><span class="s2">&quot;module&quot;</span><span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">client</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">TestClient</span><span class="p">:</span>
+    <span class="k">return</span> <span class="n">TestClient</span><span class="p">(</span><span class="n">app</span><span class="p">)</span>
+
+
+<span class="nd">@pytest</span><span class="o">.</span><span class="n">mark</span><span class="o">.</span><span class="n">benchmark</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">test_summary_endpoint_latency</span><span class="p">(</span><span class="n">benchmark</span><span class="p">,</span> <span class="n">client</span><span class="p">:</span> <span class="n">TestClient</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="c1"># Target a high-impact endpoint: a list aggregation / summary route.</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">call</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;/v1/summary?window=30d&quot;</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="n">response</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">200</span>
+
+    <span class="n">benchmark</span><span class="p">(</span><span class="n">call</span><span class="p">)</span>
+</code></pre></div>
 <ul>
-<li><strong>Untestable code.</strong> A module-level function missing from the export
-  surface can't be reached by a unit test — exactly the one function of 29
-  that couldn't be tested directly in robotsix-board.</li>
-<li><strong>Themable UI broken by inline styles.</strong> Setting colours, fonts, or layout
-  via <code>element.style.*</code> overrides the stylesheet, making class-based theming
-  impossible — a recurring incident class in robotsix-board.</li>
-<li><strong>CI red on a stale lockfile.</strong> <code>npm ci</code> fails by design when
-  <code>package-lock.json</code> doesn't match <code>package.json</code>; regenerating and
-  committing the lockfile in the same change keeps installs reproducible.</li>
-<li><strong>a11y regressions that pass every functional test.</strong> Removing
-  <code>role="dialog"</code> or mis-wiring <code>aria-labelledby</code> breaks no unit or E2E
-  assertion; the axe-core scanner catches contrast, landmark, and ARIA-validity
-  regressions a scanner-free suite never sees.</li>
+<li>The <code>benchmark</code> fixture runs <code>call</code> across many rounds and records the
+  statistics; the assertion inside keeps the benchmark honest (a route that
+  500s is not a valid baseline).</li>
+<li>Scope the client fixture to the module so app construction is not part of the
+  measured work.</li>
+</ul>
+<p>Benchmark tests must be <strong>excluded from the normal test run</strong> so they never
+inflate the blocking test gate's runtime. Either disable them by default in
+<code>pyproject.toml</code> addopts and let the scheduled job re-enable them:</p>
+<div class="highlight"><pre><span></span><code><span class="k">[tool.pytest.ini_options]</span>
+<span class="n">addopts</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;--benchmark-disable&quot;</span>
+<span class="n">markers</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span>
+<span class="w">  </span><span class="s2">&quot;benchmark: performance baseline tests (advisory, run in the scheduled job only)&quot;</span><span class="p">,</span>
+<span class="p">]</span>
+</code></pre></div>
+<p><code>--benchmark-disable</code> still <em>collects and runs</em> the test bodies (so they count
+toward correctness) but skips the timing loop, keeping the standard job fast.
+Alternatively, mark the tests with <code>@pytest.mark.benchmark</code> and deselect them in
+the standard CI test job with <code>-m "not benchmark"</code>. Either way the blocking
+gate never runs the timing loop.</p>
+<p><strong>Failure mode:</strong> benchmarks left in the blocking test job run their full
+multi-round timing loop on every push and PR, adding minutes to the gate every
+developer waits on — CI runtime creep that pressures the team to weaken the
+whole test suite.</p>
+<h2 id="ci-integration-advisory-non-blocking-by-construction">CI integration — advisory, non-blocking by construction<a class="headerlink" href="#ci-integration-advisory-non-blocking-by-construction" title="Permanent link">&para;</a></h2>
+<p>The benchmark run belongs in a <strong>scheduled workflow</strong> (weekly <code>schedule</code> plus
+<code>workflow_dispatch</code> for manual runs) or a <strong>non-required PR job</strong> — mirroring
+the <a href="../mutation-testing/">mutation-testing</a> advisory-cron pattern. The job:</p>
+<ol>
+<li>Runs <code>pytest --benchmark-only --benchmark-min-rounds=5
+   --benchmark-json=bench.json</code> (the <code>benchmark</code> marker / <code>--benchmark-enable</code>
+   re-enables the timing loop the standard config disables).</li>
+<li>Uploads <code>bench.json</code> as a workflow artifact so every run's numbers are
+   inspectable and downloadable.</li>
+<li>Compares against the previous run's artifact with <code>--benchmark-compare</code> and
+   <code>--benchmark-compare-fail=median:20%</code>, writing the comparison to the
+   <strong>workflow summary</strong> (<code>$GITHUB_STEP_SUMMARY</code>) — for visibility, never as a
+   required status check.</li>
+</ol>
+<p>The job declares <code>timeout-minutes</code> per the <a href="../repo-baseline/">repo baseline</a>.
+Per the standards convention, the caller workflow YAML is not embedded here:
+like every other CI job it belongs in the per-repo <code>.github/workflows/</code> (or, if
+the fleet later promotes it to a reusable workflow, in the
+<a href="https://github.com/damien-robotsix/robotsix-github-workflows">robotsix-github-workflows</a>
+README, versioned with the workflow — the same rule
+<a href="../mutation-testing/">mutation-testing</a> states for its cron).</p>
+<h3 id="why-not-a-blocking-5-gate">Why not a blocking &gt;5% gate<a class="headerlink" href="#why-not-a-blocking-5-gate" title="Permanent link">&para;</a></h3>
+<p>The draft that seeded this standard proposed a <strong>blocking</strong> CI step that fails
+on any regression greater than 5%. This standard deliberately <strong>deviates</strong> from
+that: performance comparison must <strong>not</strong> be a blocking gate.</p>
+<p>Free-tier GitHub-hosted runners (see <a href="../free-tier-only/">free-tier only</a>) are
+shared VMs with noisy neighbours and high run-to-run timing variance — swings
+well above 5% between two identical runs are routine. A 5% blocking threshold
+therefore produces chronic false-red CI: the job fails on runner noise, not on
+real regressions. That is exactly the "always red → gate gets silenced" failure
+mode the <a href="../mutation-testing/">mutation-testing</a> standard documents — a gate
+nobody can keep green gets muted or deleted, and the signal is lost either way.</p>
+<p>The standard is therefore <strong>advisory reporting with a generous (≥20%)
+comparison threshold</strong>. A repo running on a <strong>self-hosted runner with stable,
+dedicated hardware</strong> MAY tighten the threshold or promote the comparison to a
+required check — but only with a justifying comment at the call site explaining
+the hardware assumption, the same way a lint suppression carries its
+justification.</p>
+<p><strong>Failure mode:</strong> a blocking timing gate on shared free-tier runners fails on
+run-to-run noise rather than real regressions; with no threshold that stays
+green on shared hardware, the job is muted or removed and the performance
+signal disappears — strictly worse than an advisory run that stays visible.</p>
+<h2 id="opt-out">Opt-out<a class="headerlink" href="#opt-out" title="Permanent link">&para;</a></h2>
+<p>Low-traffic services may defer adopting performance baselines. Record the
+deferral in the service's <code>AGENT.md</code> (a one-line note stating the service is
+low-traffic and baselines are deferred) so the decision is explicit and
+revisitable, rather than an undocumented gap.</p>
+<h2 id="see-also">See also<a class="headerlink" href="#see-also" title="Permanent link">&para;</a></h2>
+<ul>
+<li><a href="../pytest/">Pytest practices</a> — strictness config the benchmark module also
+  inherits (<code>--strict-markers</code> requires the <code>benchmark</code> marker be registered).</li>
+<li><a href="../mutation-testing/">Mutation testing (mutmut)</a> — the advisory,
+  non-blocking-cron pattern this page mirrors.</li>
+<li><a href="../python-ci-workflow/">Python CI workflow</a> — the blocking <code>ci.yml</code> shape the
+  benchmark job stays out of.</li>
+<li><a href="../fastapi-test-isolation/">FastAPI test isolation</a> — the <code>TestClient</code> /
+  dependency-override pattern benchmark tests build on.</li>
 </ul>
 
 

@@ -37,6 +37,13 @@ _TIMEOUT_RE = re.compile(r"^\s*timeout-minutes:\s*(\d+)\s*(#.*)?$")
 
 
 def _new_job(name: str) -> dict:
+    """Return a fresh job-accumulator dict seeded with empty defaults.
+
+    Fields are filled in as the workflow YAML is scanned line by line:
+    the job's timeout value and the line it appears on, plus flags for
+    whether the job declares ``runs-on`` (runs steps directly) or ``uses``
+    (delegates to a reusable workflow).
+    """
     return {
         "name": name,
         "timeout_value": None,
@@ -163,6 +170,18 @@ def _analyse_job(job: dict) -> tuple[bool, str]:
 
 
 def main() -> int:
+    """Check that every step-running workflow job carries a timeout-minutes.
+
+    Each job that runs steps directly (``runs-on``) must declare an
+    auditable ``timeout-minutes`` — with an inline comment when it exceeds
+    15 — per docs/repo-baseline.md; jobs that only delegate to a reusable
+    workflow are exempt.
+
+    Exit codes:
+      0 — every step-running job carries an auditable timeout-minutes
+      1 — actionable timeout-minutes violations were found
+      2 — a workflow file could not be read
+    """
     if not WORKFLOWS_DIR.is_dir():
         print("No .github/workflows/ directory — nothing to check.")
         return 0

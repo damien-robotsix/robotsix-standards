@@ -138,6 +138,17 @@ def check_workflow(text: str) -> list[str]:
 
 
 def main() -> int:
+    """Check workflow files against the security-posture gates.
+
+    Validates each workflow YAML for the docs/security-posture.md rules —
+    a required top-level ``permissions`` block, no ``permissions: write-all``
+    (gate 4c), and pinned/commented ``uses:`` references (gate 4a).
+
+    Exit codes:
+      0 — all workflows satisfy the security gates
+      1 — one or more gate violations were found
+      2 — a workflow file could not be read
+    """
     if not WORKFLOWS_DIR.is_dir():
         print("No .github/workflows/ directory — nothing to check.")
         return 0

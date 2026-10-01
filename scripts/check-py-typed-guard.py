@@ -126,6 +126,18 @@ def _gather_workflow_texts(root: Path) -> list[tuple[Path, str]]:
 
 
 def main() -> int:
+    """Enforce the py.typed wheel guard for type-aware Python packages.
+
+    If this repository is a type-aware package (Typing :: Typed classifier
+    or a py.typed marker), require at least one CI workflow guard — an
+    installed type-check or a wheel-content assertion — per
+    docs/py-typed-wheel-guard.md.
+
+    Exit codes:
+      0 — not a typed package, or the required guard is present
+      1 — typed package found but no guard (or no CI workflow) is present
+      2 — script error (cannot read files, etc.)
+    """
     root = REPO_ROOT
 
     # 1. Is this a type-aware package?

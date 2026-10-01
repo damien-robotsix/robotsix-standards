@@ -178,6 +178,17 @@ def _py_files(paths: Sequence[Path]) -> list[Path]:
 
 
 def main(argv: Sequence[str] | None = None) -> int:
+    """Flag secret config-model fields typed as plain ``str``.
+
+    Scans the given paths (or the current directory) for pydantic config
+    models whose secret-looking fields are typed ``str`` instead of
+    ``pydantic.SecretStr`` (docs/config-standard.md §3), since a plain
+    ``str`` stores and logs the secret as plaintext.
+
+    Exit codes:
+      0 — no str-typed secret fields found
+      1 — one or more str-typed secret fields found
+    """
     args = list(argv) if argv is not None else sys.argv[1:]
     paths = [Path(p) for p in args] or [Path.cwd()]
     findings: list[Finding] = []

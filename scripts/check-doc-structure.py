@@ -89,6 +89,16 @@ def page_states_failure_mode(content: str) -> bool:
 
 
 def main() -> int:
+    """Check that every non-exempt nav page states a failure mode.
+
+    Each page referenced in the mkdocs.yml nav (minus the exempt set) must
+    contain an accepted failure-mode phrasing, so every standard explains
+    the failure its rules prevent.
+
+    Exit codes:
+      0 — all checked pages state a failure mode
+      1 — one or more pages are missing a failure-mode statement
+    """
     with MKDOCS_YML.open() as fh:
         config = yaml.safe_load(fh)
 

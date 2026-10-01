@@ -134,6 +134,17 @@ def _all_nav_pages(nav: list[object]) -> set[str]:
 
 
 def main() -> int:
+    """Verify the three TOC lists stay synchronized with the mkdocs.yml nav.
+
+    For each checked section this asserts that every page in the mkdocs.yml
+    nav is also linked from README.md and docs/index.md, and (reverse
+    direction) that every page linked from README.md / docs/index.md appears
+    somewhere in the nav.
+
+    Exit codes:
+      0 — all TOC entries are synchronized
+      1 — missing or orphaned entries were found
+    """
     with MKDOCS_YML.open() as fh:
         config = yaml.safe_load(fh)
 

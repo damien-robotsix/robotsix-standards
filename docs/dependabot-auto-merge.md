@@ -94,7 +94,7 @@ Every one of these patterns is forbidden for Dependabot auto-merge:
 | Native GitHub auto-merge without branch-protection status checks | GitHub's auto-merge is only safe when branch protection requires status checks; without them it can merge with absent or failed CI. |
 | Including `docker` or `pre-commit` ecosystems in the auto-merge group | These ecosystems rewrite build environments or hook versions — a bump can break the build or the deploy environment with no human review. |
 | Auto-merging major version bumps (`target: major`) | A major version bump to a build or test tool (e.g. ruff 1.x → 2.x) can introduce breaking changes that need human triage. |
-| Using `pull_request` (instead of `pull_request_target`) for the merge workflow | `pull_request` runs in the PR's context with read-only tokens — it cannot merge. `pull_request_target` runs in the base branch's context with write access, which is correct for a merge workflow. |
+| Running the merge workflow on the default Dependabot token without an explicit job `permissions:` block | Dependabot-triggered workflows get a read-only `GITHUB_TOKEN` by default, so the merge API call returns `403` and the PR silently never merges. The caller must grant the job `contents: write` and `pull-requests: write`. Dependabot pushes its branches to the same repository (not a fork), so `pull_request` already runs in the base-repo context and those permissions are sufficient — `pull_request_target` is not required, and using it needlessly exposes the write token to PR-head code. |
 
 ## Exceptions
 

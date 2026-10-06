@@ -3083,8 +3083,8 @@ shape is defined in the
 <td>A major version bump to a build or test tool (e.g. ruff 1.x → 2.x) can introduce breaking changes that need human triage.</td>
 </tr>
 <tr>
-<td>Using <code>pull_request</code> (instead of <code>pull_request_target</code>) for the merge workflow</td>
-<td><code>pull_request</code> runs in the PR's context with read-only tokens — it cannot merge. <code>pull_request_target</code> runs in the base branch's context with write access, which is correct for a merge workflow.</td>
+<td>Running the merge workflow on the default Dependabot token without an explicit job <code>permissions:</code> block</td>
+<td>Dependabot-triggered workflows get a read-only <code>GITHUB_TOKEN</code> by default, so the merge API call returns <code>403</code> and the PR silently never merges. The caller must grant the job <code>contents: write</code> and <code>pull-requests: write</code>. Dependabot pushes its branches to the same repository (not a fork), so <code>pull_request</code> already runs in the base-repo context and those permissions are sufficient — <code>pull_request_target</code> is not required, and using it needlessly exposes the write token to PR-head code.</td>
 </tr>
 </tbody>
 </table>

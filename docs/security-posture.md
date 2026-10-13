@@ -80,9 +80,8 @@ Scorecard would score are gated instead by
 Dependabot/`uv audit` (dependency CVEs), and Trivy (container CVEs). The
 Scorecard *Security-Policy* check is replaced by the
 [baseline gate's `SECURITY.md` check](repo-baseline.md#ci-and-security-gates),
-which reports a warning (but does not fail the job) when a repo lacks a root
-`SECURITY.md` carrying the three required elements. A future follow-up will
-convert this to a fail-closed gate once the fleet is fully compliant (see the
+which is **fail-closed** — it fails CI (exit 1) when a repo lacks a root
+`SECURITY.md` carrying the three required elements (see the
 [Vulnerability disclosure row](#audit) below). See
 [OpenSSF Scorecard (not used)](scorecard.md) for the full rationale.
 
@@ -484,7 +483,7 @@ dashboard-watching:
 | SBOM* | CI uploads CycloneDX artifact |
 | CVE audit* | `uv audit --preview-features audit-command` at the pinned uv version / `pip-audit` passes in CI |
 | Container image scan | Trivy PR-scan and publish workflows present and passing (image-shipping repos only) |
-| Vulnerability disclosure | `SECURITY.md` present at repo root with contact method, response-time expectation, and coordinated-disclosure statement |
+| Vulnerability disclosure | `SECURITY.md` present at repo root with contact method, response-time expectation, and coordinated-disclosure statement — fail-closed: `security-md-check` in `baseline-check.yml` fails CI (exit 1) when it is missing or incomplete |
 | Config API secret redaction | Deployment system / management surfaces: central-deploy config-read endpoints (`GET /config`, version-history reads, audit-log serialization) route through `mask_secrets()` before serialization; config writes use `apply_update()` merge-on-write; version history stores no secret values — audited per [config standard §3](config-standard.md#how-this-is-enforced) |
 | LLM & agentic security | Repos whose core function involves LLM agents: `robotsix-llmio` pinned to a commit SHA in `pyproject.toml`; llmio level/model selection is an explicit config field (not hard-coded, not env); tracing/provider credentials are `SecretStr` in the canonical `langfuse`/`openrouter` config blocks; destructive git ops default to dry-run; scoped single-repo token (no org/admin scopes). Non-mechanical controls (LLM01/02/07/08/10, ASI01–ASI10) are covered by the periodic standards-audit agent — see below |
 

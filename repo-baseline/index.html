@@ -3426,10 +3426,9 @@ gate set:</p>
   carrying the three required elements (a reporting contact, a response-time
   expectation, and a coordinated-disclosure statement), <code>dependabot.yml</code>
   covering the <a href="#automated-dependency-updates">required ecosystems</a>. The
-  <code>SECURITY.md</code> check is currently <strong>warning-first</strong> — it reports a missing or
-  non-compliant <code>SECURITY.md</code> as a CI annotation but does not fail the job; a
-  future follow-up will flip it to fail-closed once the fleet is fully
-  compliant (see <a href="../security-posture/">security posture</a>).</li>
+  <code>SECURITY.md</code> check is <strong>fail-closed</strong> — it fails CI (exit 1) when a repo
+  lacks a root <code>SECURITY.md</code> or the file is missing one of the three required
+  elements (see <a href="../security-posture/">security posture</a>).</li>
 <li><strong>Required-artifact uploads use <code>if: always()</code>.</strong> A step that uploads an
   artifact the gate depends on (SBOM, coverage report) must run even when an
   earlier step failed — otherwise the failure skips the upload and the

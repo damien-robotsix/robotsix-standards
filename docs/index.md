@@ -65,6 +65,10 @@ everywhere.
 - **[Conventional commit validation](conventional-commit-validation.md)** —
   commitizen `commit-msg` pre-commit hook plus a commitlint CI check on the PR
   title, so release-please never silently drops a malformed commit.
+- **[Conventional commit validation (multi-language)](conventional-commit-validation-languages.md)** —
+  the non-Python companion: `conventional-pre-commit` for PHP/Dart/non-Python
+  ROS 2 and a commitlint/cz-cli hook for Node.js, over the same language-agnostic
+  commitlint CI check.
 - **[CI lint tool pinning](ci-lint-pinning.md)** — CI lint jobs must run the same
   version-pinned tools as `.pre-commit-config.yaml`, not floating/latest
   sources — one version source, no skew.

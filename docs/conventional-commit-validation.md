@@ -6,7 +6,10 @@
 > [release-please rule 1](release-please.md#1-every-repo-wires-release-please),
 > this page covers only the Python implementation; the commit-message grammar and
 > prefix-to-bump mapping are canonical in [release-please § Conventional commits](release-please.md#conventional-commits).
-> Multi-language equivalent tooling (e.g. `cz-cli` for Node.js projects) is deferred to a follow-up task.
+> Non-Python ecosystems (Node.js, PHP, ROS 2, Dart, …) wire the equivalent local
+> hook per
+> [Conventional commit validation (multi-language)](conventional-commit-validation-languages.md);
+> the commitlint CI check is identical across every language.
 
 Release-please derives every version bump and changelog entry from the
 Conventional Commits prefix on the commits that land on the default branch.

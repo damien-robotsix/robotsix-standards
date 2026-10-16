@@ -89,6 +89,7 @@ nav:
       - Changelog & releases (superseded): changelog-driven-releases.md
       - Release-please release automation: release-please.md
       - Conventional commit validation: conventional-commit-validation.md
+      - Conventional commit validation (multi-language): conventional-commit-validation-languages.md
       - CI lint tool pinning: ci-lint-pinning.md
       - Contributor guide in docs nav: contributing-in-nav.md
       - Distribution & Packaging: distribution-packaging.md

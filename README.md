@@ -43,6 +43,7 @@ the default.
 | [CI dependency management](docs/ci-dependency-standard.md) | Renovate over Dependabot for Python/uv lockfile updates, `uv lock --check` CI gate, scheduled refresh for git-pinned dependencies, and `--resolution lowest-direct` for minimum-dependency testing. |
 | [Changelog & releases (superseded)](docs/changelog-driven-releases.md) | Historical reference: the prior towncrier fragment-driven release workflow. Superseded by [release-please](docs/release-please.md) + conventional commits. |
 | [Release-please release automation](docs/release-please.md) | Conventional-commit-driven release PRs, automated version bump, changelog generation, git tag, and GitHub Release — the fleet-wide release mechanism. |
+| [Conventional commit validation](docs/conventional-commit-validation.md) | commitizen `commit-msg` pre-commit hook plus a commitlint CI check that validates the PR title — so release-please never silently drops a malformed commit. |
 | [CI lint tool pinning](docs/ci-lint-pinning.md) | CI lint jobs must run the same version-pinned tools as `.pre-commit-config.yaml` — no floating/latest installs, one version source. |
 | [Distribution & Packaging](docs/distribution-packaging.md) | Git-based consumption of first-party libraries — no package index, no registry publish step. |
 | [Single-source versioning](docs/single-source-versioning.md) | One source of truth for the version string, read dynamically by the setuptools build backend — prevents `pyproject.toml` / `__init__.py` drift. |

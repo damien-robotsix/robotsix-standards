@@ -2771,6 +2771,17 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#fleet-compliance-audit" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Fleet compliance audit
+      
+    </span>
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -2867,6 +2878,17 @@
     <span class="md-ellipsis">
       
         Branch protection check
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#fleet-compliance-audit" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Fleet compliance audit
       
     </span>
   </a>
@@ -3011,6 +3033,47 @@ roster, queries default-branch protection settings via the mill's GitHub
 access, and files draft tickets. It cannot edit protection, run the
 apply-script, or change any repo; all remediation flows through the normal
 ticket pipeline.</p>
+<h2 id="fleet-compliance-audit">Fleet compliance audit<a class="headerlink" href="#fleet-compliance-audit" title="Permanent link">&para;</a></h2>
+<p><strong>Agent:</strong> <code>fleet-compliance-audit</code> (defined in
+<code>.robotsix-mill/agents/fleet-compliance-audit.yaml</code>).</p>
+<p><strong>Purpose:</strong> Verify that fleet repositories actually <em>comply</em> with the
+standards this repo documents — the loop that <code>branch-protection-check</code>
+(one specific control) and <code>security-posture-audit</code> (the standard
+definitions themselves) leave open. It implements the verification
+<a href="https://github.com/damien-robotsix/robotsix-standards/blob/main/AGENT.md">AGENT.md</a>
+demands: check claims about fleet behavior against the actual repos instead
+of trusting that documented standards are followed.</p>
+<p><strong>What it checks:</strong> for a rotating subset of non-archived fleet repos, the
+standards that are verifiable mechanically from repo contents — REUSE/SPDX
+compliance (<a href="../reuse-spdx-compliance/">reuse-spdx-compliance</a>), CI gate
+presence (<a href="../python-ci-workflow/">python-ci-workflow</a>), config schema sync
+(<a href="../config-standard/">config-standard</a>), Dockerfile pattern compliance
+(<a href="../docker-standard/">docker-standard</a>), pre-commit configuration
+(<a href="../ci-lint-pinning/">ci-lint-pinning</a>), and GitHub Actions security
+(<a href="../github-actions-security/">github-actions-security</a>). A check that does
+not apply to a repo is skipped, never flagged.</p>
+<p><strong>Sampling:</strong> it does not scan the whole fleet every run. Each pass picks a
+rotation subset of roughly 25–33% of the repos — the least-recently-checked
+ones per its memory ledger — so the fleet is covered over three to four
+passes and drift stays visible without a full-fleet scan each month.</p>
+<p><strong>What it does NOT do:</strong> it never edits, opens PRs against, or remediates
+another repo. It reads each sampled repo, records per-standard compliance,
+and files draft tickets; the operator remediates.</p>
+<p><strong>Output:</strong> one draft ticket per repo with gaps, listing every failing
+check, the standard it violates, observed vs. required, and a concrete
+remediation. The memory ledger carries a per-standard compliance tally so
+drift is visible across passes. A clean pass with no findings is a valid
+result.</p>
+<p><strong>Cadence:</strong> monthly (2592000 seconds).</p>
+<p><strong>Capability level:</strong> 2 (intermediate reasoning — mapping repo contents
+against several standards pages and judging applicability per repo requires
+more than a level-1 lookup).</p>
+<p><strong>Web knowledge:</strong> Disabled — the check compares fleet repos against this
+repo's own standards, not upstream sources.</p>
+<p><strong>Tools:</strong> Read-only with respect to the fleet — reads <code>docs/fleet.md</code> and
+the standards pages for the requirements, inspects each sampled repo's
+contents via the mill's GitHub access, and files draft tickets. It cannot
+change any repo; all remediation flows through the normal ticket pipeline.</p>
 
 
 

@@ -1,13 +1,12 @@
 # Conventional commit validation
 
-> **Scope: every repository that wires release-please** — which, per
+> **Scope: Python repositories** — This page prescribes the **Python toolchain**
+> for validating Conventional Commits using commitizen (`pyproject.toml` configuration).
+> While every repo that wires release-please must validate commit messages per
 > [release-please rule 1](release-please.md#1-every-repo-wires-release-please),
-> is every robotsix repo. This page prescribes the tooling that *validates*
-> commit messages against the
-> [Conventional Commits](https://www.conventionalcommits.org/) format.
-> The commit-message grammar and the prefix-to-bump mapping are canonical in
-> [release-please § Conventional commits](release-please.md#conventional-commits);
-> this page does not restate them — it only covers enforcement.
+> this page covers only the Python implementation; the commit-message grammar and
+> prefix-to-bump mapping are canonical in [release-please § Conventional commits](release-please.md#conventional-commits).
+> Multi-language equivalent tooling (e.g. `cz-cli` for Node.js projects) is deferred to a follow-up task.
 
 Release-please derives every version bump and changelog entry from the
 Conventional Commits prefix on the commits that land on the default branch.

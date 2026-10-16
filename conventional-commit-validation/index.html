@@ -16,7 +16,7 @@
         <link rel="prev" href="../release-please/">
       
       
-        <link rel="next" href="../ci-lint-pinning/">
+        <link rel="next" href="../conventional-commit-validation-languages/">
       
       
         
@@ -839,6 +839,34 @@
   
 </nav>
       
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../conventional-commit-validation-languages/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Conventional commit validation (multi-language)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
     </li>
   
 
@@ -3007,7 +3035,10 @@ While every repo that wires release-please must validate commit messages per
 <a href="../release-please/#1-every-repo-wires-release-please">release-please rule 1</a>,
 this page covers only the Python implementation; the commit-message grammar and
 prefix-to-bump mapping are canonical in <a href="../release-please/#conventional-commits">release-please § Conventional commits</a>.
-Multi-language equivalent tooling (e.g. <code>cz-cli</code> for Node.js projects) is deferred to a follow-up task.</p>
+Non-Python ecosystems (Node.js, PHP, ROS 2, Dart, …) wire the equivalent local
+hook per
+<a href="../conventional-commit-validation-languages/">Conventional commit validation (multi-language)</a>;
+the commitlint CI check is identical across every language.</p>
 </blockquote>
 <p>Release-please derives every version bump and changelog entry from the
 Conventional Commits prefix on the commits that land on the default branch.

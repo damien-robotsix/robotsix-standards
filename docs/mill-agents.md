@@ -141,3 +141,55 @@ roster, queries default-branch protection settings via the mill's GitHub
 access, and files draft tickets. It cannot edit protection, run the
 apply-script, or change any repo; all remediation flows through the normal
 ticket pipeline.
+
+## Fleet compliance audit
+
+**Agent:** `fleet-compliance-audit` (defined in
+`.robotsix-mill/agents/fleet-compliance-audit.yaml`).
+
+**Purpose:** Verify that fleet repositories actually *comply* with the
+standards this repo documents — the loop that `branch-protection-check`
+(one specific control) and `security-posture-audit` (the standard
+definitions themselves) leave open. It implements the verification
+[AGENT.md](https://github.com/damien-robotsix/robotsix-standards/blob/main/AGENT.md)
+demands: check claims about fleet behavior against the actual repos instead
+of trusting that documented standards are followed.
+
+**What it checks:** for a rotating subset of non-archived fleet repos, the
+standards that are verifiable mechanically from repo contents — REUSE/SPDX
+compliance ([reuse-spdx-compliance](reuse-spdx-compliance.md)), CI gate
+presence ([python-ci-workflow](python-ci-workflow.md)), config schema sync
+([config-standard](config-standard.md)), Dockerfile pattern compliance
+([docker-standard](docker-standard.md)), pre-commit configuration
+([ci-lint-pinning](ci-lint-pinning.md)), and GitHub Actions security
+([github-actions-security](github-actions-security.md)). A check that does
+not apply to a repo is skipped, never flagged.
+
+**Sampling:** it does not scan the whole fleet every run. Each pass picks a
+rotation subset of roughly 25–33% of the repos — the least-recently-checked
+ones per its memory ledger — so the fleet is covered over three to four
+passes and drift stays visible without a full-fleet scan each month.
+
+**What it does NOT do:** it never edits, opens PRs against, or remediates
+another repo. It reads each sampled repo, records per-standard compliance,
+and files draft tickets; the operator remediates.
+
+**Output:** one draft ticket per repo with gaps, listing every failing
+check, the standard it violates, observed vs. required, and a concrete
+remediation. The memory ledger carries a per-standard compliance tally so
+drift is visible across passes. A clean pass with no findings is a valid
+result.
+
+**Cadence:** monthly (2592000 seconds).
+
+**Capability level:** 2 (intermediate reasoning — mapping repo contents
+against several standards pages and judging applicability per repo requires
+more than a level-1 lookup).
+
+**Web knowledge:** Disabled — the check compares fleet repos against this
+repo's own standards, not upstream sources.
+
+**Tools:** Read-only with respect to the fleet — reads `docs/fleet.md` and
+the standards pages for the requirements, inspects each sampled repo's
+contents via the mill's GitHub access, and files draft tickets. It cannot
+change any repo; all remediation flows through the normal ticket pipeline.

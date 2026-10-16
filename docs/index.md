@@ -62,6 +62,9 @@ everywhere.
   release PRs, automated version bump, changelog generation, git tag, and
   GitHub Release via `googleapis/release-please-action` — the fleet-wide
   release mechanism.
+- **[Conventional commit validation](conventional-commit-validation.md)** —
+  commitizen `commit-msg` pre-commit hook plus a commitlint CI check on the PR
+  title, so release-please never silently drops a malformed commit.
 - **[CI lint tool pinning](ci-lint-pinning.md)** — CI lint jobs must run the same
   version-pinned tools as `.pre-commit-config.yaml`, not floating/latest
   sources — one version source, no skew.

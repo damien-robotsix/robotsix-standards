@@ -66,8 +66,15 @@ line coverage alone can't show whether the tests *assert* anything.
      reviewers can read the gap straight from the job log.
    - **CI artifact: one machine-readable XML report**, uploaded as a workflow
      artifact. Use the format the language's tool emits natively and that
-     Codecov, Coveralls and SonarQube all ingest: **Cobertura XML** for
-     Python (`coverage.xml`) and JavaScript, **Clover XML** for PHP.
+     Codecov, Coveralls and SonarQube all ingest, one per language:
+     - **Cobertura XML** for Python (`coverage.xml`). It is the fleet-standard
+       format for Python (the pytest-cov XML report), and coverage.py has no
+       Clover reporter, so Cobertura is the only option there.
+     - **Cobertura XML** for JavaScript, so the Python and JavaScript pages
+       share one format. vitest can also emit Clover, but using it would split
+       the fleet across two formats for no gain.
+     - **Clover XML** for PHP, because PHPUnit's native coverage XML is Clover.
+
      Don't add a conversion step just to make every repo emit the same XML
      dialect, because a converter is one more tool that can drift.
    - **Local: an HTML report** for interactive browsing. Don't commit it

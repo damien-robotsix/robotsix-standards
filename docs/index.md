@@ -100,6 +100,10 @@ everywhere.
 - **[Logging](logging.md)** — structured JSON logging via structlog,
   stdout-only output, correlation-id middleware, and level conventions
   for every deployable service.
+- **[Code coverage](code-coverage.md)** — cross-language coverage
+  measurement: the fleet-wide 80% floor, advisory per-area targets (core
+  logic and validators ≥90%, handlers 70–80%), text summary + XML artifact +
+  local HTML reports, and per-language tooling (PCOV + Clover for PHP).
 - **[Hypothesis testing](hypothesis.md)** — fleet-recommended property-based
   testing: adoption guidance, dev-dependency declaration, invariant-based
   tests, composite strategies, `RuleBasedStateMachine`, profiles, and CI

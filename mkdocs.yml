@@ -116,6 +116,7 @@ nav:
       - Issue and PR templates: issue-pr-templates.md
       - Library internal logging: library-logging.md
       - Logging: logging.md
+      - Code coverage: code-coverage.md
       - Hypothesis testing: hypothesis.md
       - Mutation testing (mutmut): mutation-testing.md
       - Markdown linting: markdown-linting.md

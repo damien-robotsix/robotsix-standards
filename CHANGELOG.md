@@ -3,6 +3,13 @@
 
 # Changelog
 
+## [0.7.1](https://github.com/damien-robotsix/robotsix-standards/compare/v0.7.0...v0.7.1) (2026-10-22)
+
+
+### Documentation
+
+* Standardize: Code Coverage Measurement and Reporting (20261016T151422Z-standardize-code-coverage-measurement-an-10eb) ([#417](https://github.com/damien-robotsix/robotsix-standards/issues/417)) ([60b6070](https://github.com/damien-robotsix/robotsix-standards/commit/60b6070b16b90583c9fe1f13d997ba179062b2f4))
+
 ## [0.7.0](https://github.com/damien-robotsix/robotsix-standards/compare/v0.6.0...v0.7.0) (2026-10-21)
 
 

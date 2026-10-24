@@ -38,15 +38,15 @@ A multi-stage Dockerfile that keeps build tooling out of the runtime image:
 - **uv cache mount, not `--no-cache`:** run the install step under
   `RUN --mount=type=cache,target=/root/.cache/uv` (BuildKit is already enabled
   by the `# syntax=docker/dockerfile:1` header) and do **not** pass
-  `--no-cache` to `uv pip install`. The cache mount lives outside the image
-  layers, so uv's wheel cache never bloats the image or widens the Trivy scan
-  surface, yet a rebuild after a `uv.lock` change reuses already-downloaded
-  wheels. This is the caching pattern from the
+  `--no-cache` to `uv pip install`. The cache mount persists across builds
+  on the builder, so a rebuild after a `uv.lock` change reuses already-downloaded
+  wheels. The runtime stage copies only site-packages and the console script,
+  so the cache never reaches the shipped image. This is the caching pattern from the
   [uv Docker integration guide](https://docs.astral.sh/uv/guides/integration/docker/#caching).
   *Failure modes this prevents:* with `--no-cache`, every lockfile bump
   re-downloads the full dependency set (slow CI builds, exposure to registry
   and git-host rate limits); with neither the mount nor `--no-cache`, uv writes
-  its cache into the layer and ships it in the image. The target is root's
+  its cache into the builder layer, where it bloats that layer but is not copied into the runtime image. The target is root's
   cache directory because the builder stage runs as root; the runtime stage
   never sees the mount.
 - **Runtime stage:** copy only the installed site-packages and the console

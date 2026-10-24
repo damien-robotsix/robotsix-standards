@@ -3133,8 +3133,8 @@ apart across the stack.</p>
   project <strong>into the system interpreter</strong> from the frozen lockfile:</li>
 </ul>
 <div class="highlight"><pre><span></span><code>uv<span class="w"> </span><span class="nb">export</span><span class="w"> </span>--frozen<span class="w"> </span>--no-emit-project<span class="w"> </span>--format<span class="w"> </span>requirements-txt<span class="w"> </span>-o<span class="w"> </span>/tmp/requirements.txt
-uv<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>--system<span class="w"> </span>--no-cache<span class="w"> </span>-r<span class="w"> </span>/tmp/requirements.txt
-uv<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>--system<span class="w"> </span>--no-cache<span class="w"> </span>--no-deps<span class="w"> </span>.
+uv<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>--system<span class="w"> </span>-r<span class="w"> </span>/tmp/requirements.txt
+uv<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>--system<span class="w"> </span>--no-deps<span class="w"> </span>.
 </code></pre></div>
 <p>Do <strong>not</strong> use <code>uv sync</code> here: it installs into a project virtualenv
   (<code>/app/.venv</code>), so the runtime stage's <code>COPY --from=builder /usr/local/…</code>
@@ -3142,6 +3142,20 @@ uv<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </s
   builds twice — robotsix-mill's Dockerfile carries the scar comment).
   <code>uv pip install --system</code> targets <code>/usr/local</code>, which is exactly what the
   runtime stage copies. Never install dev/test tooling into the image.
+- <strong>uv cache mount, not <code>--no-cache</code>:</strong> run the install step under
+  <code>RUN --mount=type=cache,target=/root/.cache/uv</code> (BuildKit is already enabled
+  by the <code># syntax=docker/dockerfile:1</code> header) and do <strong>not</strong> pass
+  <code>--no-cache</code> to <code>uv pip install</code>. The cache mount persists across builds
+  on the builder, so a rebuild after a <code>uv.lock</code> change reuses already-downloaded
+  wheels. The runtime stage copies only site-packages and the console script,
+  so the cache never reaches the shipped image. This is the caching pattern from the
+  <a href="https://docs.astral.sh/uv/guides/integration/docker/#caching">uv Docker integration guide</a>.
+  <em>Failure modes this prevents:</em> with <code>--no-cache</code>, every lockfile bump
+  re-downloads the full dependency set (slow CI builds, exposure to registry
+  and git-host rate limits); with neither the mount nor <code>--no-cache</code>, uv writes
+  its cache into the builder layer, where it bloats that layer but is not copied into the runtime image. The target is root's
+  cache directory because the builder stage runs as root; the runtime stage
+  never sees the mount.
 - <strong>Runtime stage:</strong> copy only the installed site-packages and the console
   script from the builder — no uv, no git, no compilers, no source-only build
   deps. A component whose <em>runtime</em> genuinely needs a system dependency (e.g.
@@ -3193,9 +3207,12 @@ uv<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </s
 <span class="k">COPY</span><span class="w"> </span>src<span class="w"> </span>./src
 <span class="c"># Install into the system interpreter (/usr/local) — NOT `uv sync`, which</span>
 <span class="c"># builds a venv the runtime COPY would miss. Add runtime extras via --extra.</span>
-<span class="k">RUN</span><span class="w"> </span>uv<span class="w"> </span><span class="nb">export</span><span class="w"> </span>--frozen<span class="w"> </span>--no-emit-project<span class="w"> </span>--format<span class="w"> </span>requirements-txt<span class="w"> </span>-o<span class="w"> </span>/tmp/requirements.txt<span class="w"> </span><span class="se">\</span>
-<span class="w">    </span><span class="o">&amp;&amp;</span><span class="w"> </span>uv<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>--system<span class="w"> </span>--no-cache<span class="w"> </span>-r<span class="w"> </span>/tmp/requirements.txt<span class="w"> </span><span class="se">\</span>
-<span class="w">    </span><span class="o">&amp;&amp;</span><span class="w"> </span>uv<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>--system<span class="w"> </span>--no-cache<span class="w"> </span>--no-deps<span class="w"> </span>.<span class="w"> </span><span class="se">\</span>
+<span class="c"># The uv cache lives in a BuildKit cache mount: kept out of the image layers,</span>
+<span class="c"># but reused across rebuilds. So no --no-cache.</span>
+<span class="k">RUN</span><span class="w"> </span>--mount<span class="o">=</span><span class="nv">type</span><span class="o">=</span>cache,target<span class="o">=</span>/root/.cache/uv<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>uv<span class="w"> </span><span class="nb">export</span><span class="w"> </span>--frozen<span class="w"> </span>--no-emit-project<span class="w"> </span>--format<span class="w"> </span>requirements-txt<span class="w"> </span>-o<span class="w"> </span>/tmp/requirements.txt<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span><span class="o">&amp;&amp;</span><span class="w"> </span>uv<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>--system<span class="w"> </span>-r<span class="w"> </span>/tmp/requirements.txt<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span><span class="o">&amp;&amp;</span><span class="w"> </span>uv<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>--system<span class="w"> </span>--no-deps<span class="w"> </span>.<span class="w"> </span><span class="se">\</span>
 <span class="w">    </span><span class="o">&amp;&amp;</span><span class="w"> </span>rm<span class="w"> </span>-f<span class="w"> </span>/tmp/requirements.txt
 
 <span class="k">FROM</span><span class="w"> </span><span class="s">python:3.14-slim@${BASE_DIGEST}</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="s">production</span>

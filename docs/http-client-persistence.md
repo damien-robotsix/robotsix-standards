@@ -74,15 +74,43 @@ _client = httpx.Client()
 httpx.get(url, timeout=10.0)
 ```
 
-For `requests.Session`, set the timeout on the session and let every
-request inherit it:
+Prefer `httpx.Client(timeout=...)` for new code; treat `requests` as
+legacy. `requests.Session` has **no** session-level timeout: assigning
+`_session.timeout = 10.0` only creates an unused Python attribute, and
+every `_session.get()` still runs with `timeout=None` — no timeout at all
+(long-standing upstream behaviour, psf/requests #2011 and #3070; the
+requests docs require the timeout to be passed per request). Code that
+still uses `requests` MUST either pass `timeout=` on every call, or mount
+an `HTTPAdapter` subclass that applies a default timeout in `send()`:
 
 ```python
 import requests
+from requests.adapters import HTTPAdapter
+
+class TimeoutHTTPAdapter(HTTPAdapter):
+    def __init__(self, *args, timeout: float = 10.0, **kwargs):
+        self._timeout = timeout
+        super().__init__(*args, **kwargs)
+
+    def send(self, request, **kwargs):
+        if kwargs.get("timeout") is None:
+            kwargs["timeout"] = self._timeout
+        return super().send(request, **kwargs)
 
 _session = requests.Session()
-_session.timeout = 10.0  # seconds — applies to every request
+_adapter = TimeoutHTTPAdapter(timeout=10.0)
+_session.mount("https://", _adapter)
+_session.mount("http://", _adapter)
+
+# ❌  No-op — requests never reads this attribute; requests hang forever
+_session.timeout = 10.0
 ```
+
+**Audit criterion:** any `requests.Session` call site without an explicit
+`timeout=` argument, on a session that does not mount a default-timeout
+adapter as above, is a violation. A `timeout` attribute assigned on the
+session does not count — grepping for `timeout` near `Session(` is not a
+valid check.
 
 ### 3. Allow the client to be caller-configurable
 

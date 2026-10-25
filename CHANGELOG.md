@@ -3,6 +3,13 @@
 
 # Changelog
 
+## [0.7.2](https://github.com/damien-robotsix/robotsix-standards/compare/v0.7.1...v0.7.2) (2026-10-24)
+
+
+### Documentation
+
+* Standardize: BuildKit cache mount for uv dependency install in Dockerfiles (20261024T185446Z-standardize-buildkit-cache-mount-for-uv-c8f0) ([#420](https://github.com/damien-robotsix/robotsix-standards/issues/420)) ([86c0a54](https://github.com/damien-robotsix/robotsix-standards/commit/86c0a54214796fb6f37e619f5f01e4a198fc258c))
+
 ## [0.7.1](https://github.com/damien-robotsix/robotsix-standards/compare/v0.7.0...v0.7.1) (2026-10-22)
 
 

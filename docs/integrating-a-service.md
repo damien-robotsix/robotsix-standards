@@ -262,11 +262,11 @@ labels:
 - `config-assist-seeds` lists which fields the UI collects before running it.
 - **Secret seeds never go on argv.** A seed whose schema field is `writeOnly`
   (a `SecretStr`) **must not** appear as a `{placeholder}` — it reaches the
-  command on stdin (here via `--password-stdin`) or through a `0600` temp file
-  in the config volume (e.g. `--password-file /home/app/config/.seed`), never
-  through argument interpolation. Preflight rejects a template whose
-  placeholder resolves to a `writeOnly` field — see the
-  [deploy contract](deploy-contract.md#config-assist-secret-seeds-never-on-argv).
+  command on stdin or through a `0600` temp file in the config volume, never
+  through argument interpolation. The `--password-stdin` flag in the example is
+  illustrative: confirm your CLI supports the channel you choose before
+  shipping. The canonical rule is in the
+  [deploy contract](deploy-contract.md), which points to central-deploy.
   *Failure prevented:* argv lands in the container's `Config.Cmd`
   (`docker inspect`, socket-proxy reads), the host process list
   (`/proc/<pid>/cmdline`) and deploy error logs — leaking a credential the

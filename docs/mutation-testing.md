@@ -93,14 +93,14 @@ jobs:
   mutate:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: astral-sh/setup-uv@v5
+      - uses: actions/checkout@<sha>  # v4
+      - uses: astral-sh/setup-uv@<sha>  # v5
         with: { enable-cache: true, cache-python: true }
       - run: uv sync --locked --group dev
       - run: uv run mutmut run --no-progress || true
       - run: uv run mutmut report
       - run: uv run mutmut html
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@<sha>  # v4
         with:
           name: mutmut-html-report
           path: html/

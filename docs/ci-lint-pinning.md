@@ -47,11 +47,11 @@ environment — CI and local dev are literally the same invocation.
 
 ```yaml
 # In a CI job:
-- uses: astral-sh/setup-uv@v6
+- uses: astral-sh/setup-uv@<sha>  # v6
   with:
     enable-cache: true
     cache-dependency-glob: "pyproject.toml"
-- uses: tox-dev/action-pre-commit-uv@v1
+- uses: tox-dev/action-pre-commit-uv@<sha>  # v1
   with:
     extra_args: --show-diff-on-failure --all-files
 ```
@@ -67,8 +67,9 @@ pre-commit config — do not guess, do not round, do not default to latest:
 # Good — pinned to the pre-commit rev:
 - run: pip install yamllint==1.35.1
 
-# Good — action pinned to a release tag that matches the pre-commit rev:
-- uses: hadolint/hadolint-action@v3.1.0
+# Good — action pinned to a commit SHA; the trailing `# vX.Y.Z` version
+# comment (not the ref) matches the pre-commit rev: and carries the sync signal
+- uses: hadolint/hadolint-action@<sha>  # v3.1.0
 ```
 
 When the Dependabot PR bumps the pre-commit `rev:`, it must also bump
@@ -79,7 +80,7 @@ both:
 
 ```yaml
 # Keep in sync with .pre-commit-config.yaml → hadolint rev:
-- uses: hadolint/hadolint-action@v3.1.0
+- uses: hadolint/hadolint-action@<sha>  # v3.1.0
 ```
 
 ## Anti-patterns: never install from floating/latest sources

@@ -249,6 +249,46 @@ The volume access path is **strictly read-only**:
 - All volume reads share the same per-component chat-access authorization
   gate — no separate volume permission toggle.
 
+The volume-files endpoint is a **config-read path** under
+[config standard §3](config-standard.md#3-one-secret-convention): the deploy
+system writes the component's `config.json` — secrets included, in cleartext
+— into a named volume at the path named by the
+`robotsix.deploy.config-target` label. Without a carve-out,
+`GET /chat/services/{name}/volumes/{vol}/files?path=config.json` hands every
+`SecretStr` value to the chat agent's LLM context. Therefore:
+
+- **Config target: refuse or redact.** A read of the file named by the
+  component's `robotsix.deploy.config-target` label (in whichever volume
+  backs that path) MUST either be refused with `403` or be served only
+  through the same `mask_secrets()` redaction as `GET /config` — every
+  `writeOnly` field in the committed `config.schema.json` reduced to its
+  set/unset status. The raw bytes of the config file are never returned.
+  If the redaction cannot run — the file is not valid JSON, or the committed
+  `config.schema.json` is missing or unreadable — the endpoint MUST fail
+  closed with `403`. It MUST NOT fall back to serving the raw file.
+- **Well-known secret files: deny.** The endpoint MUST refuse (`403`) every
+  read inside the managed `claude-auth` volume, and any file whose name
+  matches `*.pem`, `*.key`, `.env` or `.env.*` in any volume. Directory
+  listings may show such entries by name but never their content.
+- The deny decision is made on the **resolved** path (after symlink
+  resolution inside the volume), so a symlink or alternate spelling cannot
+  reach a denied file.
+
+### How this is enforced
+
+The §5 MUSTs govern central-deploy's chat observability routes, not this
+repo — no CI gate here can inspect that code. Enforcement is by **audit**, at
+code review and by the periodic standards-audit agent, against these criteria:
+
+| Rule | Audit criterion |
+|---|---|
+| Read-only, no traversal | The volume-files handler resolves `path` against the volume root and rejects `..`, absolute paths and escaping symlinks; no write or delete route exists under the chat volumes routes. |
+| Config target refused or redacted | A central-deploy test writes a sentinel secret into a component's config, reads the `config-target` path through the volume-files endpoint, and asserts either `403` or redacted JSON in which the sentinel string is absent. A second case replaces the config with invalid JSON (and, separately, removes the schema) and asserts `403`, never raw bytes. |
+| Secret files denied | A central-deploy test asserts `403` for a read inside the `claude-auth` volume and for a `*.pem`, `*.key`, `.env` and `.env.*` file in a component volume. |
+
+The [security posture](security-posture.md#audit) page carries the fleet-wide
+roll-up of this check.
+
 ---
 
 ## Failure modes this prevents
@@ -262,6 +302,15 @@ The volume access path is **strictly read-only**:
   accepts `..`, absolute paths, or escaping symlinks lets the chat agent read
   arbitrary host files. The strictly read-only, traversal-rejecting contract
   keeps inspection inside the named volume.
+- **Secrets leaking into the LLM context through volume reads.** The
+  component's `config.json` (cleartext `SecretStr` values) and the
+  `claude-auth` credentials live in volumes. A volume-files endpoint that
+  serves them raw bypasses config-standard's redact-on-read MUST and puts a
+  component's own credentials one prompt injection away from exfiltration
+  (OWASP LLM02:2025 with LLM01 as trigger; OWASP A01:2025) — the same
+  second-door risk [§3.1](#31-no-deploy-credential) closes. Refusing or
+  redacting the config target and denying well-known secret files keeps
+  them out of the agent's context.
 - **Observability the chat agent can't actually use.** An endpoint hidden
   behind the operator's web-login session returns a login HTML page to the
   agent instead of logs or status — silently unusable. Requiring the routes

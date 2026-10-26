@@ -263,6 +263,9 @@ system writes the component's `config.json` — secrets included, in cleartext
   through the same `mask_secrets()` redaction as `GET /config` — every
   `writeOnly` field in the committed `config.schema.json` reduced to its
   set/unset status. The raw bytes of the config file are never returned.
+  If the redaction cannot run — the file is not valid JSON, or the committed
+  `config.schema.json` is missing or unreadable — the endpoint MUST fail
+  closed with `403`. It MUST NOT fall back to serving the raw file.
 - **Well-known secret files: deny.** The endpoint MUST refuse (`403`) every
   read inside the managed `claude-auth` volume, and any file whose name
   matches `*.pem`, `*.key`, `.env` or `.env.*` in any volume. Directory
@@ -280,8 +283,8 @@ code review and by the periodic standards-audit agent, against these criteria:
 | Rule | Audit criterion |
 |---|---|
 | Read-only, no traversal | The volume-files handler resolves `path` against the volume root and rejects `..`, absolute paths and escaping symlinks; no write or delete route exists under the chat volumes routes. |
-| Config target refused or redacted | A central-deploy test writes a sentinel secret into a component's config, reads the `config-target` path through the volume-files endpoint, and asserts either `403` or redacted JSON in which the sentinel string is absent. |
-| Secret files denied | A central-deploy test asserts `403` for a read inside the `claude-auth` volume and for a `*.pem` / `.env` file in a component volume. |
+| Config target refused or redacted | A central-deploy test writes a sentinel secret into a component's config, reads the `config-target` path through the volume-files endpoint, and asserts either `403` or redacted JSON in which the sentinel string is absent. A second case replaces the config with invalid JSON (and, separately, removes the schema) and asserts `403`, never raw bytes. |
+| Secret files denied | A central-deploy test asserts `403` for a read inside the `claude-auth` volume and for a `*.pem`, `*.key`, `.env` and `.env.*` file in a component volume. |
 
 The [security posture](security-posture.md#audit) page carries the fleet-wide
 roll-up of this check.

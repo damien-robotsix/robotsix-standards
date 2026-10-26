@@ -121,6 +121,14 @@ Enforce this with ruff rule **`G004`** (`flake8-logging-format`), which
 flags f-string usage in logging calls. See the [ruff lint rules](ruff-lint-rules.md)
 standard for the full `G` rule family.
 
+### 6. Never log credentials or full request objects
+
+A library never logs credentials (tokens, API keys, passwords, session ids,
+`Authorization`/`Cookie` headers) or whole request/response objects,
+headers, bodies or URLs with query strings, **even at DEBUG**. The data
+classes and rationale are canonical in
+[logging rule 6](logging.md#6-never-log-sensitive-data).
+
 ## Why
 
 Every HTTP, IO, and retry library the fleet ships has the same need:
@@ -166,6 +174,9 @@ lazy-formatted and never print unless the application opts in.
   them unless the operator already knows to turn up verbosity. The
   DEBUG-for-routine / WARNING+ERROR-for-abnormal convention gives
   operators a predictable signal-to-noise ratio.
+- **Credentials leaked through DEBUG.** A library that dumps request
+  objects or headers at DEBUG writes tokens into the application's log
+  stream as soon as an operator turns on verbosity (CWE-532).
 
 ## Relationship to other standards
 

@@ -114,11 +114,16 @@ a silent log gap.
   `logging.basicConfig(level=logging.DEBUG)` in application code. The
   component reads its log level from the config model and applies it via
   `logging.getLogger().setLevel(…)` at startup.
-- **Per-request level override via `structlog.contextvars`.** The
-  correlation middleware (rule 4) can optionally bind
-  `add_log_level` per-request — e.g. a `?debug=1` query parameter or an
-  `X-Debug: true` header that the middleware reads and binds to the
-  context, lowering the effective level for that request's span.
+- **Per-request level override via `structlog.contextvars` — operator-only.**
+  The correlation middleware (rule 4) MAY bind a lowered effective level
+  for one request's span, but only when the request is from an
+  **authenticated operator identity** or an **internal caller** (an
+  allowlisted service identity on the internal network). A client-supplied
+  `?debug=1` query parameter or `X-Debug: true` header on an
+  unauthenticated request MUST be ignored. DEBUG records are where request
+  and response payloads tend to get dumped (see rule 6). An override that
+  any caller can trigger lets that caller pull sensitive data into the logs
+  and flood the log stream on demand.
 
 ```python
 # In the config model
@@ -131,7 +136,9 @@ class Config(BaseModel):
 **Failure prevented:** DEBUG-on-by-default in production flooding the log
 stream with per-retry and per-query records, exhausting the log-shipper's
 throughput budget and burying actionable ERROR and WARNING events under
-noise.
+noise. It also prevents an unauthenticated caller from switching on DEBUG
+for their own requests to flood the logs or dump payloads into them
+(CWE-779).
 
 ### 4. Request-logging / correlation middleware
 
@@ -258,6 +265,80 @@ plain-text line and once as structlog's `{"event": "request finished",
 events, and the plain-text line carries none of the structured context
 (request id, correlation id) the middleware bound.
 
+### 6. Never log sensitive data
+
+This is the canonical rule for the fleet. Other pages link here instead of
+restating it. Following the
+[OWASP Logging Cheat Sheet's "Data to exclude"](https://cheatsheetseries.owasp.org/cheatsheets/Logging_Cheat_Sheet.html#data-to-exclude)
+list, no log event, at any level including DEBUG, may contain:
+
+- **Credential-carrying headers:** `Authorization`, `Proxy-Authorization`,
+  `Cookie`, `Set-Cookie`, `X-Api-Key`, or similar.
+- **Access tokens and API keys:** bearer tokens, OAuth access or refresh
+  tokens, API keys, including tokens returned in upstream service responses.
+- **Passwords:** including passwords received through API request bodies or
+  forms.
+- **Session identifiers:** session ids, CSRF tokens.
+- **Connection strings and encryption keys:** DSNs that carry credentials,
+  private keys, signing secrets.
+- **PII:** personal data beyond what the operation strictly needs to
+  identify the record.
+- **Raw request and response bodies, and full URLs with query strings:**
+  credentials, tokens and PII regularly travel in both.
+
+Two concrete requirements follow:
+
+1. **The request middleware logs only `path` and `method`.** It never logs
+   `request.url` (which includes the query string), `request.headers`, or
+   the request or response body. The rule 4 middleware binds
+   `request.url.path`, not `str(request.url)`. To log a specific header,
+   name it explicitly and make sure it is not in the classes above
+   (`X-Request-ID` is fine).
+2. **A redaction processor runs at the start of the structlog chain.** Put
+   a processor that drops or masks sensitive keys before any renderer. It
+   catches a secret bound by mistake as a context var or event field. It
+   is a backstop, not permission to log raw objects:
+
+```python
+import re
+
+_SENSITIVE = re.compile(
+    r"authorization|cookie|password|passwd|token|secret|api[_-]?key|session",
+    re.IGNORECASE,
+)
+
+def redact_sensitive(_logger, _method, event_dict):
+    for key in list(event_dict):
+        if _SENSITIVE.search(key):
+            event_dict[key] = "[REDACTED]"
+    return event_dict
+
+structlog.configure(
+    processors=[
+        structlog.contextvars.merge_contextvars,
+        redact_sensitive,  # first after context merge — before anything renders
+        # … rest of the rule 1 chain …
+    ],
+)
+```
+
+Add the same processor to the `ProcessorFormatter`'s `foreign_pre_chain`
+so stdlib records from third-party libraries are covered too. A key-name
+processor cannot see a token interpolated into a free-text `event`
+message. Requirement 1 and code review cover that case.
+
+The [security-posture audit](security-posture.md#audit) checks this rule
+with a **Log hygiene** row: a test that captures log output for a request
+carrying `Authorization: Bearer <token>`, plus a grep or Semgrep rule
+against logging `request.headers` or `request.url`.
+
+**Failure prevented:** credentials and session tokens written to the log
+stream (CWE-532, OWASP Top 10 2021 A09). Logs are retained, shipped to an
+aggregator and read by everyone with log access. One logged
+`Authorization` header hands a working credential to anyone who can query
+the logs, long after the request ended and outside the access controls
+that protect the secret store.
+
 ## Failure modes this prevents
 
 - **Unparsable log stream.** Mixed `print()`, `logging.info("done")`,
@@ -283,6 +364,11 @@ events, and the plain-text line carries none of the structured context
   during one request persisting into the next (when the ASGI server
   reuses a task) produces log events with a stale `request_id`,
   corrupting trace reconstruction.
+- **Secrets in the log stream.** A logged `Authorization` header, full
+  URL with credentials in the query string, or raw request body leaks
+  credentials to everyone with log access (CWE-532). Rule 6 forbids it.
+  A redaction processor is the backstop, and an unauthenticated caller
+  can no longer turn on DEBUG payload dumping.
 
 ## Relationship to other standards
 

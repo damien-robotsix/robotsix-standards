@@ -3670,6 +3670,8 @@ siblings routinely restart, so:</p>
 <li><strong>Log level is a config field</strong> — a <code>log_level</code> enum in the component's
   pydantic model (see the <a href="../config-standard/">config standard</a>), not an
   environment variable.</li>
+<li><strong>Never log sensitive data.</strong> The canonical rule, including the excluded
+  data classes, is <a href="../logging/#6-never-log-sensitive-data">logging rule 6</a>.</li>
 </ul>
 <p>Structured JSON logging is mandated by the <a href="../logging/">logging standard</a>.
 No metrics/collector requirement is standardized — that gets added

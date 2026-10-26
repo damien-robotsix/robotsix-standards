@@ -1586,6 +1586,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#6-never-log-sensitive-data" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. Never log sensitive data
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -3052,6 +3063,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#6-never-log-sensitive-data" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. Never log sensitive data
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -3202,11 +3224,16 @@ a silent log gap.</p>
   <code>logging.basicConfig(level=logging.DEBUG)</code> in application code. The
   component reads its log level from the config model and applies it via
   <code>logging.getLogger().setLevel(…)</code> at startup.</li>
-<li><strong>Per-request level override via <code>structlog.contextvars</code>.</strong> The
-  correlation middleware (rule 4) can optionally bind
-  <code>add_log_level</code> per-request — e.g. a <code>?debug=1</code> query parameter or an
-  <code>X-Debug: true</code> header that the middleware reads and binds to the
-  context, lowering the effective level for that request's span.</li>
+<li><strong>Per-request level override via <code>structlog.contextvars</code> — operator-only.</strong>
+  The correlation middleware (rule 4) MAY bind a lowered effective level
+  for one request's span, but only when the request is from an
+  <strong>authenticated operator identity</strong> or an <strong>internal caller</strong> (an
+  allowlisted service identity on the internal network). A client-supplied
+  <code>?debug=1</code> query parameter or <code>X-Debug: true</code> header on an
+  unauthenticated request MUST be ignored. DEBUG records are where request
+  and response payloads tend to get dumped (see rule 6). An override that
+  any caller can trigger lets that caller pull sensitive data into the logs
+  and flood the log stream on demand.</li>
 </ul>
 <div class="highlight"><pre><span></span><code><span class="c1"># In the config model</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">pydantic</span><span class="w"> </span><span class="kn">import</span> <span class="n">BaseModel</span>
@@ -3217,7 +3244,9 @@ a silent log gap.</p>
 <p><strong>Failure prevented:</strong> DEBUG-on-by-default in production flooding the log
 stream with per-retry and per-query records, exhausting the log-shipper's
 throughput budget and burying actionable ERROR and WARNING events under
-noise.</p>
+noise. It also prevents an unauthenticated caller from switching on DEBUG
+for their own requests to flood the logs or dump payloads into them
+(CWE-779).</p>
 <h3 id="4-request-logging-correlation-middleware">4. Request-logging / correlation middleware<a class="headerlink" href="#4-request-logging-correlation-middleware" title="Permanent link">&para;</a></h3>
 <p>Every deployable HTTP service installs an ASGI middleware that:</p>
 <ol>
@@ -3328,6 +3357,77 @@ plain-text line and once as structlog's <code>{"event": "request finished",
 "status_code": 200, ...}</code> JSON object. The aggregator sees duplicate
 events, and the plain-text line carries none of the structured context
 (request id, correlation id) the middleware bound.</p>
+<h3 id="6-never-log-sensitive-data">6. Never log sensitive data<a class="headerlink" href="#6-never-log-sensitive-data" title="Permanent link">&para;</a></h3>
+<p>This is the canonical rule for the fleet. Other pages link here instead of
+restating it. Following the
+<a href="https://cheatsheetseries.owasp.org/cheatsheets/Logging_Cheat_Sheet.html#data-to-exclude">OWASP Logging Cheat Sheet's "Data to exclude"</a>
+list, no log event, at any level including DEBUG, may contain:</p>
+<ul>
+<li><strong>Credential-carrying headers:</strong> <code>Authorization</code>, <code>Proxy-Authorization</code>,
+  <code>Cookie</code>, <code>Set-Cookie</code>, <code>X-Api-Key</code>, or similar.</li>
+<li><strong>Access tokens and API keys:</strong> bearer tokens, OAuth access or refresh
+  tokens, API keys, including tokens returned in upstream service responses.</li>
+<li><strong>Passwords:</strong> including passwords received through API request bodies or
+  forms.</li>
+<li><strong>Session identifiers:</strong> session ids, CSRF tokens.</li>
+<li><strong>Connection strings and encryption keys:</strong> DSNs that carry credentials,
+  private keys, signing secrets.</li>
+<li><strong>PII:</strong> personal data beyond what the operation strictly needs to
+  identify the record.</li>
+<li><strong>Raw request and response bodies, and full URLs with query strings:</strong>
+  credentials, tokens and PII regularly travel in both.</li>
+</ul>
+<p>Two concrete requirements follow:</p>
+<ol>
+<li><strong>The request middleware binds only the fields rule 4 names</strong> —
+   <code>request_id</code>, <code>correlation_id</code>, <code>path</code> and <code>method</code>. It never logs
+   <code>request.url</code> (which includes the query string), <code>request.headers</code>, or
+   the request or response body. The rule 4 middleware binds
+   <code>request.url.path</code>, not <code>str(request.url)</code>. To log a specific header,
+   name it explicitly and make sure it is not in the classes above
+   (<code>X-Request-ID</code> is fine).</li>
+<li><strong>A redaction processor runs at the start of the structlog chain.</strong> Put
+   a processor that drops or masks sensitive keys before any renderer. It
+   catches a secret bound by mistake as a top-level context var or event
+   field. It inspects top-level keys only: a secret nested inside a
+   dict-valued field is <strong>not</strong> caught. It is a last-line backstop, not a
+   guarantee and not permission to log raw objects:</li>
+</ol>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">re</span>
+
+<span class="n">_SENSITIVE</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span>
+    <span class="sa">r</span><span class="s2">&quot;authorization|cookie|password|passwd|token|secret|api[_-]?key|session&quot;</span><span class="p">,</span>
+    <span class="n">re</span><span class="o">.</span><span class="n">IGNORECASE</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">redact_sensitive</span><span class="p">(</span><span class="n">_logger</span><span class="p">,</span> <span class="n">_method</span><span class="p">,</span> <span class="n">event_dict</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">event_dict</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">_SENSITIVE</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">key</span><span class="p">):</span>
+            <span class="n">event_dict</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;[REDACTED]&quot;</span>
+    <span class="k">return</span> <span class="n">event_dict</span>
+
+<span class="n">structlog</span><span class="o">.</span><span class="n">configure</span><span class="p">(</span>
+    <span class="n">processors</span><span class="o">=</span><span class="p">[</span>
+        <span class="n">structlog</span><span class="o">.</span><span class="n">contextvars</span><span class="o">.</span><span class="n">merge_contextvars</span><span class="p">,</span>
+        <span class="n">redact_sensitive</span><span class="p">,</span>  <span class="c1"># first after context merge — before anything renders</span>
+        <span class="c1"># … rest of the rule 1 chain …</span>
+    <span class="p">],</span>
+<span class="p">)</span>
+</code></pre></div>
+<p>Add the same processor to the <code>ProcessorFormatter</code>'s <code>foreign_pre_chain</code>
+so stdlib records from third-party libraries are covered too. A key-name
+processor cannot see a token interpolated into a free-text <code>event</code>
+message. Requirement 1 and code review cover that case.</p>
+<p>The <a href="../security-posture/#audit">security-posture audit</a> checks this rule
+with a <strong>Log hygiene</strong> row: a test that captures log output for a request
+carrying <code>Authorization: Bearer &lt;token&gt;</code>, plus a grep or Semgrep rule
+against logging <code>request.headers</code> or <code>request.url</code>.</p>
+<p><strong>Failure prevented:</strong> credentials and session tokens written to the log
+stream (CWE-532, OWASP Top 10 2021 A09). Logs are retained, shipped to an
+aggregator and read by everyone with log access. One logged
+<code>Authorization</code> header hands a working credential to anyone who can query
+the logs, long after the request ended and outside the access controls
+that protect the secret store.</p>
 <h2 id="failure-modes-this-prevents">Failure modes this prevents<a class="headerlink" href="#failure-modes-this-prevents" title="Permanent link">&para;</a></h2>
 <ul>
 <li><strong>Unparsable log stream.</strong> Mixed <code>print()</code>, <code>logging.info("done")</code>,
@@ -3353,6 +3453,11 @@ events, and the plain-text line carries none of the structured context
   during one request persisting into the next (when the ASGI server
   reuses a task) produces log events with a stale <code>request_id</code>,
   corrupting trace reconstruction.</li>
+<li><strong>Secrets in the log stream.</strong> A logged <code>Authorization</code> header, full
+  URL with credentials in the query string, or raw request body leaks
+  credentials to everyone with log access (CWE-532). Rule 6 forbids it.
+  A redaction processor is the backstop, and an unauthenticated caller
+  can no longer turn on DEBUG payload dumping.</li>
 </ul>
 <h2 id="relationship-to-other-standards">Relationship to other standards<a class="headerlink" href="#relationship-to-other-standards" title="Permanent link">&para;</a></h2>
 <ul>

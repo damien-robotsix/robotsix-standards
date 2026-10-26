@@ -1558,6 +1558,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#6-never-log-credentials-or-full-request-objects" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. Never log credentials or full request objects
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -3063,6 +3074,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#6-never-log-credentials-or-full-request-objects" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. Never log credentials or full request objects
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -3214,6 +3236,12 @@ attempt, this is wasted work on every disabled call site.</p>
 <p>Enforce this with ruff rule <strong><code>G004</code></strong> (<code>flake8-logging-format</code>), which
 flags f-string usage in logging calls. See the <a href="../ruff-lint-rules/">ruff lint rules</a>
 standard for the full <code>G</code> rule family.</p>
+<h3 id="6-never-log-credentials-or-full-request-objects">6. Never log credentials or full request objects<a class="headerlink" href="#6-never-log-credentials-or-full-request-objects" title="Permanent link">&para;</a></h3>
+<p>A library never logs credentials (tokens, API keys, passwords, session ids,
+<code>Authorization</code>/<code>Cookie</code> headers) or whole request/response objects,
+headers, bodies or URLs with query strings, <strong>even at DEBUG</strong>. The data
+classes and rationale are canonical in
+<a href="../logging/#6-never-log-sensitive-data">logging rule 6</a>.</p>
 <h2 id="why">Why<a class="headerlink" href="#why" title="Permanent link">&para;</a></h2>
 <p>Every HTTP, IO, and retry library the fleet ships has the same need:
 emit internal observability records so operators can trace what the
@@ -3256,6 +3284,9 @@ lazy-formatted and never print unless the application opts in.</p>
   them unless the operator already knows to turn up verbosity. The
   DEBUG-for-routine / WARNING+ERROR-for-abnormal convention gives
   operators a predictable signal-to-noise ratio.</li>
+<li><strong>Credentials leaked through DEBUG.</strong> A library that dumps request
+  objects or headers at DEBUG writes tokens into the application's log
+  stream as soon as an operator turns on verbosity (CWE-532).</li>
 </ul>
 <h2 id="relationship-to-other-standards">Relationship to other standards<a class="headerlink" href="#relationship-to-other-standards" title="Permanent link">&para;</a></h2>
 <ul>

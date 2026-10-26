@@ -377,17 +377,18 @@ fleet, setting `enforce_admins: true` on every protected branch and
 `can_approve_pull_request_reviews: false` on every repo) — run it when a repo
 is created or the required-check set changes.
 
-**Enforcement.** The apply-script is trigger-based; it never re-verifies that
-protection stayed intact. Because branch protection is load-bearing (without it
-the standards above are silently vacuous), the
-[`branch-protection-check`](mill-agents.md#branch-protection-check) periodic
-agent sweeps the fleet monthly and confirms every non-archived repo's default
-branch still keeps PR-only, required status checks, required approving review,
-force-push disabled, `enforce_admins: true`, and Actions PR approval disabled
-(`can_approve_pull_request_reviews: false`) — filing a drift ticket through
-the mill for any control that weakened (emergency bypass left on, a repo added
-without the script, a required-check set that drifted). The branch-protection
-MUSTs are therefore machine-checkable — protection can't silently erode.
+**Enforcement: unverified — residual gap since the watchdog's retirement.**
+The apply-script is trigger-based; it never re-verifies that protection stayed
+intact. The periodic `branch-protection-check` watchdog was
+[retired](mill-agents.md#retired-agents) on 2026-10-22 (it never had GitHub API
+access), so nothing machine-verifies these rules: PR-only, required status
+checks, required approving review, force-push disabled, `enforce_admins: true`,
+and Actions PR approval disabled (`can_approve_pull_request_reviews: false`).
+*Failure mode this leaves open:* protection can silently erode (emergency
+bypass left on, a repo added without the script, a required-check set that
+drifted). Verify by hand with
+`gh api repos/<owner>/<repo>/actions/permissions/workflow` (plus the branch's
+protection settings) when onboarding or auditing a repo.
 
 If an operational emergency requires admin bypass (e.g. a hotfix during CI
 outage), temporarily disable branch protection with a reason recorded,

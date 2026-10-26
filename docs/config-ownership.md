@@ -261,7 +261,7 @@ Headless components (no browser UI) skip the panel but MUST still implement
 the full HTTP surface (`GET /config`, `PUT /config`, `GET /config/versions`,
 `POST /config/rollback`).
 
-### Where the history lives — and who implements it
+### Where the history lives — and who implements it {#where-the-history-lives-and-who-implements-it}
 
 The HTTP surface above says *what* a component exposes. This says where the
 history is stored, and forbids reimplementing it per component.

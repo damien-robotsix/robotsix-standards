@@ -44,7 +44,7 @@ These gates block a PR; Scorecard only scored it after the fact.
    zizmor, actionlint, and the
    [workflow-permissions audit](security-posture.md#workflow-permissions-audit).
    Those block a PR; Scorecard only scores it afterwards. Scorecard's
-   *Branch-Protection* check has **no** replacement: none of those tools
+   *Branch-Protection* check is an **accepted gap**, with no replacement: none of those tools
    reads branch-protection settings, and since the watchdog's
    [retirement](mill-agents.md#retired-agents) fleet branch protection is
    configured but not machine-verified — see the residual gap in

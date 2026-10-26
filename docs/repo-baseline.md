@@ -377,18 +377,23 @@ fleet, setting `enforce_admins: true` on every protected branch and
 `can_approve_pull_request_reviews: false` on every repo) — run it when a repo
 is created or the required-check set changes.
 
-**Enforcement: unverified — residual gap since the watchdog's retirement.**
-The apply-script is trigger-based; it never re-verifies that protection stayed
-intact. The periodic `branch-protection-check` watchdog was
-[retired](mill-agents.md#retired-agents) on 2026-10-26 (it never had GitHub API
-access), so nothing machine-verifies these rules: PR-only, required status
-checks, required approving review, force-push disabled, `enforce_admins: true`,
-and Actions PR approval disabled (`can_approve_pull_request_reviews: false`).
+**Enforcement: unverified — ACCEPTED RISK (accepted 2026-10-22 by the operator,
+re-stated 2026-10-26; review date 2027-01-26).** The apply-script is
+trigger-based; it never re-verifies that protection stayed intact. The periodic
+`branch-protection-check` watchdog was [retired](mill-agents.md#retired-agents)
+(decision 2026-10-22, removal 2026-10-26 / #434) because it never had GitHub API
+access. Reason: no GitHub API credential is provisioned for a fleet watchdog.
+Nothing machine-verifies these rules: PR-only, required status checks, required
+approving review, force-push disabled, `enforce_admins: true`, and Actions PR
+approval disabled (`can_approve_pull_request_reviews: false`).
 *Failure mode this leaves open:* protection can silently erode (emergency
 bypass left on, a repo added without the script, a required-check set that
-drifted). Verify by hand with
-`gh api repos/<owner>/<repo>/actions/permissions/workflow` (plus the branch's
-protection settings) when onboarding or auditing a repo.
+drifted).
+
+**Residual control:** the apply-script run at onboarding, plus manual checks
+during audits: `gh api repos/<owner>/<repo>/branches/main/protection` and
+`gh api repos/<owner>/<repo>/actions/permissions/workflow`, for each repo in
+[fleet](fleet.md).
 
 If an operational emergency requires admin bypass (e.g. a hotfix during CI
 outage), temporarily disable branch protection with a reason recorded,

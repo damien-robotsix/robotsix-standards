@@ -445,7 +445,8 @@ fleet's posture against each Source level:
   with `enforce_admins: true` is configured to enforce required status checks
   on every commit to `main`, but it is **configured, not continuously
   verified**: the apply-script runs only when triggered and no automated check
-  re-reads the protection settings (residual gap in
+  re-reads the protection settings. This is a dated **accepted risk**
+  (accepted 2026-10-22, re-stated 2026-10-26, review 2027-01-26; see
   [repo baseline](repo-baseline.md#branch-protection)). Source L3 requires
   continuously enforced technical controls, so it is not reached on two
   counts: SLSA levels are cumulative and Source L2 remains a gap, and the

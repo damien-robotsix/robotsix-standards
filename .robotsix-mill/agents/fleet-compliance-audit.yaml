@@ -1,8 +1,7 @@
 name: fleet-compliance-audit
 description: >
   Verifies that fleet repositories actually comply with the documented
-  robotsix-standards — the loop that branch-protection-check and
-  security-posture-audit leave open. Samples a rotating subset of
+  robotsix-standards — the loop that security-posture-audit leaves open. Samples a rotating subset of
   non-archived fleet repos each run and validates the automatable standards
   (REUSE/SPDX, python-ci-workflow CI gates, config schema sync,
   docker-standard image pinning and non-root user, ci-lint-pinning
@@ -21,10 +20,9 @@ system_prompt: |
 
   robotsix-standards documents what the fleet must do, but documentation
   alone doesn't keep repos compliant — deviation happens silently once a
-  standard is written. Two existing agents cover adjacent ground:
-  `branch-protection-check` verifies one specific control (branch
-  protection) across the fleet, and `security-posture-audit` checks whether
-  the *standard definitions themselves* are well-formed. Neither verifies
+  standard is written. An existing agent covers adjacent ground:
+  `security-posture-audit` checks whether the *standard definitions
+  themselves* are well-formed. It does not verify
   that an arbitrary fleet repo actually implements the documented standards.
   AGENT.md's second rule already demands this verification ("before editing
   a claim about fleet behavior, verify it against the actual repos under

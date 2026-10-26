@@ -380,7 +380,7 @@ is created or the required-check set changes.
 **Enforcement: unverified — residual gap since the watchdog's retirement.**
 The apply-script is trigger-based; it never re-verifies that protection stayed
 intact. The periodic `branch-protection-check` watchdog was
-[retired](mill-agents.md#retired-agents) on 2026-10-22 (it never had GitHub API
+[retired](mill-agents.md#retired-agents) on 2026-10-26 (it never had GitHub API
 access), so nothing machine-verifies these rules: PR-only, required status
 checks, required approving review, force-push disabled, `enforce_admins: true`,
 and Actions PR approval disabled (`can_approve_pull_request_reviews: false`).

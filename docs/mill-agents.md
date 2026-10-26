@@ -152,7 +152,7 @@ change any repo; all remediation flows through the normal ticket pipeline.
 
 ## Retired agents
 
-- **`branch-protection-check`** — retired 2026-10-22 by operator decision. It
+- **`branch-protection-check`** — retired 2026-10-26 by operator decision (#434). It
   never had GitHub API access, so it never verified anything. Fleet
   branch-protection posture (incl. Actions PR approval) is **not**
   machine-verified — see the residual gap in

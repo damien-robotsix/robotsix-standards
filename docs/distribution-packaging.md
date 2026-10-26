@@ -147,21 +147,22 @@ the README is the canonical, copy-pasteable instruction.
 
 ## Enforcement
 
-Rules 4 and 5 are to be enforced by a **public-registry check**
-(`scripts/check-public-registry.py`, to run as a `public-registry-check` job in
-the shared `baseline-check.yml`). This section is the check's specification;
-the implementation will follow it and does not redefine it.
+Rules 4 and 5 are enforced by a **public-registry check**
+(`scripts/check-public-registry.py`, run as the `public-registry-check` job in
+`baseline-check.yml`). This section is the check's specification; the script
+implements it and does not redefine it.
 
-**Status:** specified, implementation pending. The job does not exist yet, and
-no periodic agent or CI step is assigned to check rules 4–5 in the meantime.
-Until it lands, reviewers check changes to workflows, `package.json`, `.npmrc`
-and `pyproject.toml` against the patterns below during code review (see the
+**Status:** implemented, warning-first (see *Rollout* below). Reviewers still
+check changes to workflows, `package.json`, `.npmrc` and `pyproject.toml`
+against the patterns below during code review (see the
 *Distribution / registry* row in the
 [security posture audit table](security-posture.md#audit)).
 
-**Scope.** The check scans every changed file matching
-`.github/workflows/*.yml` / `*.yaml`, `package.json`, `.npmrc`, and
-`pyproject.toml` on each PR and push to `main`.
+**Scope.** The check scans every file matching `.github/workflows/*.yml` /
+`*.yaml`, `package.json`, `.npmrc`, and `pyproject.toml` on each PR and push to
+`main` — at minimum every changed file of that kind. The job runs the script
+with no arguments, scanning every in-scope file in the repo (a superset of the
+changed files); given file paths, the script scans only those.
 
 **It flags:**
 
@@ -178,7 +179,9 @@ The approved internal domain is `npm.pkg.github.com` (GitHub Packages under
 the `damien-robotsix` org); any other domain needs Platform Owner approval and is added to the check's
 allow-list in the same change. A Platform Owner–approved exception (rule 4) is
 recorded as a per-repo allow-list entry naming the approval, never as an inline
-suppression.
+suppression: one line per exception in `.public-registry-allowlist` at the repo
+root, `<path> <rule-id> <approval reference>`; an entry without the approval
+reference is ignored.
 
 **Rollout.** The check is **warning-first**: it emits `::warning::`
 annotations and does not fail the build, so existing repos can converge. It

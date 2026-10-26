@@ -76,3 +76,8 @@ def check_secrets_patterns_excluded() -> ModuleType:
     return _load_script(
         "check-secrets-patterns-excluded.py", "check_secrets_patterns_excluded"
     )
+
+
+@pytest.fixture
+def check_public_registry() -> ModuleType:
+    return _load_script("check-public-registry.py", "check_public_registry")

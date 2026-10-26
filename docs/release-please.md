@@ -29,30 +29,38 @@ separate release workflow, no manual bump classification. A release PR opens
 automatically whenever releasable commits land on the default branch; merging
 it publishes the release.
 
-## Prerequisite: let Actions open pull requests
+## Prerequisite: keep Actions PR approval disabled
 
-**Before any of the configuration below matters**, the repository must allow
-GitHub Actions to open pull requests. Release-please's entire mechanism is
-opening a release PR, so without this it can do nothing.
+Release-please needs **no** repository Actions setting. The shared workflow
+opens the release PR with a GitHub App installation token
+(`RELEASE_APP_ID` / `RELEASE_APP_PRIVATE_KEY`; see the workflow template and
+the `GITHUB_TOKEN` warning below). The repo setting Settings → Actions →
+General → *"Allow GitHub Actions to create and approve pull requests"* only
+governs the built-in `GITHUB_TOKEN`, so it does nothing for the App token.
 
-Settings → Actions → General → *"Allow GitHub Actions to create and approve
-pull requests"*, or via the API:
+Keep that setting **off** in every fleet repo — the canonical rule and its
+enforcement live in [repo baseline](repo-baseline.md#branch-protection).
+Check and enforce via the API:
 
 ```bash
-# check
+# check — must print false
 gh api repos/damien-robotsix/<repo>/actions/permissions/workflow \
   -q '.can_approve_pull_request_reviews'
-# enable
+# enforce
 gh api -X PUT repos/damien-robotsix/<repo>/actions/permissions/workflow \
-  -f default_workflow_permissions=read -F can_approve_pull_request_reviews=true
+  -f default_workflow_permissions=read -F can_approve_pull_request_reviews=false
 ```
 
-> **Failure mode.** With the setting off, the run gets as far as building the
-> tree and the release commit, then dies with
-> `release-please failed: GitHub Actions is not permitted to create or approve
-> pull requests.` The workflow and both config files can be perfectly correct
-> and the repo still never releases. On 2026-08-08 this was off in 9 of 15
-> fleet repos, which is why release-please had produced nothing anywhere.
+> **Failure modes this prevents.** With the setting on, any workflow whose job
+> holds `pull-requests: write` — including a compromised third-party action or
+> a script-injection sink in it — can approve a PR with `GITHUB_TOKEN`, so a
+> machine identity satisfies the "required approving review" rule, the fleet's
+> only human-review control. The setting was once enabled fleet-wide to fix
+> release-please: on 2026-08-08, while release-please still ran on
+> `GITHUB_TOKEN`, runs died with `release-please failed: GitHub Actions is not
+> permitted to create or approve pull requests.` Since the 2026-08-15 move to
+> the App token, that error means the caller is still passing `GITHUB_TOKEN` —
+> fix the token, never the setting.
 
 ## Configuration
 
@@ -559,9 +567,9 @@ using `GITHUB_TOKEN`. Events created by it deliberately do not trigger workflow
 runs, so the checks never start and the PR cannot satisfy them. Mint a scoped
 App token instead — see the workflow template above.
 
-A release PR that never *opens* is the other half: check that the repo setting
-in [Prerequisite](#prerequisite-let-actions-open-pull-requests) is enabled, and
-that no `if:` gate references a secret that was never provisioned. A gate on a
+A release PR that never *opens* is the other half: check that the caller
+passes the App credentials rather than `GITHUB_TOKEN` (see
+[Prerequisite](#prerequisite-keep-actions-pr-approval-disabled)), and that no `if:` gate references a secret that was never provisioned. A gate on a
 missing secret makes the step **skip** while the job still reports success.
 
 ## Migration checklist
@@ -756,21 +764,22 @@ uses: damien-robotsix/robotsix-github-workflows/.github/workflows/baseline-check
 > changelog.d removal. If it fails with "towncrier config not found" or
 > "changelog.d directory is empty", the SHA is too old.
 
-### 10. Enable Actions to create pull requests
+### 10. Keep Actions PR approval disabled
 
-Release-please's entire mechanism is opening a release PR. The repo setting
-must allow this. Check and enable via the API (see
-[Prerequisite](#prerequisite-let-actions-open-pull-requests)):
+Release-please opens its PR with the App token, so it needs no repo setting.
+Make sure Actions cannot approve PRs with `GITHUB_TOKEN` (see
+[Prerequisite](#prerequisite-keep-actions-pr-approval-disabled)):
 
 ```bash
 gh api -X PUT repos/damien-robotsix/<repo>/actions/permissions/workflow \
-  -f default_workflow_permissions=read -F can_approve_pull_request_reviews=true
+  -f default_workflow_permissions=read -F can_approve_pull_request_reviews=false
 ```
 
-> **Verification.** The API returns `can_approve_pull_request_reviews: true`.
-> Without this, the first push to `main` runs the workflow and it dies with
+> **Verification.** The API returns `can_approve_pull_request_reviews: false`.
+> If the first push to `main` dies with
 > `release-please failed: GitHub Actions is not permitted to create or approve
-> pull requests`.
+> pull requests`, the caller is not passing `app-id` / `app-private-key` — fix
+> step 6, do not enable the setting.
 
 ### 11. Verify end-to-end
 

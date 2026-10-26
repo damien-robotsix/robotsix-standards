@@ -354,16 +354,28 @@ bypass every gate, the changelog check never runs):
 - **PRs only** — no direct pushes to `main`.
 - **Required status checks** — the shared-workflow gates above.
 - **Required approving review** — at least one approving review before merge.
-  Exemptions (e.g. Dependabot PRs auto-approved by the auto-merge workflow)
-  are declared and justified.
+  Exemptions are declared and justified, and none may be met by a
+  `GITHUB_TOKEN` approval (see the next rule).
+- **Actions cannot approve PRs** — the repo setting *"Allow GitHub Actions to
+  create and approve pull requests"* stays off
+  (`can_approve_pull_request_reviews: false` on
+  `repos/<owner>/<repo>/actions/permissions/workflow`). No fleet workflow needs
+  it: release-please opens its PR with a GitHub App token
+  ([release-please](release-please.md#prerequisite-keep-actions-pr-approval-disabled)),
+  and the setting only governs `GITHUB_TOKEN`. *Failure prevented:* with it on,
+  any workflow job holding `pull-requests: write` — a compromised third-party
+  action or a script-injection sink included — can approve a PR with
+  `GITHUB_TOKEN`, so a machine identity satisfies the required approving
+  review, the fleet's only human-review control.
 - **Squash merge**, force-push disabled.
 - **Include administrators** — the rules above apply to everyone, including
   repo admins. No bypass.
 
 GitHub settings can't live in the repo, so uniformity comes from the
 idempotent apply-script in robotsix-github-workflows (`gh api` loop over the
-fleet, setting `enforce_admins: true` on every protected branch) — run it when
-a repo is created or the required-check set changes.
+fleet, setting `enforce_admins: true` on every protected branch and
+`can_approve_pull_request_reviews: false` on every repo) — run it when a repo
+is created or the required-check set changes.
 
 **Enforcement.** The apply-script is trigger-based; it never re-verifies that
 protection stayed intact. Because branch protection is load-bearing (without it
@@ -371,7 +383,8 @@ the standards above are silently vacuous), the
 [`branch-protection-check`](mill-agents.md#branch-protection-check) periodic
 agent sweeps the fleet monthly and confirms every non-archived repo's default
 branch still keeps PR-only, required status checks, required approving review,
-force-push disabled, and `enforce_admins: true` — filing a drift ticket through
+force-push disabled, `enforce_admins: true`, and Actions PR approval disabled
+(`can_approve_pull_request_reviews: false`) — filing a drift ticket through
 the mill for any control that weakened (emergency bypass left on, a repo added
 without the script, a required-check set that drifted). The branch-protection
 MUSTs are therefore machine-checkable — protection can't silently erode.

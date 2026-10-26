@@ -478,6 +478,7 @@ dashboard-watching:
 | SHA-pinned actions | `grep -r 'uses:' .github/workflows/` — no mutable refs on third-party actions; `scripts/check-workflow-security.py` passes in CI |
 | Workflow linting | `.pre-commit-config.yaml` includes `actionlint`; CI runs `zizmor` (content-only repos exempt from `zizmor`) |
 | Least-privilege permissions | Every workflow has `permissions:` block; `scripts/check-workflow-security.py` passes in CI; `zizmor` reports clean (code repos) |
+| Actions PR approval disabled | `gh api repos/<owner>/<repo>/actions/permissions/workflow -q .can_approve_pull_request_reviews` returns `false`, so `GITHUB_TOKEN` cannot satisfy the required approving review — per [repo baseline](repo-baseline.md#branch-protection); set by the robotsix-github-workflows apply-script and swept by [`branch-protection-check`](mill-agents.md#branch-protection-check) |
 | Secret push protection | Push protection enabled in repo Security settings; `detect-secrets` in pre-commit; CI runs TruffleHog (content-only repos exempt from TruffleHog) |
 | Credential-file deny list | `.gitignore` covers `.htpasswd`, `.env`/`.env.*`, `wp-config*.php`, `*.pem`, `*.key`, `*secret*`, `*.p12` — verified by `scripts/check-gitignore-denylist.py` in `baseline-check.yml` (warning-first, honors per-repo negating exceptions) |
 | SBOM* | CI uploads CycloneDX artifact |

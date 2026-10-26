@@ -116,7 +116,9 @@ instantly, direct pushes bypass every gate) — so it needs a periodic watchdog.
 
 **Invariant it checks:** for each non-archived repo, the default branch keeps
 PR-only, required status checks, required approving review, squash-merge,
-force-push disabled, and `enforce_admins: true`. It catches drift the
+force-push disabled, and `enforce_admins: true`; and the repo-level Actions
+setting keeps `can_approve_pull_request_reviews: false` (so `GITHUB_TOKEN`
+cannot satisfy the required review). It catches drift the
 apply-script can't: an emergency admin bypass left disabled, a repo added
 without the script, or a required-check set that silently changed.
 

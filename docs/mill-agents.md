@@ -152,9 +152,10 @@ change any repo; all remediation flows through the normal ticket pipeline.
 
 ## Retired agents
 
-- **`branch-protection-check`** — retired 2026-10-22 by operator decision. It
-  never had GitHub API access, so it never verified anything. Fleet
-  branch-protection posture (incl. Actions PR approval) is **not**
-  machine-verified — see the residual gap in
+- **`branch-protection-check`** — retirement decided 2026-10-22 by operator decision
+  (ticket bd7e: "retire the check rather than provision a credential"); removed
+  in 2026-10-26 (#434). It never had GitHub API access, so it never verified
+  anything. Fleet branch-protection posture (incl. Actions PR approval) is **not**
+  machine-verified — recorded as an accepted risk in
   [repo-baseline](repo-baseline.md#branch-protection). *Failure mode this
   note prevents:* readers trusting a watchdog that no longer runs.

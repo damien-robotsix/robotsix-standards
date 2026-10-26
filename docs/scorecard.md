@@ -40,10 +40,17 @@ These gates block a PR; Scorecard only scored it after the fact.
    signal, just three repos carrying a workflow the other eleven do not.
 2. **It duplicates gates the fleet already runs, more weakly.** Its
    meaningful checks — action pinning, token permissions, dangerous
-   workflow patterns, branch protection — are already enforced repo-locally
-   and harder by zizmor, actionlint, and the
+   workflow patterns — are already enforced repo-locally and harder by
+   zizmor, actionlint, and the
    [workflow-permissions audit](security-posture.md#workflow-permissions-audit).
-   Those block a PR; Scorecard only scores it afterwards.
+   Those block a PR; Scorecard only scores it afterwards. Scorecard's
+   *Branch-Protection* check is an **accepted gap**, with no replacement: none of those tools
+   reads branch-protection settings, and since the watchdog's
+   [retirement](mill-agents.md#retired-agents) fleet branch protection is
+   configured but not machine-verified — see the residual gap in
+   [repo baseline](repo-baseline.md#branch-protection). *Failure mode this
+   note prevents:* reading the Scorecard drop as if branch-protection drift
+   were still caught somewhere.
 3. **`publish_results` has no consumer.** Publishing exists so third
    parties can read a score on deps.dev or a badge; nothing outside the
    fleet consumes these repos that way, so the published score is

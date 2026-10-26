@@ -89,6 +89,11 @@ implement redaction or merge); they are the deploy system's responsibility.
   or UI that reads component config MUST redact every field marked
   `writeOnly` in the committed `config.schema.json`. The secret value is
   never echoed — only the key name and its set/unset status may be exposed.
+  This includes central-deploy's chat volume-files endpoint
+  (`GET /chat/services/{name}/volumes/{vol}/files`): a read of the file at
+  the component's `robotsix.deploy.config-target` path is a config read and
+  MUST be refused or served through the same redaction, per
+  [chat access §5.2](chat-access-standard.md#52-volumes-read-only).
 - **Merge on write.** Partial-update semantics: a write that omits a secret
   field (or submits it blank / with an unchanged sentinel value) MUST
   preserve the stored value. Only an explicitly submitted, non-blank,
@@ -284,7 +289,7 @@ below, mirroring the pattern in
 
 | Rule | Audit criterion |
 |---|---|
-| Redact on read | Every config-read path — `GET /config`, version-history reads, audit-log serialization — routes through `mask_secrets()` (or an equivalent redaction wrapper) *before* serialization. `grep` the deploy system's config-API module for `mask_secrets`; any GET path that serializes a `writeOnly` field without it is a violation. |
+| Redact on read | Every config-read path — `GET /config`, version-history reads, audit-log serialization, and the chat volume-files endpoint when it reads the `config-target` path — routes through `mask_secrets()` (or an equivalent redaction wrapper) *before* serialization. `grep` the deploy system's config-API module for `mask_secrets`; any GET path that serializes a `writeOnly` field without it is a violation. |
 | Merge on write | Config writes route through `apply_update()` merge semantics (per the [config-ownership](config-ownership.md) helper table), so a partial write that omits a secret preserves the stored value. Version-history persistence stores only the fact that a secret key changed, never its value — `grep` history-write sites for raw secret values reaching storage. |
 | UI rendering | The Configure UI form is generated from the committed `config/config.schema.json`; every `writeOnly` field renders masked with a set/unset badge and the value is never echoed in any API response the form consumes. This is a design-level property the auditor reads at code review. |
 

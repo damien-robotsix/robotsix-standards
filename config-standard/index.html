@@ -3321,8 +3321,13 @@ implements it: a component defines one pydantic model and calls <code>load_confi
   not docstring-only. No real credentials are committed anywhere.</p>
 <p><strong>Management-surface layer — central-deploy config API + Configure UI</strong></p>
 <p>These rules apply to any surface that reads, writes, or displays component
-config. They are <strong>not</strong> library concerns (<code>robotsix-config</code> does not
-implement redaction or merge); they are the deploy system's responsibility.</p>
+config. The primitives live in the shared library: <code>robotsix_config</code>
+implements redaction (<code>mask_secrets</code>), merge-on-write (<code>apply_update</code>) and
+the secret-free version history (<code>robotsix_config.history</code>, planned — not yet shipped), and a
+component's own <code>/config</code> surface MUST use them rather than hand-roll them
+(see <a href="../config-ownership/#where-the-history-lives-and-who-implements-it">config ownership</a>).
+The deploy system's config API and Configure UI MUST honour the same rules
+on every path they serve.</p>
 <ul>
 <li><strong>Redact on read.</strong> Any GET endpoint, config version history, audit log,
   or UI that reads component config MUST redact every field marked
@@ -3337,8 +3342,9 @@ implement redaction or merge); they are the deploy system's responsibility.</p>
   field (or submits it blank / with an unchanged sentinel value) MUST
   preserve the stored value. Only an explicitly submitted, non-blank,
   non-sentinel secret key overwrites the stored secret. Secret values MUST
-  NOT be stored in config version history — history records that a secret
-  key changed (e.g. "secret <code>password</code> updated"), never its content.</li>
+  NOT be stored in config version history. The storage form and the rollback
+  behaviour are specified once, in
+  <a href="../config-ownership/#where-the-history-lives-and-who-implements-it">config ownership</a>.</li>
 <li><strong>UI rendering.</strong> Forms are generated from the committed
   <code>config.schema.json</code>. Every <code>writeOnly</code> field renders as a blank masked
   (password) input with a set/unset badge — the badge is the only
@@ -3514,7 +3520,7 @@ below, mirroring the pattern in
 </tr>
 <tr>
 <td>Merge on write</td>
-<td>Config writes route through <code>apply_update()</code> merge semantics (per the <a href="../config-ownership/">config-ownership</a> helper table), so a partial write that omits a secret preserves the stored value. Version-history persistence stores only the fact that a secret key changed, never its value — <code>grep</code> history-write sites for raw secret values reaching storage.</td>
+<td>Config writes route through <code>apply_update()</code> merge semantics (per the <a href="../config-ownership/">config-ownership</a> helper table), so a partial write that omits a secret preserves the stored value. Version-history persistence stores only the fact that a secret key changed, never its value — <code>grep</code> history-write sites for raw secret values reaching storage; the planned <code>robotsix_config.history</code> unit test (write a secret, rotate it, assert the old value is absent from <code>&lt;config&gt;.versions</code>) will enforce this fleet-wide once the module ships.</td>
 </tr>
 <tr>
 <td>UI rendering</td>

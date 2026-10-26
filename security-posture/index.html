@@ -3970,6 +3970,10 @@ dashboard-watching:</p>
 <td>Deployment system / management surfaces: central-deploy config-read endpoints (<code>GET /config</code>, version-history reads, audit-log serialization) route through <code>mask_secrets()</code> before serialization; config writes use <code>apply_update()</code> merge-on-write; version history stores no secret values — audited per <a href="../config-standard/#how-this-is-enforced">config standard §3</a></td>
 </tr>
 <tr>
+<td>Config history contains no secret values</td>
+<td>Components with a <code>/config</code> surface: the <code>&lt;config&gt;.versions</code> sidecar's <code>data</code> snapshots carry only a set/unset marker for each <code>SecretStr</code> / <code>writeOnly</code> field, per <a href="../config-ownership/#where-the-history-lives-and-who-implements-it">config ownership</a>. Until the planned <code>robotsix_config.history</code> unit test (write a secret, rotate it, assert the old value is absent from <code>&lt;config&gt;.versions</code>) exists, audit this by code review of the sidecar writer; the test is not yet in place (CWE-312, CWE-226)</td>
+</tr>
+<tr>
 <td>Log hygiene</td>
 <td>Deployable HTTP components: a test sends a request carrying <code>Authorization: Bearer &lt;sentinel&gt;</code> and asserts the sentinel string is absent from captured log output; a grep/Semgrep rule finds no logging call that passes <code>request.headers</code> or <code>request.url</code> (e.g. <code>logger\..*\(.*request\.headers</code> and <code>logger\..*\(.*request\.url\b(?!\.path)</code>); a structlog redaction processor sits at the start of the chain; any per-request DEBUG override accepts only authenticated operator or internal callers — per <a href="../logging/#6-never-log-sensitive-data">logging rule 6</a> (CWE-532, OWASP A09)</td>
 </tr>

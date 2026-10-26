@@ -3590,6 +3590,21 @@ component MUST validate the rolled-back config before applying it.</p>
 <li>If the target version's config fails validation against the current
   pydantic model (e.g. a field was added since that version was written),
   the component MUST return <code>422</code> and MUST NOT apply the rollback.</li>
+<li><strong>Secrets are never rolled back.</strong> History stores no secret values (see
+  <a href="#where-the-history-lives-and-who-implements-it">Where the history lives</a>),
+  so rollback restores every non-secret field from the target version and
+  <strong>keeps the current stored value of every secret field</strong> — even if the
+  secret was rotated, set or unset after the target version. To revert a
+  credential, the operator re-enters it through <code>PUT /config</code>.
+  Before validation, the component MUST replace each set/unset marker in the
+  target snapshot (<code>{"secret": "set"}</code> or <code>{"secret": "unset"}</code>) with the
+  current stored value of that secret field. A marker is not a valid
+  <code>SecretStr</code> value, so validating it unreplaced would return <code>422</code> on every
+  rollback to a version that held a secret.
+  <em>Failure mode prevented:</em> an operator rolls back across a credential
+  rotation expecting the old credential to return; without a stated rule,
+  implementations would diverge between silently keeping, blanking or
+  failing on the secret.</li>
 </ul>
 <h3 id="standard-ui-affordance">Standard UI affordance<a class="headerlink" href="#standard-ui-affordance" title="Permanent link">&para;</a></h3>
 <p>Every UI-bearing component MUST provide a <strong>Settings</strong> or <strong>Config</strong> panel,
@@ -3605,7 +3620,8 @@ reachable from the component's primary navigation. The panel:</p>
 <li><strong>Shows version history.</strong> A "History" tab or collapsible section lists
   recent versions from <code>GET /config/versions</code> with timestamps and changed
   keys. The operator can select a previous version and trigger a rollback
-  from the panel.</li>
+  from the panel. The rollback control MUST state the secret-field rule from
+  <a href="#post-configrollback"><code>POST /config/rollback</code></a>.</li>
 <li><strong>Never echoes secrets.</strong> Secret fields are always rendered as masked
   (<code>**********</code>) with a set/unset badge. The operator cannot view existing
   secret values but can set or change them — the field follows the
@@ -3619,11 +3635,30 @@ the full HTTP surface (<code>GET /config</code>, <code>PUT /config</code>, <code
 <p>The HTTP surface above says <em>what</em> a component exposes. This says where the
 history is stored, and forbids reimplementing it per component.</p>
 <p><strong>Rule: the history is a <code>&lt;config&gt;.versions</code> JSONL sidecar, and it is
-implemented by <code>robotsix_config.history</code>.</strong></p>
+provided by <code>robotsix_config.history</code></strong> (planned — not yet shipped).</p>
 <p>One JSON object per line, appended, never rewritten:</p>
 <div class="highlight"><pre><span></span><code><span class="p">{</span><span class="nt">&quot;version&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;timestamp&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2026-08-07T22:03:27+00:00&quot;</span><span class="p">,</span>
-<span class="w"> </span><span class="nt">&quot;changed_keys&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;langfuse (secret)&quot;</span><span class="p">],</span><span class="w"> </span><span class="nt">&quot;data&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="nt">&quot;...&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;config snapshot&quot;</span><span class="p">}}</span>
+<span class="w"> </span><span class="nt">&quot;changed_keys&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;langfuse (secret)&quot;</span><span class="p">],</span>
+<span class="w"> </span><span class="nt">&quot;data&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="nt">&quot;log_level&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;INFO&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;langfuse&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="nt">&quot;host&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;https://langfuse.example&quot;</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">&quot;secret_key&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="nt">&quot;secret&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;set&quot;</span><span class="p">}}}}</span>
 </code></pre></div>
+<p><strong>Rule: a history record's <code>data</code> snapshot MUST omit the value of every
+secret field.</strong> Every field the model declares <code>SecretStr</code> (JSON Schema
+<code>writeOnly</code>) is replaced by a set/unset marker — <code>{"secret": "set"}</code> or
+<code>{"secret": "unset"}</code> — never its content, masked or otherwise. This is the
+storage form of the rule in the <a href="../config-standard/">config standard</a> §3
+(<em>Merge on write</em>); <code>robotsix_config.history</code> will enforce it, and its planned unit test
+(write a secret, rotate it, assert the old value is absent from
+<code>&lt;config&gt;.versions</code>) will be the fleet-wide check once the module ships.</p>
+<blockquote>
+<p><strong>Failure mode prevented.</strong> The sidecar is appended and never rewritten,
+and retains at least 20 versions. If a snapshot held secret values, every
+historical credential would persist in cleartext on the volume (CWE-312):
+rotating a leaked key would not purge it, and the old value would stay
+readable by anything that can read the volume — backups, or a
+volume-read path — long after rotation (OWASP Secrets Management;
+CWE-226).</p>
+</blockquote>
 <p>The sidecar sits beside the config file so it travels with the same volume,
 the same backup, and the same file permissions (<code>0600</code>). A component MUST
 NOT keep its history anywhere the config file is not — a database, a
@@ -3729,9 +3764,10 @@ as they affect the component's HTTP surface and the deploy-plane UI.</p>
   submitted, non-blank secret key overwrites the stored secret. This is the
   same partial-update semantics as for all other fields, per the
   <a href="../config-standard/">config standard</a> §3.</li>
-<li><strong>Version history never stores secret values.</strong> When a secret changes, the
-  version record notes that the key changed but stores nothing about the
-  value.</li>
+<li><strong>Version history never stores secret values.</strong> The storage form is set
+  out in <a href="#where-the-history-lives-and-who-implements-it">Where the history lives</a>;
+  rollback behaviour for secret fields is set out in
+  <a href="#post-configrollback"><code>POST /config/rollback</code></a>.</li>
 <li><strong>The deploy-plane UI masks secrets server-side.</strong> The central-deploy
   config form renders <code>writeOnly</code> fields as masked (password) inputs with a
   set/unset badge and never echoes stored secret values back to the browser.

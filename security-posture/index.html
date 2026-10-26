@@ -3882,10 +3882,15 @@ fleet's posture against each Source level:</p>
   attestations; adoption is deferred pending tooling maturity and upstream
   ecosystem support.</li>
 <li><strong>Source L3 (continuous technical controls):</strong> not met — branch protection
-  with <code>enforce_admins: true</code> enforces required status checks on every commit
-  to <code>main</code>, so the underlying control is in place. Because SLSA levels are
-  cumulative and Source L2 remains a gap, Source L3 is not reached even though
-  the branch-protection control itself is enforced.</li>
+  with <code>enforce_admins: true</code> is configured to enforce required status checks
+  on every commit to <code>main</code>, but it is <strong>configured, not continuously
+  verified</strong>: the apply-script runs only when triggered and no automated check
+  re-reads the protection settings. This is a dated <strong>accepted risk</strong>
+  (accepted 2026-10-22, re-stated 2026-10-26, review 2027-01-26; see
+  <a href="../repo-baseline/#branch-protection">repo baseline</a>). Source L3 requires
+  continuously enforced technical controls, so it is not reached on two
+  counts: SLSA levels are cumulative and Source L2 remains a gap, and the
+  branch-protection control itself is unverified.</li>
 <li><strong>Source L4 (two-party review):</strong> not met — SLSA Source L4 requires an
   informed review by two distinct trusted persons on every change to a
   protected branch. The fleet's branch-protection rule mandates one required

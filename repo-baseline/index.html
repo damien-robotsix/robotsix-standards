@@ -3669,18 +3669,22 @@ idempotent apply-script in robotsix-github-workflows (<code>gh api</code> loop o
 fleet, setting <code>enforce_admins: true</code> on every protected branch and
 <code>can_approve_pull_request_reviews: false</code> on every repo) — run it when a repo
 is created or the required-check set changes.</p>
-<p><strong>Enforcement: unverified — residual gap since the watchdog's retirement.</strong>
-The apply-script is trigger-based; it never re-verifies that protection stayed
-intact. The periodic <code>branch-protection-check</code> watchdog was
-<a href="../mill-agents/#retired-agents">retired</a> on 2026-10-22 (it never had GitHub API
-access), so nothing machine-verifies these rules: PR-only, required status
-checks, required approving review, force-push disabled, <code>enforce_admins: true</code>,
-and Actions PR approval disabled (<code>can_approve_pull_request_reviews: false</code>).
+<p><strong>Enforcement: unverified — ACCEPTED RISK (accepted 2026-10-22 by the operator,
+re-stated 2026-10-26; review date 2027-01-26).</strong> The apply-script is
+trigger-based; it never re-verifies that protection stayed intact. The periodic
+<code>branch-protection-check</code> watchdog was <a href="../mill-agents/#retired-agents">retired</a>
+(decision 2026-10-22, removal 2026-10-26 / #434) because it never had GitHub API
+access. Reason: no GitHub API credential is provisioned for a fleet watchdog.
+Nothing machine-verifies these rules: PR-only, required status checks, required
+approving review, force-push disabled, <code>enforce_admins: true</code>, and Actions PR
+approval disabled (<code>can_approve_pull_request_reviews: false</code>).
 <em>Failure mode this leaves open:</em> protection can silently erode (emergency
 bypass left on, a repo added without the script, a required-check set that
-drifted). Verify by hand with
-<code>gh api repos/&lt;owner&gt;/&lt;repo&gt;/actions/permissions/workflow</code> (plus the branch's
-protection settings) when onboarding or auditing a repo.</p>
+drifted).</p>
+<p><strong>Residual control:</strong> the apply-script run at onboarding, plus manual checks
+during audits: <code>gh api repos/&lt;owner&gt;/&lt;repo&gt;/branches/main/protection</code> and
+<code>gh api repos/&lt;owner&gt;/&lt;repo&gt;/actions/permissions/workflow</code>, for each repo in
+<a href="../fleet/">fleet</a>.</p>
 <p>If an operational emergency requires admin bypass (e.g. a hotfix during CI
 outage), temporarily disable branch protection with a reason recorded,
 apply the fix, and re-enable immediately afterward. The bypass must be

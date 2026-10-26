@@ -3127,10 +3127,11 @@ contents via the mill's GitHub access, and files draft tickets. It cannot
 change any repo; all remediation flows through the normal ticket pipeline.</p>
 <h2 id="retired-agents">Retired agents<a class="headerlink" href="#retired-agents" title="Permanent link">&para;</a></h2>
 <ul>
-<li><strong><code>branch-protection-check</code></strong> — retired 2026-10-22 by operator decision. It
-  never had GitHub API access, so it never verified anything. Fleet
-  branch-protection posture (incl. Actions PR approval) is <strong>not</strong>
-  machine-verified — see the residual gap in
+<li><strong><code>branch-protection-check</code></strong> — retirement decided 2026-10-22 by operator decision
+  (ticket bd7e: "retire the check rather than provision a credential"); removed
+  in 2026-10-26 (#434). It never had GitHub API access, so it never verified
+  anything. Fleet branch-protection posture (incl. Actions PR approval) is <strong>not</strong>
+  machine-verified — recorded as an accepted risk in
   <a href="../repo-baseline/#branch-protection">repo-baseline</a>. <em>Failure mode this
   note prevents:</em> readers trusting a watchdog that no longer runs.</li>
 </ul>

@@ -39,6 +39,32 @@ onboarding flow accepts it:
   [config standard](config-standard.md)) and the field → `ComponentConfig`
   mapping.
 
+## config-assist: secret seeds never on argv
+
+The `config-assist` label's `{dotted.path}` placeholders are interpolated into
+the command central-deploy runs inside the image. Command-line arguments are
+not a secret channel, so:
+
+- Seeds whose config-schema field is `writeOnly` (a `SecretStr`) **MUST** be
+  delivered to the assist command through **stdin** or a **`0600` temp file in
+  the config volume** (removed after the run) — never through `{placeholder}`
+  argv interpolation. Non-secret seeds may still use argv placeholders.
+- **Audit criterion:** preflight rejects a `config-assist` template containing
+  a placeholder that resolves to a `writeOnly` schema field.
+- The canonical template carries no verification-disabling flag (no
+  `--no-verify` that skips TLS or credential checks).
+
+**Failure mode this prevents:** a password interpolated into argv is stored
+in the container's `Config.Cmd` (readable via `docker inspect` or socket-proxy
+read access), visible in the host process list (`ps`, `/proc/<pid>/cmdline`)
+while the assist runs, and echoed into deploy logs when the assist fails —
+contradicting the [config standard](config-standard.md)'s never-echoed,
+never-logged, redacted-on-read posture (CWE-214; OWASP Secrets Management
+Cheat Sheet: do not pass secrets on the command line). Because the
+[integration guide](integrating-a-service.md#config-assist-auto-generating-operator-config)
+example is the copy-paste template, an argv-secret pattern there would spread
+to every adopting component.
+
 ## Volumes only — no host-path bind mounts
 
 Deployed components **never bind-mount host paths**; all persistent or shared

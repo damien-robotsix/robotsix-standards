@@ -253,13 +253,29 @@ service:
 
 ```yaml
 labels:
-  robotsix.deploy.config-assist: "detect {accounts.0.auth.username} --id {accounts.0.id} --overwrite --password {accounts.0.auth.password} --no-verify --output /home/app/config/config.json"
+  robotsix.deploy.config-assist: "detect {accounts.0.auth.username} --id {accounts.0.id} --overwrite --password-stdin --output /home/app/config/config.json"
   robotsix.deploy.config-assist-seeds: "accounts.0.auth.username,accounts.0.auth.password"
 ```
 
 - `config-assist` is a command run inside the image; `{dotted.path}`
-  placeholders are filled from operator-entered seed values.
+  placeholders are filled from operator-entered **non-secret** seed values.
 - `config-assist-seeds` lists which fields the UI collects before running it.
+- **Secret seeds never go on argv.** A seed whose schema field is `writeOnly`
+  (a `SecretStr`) **must not** appear as a `{placeholder}` — it reaches the
+  command on stdin (here via `--password-stdin`) or through a `0600` temp file
+  in the config volume (e.g. `--password-file /home/app/config/.seed`), never
+  through argument interpolation. Preflight rejects a template whose
+  placeholder resolves to a `writeOnly` field — see the
+  [deploy contract](deploy-contract.md#config-assist-secret-seeds-never-on-argv).
+  *Failure prevented:* argv lands in the container's `Config.Cmd`
+  (`docker inspect`, socket-proxy reads), the host process list
+  (`/proc/<pid>/cmdline`) and deploy error logs — leaking a credential the
+  [config standard](config-standard.md) promises is never echoed or logged
+  (CWE-214).
+- Do not ship verification-disabling flags (e.g. a `--no-verify` that skips
+  TLS or credential checks) in the assist command: the generated config must
+  be validated against the real account, or the operator only discovers bad
+  credentials when the service fails at runtime.
 - Every referenced command + flag **must actually exist** in the shipped CLI —
   verify against your real entry point, or the assist step fails at deploy time.
 

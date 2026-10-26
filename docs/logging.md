@@ -288,7 +288,8 @@ list, no log event, at any level including DEBUG, may contain:
 
 Two concrete requirements follow:
 
-1. **The request middleware logs only `path` and `method`.** It never logs
+1. **The request middleware binds only the fields rule 4 names** —
+   `request_id`, `correlation_id`, `path` and `method`. It never logs
    `request.url` (which includes the query string), `request.headers`, or
    the request or response body. The rule 4 middleware binds
    `request.url.path`, not `str(request.url)`. To log a specific header,
@@ -296,8 +297,10 @@ Two concrete requirements follow:
    (`X-Request-ID` is fine).
 2. **A redaction processor runs at the start of the structlog chain.** Put
    a processor that drops or masks sensitive keys before any renderer. It
-   catches a secret bound by mistake as a context var or event field. It
-   is a backstop, not permission to log raw objects:
+   catches a secret bound by mistake as a top-level context var or event
+   field. It inspects top-level keys only: a secret nested inside a
+   dict-valued field is **not** caught. It is a last-line backstop, not a
+   guarantee and not permission to log raw objects:
 
 ```python
 import re

@@ -3224,19 +3224,20 @@ every new consumer to discover the pin syntax by reading <code>pyproject.toml</c
 that leads to consumers pinning to <code>main</code> or guessing at the syntax.</p>
 </blockquote>
 <h2 id="enforcement">Enforcement<a class="headerlink" href="#enforcement" title="Permanent link">&para;</a></h2>
-<p>Rules 4 and 5 are to be enforced by a <strong>public-registry check</strong>
-(<code>scripts/check-public-registry.py</code>, to run as a <code>public-registry-check</code> job in
-the shared <code>baseline-check.yml</code>). This section is the check's specification;
-the implementation will follow it and does not redefine it.</p>
-<p><strong>Status:</strong> specified, implementation pending. The job does not exist yet, and
-no periodic agent or CI step is assigned to check rules 4–5 in the meantime.
-Until it lands, reviewers check changes to workflows, <code>package.json</code>, <code>.npmrc</code>
-and <code>pyproject.toml</code> against the patterns below during code review (see the
+<p>Rules 4 and 5 are enforced by a <strong>public-registry check</strong>
+(<code>scripts/check-public-registry.py</code>, run as the <code>public-registry-check</code> job in
+<code>baseline-check.yml</code>). This section is the check's specification; the script
+implements it and does not redefine it.</p>
+<p><strong>Status:</strong> implemented, warning-first (see <em>Rollout</em> below). Reviewers still
+check changes to workflows, <code>package.json</code>, <code>.npmrc</code> and <code>pyproject.toml</code>
+against the patterns below during code review (see the
 <em>Distribution / registry</em> row in the
 <a href="../security-posture/#audit">security posture audit table</a>).</p>
-<p><strong>Scope.</strong> The check scans every changed file matching
-<code>.github/workflows/*.yml</code> / <code>*.yaml</code>, <code>package.json</code>, <code>.npmrc</code>, and
-<code>pyproject.toml</code> on each PR and push to <code>main</code>.</p>
+<p><strong>Scope.</strong> The check scans every file matching <code>.github/workflows/*.yml</code> /
+<code>*.yaml</code>, <code>package.json</code>, <code>.npmrc</code>, and <code>pyproject.toml</code> on each PR and push to
+<code>main</code> — at minimum every changed file of that kind. The job runs the script
+with no arguments, scanning every in-scope file in the repo (a superset of the
+changed files); given file paths, the script scans only those.</p>
 <p><strong>It flags:</strong></p>
 <table>
 <thead>
@@ -3283,7 +3284,9 @@ and <code>pyproject.toml</code> against the patterns below during code review (s
 the <code>damien-robotsix</code> org); any other domain needs Platform Owner approval and is added to the check's
 allow-list in the same change. A Platform Owner–approved exception (rule 4) is
 recorded as a per-repo allow-list entry naming the approval, never as an inline
-suppression.</p>
+suppression: one line per exception in <code>.public-registry-allowlist</code> at the repo
+root, <code>&lt;path&gt; &lt;rule-id&gt; &lt;approval reference&gt;</code>; an entry without the approval
+reference is ignored.</p>
 <p><strong>Rollout.</strong> The check is <strong>warning-first</strong>: it emits <code>::warning::</code>
 annotations and does not fail the build, so existing repos can converge. It
 flips to <strong>blocking</strong> (exit 1) on <strong>2027-01-31</strong>; from that date a match fails

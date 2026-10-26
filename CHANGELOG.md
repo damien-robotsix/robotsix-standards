@@ -3,6 +3,17 @@
 
 # Changelog
 
+## [0.7.3](https://github.com/damien-robotsix/robotsix-standards/compare/v0.7.2...v0.7.3) (2026-10-26)
+
+
+### Documentation
+
+* chat-access-standard: chat volume-read endpoint can return cleartext config.json secrets, bypassing config-standard redact-on-read (20261025T211539Z-chat-access-standard-chat-volume-read-en-9275) ([#428](https://github.com/damien-robotsix/robotsix-standards/issues/428)) ([1deca67](https://github.com/damien-robotsix/robotsix-standards/commit/1deca671bcfcab19d73e1de59b5ee30d74e71793))
+* distribution-packaging: the MUST-level ban on public registries has no automated check and no security-posture row (20261026T012824Z-distribution-packaging-the-must-level-ba-1015) ([#427](https://github.com/damien-robotsix/robotsix-standards/issues/427)) ([c36b0f4](https://github.com/damien-robotsix/robotsix-standards/commit/c36b0f412f13c9177ddc5d98d80484ed986b1de7))
+* http-client-persistence: `requests.Session.timeout = 10.0` is a no-op, so the recommended pattern leaves requests with no timeout (20261025T211539Z-http-client-persistence-requests-session-d588) ([#422](https://github.com/damien-robotsix/robotsix-standards/issues/422)) ([9d3f76e](https://github.com/damien-robotsix/robotsix-standards/commit/9d3f76e7b0b706998de10c024a9e8bbab9ae1fc4))
+* integrating-a-service: the canonical config-assist example passes the account password as a command-line argument (20261026T012824Z-integrating-a-service-the-canonical-conf-5602) ([#426](https://github.com/damien-robotsix/robotsix-standards/issues/426)) ([b2da332](https://github.com/damien-robotsix/robotsix-standards/commit/b2da332e19dc633d9f21bbf695015202a2ec33d7))
+* logging: no rule on what must never be logged (secrets, auth headers, PII), and the client-controlled DEBUG override is unguarded (20261026T012824Z-logging-no-rule-on-what-must-never-be-lo-41fc) ([#425](https://github.com/damien-robotsix/robotsix-standards/issues/425)) ([e74c3d3](https://github.com/damien-robotsix/robotsix-standards/commit/e74c3d31eacda95d3e81b8dbf31ebdb715edbfbe))
+
 ## [0.7.2](https://github.com/damien-robotsix/robotsix-standards/compare/v0.7.1...v0.7.2) (2026-10-24)
 
 

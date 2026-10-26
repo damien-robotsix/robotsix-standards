@@ -84,7 +84,7 @@ implements it: a component defines one pydantic model and calls `load_config`.
 These rules apply to any surface that reads, writes, or displays component
 config. The primitives live in the shared library: `robotsix_config`
 implements redaction (`mask_secrets`), merge-on-write (`apply_update`) and
-the secret-free version history (`robotsix_config.history`), and a
+the secret-free version history (`robotsix_config.history`, planned — not yet shipped), and a
 component's own `/config` surface MUST use them rather than hand-roll them
 (see [config ownership](config-ownership.md#where-the-history-lives-and-who-implements-it)).
 The deploy system's config API and Configure UI MUST honour the same rules
@@ -103,11 +103,9 @@ on every path they serve.
   field (or submits it blank / with an unchanged sentinel value) MUST
   preserve the stored value. Only an explicitly submitted, non-blank,
   non-sentinel secret key overwrites the stored secret. Secret values MUST
-  NOT be stored in config version history — history records that a secret
-  key changed (e.g. "secret `password` updated"), never its content; a
-  history snapshot carries only a set/unset marker per secret field, and
-  rollback never restores a secret (the current value is kept), per
-  [config ownership](config-ownership.md#post-configrollback).
+  NOT be stored in config version history. The storage form and the rollback
+  behaviour are specified once, in
+  [config ownership](config-ownership.md#where-the-history-lives-and-who-implements-it).
 - **UI rendering.** Forms are generated from the committed
   `config.schema.json`. Every `writeOnly` field renders as a blank masked
   (password) input with a set/unset badge — the badge is the only
@@ -298,7 +296,7 @@ below, mirroring the pattern in
 | Rule | Audit criterion |
 |---|---|
 | Redact on read | Every config-read path — `GET /config`, version-history reads, audit-log serialization, and the chat volume-files endpoint when it reads the `config-target` path — routes through `mask_secrets()` (or an equivalent redaction wrapper) *before* serialization. `grep` the deploy system's config-API module for `mask_secrets`; any GET path that serializes a `writeOnly` field without it is a violation. The chat volume-files `config-target` read may instead be refused with `403` (failing closed when redaction cannot run, per [chat access §5.2](chat-access-standard.md#52-volumes-read-only)); a `403` there is compliant, not a violation. |
-| Merge on write | Config writes route through `apply_update()` merge semantics (per the [config-ownership](config-ownership.md) helper table), so a partial write that omits a secret preserves the stored value. Version-history persistence stores only the fact that a secret key changed, never its value — `grep` history-write sites for raw secret values reaching storage; the `robotsix_config.history` unit test (write a secret, rotate it, assert the old value is absent from `<config>.versions`) enforces this fleet-wide. |
+| Merge on write | Config writes route through `apply_update()` merge semantics (per the [config-ownership](config-ownership.md) helper table), so a partial write that omits a secret preserves the stored value. Version-history persistence stores only the fact that a secret key changed, never its value — `grep` history-write sites for raw secret values reaching storage; the planned `robotsix_config.history` unit test (write a secret, rotate it, assert the old value is absent from `<config>.versions`) will enforce this fleet-wide once the module ships. |
 | UI rendering | The Configure UI form is generated from the committed `config/config.schema.json`; every `writeOnly` field renders masked with a set/unset badge and the value is never echoed in any API response the form consumes. This is a design-level property the auditor reads at code review. |
 
 The [security posture](security-posture.md#audit) page carries the fleet-wide

@@ -224,6 +224,11 @@ component MUST validate the rolled-back config before applying it.
   **keeps the current stored value of every secret field** — even if the
   secret was rotated, set or unset after the target version. To revert a
   credential, the operator re-enters it through `PUT /config`.
+  Before validation, the component MUST replace each set/unset marker in the
+  target snapshot (`{"secret": "set"}` or `{"secret": "unset"}`) with the
+  current stored value of that secret field. A marker is not a valid
+  `SecretStr` value, so validating it unreplaced would return `422` on every
+  rollback to a version that held a secret.
   *Failure mode prevented:* an operator rolls back across a credential
   rotation expecting the old credential to return; without a stated rule,
   implementations would diverge between silently keeping, blanking or
@@ -244,8 +249,8 @@ reachable from the component's primary navigation. The panel:
 - **Shows version history.** A "History" tab or collapsible section lists
   recent versions from `GET /config/versions` with timestamps and changed
   keys. The operator can select a previous version and trigger a rollback
-  from the panel. The rollback control MUST state that secret fields are
-  not rolled back — their current values are kept.
+  from the panel. The rollback control MUST state the secret-field rule from
+  [`POST /config/rollback`](#post-configrollback).
 - **Never echoes secrets.** Secret fields are always rendered as masked
   (`**********`) with a set/unset badge. The operator cannot view existing
   secret values but can set or change them — the field follows the
@@ -262,7 +267,7 @@ The HTTP surface above says *what* a component exposes. This says where the
 history is stored, and forbids reimplementing it per component.
 
 **Rule: the history is a `<config>.versions` JSONL sidecar, and it is
-implemented by `robotsix_config.history`.**
+provided by `robotsix_config.history`** (planned — not yet shipped).
 
 One JSON object per line, appended, never rewritten:
 
@@ -278,9 +283,9 @@ secret field.** Every field the model declares `SecretStr` (JSON Schema
 `writeOnly`) is replaced by a set/unset marker — `{"secret": "set"}` or
 `{"secret": "unset"}` — never its content, masked or otherwise. This is the
 storage form of the rule in the [config standard](config-standard.md) §3
-(*Merge on write*); `robotsix_config.history` enforces it, and its unit test
+(*Merge on write*); `robotsix_config.history` will enforce it, and its planned unit test
 (write a secret, rotate it, assert the old value is absent from
-`<config>.versions`) is the fleet-wide check.
+`<config>.versions`) will be the fleet-wide check once the module ships.
 
 > **Failure mode prevented.** The sidecar is appended and never rewritten,
 > and retains at least 20 versions. If a snapshot held secret values, every
@@ -382,11 +387,10 @@ as they affect the component's HTTP surface and the deploy-plane UI.
   submitted, non-blank secret key overwrites the stored secret. This is the
   same partial-update semantics as for all other fields, per the
   [config standard](config-standard.md) §3.
-- **Version history never stores secret values.** When a secret changes, the
-  version record notes that the key changed but stores nothing about the
-  value — the `data` snapshot carries only a set/unset marker for each
-  secret field, and rollback keeps the current secret values (see
-  [`POST /config/rollback`](#post-configrollback)).
+- **Version history never stores secret values.** The storage form is set
+  out in [Where the history lives](#where-the-history-lives-and-who-implements-it);
+  rollback behaviour for secret fields is set out in
+  [`POST /config/rollback`](#post-configrollback).
 - **The deploy-plane UI masks secrets server-side.** The central-deploy
   config form renders `writeOnly` fields as masked (password) inputs with a
   set/unset badge and never echoes stored secret values back to the browser.

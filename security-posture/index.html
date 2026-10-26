@@ -3954,6 +3954,10 @@ dashboard-watching:</p>
 <td><code>uv audit --preview-features audit-command</code> at the pinned uv version / <code>pip-audit</code> passes in CI</td>
 </tr>
 <tr>
+<td>Distribution / registry</td>
+<td>No publish to a public package index and no public-registry credentials, per <a href="../distribution-packaging/#enforcement">distribution &amp; packaging rules 4–5</a>. Planned check: the <code>public-registry-check</code> job (<code>scripts/check-public-registry.py</code> in <code>baseline-check.yml</code>, not yet implemented) would find no <code>registry.npmjs.org</code> / <code>upload.pypi.org</code> / <code>pypi.org/legacy</code> endpoint, no <code>npm publish</code> / <code>twine upload</code> / <code>uv publish</code> without an approved internal registry, and no <code>NPM_TOKEN</code> / <code>PYPI_TOKEN</code> secret in workflows, <code>package.json</code> <code>publishConfig</code>, <code>.npmrc</code> or <code>pyproject.toml</code> — warning-first, blocking from 2027-01-31. Until the job lands, no periodic agent or CI step checks this row; it is verified by manual review of publish-related changes only</td>
+</tr>
+<tr>
 <td>Container image scan</td>
 <td>Trivy PR-scan and publish workflows present and passing (image-shipping repos only)</td>
 </tr>

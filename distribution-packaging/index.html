@@ -899,10 +899,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#2-pin-to-a-commit-sha-not-a-branch" class="md-nav__link">
+  <a href="#2-pin-to-a-commit-sha-not-a-branch-or-tag" class="md-nav__link">
     <span class="md-ellipsis">
       
-        2. Pin to a commit SHA, not a branch
+        2. Pin to a commit SHA, not a branch or tag
       
     </span>
   </a>
@@ -959,10 +959,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#enforcement-future" class="md-nav__link">
+  <a href="#enforcement" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Enforcement (future)
+        Enforcement
       
     </span>
   </a>
@@ -3009,10 +3009,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#2-pin-to-a-commit-sha-not-a-branch" class="md-nav__link">
+  <a href="#2-pin-to-a-commit-sha-not-a-branch-or-tag" class="md-nav__link">
     <span class="md-ellipsis">
       
-        2. Pin to a commit SHA, not a branch
+        2. Pin to a commit SHA, not a branch or tag
       
     </span>
   </a>
@@ -3069,10 +3069,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#enforcement-future" class="md-nav__link">
+  <a href="#enforcement" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Enforcement (future)
+        Enforcement
       
     </span>
   </a>
@@ -3114,7 +3114,8 @@ library follows the same path.</p>
 <h2 id="rules">Rules<a class="headerlink" href="#rules" title="Permanent link">&para;</a></h2>
 <h3 id="1-git-based-consumption-is-the-preferred-path">1. Git-based consumption is the preferred path<a class="headerlink" href="#1-git-based-consumption-is-the-preferred-path" title="Permanent link">&para;</a></h3>
 <p><strong>Rule:</strong> robotsix libraries are consumed directly from their GitHub repository,
-pinned to a tag or commit SHA. No registry publish step is required.</p>
+pinned to a full 40-character commit SHA (rule 2), optionally annotated with
+the release version in a comment. No registry publish step is required.</p>
 <p><strong>Rationale:</strong> A single-org, first-party set of repositories does not benefit
 from the overhead of a package index — publishing accounts, release machinery,
 token rotation — when every consumer already has access to the source. Git-based
@@ -3131,20 +3132,26 @@ one.</p>
 </blockquote>
 <p><strong>Python consumers</strong> use a git source in <code>pyproject.toml</code>:</p>
 <div class="highlight"><pre><span></span><code><span class="k">[tool.uv.sources]</span>
-<span class="n">robotsix-llmio</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">git</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">&quot;https://github.com/damien-robotsix/robotsix-llmio.git&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">rev</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">&quot;abc123def456&quot;</span><span class="w"> </span><span class="p">}</span>
+<span class="n">robotsix-llmio</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">git</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">&quot;https://github.com/damien-robotsix/robotsix-llmio.git&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">rev</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">&quot;0123456789abcdef0123456789abcdef01234567&quot;</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="c1"># v0.4.0</span>
 </code></pre></div>
 <p>Or a PEP 508 git URL in <code>[project] dependencies</code>:</p>
-<div class="highlight"><pre><span></span><code>robotsix-llmio @ git+https://github.com/damien-robotsix/robotsix-llmio@abc123def456
+<div class="highlight"><pre><span></span><code>robotsix-llmio @ git+https://github.com/damien-robotsix/robotsix-llmio@0123456789abcdef0123456789abcdef01234567
 </code></pre></div>
-<p><strong>npm consumers</strong> use a git URL:</p>
-<div class="highlight"><pre><span></span><code>git+https://github.com/damien-robotsix/robotsix-ui#v0.4.0
+<p><strong>npm consumers</strong> use a git URL with a SHA fragment (record the version in the
+PR or lockfile — <code>package.json</code> has no comments):</p>
+<div class="highlight"><pre><span></span><code>git+https://github.com/damien-robotsix/robotsix-ui#0123456789abcdef0123456789abcdef01234567
 </code></pre></div>
-<h3 id="2-pin-to-a-commit-sha-not-a-branch">2. Pin to a commit SHA, not a branch<a class="headerlink" href="#2-pin-to-a-commit-sha-not-a-branch" title="Permanent link">&para;</a></h3>
-<p><strong>Rule:</strong> Every first-party git source is pinned to a <strong>commit SHA</strong> (or an
-annotated tag, which resolves to a SHA). Branch refs like <code>main</code> are disallowed.</p>
+<h3 id="2-pin-to-a-commit-sha-not-a-branch-or-tag">2. Pin to a commit SHA, not a branch or tag<a class="headerlink" href="#2-pin-to-a-commit-sha-not-a-branch-or-tag" title="Permanent link">&para;</a></h3>
+<p><strong>Rule:</strong> Every first-party git source is pinned to a <strong>full 40-character
+commit SHA</strong>, optionally followed by a version comment (e.g. <code># v0.4.0</code>) where
+the manifest format allows comments. Branch refs like <code>main</code> and tag refs
+(lightweight or annotated) are disallowed as the pin itself.</p>
 <p><strong>Rationale:</strong> A branch ref drifts silently — a fresh lock (or any lock-refresh)
 can pull in unrelated upstream changes with no PR, and a rename or breaking
-change upstream then breaks resolution out of nowhere.</p>
+change upstream then breaks resolution out of nowhere. A tag is no better as a
+pin: any git tag, annotated or not, can be deleted and re-pushed at a different
+commit, so a tag pin does not give the immutability this rule exists for. Only
+a commit SHA is content-addressed (cf. OpenSSF Scorecard <em>Pinned-Dependencies</em>).</p>
 <blockquote>
 <p><strong>Failure mode.</strong> A <code>pyproject.toml</code> that pins <code>robotsix-llmio</code> to <code>main</code>
 works today but breaks tomorrow when <code>main</code> receives a breaking change the
@@ -3158,7 +3165,8 @@ version, generates the changelog, and pushes a <code>v*</code> tag — the full 
 documented in <a href="../release-please/">release-please</a>. The version source is
 declared following the <a href="../single-source-versioning/">single-source versioning</a>
 convention; deriving it from git tags is disallowed (release-please rule 3).
-Consumers pin to those tags (or the underlying SHA).</p>
+Consumers pin to the commit SHA each tag resolves to (rule 2), using the tag
+name only as the version comment.</p>
 <p><strong>Rationale:</strong> Tags give consumers a human-readable version to pin against while
 retaining the auditability of a git SHA. Release-please keeps every repo on the
 same release mechanism rather than each repo inventing its own. The single-source
@@ -3215,10 +3223,81 @@ every new consumer to discover the pin syntax by reading <code>pyproject.toml</c
 <code>package.json</code> of an existing consumer — a wasteful and error-prone process
 that leads to consumers pinning to <code>main</code> or guessing at the syntax.</p>
 </blockquote>
-<h2 id="enforcement-future">Enforcement (future)<a class="headerlink" href="#enforcement-future" title="Permanent link">&para;</a></h2>
-<p>A standards CI lint that scans changed workflows, <code>package.json</code>, and
-<code>pyproject.toml</code> for public-registry endpoints (<code>registry.npmjs.org</code>, public
-PyPI) and fails the PR if found. This is tracked as a follow-up ticket.</p>
+<h2 id="enforcement">Enforcement<a class="headerlink" href="#enforcement" title="Permanent link">&para;</a></h2>
+<p>Rules 4 and 5 are to be enforced by a <strong>public-registry check</strong>
+(<code>scripts/check-public-registry.py</code>, to run as a <code>public-registry-check</code> job in
+the shared <code>baseline-check.yml</code>). This section is the check's specification;
+the implementation will follow it and does not redefine it.</p>
+<p><strong>Status:</strong> specified, implementation pending. The job does not exist yet, and
+no periodic agent or CI step is assigned to check rules 4–5 in the meantime.
+Until it lands, reviewers check changes to workflows, <code>package.json</code>, <code>.npmrc</code>
+and <code>pyproject.toml</code> against the patterns below during code review (see the
+<em>Distribution / registry</em> row in the
+<a href="../security-posture/#audit">security posture audit table</a>).</p>
+<p><strong>Scope.</strong> The check scans every changed file matching
+<code>.github/workflows/*.yml</code> / <code>*.yaml</code>, <code>package.json</code>, <code>.npmrc</code>, and
+<code>pyproject.toml</code> on each PR and push to <code>main</code>.</p>
+<p><strong>It flags:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Pattern</th>
+<th>Where</th>
+<th>Why</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>registry.npmjs.org</code></td>
+<td>workflows, <code>package.json</code> <code>publishConfig.registry</code>, <code>.npmrc</code></td>
+<td>Public npm publish target (rule 4)</td>
+</tr>
+<tr>
+<td><code>upload.pypi.org</code>, <code>pypi.org/legacy</code>, <code>test.pypi.org</code></td>
+<td>workflows, <code>pyproject.toml</code> (<code>[[tool.uv.index]]</code> <code>publish-url</code>)</td>
+<td>Public PyPI upload endpoint (rule 4)</td>
+</tr>
+<tr>
+<td><code>npm publish</code> with no <code>--registry</code> pointing at an approved internal domain</td>
+<td>workflows</td>
+<td>Falls back to the public default registry (rule 5)</td>
+</tr>
+<tr>
+<td><code>twine upload</code> / <code>uv publish</code> with no <code>--repository-url</code> / <code>--publish-url</code> pointing at an approved internal domain</td>
+<td>workflows</td>
+<td>Falls back to public PyPI (rule 5)</td>
+</tr>
+<tr>
+<td><code>pypa/gh-action-pypi-publish</code></td>
+<td>workflows</td>
+<td>Action whose default target is public PyPI (rule 4)</td>
+</tr>
+<tr>
+<td><code>secrets.NPM_TOKEN</code>, <code>secrets.PYPI_TOKEN</code>, <code>secrets.PYPI_API_TOKEN</code></td>
+<td>workflows</td>
+<td>Public-registry credentials in CI (rules 4–5)</td>
+</tr>
+</tbody>
+</table>
+<p>The approved internal domain is <code>npm.pkg.github.com</code> (GitHub Packages under
+the <code>damien-robotsix</code> org); any other domain needs Platform Owner approval and is added to the check's
+allow-list in the same change. A Platform Owner–approved exception (rule 4) is
+recorded as a per-repo allow-list entry naming the approval, never as an inline
+suppression.</p>
+<p><strong>Rollout.</strong> The check is <strong>warning-first</strong>: it emits <code>::warning::</code>
+annotations and does not fail the build, so existing repos can converge. It
+flips to <strong>blocking</strong> (exit 1) on <strong>2027-01-31</strong>; from that date a match fails
+CI.</p>
+<blockquote>
+<p><strong>Failure mode.</strong> Without a mechanical gate, rules 4–5 are an aspiration: a
+PR that adds <code>npm publish</code> with an <code>NPM_TOKEN</code> secret, or a <code>uv publish</code> to
+public PyPI, merges on review alone — and the first sign of the breach is the
+package appearing on the public index under the org's name, after which it
+cannot be fully retracted (mirrors and caches keep it). Alignment:
+<a href="https://slsa.dev/spec/v1.0/levels">SLSA v1.0 Build track</a> (controlled
+distribution), <a href="https://owasp.org/Top10/A08_2021-Software_and_Data_Integrity_Failures/">OWASP Top 10 2021 A08</a>
+(dependency confusion, credential-theft publishing).</p>
+</blockquote>
 
 
 

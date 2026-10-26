@@ -16,7 +16,8 @@ library follows the same path.
 ### 1. Git-based consumption is the preferred path
 
 **Rule:** robotsix libraries are consumed directly from their GitHub repository,
-pinned to a tag or commit SHA. No registry publish step is required.
+pinned to a full 40-character commit SHA (rule 2), optionally annotated with
+the release version in a comment. No registry publish step is required.
 
 **Rationale:** A single-org, first-party set of repositories does not benefit
 from the overhead of a package index — publishing accounts, release machinery,
@@ -36,29 +37,35 @@ supply-chain risk (registry-account compromise, dependency confusion).
 
 ```toml
 [tool.uv.sources]
-robotsix-llmio = { git = "https://github.com/damien-robotsix/robotsix-llmio.git", rev = "abc123def456" }
+robotsix-llmio = { git = "https://github.com/damien-robotsix/robotsix-llmio.git", rev = "0123456789abcdef0123456789abcdef01234567" } # v0.4.0
 ```
 
 Or a PEP 508 git URL in `[project] dependencies`:
 
 ```text
-robotsix-llmio @ git+https://github.com/damien-robotsix/robotsix-llmio@abc123def456
+robotsix-llmio @ git+https://github.com/damien-robotsix/robotsix-llmio@0123456789abcdef0123456789abcdef01234567
 ```
 
-**npm consumers** use a git URL:
+**npm consumers** use a git URL with a SHA fragment (record the version in the
+PR or lockfile — `package.json` has no comments):
 
 ```text
-git+https://github.com/damien-robotsix/robotsix-ui#v0.4.0
+git+https://github.com/damien-robotsix/robotsix-ui#0123456789abcdef0123456789abcdef01234567
 ```
 
-### 2. Pin to a commit SHA, not a branch
+### 2. Pin to a commit SHA, not a branch or tag
 
-**Rule:** Every first-party git source is pinned to a **commit SHA** (or an
-annotated tag, which resolves to a SHA). Branch refs like `main` are disallowed.
+**Rule:** Every first-party git source is pinned to a **full 40-character
+commit SHA**, optionally followed by a version comment (e.g. `# v0.4.0`) where
+the manifest format allows comments. Branch refs like `main` and tag refs
+(lightweight or annotated) are disallowed as the pin itself.
 
 **Rationale:** A branch ref drifts silently — a fresh lock (or any lock-refresh)
 can pull in unrelated upstream changes with no PR, and a rename or breaking
-change upstream then breaks resolution out of nowhere.
+change upstream then breaks resolution out of nowhere. A tag is no better as a
+pin: any git tag, annotated or not, can be deleted and re-pushed at a different
+commit, so a tag pin does not give the immutability this rule exists for. Only
+a commit SHA is content-addressed (cf. OpenSSF Scorecard *Pinned-Dependencies*).
 
 > **Failure mode.** A `pyproject.toml` that pins `robotsix-llmio` to `main`
 > works today but breaks tomorrow when `main` receives a breaking change the
@@ -73,7 +80,8 @@ version, generates the changelog, and pushes a `v*` tag — the full mechanism i
 documented in [release-please](release-please.md). The version source is
 declared following the [single-source versioning](single-source-versioning.md)
 convention; deriving it from git tags is disallowed (release-please rule 3).
-Consumers pin to those tags (or the underlying SHA).
+Consumers pin to the commit SHA each tag resolves to (rule 2), using the tag
+name only as the version comment.
 
 **Rationale:** Tags give consumers a human-readable version to pin against while
 retaining the auditability of a git SHA. Release-please keeps every repo on the
@@ -137,8 +145,51 @@ the README is the canonical, copy-pasteable instruction.
 > `package.json` of an existing consumer — a wasteful and error-prone process
 > that leads to consumers pinning to `main` or guessing at the syntax.
 
-## Enforcement (future)
+## Enforcement
 
-A standards CI lint that scans changed workflows, `package.json`, and
-`pyproject.toml` for public-registry endpoints (`registry.npmjs.org`, public
-PyPI) and fails the PR if found. This is tracked as a follow-up ticket.
+Rules 4 and 5 are to be enforced by a **public-registry check**
+(`scripts/check-public-registry.py`, to run as a `public-registry-check` job in
+the shared `baseline-check.yml`). This section is the check's specification;
+the implementation will follow it and does not redefine it.
+
+**Status:** specified, implementation pending. The job does not exist yet, and
+no periodic agent or CI step is assigned to check rules 4–5 in the meantime.
+Until it lands, reviewers check changes to workflows, `package.json`, `.npmrc`
+and `pyproject.toml` against the patterns below during code review (see the
+*Distribution / registry* row in the
+[security posture audit table](security-posture.md#audit)).
+
+**Scope.** The check scans every changed file matching
+`.github/workflows/*.yml` / `*.yaml`, `package.json`, `.npmrc`, and
+`pyproject.toml` on each PR and push to `main`.
+
+**It flags:**
+
+| Pattern | Where | Why |
+|---|---|---|
+| `registry.npmjs.org` | workflows, `package.json` `publishConfig.registry`, `.npmrc` | Public npm publish target (rule 4) |
+| `upload.pypi.org`, `pypi.org/legacy`, `test.pypi.org` | workflows, `pyproject.toml` (`[[tool.uv.index]]` `publish-url`) | Public PyPI upload endpoint (rule 4) |
+| `npm publish` with no `--registry` pointing at an approved internal domain | workflows | Falls back to the public default registry (rule 5) |
+| `twine upload` / `uv publish` with no `--repository-url` / `--publish-url` pointing at an approved internal domain | workflows | Falls back to public PyPI (rule 5) |
+| `pypa/gh-action-pypi-publish` | workflows | Action whose default target is public PyPI (rule 4) |
+| `secrets.NPM_TOKEN`, `secrets.PYPI_TOKEN`, `secrets.PYPI_API_TOKEN` | workflows | Public-registry credentials in CI (rules 4–5) |
+
+The approved internal domain is `npm.pkg.github.com` (GitHub Packages under
+the `damien-robotsix` org); any other domain needs Platform Owner approval and is added to the check's
+allow-list in the same change. A Platform Owner–approved exception (rule 4) is
+recorded as a per-repo allow-list entry naming the approval, never as an inline
+suppression.
+
+**Rollout.** The check is **warning-first**: it emits `::warning::`
+annotations and does not fail the build, so existing repos can converge. It
+flips to **blocking** (exit 1) on **2027-01-31**; from that date a match fails
+CI.
+
+> **Failure mode.** Without a mechanical gate, rules 4–5 are an aspiration: a
+> PR that adds `npm publish` with an `NPM_TOKEN` secret, or a `uv publish` to
+> public PyPI, merges on review alone — and the first sign of the breach is the
+> package appearing on the public index under the org's name, after which it
+> cannot be fully retracted (mirrors and caches keep it). Alignment:
+> [SLSA v1.0 Build track](https://slsa.dev/spec/v1.0/levels) (controlled
+> distribution), [OWASP Top 10 2021 A08](https://owasp.org/Top10/A08_2021-Software_and_Data_Integrity_Failures/)
+> (dependency confusion, credential-theft publishing).

@@ -3519,13 +3519,29 @@ preflight fails (§8).</p>
 declare it so the UI offers a "generate for me" step. Two labels on the primary
 service:</p>
 <div class="highlight"><pre><span></span><code><span class="nt">labels</span><span class="p">:</span>
-<span class="w">  </span><span class="nt">robotsix.deploy.config-assist</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;detect</span><span class="nv"> </span><span class="s">{accounts.0.auth.username}</span><span class="nv"> </span><span class="s">--id</span><span class="nv"> </span><span class="s">{accounts.0.id}</span><span class="nv"> </span><span class="s">--overwrite</span><span class="nv"> </span><span class="s">--password</span><span class="nv"> </span><span class="s">{accounts.0.auth.password}</span><span class="nv"> </span><span class="s">--no-verify</span><span class="nv"> </span><span class="s">--output</span><span class="nv"> </span><span class="s">/home/app/config/config.json&quot;</span>
+<span class="w">  </span><span class="nt">robotsix.deploy.config-assist</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;detect</span><span class="nv"> </span><span class="s">{accounts.0.auth.username}</span><span class="nv"> </span><span class="s">--id</span><span class="nv"> </span><span class="s">{accounts.0.id}</span><span class="nv"> </span><span class="s">--overwrite</span><span class="nv"> </span><span class="s">--password-stdin</span><span class="nv"> </span><span class="s">--output</span><span class="nv"> </span><span class="s">/home/app/config/config.json&quot;</span>
 <span class="w">  </span><span class="nt">robotsix.deploy.config-assist-seeds</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;accounts.0.auth.username,accounts.0.auth.password&quot;</span>
 </code></pre></div>
 <ul>
 <li><code>config-assist</code> is a command run inside the image; <code>{dotted.path}</code>
-  placeholders are filled from operator-entered seed values.</li>
+  placeholders are filled from operator-entered <strong>non-secret</strong> seed values.</li>
 <li><code>config-assist-seeds</code> lists which fields the UI collects before running it.</li>
+<li><strong>Secret seeds never go on argv.</strong> A seed whose schema field is <code>writeOnly</code>
+  (a <code>SecretStr</code>) <strong>must not</strong> appear as a <code>{placeholder}</code> — it reaches the
+  command on stdin or through a <code>0600</code> temp file in the config volume, never
+  through argument interpolation. The <code>--password-stdin</code> flag in the example is
+  illustrative: confirm your CLI supports the channel you choose before
+  shipping. The canonical rule is in the
+  <a href="../deploy-contract/">deploy contract</a>, which points to central-deploy.
+  <em>Failure prevented:</em> argv lands in the container's <code>Config.Cmd</code>
+  (<code>docker inspect</code>, socket-proxy reads), the host process list
+  (<code>/proc/&lt;pid&gt;/cmdline</code>) and deploy error logs — leaking a credential the
+  <a href="../config-standard/">config standard</a> promises is never echoed or logged
+  (CWE-214).</li>
+<li>Do not ship verification-disabling flags (e.g. a <code>--no-verify</code> that skips
+  TLS or credential checks) in the assist command: the generated config must
+  be validated against the real account, or the operator only discovers bad
+  credentials when the service fails at runtime.</li>
 <li>Every referenced command + flag <strong>must actually exist</strong> in the shipped CLI —
   verify against your real entry point, or the assist step fails at deploy time.</li>
 </ul>

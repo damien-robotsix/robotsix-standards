@@ -3159,11 +3159,11 @@ path and the one the fleet's shared workflows use. The pre-commit runtime
 installs exactly the <code>rev:</code>-pinned version into its own isolated
 environment — CI and local dev are literally the same invocation.</p>
 <div class="highlight"><pre><span></span><code><span class="c1"># In a CI job:</span>
-<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">uses</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">astral-sh/setup-uv@v6</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">uses</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">astral-sh/setup-uv@&lt;sha&gt;</span><span class="w">  </span><span class="c1"># v6</span>
 <span class="w">  </span><span class="nt">with</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">enable-cache</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
 <span class="w">    </span><span class="nt">cache-dependency-glob</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;pyproject.toml&quot;</span>
-<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">uses</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">tox-dev/action-pre-commit-uv@v1</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">uses</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">tox-dev/action-pre-commit-uv@&lt;sha&gt;</span><span class="w">  </span><span class="c1"># v1</span>
 <span class="w">  </span><span class="nt">with</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">extra_args</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">--show-diff-on-failure --all-files</span>
 </code></pre></div>
@@ -3175,8 +3175,9 @@ pre-commit config — do not guess, do not round, do not default to latest:</p>
 <div class="highlight"><pre><span></span><code><span class="c1"># Good — pinned to the pre-commit rev:</span>
 <span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">run</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">pip install yamllint==1.35.1</span>
 
-<span class="c1"># Good — action pinned to a release tag that matches the pre-commit rev:</span>
-<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">uses</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">hadolint/hadolint-action@v3.1.0</span>
+<span class="c1"># Good — action pinned to a commit SHA; the trailing `# vX.Y.Z` version</span>
+<span class="c1"># comment (not the ref) matches the pre-commit rev: and carries the sync signal</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">uses</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">hadolint/hadolint-action@&lt;sha&gt;</span><span class="w">  </span><span class="c1"># v3.1.0</span>
 </code></pre></div>
 <p>When the Dependabot PR bumps the pre-commit <code>rev:</code>, it must also bump
 any standalone CI install lines that reference the same tool. A CI job
@@ -3184,7 +3185,7 @@ that references a version literal must carry a comment pointing back to
 the pre-commit config so the reviewer of the Dependabot PR knows to update
 both:</p>
 <div class="highlight"><pre><span></span><code><span class="c1"># Keep in sync with .pre-commit-config.yaml → hadolint rev:</span>
-<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">uses</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">hadolint/hadolint-action@v3.1.0</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">uses</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">hadolint/hadolint-action@&lt;sha&gt;</span><span class="w">  </span><span class="c1"># v3.1.0</span>
 </code></pre></div>
 <h2 id="anti-patterns-never-install-from-floatinglatest-sources">Anti-patterns: never install from floating/latest sources<a class="headerlink" href="#anti-patterns-never-install-from-floatinglatest-sources" title="Permanent link">&para;</a></h2>
 <p>Every one of these patterns is forbidden in CI lint jobs for tools that

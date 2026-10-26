@@ -210,3 +210,24 @@ jobs:
           done
           [ "$found" -eq 0 ] || exit 1
           echo "SBOM scope (content-only, exempt): OK"
+
+  public-registry-check:
+    # Enforcement gate for docs/distribution-packaging.md rules 4-5 (no
+    # publish to a public package index; publish jobs resolve to an
+    # org-internal registry). The page's Enforcement section is the
+    # specification; scripts/check-public-registry.py implements its scope
+    # and pattern table. Warning-first: findings are annotations until
+    # 2027-01-31, after which the script exits 1 and fails CI. See also the
+    # Distribution / registry row of the docs/security-posture.md audit table.
+    permissions:
+      contents: read
+    runs-on: ubuntu-latest
+    timeout-minutes: 5  # fast grep/parse check; well under 15-minute default
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
+      - uses: astral-sh/setup-uv@1c37ad07a6a961277cf70c0d37d6f313000f5884 # v10.3.0
+        with:
+          enable-cache: true
+          python-version: "3.14"
+      - name: Check for public package-index publishing
+        run: uv run --group docs python scripts/check-public-registry.py

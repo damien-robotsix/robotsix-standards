@@ -147,14 +147,16 @@ the README is the canonical, copy-pasteable instruction.
 
 ## Enforcement
 
-Rules 4 and 5 are enforced by a **public-registry check**
-(`scripts/check-public-registry.py`, run as a `public-registry-check` job in
+Rules 4 and 5 are to be enforced by a **public-registry check**
+(`scripts/check-public-registry.py`, to run as a `public-registry-check` job in
 the shared `baseline-check.yml`). This section is the check's specification;
-the implementation follows it and does not redefine it.
+the implementation will follow it and does not redefine it.
 
-**Status:** specified, implementation pending. Until the job lands, rules 4–5
-are verified by the periodic standards-audit agent against the same patterns
-below (see the *Distribution / registry* row in the
+**Status:** specified, implementation pending. The job does not exist yet, and
+no periodic agent or CI step is assigned to check rules 4–5 in the meantime.
+Until it lands, reviewers check changes to workflows, `package.json`, `.npmrc`
+and `pyproject.toml` against the patterns below during code review (see the
+*Distribution / registry* row in the
 [security posture audit table](security-posture.md#audit)).
 
 **Scope.** The check scans every changed file matching

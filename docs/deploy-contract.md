@@ -39,6 +39,12 @@ onboarding flow accepts it:
   [config standard](config-standard.md)) and the field → `ComponentConfig`
   mapping.
 
+## config-assist
+
+The requirements for the `config-assist` label (placeholder handling, secret
+seeds, verification flags) are specified only in the canonical contract in
+central-deploy — see the **Source** link above. This page does not restate them.
+
 ## Volumes only — no host-path bind mounts
 
 Deployed components **never bind-mount host paths**; all persistent or shared

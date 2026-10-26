@@ -3327,7 +3327,12 @@ implement redaction or merge); they are the deploy system's responsibility.</p>
 <li><strong>Redact on read.</strong> Any GET endpoint, config version history, audit log,
   or UI that reads component config MUST redact every field marked
   <code>writeOnly</code> in the committed <code>config.schema.json</code>. The secret value is
-  never echoed — only the key name and its set/unset status may be exposed.</li>
+  never echoed — only the key name and its set/unset status may be exposed.
+  This includes central-deploy's chat volume-files endpoint
+  (<code>GET /chat/services/{name}/volumes/{vol}/files</code>): a read of the file at
+  the component's <code>robotsix.deploy.config-target</code> path is a config read and
+  MUST be refused or served through the same redaction, per
+  <a href="../chat-access-standard/#52-volumes-read-only">chat access §5.2</a>.</li>
 <li><strong>Merge on write.</strong> Partial-update semantics: a write that omits a secret
   field (or submits it blank / with an unchanged sentinel value) MUST
   preserve the stored value. Only an explicitly submitted, non-blank,
@@ -3505,7 +3510,7 @@ below, mirroring the pattern in
 <tbody>
 <tr>
 <td>Redact on read</td>
-<td>Every config-read path — <code>GET /config</code>, version-history reads, audit-log serialization — routes through <code>mask_secrets()</code> (or an equivalent redaction wrapper) <em>before</em> serialization. <code>grep</code> the deploy system's config-API module for <code>mask_secrets</code>; any GET path that serializes a <code>writeOnly</code> field without it is a violation.</td>
+<td>Every config-read path — <code>GET /config</code>, version-history reads, audit-log serialization, and the chat volume-files endpoint when it reads the <code>config-target</code> path — routes through <code>mask_secrets()</code> (or an equivalent redaction wrapper) <em>before</em> serialization. <code>grep</code> the deploy system's config-API module for <code>mask_secrets</code>; any GET path that serializes a <code>writeOnly</code> field without it is a violation. The chat volume-files <code>config-target</code> read may instead be refused with <code>403</code> (failing closed when redaction cannot run, per <a href="../chat-access-standard/#52-volumes-read-only">chat access §5.2</a>); a <code>403</code> there is compliant, not a violation.</td>
 </tr>
 <tr>
 <td>Merge on write</td>

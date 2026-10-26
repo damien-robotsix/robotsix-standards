@@ -2593,6 +2593,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#how-this-is-enforced" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How this is enforced
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -3208,6 +3219,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#how-this-is-enforced" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How this is enforced
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -3494,6 +3516,59 @@ chat-access components:</p>
 <li>All volume reads share the same per-component chat-access authorization
   gate — no separate volume permission toggle.</li>
 </ul>
+<p>The volume-files endpoint is a <strong>config-read path</strong> under
+<a href="../config-standard/#3-one-secret-convention">config standard §3</a>: the deploy
+system writes the component's <code>config.json</code> — secrets included, in cleartext
+— into a named volume at the path named by the
+<code>robotsix.deploy.config-target</code> label. Without a carve-out,
+<code>GET /chat/services/{name}/volumes/{vol}/files?path=config.json</code> hands every
+<code>SecretStr</code> value to the chat agent's LLM context. Therefore:</p>
+<ul>
+<li><strong>Config target: refuse or redact.</strong> A read of the file named by the
+  component's <code>robotsix.deploy.config-target</code> label (in whichever volume
+  backs that path) MUST either be refused with <code>403</code> or be served only
+  through the same <code>mask_secrets()</code> redaction as <code>GET /config</code> — every
+  <code>writeOnly</code> field in the committed <code>config.schema.json</code> reduced to its
+  set/unset status. The raw bytes of the config file are never returned.
+  If the redaction cannot run — the file is not valid JSON, or the committed
+  <code>config.schema.json</code> is missing or unreadable — the endpoint MUST fail
+  closed with <code>403</code>. It MUST NOT fall back to serving the raw file.</li>
+<li><strong>Well-known secret files: deny.</strong> The endpoint MUST refuse (<code>403</code>) every
+  read inside the managed <code>claude-auth</code> volume, and any file whose name
+  matches <code>*.pem</code>, <code>*.key</code>, <code>.env</code> or <code>.env.*</code> in any volume. Directory
+  listings may show such entries by name but never their content.</li>
+<li>The deny decision is made on the <strong>resolved</strong> path (after symlink
+  resolution inside the volume), so a symlink or alternate spelling cannot
+  reach a denied file.</li>
+</ul>
+<h3 id="how-this-is-enforced">How this is enforced<a class="headerlink" href="#how-this-is-enforced" title="Permanent link">&para;</a></h3>
+<p>The §5 MUSTs govern central-deploy's chat observability routes, not this
+repo — no CI gate here can inspect that code. Enforcement is by <strong>audit</strong>, at
+code review and by the periodic standards-audit agent, against these criteria:</p>
+<table>
+<thead>
+<tr>
+<th>Rule</th>
+<th>Audit criterion</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Read-only, no traversal</td>
+<td>The volume-files handler resolves <code>path</code> against the volume root and rejects <code>..</code>, absolute paths and escaping symlinks; no write or delete route exists under the chat volumes routes.</td>
+</tr>
+<tr>
+<td>Config target refused or redacted</td>
+<td>A central-deploy test writes a sentinel secret into a component's config, reads the <code>config-target</code> path through the volume-files endpoint, and asserts either <code>403</code> or redacted JSON in which the sentinel string is absent. A second case replaces the config with invalid JSON (and, separately, removes the schema) and asserts <code>403</code>, never raw bytes.</td>
+</tr>
+<tr>
+<td>Secret files denied</td>
+<td>A central-deploy test asserts <code>403</code> for a read inside the <code>claude-auth</code> volume and for a <code>*.pem</code>, <code>*.key</code>, <code>.env</code> and <code>.env.*</code> file in a component volume.</td>
+</tr>
+</tbody>
+</table>
+<p>The <a href="../security-posture/#audit">security posture</a> page carries the fleet-wide
+roll-up of this check.</p>
 <hr />
 <h2 id="failure-modes-this-prevents">Failure modes this prevents<a class="headerlink" href="#failure-modes-this-prevents" title="Permanent link">&para;</a></h2>
 <ul>
@@ -3506,6 +3581,15 @@ chat-access components:</p>
   accepts <code>..</code>, absolute paths, or escaping symlinks lets the chat agent read
   arbitrary host files. The strictly read-only, traversal-rejecting contract
   keeps inspection inside the named volume.</li>
+<li><strong>Secrets leaking into the LLM context through volume reads.</strong> The
+  component's <code>config.json</code> (cleartext <code>SecretStr</code> values) and the
+  <code>claude-auth</code> credentials live in volumes. A volume-files endpoint that
+  serves them raw bypasses config-standard's redact-on-read MUST and puts a
+  component's own credentials one prompt injection away from exfiltration
+  (OWASP LLM02:2025 with LLM01 as trigger; OWASP A01:2025) — the same
+  second-door risk <a href="#31-no-deploy-credential">§3.1</a> closes. Refusing or
+  redacting the config target and denying well-known secret files keeps
+  them out of the agent's context.</li>
 <li><strong>Observability the chat agent can't actually use.</strong> An endpoint hidden
   behind the operator's web-login session returns a login HTML page to the
   agent instead of logs or status — silently unusable. Requiring the routes

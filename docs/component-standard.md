@@ -217,6 +217,8 @@ siblings routinely restart, so:
 - **Log level is a config field** — a `log_level` enum in the component's
   pydantic model (see the [config standard](config-standard.md)), not an
   environment variable.
+- **Never log sensitive data.** The canonical rule, including the excluded
+  data classes, is [logging rule 6](logging.md#6-never-log-sensitive-data).
 
 Structured JSON logging is mandated by the [logging standard](logging.md).
 No metrics/collector requirement is standardized — that gets added

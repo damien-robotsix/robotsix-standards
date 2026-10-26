@@ -45,6 +45,11 @@ def check_doc_structure() -> ModuleType:
 
 
 @pytest.fixture
+def check_doc_example_pinning() -> ModuleType:
+    return _load_script("check-doc-example-pinning.py", "check_doc_example_pinning")
+
+
+@pytest.fixture
 def check_workflow_timeouts() -> ModuleType:
     return _load_script("check-workflow-timeouts.py", "check_workflow_timeouts")
 

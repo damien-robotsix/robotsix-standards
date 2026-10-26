@@ -185,9 +185,9 @@ URL cannot block the deploy itself:
 linkcheck:
   runs-on: ubuntu-24.04
   steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@<sha>  # v4
     - # … build the docs into site/ …
-    - uses: lycheeverse/lychee-action@v2
+    - uses: lycheeverse/lychee-action@<sha>  # v2
       with:
         fail: true
         args: >-

@@ -507,7 +507,7 @@ visible directly in the CI log.
 
   ```yaml
   - name: Upload coverage to Codecov
-    uses: codecov/codecov-action@v4
+    uses: codecov/codecov-action@<sha>  # v4
     with:
       files: coverage.xml
       fail_ci_if_error: false

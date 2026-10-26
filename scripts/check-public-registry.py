@@ -47,6 +47,7 @@ import json
 import re
 import sys
 import tomllib
+from collections.abc import Callable
 from dataclasses import dataclass
 from pathlib import Path
 
@@ -117,35 +118,72 @@ def scan_workflow(path: str, text: str) -> list[Finding]:
     findings: list[Finding] = []
     for num, line in _logical_lines(text):
         if _NPMJS.search(line):
-            findings.append(Finding(path, num, "npmjs-registry",
-                                    "public npm registry `registry.npmjs.org` (rule 4)"))
+            findings.append(
+                Finding(
+                    path,
+                    num,
+                    "npmjs-registry",
+                    "public npm registry `registry.npmjs.org` (rule 4)",
+                )
+            )
         if _PYPI_UPLOAD.search(line):
-            findings.append(Finding(path, num, "pypi-upload",
-                                    "public PyPI upload endpoint (rule 4)"))
-        if _NPM_PUBLISH.search(line) and not _flag_points_internal(_REGISTRY_FLAG, line):
-            findings.append(Finding(path, num, "npm-publish",
-                                    "`npm publish` without `--registry` pointing at an "
-                                    "approved internal domain (rule 5)"))
+            findings.append(
+                Finding(
+                    path, num, "pypi-upload", "public PyPI upload endpoint (rule 4)"
+                )
+            )
+        if _NPM_PUBLISH.search(line) and not _flag_points_internal(
+            _REGISTRY_FLAG, line
+        ):
+            findings.append(
+                Finding(
+                    path,
+                    num,
+                    "npm-publish",
+                    "`npm publish` without `--registry` pointing at an "
+                    "approved internal domain (rule 5)",
+                )
+            )
         if _PY_PUBLISH.search(line) and not _flag_points_internal(_PY_URL_FLAG, line):
-            findings.append(Finding(path, num, "python-publish",
-                                    "`twine upload` / `uv publish` without "
-                                    "`--repository-url` / `--publish-url` pointing at an "
-                                    "approved internal domain (rule 5)"))
+            findings.append(
+                Finding(
+                    path,
+                    num,
+                    "python-publish",
+                    "`twine upload` / `uv publish` without "
+                    "`--repository-url` / `--publish-url` pointing at an "
+                    "approved internal domain (rule 5)",
+                )
+            )
         if _PYPI_ACTION.search(line):
-            findings.append(Finding(path, num, "pypi-publish-action",
-                                    "`pypa/gh-action-pypi-publish` targets public PyPI "
-                                    "(rule 4)"))
-        for m in _TOKEN_SECRET.finditer(line):
-            findings.append(Finding(path, num, "registry-token",
-                                    f"public-registry credential `secrets.{m.group(1)}` "
-                                    "(rules 4-5)"))
+            findings.append(
+                Finding(
+                    path,
+                    num,
+                    "pypi-publish-action",
+                    "`pypa/gh-action-pypi-publish` targets public PyPI (rule 4)",
+                )
+            )
+        findings.extend(
+            Finding(
+                path,
+                num,
+                "registry-token",
+                f"public-registry credential `secrets.{m.group(1)}` (rules 4-5)",
+            )
+            for m in _TOKEN_SECRET.finditer(line)
+        )
     return findings
 
 
 def scan_npmrc(path: str, text: str) -> list[Finding]:
     return [
-        Finding(path, num, "npmjs-registry",
-                "public npm registry `registry.npmjs.org` (rule 4)")
+        Finding(
+            path,
+            num,
+            "npmjs-registry",
+            "public npm registry `registry.npmjs.org` (rule 4)",
+        )
         for num, line in _logical_lines(text)
         if not line.lstrip().startswith(";") and _NPMJS.search(line)
     ]
@@ -159,8 +197,14 @@ def scan_package_json(path: str, text: str) -> list[Finding]:
     publish = data.get("publishConfig") if isinstance(data, dict) else None
     registry = publish.get("registry") if isinstance(publish, dict) else None
     if isinstance(registry, str) and _NPMJS.search(registry):
-        return [Finding(path, _line_of(text, "registry.npmjs.org"), "npmjs-registry",
-                        "`publishConfig.registry` is the public npm registry (rule 4)")]
+        return [
+            Finding(
+                path,
+                _line_of(text, "registry.npmjs.org"),
+                "npmjs-registry",
+                "`publishConfig.registry` is the public npm registry (rule 4)",
+            )
+        ]
     return []
 
 
@@ -176,9 +220,15 @@ def scan_pyproject(path: str, text: str) -> list[Finding]:
     for index in indexes:
         url = index.get("publish-url") if isinstance(index, dict) else None
         if isinstance(url, str) and _PYPI_UPLOAD.search(url):
-            findings.append(Finding(path, _line_of(text, url), "pypi-upload",
-                                    "`[[tool.uv.index]]` `publish-url` is a public PyPI "
-                                    "upload endpoint (rule 4)"))
+            findings.append(
+                Finding(
+                    path,
+                    _line_of(text, url),
+                    "pypi-upload",
+                    "`[[tool.uv.index]]` `publish-url` is a public PyPI "
+                    "upload endpoint (rule 4)",
+                )
+            )
     return findings
 
 
@@ -189,7 +239,7 @@ def _line_of(text: str, needle: str) -> int:
     return 1
 
 
-def scanner_for(rel: str):
+def scanner_for(rel: str) -> Callable[[str, str], list[Finding]] | None:
     """Return the scanner for an in-scope repo-relative path, else None."""
     p = Path(rel)
     if p.parent.as_posix() == ".github/workflows" and p.suffix in (".yml", ".yaml"):
@@ -243,9 +293,8 @@ def scan(root: Path, paths: list[str] | None = None) -> list[Finding]:
         full = root / rel
         if scanner is None or not full.is_file():
             continue
-        for f in scanner(rel, full.read_text(encoding="utf-8", errors="replace")):
-            if (f.path, f.rule) not in allow:
-                findings.append(f)
+        text = full.read_text(encoding="utf-8", errors="replace")
+        findings.extend(f for f in scanner(rel, text) if (f.path, f.rule) not in allow)
     return findings
 
 
@@ -256,15 +305,19 @@ def main(argv: list[str] | None = None, today: _dt.date | None = None) -> int:
     level = "error" if blocking else "warning"
     findings = scan(REPO_ROOT, args)
     for f in findings:
-        print(f"::{level} file={f.path},line={f.line}::[{f.rule}] {f.message} "
-              f"— see {DOC_REF}")
+        print(
+            f"::{level} file={f.path},line={f.line}::[{f.rule}] {f.message} "
+            f"— see {DOC_REF}"
+        )
     if not findings:
         print("Public-registry check: OK")
         return 0
     if blocking:
         return 1
-    print(f"Public-registry check: {len(findings)} finding(s); warning-first "
-          f"until {BLOCKING_FROM.isoformat()}, blocking from then")
+    print(
+        f"Public-registry check: {len(findings)} finding(s); warning-first "
+        f"until {BLOCKING_FROM.isoformat()}, blocking from then"
+    )
     return 0
 
 

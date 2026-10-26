@@ -747,10 +747,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#prerequisite-let-actions-open-pull-requests" class="md-nav__link">
+  <a href="#prerequisite-keep-actions-pr-approval-disabled" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Prerequisite: let Actions open pull requests
+        Prerequisite: keep Actions PR approval disabled
       
     </span>
   </a>
@@ -1085,10 +1085,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#10-enable-actions-to-create-pull-requests" class="md-nav__link">
+  <a href="#10-keep-actions-pr-approval-disabled" class="md-nav__link">
     <span class="md-ellipsis">
       
-        10. Enable Actions to create pull requests
+        10. Keep Actions PR approval disabled
       
     </span>
   </a>
@@ -3290,10 +3290,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#prerequisite-let-actions-open-pull-requests" class="md-nav__link">
+  <a href="#prerequisite-keep-actions-pr-approval-disabled" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Prerequisite: let Actions open pull requests
+        Prerequisite: keep Actions PR approval disabled
       
     </span>
   </a>
@@ -3628,10 +3628,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#10-enable-actions-to-create-pull-requests" class="md-nav__link">
+  <a href="#10-keep-actions-pr-approval-disabled" class="md-nav__link">
     <span class="md-ellipsis">
       
-        10. Enable Actions to create pull requests
+        10. Keep Actions PR approval disabled
       
     </span>
   </a>
@@ -3712,26 +3712,34 @@ itself is the changelog entry and the bump signal. No fragment files, no
 separate release workflow, no manual bump classification. A release PR opens
 automatically whenever releasable commits land on the default branch; merging
 it publishes the release.</p>
-<h2 id="prerequisite-let-actions-open-pull-requests">Prerequisite: let Actions open pull requests<a class="headerlink" href="#prerequisite-let-actions-open-pull-requests" title="Permanent link">&para;</a></h2>
-<p><strong>Before any of the configuration below matters</strong>, the repository must allow
-GitHub Actions to open pull requests. Release-please's entire mechanism is
-opening a release PR, so without this it can do nothing.</p>
-<p>Settings → Actions → General → <em>"Allow GitHub Actions to create and approve
-pull requests"</em>, or via the API:</p>
-<div class="highlight"><pre><span></span><code><span class="c1"># check</span>
+<h2 id="prerequisite-keep-actions-pr-approval-disabled">Prerequisite: keep Actions PR approval disabled<a class="headerlink" href="#prerequisite-keep-actions-pr-approval-disabled" title="Permanent link">&para;</a></h2>
+<p>Release-please needs <strong>no</strong> repository Actions setting. The shared workflow
+opens the release PR with a GitHub App installation token
+(<code>RELEASE_APP_ID</code> / <code>RELEASE_APP_PRIVATE_KEY</code>; see the workflow template and
+the <code>GITHUB_TOKEN</code> warning below). The repo setting Settings → Actions →
+General → <em>"Allow GitHub Actions to create and approve pull requests"</em> only
+governs the built-in <code>GITHUB_TOKEN</code>, so it does nothing for the App token.</p>
+<p>Keep that setting <strong>off</strong> in every fleet repo — the canonical rule and its
+enforcement live in <a href="../repo-baseline/#branch-protection">repo baseline</a>.
+Check and enforce via the API:</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># check — must print false</span>
 gh<span class="w"> </span>api<span class="w"> </span>repos/damien-robotsix/&lt;repo&gt;/actions/permissions/workflow<span class="w"> </span><span class="se">\</span>
 <span class="w">  </span>-q<span class="w"> </span><span class="s1">&#39;.can_approve_pull_request_reviews&#39;</span>
-<span class="c1"># enable</span>
+<span class="c1"># enforce</span>
 gh<span class="w"> </span>api<span class="w"> </span>-X<span class="w"> </span>PUT<span class="w"> </span>repos/damien-robotsix/&lt;repo&gt;/actions/permissions/workflow<span class="w"> </span><span class="se">\</span>
-<span class="w">  </span>-f<span class="w"> </span><span class="nv">default_workflow_permissions</span><span class="o">=</span><span class="nb">read</span><span class="w"> </span>-F<span class="w"> </span><span class="nv">can_approve_pull_request_reviews</span><span class="o">=</span><span class="nb">true</span>
+<span class="w">  </span>-f<span class="w"> </span><span class="nv">default_workflow_permissions</span><span class="o">=</span><span class="nb">read</span><span class="w"> </span>-F<span class="w"> </span><span class="nv">can_approve_pull_request_reviews</span><span class="o">=</span><span class="nb">false</span>
 </code></pre></div>
 <blockquote>
-<p><strong>Failure mode.</strong> With the setting off, the run gets as far as building the
-tree and the release commit, then dies with
-<code>release-please failed: GitHub Actions is not permitted to create or approve
-pull requests.</code> The workflow and both config files can be perfectly correct
-and the repo still never releases. On 2026-08-08 this was off in 9 of 15
-fleet repos, which is why release-please had produced nothing anywhere.</p>
+<p><strong>Failure modes this prevents.</strong> With the setting on, any workflow whose job
+holds <code>pull-requests: write</code> — including a compromised third-party action or
+a script-injection sink in it — can approve a PR with <code>GITHUB_TOKEN</code>, so a
+machine identity satisfies the "required approving review" rule, the fleet's
+only human-review control. The setting was once enabled fleet-wide to fix
+release-please: on 2026-08-08, while release-please still ran on
+<code>GITHUB_TOKEN</code>, runs died with <code>release-please failed: GitHub Actions is not
+permitted to create or approve pull requests.</code> Since the 2026-08-15 move to
+the App token, that error means the caller is still passing <code>GITHUB_TOKEN</code> —
+fix the token, never the setting.</p>
 </blockquote>
 <h2 id="configuration">Configuration<a class="headerlink" href="#configuration" title="Permanent link">&para;</a></h2>
 <p>Every repo carries two config files at its root:</p>
@@ -4214,9 +4222,9 @@ is regenerated on every run.</p>
 using <code>GITHUB_TOKEN</code>. Events created by it deliberately do not trigger workflow
 runs, so the checks never start and the PR cannot satisfy them. Mint a scoped
 App token instead — see the workflow template above.</p>
-<p>A release PR that never <em>opens</em> is the other half: check that the repo setting
-in <a href="#prerequisite-let-actions-open-pull-requests">Prerequisite</a> is enabled, and
-that no <code>if:</code> gate references a secret that was never provisioned. A gate on a
+<p>A release PR that never <em>opens</em> is the other half: check that the caller
+passes the App credentials rather than <code>GITHUB_TOKEN</code> (see
+<a href="#prerequisite-keep-actions-pr-approval-disabled">Prerequisite</a>), and that no <code>if:</code> gate references a secret that was never provisioned. A gate on a
 missing secret makes the step <strong>skip</strong> while the job still reports success.</p>
 <h2 id="migration-checklist">Migration checklist<a class="headerlink" href="#migration-checklist" title="Permanent link">&para;</a></h2>
 <p>This is the step-by-step playbook for a fleet repo moving OFF
@@ -4379,18 +4387,19 @@ repo calls the shared workflow) to <code>a6378ac</code> or later:</p>
 changelog.d removal. If it fails with "towncrier config not found" or
 "changelog.d directory is empty", the SHA is too old.</p>
 </blockquote>
-<h3 id="10-enable-actions-to-create-pull-requests">10. Enable Actions to create pull requests<a class="headerlink" href="#10-enable-actions-to-create-pull-requests" title="Permanent link">&para;</a></h3>
-<p>Release-please's entire mechanism is opening a release PR. The repo setting
-must allow this. Check and enable via the API (see
-<a href="#prerequisite-let-actions-open-pull-requests">Prerequisite</a>):</p>
+<h3 id="10-keep-actions-pr-approval-disabled">10. Keep Actions PR approval disabled<a class="headerlink" href="#10-keep-actions-pr-approval-disabled" title="Permanent link">&para;</a></h3>
+<p>Release-please opens its PR with the App token, so it needs no repo setting.
+Make sure Actions cannot approve PRs with <code>GITHUB_TOKEN</code> (see
+<a href="#prerequisite-keep-actions-pr-approval-disabled">Prerequisite</a>):</p>
 <div class="highlight"><pre><span></span><code>gh<span class="w"> </span>api<span class="w"> </span>-X<span class="w"> </span>PUT<span class="w"> </span>repos/damien-robotsix/&lt;repo&gt;/actions/permissions/workflow<span class="w"> </span><span class="se">\</span>
-<span class="w">  </span>-f<span class="w"> </span><span class="nv">default_workflow_permissions</span><span class="o">=</span><span class="nb">read</span><span class="w"> </span>-F<span class="w"> </span><span class="nv">can_approve_pull_request_reviews</span><span class="o">=</span><span class="nb">true</span>
+<span class="w">  </span>-f<span class="w"> </span><span class="nv">default_workflow_permissions</span><span class="o">=</span><span class="nb">read</span><span class="w"> </span>-F<span class="w"> </span><span class="nv">can_approve_pull_request_reviews</span><span class="o">=</span><span class="nb">false</span>
 </code></pre></div>
 <blockquote>
-<p><strong>Verification.</strong> The API returns <code>can_approve_pull_request_reviews: true</code>.
-Without this, the first push to <code>main</code> runs the workflow and it dies with
+<p><strong>Verification.</strong> The API returns <code>can_approve_pull_request_reviews: false</code>.
+If the first push to <code>main</code> dies with
 <code>release-please failed: GitHub Actions is not permitted to create or approve
-pull requests</code>.</p>
+pull requests</code>, the caller is not passing <code>app-id</code> / <code>app-private-key</code> — fix
+step 6, do not enable the setting.</p>
 </blockquote>
 <h3 id="11-verify-end-to-end">11. Verify end-to-end<a class="headerlink" href="#11-verify-end-to-end" title="Permanent link">&para;</a></h3>
 <p>Push a commit with a conventional subject (<code>fix:</code>, <code>feat:</code>) to the default

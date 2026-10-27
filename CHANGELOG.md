@@ -3,6 +3,27 @@
 
 # Changelog
 
+## [0.8.0](https://github.com/damien-robotsix/robotsix-standards/compare/v0.7.3...v0.8.0) (2026-10-27)
+
+
+### Features
+
+* Implement public-registry-check job and scripts/check-public-registry.py (distribution rules 4–5) (20261026T015303Z-implement-public-registry-check-job-and-673b) ([#429](https://github.com/damien-robotsix/robotsix-standards/issues/429)) ([8977940](https://github.com/damien-robotsix/robotsix-standards/commit/89779408b0555e19dc1789d4c654719d4e48ad59))
+
+
+### Bug Fixes
+
+* Make branch-protection-check verify can_approve_pull_request_reviews (20261026T162549Z-make-branch-protection-check-verify-can-968a) ([#433](https://github.com/damien-robotsix/robotsix-standards/issues/433)) ([c7bc07f](https://github.com/damien-robotsix/robotsix-standards/commit/c7bc07f03a73afebdfa76f4af9563fbd309fb2b2))
+* Standards doc examples use tag-pinned `uses:` refs that contradict the SHA-pinning rule (security-posture 4a) (20261025T211539Z-standards-doc-examples-use-tag-pinned-us-daf0) ([#424](https://github.com/damien-robotsix/robotsix-standards/issues/424)) ([c9bfd92](https://github.com/damien-robotsix/robotsix-standards/commit/c9bfd926805af7c441cf1b96d621d5f9cb7ce79c))
+* Two secret-protection CI checks have warned without blocking since 2026-09 with no switch-over date, and github-actions-security says all warning-only checks share 2027-01-31 (20261027T052226Z-two-secret-protection-ci-checks-have-war-205b) ([#437](https://github.com/damien-robotsix/robotsix-standards/issues/437)) ([20e7308](https://github.com/damien-robotsix/robotsix-standards/commit/20e730877860682b9de7f7f1a9c3654f699b4945))
+
+
+### Documentation
+
+* Branch protection is now not checked by anything: the watchdog was retired with no replacement, and scorecard.md, security-posture and fleet-compliance-audit still say it is enforced (20261026T220959Z-branch-protection-is-now-not-checked-by-d9f4) ([#435](https://github.com/damien-robotsix/robotsix-standards/issues/435)) ([850def7](https://github.com/damien-robotsix/robotsix-standards/commit/850def7534556b9a031f9b3936b99f4a09ce8fd7))
+* release-please: the setup tells every repo to let GitHub Actions approve PRs (can_approve_pull_request_reviews=true), with an out-of-date reason and no compensating control (20261026T160753Z-release-please-the-setup-tells-every-rep-ebd2) ([#432](https://github.com/damien-robotsix/robotsix-standards/issues/432)) ([65204b0](https://github.com/damien-robotsix/robotsix-standards/commit/65204b03846b18df91952806ebee6ac6ca5a93d4))
+* zizmor is still warning-only fleet-wide with no Phase 3 deadline, but security-posture and scorecard.md say it blocks PRs (20261027T021925Z-zizmor-is-still-warning-only-fleet-wide-8399) ([#436](https://github.com/damien-robotsix/robotsix-standards/issues/436)) ([86e9f89](https://github.com/damien-robotsix/robotsix-standards/commit/86e9f89e561d4c35894a12a40de7b3a6b906f717))
+
 ## [0.7.3](https://github.com/damien-robotsix/robotsix-standards/compare/v0.7.2...v0.7.3) (2026-10-26)
 
 

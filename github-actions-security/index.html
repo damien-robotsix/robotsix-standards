@@ -679,6 +679,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#accepted-risk-warning-mode-zizmor" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Accepted risk: warning-mode zizmor
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -3108,6 +3119,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#accepted-risk-warning-mode-zizmor" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Accepted risk: warning-mode zizmor
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -3206,6 +3228,15 @@ delivered through a shared reusable workflow in
 <a href="https://github.com/damien-robotsix/robotsix-github-workflows">robotsix-github-workflows</a>
 so that one workflow definition protects the entire fleet — no per-repo
 copy-paste, no per-repo version skew.</p>
+<p><strong>Current enforcement state: warning-only outside
+<code>robotsix-github-workflows</code>.</strong> Running zizmor is required everywhere, but
+its findings <strong>block</strong> a PR only on <code>robotsix-github-workflows</code> (Phase 1)
+and on repos that have opted in with <code>fail-on-finding: true</code>. Every other
+repo is in Phase 2 warning mode: findings are annotations, not a gate. See
+<a href="#accepted-risk-warning-mode-zizmor">accepted risk</a> below. <em>Failure mode
+this note prevents:</em> another standards page (or an operator decision, such
+as the Scorecard drop) relying on zizmor as a blocking gate on repos where
+it only reports.</p>
 <h2 id="canonical-invocation">Canonical invocation<a class="headerlink" href="#canonical-invocation" title="Permanent link">&para;</a></h2>
 <p>The shared reusable workflow runs zizmor with these parameters:</p>
 <div class="highlight"><pre><span></span><code>zizmor<span class="w"> </span>--pedantic<span class="w"> </span>--min-severity<span class="w"> </span>medium<span class="w"> </span>.github/workflows/
@@ -3242,9 +3273,9 @@ must pass <code>zizmor --pedantic</code> with zero findings at any severity. Thi
 gate protects the fleet's highest-value workflow surface.</p>
 <h3 id="phase-2-warning-mode-fleet-wide-current">Phase 2 — warning mode fleet-wide (current)<a class="headerlink" href="#phase-2-warning-mode-fleet-wide-current" title="Permanent link">&para;</a></h3>
 <p>Every other fleet repo with GitHub Actions workflows runs zizmor in
-<strong>warning mode</strong>: findings are published as CI annotations and surfaced
-in the fleet dashboard, but do not block the PR or the merge. No repo
-is blocked before it has had a chance to clean up existing findings.</p>
+<strong>warning mode</strong>: findings are published as CI annotations, but do not
+block the PR or the merge. No repo is blocked before it has had a chance
+to clean up existing findings.</p>
 <p>The shared reusable workflow accepts a <code>fail-on-finding</code> input (default
 <code>false</code> in Phase 2). A repo that is already clean can opt in to
 fail-closed early by setting <code>fail-on-finding: true</code> — but the fleet-wide
@@ -3252,11 +3283,34 @@ default remains warning-only until Phase 3.</p>
 <h3 id="phase-3-per-repo-fail-closed-tracked">Phase 3 — per-repo fail-closed (tracked)<a class="headerlink" href="#phase-3-per-repo-fail-closed-tracked" title="Permanent link">&para;</a></h3>
 <p>Each repo is promoted to fail-closed individually once it demonstrates
 a clean zizmor run (zero findings at <code>--min-severity medium</code>) on its
-default branch. Promotion is tracked in the fleet dashboard; remaining
-warning-mode repos are tracked until the fleet is fully migrated.</p>
+default branch, by setting <code>fail-on-finding: true</code> in its caller
+workflow. There is <strong>no fleet-wide promotion deadline and no automated
+check</strong> that lists which repos are still in warning mode; the caller's
+<code>fail-on-finding</code> value is the only record of a repo's phase.</p>
 <p>Once a repo is fail-closed, zizmor becomes a blocking CI gate — every PR
 that introduces a new finding at <code>medium</code> or higher severity is rejected
 until the finding is fixed or suppressed with a documented rationale.</p>
+<h3 id="accepted-risk-warning-mode-zizmor">Accepted risk: warning-mode zizmor<a class="headerlink" href="#accepted-risk-warning-mode-zizmor" title="Permanent link">&para;</a></h3>
+<p>Until a repo is promoted to Phase 3, the controls that <strong>only</strong> zizmor
+provides are report-only on that repo:</p>
+<ul>
+<li>template injection via <code>${{ }}</code> in <code>run:</code> blocks;</li>
+<li>untrusted checkout under <code>pull_request_target</code>;</li>
+<li>artifact poisoning;</li>
+<li>credential persistence;</li>
+<li>known-vulnerable actions.</li>
+</ul>
+<p>(SHA-pinned <code>uses:</code> and least-privilege <code>permissions:</code> — gates 4a and 4c —
+stay blocking on every repo through
+<a href="../security-posture/#workflow-permissions-audit"><code>scripts/check-workflow-security.py</code></a>.)</p>
+<p>This is a dated <strong>accepted risk</strong>: accepted 2026-10-27, review
+<strong>2027-01-31</strong> (aligned with the fleet's other warning-first gates). At
+review, either flip the reusable workflow's <code>fail-on-finding</code> default to
+<code>true</code> and name a periodic check that lists repos still in warning mode,
+or re-state the acceptance with a new review date. <em>Failure mode this
+prevents:</em> a <code>${{ github.event.* }}</code> injection or <code>pull_request_target</code>
+checkout merging on a warning-mode repo while the standards claim the
+pattern is blocked (OWASP CICD-SEC-4 / CICD-SEC-1, SLSA Build L3).</p>
 <h2 id="how-to-verify">How to verify<a class="headerlink" href="#how-to-verify" title="Permanent link">&para;</a></h2>
 <ul>
 <li>The repo's CI workflow calls the shared zizmor reusable workflow from

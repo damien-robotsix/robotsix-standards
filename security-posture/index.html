@@ -3605,7 +3605,12 @@ when the publisher moves it; a SHA is immutable.</p>
 <code>.pre-commit-config.yaml</code>) and at CI time (<code>actionlint</code> in the shared CI
 workflow). <code>zizmor</code> audits workflow definitions for security anti-patterns
 (script injection via <code>${{ }}</code> in <code>run:</code> steps, overly broad <code>permissions:</code>,
-untrusted checkout of <code>pull_request_target</code> events) and gates in CI.</p>
+untrusted checkout of <code>pull_request_target</code> events). zizmor <strong>blocks</strong> only
+on <code>robotsix-github-workflows</code> and on repos that opted in with
+<code>fail-on-finding: true</code>; on every other repo it is <strong>warning-only
+(Phase 2)</strong> — findings are CI annotations, not a gate. This is a dated
+accepted risk (review 2027-01-31); see
+<a href="../github-actions-security/#accepted-risk-warning-mode-zizmor">GitHub Actions security — accepted risk</a>.</p>
 <ul>
 <li><strong>How to verify:</strong> <code>.pre-commit-config.yaml</code> includes <code>actionlint</code>. CI
   calls the shared workflow that runs <code>zizmor</code> on <code>.github/workflows/</code>.</li>
@@ -3644,9 +3649,11 @@ blast radius to the minimum.</p>
 <p>The <strong>workflow-permissions audit</strong> is the concrete, repo-local enforcement
 mechanism that makes gates 4a and 4c self-enforcing — including for
 <strong>content-only repos</strong>, which are exempt from the zizmor workflow audit (gate
-4b) but must still meet 4a and 4c. For code repos, zizmor mechanically
-enforces both properties; for content-only repos this script is the equivalent
-gate, so every repo's 4a/4c requirement stays checkable without human review.</p>
+4b) but must still meet 4a and 4c. For code repos, zizmor also flags both
+properties, but it is warning-only (Phase 2) outside
+<code>robotsix-github-workflows</code> and opted-in repos, so this script is the
+blocking 4a/4c gate for every repo — code and content-only alike — and every
+repo's 4a/4c requirement stays checkable without human review.</p>
 <p>It is implemented as <code>scripts/check-workflow-security.py</code>, run in CI on every
 PR (see <code>.github/workflows/ci.yml</code> and <code>.github/workflows/baseline-check.yml</code>),
 and enforced on this repo as its reference implementation. It scans every

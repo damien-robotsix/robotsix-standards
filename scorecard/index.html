@@ -3042,7 +3042,10 @@ had it (robotsix-chat, robotsix-board, robotsix-calendar-agent).</p>
 repo-locally, and harder:</p>
 <ul>
 <li><strong>zizmor</strong> — workflow security (dangerous-workflow patterns, token
-  permissions, template injection).</li>
+  permissions, template injection). <strong>Warning-only (Phase 2)</strong> outside
+  <code>robotsix-github-workflows</code> and repos that opted in with
+  <code>fail-on-finding: true</code> — see the
+  <a href="../github-actions-security/#accepted-risk-warning-mode-zizmor">accepted risk</a>.</li>
 <li><strong>actionlint</strong> — workflow syntax.</li>
 <li><strong>workflow-permissions audit</strong> — least-privilege <code>permissions:</code> blocks and
   SHA-pinned <code>uses:</code>, enforced by <code>scripts/check-workflow-security.py</code> (see
@@ -3050,7 +3053,8 @@ repo-locally, and harder:</p>
 <li><strong>Dependabot / <code>uv audit</code></strong> — dependency CVEs.</li>
 <li><strong>Trivy</strong> — container CVEs.</li>
 </ul>
-<p>These gates block a PR; Scorecard only scored it after the fact.</p>
+<p>The other gates block a PR, and zizmor blocks on promoted repos; Scorecard
+only scored it after the fact.</p>
 <h2 id="why-it-was-dropped">Why it was dropped<a class="headerlink" href="#why-it-was-dropped" title="Permanent link">&para;</a></h2>
 <ol>
 <li><strong>It was never a fleet standard — an accident of history.</strong> Scorecard
@@ -3058,10 +3062,18 @@ repo-locally, and harder:</p>
    signal, just three repos carrying a workflow the other eleven do not.</li>
 <li><strong>It duplicates gates the fleet already runs, more weakly.</strong> Its
    meaningful checks — action pinning, token permissions, dangerous
-   workflow patterns — are already enforced repo-locally and harder by
-   zizmor, actionlint, and the
+   workflow patterns — are already covered repo-locally by zizmor,
+   actionlint, and the
    <a href="../security-posture/#workflow-permissions-audit">workflow-permissions audit</a>.
-   Those block a PR; Scorecard only scores it afterwards. Scorecard's
+   Action pinning and token permissions are <strong>blocked</strong> on every repo by the
+   workflow-permissions audit. Scorecard's <em>Dangerous-Workflow</em> patterns
+   (template injection, untrusted <code>pull_request_target</code> checkout) are caught
+   only by zizmor, which is <strong>warning-only (Phase 2)</strong> outside
+   <code>robotsix-github-workflows</code> and opted-in repos — a dated
+   <a href="../github-actions-security/#accepted-risk-warning-mode-zizmor">accepted risk</a>
+   (review 2027-01-31), not a blocking replacement. <em>Failure mode this note
+   prevents:</em> reading the Scorecard drop as if dangerous-workflow patterns
+   were blocked fleet-wide. Scorecard's
    <em>Branch-Protection</em> check is an <strong>accepted gap</strong>, with no replacement: none of those tools
    reads branch-protection settings, and since the watchdog's
    <a href="../mill-agents/#retired-agents">retirement</a> fleet branch protection is

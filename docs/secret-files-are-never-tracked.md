@@ -149,9 +149,12 @@ It verifies that:
 - `.pre-commit-config.yaml` does not wire the file into detect-secrets via the
   no-op `--exclude-files .secrets-patterns-excluded` form.
 
-Like the `.gitignore` deny-list gate, it is **warning-first** (2026-09): it
-emits `::warning::` annotations but does not fail the build, so the fleet can
-converge before a follow-up gate flips it to fail-closed.
+Like the `.gitignore` deny-list gate, it has been **warning-first** since
+2026-09: it emits `::warning::` annotations but does not fail the build, so
+the fleet can converge. It flips to **blocking** on **2027-01-31** — from that
+date the script emits `::error::` annotations and exits 1, failing CI — the
+same date as the `.gitignore` deny-list gate and `public-registry-check`. A
+repo that is still non-compliant on that date fails CI until it is fixed.
 
 ## Failure prevented
 

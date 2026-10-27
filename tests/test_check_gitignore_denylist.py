@@ -2,12 +2,17 @@
 
 Covers scripts/check-gitignore-denylist.py: the positive-pattern parse
 (negations and comments dropped), the coverage decision for each deny-list
-requirement, honoring of ``!`` negating exceptions, and the warning-first
-main() (which always exits 0 while emitting ``::warning::`` annotations for
-missing patterns).  See docs/security-posture.md gate 5.
+requirement, honoring of ``!`` negating exceptions, and the dated rollout of
+main() (exit 0 with ``::warning::`` annotations before 2027-01-31, exit 1 with
+``::error::`` annotations from then).  See docs/security-posture.md gate 5.
 """
 
 from __future__ import annotations
+
+import datetime as _dt
+
+BEFORE = _dt.date(2027, 1, 30)
+ON = _dt.date(2027, 1, 31)
 
 # A .gitignore that satisfies every deny-list requirement. ``.env*`` covers
 # both ``.env`` and ``.env.*``; ``wp-config*.php`` covers both wp-config forms.
@@ -105,7 +110,7 @@ def test_empty_gitignore_reports_all(check_gitignore_denylist):
 
 
 # ---------------------------------------------------------------------------
-# main(): warning-first end-to-end gate
+# main(): dated warning-first -> blocking end-to-end gate
 # ---------------------------------------------------------------------------
 
 
@@ -126,7 +131,7 @@ def test_main_warns_but_passes_when_missing(
     gi.write_text(MISSING_SOME)
     monkeypatch.setattr(check_gitignore_denylist, "GITIGNORE", gi)
     # Warning-first: exit 0 even with missing patterns.
-    assert check_gitignore_denylist.main() == 0
+    assert check_gitignore_denylist.main(today=BEFORE) == 0
     out = capsys.readouterr().out
     assert "::warning::" in out
     assert "*.p12" in out
@@ -136,5 +141,35 @@ def test_main_warns_when_gitignore_absent(
     tmp_path, check_gitignore_denylist, monkeypatch, capsys
 ):
     monkeypatch.setattr(check_gitignore_denylist, "GITIGNORE", tmp_path / ".gitignore")
-    assert check_gitignore_denylist.main() == 0
+    assert check_gitignore_denylist.main(today=BEFORE) == 0
     assert "::warning::" in capsys.readouterr().out
+
+
+def test_main_blocks_from_blocking_date_when_missing(
+    tmp_path, check_gitignore_denylist, monkeypatch, capsys
+):
+    gi = tmp_path / ".gitignore"
+    gi.write_text(MISSING_SOME)
+    monkeypatch.setattr(check_gitignore_denylist, "GITIGNORE", gi)
+    assert check_gitignore_denylist.BLOCKING_FROM == ON
+    assert check_gitignore_denylist.main(today=ON) == 1
+    out = capsys.readouterr().out
+    assert "::error::" in out
+    assert "::warning::" not in out
+
+
+def test_main_blocks_from_blocking_date_when_absent(
+    tmp_path, check_gitignore_denylist, monkeypatch, capsys
+):
+    monkeypatch.setattr(check_gitignore_denylist, "GITIGNORE", tmp_path / ".gitignore")
+    assert check_gitignore_denylist.main(today=ON) == 1
+    assert "::error::" in capsys.readouterr().out
+
+
+def test_main_ok_after_blocking_date_when_complete(
+    tmp_path, check_gitignore_denylist, monkeypatch
+):
+    gi = tmp_path / ".gitignore"
+    gi.write_text(COMPLETE)
+    monkeypatch.setattr(check_gitignore_denylist, "GITIGNORE", gi)
+    assert check_gitignore_denylist.main(today=ON) == 0

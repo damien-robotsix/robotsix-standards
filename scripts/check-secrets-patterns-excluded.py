@@ -21,17 +21,20 @@ Two ways the mandate silently breaks — and this gate catches both:
      Each non-comment line is compiled with Python's ``re`` to catch a pattern
      that will not parse.
 
-Warning-first (2026-09): problems are reported as GitHub ``::warning::``
-annotations but do NOT fail the build, mirroring the ``.gitignore`` deny-list
-gate (scripts/check-gitignore-denylist.py).  A follow-up gate flips this to
-fail-closed once the fleet is compliant.
+Rollout: warning-first since 2026-09.  Before ``BLOCKING_FROM`` (2027-01-31)
+problems are ``::warning::`` annotations and the exit code is 0; from that
+date they are ``::error::`` annotations and the exit code is 1 — the same flip
+date as the ``.gitignore`` deny-list gate (scripts/check-gitignore-denylist.py)
+and scripts/check-public-registry.py.
 
 Exit codes:
-  0 — always (warning-first); problems are emitted as ``::warning::``
+  0 — no problems, or problems found before the blocking date
+  1 — problems found on or after the blocking date
 """
 
 from __future__ import annotations
 
+import datetime as _dt
 import re
 import sys
 from pathlib import Path
@@ -39,6 +42,7 @@ from pathlib import Path
 REPO_ROOT = Path(__file__).resolve().parent.parent
 PATTERNS_FILE = REPO_ROOT / ".secrets-patterns-excluded"
 PRECOMMIT = REPO_ROOT / ".pre-commit-config.yaml"
+BLOCKING_FROM = _dt.date(2027, 1, 31)
 
 # The exact no-op miswiring: detect-secrets ``--exclude-files`` fed the pattern
 # file's name instead of a regex.  Matched tolerantly across the two-line
@@ -88,12 +92,15 @@ def detect_secrets_noop(precommit_text: str) -> bool:
     return _NOOP_WIRING.search(precommit_text) is not None
 
 
-def main() -> int:
+def main(today: _dt.date | None = None) -> int:
+    today = today or _dt.date.today()
+    blocking = today >= BLOCKING_FROM
+    level = "error" if blocking else "warning"
     ok = True
 
     if not PATTERNS_FILE.is_file():
         print(
-            "::warning::.secrets-patterns-excluded is missing at repo root; "
+            f"::{level}::.secrets-patterns-excluded is missing at repo root; "
             "every repo must ship it as the reviewed scanner-exclusion file "
             "(docs/secret-files-are-never-tracked.md)"
         )
@@ -101,7 +108,7 @@ def main() -> int:
     else:
         for line in invalid_patterns(PATTERNS_FILE.read_text()):
             print(
-                f"::warning::.secrets-patterns-excluded line `{line}` is not a "
+                f"::{level}::.secrets-patterns-excluded line `{line}` is not a "
                 "valid regular expression — the file is newline-separated "
                 "regexes (RE2/re), not gitignore globs "
                 "(docs/secret-files-are-never-tracked.md)"
@@ -110,7 +117,7 @@ def main() -> int:
 
     if PRECOMMIT.is_file() and detect_secrets_noop(PRECOMMIT.read_text()):
         print(
-            "::warning::.pre-commit-config.yaml wires detect-secrets with "
+            f"::{level}::.pre-commit-config.yaml wires detect-secrets with "
             "`--exclude-files .secrets-patterns-excluded` — a silent no-op "
             "(--exclude-files takes a regex, not a file). Move path exclusions "
             "to the hook's `exclude:` regex "
@@ -120,7 +127,13 @@ def main() -> int:
 
     if ok:
         print(".secrets-patterns-excluded presence and wiring: OK")
-
+        return 0
+    if blocking:
+        return 1
+    print(
+        ".secrets-patterns-excluded: problems found; warning-first until "
+        f"{BLOCKING_FROM.isoformat()}, blocking from then"
+    )
     return 0
 
 

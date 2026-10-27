@@ -27,22 +27,26 @@ public certificate, a detect-secrets baseline) negates just that file with a
 comment.  Negation lines never count as coverage and never mark a requirement
 missing — coverage is decided solely by the positive patterns.
 
-Warning-first (2026-09): missing patterns are reported as GitHub annotations
-but do NOT fail the build, mirroring the SECURITY.md baseline-check treatment.
-A follow-up gate flips this to fail-closed once the fleet is compliant.
+Rollout: warning-first since 2026-09.  Before ``BLOCKING_FROM`` (2027-01-31)
+missing patterns are ``::warning::`` annotations and the exit code is 0; from
+that date they are ``::error::`` annotations and the exit code is 1 (the same
+flip date as scripts/check-public-registry.py).
 
 Exit codes:
-  0 — always (warning-first); missing patterns are emitted as ``::warning::``
+  0 — deny list fully covered, or gaps found before the blocking date
+  1 — gaps found (or ``.gitignore`` missing) on or after the blocking date
 """
 
 from __future__ import annotations
 
+import datetime as _dt
 import fnmatch
 import sys
 from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
 GITIGNORE = REPO_ROOT / ".gitignore"
+BLOCKING_FROM = _dt.date(2027, 1, 31)
 
 # Each requirement is (human label, a representative filename of that
 # credential class).  A requirement is satisfied when at least one positive
@@ -110,13 +114,17 @@ def missing_requirements(text: str) -> list[str]:
     return [label for label, sample in REQUIREMENTS if not _covers(patterns, sample)]
 
 
-def main() -> int:
+def main(today: _dt.date | None = None) -> int:
+    today = today or _dt.date.today()
+    blocking = today >= BLOCKING_FROM
+    level = "error" if blocking else "warning"
+
     if not GITIGNORE.is_file():
         print(
-            "::warning::.gitignore is missing at repo root; it must cover the "
+            f"::{level}::.gitignore is missing at repo root; it must cover the "
             "credential/secret-file deny list (docs/security-posture.md gate 5)"
         )
-        return 0
+        return 1 if blocking else 0
 
     text = GITIGNORE.read_text()
     missing = missing_requirements(text)
@@ -124,10 +132,16 @@ def main() -> int:
     if missing:
         for label in missing:
             print(
-                f"::warning::.gitignore does not cover `{label}` — the "
+                f"::{level}::.gitignore does not cover `{label}` — the "
                 "credential/secret-file deny list requires it "
                 "(docs/security-posture.md gate 5)"
             )
+        if blocking:
+            return 1
+        print(
+            f".gitignore deny list: {len(missing)} gap(s); warning-first until "
+            f"{BLOCKING_FROM.isoformat()}, blocking from then"
+        )
     else:
         print(".gitignore credential/secret-file deny list: OK")
 

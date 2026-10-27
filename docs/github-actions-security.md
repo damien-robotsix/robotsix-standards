@@ -127,7 +127,9 @@ stay blocking on every repo through
 [`scripts/check-workflow-security.py`](security-posture.md#workflow-permissions-audit).)
 
 This is a dated **accepted risk**: accepted 2026-10-27, review
-**2027-01-31** (aligned with the fleet's other warning-first gates). At
+**2027-01-31** (aligned with the blocking date of the fleet's other
+warning-first gates: `public-registry-check`, `gitignore-denylist-check` and
+`secrets-patterns-excluded-check` in `baseline-check.yml`). At
 review, either flip the reusable workflow's `fail-on-finding` default to
 `true` and name a periodic check that lists repos still in warning mode,
 or re-state the acceptance with a new review date. *Failure mode this

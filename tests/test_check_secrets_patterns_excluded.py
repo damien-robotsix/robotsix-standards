@@ -3,11 +3,17 @@
 Covers scripts/check-secrets-patterns-excluded.py: the pattern-line parse
 (comments and blanks dropped), regex validation (a gitignore glob is rejected),
 detection of the no-op ``--exclude-files <file>`` detect-secrets wiring, and
-the warning-first main() (which always exits 0 while emitting ``::warning::``
-annotations).  See docs/secret-files-are-never-tracked.md.
+the dated rollout of main() (exit 0 with ``::warning::`` annotations before
+2027-01-31, exit 1 with ``::error::`` annotations from then).  See
+docs/secret-files-are-never-tracked.md.
 """
 
 from __future__ import annotations
+
+import datetime as _dt
+
+BEFORE = _dt.date(2027, 1, 30)
+ON = _dt.date(2027, 1, 31)
 
 VALID_PATTERNS = """\
 # Directories that never contain secrets.
@@ -85,7 +91,7 @@ def test_detect_secrets_clean_wiring_not_flagged(check_secrets_patterns_excluded
 
 
 # ---------------------------------------------------------------------------
-# main(): warning-first end-to-end gate
+# main(): dated warning-first -> blocking end-to-end gate
 # ---------------------------------------------------------------------------
 
 
@@ -125,7 +131,7 @@ def test_main_warns_when_file_missing(
         patterns_text=None,
         precommit_text=PRECOMMIT_CLEAN,
     )
-    assert check_secrets_patterns_excluded.main() == 0
+    assert check_secrets_patterns_excluded.main(today=BEFORE) == 0
     assert "missing at repo root" in capsys.readouterr().out
 
 
@@ -140,7 +146,38 @@ def test_main_warns_on_glob_and_noop_wiring(
         precommit_text=PRECOMMIT_NOOP_SPLIT,
     )
     # Warning-first: exit 0 even with problems present.
-    assert check_secrets_patterns_excluded.main() == 0
+    assert check_secrets_patterns_excluded.main(today=BEFORE) == 0
     out = capsys.readouterr().out
     assert "not a valid regular expression" in out
     assert "silent no-op" in out
+    assert "::warning::" in out
+
+
+def test_main_blocks_from_blocking_date(
+    tmp_path, check_secrets_patterns_excluded, monkeypatch, capsys
+):
+    _wire(
+        monkeypatch,
+        check_secrets_patterns_excluded,
+        tmp_path,
+        patterns_text=GLOB_SYNTAX,
+        precommit_text=PRECOMMIT_NOOP_SPLIT,
+    )
+    assert check_secrets_patterns_excluded.BLOCKING_FROM == ON
+    assert check_secrets_patterns_excluded.main(today=ON) == 1
+    out = capsys.readouterr().out
+    assert "::error::" in out
+    assert "::warning::" not in out
+
+
+def test_main_ok_after_blocking_date_when_clean(
+    tmp_path, check_secrets_patterns_excluded, monkeypatch
+):
+    _wire(
+        monkeypatch,
+        check_secrets_patterns_excluded,
+        tmp_path,
+        patterns_text=VALID_PATTERNS,
+        precommit_text=PRECOMMIT_CLEAN,
+    )
+    assert check_secrets_patterns_excluded.main(today=ON) == 0

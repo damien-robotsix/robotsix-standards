@@ -3286,9 +3286,12 @@ It verifies that:</p>
 <li><code>.pre-commit-config.yaml</code> does not wire the file into detect-secrets via the
   no-op <code>--exclude-files .secrets-patterns-excluded</code> form.</li>
 </ul>
-<p>Like the <code>.gitignore</code> deny-list gate, it is <strong>warning-first</strong> (2026-09): it
-emits <code>::warning::</code> annotations but does not fail the build, so the fleet can
-converge before a follow-up gate flips it to fail-closed.</p>
+<p>Like the <code>.gitignore</code> deny-list gate, it has been <strong>warning-first</strong> since
+2026-09: it emits <code>::warning::</code> annotations but does not fail the build, so
+the fleet can converge. It flips to <strong>blocking</strong> on <strong>2027-01-31</strong> — from that
+date the script emits <code>::error::</code> annotations and exits 1, failing CI — the
+same date as the <code>.gitignore</code> deny-list gate and <code>public-registry-check</code>. A
+repo that is still non-compliant on that date fails CI until it is fixed.</p>
 <h2 id="failure-prevented">Failure prevented<a class="headerlink" href="#failure-prevented" title="Permanent link">&para;</a></h2>
 <p><em>Failure mode 1 — silent no-op wiring.</em> Feeding the glob file to detect-secrets
 via <code>--exclude-files</code> (which expects a regex, not a file) silently ignores

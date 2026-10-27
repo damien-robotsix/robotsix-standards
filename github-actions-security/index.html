@@ -3304,7 +3304,9 @@ provides are report-only on that repo:</p>
 stay blocking on every repo through
 <a href="../security-posture/#workflow-permissions-audit"><code>scripts/check-workflow-security.py</code></a>.)</p>
 <p>This is a dated <strong>accepted risk</strong>: accepted 2026-10-27, review
-<strong>2027-01-31</strong> (aligned with the fleet's other warning-first gates). At
+<strong>2027-01-31</strong> (aligned with the blocking date of the fleet's other
+warning-first gates: <code>public-registry-check</code>, <code>gitignore-denylist-check</code> and
+<code>secrets-patterns-excluded-check</code> in <code>baseline-check.yml</code>). At
 review, either flip the reusable workflow's <code>fail-on-finding</code> default to
 <code>true</code> and name a periodic check that lists repos still in warning mode,
 or re-state the acceptance with a new review date. <em>Failure mode this

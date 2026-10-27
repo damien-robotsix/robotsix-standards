@@ -3780,7 +3780,7 @@ non-delete invocation or a dedicated file transfer instead.</p>
   <code>.gitignore</code> deny-list coverage is checked mechanically by
   <code>scripts/check-gitignore-denylist.py</code> (run from <code>baseline-check.yml</code>), which
   reports any missing pattern and honors per-repo negating exceptions —
-  warning-first today, fail-closed once the fleet is compliant; the deploy
+  warning-first today, blocking (CI fails) from 2027-01-31; the deploy
   workflow reads secrets from <code>${{ secrets.* }}</code> and writes them via a
   transport with no delete-ordering.</li>
 <li><strong>Failure prevented:</strong> a credential file is committed and tracked. Once in
@@ -3959,7 +3959,7 @@ dashboard-watching:</p>
 </tr>
 <tr>
 <td>Credential-file deny list</td>
-<td><code>.gitignore</code> covers <code>.htpasswd</code>, <code>.env</code>/<code>.env.*</code>, <code>wp-config*.php</code>, <code>*.pem</code>, <code>*.key</code>, <code>*secret*</code>, <code>*.p12</code> — verified by <code>scripts/check-gitignore-denylist.py</code> in <code>baseline-check.yml</code> (warning-first, honors per-repo negating exceptions)</td>
+<td><code>.gitignore</code> covers <code>.htpasswd</code>, <code>.env</code>/<code>.env.*</code>, <code>wp-config*.php</code>, <code>*.pem</code>, <code>*.key</code>, <code>*secret*</code>, <code>*.p12</code> — verified by <code>scripts/check-gitignore-denylist.py</code> in <code>baseline-check.yml</code> (warning-first, blocking from 2027-01-31; honors per-repo negating exceptions) — and <code>.secrets-patterns-excluded</code> presence and wiring by <code>scripts/check-secrets-patterns-excluded.py</code> (same dates)</td>
 </tr>
 <tr>
 <td>SBOM*</td>

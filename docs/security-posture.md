@@ -177,7 +177,12 @@ Every workflow file is linted at commit time (`actionlint` in
 `.pre-commit-config.yaml`) and at CI time (`actionlint` in the shared CI
 workflow). `zizmor` audits workflow definitions for security anti-patterns
 (script injection via `${{ }}` in `run:` steps, overly broad `permissions:`,
-untrusted checkout of `pull_request_target` events) and gates in CI.
+untrusted checkout of `pull_request_target` events). zizmor **blocks** only
+on `robotsix-github-workflows` and on repos that opted in with
+`fail-on-finding: true`; on every other repo it is **warning-only
+(Phase 2)** — findings are CI annotations, not a gate. This is a dated
+accepted risk (review 2027-01-31); see
+[GitHub Actions security — accepted risk](github-actions-security.md#accepted-risk-warning-mode-zizmor).
 
 - **How to verify:** `.pre-commit-config.yaml` includes `actionlint`. CI
   calls the shared workflow that runs `zizmor` on `.github/workflows/`.
@@ -218,9 +223,11 @@ blast radius to the minimum.
 The **workflow-permissions audit** is the concrete, repo-local enforcement
 mechanism that makes gates 4a and 4c self-enforcing — including for
 **content-only repos**, which are exempt from the zizmor workflow audit (gate
-4b) but must still meet 4a and 4c. For code repos, zizmor mechanically
-enforces both properties; for content-only repos this script is the equivalent
-gate, so every repo's 4a/4c requirement stays checkable without human review.
+4b) but must still meet 4a and 4c. For code repos, zizmor also flags both
+properties, but it is warning-only (Phase 2) outside
+`robotsix-github-workflows` and opted-in repos, so this script is the
+blocking 4a/4c gate for every repo — code and content-only alike — and every
+repo's 4a/4c requirement stays checkable without human review.
 
 It is implemented as `scripts/check-workflow-security.py`, run in CI on every
 PR (see `.github/workflows/ci.yml` and `.github/workflows/baseline-check.yml`),

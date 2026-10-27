@@ -23,7 +23,10 @@ The supply-chain properties Scorecard would score are already gated
 repo-locally, and harder:
 
 - **zizmor** — workflow security (dangerous-workflow patterns, token
-  permissions, template injection).
+  permissions, template injection). **Warning-only (Phase 2)** outside
+  `robotsix-github-workflows` and repos that opted in with
+  `fail-on-finding: true` — see the
+  [accepted risk](github-actions-security.md#accepted-risk-warning-mode-zizmor).
 - **actionlint** — workflow syntax.
 - **workflow-permissions audit** — least-privilege `permissions:` blocks and
   SHA-pinned `uses:`, enforced by `scripts/check-workflow-security.py` (see
@@ -31,7 +34,8 @@ repo-locally, and harder:
 - **Dependabot / `uv audit`** — dependency CVEs.
 - **Trivy** — container CVEs.
 
-These gates block a PR; Scorecard only scored it after the fact.
+The other gates block a PR, and zizmor blocks on promoted repos; Scorecard
+only scored it after the fact.
 
 ## Why it was dropped
 
@@ -40,10 +44,18 @@ These gates block a PR; Scorecard only scored it after the fact.
    signal, just three repos carrying a workflow the other eleven do not.
 2. **It duplicates gates the fleet already runs, more weakly.** Its
    meaningful checks — action pinning, token permissions, dangerous
-   workflow patterns — are already enforced repo-locally and harder by
-   zizmor, actionlint, and the
+   workflow patterns — are already covered repo-locally by zizmor,
+   actionlint, and the
    [workflow-permissions audit](security-posture.md#workflow-permissions-audit).
-   Those block a PR; Scorecard only scores it afterwards. Scorecard's
+   Action pinning and token permissions are **blocked** on every repo by the
+   workflow-permissions audit. Scorecard's *Dangerous-Workflow* patterns
+   (template injection, untrusted `pull_request_target` checkout) are caught
+   only by zizmor, which is **warning-only (Phase 2)** outside
+   `robotsix-github-workflows` and opted-in repos — a dated
+   [accepted risk](github-actions-security.md#accepted-risk-warning-mode-zizmor)
+   (review 2027-01-31), not a blocking replacement. *Failure mode this note
+   prevents:* reading the Scorecard drop as if dangerous-workflow patterns
+   were blocked fleet-wide. Scorecard's
    *Branch-Protection* check is an **accepted gap**, with no replacement: none of those tools
    reads branch-protection settings, and since the watchdog's
    [retirement](mill-agents.md#retired-agents) fleet branch protection is

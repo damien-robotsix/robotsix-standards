@@ -3092,6 +3092,10 @@ MUST NOT be used.</p>
   image digests) or pin/refactor hook versions (rewrites code or images) and
   warrant human review. Every repo's <code>.github/dependabot.yml</code> must exclude
   the <code>docker</code> and <code>pre-commit</code> ecosystems from the auto-merge group.</li>
+<li><strong>Wait out the release-age cooldown.</strong> Every auto-merge-eligible
+  ecosystem carries a <code>cooldown: default-days: 3</code> block — the rule, its
+  exemptions and its enforcement are in the
+  <a href="../repo-baseline/#release-age-cooldown">repo baseline — release-age cooldown</a>.</li>
 </ul>
 <h2 id="why">Why<a class="headerlink" href="#why" title="Permanent link">&para;</a></h2>
 <p>GitHub's native auto-merge is only safe when branch protection requires

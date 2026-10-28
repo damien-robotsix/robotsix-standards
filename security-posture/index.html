@@ -3594,17 +3594,31 @@ remaining ecosystems; the baseline-check gate verifies both are present and
 complete. Dependabot and Renovate PRs auto-merge once required checks pass —
 restricted to <code>minor</code>/<code>patch</code> updates, with the <code>docker</code> and <code>pre-commit</code>
 ecosystems excluded from auto-merge (those PRs always require human review);
-see <a href="../dependabot-auto-merge/">Dependabot auto-merge</a>.</p>
+see <a href="../dependabot-auto-merge/">Dependabot auto-merge</a>. An auto-merged update
+must also wait out a <strong>3-day release-age cooldown</strong> (Renovate
+<code>minimumReleaseAge</code> + <code>internalChecksFilter: strict</code>, Dependabot
+<code>cooldown: default-days: 3</code> on every auto-merge-eligible ecosystem). Security
+updates and first-party <code>damien-robotsix/*</code> packages are exempt — see
+<a href="../repo-baseline/#release-age-cooldown">repo baseline — release-age cooldown</a>.</p>
 <ul>
 <li><strong>How to verify:</strong> <code>renovate.json</code> exists in every Python repo (covering the
   <code>uv</code> manager); <code>.github/dependabot.yml</code> exists and covers <code>github-actions</code>
   and <code>pre-commit</code> in every repo, plus <code>npm</code> in repos with <code>package.json</code> and
   <code>docker</code> in image-shipping repos. The Dependabot and Renovate dashboards
-  show recent update PRs.</li>
+  show recent update PRs. The <code>dependency-cooldown-check</code> job
+  (<code>scripts/check-dependency-cooldown.py</code> in <code>baseline-check.yml</code>) finds a
+  cooldown of at least 3 days on every auto-merge path, or an accepted-risk
+  entry in <code>.dependency-cooldown-allowlist</code> — warning-first, blocking from
+  2027-01-31.</li>
 <li><strong>Failure prevented:</strong> a pinned digest (base image, action SHA) rots silently
   — the image stops receiving base-OS security patches, an action runs an
-  unmaintained version — with no alert.</li>
-<li><strong>Alignment:</strong> OpenSSF Scorecard <em>Dependency-Update-Tool</em> check.</li>
+  unmaintained version — with no alert. The cooldown prevents a second
+  failure: a freshly published malicious release passes CI and is
+  auto-merged within hours, before it can be yanked.</li>
+<li><strong>Alignment:</strong> OpenSSF Scorecard <em>Dependency-Update-Tool</em> check; OWASP Top
+  10:2025 <em>A03 Software Supply Chain Failures</em>;
+  <a href="https://owasp.org/www-project-top-10-ci-cd-security-risks/">OWASP Top 10 CI/CD Security Risks</a>
+  <em>CICD-SEC-3 Dependency Chain Abuse</em>.</li>
 <li><strong>Detail:</strong> <a href="../repo-baseline/#automated-dependency-updates">repo baseline — automated dependency updates</a>.</li>
 </ul>
 <h3 id="4-workflow-hardening">4. Workflow hardening<a class="headerlink" href="#4-workflow-hardening" title="Permanent link">&para;</a></h3>
@@ -4020,7 +4034,7 @@ dashboard-watching:</p>
 </tr>
 <tr>
 <td>Dependabot + Renovate</td>
-<td><code>.github/dependabot.yml</code> covers non-uv ecosystems; <code>renovate.json</code> present in Python repos; recent update PRs</td>
+<td><code>.github/dependabot.yml</code> covers non-uv ecosystems; <code>renovate.json</code> present in Python repos; recent update PRs; 3-day release-age cooldown on every auto-merge path, verified by <code>scripts/check-dependency-cooldown.py</code> in <code>baseline-check.yml</code> (warning-first, blocking from 2027-01-31)</td>
 </tr>
 <tr>
 <td>SHA-pinned actions</td>

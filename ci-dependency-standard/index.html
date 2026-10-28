@@ -3325,9 +3325,18 @@ v41.63.0.</p>
 <span class="w">    </span><span class="p">{</span>
 <span class="w">      </span><span class="nt">&quot;matchUpdateTypes&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;minor&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;patch&quot;</span><span class="p">],</span>
 <span class="w">      </span><span class="nt">&quot;groupName&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;non-major dependencies&quot;</span><span class="p">,</span>
-<span class="w">      </span><span class="nt">&quot;automerge&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span>
+<span class="w">      </span><span class="nt">&quot;automerge&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;minimumReleaseAge&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;3 days&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;internalChecksFilter&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;strict&quot;</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">&quot;matchSourceUrls&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;https://github.com/damien-robotsix/**&quot;</span><span class="p">],</span>
+<span class="w">      </span><span class="nt">&quot;minimumReleaseAge&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span>
 <span class="w">    </span><span class="p">}</span>
 <span class="w">  </span><span class="p">],</span>
+<span class="w">  </span><span class="nt">&quot;vulnerabilityAlerts&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;minimumReleaseAge&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span>
+<span class="w">  </span><span class="p">},</span>
 <span class="w">  </span><span class="nt">&quot;lockFileMaintenance&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
 <span class="w">    </span><span class="nt">&quot;enabled&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span>
 <span class="w">    </span><span class="nt">&quot;schedule&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;before 5am on monday&quot;</span><span class="p">]</span>
@@ -3340,6 +3349,17 @@ v41.63.0.</p>
 <li>The <code>packageRules</code> block groups minor and patch updates into a single PR
   and enables auto-merge (<code>"automerge": true</code>).  Major updates remain
   individual and require human review.</li>
+<li><code>"minimumReleaseAge": "3 days"</code> with <code>"internalChecksFilter": "strict"</code> —
+  the release-age cooldown. Renovate does not auto-merge an update until the
+  release is at least 3 days old, and <code>strict</code> makes it wait to create the
+  branch at all until that check passes. The fleet value
+  is 3 days; the rule and its enforcement live in the
+  <a href="../repo-baseline/#release-age-cooldown">repo baseline — release-age cooldown</a>.</li>
+<li>The second rule exempts first-party <code>damien-robotsix/*</code> packages
+  (<code>"minimumReleaseAge": null</code>): the fleet publishes them itself, so the
+  waiting period protects nothing.</li>
+<li><code>"vulnerabilityAlerts": {"minimumReleaseAge": null}</code> — security fixes are
+  never delayed.</li>
 <li><code>"lockFileMaintenance"</code> — weekly lockfile refresh (re-resolves transitive
   deps within <code>pyproject.toml</code> constraints and re-locks <code>uv.lock</code>).</li>
 </ul>

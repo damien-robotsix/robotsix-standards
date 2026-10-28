@@ -494,7 +494,9 @@ RAG context sources (ticket bodies, PR diffs, chat history) are treated as
 untrusted input under **LLM01** and are delimited before injection.  *Failure
 prevented:* a poisoned RAG document containing a backdoor instruction is
 retrieved as context; the delimitation layer treats it as data rather than
-instruction, preventing the model from adopting the backdoor.
+instruction, preventing the model from adopting the backdoor.  *Enforced
+by:* the periodic standards-audit agent, against the LLM05 criterion in the
+[LLM & agentic security audit](security-posture.md#llm-agentic-security-audit).
 
 **LLM06 — Unbounded Consumption.** Agent resource usage — compute, API
 budget, token spend, and spawned subtasks — must be bounded at every level.
@@ -505,6 +507,11 @@ request cap); (c) the `spawn_subtask` mechanism is bounded — agents cannot
 recursively spawn unbounded child agents.  *Failure prevented:* a looping or
 confused agent cannot consume unbounded compute or API budget — the request
 cap and job timeout together enforce a hard ceiling on any single agent run.
+*Enforced by:* `scripts/check-workflow-timeouts.py` for mechanism (a) on
+GitHub Actions jobs; the rest (request budgets, timeouts on runs outside
+Actions, `spawn_subtask` bounds) by the periodic standards-audit agent,
+against the LLM06 criterion in the
+[LLM & agentic security audit](security-posture.md#llm-agentic-security-audit).
 
 **LLM07 — Misinformation.** Model output that represents a decision or
 factual claim a **human would rely on** must carry a provenance tag (model +

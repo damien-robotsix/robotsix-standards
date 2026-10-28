@@ -145,8 +145,13 @@ component:
   shared auto-release workflow — see
   [changelog & releases](repo-baseline.md#changelog-releases)) → `X.Y.Z`,
   `sha-<short>`.
-- **Attestations:** SBOM + build provenance (`provenance: mode=max`,
-  `sbom: true`), signed via OIDC.
+- **Attestations:** SBOM + build provenance, attached by BuildKit
+  (`docker buildx build --provenance mode=max --sbom true`) to the image index
+  as **unsigned** in-toto statements. This reaches SLSA **Build L1** only. No
+  Sigstore/OIDC signing step (`actions/attest-build-provenance`, cosign) runs
+  yet, so Build L2/L3 and the consumer-side verification are not met. See
+  [SLSA Build Track](security-posture.md#slsa-build-track) for the per-level
+  verdict, the target mechanism and the dated accepted risk.
 - **Scan:** a Trivy vulnerability scan with findings uploaded as a workflow artifact.
 
 ## Registry & tags

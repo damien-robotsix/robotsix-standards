@@ -302,8 +302,11 @@ and add a self-referential secret-management burden. The OSS stack above
 - **Failure prevented:** a credential (API key, token, private key) is
   committed and pushed; even if the commit is later reverted or force-pushed,
   the secret existed in the history and must be assumed compromised.
-- **Alignment:** OpenSSF Scorecard *Token-Permissions* check, OWASP
-  *Secret Management*.
+- **Alignment:** [OWASP Secrets Management Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/Secrets_Management_Cheat_Sheet.html),
+  [OpenSSF OSPS Baseline](https://baseline.openssf.org/) *OSPS-BR-07*
+  (prevent storage of unencrypted secrets in the repository). OpenSSF
+  Scorecard has no secret-scanning check — its *Token-Permissions* check
+  covers workflow `GITHUB_TOKEN` scope (gate 4c), not committed secrets.
 
 #### Credential and secret files are never tracked
 
@@ -350,8 +353,10 @@ non-delete invocation or a dedicated file transfer instead.
   incident). A deploy sync with a delete-ordering silently deletes a
   server-side secret absent from the committed tree, taking the protected
   service down (the robotsix-mill `lftp mirror --delete` trap).
-- **Alignment:** OWASP *Secret Management*, OpenSSF Scorecard
-  *Token-Permissions* check.
+- **Alignment:** [OWASP Secrets Management Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/Secrets_Management_Cheat_Sheet.html),
+  [OpenSSF OSPS Baseline](https://baseline.openssf.org/) *OSPS-BR-07*
+  (prevent storage of unencrypted secrets in the repository). OpenSSF
+  Scorecard has no matching check.
 
 **Full details:** [secret files are never tracked (dedicated doc)](secret-files-are-never-tracked.md)
 — `.secrets-patterns-excluded` format, scanner integration, and the separation
@@ -428,9 +433,11 @@ dependency vulnerability audit on every CI run.
   fails schema validation or is silently ignored, while no real SBOM is ever
   produced.
 - **Alignment:** OpenSSF Scorecard *SBOM* (10/10 with release asset) and
-  *Vulnerabilities* checks,
-  [SLSA *Build L2+*](https://slsa.dev/spec/v1.2/requirements) provenance
-  requirement.
+  *Vulnerabilities* checks, [OpenSSF OSPS Baseline](https://baseline.openssf.org/)
+  *OSPS-QA-02* (SBOM for released assets) and the *OSPS-VM* vulnerability
+  management controls. SLSA Build-track provenance is a separate control
+  (SLSA v1.x requires neither an SBOM nor a CVE audit) and is covered by the
+  [provenance attestation in docker-standard](docker-standard.md#publish-one-reusable-workflow-the-single-method).
 - **Detail:** [Docker build & release — CI-time image scan](docker-standard.md#ci-time-image-scan).
 
 ## SLSA Source Track

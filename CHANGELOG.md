@@ -3,6 +3,28 @@
 
 # Changelog
 
+## [0.9.0](https://github.com/damien-robotsix/robotsix-standards/compare/v0.8.0...v0.9.0) (2026-10-28)
+
+
+### Features
+
+* Standardize: job-level timeout-minutes on all CI jobs (20261028T023837Z-standardize-job-level-timeout-minutes-on-e5a5) ([#442](https://github.com/damien-robotsix/robotsix-standards/issues/442)) ([d68dd63](https://github.com/damien-robotsix/robotsix-standards/commit/d68dd63a834e3cb9475a8b5b142aa468ef349fd6))
+
+
+### Bug Fixes
+
+* The SecretStr check can't run in any fleet repo: check-secret-str is a local hook calling a script that exists only in robotsix-standards, and python.md's standard hook list omits it (20261028T054244Z-the-secretstr-check-can-t-run-in-any-fle-c90a) ([#445](https://github.com/damien-robotsix/robotsix-standards/issues/445)) ([e4242b7](https://github.com/damien-robotsix/robotsix-standards/commit/e4242b7dfe6c22a45038e3f09a051ecf811f39ec))
+
+
+### Documentation
+
+* http-security-headers: rule 4 says the `secure` library drops HSTS on plain-HTTP requests, but the library never checks the request scheme (20261028T073257Z-http-security-headers-rule-4-says-the-se-71cb) ([#446](https://github.com/damien-robotsix/robotsix-standards/issues/446)) ([3219fd9](https://github.com/damien-robotsix/robotsix-standards/commit/3219fd9b4a01dd266b2b39d83fadc5af8906a7a8))
+* LLM05 and LLM06 are MUSTs in component-standard, but no audit table checks them (20261028T014101Z-llm05-and-llm06-are-musts-in-component-s-61cd) ([#440](https://github.com/damien-robotsix/robotsix-standards/issues/440)) ([ebffc9b](https://github.com/damien-robotsix/robotsix-standards/commit/ebffc9bec91e8e008fbfbc5895928b6ab2e798ea))
+* security-posture: the Alignment lines for gates 2, 4a and 4c cite the wrong Scorecard/SLSA controls (20261028T014101Z-security-posture-the-alignment-lines-for-25d5) ([#441](https://github.com/damien-robotsix/robotsix-standards/issues/441)) ([1932eb1](https://github.com/damien-robotsix/robotsix-standards/commit/1932eb1115217287fe4b4bb3c290a3906f476f84))
+* security-posture: the Alignment lines for gates 5 and 6 cite the wrong OpenSSF/SLSA controls (20261028T003453Z-security-posture-the-alignment-lines-for-fec6) ([#438](https://github.com/damien-robotsix/robotsix-standards/issues/438)) ([c8dc4d8](https://github.com/damien-robotsix/robotsix-standards/commit/c8dc4d8759b6bf7d40cb1ff9a0f3789a8f64bf6b))
+* SLSA Build-track level is never stated, docker-standard's "signed via OIDC" names no signer, and nothing verifies provenance before deploy (20261028T041915Z-slsa-build-track-level-is-never-stated-d-7820) ([#444](https://github.com/damien-robotsix/robotsix-standards/issues/444)) ([bfe72dd](https://github.com/damien-robotsix/robotsix-standards/commit/bfe72dd369a27b9561132529f356b07bdc76ce70))
+* Three security citations still use OWASP Top 10 2021 (or no version) while the rest of the standards use 2025 (20261028T041915Z-three-security-citations-still-use-owasp-382a) ([#443](https://github.com/damien-robotsix/robotsix-standards/issues/443)) ([e4802a0](https://github.com/damien-robotsix/robotsix-standards/commit/e4802a03744e43c9c97563da43587c6c47b4f9fa))
+
 ## [0.8.0](https://github.com/damien-robotsix/robotsix-standards/compare/v0.7.3...v0.8.0) (2026-10-27)
 
 

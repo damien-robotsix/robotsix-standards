@@ -2578,10 +2578,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#4-hsts-is-conditional-on-tls" class="md-nav__link">
+  <a href="#4-hsts-is-emitted-unconditionally-and-takes-effect-over-tls" class="md-nav__link">
     <span class="md-ellipsis">
       
-        4. HSTS is conditional on TLS
+        4. HSTS is emitted unconditionally and takes effect over TLS
       
     </span>
   </a>
@@ -3020,10 +3020,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#4-hsts-is-conditional-on-tls" class="md-nav__link">
+  <a href="#4-hsts-is-emitted-unconditionally-and-takes-effect-over-tls" class="md-nav__link">
     <span class="md-ellipsis">
       
-        4. HSTS is conditional on TLS
+        4. HSTS is emitted unconditionally and takes effect over TLS
       
     </span>
   </a>
@@ -3129,7 +3129,7 @@ which provides a safe, low-friction baseline:</p>
 </tr>
 <tr>
 <td><code>Strict-Transport-Security</code></td>
-<td><code>max-age=31536000; includeSubDomains</code> (only behind TLS)</td>
+<td><code>max-age=31536000; includeSubDomains</code> (effective only over TLS; ignored by browsers on HTTP)</td>
 </tr>
 </tbody>
 </table>
@@ -3158,11 +3158,23 @@ by calling methods on the <code>Secure</code> object — e.g.
 <code>secure_headers.csp.default_src = "'self' 'unsafe-inline'"</code> — rather than
 disabling the header or building a CSP string by hand. This keeps every CSP
 modification traceable to a single, grep-able location.</p>
-<h3 id="4-hsts-is-conditional-on-tls">4. HSTS is conditional on TLS<a class="headerlink" href="#4-hsts-is-conditional-on-tls" title="Permanent link">&para;</a></h3>
-<p>The <code>Strict-Transport-Security</code> header is only emitted when the service is
-behind TLS. The <code>secure</code> library detects this from the request scheme and
-suppresses the header on plain-HTTP requests automatically — the service does
-not need to branch on this itself.</p>
+<h3 id="4-hsts-is-emitted-unconditionally-and-takes-effect-over-tls">4. HSTS is emitted unconditionally and takes effect over TLS<a class="headerlink" href="#4-hsts-is-emitted-unconditionally-and-takes-effect-over-tls" title="Permanent link">&para;</a></h3>
+<p>The <code>secure</code> library does <strong>not</strong> inspect the request scheme: the
+<code>SecureASGIMiddleware</code> applies every configured header — including
+<code>Strict-Transport-Security</code> — to every HTTP response, plain HTTP included.
+This is harmless: user agents MUST ignore an HSTS header received over
+non-secure transport (<a href="https://www.rfc-editor.org/rfc/rfc6797#section-8.1">RFC 6797 §8.1</a>),
+and fleet services sit behind a TLS-terminating edge, so the header takes
+effect only on the TLS hop from the edge to the browser. Services MUST NOT
+strip <code>Strict-Transport-Security</code> or branch on the request scheme to suppress
+it, and the edge MUST pass it through on HTTPS responses. The HSTS policy
+must carry <code>max-age</code> of at least one year (<code>31536000</code>), per
+<a href="https://owasp.org/www-project-application-security-verification-standard/">OWASP ASVS 5.0 V3.4.1</a>
+and the <a href="https://cheatsheetseries.owasp.org/cheatsheets/HTTP_Strict_Transport_Security_Cheat_Sheet.html">OWASP HTTP Strict Transport Security Cheat Sheet</a>;
+the BALANCED default qualifies.</p>
+<p><em>Failure mode this prevents:</em> an auditor or agent assumes the library gates
+HSTS by scheme, and a service or edge change that drops HSTS on the HTTPS path
+goes unnoticed.</p>
 <h2 id="how-this-is-enforced">How this is enforced<a class="headerlink" href="#how-this-is-enforced" title="Permanent link">&para;</a></h2>
 <p>This standard governs downstream deployable components, not this repo, so there
 is no CI gate here that can inspect a component's ASGI app. Enforcement is by
@@ -3192,8 +3204,8 @@ is registered).</p>
 <td>Every CSP relaxation is a method call on the <code>Secure</code>/CSP object at the single registration site — <code>grep</code> for <code>csp</code> in the app-setup module surfaces all relaxations; a hand-built CSP string or a disabled header is a violation.</td>
 </tr>
 <tr>
-<td>4. HSTS conditional on TLS</td>
-<td>The service does not branch on the request scheme to set <code>Strict-Transport-Security</code> itself; it relies on the <code>secure</code> library's automatic TLS detection.</td>
+<td>4. HSTS emitted, effective over TLS</td>
+<td>The configured <code>Secure</code> object includes <code>StrictTransportSecurity</code> with <code>max-age</code> ≥ <code>31536000</code> (the BALANCED default qualifies), and no code strips the header or branches on the request scheme to suppress it. Optionally, a deploy smoke check runs <code>curl -sI https://&lt;host&gt;/health</code> and asserts a <code>strict-transport-security</code> header is present.</td>
 </tr>
 </tbody>
 </table>

@@ -3745,8 +3745,11 @@ and add a self-referential secret-management burden. The OSS stack above
 <li><strong>Failure prevented:</strong> a credential (API key, token, private key) is
   committed and pushed; even if the commit is later reverted or force-pushed,
   the secret existed in the history and must be assumed compromised.</li>
-<li><strong>Alignment:</strong> OpenSSF Scorecard <em>Token-Permissions</em> check, OWASP
-  <em>Secret Management</em>.</li>
+<li><strong>Alignment:</strong> <a href="https://cheatsheetseries.owasp.org/cheatsheets/Secrets_Management_Cheat_Sheet.html">OWASP Secrets Management Cheat Sheet</a>,
+  <a href="https://baseline.openssf.org/">OpenSSF OSPS Baseline</a> <em>OSPS-BR-07</em>
+  (prevent storage of unencrypted secrets in the repository). OpenSSF
+  Scorecard has no secret-scanning check — its <em>Token-Permissions</em> check
+  covers workflow <code>GITHUB_TOKEN</code> scope (gate 4c), not committed secrets.</li>
 </ul>
 <h4 id="credential-and-secret-files-are-never-tracked">Credential and secret files are never tracked<a class="headerlink" href="#credential-and-secret-files-are-never-tracked" title="Permanent link">&para;</a></h4>
 <p>Secret scanning (above) catches <em>detected</em> secrets — API keys, tokens,
@@ -3790,8 +3793,10 @@ non-delete invocation or a dedicated file transfer instead.</p>
   incident). A deploy sync with a delete-ordering silently deletes a
   server-side secret absent from the committed tree, taking the protected
   service down (the robotsix-mill <code>lftp mirror --delete</code> trap).</li>
-<li><strong>Alignment:</strong> OWASP <em>Secret Management</em>, OpenSSF Scorecard
-  <em>Token-Permissions</em> check.</li>
+<li><strong>Alignment:</strong> <a href="https://cheatsheetseries.owasp.org/cheatsheets/Secrets_Management_Cheat_Sheet.html">OWASP Secrets Management Cheat Sheet</a>,
+  <a href="https://baseline.openssf.org/">OpenSSF OSPS Baseline</a> <em>OSPS-BR-07</em>
+  (prevent storage of unencrypted secrets in the repository). OpenSSF
+  Scorecard has no matching check.</li>
 </ul>
 <p><strong>Full details:</strong> <a href="../secret-files-are-never-tracked/">secret files are never tracked (dedicated doc)</a>
 — <code>.secrets-patterns-excluded</code> format, scanner integration, and the separation
@@ -3869,9 +3874,11 @@ dependency vulnerability audit on every CI run.</p>
   fails schema validation or is silently ignored, while no real SBOM is ever
   produced.</li>
 <li><strong>Alignment:</strong> OpenSSF Scorecard <em>SBOM</em> (10/10 with release asset) and
-  <em>Vulnerabilities</em> checks,
-  <a href="https://slsa.dev/spec/v1.2/requirements">SLSA <em>Build L2+</em></a> provenance
-  requirement.</li>
+  <em>Vulnerabilities</em> checks, <a href="https://baseline.openssf.org/">OpenSSF OSPS Baseline</a>
+  <em>OSPS-QA-02</em> (SBOM for released assets) and the <em>OSPS-VM</em> vulnerability
+  management controls. SLSA Build-track provenance is a separate control
+  (SLSA v1.x requires neither an SBOM nor a CVE audit) and is covered by the
+  <a href="../docker-standard/#publish-one-reusable-workflow-the-single-method">provenance attestation in docker-standard</a>.</li>
 <li><strong>Detail:</strong> <a href="../docker-standard/#ci-time-image-scan">Docker build &amp; release — CI-time image scan</a>.</li>
 </ul>
 <h2 id="slsa-source-track">SLSA Source Track<a class="headerlink" href="#slsa-source-track" title="Permanent link">&para;</a></h2>

@@ -3555,8 +3555,10 @@ vulnerable package before the PR merges.</p>
   workflow. Opening a PR that adds a vulnerable dependency fails the check.</li>
 <li><strong>Failure prevented:</strong> a lockfile bump silently pulls in a package with a
   published CVE.</li>
-<li><strong>Alignment:</strong> OpenSSF Scorecard <em>Dependency-Update-Tool</em> and
-  <em>Vulnerabilities</em> checks.</li>
+<li><strong>Alignment:</strong> OpenSSF Scorecard <em>Vulnerabilities</em> check,
+  <a href="https://baseline.openssf.org/">OpenSSF OSPS Baseline</a> <em>OSPS-VM-05</em>
+  (dependency vulnerability management). Scorecard <em>Dependency-Update-Tool</em>
+  measures only the automated update tooling of gate 3, not a PR-time block.</li>
 </ul>
 <h3 id="3-automated-dependency-updates-renovate-dependabot">3. Automated dependency updates — Renovate + Dependabot<a class="headerlink" href="#3-automated-dependency-updates-renovate-dependabot" title="Permanent link">&para;</a></h3>
 <p>Every pin the standards mandate has exactly one named bumper. Renovate covers
@@ -3582,9 +3584,9 @@ see <a href="../dependabot-auto-merge/">Dependabot auto-merge</a>.</p>
 </ul>
 <h3 id="4-workflow-hardening">4. Workflow hardening<a class="headerlink" href="#4-workflow-hardening" title="Permanent link">&para;</a></h3>
 <h4 id="4a-actions-pinned-to-commit-shas">4a. Actions pinned to commit SHAs<a class="headerlink" href="#4a-actions-pinned-to-commit-shas" title="Permanent link">&para;</a></h4>
-<p>Every third-party action (<code>uses:</code> referencing an action outside the
-robotsix-github-workflows org) is pinned to its full 40-character commit SHA,
-with a trailing <code># vX.Y.Z</code> version comment. A tag or branch ref drifts silently
+<p>Every <code>uses:</code> reference — third-party actions and first-party reusable
+workflows from robotsix-github-workflows alike — is pinned to its full
+40-character commit SHA, with a trailing <code># vX.Y.Z</code> version comment. A tag or branch ref drifts silently
 when the publisher moves it; a SHA is immutable.</p>
 <ul>
 <li><strong>How to verify:</strong> the <a href="#workflow-permissions-audit">workflow-permissions audit</a>
@@ -3597,8 +3599,10 @@ when the publisher moves it; a SHA is immutable.</p>
   third-party actions.</li>
 <li><strong>Failure prevented:</strong> a compromised or broken action release replaces a
   trusted tag, and every CI run pulls the replacement with no review.</li>
-<li><strong>Alignment:</strong> OpenSSF Scorecard <em>Pinned-Dependencies</em> check, SLSA
-  <em>Build L3</em> requirement.</li>
+<li><strong>Alignment:</strong> OpenSSF Scorecard <em>Pinned-Dependencies</em> check. This is not
+  a SLSA requirement (SLSA v1.x Build L3 requires a hardened build platform,
+  not pinned build dependencies); pinning hardens the build inputs that the
+  separately attested provenance describes.</li>
 </ul>
 <h4 id="4b-workflow-linting-actionlint-zizmor">4b. Workflow linting — actionlint + zizmor<a class="headerlink" href="#4b-workflow-linting-actionlint-zizmor" title="Permanent link">&para;</a></h4>
 <p>Every workflow file is linted at commit time (<code>actionlint</code> in
@@ -3642,8 +3646,8 @@ blast radius to the minimum.</p>
 <li><strong>Failure prevented:</strong> a compromised third-party action in a workflow with
   <code>write-all</code> can push to <code>main</code>, exfiltrate secrets, or modify releases with
   no audit trail.</li>
-<li><strong>Alignment:</strong> OpenSSF Scorecard <em>Token-Permissions</em> check, SLSA
-  <em>Build L3</em> requirement, <a href="https://docs.github.com/en/actions/security-for-github-actions/security-guides/automatic-token-authentication#permissions-for-the-github_token">GitHub's own guidance</a>.</li>
+<li><strong>Alignment:</strong> OpenSSF Scorecard <em>Token-Permissions</em> check,
+  <a href="https://docs.github.com/en/actions/security-for-github-actions/security-guides/automatic-token-authentication#permissions-for-the-github_token">GitHub's own guidance</a>.</li>
 </ul>
 <h4 id="workflow-permissions-audit">Workflow-permissions audit<a class="headerlink" href="#workflow-permissions-audit" title="Permanent link">&para;</a></h4>
 <p>The <strong>workflow-permissions audit</strong> is the concrete, repo-local enforcement

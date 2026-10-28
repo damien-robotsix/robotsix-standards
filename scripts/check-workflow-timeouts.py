@@ -19,21 +19,80 @@ Rules enforced (per docs/repo-baseline.md):
     ceiling belongs inside the called workflow, where each of its own jobs
     declares `timeout-minutes`.
 
+Hard-cap tier (warning-first):
+  - A job's `timeout-minutes` must not exceed its fleet hard cap:
+    ``RELEASE_CAP`` (60) for release/docs jobs (job id matching
+    ``RELEASE_JOB_RE``: release, publish, docs, sbom, deploy) and
+    ``DEFAULT_CAP`` (30) for every other job (test, lint, build, ...).
+  - An approved exception is an accepted-risk entry in
+    ``.workflow-timeout-allowlist`` at the repo root, one per line:
+    ``<workflow-file> <job-id> <minutes> <approval reference ...>`` — the
+    approval reference is mandatory and the entry covers values up to
+    ``<minutes>``.
+  - Before ``BLOCKING_FROM`` (2027-01-31) over-cap findings are
+    ``::warning::`` annotations and do not change the exit code; from that
+    date they are ``::error::`` annotations and the exit code is 1.
+
 Exit codes:
-  0 — all workflow jobs satisfy the rule
-  1 — a step-running job lacks timeout-minutes, or a >15 timeout has no
-      explanation
+  0 — all workflow jobs satisfy the rule (over-cap findings before the
+      blocking date are warnings only)
+  1 — a step-running job lacks timeout-minutes, a >15 timeout has no
+      explanation, or (from the blocking date) a job exceeds its hard cap
   2 — script error (cannot read a workflow file, etc.)
 """
 
 from __future__ import annotations
 
+import datetime as _dt
 import re
 import sys
 
 from _workflow_utils import WORKFLOWS_DIR, iter_workflow_files, read_workflow
 
 _TIMEOUT_RE = re.compile(r"^\s*timeout-minutes:\s*(\d+)\s*(#.*)?$")
+
+DEFAULT_CAP = 30
+RELEASE_CAP = 60
+RELEASE_JOB_RE = re.compile(r"release|publish|docs|sbom|deploy", re.IGNORECASE)
+ALLOWLIST_NAME = ".workflow-timeout-allowlist"
+BLOCKING_FROM = _dt.date(2027, 1, 31)
+
+
+def cap_for(job_name: str) -> int:
+    """Return the fleet hard cap (minutes) for a job id."""
+    return RELEASE_CAP if RELEASE_JOB_RE.search(job_name) else DEFAULT_CAP
+
+
+def parse_allowlist(text: str) -> dict[tuple[str, str], int]:
+    """Parse ``<workflow-file> <job-id> <minutes> <approval ...>`` entries.
+
+    An entry without an approval reference, or with a non-integer minutes
+    field, is ignored: every accepted risk must name its approval.
+    """
+    entries: dict[tuple[str, str], int] = {}
+    for raw in text.splitlines():
+        line = raw.strip()
+        if not line or line.startswith("#"):
+            continue
+        parts = line.split(None, 3)
+        if len(parts) == 4 and parts[2].isdigit():
+            entries[(parts[0], parts[1])] = int(parts[2])
+    return entries
+
+
+def over_cap(job: dict, workflow: str, allow: dict[tuple[str, str], int]) -> str | None:
+    """Return an over-cap message for ``job``, or None when within cap."""
+    value = job["timeout_value"]
+    if job["has_job_uses"] or value is None:
+        return None
+    cap = cap_for(job["name"])
+    if value <= cap or value <= allow.get((workflow, job["name"]), -1):
+        return None
+    return (
+        f"{workflow}: {job['name']}: timeout-minutes {value} exceeds the fleet "
+        f"hard cap of {cap}; lower it or add an accepted-risk entry to "
+        f"{ALLOWLIST_NAME} (docs/repo-baseline.md#job-timeout-minutes)"
+    )
 
 
 def _new_job(name: str) -> dict:
@@ -169,7 +228,7 @@ def _analyse_job(job: dict) -> tuple[bool, str]:
     return True, f"{name}: timeout-minutes OK"
 
 
-def main() -> int:
+def main(today: _dt.date | None = None) -> int:
     """Check that every step-running workflow job carries a timeout-minutes.
 
     Each job that runs steps directly (``runs-on``) must declare an
@@ -186,8 +245,15 @@ def main() -> int:
         print("No .github/workflows/ directory — nothing to check.")
         return 0
 
+    today = today or _dt.date.today()
+    blocking = today >= BLOCKING_FROM
+    # The allowlist lives at the repo root, two levels above .github/workflows.
+    allow_file = WORKFLOWS_DIR.parent.parent / ALLOWLIST_NAME
+    allow = parse_allowlist(allow_file.read_text()) if allow_file.is_file() else {}
+
     ok_count = 0
     problems: list[str] = []
+    cap_findings: list[str] = []
 
     for wf in iter_workflow_files(WORKFLOWS_DIR):
         text = read_workflow(wf)
@@ -200,6 +266,18 @@ def main() -> int:
                 ok_count += 1
             else:
                 problems.append(f"{wf.name}: {reason}")
+            finding = over_cap(job, wf.name, allow)
+            if finding:
+                cap_findings.append(finding)
+
+    level = "error" if blocking else "warning"
+    for finding in cap_findings:
+        print(f"::{level}::{finding}")
+    if cap_findings and not blocking:
+        print(
+            f"Timeout hard-cap: {len(cap_findings)} finding(s); warning-first "
+            f"until {BLOCKING_FROM.isoformat()}, blocking from then"
+        )
 
     if problems:
         print(
@@ -209,6 +287,9 @@ def main() -> int:
             "> 15) to every job that runs steps directly — see "
             "docs/repo-baseline.md.\n"
         )
+        return 1
+
+    if cap_findings and blocking:
         return 1
 
     print(

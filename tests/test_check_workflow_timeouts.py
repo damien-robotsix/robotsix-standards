@@ -225,3 +225,85 @@ def test_main_yaml_workflow_is_checked(
     monkeypatch.setattr(check_workflow_timeouts, "WORKFLOWS_DIR", wf_dir)
     assert check_workflow_timeouts.main() == 1
     assert "timeout-minutes" in capsys.readouterr().out
+
+
+# ---------------------------------------------------------------------------
+# Hard-cap tier: warning-first, blocking from BLOCKING_FROM
+# ---------------------------------------------------------------------------
+
+OVER_CAP = """\
+name: Test
+
+on: push
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45  # slow integration suite
+  release:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45  # release build, within the release cap
+"""
+
+
+def _before(mod):
+    import datetime as dt
+
+    return mod.BLOCKING_FROM - dt.timedelta(days=1)
+
+
+def test_cap_for_tiers(check_workflow_timeouts):
+    assert check_workflow_timeouts.cap_for("test") == 30
+    assert check_workflow_timeouts.cap_for("lint") == 30
+    for name in ("release", "publish", "docs-build", "sbom", "deploy"):
+        assert check_workflow_timeouts.cap_for(name) == 60
+
+
+def test_parse_allowlist_requires_approval(check_workflow_timeouts):
+    text = (
+        "# comment\n"
+        "ci.yml test 45 approved in standards#999\n"
+        "ci.yml lint 40\n"
+        "ci.yml build abc approved\n"
+    )
+    assert check_workflow_timeouts.parse_allowlist(text) == {("ci.yml", "test"): 45}
+
+
+def test_over_cap_warns_before_blocking_date(
+    tmp_path, check_workflow_timeouts, monkeypatch, capsys
+):
+    _write_workflow(tmp_path, OVER_CAP)
+    monkeypatch.setattr(
+        check_workflow_timeouts, "WORKFLOWS_DIR", tmp_path / ".github" / "workflows"
+    )
+    assert check_workflow_timeouts.main(today=_before(check_workflow_timeouts)) == 0
+    out = capsys.readouterr().out
+    assert "::warning::test.yml: test: timeout-minutes 45" in out
+    assert "release:" not in out
+
+
+def test_over_cap_blocks_from_blocking_date(
+    tmp_path, check_workflow_timeouts, monkeypatch, capsys
+):
+    _write_workflow(tmp_path, OVER_CAP)
+    monkeypatch.setattr(
+        check_workflow_timeouts, "WORKFLOWS_DIR", tmp_path / ".github" / "workflows"
+    )
+    blocking = check_workflow_timeouts.BLOCKING_FROM
+    assert check_workflow_timeouts.main(today=blocking) == 1
+    assert "::error::test.yml: test:" in capsys.readouterr().out
+
+
+def test_over_cap_accepted_risk_entry(
+    tmp_path, check_workflow_timeouts, monkeypatch, capsys
+):
+    _write_workflow(tmp_path, OVER_CAP)
+    (tmp_path / ".workflow-timeout-allowlist").write_text(
+        "test.yml test 45 approved in standards#999\n"
+    )
+    monkeypatch.setattr(
+        check_workflow_timeouts, "WORKFLOWS_DIR", tmp_path / ".github" / "workflows"
+    )
+    blocking = check_workflow_timeouts.BLOCKING_FROM
+    assert check_workflow_timeouts.main(today=blocking) == 0
+    assert "::" not in capsys.readouterr().out

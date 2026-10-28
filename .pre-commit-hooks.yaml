@@ -1,0 +1,20 @@
+# Hooks published by robotsix-standards for fleet repos to consume as a
+# remote pre-commit hook:
+#
+#   - repo: https://github.com/damien-robotsix/robotsix-standards
+#     rev: <release tag>   # pinned; Renovate/`pre-commit autoupdate` bumps it
+#     hooks:
+#       - id: check-secret-str
+#
+# `language: script` runs the entry relative to the root of THIS repo's
+# checkout, so the hook needs no packaging and no install step: the script is
+# stdlib-only and runs under the consumer's `python3` (via its shebang).
+- id: check-secret-str
+  name: reject str-typed secret fields in config models
+  description: >-
+    Fails on any pydantic config-model field whose name matches a secret
+    pattern (api_key, token, password, secret, ...) but is annotated `str`
+    instead of `SecretStr` (docs/config-standard.md §3).
+  entry: scripts/check-secret-str.py
+  language: script
+  types: [python]

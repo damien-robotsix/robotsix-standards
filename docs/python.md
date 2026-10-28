@@ -720,6 +720,13 @@ documented in the template's `.pre-commit-config.yaml`.
 - **Secrets:** `detect-secrets` (with a committed `.secrets.baseline`) —
   catches credentials *before* the commit exists, complementing CI's push
   protection; this matters more when agents author most commits.
+  **Repos with a pydantic config model additionally:** `check-secret-str`,
+  the remote hook published by robotsix-standards
+  (`repo: https://github.com/damien-robotsix/robotsix-standards`, `rev:`
+  pinned to a release tag, `id: check-secret-str`). It enforces the
+  [SecretStr MUST](config-standard.md#3-one-secret-convention). Without it, a
+  secret field typed `str` passes every other hook, and the secret is stored
+  and logged as plaintext.
 - **Workflows:** `actionlint` — catches broken workflow/caller YAML at commit
   time.
 - **Dead code:** `vulture` — agent-written changes are prone to orphaned

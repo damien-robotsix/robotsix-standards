@@ -3423,7 +3423,8 @@ with a <strong>Log hygiene</strong> row: a test that captures log output for a r
 carrying <code>Authorization: Bearer &lt;token&gt;</code>, plus a grep or Semgrep rule
 against logging <code>request.headers</code> or <code>request.url</code>.</p>
 <p><strong>Failure prevented:</strong> credentials and session tokens written to the log
-stream (CWE-532, OWASP Top 10 2021 A09). Logs are retained, shipped to an
+stream (CWE-532, <a href="https://owasp.org/Top10/2025/">OWASP Top 10:2025</a> A09 Security
+Logging &amp; Alerting Failures). Logs are retained, shipped to an
 aggregator and read by everyone with log access. One logged
 <code>Authorization</code> header hands a working credential to anyone who can query
 the logs, long after the request ended and outside the access controls

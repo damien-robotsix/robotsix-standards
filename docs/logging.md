@@ -336,7 +336,8 @@ carrying `Authorization: Bearer <token>`, plus a grep or Semgrep rule
 against logging `request.headers` or `request.url`.
 
 **Failure prevented:** credentials and session tokens written to the log
-stream (CWE-532, OWASP Top 10 2021 A09). Logs are retained, shipped to an
+stream (CWE-532, [OWASP Top 10:2025](https://owasp.org/Top10/2025/) A09 Security
+Logging & Alerting Failures). Logs are retained, shipped to an
 aggregator and read by everyone with log access. One logged
 `Authorization` header hands a working credential to anyone who can query
 the logs, long after the request ended and outside the access controls

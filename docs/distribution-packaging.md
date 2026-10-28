@@ -194,5 +194,7 @@ CI.
 > package appearing on the public index under the org's name, after which it
 > cannot be fully retracted (mirrors and caches keep it). Alignment:
 > [SLSA v1.0 Build track](https://slsa.dev/spec/v1.0/levels) (controlled
-> distribution), [OWASP Top 10 2021 A08](https://owasp.org/Top10/A08_2021-Software_and_Data_Integrity_Failures/)
-> (dependency confusion, credential-theft publishing).
+> distribution), [OWASP Top 10:2025](https://owasp.org/Top10/2025/)
+> [A03:2025 Software Supply Chain Failures](https://owasp.org/Top10/2025/A03_2025-Software_Supply_Chain_Failures/)
+> (dependency confusion, credential-theft publishing) and
+> [A08:2025 Software or Data Integrity Failures](https://owasp.org/Top10/2025/A08_2025-Software_or_Data_Integrity_Failures/).

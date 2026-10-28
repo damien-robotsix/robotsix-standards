@@ -307,7 +307,7 @@ roll-up of this check.
   `claude-auth` credentials live in volumes. A volume-files endpoint that
   serves them raw bypasses config-standard's redact-on-read MUST and puts a
   component's own credentials one prompt injection away from exfiltration
-  (OWASP LLM02:2025 with LLM01 as trigger; OWASP A01:2025) — the same
+  (OWASP LLM02:2026 with LLM01 as trigger; OWASP A01:2025) — the same
   second-door risk [§3.1](#31-no-deploy-credential) closes. Refusing or
   redacting the config target and denying well-known secret files keeps
   them out of the agent's context.

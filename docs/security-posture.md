@@ -123,8 +123,10 @@ vulnerable package before the PR merges.
   workflow. Opening a PR that adds a vulnerable dependency fails the check.
 - **Failure prevented:** a lockfile bump silently pulls in a package with a
   published CVE.
-- **Alignment:** OpenSSF Scorecard *Dependency-Update-Tool* and
-  *Vulnerabilities* checks.
+- **Alignment:** OpenSSF Scorecard *Vulnerabilities* check,
+  [OpenSSF OSPS Baseline](https://baseline.openssf.org/) *OSPS-VM-05*
+  (dependency vulnerability management). Scorecard *Dependency-Update-Tool*
+  measures only the automated update tooling of gate 3, not a PR-time block.
 
 ### 3. Automated dependency updates — Renovate + Dependabot
 
@@ -153,9 +155,9 @@ see [Dependabot auto-merge](dependabot-auto-merge.md).
 
 #### 4a. Actions pinned to commit SHAs
 
-Every third-party action (`uses:` referencing an action outside the
-robotsix-github-workflows org) is pinned to its full 40-character commit SHA,
-with a trailing `# vX.Y.Z` version comment. A tag or branch ref drifts silently
+Every `uses:` reference — third-party actions and first-party reusable
+workflows from robotsix-github-workflows alike — is pinned to its full
+40-character commit SHA, with a trailing `# vX.Y.Z` version comment. A tag or branch ref drifts silently
 when the publisher moves it; a SHA is immutable.
 
 - **How to verify:** the [workflow-permissions audit](#workflow-permissions-audit)
@@ -168,8 +170,10 @@ when the publisher moves it; a SHA is immutable.
   third-party actions.
 - **Failure prevented:** a compromised or broken action release replaces a
   trusted tag, and every CI run pulls the replacement with no review.
-- **Alignment:** OpenSSF Scorecard *Pinned-Dependencies* check, SLSA
-  *Build L3* requirement.
+- **Alignment:** OpenSSF Scorecard *Pinned-Dependencies* check. This is not
+  a SLSA requirement (SLSA v1.x Build L3 requires a hardened build platform,
+  not pinned build dependencies); pinning hardens the build inputs that the
+  separately attested provenance describes.
 
 #### 4b. Workflow linting — actionlint + zizmor
 
@@ -215,8 +219,8 @@ blast radius to the minimum.
 - **Failure prevented:** a compromised third-party action in a workflow with
   `write-all` can push to `main`, exfiltrate secrets, or modify releases with
   no audit trail.
-- **Alignment:** OpenSSF Scorecard *Token-Permissions* check, SLSA
-  *Build L3* requirement, [GitHub's own guidance](https://docs.github.com/en/actions/security-for-github-actions/security-guides/automatic-token-authentication#permissions-for-the-github_token).
+- **Alignment:** OpenSSF Scorecard *Token-Permissions* check,
+  [GitHub's own guidance](https://docs.github.com/en/actions/security-for-github-actions/security-guides/automatic-token-authentication#permissions-for-the-github_token).
 
 #### Workflow-permissions audit
 

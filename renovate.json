@@ -5,9 +5,18 @@
     {
       "matchUpdateTypes": ["minor", "patch"],
       "groupName": "non-major dependencies",
-      "automerge": true
+      "automerge": true,
+      "minimumReleaseAge": "3 days",
+      "internalChecksFilter": "strict"
+    },
+    {
+      "matchSourceUrls": ["https://github.com/damien-robotsix/**"],
+      "minimumReleaseAge": null
     }
   ],
+  "vulnerabilityAlerts": {
+    "minimumReleaseAge": null
+  },
   "lockFileMaintenance": {
     "enabled": true,
     "schedule": ["before 5am on monday"]

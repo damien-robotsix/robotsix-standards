@@ -32,7 +32,7 @@ which provides a safe, low-friction baseline:
 | `Referrer-Policy` | `strict-origin-when-cross-origin` |
 | `Content-Security-Policy` | `default-src 'self'` (relax per-app for inline assets) |
 | `Permissions-Policy` | `geolocation=(), microphone=(), camera=()` |
-| `Strict-Transport-Security` | `max-age=31536000; includeSubDomains` (only behind TLS) |
+| `Strict-Transport-Security` | `max-age=31536000; includeSubDomains` (effective only over TLS; ignored by browsers on HTTP) |
 
 Services that require a stricter posture — e.g. an admin dashboard that must
 never be framed and must restrict script sources tightly — use
@@ -67,12 +67,25 @@ by calling methods on the `Secure` object — e.g.
 disabling the header or building a CSP string by hand. This keeps every CSP
 modification traceable to a single, grep-able location.
 
-### 4. HSTS is conditional on TLS
+### 4. HSTS is emitted unconditionally and takes effect over TLS
 
-The `Strict-Transport-Security` header is only emitted when the service is
-behind TLS. The `secure` library detects this from the request scheme and
-suppresses the header on plain-HTTP requests automatically — the service does
-not need to branch on this itself.
+The `secure` library does **not** inspect the request scheme: the
+`SecureASGIMiddleware` applies every configured header — including
+`Strict-Transport-Security` — to every HTTP response, plain HTTP included.
+This is harmless: user agents MUST ignore an HSTS header received over
+non-secure transport ([RFC 6797 §8.1](https://www.rfc-editor.org/rfc/rfc6797#section-8.1)),
+and fleet services sit behind a TLS-terminating edge, so the header takes
+effect only on the TLS hop from the edge to the browser. Services MUST NOT
+strip `Strict-Transport-Security` or branch on the request scheme to suppress
+it, and the edge MUST pass it through on HTTPS responses. The HSTS policy
+must carry `max-age` of at least one year (`31536000`), per
+[OWASP ASVS 5.0 V3.4.1](https://owasp.org/www-project-application-security-verification-standard/)
+and the [OWASP HTTP Strict Transport Security Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/HTTP_Strict_Transport_Security_Cheat_Sheet.html);
+the BALANCED default qualifies.
+
+*Failure mode this prevents:* an auditor or agent assumes the library gates
+HSTS by scheme, and a service or edge change that drops HSTS on the HTTPS path
+goes unnoticed.
 
 ## How this is enforced
 
@@ -89,7 +102,7 @@ is registered).
 | 1. `secure` ≥2.0.1 baseline | The component depends on `secure` (≥2.0.1) in its manifest and builds its header object from `Secure.with_default_headers()` (`Preset.BALANCED`) or `Preset.STRICT` — not a hand-rolled `BaseHTTPMiddleware`. |
 | 2. One middleware, registered once | Code review verifies the ASGI app calls `app.add_middleware(SecureASGIMiddleware, ...)` exactly once during application construction, and that no route handler sets security headers itself. |
 | 3. CSP relaxation is explicit | Every CSP relaxation is a method call on the `Secure`/CSP object at the single registration site — `grep` for `csp` in the app-setup module surfaces all relaxations; a hand-built CSP string or a disabled header is a violation. |
-| 4. HSTS conditional on TLS | The service does not branch on the request scheme to set `Strict-Transport-Security` itself; it relies on the `secure` library's automatic TLS detection. |
+| 4. HSTS emitted, effective over TLS | The configured `Secure` object includes `StrictTransportSecurity` with `max-age` ≥ `31536000` (the BALANCED default qualifies), and no code strips the header or branches on the request scheme to suppress it. Optionally, a deploy smoke check runs `curl -sI https://<host>/health` and asserts a `strict-transport-security` header is present. |
 
 A component that serves HTTP responses and fails any criterion is
 non-compliant; the fix is always the same — register the shared

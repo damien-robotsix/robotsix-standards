@@ -440,9 +440,61 @@ dependency vulnerability audit on every CI run.
   *Vulnerabilities* checks, [OpenSSF OSPS Baseline](https://baseline.openssf.org/)
   *OSPS-QA-02* (SBOM for released assets) and the *OSPS-VM* vulnerability
   management controls. SLSA Build-track provenance is a separate control
-  (SLSA v1.x requires neither an SBOM nor a CVE audit) and is covered by the
-  [provenance attestation in docker-standard](docker-standard.md#publish-one-reusable-workflow-the-single-method).
+  (SLSA v1.x requires neither an SBOM nor a CVE audit) and is covered by
+  [SLSA Build Track](#slsa-build-track) below.
 - **Detail:** [Docker build & release — CI-time image scan](docker-standard.md#ci-time-image-scan).
+
+## SLSA Build Track
+
+The [SLSA v1.x Build track](https://slsa.dev/spec/v1.0/levels#build-track)
+applies to the artifacts the fleet releases — the container images published by
+the shared `docker-release.yml` reusable workflow (see
+[Docker build & release](docker-standard.md#publish-one-reusable-workflow-the-single-method)).
+Build levels are cumulative, and producing provenance is only half the control:
+SLSA makes **verifying** it a separate consumer duty
+([Verifying artifacts](https://slsa.dev/spec/v1.0/verifying-artifacts)). The
+fleet's posture against each Build level:
+
+- **Build L1 (provenance exists):** met — `docker-release.yml` builds on
+  GitHub-hosted runners with `docker buildx build --provenance
+  "mode=max,builder-id=<run URL>" --sbom true`. BuildKit attaches an in-toto
+  SLSA provenance statement and an SBOM to the pushed image index.
+- **Build L2 (hosted platform, signed provenance):** not met — the BuildKit
+  provenance is an **unsigned** in-toto statement. The workflow grants
+  `id-token: write` and `attestations: write`, but no step signs the
+  provenance: no `actions/attest-build-provenance`, no cosign and no
+  `slsa-github-generator`. Anyone who can push to the image can replace an
+  unsigned statement. **Target:** add `actions/attest-build-provenance`
+  (Sigstore keyless signing via the GitHub OIDC token, stored in the GitHub
+  attestations API) to the publish job, with `subject-digest` set to the
+  pushed index digest.
+- **Build L3 (hardened platform, unforgeable provenance):** not met — L2 is a
+  prerequisite. Once the attestation step above lands, L3 is reached because
+  the signing runs inside the shared reusable workflow. A caller cannot run
+  its own steps in that job, and the signing identity is the reusable
+  workflow's ref, not the caller's. This matches GitHub's guidance that
+  artifact attestations from an isolated reusable workflow meet Build L3.
+- **Verification (consumer side):** not in place. **Requirement:** before the
+  deployment system rolls out an image, it verifies the image digest's
+  provenance with
+  `gh attestation verify oci://ghcr.io/<owner>/<repo>@<digest> --owner <owner>`
+  (or the equivalent `cosign verify-attestation` with the reusable workflow's
+  certificate identity). It refuses the rollout on failure. Until the
+  attestation step above exists there is nothing signed to verify, so this is
+  a dated **accepted risk** (accepted 2026-10-28, review 2027-01-31). It is
+  tracked in the [Audit](#audit) table and referenced from the
+  [deployment system](deployment-system.md#provenance-verification-before-rollout).
+
+**Failure prevented:** without signed and verified provenance, an image
+tampered with after the build (a stolen GHCR token, a compromised push from
+outside the reusable workflow) deploys exactly like a genuine one. Unsigned
+provenance can be forged along with the image, and provenance that nobody
+verifies blocks nothing. A Build level stated without its mechanism cannot be
+audited.
+
+**Alignment:** OWASP Top 10:2025 *A03 Software Supply Chain Failures* and *A08
+Software or Data Integrity Failures* (signing plus integrity verification), and
+OpenSSF Scorecard *Signed-Releases*.
 
 ## SLSA Source Track
 
@@ -507,6 +559,7 @@ dashboard-watching:
 | SBOM* | CI uploads CycloneDX artifact |
 | CVE audit* | `uv audit --preview-features audit-command` at the pinned uv version / `pip-audit` passes in CI |
 | Distribution / registry | No publish to a public package index and no public-registry credentials, per [distribution & packaging rules 4–5](distribution-packaging.md#enforcement). Verified by the `public-registry-check` job (`scripts/check-public-registry.py` in `baseline-check.yml`), which finds no `registry.npmjs.org` / `upload.pypi.org` / `pypi.org/legacy` endpoint, no `npm publish` / `twine upload` / `uv publish` without an approved internal registry, and no `NPM_TOKEN` / `PYPI_TOKEN` secret in workflows, `package.json` `publishConfig`, `.npmrc` or `pyproject.toml` — warning-first, blocking from 2027-01-31 |
+| SLSA Build provenance | Image-shipping repos: the published image index carries BuildKit provenance (`docker buildx imagetools inspect ghcr.io/<owner>/<repo>@<digest> --format '{{ json .Provenance }}'` is non-empty) — Build L1. Once `docker-release.yml` signs it, `gh attestation verify oci://ghcr.io/<owner>/<repo>@<digest> --owner <owner>` passes and the deployment system runs that check before rollout. Signing and verification are a dated accepted risk until then (review 2027-01-31) — per [SLSA Build Track](#slsa-build-track) |
 | Container image scan | Trivy PR-scan and publish workflows present and passing (image-shipping repos only) |
 | Vulnerability disclosure | `SECURITY.md` present at repo root with contact method, response-time expectation, and coordinated-disclosure statement — fail-closed: `security-md-check` in `baseline-check.yml` fails CI (exit 1) when it is missing or incomplete |
 | Config API secret redaction | Deployment system / management surfaces: central-deploy config-read endpoints (`GET /config`, version-history reads, audit-log serialization) route through `mask_secrets()` before serialization; config writes use `apply_update()` merge-on-write; version history stores no secret values — audited per [config standard §3](config-standard.md#how-this-is-enforced) |

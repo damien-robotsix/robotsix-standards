@@ -43,7 +43,7 @@ import re
 import sys
 from pathlib import Path
 
-import yaml
+import yaml  # type: ignore[import-untyped]
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
 RENOVATE = REPO_ROOT / "renovate.json"

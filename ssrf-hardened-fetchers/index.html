@@ -3105,21 +3105,60 @@ resolution will be made when the business code will be executed"</em>.</p>
 validated is provably the address that is connected to.</strong> A pre-flight
 <code>getaddrinfo</code> check is defence-in-depth at best; it is never the sole control.</p>
 <h3 id="1-validate-and-pin-the-resolved-ip-at-the-connection-layer">1. Validate and pin the resolved IP at the connection layer<a class="headerlink" href="#1-validate-and-pin-the-resolved-ip-at-the-connection-layer" title="Permanent link">&para;</a></h3>
-<p>Subclass <code>httpcore.AsyncConnectionPool</code> and override <code>_resolve_host</code> to reject
-private, loopback, link-local, multicast, unspecified, and IPv4-mapped
-addresses, returning only the validated entries. httpcore caches the resolved
-entry keyed by <code>(host, port, ssl)</code>, so httpx connects to exactly the validated
-IP — while the <code>Host</code> header and TLS SNI keep the original hostname, so
-certificate verification stays intact. Install the guarded pool via
-<code>httpx.AsyncHTTPTransport(pool=...)</code>.</p>
+<p>httpcore has no resolver hook on the connection pool: each connection calls
+its <strong>network backend's</strong> <code>connect_tcp(host, port, ...)</code>, and the backend
+resolves the hostname itself. That backend is therefore the one place where
+the guard can see — and fix — the address actually connected to. A
+fleet fetcher MUST:</p>
+<ol>
+<li><strong>Subclass <code>httpcore.AsyncNetworkBackend</code></strong> (wrapping
+   <code>httpcore.AnyIOBackend</code>). Its <code>connect_tcp</code> resolves the host with
+   <code>getaddrinfo</code>, drops every address <code>_is_blocked</code> rejects, raises
+   <code>httpcore.ConnectError</code> when none is left, and otherwise calls the wrapped
+   backend's <code>connect_tcp</code> with the <strong>validated IP literal</strong> — never the
+   hostname, so nothing re-resolves it. TLS SNI, certificate verification, and
+   the <code>Host</code> header still use the original hostname: httpcore passes
+   <code>server_hostname</code> to <code>start_tls</code> from the request origin, not from the
+   socket address.</li>
+<li><strong>Install the backend in an <code>httpcore.AsyncConnectionPool(network_backend=...,
+   ssl_context=...)</code></strong> and route the httpx client through it. httpx's
+   <code>AsyncHTTPTransport</code> accepts neither a <code>pool=</code> nor a <code>network_backend=</code>
+   argument, so either write a small <code>httpx.AsyncBaseTransport</code> adapter or
+   replace the transport's private <code>_pool</code> attribute as below — and pin httpx
+   to the range the private attribute was verified against
+   (<code>httpx&gt;=0.28,&lt;0.29</code>, <code>httpcore&gt;=1.0,&lt;2</code>).</li>
+<li><strong>Disable proxies</strong> — <code>trust_env=False</code> on the client and transport, no
+   <code>proxy=</code>. Through a proxy, httpx connects to the <em>proxy</em> and the proxy
+   resolves the attacker-chosen host itself, so the backend guard only ever
+   validates the proxy's address.</li>
+</ol>
+<p><code>_is_blocked</code> rejects private, loopback, link-local, multicast, unspecified,
+reserved and CGNAT (<code>100.64.0.0/10</code>) addresses, and unwraps IPv4 addresses
+embedded in IPv6 — IPv4-mapped (<code>::ffff:a.b.c.d</code>), IPv4-compatible
+(<code>::a.b.c.d</code>) and NAT64 (<code>64:ff9b::/96</code>) — before re-checking them.</p>
 <div class="highlight"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">ipaddress</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">socket</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">ssl</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">typing</span>
 
+<span class="kn">import</span><span class="w"> </span><span class="nn">anyio</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">httpcore</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">httpx</span>
 
+<span class="n">_EXTRA_BLOCKED</span> <span class="o">=</span> <span class="p">(</span><span class="n">ipaddress</span><span class="o">.</span><span class="n">ip_network</span><span class="p">(</span><span class="s2">&quot;100.64.0.0/10&quot;</span><span class="p">),)</span>  <span class="c1"># CGNAT, RFC 6598</span>
+<span class="n">_IPV4_EMBEDDING</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="n">ipaddress</span><span class="o">.</span><span class="n">ip_network</span><span class="p">(</span><span class="s2">&quot;64:ff9b::/96&quot;</span><span class="p">),</span>  <span class="c1"># NAT64 well-known prefix, RFC 6052</span>
+    <span class="n">ipaddress</span><span class="o">.</span><span class="n">ip_network</span><span class="p">(</span><span class="s2">&quot;::/96&quot;</span><span class="p">),</span>  <span class="c1"># deprecated IPv4-compatible, RFC 4291</span>
+<span class="p">)</span>
+
 
 <span class="k">def</span><span class="w"> </span><span class="nf">_is_blocked</span><span class="p">(</span><span class="n">ip</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
-    <span class="n">addr</span> <span class="o">=</span> <span class="n">ipaddress</span><span class="o">.</span><span class="n">ip_address</span><span class="p">(</span><span class="n">ip</span><span class="p">)</span>
+    <span class="n">addr</span> <span class="o">=</span> <span class="n">ipaddress</span><span class="o">.</span><span class="n">ip_address</span><span class="p">(</span><span class="n">ip</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;%&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)[</span><span class="mi">0</span><span class="p">])</span>  <span class="c1"># drop any IPv6 zone id</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">addr</span><span class="p">,</span> <span class="n">ipaddress</span><span class="o">.</span><span class="n">IPv6Address</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">addr</span><span class="o">.</span><span class="n">ipv4_mapped</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>  <span class="c1"># ::ffff:a.b.c.d</span>
+            <span class="k">return</span> <span class="n">_is_blocked</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">addr</span><span class="o">.</span><span class="n">ipv4_mapped</span><span class="p">))</span>
+        <span class="k">if</span> <span class="nb">int</span><span class="p">(</span><span class="n">addr</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span> <span class="ow">and</span> <span class="nb">any</span><span class="p">(</span><span class="n">addr</span> <span class="ow">in</span> <span class="n">net</span> <span class="k">for</span> <span class="n">net</span> <span class="ow">in</span> <span class="n">_IPV4_EMBEDDING</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">_is_blocked</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">ipaddress</span><span class="o">.</span><span class="n">IPv4Address</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">addr</span><span class="p">)</span> <span class="o">&amp;</span> <span class="mh">0xFFFFFFFF</span><span class="p">)))</span>
     <span class="k">return</span> <span class="p">(</span>
         <span class="n">addr</span><span class="o">.</span><span class="n">is_private</span>
         <span class="ow">or</span> <span class="n">addr</span><span class="o">.</span><span class="n">is_loopback</span>
@@ -3127,26 +3166,91 @@ certificate verification stays intact. Install the guarded pool via
         <span class="ow">or</span> <span class="n">addr</span><span class="o">.</span><span class="n">is_multicast</span>
         <span class="ow">or</span> <span class="n">addr</span><span class="o">.</span><span class="n">is_unspecified</span>
         <span class="ow">or</span> <span class="n">addr</span><span class="o">.</span><span class="n">is_reserved</span>
-        <span class="ow">or</span> <span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">addr</span><span class="p">,</span> <span class="n">ipaddress</span><span class="o">.</span><span class="n">IPv6Address</span><span class="p">)</span> <span class="ow">and</span> <span class="n">addr</span><span class="o">.</span><span class="n">ipv4_mapped</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="ow">or</span> <span class="nb">any</span><span class="p">(</span><span class="n">addr</span> <span class="ow">in</span> <span class="n">net</span> <span class="k">for</span> <span class="n">net</span> <span class="ow">in</span> <span class="n">_EXTRA_BLOCKED</span><span class="p">)</span>
     <span class="p">)</span>
 
 
-<span class="k">class</span><span class="w"> </span><span class="nc">SSRFGuardPool</span><span class="p">(</span><span class="n">httpcore</span><span class="o">.</span><span class="n">AsyncConnectionPool</span><span class="p">):</span>
-    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">_resolve_host</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">origin</span><span class="p">:</span> <span class="n">httpcore</span><span class="o">.</span><span class="n">Origin</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">]:</span>
-        <span class="n">entries</span> <span class="o">=</span> <span class="k">await</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">_resolve_host</span><span class="p">(</span><span class="n">origin</span><span class="p">)</span>
-        <span class="n">allowed</span> <span class="o">=</span> <span class="p">[</span><span class="n">e</span> <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">entries</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">_is_blocked</span><span class="p">(</span><span class="n">e</span><span class="p">[</span><span class="s2">&quot;addr&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">])]</span>
+<span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">_resolve</span><span class="p">(</span><span class="n">host</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">port</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+    <span class="n">infos</span> <span class="o">=</span> <span class="k">await</span> <span class="n">anyio</span><span class="o">.</span><span class="n">getaddrinfo</span><span class="p">(</span><span class="n">host</span><span class="p">,</span> <span class="n">port</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="n">socket</span><span class="o">.</span><span class="n">SOCK_STREAM</span><span class="p">)</span>
+    <span class="k">return</span> <span class="p">[</span><span class="n">info</span><span class="p">[</span><span class="mi">4</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">info</span> <span class="ow">in</span> <span class="n">infos</span><span class="p">]</span>
+
+
+<span class="k">class</span><span class="w"> </span><span class="nc">SSRFGuardBackend</span><span class="p">(</span><span class="n">httpcore</span><span class="o">.</span><span class="n">AsyncNetworkBackend</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Resolve, validate, then connect to the validated IP literal.&quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_inner</span> <span class="o">=</span> <span class="n">httpcore</span><span class="o">.</span><span class="n">AnyIOBackend</span><span class="p">()</span>
+
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">connect_tcp</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">host</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">port</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+        <span class="n">timeout</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">local_address</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">socket_options</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Iterable</span><span class="p">[</span><span class="n">httpcore</span><span class="o">.</span><span class="n">SOCKET_OPTION</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">httpcore</span><span class="o">.</span><span class="n">AsyncNetworkStream</span><span class="p">:</span>
+        <span class="n">allowed</span> <span class="o">=</span> <span class="p">[</span><span class="n">ip</span> <span class="k">for</span> <span class="n">ip</span> <span class="ow">in</span> <span class="k">await</span> <span class="n">_resolve</span><span class="p">(</span><span class="n">host</span><span class="p">,</span> <span class="n">port</span><span class="p">)</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">_is_blocked</span><span class="p">(</span><span class="n">ip</span><span class="p">)]</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">allowed</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="n">httpx</span><span class="o">.</span><span class="n">ConnectError</span><span class="p">(</span><span class="s2">&quot;blocked by SSRF guard: no public address&quot;</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">allowed</span>
+            <span class="k">raise</span> <span class="n">httpcore</span><span class="o">.</span><span class="n">ConnectError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;blocked by SSRF guard: </span><span class="si">{</span><span class="n">host</span><span class="si">!r}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="c1"># Connect to the address that was validated — never re-resolve `host`.</span>
+        <span class="k">return</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_inner</span><span class="o">.</span><span class="n">connect_tcp</span><span class="p">(</span>
+            <span class="n">allowed</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">port</span><span class="p">,</span> <span class="n">timeout</span><span class="p">,</span> <span class="n">local_address</span><span class="p">,</span> <span class="n">socket_options</span>
+        <span class="p">)</span>
+
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">connect_unix_socket</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="n">httpcore</span><span class="o">.</span><span class="n">ConnectError</span><span class="p">(</span><span class="s2">&quot;blocked by SSRF guard: unix sockets&quot;</span><span class="p">)</span>
+
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">sleep</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">seconds</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_inner</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="n">seconds</span><span class="p">)</span>
 
 
-<span class="n">_transport</span> <span class="o">=</span> <span class="n">httpx</span><span class="o">.</span><span class="n">AsyncHTTPTransport</span><span class="p">(</span><span class="n">pool</span><span class="o">=</span><span class="n">SSRFGuardPool</span><span class="p">())</span>
-<span class="n">_client</span> <span class="o">=</span> <span class="n">httpx</span><span class="o">.</span><span class="n">AsyncClient</span><span class="p">(</span><span class="n">transport</span><span class="o">=</span><span class="n">_transport</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">httpx</span><span class="o">.</span><span class="n">Timeout</span><span class="p">(</span><span class="mf">10.0</span><span class="p">))</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">SSRFGuardTransport</span><span class="p">(</span><span class="n">httpx</span><span class="o">.</span><span class="n">AsyncHTTPTransport</span><span class="p">):</span>
+    <span class="c1"># httpx&gt;=0.28,&lt;0.29: no pool=/network_backend= argument, so the guarded</span>
+    <span class="c1"># pool replaces the private `_pool` attribute. Re-verify on every bump.</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ssl_context</span><span class="p">:</span> <span class="n">ssl</span><span class="o">.</span><span class="n">SSLContext</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">trust_env</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_pool</span> <span class="o">=</span> <span class="n">httpcore</span><span class="o">.</span><span class="n">AsyncConnectionPool</span><span class="p">(</span>
+            <span class="n">ssl_context</span><span class="o">=</span><span class="n">ssl_context</span> <span class="ow">or</span> <span class="n">httpx</span><span class="o">.</span><span class="n">create_ssl_context</span><span class="p">(),</span>
+            <span class="n">network_backend</span><span class="o">=</span><span class="n">SSRFGuardBackend</span><span class="p">(),</span>
+        <span class="p">)</span>
+
+
+<span class="n">_client</span> <span class="o">=</span> <span class="n">httpx</span><span class="o">.</span><span class="n">AsyncClient</span><span class="p">(</span>
+    <span class="n">transport</span><span class="o">=</span><span class="n">SSRFGuardTransport</span><span class="p">(),</span>
+    <span class="n">trust_env</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>  <span class="c1"># no env proxy: a proxy would resolve the host itself</span>
+    <span class="n">timeout</span><span class="o">=</span><span class="n">httpx</span><span class="o">.</span><span class="n">Timeout</span><span class="p">(</span><span class="mf">10.0</span><span class="p">),</span>
+<span class="p">)</span>
 </code></pre></div>
-<p>Because the validated entry is what httpcore caches and connects to, there is
-no window between the check and the connection for DNS to change under the
-tool's feet. Pinning the IP — not re-resolving the hostname — is what closes
-the TOCTOU gap.</p>
+<p>httpcore maps the backend's <code>httpcore.ConnectError</code> to <code>httpx.ConnectError</code>,
+so callers see an ordinary connection failure. Because the backend connects to
+the exact address it just validated, there is no window between the check and
+the connection for DNS to change under the tool's feet. Pinning the IP — not
+re-resolving the hostname — is what closes the TOCTOU gap.</p>
+<p><strong>Prove the guard runs.</strong> A guard that is wired wrong (an override nothing
+calls) fails open and looks identical to a working one until it is exploited.
+Every fetcher MUST ship a test that a fetch to <code>http://127.0.0.1:&lt;port&gt;/</code> and
+to a hostname resolving to <code>169.254.169.254</code> both raise:</p>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">httpx</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pytest</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">fetcher</span>  <span class="c1"># the module defining _client and _resolve above</span>
+
+
+<span class="nd">@pytest</span><span class="o">.</span><span class="n">mark</span><span class="o">.</span><span class="n">anyio</span>
+<span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">test_guard_blocks_loopback_literal</span><span class="p">():</span>
+    <span class="k">with</span> <span class="n">pytest</span><span class="o">.</span><span class="n">raises</span><span class="p">(</span><span class="n">httpx</span><span class="o">.</span><span class="n">ConnectError</span><span class="p">,</span> <span class="n">match</span><span class="o">=</span><span class="s2">&quot;SSRF guard&quot;</span><span class="p">):</span>
+        <span class="k">await</span> <span class="n">fetcher</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;http://127.0.0.1:8080/&quot;</span><span class="p">)</span>
+
+
+<span class="nd">@pytest</span><span class="o">.</span><span class="n">mark</span><span class="o">.</span><span class="n">anyio</span>
+<span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">test_guard_blocks_hostname_resolving_to_metadata</span><span class="p">(</span><span class="n">monkeypatch</span><span class="p">):</span>
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">resolve_to_metadata</span><span class="p">(</span><span class="n">host</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">port</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+        <span class="k">return</span> <span class="p">[</span><span class="s2">&quot;169.254.169.254&quot;</span><span class="p">]</span>
+
+    <span class="n">monkeypatch</span><span class="o">.</span><span class="n">setattr</span><span class="p">(</span><span class="n">fetcher</span><span class="p">,</span> <span class="s2">&quot;_resolve&quot;</span><span class="p">,</span> <span class="n">resolve_to_metadata</span><span class="p">)</span>
+    <span class="k">with</span> <span class="n">pytest</span><span class="o">.</span><span class="n">raises</span><span class="p">(</span><span class="n">httpx</span><span class="o">.</span><span class="n">ConnectError</span><span class="p">,</span> <span class="n">match</span><span class="o">=</span><span class="s2">&quot;SSRF guard&quot;</span><span class="p">):</span>
+        <span class="k">await</span> <span class="n">fetcher</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;http://rebind.example/latest/meta-data/&quot;</span><span class="p">)</span>
+</code></pre></div>
 <div class="highlight"><pre><span></span><code><span class="c1"># ❌  Pre-flight check only — TOCTOU / DNS-rebinding gap</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">socket</span>
 
@@ -3164,8 +3268,9 @@ the TOCTOU gap.</p>
 <p>An auto-followed redirect to an internal endpoint bypasses a check that only
 looks at the original URL. Every fetcher MUST either:</p>
 <ul>
-<li>rely on the guarded pool, so that <strong>every</strong> connection — including each
-  redirect hop — flows through <code>_resolve_host</code> and is re-validated for free; or</li>
+<li>rely on the guarded network backend, so that <strong>every</strong> connection —
+  including each redirect hop — flows through its <code>connect_tcp</code> and is
+  re-validated for free; or</li>
 <li>set <code>follow_redirects=False</code> and re-run the connection-layer check on each
   hop explicitly before following it.</li>
 </ul>
@@ -3187,13 +3292,23 @@ check.</p>
   validation pins the address that was checked, so the two can never diverge.</li>
 <li><strong>Redirect-based SSRF.</strong> A public URL 302-redirects to an internal endpoint.
   A check that only inspects the original URL follows the redirect blindly; a
-  guarded pool re-validates the redirect target's address before connecting.</li>
+  guarded network backend re-validates the redirect target's address before
+  connecting.</li>
 <li><strong>Cloud metadata exfiltration.</strong> <code>169.254.169.254</code> (link-local) and other
   internal ranges are rejected at the moment of connection, so instance
   credentials and metadata cannot be read through the fetcher.</li>
-<li><strong>IPv4-mapped IPv6 bypass.</strong> An address like <code>::ffff:127.0.0.1</code> sneaks a
-  loopback target past an IPv4-only string check; unwrapping the mapped
+<li><strong>IPv4-in-IPv6 bypass.</strong> An address like <code>::ffff:127.0.0.1</code>,
+  <code>::127.0.0.1</code> or <code>64:ff9b::a9fe:a9fe</code> (NAT64 for <code>169.254.169.254</code>) sneaks
+  an internal target past an IPv4-only check; unwrapping the embedded IPv4
   address and re-checking it closes that hole.</li>
+<li><strong>Proxy bypass.</strong> With an environment proxy, httpx connects to the proxy and
+  the proxy resolves the attacker's host, so the backend only ever validates
+  the proxy. <code>trust_env=False</code> keeps the connection — and the check — local.</li>
+<li><strong>A guard that never runs.</strong> An override of a method httpcore does not call
+  (such as a nonexistent <code>AsyncConnectionPool._resolve_host</code>) lets every
+  request through while looking compliant in review. The mandatory
+  loopback/metadata tests fail as soon as the guard is not on the connection
+  path.</li>
 </ul>
 <h2 id="how-this-is-enforced">How this is enforced<a class="headerlink" href="#how-this-is-enforced" title="Permanent link">&para;</a></h2>
 <p>Enforcement is by code review and the periodic standards-audit agent; there is
@@ -3203,23 +3318,35 @@ An auditor (human or agent) applies these criteria to every tool that fetches
 an attacker-influenced URL:</p>
 <ul>
 <li><strong>Connection-layer validation.</strong> The fetcher's <code>httpx</code> client is wired to a
-  guarded pool — an <code>httpcore.AsyncConnectionPool</code> subclass (e.g.
-  <code>SSRFGuardPool</code>) that overrides <code>_resolve_host</code> to reject private, loopback,
-  link-local, multicast, unspecified, reserved, and IPv4-mapped addresses — or
-  an equivalent connection-layer control. A tool that only performs a
-  pre-flight <code>getaddrinfo</code>/<code>socket</code> check before an unguarded transport fails
-  this criterion.</li>
+  guarded <strong>network backend</strong> — an <code>httpcore.AsyncNetworkBackend</code> subclass
+  (e.g. <code>SSRFGuardBackend</code>) whose <code>connect_tcp</code> rejects private, loopback,
+  link-local, multicast, unspecified, reserved, CGNAT and IPv4-embedded
+  addresses and connects to the validated IP literal — installed through
+  <code>httpcore.AsyncConnectionPool(network_backend=...)</code>, or an equivalent
+  connection-layer control. A tool that only performs a pre-flight
+  <code>getaddrinfo</code>/<code>socket</code> check before an unguarded transport fails this
+  criterion, and so does any override of a method httpcore never calls (e.g.
+  <code>AsyncConnectionPool._resolve_host</code>, which does not exist).</li>
+<li><strong>No proxy.</strong> The client and transport set <code>trust_env=False</code> and pass no
+  <code>proxy=</code>; a proxied fetcher fails this criterion.</li>
+<li><strong>Guard test.</strong> The repo has a test asserting that a fetch to
+  <code>http://127.0.0.1:&lt;port&gt;/</code> and to a hostname resolving to <code>169.254.169.254</code>
+  both raise. Without it, a no-op guard cannot be told apart from a working
+  one, and the fetcher fails this criterion.</li>
 <li><strong>Redirect re-validation.</strong> Redirect hops are re-validated: either the
-  guarded pool handles every hop (so <code>_resolve_host</code> runs on each redirect
+  guarded backend handles every hop (so <code>connect_tcp</code> runs on each redirect
   target), or the tool sets <code>follow_redirects=False</code> and re-runs the
   connection-layer check on each hop explicitly. A tool that combines
   <code>follow_redirects=True</code> with an unguarded transport fails this criterion.</li>
 </ul>
 <p>New outbound-fetch tools MUST route through the shared
-<code>robotsix_chat/common/http_fetch.py</code> helper (or reproduce its guarded pool);
+<code>robotsix_chat/common/http_fetch.py</code> helper (or reproduce its guarded network
+backend);
 reviewers reject a fetcher that opens its own unguarded client.</p>
 <h2 id="reference">Reference<a class="headerlink" href="#reference" title="Permanent link">&para;</a></h2>
 <ul>
+<li>OWASP Top 10 — <a href="https://owasp.org/Top10/2025/A01_2025-Broken_Access_Control/">A01:2025 Broken Access Control</a>
+  (SSRF was merged into A01 in 2025; it was A10:2021).</li>
 <li>OWASP — <a href="https://cheatsheetseries.owasp.org/cheatsheets/Server_Side_Request_Forgery_Prevention_Cheat_Sheet.html">Server-Side Request Forgery Prevention Cheat Sheet</a>.</li>
 </ul>
 

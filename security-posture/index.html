@@ -4075,6 +4075,10 @@ dashboard-watching:</p>
 <td>Deployment system / management surfaces: central-deploy config-read endpoints (<code>GET /config</code>, version-history reads, audit-log serialization) route through <code>mask_secrets()</code> before serialization; config writes use <code>apply_update()</code> merge-on-write; version history stores no secret values — audited per <a href="../config-standard/#how-this-is-enforced">config standard §3</a></td>
 </tr>
 <tr>
+<td>Config secrets typed SecretStr</td>
+<td>Repos with a pydantic config model: <code>.pre-commit-config.yaml</code> includes the remote <code>check-secret-str</code> hook (<code>repo: https://github.com/damien-robotsix/robotsix-standards</code>) at a pinned <code>rev:</code>, and <code>config/config.schema.json</code> marks every secret-named field (<code>api_key</code>, <code>token</code>, <code>password</code>, <code>secret</code>, ...) <code>writeOnly: true</code>. The second check is a fallback you can grep without running the hook. Per <a href="../config-standard/#3-one-secret-convention">config standard §3</a></td>
+</tr>
+<tr>
 <td>Config history contains no secret values</td>
 <td>Components with a <code>/config</code> surface: the <code>&lt;config&gt;.versions</code> sidecar's <code>data</code> snapshots carry only a set/unset marker for each <code>SecretStr</code> / <code>writeOnly</code> field, per <a href="../config-ownership/#where-the-history-lives-and-who-implements-it">config ownership</a>. Until the planned <code>robotsix_config.history</code> unit test (write a secret, rotate it, assert the old value is absent from <code>&lt;config&gt;.versions</code>) exists, audit this by code review of the sidecar writer; the test is not yet in place (CWE-312, CWE-226)</td>
 </tr>

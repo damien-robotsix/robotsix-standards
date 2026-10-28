@@ -3301,12 +3301,18 @@ implements it: a component defines one pydantic model and calls <code>load_confi
   the deploy UI knows to mask the input and never echo it back. Secrets are
   <strong>typed</strong>, not guessed from an empty slot.</li>
 <li>The SecretStr typing is <strong>machine-checked</strong>. The <code>check-secret-str</code>
-  pre-commit hook — defined in this repo's <code>.pre-commit-config.yaml</code> as part
-  of the standard pre-commit set — fails on any config-model field whose name
-  matches a secret pattern (<code>api_key</code>, <code>token</code>, <code>password</code>, <code>secret</code>, ...)
-  but is annotated <code>str</code> (or <code>Optional[str]</code>) instead of <code>SecretStr</code>. Fleet
-  repos run it as part of their pre-commit set so this MUST is enforced at
-  commit time, not aspirational.</li>
+  pre-commit hook fails on any config-model field whose name matches a secret
+  pattern (<code>api_key</code>, <code>token</code>, <code>password</code>, <code>secret</code>, ...) but is annotated
+  <code>str</code> (or <code>Optional[str]</code>) instead of <code>SecretStr</code>. robotsix-standards
+  <strong>publishes</strong> it through its <code>.pre-commit-hooks.yaml</code>. Every repo with a
+  pydantic config model references it as a remote hook
+  (<code>repo: https://github.com/damien-robotsix/robotsix-standards</code>,
+  <code>id: check-secret-str</code>) pinned to a release-tag <code>rev:</code>, as listed in the
+  <a href="../python/#pre-commit-hooks">standard pre-commit set</a>. This MUST is
+  therefore enforced at commit time in the repos it governs, and CI's
+  <code>pre-commit run --all-files</code> re-runs it. The
+  <a href="../security-posture/#audit">security-posture audit</a> checks that the hook
+  is wired in.</li>
 </ul>
 <p><em>Failure it prevents:</em> a secret field declared as plain <code>str</code> passes mypy,
   ruff, and the schema-drift check with no signal, so the masked-on-read /

@@ -2845,6 +2845,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#provenance-verification-before-rollout" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Provenance verification before rollout
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#rule-of-thumb" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -3125,6 +3136,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#provenance-verification-before-rollout" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Provenance verification before rollout
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#rule-of-thumb" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -3309,6 +3331,13 @@ hard-coded service definition by another name.</p>
 <p>The <code>robotsix-central-deploy</code> repo completed this migration in
 <code>20260719T181243Z-make-central-deploy-repo-agnostic-remove-f13a</code>, removing all
 service-specific code in favour of the patterns above.</p>
+<h2 id="provenance-verification-before-rollout">Provenance verification before rollout<a class="headerlink" href="#provenance-verification-before-rollout" title="Permanent link">&para;</a></h2>
+<p>The deployment system consumes every published component image, so the
+provenance check before rollout is a deployment-system duty. The rule, its
+command, its rationale and its current status are stated once in
+<a href="../security-posture/#slsa-build-track">security posture — SLSA Build Track</a>.
+Failure mode this prevents: an image tampered with after the build is deployed
+exactly like a genuine one.</p>
 <h2 id="rule-of-thumb">Rule of thumb<a class="headerlink" href="#rule-of-thumb" title="Permanent link">&para;</a></h2>
 <p>If central-deploy needs a capability, ask whether a component could get it
 through the deploy contract instead. Only what genuinely cannot be expressed

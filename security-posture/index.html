@@ -717,6 +717,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#slsa-build-track" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        SLSA Build Track
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#slsa-source-track" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -3363,6 +3374,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#slsa-build-track" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        SLSA Build Track
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#slsa-source-track" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -3884,10 +3906,59 @@ dependency vulnerability audit on every CI run.</p>
   <em>Vulnerabilities</em> checks, <a href="https://baseline.openssf.org/">OpenSSF OSPS Baseline</a>
   <em>OSPS-QA-02</em> (SBOM for released assets) and the <em>OSPS-VM</em> vulnerability
   management controls. SLSA Build-track provenance is a separate control
-  (SLSA v1.x requires neither an SBOM nor a CVE audit) and is covered by the
-  <a href="../docker-standard/#publish-one-reusable-workflow-the-single-method">provenance attestation in docker-standard</a>.</li>
+  (SLSA v1.x requires neither an SBOM nor a CVE audit) and is covered by
+  <a href="#slsa-build-track">SLSA Build Track</a> below.</li>
 <li><strong>Detail:</strong> <a href="../docker-standard/#ci-time-image-scan">Docker build &amp; release — CI-time image scan</a>.</li>
 </ul>
+<h2 id="slsa-build-track">SLSA Build Track<a class="headerlink" href="#slsa-build-track" title="Permanent link">&para;</a></h2>
+<p>The <a href="https://slsa.dev/spec/v1.0/levels#build-track">SLSA v1.x Build track</a>
+applies to the artifacts the fleet releases — the container images published by
+the shared <code>docker-release.yml</code> reusable workflow (see
+<a href="../docker-standard/#publish-one-reusable-workflow-the-single-method">Docker build &amp; release</a>).
+Build levels are cumulative, and producing provenance is only half the control:
+SLSA makes <strong>verifying</strong> it a separate consumer duty
+(<a href="https://slsa.dev/spec/v1.0/verifying-artifacts">Verifying artifacts</a>). The
+fleet's posture against each Build level:</p>
+<ul>
+<li><strong>Build L1 (provenance exists):</strong> met — <code>docker-release.yml</code> builds on
+  GitHub-hosted runners with <code>docker buildx build --provenance
+  mode=max --sbom true</code>. BuildKit attaches an in-toto
+  SLSA provenance statement and an SBOM to the pushed image index.</li>
+<li><strong>Build L2 (hosted platform, signed provenance):</strong> not met — the BuildKit
+  provenance is an <strong>unsigned</strong> in-toto statement. The workflow grants
+  <code>id-token: write</code> and <code>attestations: write</code>, but no step signs the
+  provenance: no <code>actions/attest-build-provenance</code>, no cosign and no
+  <code>slsa-github-generator</code>. Anyone who can push to the image can replace an
+  unsigned statement. <strong>Target:</strong> add <code>actions/attest-build-provenance</code>
+  (Sigstore keyless signing via the GitHub OIDC token, stored in the GitHub
+  attestations API) to the publish job, with <code>subject-digest</code> set to the
+  pushed index digest.</li>
+<li><strong>Build L3 (hardened platform, unforgeable provenance):</strong> not met — L2 is a
+  prerequisite. Once the attestation step above lands, L3 is reached because
+  the signing runs inside the shared reusable workflow. A caller cannot run
+  its own steps in that job, and the signing identity is the reusable
+  workflow's ref, not the caller's. This matches GitHub's guidance that
+  artifact attestations from an isolated reusable workflow meet Build L3.</li>
+<li><strong>Verification (consumer side):</strong> not in place. <strong>Requirement:</strong> before the
+  deployment system rolls out an image, it verifies the image digest's
+  provenance with
+  <code>gh attestation verify oci://ghcr.io/&lt;owner&gt;/&lt;repo&gt;@&lt;digest&gt; --owner &lt;owner&gt;</code>
+  (or the equivalent <code>cosign verify-attestation</code> with the reusable workflow's
+  certificate identity). It refuses the rollout on failure. Until the
+  attestation step above exists there is nothing signed to verify, so this is
+  a dated <strong>accepted risk</strong> (accepted 2026-10-28, review 2027-01-31). It is
+  tracked in the <a href="#audit">Audit</a> table and referenced from the
+  <a href="../deployment-system/#provenance-verification-before-rollout">deployment system</a>.</li>
+</ul>
+<p><strong>Failure prevented:</strong> without signed and verified provenance, an image
+tampered with after the build (a stolen GHCR token, a compromised push from
+outside the reusable workflow) deploys exactly like a genuine one. Unsigned
+provenance can be forged along with the image, and provenance that nobody
+verifies blocks nothing. A Build level stated without its mechanism cannot be
+audited.</p>
+<p><strong>Alignment:</strong> OWASP Top 10:2025 <em>A03 Software Supply Chain Failures</em> and <em>A08
+Software or Data Integrity Failures</em> (signing plus integrity verification), and
+OpenSSF Scorecard <em>Signed-Releases</em>.</p>
 <h2 id="slsa-source-track">SLSA Source Track<a class="headerlink" href="#slsa-source-track" title="Permanent link">&para;</a></h2>
 <p>The <a href="https://slsa.dev/spec/v1.2/source-requirements">SLSA v1.2 source track</a>
 defines four cumulative levels (Source L1–L4) that apply to the change history
@@ -3986,6 +4057,10 @@ dashboard-watching:</p>
 <tr>
 <td>Distribution / registry</td>
 <td>No publish to a public package index and no public-registry credentials, per <a href="../distribution-packaging/#enforcement">distribution &amp; packaging rules 4–5</a>. Verified by the <code>public-registry-check</code> job (<code>scripts/check-public-registry.py</code> in <code>baseline-check.yml</code>), which finds no <code>registry.npmjs.org</code> / <code>upload.pypi.org</code> / <code>pypi.org/legacy</code> endpoint, no <code>npm publish</code> / <code>twine upload</code> / <code>uv publish</code> without an approved internal registry, and no <code>NPM_TOKEN</code> / <code>PYPI_TOKEN</code> secret in workflows, <code>package.json</code> <code>publishConfig</code>, <code>.npmrc</code> or <code>pyproject.toml</code> — warning-first, blocking from 2027-01-31</td>
+</tr>
+<tr>
+<td>SLSA Build provenance</td>
+<td>Image-shipping repos: the published image index carries BuildKit provenance (<code>docker buildx imagetools inspect ghcr.io/&lt;owner&gt;/&lt;repo&gt;@&lt;digest&gt; --format '{{ json .Provenance }}'</code> is non-empty) — Build L1. Once <code>docker-release.yml</code> signs it, <code>gh attestation verify oci://ghcr.io/&lt;owner&gt;/&lt;repo&gt;@&lt;digest&gt; --owner &lt;owner&gt;</code> passes and the deployment system runs that check before rollout. Signing and verification are a dated accepted risk until then (review 2027-01-31) — per <a href="#slsa-build-track">SLSA Build Track</a></td>
 </tr>
 <tr>
 <td>Container image scan</td>

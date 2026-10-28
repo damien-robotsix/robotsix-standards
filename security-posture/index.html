@@ -4002,7 +4002,7 @@ dashboard-watching:</p>
 </tr>
 <tr>
 <td>LLM &amp; agentic security</td>
-<td>Repos whose core function involves LLM agents: <code>robotsix-llmio</code> pinned to a commit SHA in <code>pyproject.toml</code>; llmio level/model selection is an explicit config field (not hard-coded, not env); tracing/provider credentials are <code>SecretStr</code> in the canonical <code>langfuse</code>/<code>openrouter</code> config blocks; destructive git ops default to dry-run; scoped single-repo token (no org/admin scopes). Non-mechanical controls (LLM01/02/07/08/10, ASI01–ASI10) are covered by the periodic standards-audit agent — see below</td>
+<td>Repos whose core function involves LLM agents: <code>robotsix-llmio</code> pinned to a commit SHA in <code>pyproject.toml</code>; llmio level/model selection is an explicit config field (not hard-coded, not env); tracing/provider credentials are <code>SecretStr</code> in the canonical <code>langfuse</code>/<code>openrouter</code> config blocks; destructive git ops default to dry-run; scoped single-repo token (no org/admin scopes). Non-mechanical controls (LLM01/02/05/06/07/08/10, ASI01–ASI10) are covered by the periodic standards-audit agent — see below</td>
 </tr>
 </tbody>
 </table>
@@ -4058,6 +4058,14 @@ reads against the criteria below:</p>
 <tr>
 <td>LLM02 — sensitive information</td>
 <td>PII/secrets are scrubbed or tokenised before prompt assembly; raw model context is never logged.</td>
+</tr>
+<tr>
+<td>LLM05 — data &amp; model poisoning</td>
+<td>RAG/context sources (ticket bodies, PR diffs, chat history) are the untrusted-input set delimited under LLM01, so LLM05 is satisfied by the LLM01 criterion while the fleet does not fine-tune. No fine-tuning or training pipeline exists; a repo that adds one must cite a dataset integrity check (source pinning plus a checksum or known-good-baseline comparison) before the data is used.</td>
+</tr>
+<tr>
+<td>LLM06 — unbounded consumption</td>
+<td>Every agent entry point declares a finite request/token budget in its config — a concrete number, never unlimited, <code>None</code> or <code>0</code>-as-unlimited (e.g. the robotsix-mill implement agent's ~200-request cap and sub-agents' ~30-request cap); the auditor greps the agent config for the budget field and confirms every entry point sets one. Every run is wrapped in a wall-clock timeout: Actions-hosted runs carry <code>timeout-minutes</code> on each job (machine-checked by <code>scripts/check-workflow-timeouts.py</code>); runs outside Actions (e.g. a long-running mill service) must show an equivalent per-run timeout in code or config. <code>spawn_subtask</code> (or any child-agent spawner) enforces a maximum depth or count, so a child cannot spawn without bound.</td>
 </tr>
 <tr>
 <td>LLM07 — misinformation</td>

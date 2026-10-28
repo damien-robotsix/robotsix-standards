@@ -3929,7 +3929,9 @@ RAG context sources (ticket bodies, PR diffs, chat history) are treated as
 untrusted input under <strong>LLM01</strong> and are delimited before injection.  <em>Failure
 prevented:</em> a poisoned RAG document containing a backdoor instruction is
 retrieved as context; the delimitation layer treats it as data rather than
-instruction, preventing the model from adopting the backdoor.</p>
+instruction, preventing the model from adopting the backdoor.  <em>Enforced
+by:</em> the periodic standards-audit agent, against the LLM05 criterion in the
+<a href="../security-posture/#llm-agentic-security-audit">LLM &amp; agentic security audit</a>.</p>
 <p><strong>LLM06 — Unbounded Consumption.</strong> Agent resource usage — compute, API
 budget, token spend, and spawned subtasks — must be bounded at every level.
 The fleet enforces three mechanisms: (a) every agent invocation runs inside a
@@ -3938,7 +3940,12 @@ request budget (the implement agent's ~200-request cap, sub-agents' ~30-
 request cap); (c) the <code>spawn_subtask</code> mechanism is bounded — agents cannot
 recursively spawn unbounded child agents.  <em>Failure prevented:</em> a looping or
 confused agent cannot consume unbounded compute or API budget — the request
-cap and job timeout together enforce a hard ceiling on any single agent run.</p>
+cap and job timeout together enforce a hard ceiling on any single agent run.
+<em>Enforced by:</em> <code>scripts/check-workflow-timeouts.py</code> for mechanism (a) on
+GitHub Actions jobs; the rest (request budgets, timeouts on runs outside
+Actions, <code>spawn_subtask</code> bounds) by the periodic standards-audit agent,
+against the LLM06 criterion in the
+<a href="../security-posture/#llm-agentic-security-audit">LLM &amp; agentic security audit</a>.</p>
 <p><strong>LLM07 — Misinformation.</strong> Model output that represents a decision or
 factual claim a <strong>human would rely on</strong> must carry a provenance tag (model +
 timestamp) so the human can judge its currency; output that commits a side-

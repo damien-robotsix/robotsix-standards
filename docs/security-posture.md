@@ -26,6 +26,10 @@ Every gate is **self-enforcing** — implemented in CI or GitHub settings, not
 dependent on human review or dashboard monitoring — so an audit pass can verify
 compliance mechanically.
 
+OWASP Top 10 citations across the standards refer to the
+[2025 edition](https://owasp.org/Top10/2025/) (e.g. `A09:2025`); OWASP LLM
+and Agentic citations refer to the 2026 editions.
+
 ## Why a dedicated security standard
 
 Before this page, security gates lived scattered across several standards
@@ -511,7 +515,7 @@ dashboard-watching:
 | Vulnerability disclosure | `SECURITY.md` present at repo root with contact method, response-time expectation, and coordinated-disclosure statement — fail-closed: `security-md-check` in `baseline-check.yml` fails CI (exit 1) when it is missing or incomplete |
 | Config API secret redaction | Deployment system / management surfaces: central-deploy config-read endpoints (`GET /config`, version-history reads, audit-log serialization) route through `mask_secrets()` before serialization; config writes use `apply_update()` merge-on-write; version history stores no secret values — audited per [config standard §3](config-standard.md#how-this-is-enforced) |
 | Config history contains no secret values | Components with a `/config` surface: the `<config>.versions` sidecar's `data` snapshots carry only a set/unset marker for each `SecretStr` / `writeOnly` field, per [config ownership](config-ownership.md#where-the-history-lives-and-who-implements-it). Until the planned `robotsix_config.history` unit test (write a secret, rotate it, assert the old value is absent from `<config>.versions`) exists, audit this by code review of the sidecar writer; the test is not yet in place (CWE-312, CWE-226) |
-| Log hygiene | Deployable HTTP components: a test sends a request carrying `Authorization: Bearer <sentinel>` and asserts the sentinel string is absent from captured log output; a grep/Semgrep rule finds no logging call that passes `request.headers` or `request.url` (e.g. `logger\..*\(.*request\.headers` and `logger\..*\(.*request\.url\b(?!\.path)`); a structlog redaction processor sits at the start of the chain; any per-request DEBUG override accepts only authenticated operator or internal callers — per [logging rule 6](logging.md#6-never-log-sensitive-data) (CWE-532, OWASP A09) |
+| Log hygiene | Deployable HTTP components: a test sends a request carrying `Authorization: Bearer <sentinel>` and asserts the sentinel string is absent from captured log output; a grep/Semgrep rule finds no logging call that passes `request.headers` or `request.url` (e.g. `logger\..*\(.*request\.headers` and `logger\..*\(.*request\.url\b(?!\.path)`); a structlog redaction processor sits at the start of the chain; any per-request DEBUG override accepts only authenticated operator or internal callers — per [logging rule 6](logging.md#6-never-log-sensitive-data) (CWE-532, OWASP A09:2025) |
 | LLM & agentic security | Repos whose core function involves LLM agents: `robotsix-llmio` pinned to a commit SHA in `pyproject.toml`; llmio level/model selection is an explicit config field (not hard-coded, not env); tracing/provider credentials are `SecretStr` in the canonical `langfuse`/`openrouter` config blocks; destructive git ops default to dry-run; scoped single-repo token (no org/admin scopes). Non-mechanical controls (LLM01/02/05/06/07/08/10, ASI01–ASI10) are covered by the periodic standards-audit agent — see below |
 
 *Content-only repos are exempt per the preamble above.

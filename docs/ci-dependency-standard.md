@@ -40,9 +40,18 @@ Every Python repo must include a `renovate.json` at the repo root:
     {
       "matchUpdateTypes": ["minor", "patch"],
       "groupName": "non-major dependencies",
-      "automerge": true
+      "automerge": true,
+      "minimumReleaseAge": "3 days",
+      "internalChecksFilter": "strict"
+    },
+    {
+      "matchSourceUrls": ["https://github.com/damien-robotsix/**"],
+      "minimumReleaseAge": null
     }
   ],
+  "vulnerabilityAlerts": {
+    "minimumReleaseAge": null
+  },
   "lockFileMaintenance": {
     "enabled": true,
     "schedule": ["before 5am on monday"]
@@ -55,6 +64,17 @@ Every Python repo must include a `renovate.json` at the repo root:
 - The `packageRules` block groups minor and patch updates into a single PR
   and enables auto-merge (`"automerge": true`).  Major updates remain
   individual and require human review.
+- `"minimumReleaseAge": "3 days"` with `"internalChecksFilter": "strict"` —
+  the release-age cooldown. Renovate does not auto-merge an update until the
+  release is at least 3 days old, and `strict` makes it wait to create the
+  branch at all until that check passes. The fleet value
+  is 3 days; the rule and its enforcement live in the
+  [repo baseline — release-age cooldown](repo-baseline.md#release-age-cooldown).
+- The second rule exempts first-party `damien-robotsix/*` packages
+  (`"minimumReleaseAge": null`): the fleet publishes them itself, so the
+  waiting period protects nothing.
+- `"vulnerabilityAlerts": {"minimumReleaseAge": null}` — security fixes are
+  never delayed.
 - `"lockFileMaintenance"` — weekly lockfile refresh (re-resolves transitive
   deps within `pyproject.toml` constraints and re-locks `uv.lock`).
 

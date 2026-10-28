@@ -27,6 +27,10 @@ Additionally:
   image digests) or pin/refactor hook versions (rewrites code or images) and
   warrant human review. Every repo's `.github/dependabot.yml` must exclude
   the `docker` and `pre-commit` ecosystems from the auto-merge group.
+- **Wait out the release-age cooldown.** Every auto-merge-eligible
+  ecosystem carries a `cooldown: default-days: 3` block — the rule, its
+  exemptions and its enforcement are in the
+  [repo baseline — release-age cooldown](repo-baseline.md#release-age-cooldown).
 
 ## Why
 

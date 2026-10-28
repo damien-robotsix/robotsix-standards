@@ -2,12 +2,23 @@
 # Python/uv lockfile updates use Renovate (see renovate.json), not Dependabot —
 # Dependabot's `uv` ecosystem has unresolved lockfile update bugs
 # (dependabot-core#13912).
+#
+# Every auto-merge-eligible ecosystem carries a 3-day `cooldown:` so a freshly
+# published (possibly malicious) release is not merged before it can be yanked
+# (docs/repo-baseline.md#release-age-cooldown). Security updates are never
+# delayed — Dependabot applies cooldown to version updates only. First-party
+# damien-robotsix/* dependencies are exempt.
 version: 2
 updates:
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
       interval: "weekly"
+    # github-actions supports only `default-days`.
+    cooldown:
+      default-days: 3
+      exclude:
+        - "damien-robotsix/*"
     groups:
       actions:
         patterns: ["*"]
@@ -16,6 +27,9 @@ updates:
     directory: "/"
     schedule:
       interval: "weekly"
+    # Recommended (not required): these PRs are not auto-merged.
+    cooldown:
+      default-days: 3
     # No auto-merge group — these PRs require human review.
     open-pull-requests-limit: 5
 
@@ -23,6 +37,8 @@ updates:
     directory: "/"
     schedule:
       interval: "weekly"
+    cooldown:
+      default-days: 3
     # Note: uv lockfile updates are handled by Renovate (renovate.json),
     # not Dependabot, due to unresolved lockfile update bugs
     # (dependabot-core#13912).  This entry exists to satisfy the

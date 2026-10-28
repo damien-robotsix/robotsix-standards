@@ -84,5 +84,10 @@ def check_secrets_patterns_excluded() -> ModuleType:
 
 
 @pytest.fixture
+def check_dependency_cooldown() -> ModuleType:
+    return _load_script("check-dependency-cooldown.py", "check_dependency_cooldown")
+
+
+@pytest.fixture
 def check_public_registry() -> ModuleType:
     return _load_script("check-public-registry.py", "check_public_registry")

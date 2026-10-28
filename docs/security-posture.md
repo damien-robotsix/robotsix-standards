@@ -142,17 +142,31 @@ remaining ecosystems; the baseline-check gate verifies both are present and
 complete. Dependabot and Renovate PRs auto-merge once required checks pass —
 restricted to `minor`/`patch` updates, with the `docker` and `pre-commit`
 ecosystems excluded from auto-merge (those PRs always require human review);
-see [Dependabot auto-merge](dependabot-auto-merge.md).
+see [Dependabot auto-merge](dependabot-auto-merge.md). An auto-merged update
+must also wait out a **3-day release-age cooldown** (Renovate
+`minimumReleaseAge` + `internalChecksFilter: strict`, Dependabot
+`cooldown: default-days: 3` on every auto-merge-eligible ecosystem). Security
+updates and first-party `damien-robotsix/*` packages are exempt — see
+[repo baseline — release-age cooldown](repo-baseline.md#release-age-cooldown).
 
 - **How to verify:** `renovate.json` exists in every Python repo (covering the
   `uv` manager); `.github/dependabot.yml` exists and covers `github-actions`
   and `pre-commit` in every repo, plus `npm` in repos with `package.json` and
   `docker` in image-shipping repos. The Dependabot and Renovate dashboards
-  show recent update PRs.
+  show recent update PRs. The `dependency-cooldown-check` job
+  (`scripts/check-dependency-cooldown.py` in `baseline-check.yml`) finds a
+  cooldown of at least 3 days on every auto-merge path, or an accepted-risk
+  entry in `.dependency-cooldown-allowlist` — warning-first, blocking from
+  2027-01-31.
 - **Failure prevented:** a pinned digest (base image, action SHA) rots silently
   — the image stops receiving base-OS security patches, an action runs an
-  unmaintained version — with no alert.
-- **Alignment:** OpenSSF Scorecard *Dependency-Update-Tool* check.
+  unmaintained version — with no alert. The cooldown prevents a second
+  failure: a freshly published malicious release passes CI and is
+  auto-merged within hours, before it can be yanked.
+- **Alignment:** OpenSSF Scorecard *Dependency-Update-Tool* check; OWASP Top
+  10:2025 *A03 Software Supply Chain Failures*;
+  [OWASP Top 10 CI/CD Security Risks](https://owasp.org/www-project-top-10-ci-cd-security-risks/)
+  *CICD-SEC-3 Dependency Chain Abuse*.
 - **Detail:** [repo baseline — automated dependency updates](repo-baseline.md#automated-dependency-updates).
 
 ### 4. Workflow hardening
@@ -553,7 +567,7 @@ dashboard-watching:
 |---|---|
 | Semgrep* | CI calls shared Semgrep workflow; latest CI run uploads Semgrep findings artifact |
 | Dependency review* | CI calls shared `dependency-review` workflow; Dependency graph enabled |
-| Dependabot + Renovate | `.github/dependabot.yml` covers non-uv ecosystems; `renovate.json` present in Python repos; recent update PRs |
+| Dependabot + Renovate | `.github/dependabot.yml` covers non-uv ecosystems; `renovate.json` present in Python repos; recent update PRs; 3-day release-age cooldown on every auto-merge path, verified by `scripts/check-dependency-cooldown.py` in `baseline-check.yml` (warning-first, blocking from 2027-01-31) |
 | SHA-pinned actions | `grep -r 'uses:' .github/workflows/` — no mutable refs on third-party actions; `scripts/check-workflow-security.py` passes in CI |
 | Workflow linting | `.pre-commit-config.yaml` includes `actionlint`; CI runs `zizmor` (content-only repos exempt from `zizmor`) |
 | Least-privilege permissions | Every workflow has `permissions:` block; `scripts/check-workflow-security.py` passes in CI; `zizmor` reports clean (code repos) |

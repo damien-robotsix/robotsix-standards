@@ -503,7 +503,8 @@ receiving security patches until someone moves it):
 and **`npm`** in repos with a `package.json`
 (GitHub only reads the file per-repo — it cannot be centralized, so the
 baseline-check gate verifies its contents instead). Dependabot PRs auto-merge
-once required checks pass, via the shared `dependabot-auto-merge.yml` caller
+once required checks pass and the release has aged past the
+[release-age cooldown](#release-age-cooldown), via the shared `dependabot-auto-merge.yml` caller
 from robotsix-github-workflows — but only for `minor`/`patch` updates, and the
 `docker` and `pre-commit` ecosystems are excluded from auto-merge (those PRs
 require human review); see [Dependabot auto-merge](dependabot-auto-merge.md).
@@ -511,3 +512,50 @@ require human review); see [Dependabot auto-merge](dependabot-auto-merge.md).
 Python/uv lockfile updates use **Renovate** instead of Dependabot — see
 [CI dependency management](ci-dependency-standard.md) for the configuration
 and rationale.
+
+### Release-age cooldown
+
+**Rule:** an auto-merged dependency update must wait until the release is at
+least **3 days** old:
+
+- **Dependabot:** every auto-merge-eligible ecosystem in
+  `.github/dependabot.yml` (every ecosystem except `docker` and `pre-commit`,
+  i.e. `github-actions`, `npm`, and any `uv` entry) carries a `cooldown:`
+  block with `default-days: 3` or more. `github-actions` supports only
+  `default-days`. The cooldown is recommended for `docker` and `pre-commit`
+  too, though a human reviews those PRs anyway.
+- **Renovate:** every `packageRules` entry with `"automerge": true` sets
+  `"minimumReleaseAge": "3 days"` and `"internalChecksFilter": "strict"` —
+  see the template in [CI dependency management](ci-dependency-standard.md#configuration).
+
+**Exemptions:**
+
+- **Security updates are never delayed.** Dependabot applies `cooldown` to
+  version updates only, never to security updates. Renovate's
+  `vulnerabilityAlerts` must not set a `minimumReleaseAge` (the template sets
+  it to `null`).
+- **First-party `damien-robotsix/*` packages are exempt.** Dependabot uses
+  `cooldown: exclude: ["damien-robotsix/*"]`, Renovate a `packageRules` entry
+  with `"minimumReleaseAge": null`. The first-party git-pin bump workflow and
+  release-please are not dependency updates and are unaffected.
+
+**Enforcement:** `scripts/check-dependency-cooldown.py` (the
+`dependency-cooldown-check` job in `baseline-check.yml`) parses
+`renovate.json` and `.github/dependabot.yml`. It is **warning-first**: before
+2027-01-31 a missing or short cooldown is a `::warning::` annotation and the
+build passes; from 2027-01-31 it is an `::error::` and the build fails — the
+same flip date as the other baseline gates. A repo that cannot carry the
+cooldown on one target records an accepted-risk entry in
+`.dependency-cooldown-allowlist` at the repo root, one per line:
+`<target> <approval reference ...>`, where `<target>` is a Dependabot
+ecosystem name or `renovate` (for example
+`npm approved in robotsix-standards#123`). The approval reference is
+mandatory; an entry without one is ignored.
+
+> **Failure mode prevented:** a compromised release (the ultralytics PyPI
+> release, Dec 2024) or a repointed action tag (tj-actions/changed-files,
+> Mar 2025) behaves normally in tests, so required CI passes and the
+> update auto-merges within hours. CI also *runs* the malicious code, so the
+> compromise happens before the merge. Most such releases are found and
+> yanked within hours to a few days; a 3-day wait keeps the fleet from
+> picking them up.

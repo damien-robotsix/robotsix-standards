@@ -153,12 +153,9 @@ service-specific code in favour of the patterns above.
 
 ## Provenance verification before rollout
 
-The deployment system is the consumer of every published component image. It
-must verify the image digest's signed build provenance (`gh attestation verify
-oci://ghcr.io/<owner>/<repo>@<digest> --owner <owner>`) before it rolls the
-image out, and refuse the rollout on failure. The rule, its rationale and its
-current status (a dated accepted risk until `docker-release.yml` signs the
-provenance) are stated once in
+The deployment system consumes every published component image, so the
+provenance check before rollout is a deployment-system duty. The rule, its
+command, its rationale and its current status are stated once in
 [security posture — SLSA Build Track](security-posture.md#slsa-build-track).
 Failure mode this prevents: an image tampered with after the build is deployed
 exactly like a genuine one.

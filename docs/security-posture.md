@@ -457,7 +457,7 @@ fleet's posture against each Build level:
 
 - **Build L1 (provenance exists):** met — `docker-release.yml` builds on
   GitHub-hosted runners with `docker buildx build --provenance
-  "mode=max,builder-id=<run URL>" --sbom true`. BuildKit attaches an in-toto
+  mode=max --sbom true`. BuildKit attaches an in-toto
   SLSA provenance statement and an SBOM to the pushed image index.
 - **Build L2 (hosted platform, signed provenance):** not met — the BuildKit
   provenance is an **unsigned** in-toto statement. The workflow grants

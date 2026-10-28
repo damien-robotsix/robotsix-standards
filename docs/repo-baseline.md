@@ -328,6 +328,31 @@ the called workflow's responsibility — do not add `timeout-minutes` to
 the caller, and read "every job" above as "every job that runs steps
 directly."
 
+**Hard caps.** Justified exceptions above 15 minutes are still bounded
+by a fleet hard cap, so one comment cannot quietly bring back a
+multi-hour ceiling:
+
+| Job kind | Hard cap |
+| --- | --- |
+| Test, lint, type-check, build and every other job | 30 minutes |
+| Release and docs jobs (job id contains `release`, `publish`, `docs`, `sbom` or `deploy`) | 60 minutes |
+
+A job that genuinely needs more than its cap needs an accepted-risk
+entry in `.workflow-timeout-allowlist` at the repo root, one per line:
+`<workflow-file> <job-id> <minutes> <approval reference ...>` (for
+example `ci.yml integration 45 approved in robotsix-standards#123`).
+The approval reference is mandatory, and the entry covers ceilings up to
+`<minutes>`. The same script enforces the cap **warning-first**: before
+2027-01-31 an over-cap job gets a `::warning::` annotation and the build
+still passes. From 2027-01-31 it gets an `::error::` and the build
+fails. That is the same flip date as the public-registry and secret-file
+checks. The missing-timeout and unexplained-above-15 checks already
+block today and are not affected by the flip.
+
+Step-level `timeout-minutes` is recommended for steps that make network
+calls (package downloads, registry pushes, external APIs), so a stuck
+call fails fast instead of using up the whole job ceiling.
+
 > **Failure modes prevented:**
 >
 > - **Runaway job burns CI budget.** A job that hangs (network timeout,
@@ -341,6 +366,10 @@ directly."
 >   picks its own (or none), and a developer moving between repos can't
 >   predict when a hung job will be killed or whether their push
 >   even has a safety net.
+> - **Unbounded justified exceptions.** Without a hard cap, a
+>   `timeout-minutes: 300  # slow` comment passes the gate and brings
+>   back the multi-hour window. The cap plus an approved accepted-risk
+>   entry keeps every long ceiling bounded and traceable.
 
 Python-specific timeout defaults (lint: 5, type-check: 10, test: 15)
 are listed in [Python CI workflow](python-ci-workflow.md#job-timeout-minutes).

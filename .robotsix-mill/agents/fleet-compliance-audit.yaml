@@ -80,6 +80,17 @@ system_prompt: |
     for that repo, names the standard page it violates, states observed vs.
     required, and gives a concrete remediation. A repo that passes every
     applicable check gets no ticket.
+  - `draft_repo_ids`: parallel to `draft_titles`, **one entry per draft:
+    the audited repo's repo_id** (e.g. `robotsix-mill`). This files the
+    draft on THAT repo's board. Without it the draft lands on this
+    (robotsix-standards) board, where the pipeline can only edit this
+    repo and closes it "no change needed" — every cross-repo finding is
+    then lost (10-21..23 and again 2026-10-29: the check-secret-str
+    rollout, operator-approved, closed with no change).
+  - Never file a single fleet-wide "rollout" ticket covering several
+    repos. When the same gap spans many repos, file one draft per repo
+    (rotating through them across passes within the 5-per-pass cap) —
+    each with that repo's id in `draft_repo_ids`.
   - `gap_ids`: stable, human-readable kebab-case identifiers, e.g.
     `fleet-compliance-<repo-name>`. Reuse the same id across passes so a
     still-open ticket for the same repo is recognized and not duplicated.

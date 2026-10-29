@@ -471,12 +471,33 @@ the shared `docker-release.yml` reusable workflow (see
 Build levels are cumulative, and producing provenance is only half the control:
 SLSA makes **verifying** it a separate consumer duty
 ([Verifying artifacts](https://slsa.dev/spec/v1.0/verifying-artifacts)). The
-fleet's posture against each Build level:
+fleet's posture against each Build level.
 
-- **Build L1 (provenance exists):** met — `docker-release.yml` builds on
-  GitHub-hosted runners with `docker buildx build --provenance
-  mode=max --sbom true`. BuildKit attaches an in-toto
-  SLSA provenance statement and an SBOM to the pushed image index.
+The reachable Build level depends on the **runner class** the build runs on.
+[Runner choice follows repository visibility](repo-baseline.md#runner-choice-follows-repository-visibility):
+a **public** repository calls `docker-release.yml` on a GitHub-hosted runner,
+while a **private** repository (e.g. `robotsix-invest`) passes `self-hosted` as
+its `runs-on` input, so its images are built — and, once signing lands, signed —
+on the fleet's persistent self-hosted runner. That runner is shared across
+repositories and reused between jobs, so it does not give the run isolation SLSA
+Build L3 requires ("the build platform ensures runs cannot influence one
+another"): an earlier job on the host can tamper with the build cache, BuildKit
+state or the toolchain. The provenance `builder.id` and runner environment also
+differ from the GitHub-hosted case. Per runner class:
+
+| Runner class | Now | After `actions/attest-build-provenance` lands |
+| --- | --- | --- |
+| Public repo, GitHub-hosted (ephemeral) | Build L1 | Build L3 (L2 + isolated reusable workflow) |
+| Private repo, persistent self-hosted | at most Build L1 | at most Build L2 — L3 only if the runner becomes ephemeral/JIT and isolated per job |
+
+The levels below describe the GitHub-hosted case; the self-hosted caps are
+stated inline.
+
+- **Build L1 (provenance exists):** met — `docker-release.yml` builds with
+  `docker buildx build --provenance mode=max --sbom true` on GitHub-hosted
+  runners (public repos) or the self-hosted runner (private repos). BuildKit
+  attaches an in-toto SLSA provenance statement and an SBOM to the pushed
+  image index on either runner class.
 - **Build L2 (hosted platform, signed provenance):** not met — the BuildKit
   provenance is an **unsigned** in-toto statement. The workflow grants
   `id-token: write` and `attestations: write`, but no step signs the
@@ -485,22 +506,45 @@ fleet's posture against each Build level:
   unsigned statement. **Target:** add `actions/attest-build-provenance`
   (Sigstore keyless signing via the GitHub OIDC token, stored in the GitHub
   attestations API) to the publish job, with `subject-digest` set to the
-  pushed index digest.
+  pushed index digest. On the self-hosted runner the "hosted build platform"
+  property is weaker: the platform is an operator-managed host, not
+  GitHub's, so signing there yields at most L2.
 - **Build L3 (hardened platform, unforgeable provenance):** not met — L2 is a
-  prerequisite. Once the attestation step above lands, L3 is reached because
-  the signing runs inside the shared reusable workflow. A caller cannot run
-  its own steps in that job, and the signing identity is the reusable
+  prerequisite. Once the attestation step above lands, L3 is reached **for
+  public-repo images built on GitHub-hosted runners** because the signing runs
+  inside the shared reusable workflow on an ephemeral runner. A caller cannot
+  run its own steps in that job, and the signing identity is the reusable
   workflow's ref, not the caller's. This matches GitHub's guidance that
-  artifact attestations from an isolated reusable workflow meet Build L3.
+  artifact attestations from an isolated reusable workflow meet Build L3 —
+  guidance that assumes GitHub-hosted, ephemeral runners. **Private-repo
+  images built on the persistent self-hosted runner do not reach L3**: the
+  reusable-workflow signing identity is the same, but the runs are not
+  isolated. L3 for them requires an ephemeral/JIT runner that is isolated per
+  job.
 - **Verification (consumer side):** not in place. **Requirement:** before the
   deployment system rolls out an image, it verifies the image digest's
-  provenance with
-  `gh attestation verify oci://ghcr.io/<owner>/<repo>@<digest> --owner <owner>`
-  (or the equivalent `cosign verify-attestation` with the reusable workflow's
-  certificate identity). It refuses the rollout on failure. Until the
-  attestation step above exists there is nothing signed to verify, so this is
-  a dated **accepted risk** (accepted 2026-10-28, review 2027-01-31). It is
-  tracked in the [Audit](#audit) table and referenced from the
+  provenance and refuses the rollout on failure, with a policy per runner
+  class:
+    - **Public-repo images** are verified with
+      `gh attestation verify oci://ghcr.io/<owner>/<repo>@<digest> --owner <owner> --deny-self-hosted-runners`
+      (or the equivalent `cosign verify-attestation` with the reusable
+      workflow's certificate identity and a runner-environment check). The
+      `--deny-self-hosted-runners` flag matters: the signing identity is the
+      reusable workflow's ref on either runner class, so without a
+      runner-environment check `gh attestation verify` passes for a
+      self-hosted build too and a consumer cannot tell an L3 build from a
+      self-hosted one.
+    - **Private-repo images** are verified with the same command **without**
+      `--deny-self-hosted-runners`, because they are built on the self-hosted
+      runner by rule. Accepting self-hosted provenance (at most Build L2) for
+      private-repo images is a dated **accepted risk** (accepted 2026-10-29,
+      review 2027-01-31), lifted only when the self-hosted runner becomes
+      ephemeral/JIT and isolated per job.
+
+  Until the attestation step above exists there is nothing signed to verify,
+  so verification itself is a dated **accepted risk** (accepted 2026-10-28,
+  review 2027-01-31). Both accepted risks are tracked in the [Audit](#audit)
+  table and referenced from the
   [deployment system](deployment-system.md#provenance-verification-before-rollout).
 
 **Failure prevented:** without signed and verified provenance, an image
@@ -508,7 +552,11 @@ tampered with after the build (a stolen GHCR token, a compromised push from
 outside the reusable workflow) deploys exactly like a genuine one. Unsigned
 provenance can be forged along with the image, and provenance that nobody
 verifies blocks nothing. A Build level stated without its mechanism cannot be
-audited.
+audited. A Build level stated without its runner class overclaims: a
+private-repo image built on the shared self-hosted runner passes the same
+`gh attestation verify` check as an isolated GitHub-hosted build, so an L3
+claim that ignores the runner hides a build that an earlier job on the host
+could have tampered with.
 
 **Alignment:** OWASP Top 10:2025 *A03 Software Supply Chain Failures* and *A08
 Software or Data Integrity Failures* (signing plus integrity verification), and
@@ -577,7 +625,7 @@ dashboard-watching:
 | SBOM* | CI uploads CycloneDX artifact |
 | CVE audit* | `uv audit --preview-features audit-command` at the pinned uv version / `pip-audit` passes in CI |
 | Distribution / registry | No publish to a public package index and no public-registry credentials, per [distribution & packaging rules 4–5](distribution-packaging.md#enforcement). Verified by the `public-registry-check` job (`scripts/check-public-registry.py` in `baseline-check.yml`), which finds no `registry.npmjs.org` / `upload.pypi.org` / `pypi.org/legacy` endpoint, no `npm publish` / `twine upload` / `uv publish` without an approved internal registry, and no `NPM_TOKEN` / `PYPI_TOKEN` secret in workflows, `package.json` `publishConfig`, `.npmrc` or `pyproject.toml` — warning-first, blocking from 2027-01-31 |
-| SLSA Build provenance | Image-shipping repos: the published image index carries BuildKit provenance (`docker buildx imagetools inspect ghcr.io/<owner>/<repo>@<digest> --format '{{ json .Provenance }}'` is non-empty) — Build L1. Once `docker-release.yml` signs it, `gh attestation verify oci://ghcr.io/<owner>/<repo>@<digest> --owner <owner>` passes and the deployment system runs that check before rollout. Signing and verification are a dated accepted risk until then (review 2027-01-31) — per [SLSA Build Track](#slsa-build-track) |
+| SLSA Build provenance | Image-shipping repos: the published image index carries BuildKit provenance (`docker buildx imagetools inspect ghcr.io/<owner>/<repo>@<digest> --format '{{ json .Provenance }}'` is non-empty) — Build L1 on either runner class. Once `docker-release.yml` signs it, the deployment system verifies before rollout: public-repo (GitHub-hosted) images with `gh attestation verify oci://ghcr.io/<owner>/<repo>@<digest> --owner <owner> --deny-self-hosted-runners` (Build L3); private-repo (self-hosted) images with the same command without `--deny-self-hosted-runners` (at most Build L2 — self-hosted provenance is a dated accepted risk, accepted 2026-10-29, review 2027-01-31, until the runner is ephemeral/JIT and isolated per job). Signing and verification are a dated accepted risk until then (review 2027-01-31) — per [SLSA Build Track](#slsa-build-track) |
 | Container image scan | Trivy PR-scan and publish workflows present and passing (image-shipping repos only) |
 | Vulnerability disclosure | `SECURITY.md` present at repo root with contact method, response-time expectation, and coordinated-disclosure statement — fail-closed: `security-md-check` in `baseline-check.yml` fails CI (exit 1) when it is missing or incomplete |
 | Config API secret redaction | Deployment system / management surfaces: central-deploy config-read endpoints (`GET /config`, version-history reads, audit-log serialization) route through `mask_secrets()` before serialization; config writes use `apply_update()` merge-on-write; version history stores no secret values — audited per [config standard §3](config-standard.md#how-this-is-enforced) |

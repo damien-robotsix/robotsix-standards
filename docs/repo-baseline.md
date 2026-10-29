@@ -403,6 +403,13 @@ that private repositories run CI on the self-hosted runner.
   host-path bind mount; if the runner's work directory is not visible at
   the identical path on the host, the action sees an empty or missing
   workspace.
+- **Image builds on the self-hosted runner cap SLSA provenance below L3.**
+  A private image-shipping repo runs `docker-release.yml` on the
+  self-hosted runner, which is persistent and shared across repositories,
+  so its images reach at most SLSA Build L2 once signing lands. Build L3
+  for those images requires an ephemeral (JIT) runner isolated per job;
+  until then self-hosted provenance is a dated accepted risk — see
+  [SLSA Build Track](security-posture.md#slsa-build-track).
 
 > **Failure modes prevented:**
 >

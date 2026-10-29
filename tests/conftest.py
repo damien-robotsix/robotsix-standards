@@ -89,5 +89,10 @@ def check_dependency_cooldown() -> ModuleType:
 
 
 @pytest.fixture
+def check_runner_visibility() -> ModuleType:
+    return _load_script("check-runner-visibility.py", "check_runner_visibility")
+
+
+@pytest.fixture
 def check_public_registry() -> ModuleType:
     return _load_script("check-public-registry.py", "check_public_registry")

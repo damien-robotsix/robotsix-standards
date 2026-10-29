@@ -75,6 +75,31 @@ jobs:
       - name: Check workflow security (4a SHA-pinning + 4c least-privilege permissions)
         run: uv run --group docs python scripts/check-workflow-security.py
 
+  runner-visibility-check:
+    name: Runner choice follows repository visibility
+    # Fail-closed gate for docs/security-posture.md gate 4d (Runner isolation)
+    # and the docs/repo-baseline.md runner-visibility rule: a public repo must
+    # never target a self-hosted runner (fork PRs would execute on the host).
+    # Private repos on GitHub-hosted runners are warnings only. See:
+    #   - scripts/check-runner-visibility.py (the gate logic)
+    #   - docs/repo-baseline.md#runner-choice-follows-repository-visibility
+    permissions:
+      contents: read
+    runs-on: ubuntu-latest
+    timeout-minutes: 5  # fast parse check; well under 15-minute default
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: astral-sh/setup-uv@1c37ad07a6a961277cf70c0d37d6f313000f5884 # v10.3.0
+        with:
+          enable-cache: true
+          python-version: "3.14"
+      - name: Check runner choice against repository visibility
+        env:
+          REPO_PRIVATE: ${{ github.event.repository.private }}
+        run: uv run --group docs python scripts/check-runner-visibility.py
+
   license-check:
     permissions:
       contents: read

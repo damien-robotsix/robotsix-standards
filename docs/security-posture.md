@@ -246,7 +246,7 @@ A **public** repository never runs a job on a self-hosted runner. A
 **private** repository runs on the self-hosted runner, and that runner is
 hardened as described in
 [repo baseline — self-hosted runner hardening](repo-baseline.md#self-hosted-runner-hardening):
-ephemeral or JIT, a runner group limited to the named private repos,
+ephemeral or JIT, registered only to the named private repos,
 fork-PR workflows off, a visibility-change procedure, and host and network
 isolation. The rule itself is set out in
 [repo baseline — runner choice follows repository visibility](repo-baseline.md#runner-choice-follows-repository-visibility).
@@ -256,7 +256,7 @@ isolation. The rule itself is set out in
   **fail-closed from day one**, with no warning-first period. It fails
   when the repo is public and any job's `runs-on`, or a reusable-workflow
   caller's `runs-on` input, targets `self-hosted`. It also fails when
-  visibility is unknown. The runner-group and fork-PR settings are not in
+  visibility is unknown. The runner-registration and fork-PR settings are not in
   the repo, so they are checked by hand, as the [Audit](#audit) row says.
   zizmor's `self-hosted-runner` audit runs only in the *auditor* persona,
   so the fleet's pedantic zizmor invocation (gate 4b) does **not** catch
@@ -603,7 +603,7 @@ dashboard-watching:
 | SHA-pinned actions | `grep -r 'uses:' .github/workflows/` — no mutable refs on third-party actions; `scripts/check-workflow-security.py` passes in CI |
 | Workflow linting | `.pre-commit-config.yaml` includes `actionlint`; CI runs `zizmor` (content-only repos exempt from `zizmor`) |
 | Least-privilege permissions | Every workflow has `permissions:` block; `scripts/check-workflow-security.py` passes in CI; `zizmor` reports clean (code repos) |
-| Runner isolation | Public repos target no self-hosted runner: `scripts/check-runner-visibility.py` (`runner-visibility-check` job in `baseline-check.yml`) passes. It is fail-closed, and private repos on GitHub-hosted runners only warn. By hand, for private repos: the runner group's access is *selected repositories* and lists only private repos; "Run workflows from fork pull requests" is off; the runner is ephemeral/JIT — per [repo baseline](repo-baseline.md#self-hosted-runner-hardening) |
+| Runner isolation | Public repos target no self-hosted runner: `scripts/check-runner-visibility.py` (`runner-visibility-check` job in `baseline-check.yml`) passes. It is fail-closed, and private repos on GitHub-hosted runners only warn. By hand: `gh api repos/<owner>/<repo>/actions/runners` shows no runner registered to any public repo (personal account, so no runner groups); for private repos, "Run workflows from fork pull requests" is off; the runner is ephemeral/JIT — per [repo baseline](repo-baseline.md#self-hosted-runner-hardening) |
 | Actions PR approval disabled | `gh api repos/<owner>/<repo>/actions/permissions/workflow -q .can_approve_pull_request_reviews` returns `false`, so `GITHUB_TOKEN` cannot satisfy the required approving review — per [repo baseline](repo-baseline.md#branch-protection); set by the robotsix-github-workflows apply-script; not machine-verified since the watchdog's [retirement](mill-agents.md#retired-agents) — check by hand |
 | Secret push protection | Push protection enabled in repo Security settings; `detect-secrets` in pre-commit; CI runs TruffleHog (content-only repos exempt from TruffleHog) |
 | Credential-file deny list | `.gitignore` covers `.htpasswd`, `.env`/`.env.*`, `wp-config*.php`, `*.pem`, `*.key`, `*secret*`, `*.p12` — verified by `scripts/check-gitignore-denylist.py` in `baseline-check.yml` (warning-first, blocking from 2027-01-31; honors per-repo negating exceptions) — and `.secrets-patterns-excluded` presence and wiring by `scripts/check-secrets-patterns-excluded.py` (same dates) |

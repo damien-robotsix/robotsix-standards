@@ -427,6 +427,91 @@ that private repositories run CI on the self-hosted runner.
 >   system `pip install` is refused (PEP 668) or a container action cannot
 >   see the workspace.
 
+**Enforcement:** `scripts/check-runner-visibility.py`, run by the
+`runner-visibility-check` job in `baseline-check.yml`, reads the repo's
+visibility (`${{ github.event.repository.private }}`) and **fails closed**
+when a public repository has any job whose `runs-on` (string, label list,
+`group:` mapping or expression) names `self-hosted`, or a reusable-workflow
+call that passes `self-hosted` as its `runs-on` / `runner` input. It also
+fails when visibility is unknown. A private repository job on a GitHub-hosted
+runner is a warning annotation only. This is
+[security-posture gate 4d](security-posture.md#4d-runner-isolation).
+
+#### Self-hosted runner hardening
+
+No fleet repository declares the self-hosted runner today: its registration
+and host configuration are set up by hand on the host, outside version
+control. Until a repo declares it, the operator owns it, and every rule below
+is re-verified by hand at each quarterly fleet audit and whenever a
+repository changes visibility. *Failure mode this leaves open:* a runner
+setting that drifts on the host (a runner re-registered as persistent, a
+public repo granted access) is caught only at the next audit.
+
+The fleet lives under the personal account `damien-robotsix`. On a personal
+account, runners are registered **per repository** and runner groups do not
+exist (they are an organization/enterprise feature). To verify:
+
+- For each private repo, `gh api repos/<owner>/<repo> -q .private` returns
+  `true`, and `gh api repos/<owner>/<repo>/actions/runners` lists the
+  runners registered to it.
+- For each public repo, `gh api repos/<owner>/<repo>/actions/runners`
+  returns `total_count: 0`.
+- Each private repo's fork-PR setting is off.
+
+If the fleet moves to an organization, use
+`gh api orgs/<org>/actions/runner-groups` instead to check the group's
+repository list.
+
+- **Ephemeral or just-in-time runners.** Each job runs on a fresh runner:
+  either an ephemeral runner (`--ephemeral`, deregistered after one job) or a
+  just-in-time runner from the `generate-jitconfig` API. If a runner has to be
+  reused, it must at least start each job with a wiped workspace, an emptied
+  tool cache and Docker layer cache, and no credentials (git credentials,
+  `docker login` state, cloud tokens) left over from an earlier job.
+  *Failure prevented:* a persistent runner shared by every private repo
+  carries workspace, caches and credentials between jobs and across repos.
+  A compromised dependency or PR in one private repo can then poison or read
+  another repo's builds. This breaks the SLSA Build L3 *isolated*
+  requirement and is OWASP CICD-SEC-7.
+- **Runner registered only to the named private repos.** On the personal
+  account, the runner is registered per repository, and only to the private
+  repos that need it; it is never registered to a public repository. If the
+  fleet moves to an organization, the runner goes in a runner group whose
+  access is set to **selected repositories** listing only those private
+  repos, and "All repositories" access is never used. *Failure prevented:* a
+  runner registered to a public repo, or to an org-level group without a
+  repository restriction, can be targeted by a public repo. A fork PR there
+  then runs on the home network, whatever the workflow gate says.
+- **Fork-PR workflows disabled on private repos.** Every private repo leaves
+  *Settings → Actions → Fork pull request workflows* ("Run workflows from fork
+  pull requests") **off**. *Failure prevented:* with the setting on, anyone
+  with read access who forks the repo can run arbitrary code on the
+  self-hosted runner. This is poisoned pipeline execution, OWASP CICD-SEC-4.
+- **Visibility-change procedure.** Before a private repository is made
+  public:
+  1. Open a PR that moves every job off `self-hosted`, back to a
+     GitHub-hosted runner or the shared workflow's default.
+  2. Merge it. Then, locally, run
+     `python scripts/check-runner-visibility.py --private false` and confirm
+     it passes. The CI job reads the repo's current visibility and takes no
+     flag, so while the repo is still private it cannot test the public case.
+  3. Remove the runner registration from the repo (or, in an organization,
+     remove the repo from the runner group's selected repositories).
+  4. Only then change the visibility.
+  *Failure prevented:* a repo made public while it still has
+  `runs-on: self-hosted` is open to fork PRs from that moment. The CI gate
+  only sees this on the next run, so the order above closes the gap.
+- **Host and network isolation.** The runner process runs as a dedicated
+  non-root user with no `sudo`. It never shares the Docker socket of the
+  host's production containers: container jobs use a separate, rootless or
+  per-runner Docker daemon. Its egress is limited to what CI needs (GitHub,
+  GHCR, package indexes) by a host firewall. It has no route to the home
+  network's management interfaces, production services or other hosts, and it
+  holds no production secrets. *Failure prevented:* a job that is
+  compromised anyway (a malicious dependency in a private repo) could
+  otherwise control production containers through the shared Docker
+  socket, or move sideways into the home network.
+
 ## Branch protection
 
 `main` is protected identically in every repo — several standards are

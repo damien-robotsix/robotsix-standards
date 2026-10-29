@@ -20,6 +20,12 @@ infrastructure don't have that failure mode.
    - A repo that runs Actions is either **public**, or runs its Actions on a
      **self-hosted runner** (`runs-on: self-hosted`). Private + GitHub-hosted
      is not allowed — it burns paid minutes.
+   - The two options are exclusive. A **public** repo never uses a
+     self-hosted runner, because fork PRs would run on the host. See
+     [repo baseline — runner choice follows repository visibility](repo-baseline.md#runner-choice-follows-repository-visibility)
+     for the rule and the runner hardening requirements, and
+     [security-posture gate 4d](security-posture.md#4d-runner-isolation)
+     for how it is enforced.
 2. **Container images are free to store and pull.** GHCR is free for **public**
    packages; **private** packages are metered (storage + egress) and the deploy
    server pulls images constantly. Fleet images are therefore **public

@@ -23,7 +23,7 @@
       
       
       <link rel="icon" href="../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.8.0">
     
     
       
@@ -31,10 +31,10 @@
       
     
     
-      <link rel="stylesheet" href="../assets/stylesheets/main.ec1eaa64.min.css">
+      <link rel="stylesheet" href="../assets/stylesheets/main.57a0d79d.min.css">
       
         
-        <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
+        <link rel="stylesheet" href="../assets/stylesheets/palette.fb2fffe2.min.css">
       
       
 
@@ -566,6 +566,17 @@
     <span class="md-ellipsis">
       
         Job timeout-minutes
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#runner-choice-follows-repository-visibility" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Runner choice follows repository visibility
       
     </span>
   </a>
@@ -3247,6 +3258,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#runner-choice-follows-repository-visibility" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Runner choice follows repository visibility
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -3712,6 +3734,48 @@ call fails fast instead of using up the whole job ceiling.</p>
 </blockquote>
 <p>Python-specific timeout defaults (lint: 5, type-check: 10, test: 15)
 are listed in <a href="../python-ci-workflow/#job-timeout-minutes">Python CI workflow</a>.</p>
+<h3 id="runner-choice-follows-repository-visibility">Runner choice follows repository visibility<a class="headerlink" href="#runner-choice-follows-repository-visibility" title="Permanent link">&para;</a></h3>
+<p><strong>Rule:</strong> In a repository whose GitHub visibility is <strong>private</strong>, every
+job runs on the <code>self-hosted</code> runner — inline jobs (<code>runs-on: self-hosted</code>)
+and reusable-workflow calls alike. For a shared workflow, pass
+<code>self-hosted</code> as its <code>runs-on</code> input, and pin a shared-workflow revision
+that has that input (an older pin silently falls back to its
+GitHub-hosted default).</p>
+<p><strong>Rule:</strong> A <strong>public</strong> repository never uses a self-hosted runner. Every
+job stays on a GitHub-hosted runner (<code>ubuntu-latest</code> or the shared
+workflow's default).</p>
+<p><strong>Rationale:</strong> GitHub refuses to start GitHub-hosted jobs on the account's
+private repositories ("The job was not started because recent account
+payments have failed or your spending limit needs to be increased" —
+2026-09-18..22 and 2026-10-27..29). The operator decided on 2026-10-29
+that private repositories run CI on the self-hosted runner.</p>
+<p><strong>Portability notes for self-hosted jobs:</strong></p>
+<ul>
+<li><strong>Install Python with <code>actions/setup-python</code> before any <code>pip install</code>.</strong>
+  The runner image's system <code>python3</code> is PEP 668 externally-managed, so
+  a bare <code>pip install</code> fails with <code>externally-managed-environment</code>.</li>
+<li><strong>Container actions need the runner work directory mounted at the same
+  path on the host.</strong> A container action receives the workspace as a
+  host-path bind mount; if the runner's work directory is not visible at
+  the identical path on the host, the action sees an empty or missing
+  workspace.</li>
+</ul>
+<blockquote>
+<p><strong>Failure modes prevented:</strong></p>
+<ul>
+<li><strong>Private repo CI never goes green.</strong> A workflow written for a private
+  repository with the default <code>ubuntu-latest</code> runner is never started
+  while GitHub-hosted jobs are refused, so every PR is blocked on checks
+  that cannot run.</li>
+<li><strong>Fork PRs execute on the home network.</strong> On a public repository, a
+  self-hosted runner executes code from any fork pull request on the
+  host, giving an outsider code execution inside the home network.</li>
+<li><strong>Self-hosted jobs fail on environment differences.</strong> A job that
+  passes on GitHub-hosted runners fails on the self-hosted runner because
+  system <code>pip install</code> is refused (PEP 668) or a container action cannot
+  see the workspace.</li>
+</ul>
+</blockquote>
 <h2 id="branch-protection">Branch protection<a class="headerlink" href="#branch-protection" title="Permanent link">&para;</a></h2>
 <p><code>main</code> is protected identically in every repo — several standards are
 silently vacuous without it (auto-merge merges instantly, direct pushes
@@ -3958,10 +4022,10 @@ picking them up.</p>
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.sections", "navigation.expand", "content.code.copy"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.sections", "navigation.expand", "content.code.copy"], "search": "../assets/javascripts/workers/search.a7633da7.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
-      <script src="../assets/javascripts/bundle.d7400e89.min.js"></script>
+      <script src="../assets/javascripts/bundle.c21346df.min.js"></script>
       
     
   </body>

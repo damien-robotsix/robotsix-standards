@@ -3018,6 +3018,12 @@ infrastructure don't have that failure mode.</p>
 <li>A repo that runs Actions is either <strong>public</strong>, or runs its Actions on a
      <strong>self-hosted runner</strong> (<code>runs-on: self-hosted</code>). Private + GitHub-hosted
      is not allowed — it burns paid minutes.</li>
+<li>The two options are exclusive. A <strong>public</strong> repo never uses a
+     self-hosted runner, because fork PRs would run on the host. See
+     <a href="../repo-baseline/#runner-choice-follows-repository-visibility">repo baseline — runner choice follows repository visibility</a>
+     for the rule and the runner hardening requirements, and
+     <a href="../security-posture/#4d-runner-isolation">security-posture gate 4d</a>
+     for how it is enforced.</li>
 <li><strong>Container images are free to store and pull.</strong> GHCR is free for <strong>public</strong>
    packages; <strong>private</strong> packages are metered (storage + egress) and the deploy
    server pulls images constantly. Fleet images are therefore <strong>public

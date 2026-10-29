@@ -635,6 +635,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#4d-runner-isolation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4d. Runner isolation
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#workflow-permissions-audit" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -3292,6 +3303,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#4d-runner-isolation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4d. Runner isolation
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#workflow-permissions-audit" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -3687,6 +3709,37 @@ blast radius to the minimum.</p>
   no audit trail.</li>
 <li><strong>Alignment:</strong> OpenSSF Scorecard <em>Token-Permissions</em> check,
   <a href="https://docs.github.com/en/actions/security-for-github-actions/security-guides/automatic-token-authentication#permissions-for-the-github_token">GitHub's own guidance</a>.</li>
+</ul>
+<h4 id="4d-runner-isolation">4d. Runner isolation<a class="headerlink" href="#4d-runner-isolation" title="Permanent link">&para;</a></h4>
+<p>A <strong>public</strong> repository never runs a job on a self-hosted runner. A
+<strong>private</strong> repository runs on the self-hosted runner, and that runner is
+hardened as described in
+<a href="../repo-baseline/#self-hosted-runner-hardening">repo baseline — self-hosted runner hardening</a>:
+ephemeral or JIT, registered only to the named private repos,
+fork-PR workflows off, a visibility-change procedure, and host and network
+isolation. The rule itself is set out in
+<a href="../repo-baseline/#runner-choice-follows-repository-visibility">repo baseline — runner choice follows repository visibility</a>.</p>
+<ul>
+<li><strong>How to verify:</strong> <code>scripts/check-runner-visibility.py</code> runs as the
+  <code>runner-visibility-check</code> job in <code>baseline-check.yml</code>. It is
+  <strong>fail-closed from day one</strong>, with no warning-first period. It fails
+  when the repo is public and any job's <code>runs-on</code>, or a reusable-workflow
+  caller's <code>runs-on</code> input, targets <code>self-hosted</code>. It also fails when
+  visibility is unknown. The runner-registration and fork-PR settings are not in
+  the repo, so they are checked by hand, as the <a href="#audit">Audit</a> row says.
+  zizmor's <code>self-hosted-runner</code> audit runs only in the <em>auditor</em> persona,
+  so the fleet's pedantic zizmor invocation (gate 4b) does <strong>not</strong> catch
+  this. The script is the gate.</li>
+<li><strong>Failure prevented:</strong> a self-hosted runner on a public repository runs
+  code from any fork pull request on the host. That gives an outsider code
+  execution inside the home network, the highest-impact CI risk in these
+  standards. A persistent runner shared across private repos also lets one
+  compromised build poison or read another.</li>
+<li><strong>Alignment:</strong> GitHub's
+  <a href="https://docs.github.com/en/actions/security-for-github-actions/security-guides/security-hardening-for-github-actions#hardening-for-self-hosted-runners">hardening for self-hosted runners</a>
+  ("self-hosted runners should almost never be used for public
+  repositories"), OpenSSF Scorecard <em>Dangerous-Workflow</em>, SLSA Build L3
+  <em>isolated</em>, and OWASP CICD-SEC-4 / CICD-SEC-7.</li>
 </ul>
 <h4 id="workflow-permissions-audit">Workflow-permissions audit<a class="headerlink" href="#workflow-permissions-audit" title="Permanent link">&para;</a></h4>
 <p>The <strong>workflow-permissions audit</strong> is the concrete, repo-local enforcement
@@ -4179,6 +4232,10 @@ dashboard-watching:</p>
 <tr>
 <td>Least-privilege permissions</td>
 <td>Every workflow has <code>permissions:</code> block; <code>scripts/check-workflow-security.py</code> passes in CI; <code>zizmor</code> reports clean (code repos)</td>
+</tr>
+<tr>
+<td>Runner isolation</td>
+<td>Public repos target no self-hosted runner: <code>scripts/check-runner-visibility.py</code> (<code>runner-visibility-check</code> job in <code>baseline-check.yml</code>) passes. It is fail-closed, and private repos on GitHub-hosted runners only warn. By hand: <code>gh api repos/&lt;owner&gt;/&lt;repo&gt;/actions/runners</code> shows no runner registered to any public repo (personal account, so no runner groups); for private repos, "Run workflows from fork pull requests" is off; the runner is ephemeral/JIT — per <a href="../repo-baseline/#self-hosted-runner-hardening">repo baseline</a></td>
 </tr>
 <tr>
 <td>Actions PR approval disabled</td>

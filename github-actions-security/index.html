@@ -3369,6 +3369,13 @@ pattern is blocked (OWASP CICD-SEC-4 / CICD-SEC-1, SLSA Build L3).</p>
   expands the gate into a standalone standard with canonical invocation,
   severity policy, and phased rollout. The rule text lives here; the
   security posture page cross-references it.</li>
+<li><strong><a href="../security-posture/#4d-runner-isolation">Security posture — gate 4d</a></strong>
+  covers self-hosted runners. zizmor's <code>self-hosted-runner</code> audit runs only
+  in the <em>auditor</em> persona, so the pedantic invocation above does not catch
+  a public repo that targets <code>self-hosted</code>. That ban is enforced by
+  <code>scripts/check-runner-visibility.py</code>, and the runner's own hardening
+  rules are in
+  <a href="../repo-baseline/#self-hosted-runner-hardening">repo baseline — self-hosted runner hardening</a>.</li>
 <li><strong><a href="../ci-lint-pinning/">CI lint tool pinning</a></strong> — the version of zizmor
   run in CI must match the version in <code>.pre-commit-config.yaml</code>. The
   shared reusable workflow pins zizmor's version; downstream repos

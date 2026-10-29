@@ -39,7 +39,7 @@ import sys
 from pathlib import Path
 from typing import Any
 
-import yaml
+import yaml  # type: ignore[import-untyped]
 from _workflow_utils import WORKFLOWS_DIR, iter_workflow_files, read_workflow
 
 SELF_HOSTED = "self-hosted"

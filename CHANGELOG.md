@@ -3,6 +3,25 @@
 
 # Changelog
 
+## [0.11.0](https://github.com/damien-robotsix/robotsix-standards/compare/v0.10.0...v0.11.0) (2026-10-29)
+
+
+### Features
+
+* Public repos are banned from self-hosted runners, but nothing checks it and the runner itself has no hardening rules (20261029T100446Z-public-repos-are-banned-from-self-hosted-9767) ([#456](https://github.com/damien-robotsix/robotsix-standards/issues/456)) ([d682937](https://github.com/damien-robotsix/robotsix-standards/commit/d6829377ddd00074bc7f048467f0f0265e1a60d8))
+
+
+### Bug Fixes
+
+* **agents:** fleet-compliance-audit files each draft on the audited repo's board ([#460](https://github.com/damien-robotsix/robotsix-standards/issues/460)) ([8e56192](https://github.com/damien-robotsix/robotsix-standards/commit/8e56192ba6b9b749a5804a1ea58e9fa4133d6b38))
+* **hooks:** check-secret-str runs on any Python 3, not only 3.14 ([#461](https://github.com/damien-robotsix/robotsix-standards/issues/461)) ([76d4eae](https://github.com/damien-robotsix/robotsix-standards/commit/76d4eae3a624e06330334dbb23de4dfd6bd11d22))
+
+
+### Documentation
+
+* Private repos can't create or verify signed build provenance on the free GitHub plan, but the SLSA plan says they will (20261029T104854Z-private-repos-can-t-create-or-verify-sig-6234) ([#459](https://github.com/damien-robotsix/robotsix-standards/issues/459)) ([a53806a](https://github.com/damien-robotsix/robotsix-standards/commit/a53806a43f05217cd66310d4cbf18375ab2d3796))
+* security-posture says image builds run on GitHub-hosted runners and will reach SLSA Build L3, but private repos now build on the self-hosted runner (20261029T100448Z-security-posture-says-image-builds-run-o-1516) ([#457](https://github.com/damien-robotsix/robotsix-standards/issues/457)) ([4a44fcb](https://github.com/damien-robotsix/robotsix-standards/commit/4a44fcb002d53318afabe5f8008467b8223358ee))
+
 ## [0.10.0](https://github.com/damien-robotsix/robotsix-standards/compare/v0.9.0...v0.10.0) (2026-10-29)
 
 

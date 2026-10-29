@@ -34,6 +34,11 @@ from pathlib import Path
 SECRET_PATTERNS = ("api_key", "apikey", "token", "password", "passwd", "secret")
 
 # Directories skipped during a recursive scan (deps, build/docs output, VCS).
+# A tuple, not `except A, B, C:` (PEP 758): this script runs as a
+# `language: script` pre-commit hook under the CONSUMER's system python3,
+# which may predate 3.14 — the bare form is a SyntaxError there.
+_UNREADABLE = (OSError, SyntaxError, UnicodeDecodeError)
+
 _SKIP_DIRS = (
     ".git",
     ".venv",
@@ -150,7 +155,7 @@ def scan_file(path: Path) -> list[Finding]:
     """Scan one Python file and return secret-named ``str`` field findings."""
     try:
         tree = ast.parse(path.read_text(encoding="utf-8"), filename=str(path))
-    except OSError, SyntaxError, UnicodeDecodeError:
+    except _UNREADABLE:
         return []
     classes = {
         node.name: node for node in ast.walk(tree) if isinstance(node, ast.ClassDef)

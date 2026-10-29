@@ -155,3 +155,15 @@ def test_main_exit_codes(check_secret_str: ModuleType, tmp_path: Path) -> None:
 
     assert check_secret_str.main([str(clean)]) == 0
     assert check_secret_str.main([str(dirty)]) == 1
+
+
+def test_hook_script_parses_on_python_310_grammar():
+    """The hook runs under the consumer's python3 (language: script), so it
+    must not use 3.14-only syntax such as PEP 758 `except A, B:`."""
+    import ast
+    from pathlib import Path
+
+    src = (
+        Path(__file__).resolve().parents[1] / "scripts" / "check-secret-str.py"
+    ).read_text()
+    ast.parse(src, feature_version=(3, 10))

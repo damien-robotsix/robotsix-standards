@@ -3,6 +3,19 @@
 
 # Changelog
 
+## [0.10.0](https://github.com/damien-robotsix/robotsix-standards/compare/v0.9.0...v0.10.0) (2026-10-29)
+
+
+### Features
+
+* Dependency updates are auto-merged as soon as they're released: Renovate and Dependabot have no minimum release age (20261028T124400Z-dependency-updates-are-auto-merged-as-so-fc87) ([#449](https://github.com/damien-robotsix/robotsix-standards/issues/449)) ([0ff8c1a](https://github.com/damien-robotsix/robotsix-standards/commit/0ff8c1a7ae1437ed537fc7a39c945b204d0736e9))
+
+
+### Documentation
+
+* repo-baseline.md: private repositories run every Actions job on the self-hosted runner; public ones never do (20261029T084800Z-repo-baseline-md-private-repositories-ru-90b3) ([#455](https://github.com/damien-robotsix/robotsix-standards/issues/455)) ([3d355f6](https://github.com/damien-robotsix/robotsix-standards/commit/3d355f6694ca6ef0f4b95dda981c00f5b10e1d1c))
+* ssrf-hardened-fetchers: the guard example uses httpx/httpcore APIs that don't exist, so the SSRF guard is broken or silently does nothing (20261028T090626Z-ssrf-hardened-fetchers-the-guard-example-caf7) ([#447](https://github.com/damien-robotsix/robotsix-standards/issues/447)) ([326b743](https://github.com/damien-robotsix/robotsix-standards/commit/326b7433bbd4d6123fed699650cb77d716cf7902))
+
 ## [0.9.0](https://github.com/damien-robotsix/robotsix-standards/compare/v0.8.0...v0.9.0) (2026-10-28)
 
 

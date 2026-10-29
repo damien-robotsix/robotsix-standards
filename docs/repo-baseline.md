@@ -374,6 +374,50 @@ call fails fast instead of using up the whole job ceiling.
 Python-specific timeout defaults (lint: 5, type-check: 10, test: 15)
 are listed in [Python CI workflow](python-ci-workflow.md#job-timeout-minutes).
 
+### Runner choice follows repository visibility
+
+**Rule:** In a repository whose GitHub visibility is **private**, every
+job runs on the `self-hosted` runner — inline jobs (`runs-on: self-hosted`)
+and reusable-workflow calls alike. For a shared workflow, pass
+`self-hosted` as its `runs-on` input, and pin a shared-workflow revision
+that has that input (an older pin silently falls back to its
+GitHub-hosted default).
+
+**Rule:** A **public** repository never uses a self-hosted runner. Every
+job stays on a GitHub-hosted runner (`ubuntu-latest` or the shared
+workflow's default).
+
+**Rationale:** GitHub refuses to start GitHub-hosted jobs on the account's
+private repositories ("The job was not started because recent account
+payments have failed or your spending limit needs to be increased" —
+2026-09-18..22 and 2026-10-27..29). The operator decided on 2026-10-29
+that private repositories run CI on the self-hosted runner.
+
+**Portability notes for self-hosted jobs:**
+
+- **Install Python with `actions/setup-python` before any `pip install`.**
+  The runner image's system `python3` is PEP 668 externally-managed, so
+  a bare `pip install` fails with `externally-managed-environment`.
+- **Container actions need the runner work directory mounted at the same
+  path on the host.** A container action receives the workspace as a
+  host-path bind mount; if the runner's work directory is not visible at
+  the identical path on the host, the action sees an empty or missing
+  workspace.
+
+> **Failure modes prevented:**
+>
+> - **Private repo CI never goes green.** A workflow written for a private
+>   repository with the default `ubuntu-latest` runner is never started
+>   while GitHub-hosted jobs are refused, so every PR is blocked on checks
+>   that cannot run.
+> - **Fork PRs execute on the home network.** On a public repository, a
+>   self-hosted runner executes code from any fork pull request on the
+>   host, giving an outsider code execution inside the home network.
+> - **Self-hosted jobs fail on environment differences.** A job that
+>   passes on GitHub-hosted runners fails on the self-hosted runner because
+>   system `pip install` is refused (PEP 668) or a container action cannot
+>   see the workspace.
+
 ## Branch protection
 
 `main` is protected identically in every repo — several standards are

@@ -3762,7 +3762,9 @@ that private repositories run CI on the self-hosted runner.</p>
 <li><strong>Image builds on the self-hosted runner cap SLSA provenance below L3.</strong>
   A private image-shipping repo runs <code>docker-release.yml</code> on the
   self-hosted runner, which is persistent and shared across repositories,
-  so its images reach at most SLSA Build L2 once signing lands. Build L3
+  so its images reach at most SLSA Build L2 once signing lands, and only if
+  the signing key is out of reach of the other jobs on that runner (a
+  co-tenant job could otherwise read it and forge provenance). Build L3
   for those images requires an ephemeral (JIT) runner isolated per job;
   until then self-hosted provenance is a dated accepted risk — see
   <a href="../security-posture/#slsa-build-track">SLSA Build Track</a>.</li>

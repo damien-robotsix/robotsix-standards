@@ -3026,7 +3026,11 @@ infrastructure don't have that failure mode.</p>
    package, so this must be set explicitly.</li>
 <li><strong>No paid GitHub features.</strong> GitHub Advanced Security on private repos,
    larger/GPU hosted runners, Copilot in CI, and GitHub Models are all off the
-   table. CodeQL is free on public repos — keep it there.</li>
+   table. CodeQL is free on public repos — keep it there. GitHub artifact
+   attestations (<code>actions/attest-build-provenance</code>) on private or internal
+   repos need Enterprise Cloud. Use them on public repos only; private repos
+   sign with key-based cosign instead (see
+   <a href="../security-posture/#slsa-build-track">SLSA Build Track</a>).</li>
 <li><strong>No paid or licensed Marketplace Actions.</strong> Third-party Actions from the
    GitHub Marketplace that require a paid subscription, licence key, or
    per-minute billing are forbidden everywhere in the fleet — public repos

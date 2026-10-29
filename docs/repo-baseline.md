@@ -444,8 +444,11 @@ and host configuration are set up by hand on the host, outside version
 control. Until a repo declares it, the operator owns it. The rules below are
 not all verified the same way, and none is verified by a quarterly audit:
 
-- **Machine-checked, every 30 days:** runner registration against repo
-  visibility (the "registered only to the named private repos" rule, below).
+- **Machine-checked, every 30 days:** runner visibility — no runner is
+  registered to a public repo, and every repo with a registered runner is
+  private. Whether the runner is registered only to the named private repos
+  is not machine-checked; the operator confirms it by hand (see the
+  verification list below).
 - **Operator-checked by hand, every 90 days:** the runner host checklist
   (fork-PR setting, ephemeral/JIT or wipe, non-root user, Docker socket,
   egress firewall).
@@ -466,11 +469,11 @@ The two mechanisms are described in turn:
 - **Manual — the runner host checklist.** The **operator** owns it and runs
   it **every 90 days**. Each time it falls due, `fleet-compliance-audit`
   files a `runner-host-checklist` reminder draft, and the operator closes
-  the draft once the checklist is done. No API exposes the remaining items,
-  so the agent cannot check them:
+  the draft once the checklist is done. The fleet agent does not check these
+  items, so the operator checks them by hand:
   1. Each private repo's "Run workflows from fork pull requests" setting is
-     off. The standards rely on no API endpoint for this setting, so it
-     stays manual.
+     off. The fleet agent does not read this setting, so the operator checks
+     it by hand on the repository's Settings → Actions page.
   2. The runner is ephemeral/JIT, or the wipe-between-jobs fallback below
      is in place. The current runner meets neither; see the accepted risk
      below.

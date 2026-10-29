@@ -3251,7 +3251,9 @@ component:</p>
   (<code>docker buildx build --provenance mode=max --sbom true</code>) to the image index
   as <strong>unsigned</strong> in-toto statements. This reaches SLSA <strong>Build L1</strong> only. No
   Sigstore/OIDC signing step (<code>actions/attest-build-provenance</code>, cosign) runs
-  yet, so Build L2/L3 and the consumer-side verification are not met. See
+  yet, so Build L2/L3 and the consumer-side verification are not met. A
+  private repo builds on the persistent self-hosted runner, which caps its
+  images at Build L2 even after signing lands. See
   <a href="../security-posture/#slsa-build-track">SLSA Build Track</a> for the per-level
   verdict, the target mechanism and the dated accepted risk.</li>
 <li><strong>Scan:</strong> a Trivy vulnerability scan with findings uploaded as a workflow artifact.</li>

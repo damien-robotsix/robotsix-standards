@@ -63,6 +63,28 @@ system_prompt: |
     actions SHA-pinned (no mutable `@main`/`@v1` refs) and least-privilege
     `permissions` declared.
 
+  - **Self-hosted runner posture** (`docs/repo-baseline.md`
+    §Self-hosted runner hardening, security-posture gate 4d). This check
+    runs against **every** non-archived fleet repo on **every** pass, not
+    only the rotation subset, because it costs two API calls per repo. For
+    each repo:
+    - if `gh api repos/<owner>/<repo> -q .private` is `false`, then
+      `gh api repos/<owner>/<repo>/actions/runners` must return
+      `total_count: 0`. A runner registered to a public repo is a finding.
+    - if `actions/runners` lists any runner, `.private` must be `true`.
+    The fix is a GitHub setting, not a code change. Mark the finding
+    **operator action required** in the repo's draft body.
+  - **Runner host checklist reminder.** The fork-PR workflow setting on
+    private repos and the host items (ephemeral/JIT or wipe-between-jobs,
+    non-root runner user, no shared production Docker socket, egress
+    firewall) cannot be read through an API you have. Do not try to verify
+    them. When your memory ledger shows that 90 days or more have passed
+    since you last filed it (or it was never filed), file one draft titled
+    `Runner host checklist due` on this (robotsix-standards) board. Leave
+    its `draft_repo_ids` entry empty, use gap id `runner-host-checklist`,
+    and list the checklist items from that section in the body. Record the
+    filing date in memory.
+
   Skip a check that does not apply to a repo (no Dockerfile → skip the
   Docker check, not a Python repo → skip the Python CI check). A
   not-applicable check is never a finding.

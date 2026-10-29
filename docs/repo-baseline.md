@@ -441,11 +441,64 @@ runner is a warning annotation only. This is
 
 No fleet repository declares the self-hosted runner today: its registration
 and host configuration are set up by hand on the host, outside version
-control. Until a repo declares it, the operator owns it, and every rule below
-is re-verified by hand at each quarterly fleet audit and whenever a
-repository changes visibility. *Failure mode this leaves open:* a runner
-setting that drifts on the host (a runner re-registered as persistent, a
-public repo granted access) is caught only at the next audit.
+control. Until a repo declares it, the operator owns it. The rules below are
+not all verified the same way, and none is verified by a quarterly audit:
+
+- **Machine-checked, every 30 days:** runner registration against repo
+  visibility (the "registered only to the named private repos" rule, below).
+- **Operator-checked by hand, every 90 days:** the runner host checklist
+  (fork-PR setting, ephemeral/JIT or wipe, non-root user, Docker socket,
+  egress firewall).
+- **Operator-run at each visibility change:** the visibility-change
+  procedure below. No agent observes a visibility change, so the operator
+  runs it as part of making the repository public or private.
+
+The two mechanisms are described in turn:
+
+- **Automated — the `fleet-compliance-audit` mill agent** (every 30 days,
+  see [mill agents](mill-agents.md#fleet-compliance-audit)) runs the
+  runner-posture check against **every** non-archived fleet repo on each
+  pass. It is not limited to its rotating sample. It checks that
+  `gh api repos/<owner>/<repo>/actions/runners` returns `total_count: 0`
+  for every public repo, and that `gh api repos/<owner>/<repo> -q .private`
+  is `true` for every repo that has a registered runner. Each gap becomes a
+  draft ticket.
+- **Manual — the runner host checklist.** The **operator** owns it and runs
+  it **every 90 days**. Each time it falls due, `fleet-compliance-audit`
+  files a `runner-host-checklist` reminder draft, and the operator closes
+  the draft once the checklist is done. No API exposes the remaining items,
+  so the agent cannot check them:
+  1. Each private repo's "Run workflows from fork pull requests" setting is
+     off. The standards rely on no API endpoint for this setting, so it
+     stays manual.
+  2. The runner is ephemeral/JIT, or the wipe-between-jobs fallback below
+     is in place. The current runner meets neither; see the accepted risk
+     below.
+  3. The runner process runs as a dedicated non-root user without `sudo`.
+  4. The runner does not share the production Docker socket.
+  5. The host egress firewall limits the runner to GitHub, GHCR and package
+     indexes, and gives it no route to management interfaces or production
+     hosts.
+
+*Failure mode this leaves open:* a host setting that drifts (a runner
+re-registered as persistent, a firewall rule dropped) is caught only at the
+next checklist run, up to 90 days later. A runner registered to a public repo
+is caught within 30 days.
+
+**Accepted risk: persistent shared runner (accepted 2026-10-29, review
+2027-01-31).** Today's self-hosted runner is persistent, shared across the
+private repos and reused between jobs. It does not meet the
+ephemeral/JIT rule below. No wipe-between-jobs control (a wiped workspace,
+emptied tool and Docker layer caches, no leftover credentials) is documented
+as in place, so the fallback is not met either. A compromised build in one
+private repo can still poison or read another's workspace, caches or
+credentials (OWASP CICD-SEC-7). The risk is accepted because every repo on
+the runner is a private, operator-owned repo, and fork-PR workflows are off
+there. Before the review date, the runner is either moved to ephemeral/JIT
+registration or given the wipe controls, and checklist item 2 then records
+which one. This risk is separate from the provenance accepted risk in
+[SLSA Build Track](security-posture.md#slsa-build-track), and it is listed in
+the security-posture [Audit](security-posture.md#audit) table.
 
 The fleet lives under the personal account `damien-robotsix`. On a personal
 account, runners are registered **per repository** and runner groups do not

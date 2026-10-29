@@ -151,7 +151,12 @@ component:
   Sigstore/OIDC signing step (`actions/attest-build-provenance`, cosign) runs
   yet, so Build L2/L3 and the consumer-side verification are not met. A
   private repo builds on the persistent self-hosted runner, which caps its
-  images at Build L2 even after signing lands. See
+  images at Build L2 even after signing lands, and only if the signing key is
+  kept out of reach of the other jobs on that shared runner (until then the
+  claim is Build L1). A private repo also cannot use
+  GitHub artifact attestations on the free plan, so its images are signed
+  with key-based `cosign attest` instead of `actions/attest-build-provenance`.
+  See
   [SLSA Build Track](security-posture.md#slsa-build-track) for the per-level
   verdict, the target mechanism and the dated accepted risk.
 - **Scan:** a Trivy vulnerability scan with findings uploaded as a workflow artifact.

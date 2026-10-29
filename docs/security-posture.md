@@ -525,21 +525,21 @@ stated inline.
   deployment system rolls out an image, it verifies the image digest's
   provenance and refuses the rollout on failure, with a policy per runner
   class:
-    - **Public-repo images** are verified with
-      `gh attestation verify oci://ghcr.io/<owner>/<repo>@<digest> --owner <owner> --deny-self-hosted-runners`
-      (or the equivalent `cosign verify-attestation` with the reusable
-      workflow's certificate identity and a runner-environment check). The
-      `--deny-self-hosted-runners` flag matters: the signing identity is the
-      reusable workflow's ref on either runner class, so without a
-      runner-environment check `gh attestation verify` passes for a
-      self-hosted build too and a consumer cannot tell an L3 build from a
-      self-hosted one.
-    - **Private-repo images** are verified with the same command **without**
-      `--deny-self-hosted-runners`, because they are built on the self-hosted
-      runner by rule. Accepting self-hosted provenance (at most Build L2) for
-      private-repo images is a dated **accepted risk** (accepted 2026-10-29,
-      review 2027-01-31), lifted only when the self-hosted runner becomes
-      ephemeral/JIT and isolated per job.
+  - **Public-repo images** are verified with
+    `gh attestation verify oci://ghcr.io/<owner>/<repo>@<digest> --owner <owner> --deny-self-hosted-runners`
+    (or the equivalent `cosign verify-attestation` with the reusable
+    workflow's certificate identity and a runner-environment check). The
+    `--deny-self-hosted-runners` flag matters: the signing identity is the
+    reusable workflow's ref on either runner class, so without a
+    runner-environment check `gh attestation verify` passes for a
+    self-hosted build too and a consumer cannot tell an L3 build from a
+    self-hosted one.
+  - **Private-repo images** are verified with the same command **without**
+    `--deny-self-hosted-runners`, because they are built on the self-hosted
+    runner by rule. Accepting self-hosted provenance (at most Build L2) for
+    private-repo images is a dated **accepted risk** (accepted 2026-10-29,
+    review 2027-01-31), lifted only when the self-hosted runner becomes
+    ephemeral/JIT and isolated per job.
 
   Until the attestation step above exists there is nothing signed to verify,
   so verification itself is a dated **accepted risk** (accepted 2026-10-28,

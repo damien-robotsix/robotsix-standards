@@ -3166,6 +3166,12 @@ retries, requests, and errors without wiring their own callbacks.</p>
 package structure (<code>robotsix_http.client</code>, <code>robotsix_http.retry</code>), so
 callers can enable or silence specific subsystems with standard
 logger-level configuration.</p>
+<p>A module may instead use an explicit, stable name, as long as that name
+sits under the package's top-level logger (for example
+<code>logging.getLogger("robotsix_config.loader")</code>). It then inherits the
+package <code>NullHandler</code>. Adopting this standard never requires renaming a
+logger that already exists: renaming one would break every application
+filter or level override that targets the old name.</p>
 <h3 id="2-one-nullhandler-on-the-packages-top-level-logger">2. One NullHandler on the package's top-level logger<a class="headerlink" href="#2-one-nullhandler-on-the-packages-top-level-logger" title="Permanent link">&para;</a></h3>
 <p>The package's <code>__init__.py</code> attaches exactly one <code>logging.NullHandler()</code>
 to the top-level logger:</p>
@@ -3175,10 +3181,12 @@ to the top-level logger:</p>
 <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span><span class="o">.</span><span class="n">addHandler</span><span class="p">(</span><span class="n">logging</span><span class="o">.</span><span class="n">NullHandler</span><span class="p">())</span>
 </code></pre></div>
 <p>This is the CPython logging HOWTO's recommended pattern for libraries.
-A <code>NullHandler</code> swallows every record, so importing the package never
-triggers the "No handlers could be found for logger …" warning and the
-library never prints to stderr unless the application opts in by adding
-its own handler.</p>
+A <code>NullHandler</code> swallows every record. Without it, in an application that
+never configured logging, Python 3 routes every <code>WARNING</code>-or-higher record
+to its <code>logging.lastResort</code> handler, which prints it to stderr. With the
+<code>NullHandler</code> attached, the library stays silent until the application
+opts in by adding its own handler. See the HOWTO section
+<a href="https://docs.python.org/3/howto/logging.html#configuring-logging-for-a-library">Configuring Logging for a Library</a>.</p>
 <p>The handler is attached <strong>once</strong> in <code>__init__.py</code>, at the package root.
 Individual modules do not add handlers — they only obtain a logger
 (<code>logging.getLogger(__name__)</code>) and emit records through it.</p>
@@ -3257,11 +3265,14 @@ decision; enable <code>WARNING</code>, see degradations; the records are always
 lazy-formatted and never print unless the application opts in.</p>
 <h2 id="failure-modes-this-prevents">Failure modes this prevents<a class="headerlink" href="#failure-modes-this-prevents" title="Permanent link">&para;</a></h2>
 <ul>
-<li><strong>"No handlers could be found" on import.</strong> A library that emits log
-  records without a <code>NullHandler</code> causes the <code>logging</code> module to print a
-  warning to stderr on the first record. In a container, that warning
-  lands in the log stream with no context, confusing operators. The
-  <code>NullHandler</code> silences it.</li>
+<li><strong>Library warnings leak to stderr through <code>lastResort</code>.</strong> If a library
+  emits records without a <code>NullHandler</code>, Python 3 sends every <code>WARNING</code>+
+  record to the <code>logging.lastResort</code> handler whenever the consumer
+  application has not configured logging. The bare message is printed to
+  stderr, without a timestamp or logger name, and lands unasked in CLI
+  output or a container's log stream. If each package decides this for
+  itself, two robotsix libraries in the same process behave differently.
+  The single <code>NullHandler</code> gives the whole fleet the same behaviour.</li>
 <li><strong>Library steals logging configuration.</strong> A library that calls
   <code>basicConfig()</code> or <code>setLevel()</code> on import overwrites the application's
   logging setup. The first import wins; every subsequent library and the

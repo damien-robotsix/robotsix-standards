@@ -28,7 +28,7 @@ jobs:
         with:
           persist-credentials: false
           fetch-depth: 0
-      - uses: astral-sh/setup-uv@1c37ad07a6a961277cf70c0d37d6f313000f5884 # v10.3.0
+      - uses: astral-sh/setup-uv@07a047e608db84b3d8c06cd9a7c7dcc9c355c18e # v10.3.2
         with:
           enable-cache: true
           python-version: "3.14"
@@ -73,7 +73,7 @@ jobs:
           done
           exit 1
       - name: Run pre-commit hooks (ruff, mypy, markdownlint-cli2, codespell, semgrep)
-        uses: tox-dev/action-pre-commit-uv@4de52c139ed1a6963bcc4c30042c4ef9d75d8b11  # v1
+        uses: tox-dev/action-pre-commit-uv@ae5b217f46f65d48b20a76b902d7950c745171af  # v1
         env:
           SKIP: trailing-whitespace,end-of-file-fixer,check-yaml,check-toml,check-json,check-merge-conflict,check-case-conflict,check-added-large-files,detect-private-key,detect-secrets,actionlint-docker,vale
         with:

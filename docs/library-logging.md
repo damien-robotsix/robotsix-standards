@@ -28,6 +28,13 @@ package structure (`robotsix_http.client`, `robotsix_http.retry`), so
 callers can enable or silence specific subsystems with standard
 logger-level configuration.
 
+A module may instead use an explicit, stable name, as long as that name
+sits under the package's top-level logger (for example
+`logging.getLogger("robotsix_config.loader")`). It then inherits the
+package `NullHandler`. Adopting this standard never requires renaming a
+logger that already exists: renaming one would break every application
+filter or level override that targets the old name.
+
 ### 2. One NullHandler on the package's top-level logger
 
 The package's `__init__.py` attaches exactly one `logging.NullHandler()`
@@ -41,10 +48,12 @@ logging.getLogger(__name__).addHandler(logging.NullHandler())
 ```
 
 This is the CPython logging HOWTO's recommended pattern for libraries.
-A `NullHandler` swallows every record, so importing the package never
-triggers the "No handlers could be found for logger …" warning and the
-library never prints to stderr unless the application opts in by adding
-its own handler.
+A `NullHandler` swallows every record. Without it, in an application that
+never configured logging, Python 3 routes every `WARNING`-or-higher record
+to its `logging.lastResort` handler, which prints it to stderr. With the
+`NullHandler` attached, the library stays silent until the application
+opts in by adding its own handler. See the HOWTO section
+[Configuring Logging for a Library](https://docs.python.org/3/howto/logging.html#configuring-logging-for-a-library).
 
 The handler is attached **once** in `__init__.py`, at the package root.
 Individual modules do not add handlers — they only obtain a logger
@@ -147,11 +156,14 @@ lazy-formatted and never print unless the application opts in.
 
 ## Failure modes this prevents
 
-- **"No handlers could be found" on import.** A library that emits log
-  records without a `NullHandler` causes the `logging` module to print a
-  warning to stderr on the first record. In a container, that warning
-  lands in the log stream with no context, confusing operators. The
-  `NullHandler` silences it.
+- **Library warnings leak to stderr through `lastResort`.** If a library
+  emits records without a `NullHandler`, Python 3 sends every `WARNING`+
+  record to the `logging.lastResort` handler whenever the consumer
+  application has not configured logging. The bare message is printed to
+  stderr, without a timestamp or logger name, and lands unasked in CLI
+  output or a container's log stream. If each package decides this for
+  itself, two robotsix libraries in the same process behave differently.
+  The single `NullHandler` gives the whole fleet the same behaviour.
 - **Library steals logging configuration.** A library that calls
   `basicConfig()` or `setLevel()` on import overwrites the application's
   logging setup. The first import wins; every subsequent library and the

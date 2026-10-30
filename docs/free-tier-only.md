@@ -31,13 +31,17 @@ infrastructure don't have that failure mode.
    server pulls images constantly. Fleet images are therefore **public
    packages** (or served from a self-hosted registry). Package visibility is
    independent of repo visibility — a public repo can still publish a *private*
-   package, so this must be set explicitly.
+   package, so this must be set explicitly. This holds for **private repos**
+   too: their images, and the provenance attestations stored next to them,
+   are public, so the repo name, workflow ref and commit they carry are public
+   as well. That is why private-repo provenance is signed keyless (rule 3).
 3. **No paid GitHub features.** GitHub Advanced Security on private repos,
    larger/GPU hosted runners, Copilot in CI, and GitHub Models are all off the
    table. CodeQL is free on public repos — keep it there. GitHub artifact
    attestations (`actions/attest-build-provenance`) on private or internal
    repos need Enterprise Cloud. Use them on public repos only; private repos
-   sign with key-based cosign instead (see
+   sign with keyless cosign (the job's GitHub OIDC identity against the free
+   public Sigstore instance) instead (see
    [SLSA Build Track](security-posture.md#slsa-build-track)).
 4. **No paid or licensed Marketplace Actions.** Third-party Actions from the
    GitHub Marketplace that require a paid subscription, licence key, or

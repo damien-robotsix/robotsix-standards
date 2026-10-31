@@ -84,6 +84,15 @@ jobs:
           python-version: "3.14"
       - name: Build docs into site/
         run: uv run --group docs mkdocs build --strict
+      # Exclusions (each is not an external dead link):
+      # - this site's own published URLs (canonical <link> tags and
+      #   sitemap.xml): internal links are already validated by htmlproofer in
+      #   the docs build, and a new page's live URL 404s until it is deployed;
+      # - 404.html: mkdocs renders it with root-relative links that only
+      #   resolve on the served site, not in the local site/ tree;
+      # - robotsix-website: a private fleet repo, 404 to the job token;
+      # - the generated CHANGELOG compare link for 0.5.0: tag v0.4.0 was never
+      #   published, and release-please owns that file.
       - name: Check links (lychee)
         uses: lycheeverse/lychee-action@e7477775783ea5526144ba13e8db5eec57747ce8 # v2.9.0
         with:
@@ -91,5 +100,11 @@ jobs:
           args: >-
             --accept 200,206,403,429,503
             --exclude-private
+            --max-retries 3
+            --timeout 30
+            --exclude '^https://damien-robotsix\.github\.io/robotsix-standards/'
+            --exclude '^https://github\.com/damien-robotsix/robotsix-website/'
+            --exclude '^https://github\.com/damien-robotsix/robotsix-standards/compare/v0\.4\.0\.\.\.v0\.5\.0$'
+            --exclude-path 'site/404\.html'
             --cache
             site/

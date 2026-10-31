@@ -119,9 +119,7 @@ only `no-store` forbids storage
 
 The simplest compliant setup — and the fleet default — adds the header to the
 same `Secure` object at the single registration site, so every response
-carries it. The value `no-store, max-age=0` is the one the
-[OWASP Secure Headers Project](https://owasp.org/www-project-secure-headers/)
-recommends and the one `Preset.STRICT` already emits:
+carries it:
 
 ```python
 from secure import CacheControl, Secure
@@ -134,12 +132,22 @@ app.add_middleware(SecureASGIMiddleware, secure=secure_headers)
 
 **Opt-out for static public assets is explicit.** `SecureASGIMiddleware`
 *overwrites* any `Cache-Control` a route sets, so a hashed `/static/` file
-cannot opt out by setting its own header. A public, non-personalised asset
-path (e.g. content-hashed files under `/static/` with a long `max-age`) opts
-out with one path-scoped override registered at the same app-setup site —
-or by being served from the edge — and that override is the only place a
-non-`no-store` `Cache-Control` is set. Never relax the default for an API or
-HTML route.
+cannot opt out by setting its own header on the response. A public,
+non-personalised asset path (e.g. content-hashed files under `/static/` with a
+long `max-age`) opts out in one of two ways, both applied at the app-setup site:
+
+1. **Serve the assets from the edge**, outside the component, so the component
+   never emits a `Cache-Control` for them. This is the preferred option.
+2. **Add a path-scoped ASGI middleware** that rewrites the `Cache-Control`
+   header on `http.response.start` messages for requests whose path starts with
+   the asset prefix (e.g. `/static/`). Register it with `app.add_middleware(...)`
+   *after* `SecureASGIMiddleware` so it is the outer layer: Starlette makes the
+   last-added middleware outermost, so its send wrapper sees the headers after
+   `SecureASGIMiddleware` has written its own. The middleware must match the
+   asset prefix only; it must never match an API or HTML route.
+
+That override is the only place a non-`no-store` `Cache-Control` is set. Never
+relax the default for an API or HTML route.
 
 *Failure mode this prevents:* a chat transcript, LLM answer, config view or
 deploy-dashboard response is written to the browser's disk cache, survives
@@ -162,7 +170,7 @@ is registered).
 | 2. One middleware, registered once | Code review verifies the ASGI app calls `app.add_middleware(SecureASGIMiddleware, ...)` exactly once during application construction, and that no route handler sets security headers itself. |
 | 3. CSP relaxation is explicit | Every CSP relaxation is a method call on the `Secure`/CSP object at the single registration site — `grep` for `csp` in the app-setup module surfaces all relaxations; a hand-built CSP string or a disabled header is a violation. |
 | 4. HSTS emitted, effective over TLS | The configured `Secure` object includes `StrictTransportSecurity` with `max-age` ≥ `31536000` (the BALANCED default qualifies), and no code strips the header or branches on the request scheme to suppress it. Optionally, a deploy smoke check runs `curl -sI https://<host>/health` and asserts a `strict-transport-security` header is present. |
-| 5. Sensitive responses are not stored | The configured `Secure` object includes `CacheControl().no_store()` (e.g. `no-store, max-age=0`) — or `Preset.STRICT`, which already does — so every authenticated, personalised, config, conversation or credential-adjacent response carries `Cache-Control: no-store`. `grep` for `Cache-Control`/`CacheControl` in the app-setup module surfaces every opt-out; any opt-out that covers a non-public path, or any `no-cache`-only value on such a response, is a violation. Optionally, a deploy smoke check runs `curl -sI` against an authenticated route and asserts `cache-control` contains `no-store`. |
+| 5. Sensitive responses are not stored | The configured `Secure` object includes `CacheControl().no_store()` so every authenticated, personalised, config, conversation or credential-adjacent response carries `Cache-Control: no-store`. `grep` for `Cache-Control`/`CacheControl` in the app-setup module surfaces every opt-out; any opt-out that covers a non-public path, or any `no-cache`-only value on such a response, is a violation. Optionally, a deploy smoke check runs `curl -sI` against an authenticated route and asserts `cache-control` contains `no-store`. |
 
 A component that serves HTTP responses and fails any criterion is
 non-compliant; the fix is always the same — register the shared

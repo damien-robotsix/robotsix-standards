@@ -3,6 +3,23 @@
 
 # Changelog
 
+## [0.12.0](https://github.com/damien-robotsix/robotsix-standards/compare/v0.11.0...v0.12.0) (2026-10-31)
+
+
+### Features
+
+* Eight standards say a 'periodic standards-audit agent' checks their security rules, but no such agent exists (20261031T124209Z-eight-standards-say-a-periodic-standards-035d) ([#470](https://github.com/damien-robotsix/robotsix-standards/issues/470)) ([9beca2e](https://github.com/damien-robotsix/robotsix-standards/commit/9beca2eb7264cecb63adb813f73684de3321c6dd))
+* Secret maps (`dict[str, SecretStr]`) aren't machine-checked, and the redact-on-read rule doesn't cover them: the OpenRouter keys can be typed `str` or served unmasked (20261030T101305Z-secret-maps-dict-str-secretstr-aren-t-ma-c0cb) ([#468](https://github.com/damien-robotsix/robotsix-standards/issues/468)) ([04626d6](https://github.com/damien-robotsix/robotsix-standards/commit/04626d6af4d583acf097fd0c8b8e3e0abb05e394))
+
+
+### Documentation
+
+* chat-access §5 says the security-posture page covers its check, but that page has no row for it (20261031T214947Z-chat-access-5-says-the-security-posture-7695) ([#473](https://github.com/damien-robotsix/robotsix-standards/issues/473)) ([f272465](https://github.com/damien-robotsix/robotsix-standards/commit/f272465f75a4954181b8c4caabdf2a211d94ed42))
+* No standard says pages with private data must stop browsers from caching them, and the header page lists the wrong default headers (20261031T142447Z-no-standard-says-pages-with-private-data-b937) ([#471](https://github.com/damien-robotsix/robotsix-standards/issues/471)) ([2b29cfe](https://github.com/damien-robotsix/robotsix-standards/commit/2b29cfea7c7e4cda62993e6283f769be74fb5785))
+* Nothing re-checks that each component's own config page hides secrets: the security audit only covers central-deploy's config page (20261031T164712Z-nothing-re-checks-that-each-component-s-8529) ([#472](https://github.com/damien-robotsix/robotsix-standards/issues/472)) ([f83a209](https://github.com/damien-robotsix/robotsix-standards/commit/f83a20940d91d12358341711340250c9e5ade070))
+* Standardize: library packages attach a NullHandler to their top-level logger (20261030T155913Z-standardize-library-packages-attach-a-nu-5276) ([#462](https://github.com/damien-robotsix/robotsix-standards/issues/462)) ([a045b3c](https://github.com/damien-robotsix/robotsix-standards/commit/a045b3c2eb65b3afc2bd4472118a8f5a68875f2d))
+* The deployment system's own auto-updater pulls new images with no provenance check, and the upstream Watchtower project is no longer maintained (20261030T093104Z-the-deployment-system-s-own-auto-updater-70d7) ([#469](https://github.com/damien-robotsix/robotsix-standards/issues/469)) ([ddc13b6](https://github.com/damien-robotsix/robotsix-standards/commit/ddc13b65d43be27407b9806c00eb035b88deec87))
+
 ## [0.11.0](https://github.com/damien-robotsix/robotsix-standards/compare/v0.10.0...v0.11.0) (2026-10-29)
 
 

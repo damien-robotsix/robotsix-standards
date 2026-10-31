@@ -17,9 +17,11 @@ A multi-stage Dockerfile that keeps build tooling out of the runtime image:
   `docker` ecosystem bumps the digest — see
   [automated dependency updates](repo-baseline.md#automated-dependency-updates);
   an unbumped digest pin silently stops receiving base security patches.)
-- **Pins written where the bumper reads them:** write every image reference
-  **literally on a `FROM` line** as `<image>:<tag>@sha256:<digest>` — repeat the
-  full `python:3.14-slim@sha256:…` reference in each stage. Never move a
+- **Pins written where the bumper reads them:** write every external image
+  reference **literally on a `FROM` line** as `<image>:<tag>@sha256:<digest>`.
+  The python base is the **first** `FROM` line (Dependabot's Docker support
+  reads the first `FROM` and the external images it names); later python stages
+  reuse it with `FROM base`, so the digest is written once. Never move a
   digest or tag into an `ARG` (`FROM python:3.14-slim@${BASE_DIGEST}`), and
   never pull an image inline with `COPY --from=<registry>/<image>:<tag>`:
   GitHub documents that Dockerfiles "do not receive updates to images
@@ -27,18 +29,17 @@ A multi-stage Dockerfile that keeps build tooling out of the runtime image:
   `COPY --from=<image>` (dependabot-core #5103, #7640). **Failure mode:** a
   pin Dependabot cannot see is never bumped and never flagged — the base image
   stops receiving OS security patches while gate 3 appears satisfied. The
-  fleet's proven shape is robotsix-mill's `Dockerfile` (literal digest on
-  every `FROM python:3.14-slim@sha256:…` line).
+  fleet's proven pattern is robotsix-mill's `Dockerfile`, which writes the
+  literal digest on its `FROM python:3.14-slim@sha256:…` lines.
 - **uv as a named stage:** bring in uv through its own stage, pinned by
   **version and digest** as the uv Docker guide recommends —
-  `FROM ghcr.io/astral-sh/uv:<x.y.z>@sha256:<digest> AS uv`, then
-  `COPY --from=uv /uv /uvx /bin/` (GitHub's documented workaround for
-  `COPY --from`). **Failure mode:** a tag-only uv pin is mutable — a re-pushed
-  tag silently swaps the binary that writes every installed site-package in
-  the build stage — and an inline `COPY --from=<image>` pin is invisible to
-  Dependabot, so it never moves.
+  `FROM ghcr.io/astral-sh/uv:<x.y.z>@sha256:<digest> AS uv`, placed after the
+  `base` stage and before the builder, then `COPY --from=uv /uv /uvx /bin/`
+  (GitHub's documented workaround for `COPY --from`). **Failure mode:** a
+  tag-only uv pin is mutable — a re-pushed tag silently swaps the binary that
+  writes every installed site-package in the build stage — and an inline
+  `COPY --from=<image>` pin is invisible to Dependabot, so it never moves.
 - **Builder stage:** copy uv from the `uv` stage, install `git` (uv needs it to clone the
-  `[tool.uv.sources]` git-pinned first-party dependencies), and install the
   project **into the system interpreter** from the frozen lockfile:
 
   ```sh
@@ -109,10 +110,13 @@ A multi-stage Dockerfile that keeps build tooling out of the runtime image:
 # Every image pin is written literally on its FROM line (tag + @sha256 digest),
 # never via ARG or an inline COPY --from=<image>: Dependabot cannot bump those.
 
+# The python base is the first FROM, digest written literally; later stages reuse it.
+FROM python:3.14-slim@sha256:<digest> AS base
+
 # uv, pinned by version and digest, brought in through a named stage.
 FROM ghcr.io/astral-sh/uv:0.11.26@sha256:<uv-digest> AS uv
 
-FROM python:3.14-slim@sha256:<digest> AS builder
+FROM base AS builder
 COPY --from=uv /uv /uvx /bin/
 WORKDIR /app
 
@@ -132,7 +136,7 @@ RUN --mount=type=cache,target=/root/.cache/uv \
     && uv pip install --system --no-deps . \
     && rm -f /tmp/requirements.txt
 
-FROM python:3.14-slim@sha256:<digest> AS production
+FROM base AS production
 COPY --from=builder /usr/local/lib/python3.14/site-packages/ /usr/local/lib/python3.14/site-packages/
 COPY --from=builder /usr/local/bin/robotsix-<name> /usr/local/bin/robotsix-<name>
 # Standardized layout: app/1000, /home/app. The deployment system sets the

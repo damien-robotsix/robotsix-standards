@@ -141,7 +141,8 @@ sees an image pin written literally on a `FROM` line — a digest held in an
 `ARG` or an image pulled inline with `COPY --from=<image>` is never bumped, so
 the Dockerfile must use the
 [Dependabot-readable shape](docker-standard.md#build-the-dockerfile) (literal
-`@sha256` on every `FROM`, uv as a digest-pinned named stage). `renovate.json` declares the `uv`
+`@sha256` on every external `FROM`, python base as the first `FROM`, uv as a
+digest-pinned named stage). `renovate.json` declares the `uv`
 manager in every Python repo, and `.github/dependabot.yml` declares the
 remaining ecosystems; the baseline-check gate verifies both are present and
 complete. Dependabot and Renovate PRs auto-merge once required checks pass —
@@ -159,7 +160,9 @@ updates and first-party `damien-robotsix/*` packages are exempt — see
   and `pre-commit` in every repo, plus `npm` in repos with `package.json` and
   `docker` in image-shipping repos, and every image-shipping repo's
   `Dockerfile` has no `FROM …@${…}` line and no `COPY --from=<registry image>`
-  (every external image is a literal `FROM <image>:<tag>@sha256:<digest>`).
+  (every external image is a literal `FROM <image>:<tag>@sha256:<digest>`,
+  with the python base as the first `FROM`), verified fail-closed by
+  `scripts/check-dockerfile-pins.py` in `baseline-check.yml`.
   The Dependabot and Renovate dashboards
   show recent update PRs. The `dependency-cooldown-check` job
   (`scripts/check-dependency-cooldown.py` in `baseline-check.yml`) finds a
@@ -730,6 +733,7 @@ dashboard-watching:
 | Semgrep* | CI calls shared Semgrep workflow; latest CI run uploads Semgrep findings artifact |
 | Dependency review* | CI calls shared `dependency-review` workflow; Dependency graph enabled |
 | Dependabot + Renovate | `.github/dependabot.yml` covers non-uv ecosystems; `renovate.json` present in Python repos; recent update PRs; 3-day release-age cooldown on every auto-merge path, verified by `scripts/check-dependency-cooldown.py` in `baseline-check.yml` (warning-first, blocking from 2027-01-31) |
+| Dockerfile pin shape | Image-shipping repos: every external `FROM` is a literal `<image>:<tag>@sha256:<digest>`, the python base is the first `FROM`, `COPY --from` names only a prior stage (no `ARG`-held digest, no inline registry image) — verified fail-closed by `scripts/check-dockerfile-pins.py` (`dockerfile-pin-check` job in `baseline-check.yml`) |
 | SHA-pinned actions | `grep -r 'uses:' .github/workflows/` — no mutable refs on third-party actions; `scripts/check-workflow-security.py` passes in CI |
 | Workflow linting | `.pre-commit-config.yaml` includes `actionlint`; CI runs `zizmor` (content-only repos exempt from `zizmor`) |
 | Least-privilege permissions | Every workflow has `permissions:` block; `scripts/check-workflow-security.py` passes in CI; `zizmor` reports clean (code repos) |

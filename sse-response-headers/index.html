@@ -3064,7 +3064,7 @@ and complements the <a href="../http-error-envelope/">HTTP error envelope</a> an
 <a href="../http-security-headers/">HTTP security headers</a> standards.</p>
 </blockquote>
 <p>Every <code>text/event-stream</code> response a fleet service emits carries three
-proxy-safety headers: <code>Cache-Control: no-cache</code>, <code>Connection: keep-alive</code>, and
+proxy-safety headers: <code>Cache-Control: no-store</code>, <code>Connection: keep-alive</code>, and
 <code>X-Accel-Buffering: no</code>. A hand-rolled
 <code>StreamingResponse(media_type="text/event-stream")</code> — the pattern a service
 uses when it needs a manual heartbeat plus a <code>request.is_disconnected()</code> loop —
@@ -3088,8 +3088,8 @@ are defined by <a href="https://www.rfc-editor.org/rfc/rfc9110">RFC 9110 — HTT
 <tbody>
 <tr>
 <td><code>Cache-Control</code></td>
-<td><code>no-cache</code></td>
-<td>Prevents caching intermediaries from holding the stream — any stored copy must be revalidated before reuse, so a stale snapshot is never re-served.</td>
+<td><code>no-store</code></td>
+<td>Forbids browsers and caching intermediaries from storing the stream at all, so a stale snapshot is never re-served and streamed content (chat transcripts, LLM output) never lands in a disk cache. <code>no-cache</code> is <strong>not</strong> sufficient: it permits storage and only requires revalidation before reuse (<a href="https://www.rfc-editor.org/rfc/rfc9111#section-5.2.2.4">RFC 9111 §5.2.2.4</a> vs <a href="https://www.rfc-editor.org/rfc/rfc9111#section-5.2.2.5">§5.2.2.5</a>). This is the SSE case of <a href="../http-security-headers/#5-sensitive-responses-are-not-stored">HTTP security headers rule 5</a>.</td>
 </tr>
 <tr>
 <td><code>Connection</code></td>
@@ -3105,9 +3105,8 @@ are defined by <a href="https://www.rfc-editor.org/rfc/rfc9110">RFC 9110 — HTT
 </table>
 <p><code>sse-starlette</code>'s <code>EventSourceResponse</code> — the de-facto standard SSE response
 for Starlette/FastAPI — applies this set by default: <code>Connection: keep-alive</code>
-and <code>X-Accel-Buffering: no</code>, plus <code>Cache-Control: no-store</code> (a strictly
-stronger cache-busting directive than <code>no-cache</code>, and acceptable under this
-rule). Services that hand-roll their streaming response lose these defaults
+and <code>X-Accel-Buffering: no</code>, plus <code>Cache-Control: no-store</code> — so it complies
+with this rule unchanged. Services that hand-roll their streaming response lose these defaults
 and must add the headers explicitly.</p>
 <h3 id="2-one-shared-helper-the-header-set-cannot-drift-per-endpoint">2. One shared helper — the header set cannot drift per-endpoint<a class="headerlink" href="#2-one-shared-helper-the-header-set-cannot-drift-per-endpoint" title="Permanent link">&para;</a></h3>
 <p>Prefer a single shared <code>sse_response(...)</code> factory so the header set is
@@ -3120,7 +3119,7 @@ defined once and cannot drift between endpoints:</p>
     <span class="n">headers</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;headers&quot;</span><span class="p">,</span> <span class="p">{})</span>
     <span class="n">headers</span><span class="o">.</span><span class="n">update</span><span class="p">(</span>
         <span class="p">{</span>
-            <span class="s2">&quot;Cache-Control&quot;</span><span class="p">:</span> <span class="s2">&quot;no-cache&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Cache-Control&quot;</span><span class="p">:</span> <span class="s2">&quot;no-store&quot;</span><span class="p">,</span>
             <span class="s2">&quot;Connection&quot;</span><span class="p">:</span> <span class="s2">&quot;keep-alive&quot;</span><span class="p">,</span>
             <span class="s2">&quot;X-Accel-Buffering&quot;</span><span class="p">:</span> <span class="s2">&quot;no&quot;</span><span class="p">,</span>
         <span class="p">}</span>
@@ -3159,7 +3158,7 @@ response the component emits.</p>
 <tbody>
 <tr>
 <td>1. Three headers on every stream</td>
-<td>Every <code>text/event-stream</code> response carries <code>Cache-Control</code> (<code>no-cache</code> or the stronger <code>no-store</code>), <code>Connection: keep-alive</code>, and <code>X-Accel-Buffering: no</code>. A hand-rolled <code>StreamingResponse(media_type="text/event-stream")</code> that goes out with the default header set is a violation.</td>
+<td>Every <code>text/event-stream</code> response carries <code>Cache-Control: no-store</code>, <code>Connection: keep-alive</code>, and <code>X-Accel-Buffering: no</code>. A <code>Cache-Control</code> of <code>no-cache</code> alone is a violation (it permits storage). A hand-rolled <code>StreamingResponse(media_type="text/event-stream")</code> that goes out with the default header set is a violation.</td>
 </tr>
 <tr>
 <td>2. One shared helper</td>
@@ -3185,6 +3184,9 @@ default for every endpoint.</p>
   caching intermediary may hold the unbounded, never-completing stream and
   re-serve a stale snapshot to later clients instead of passing the live
   stream through.</li>
+<li><strong>Stored conversation content.</strong> With <code>no-cache</code> instead of <code>no-store</code>, a
+  browser or proxy may legitimately write the streamed chat transcript or LLM
+  output to its cache, where it outlives the session.</li>
 <li><strong>Mid-stream connection teardown.</strong> Without <code>Connection: keep-alive</code>, an
   intermediary that honors <code>Connection: close</code> semantics tears the stream
   down after the first response segment, breaking long-lived event delivery.</li>

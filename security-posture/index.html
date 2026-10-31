@@ -4299,6 +4299,10 @@ dashboard-watching:</p>
 <td>Deployable HTTP components: a test sends a request carrying <code>Authorization: Bearer &lt;sentinel&gt;</code> and asserts the sentinel string is absent from captured log output; a grep/Semgrep rule finds no logging call that passes <code>request.headers</code> or <code>request.url</code> (e.g. <code>logger\..*\(.*request\.headers</code> and <code>logger\..*\(.*request\.url\b(?!\.path)</code>); a structlog redaction processor sits at the start of the chain; any per-request DEBUG override accepts only authenticated operator or internal callers — per <a href="../logging/#6-never-log-sensitive-data">logging rule 6</a> (CWE-532, OWASP A09:2025)</td>
 </tr>
 <tr>
+<td>Anti-caching on sensitive responses</td>
+<td>Deployable HTTP components: the <code>Secure</code> object registered with <code>SecureASGIMiddleware</code> adds <code>CacheControl().no_store()</code>, so every authenticated, personalised, config, conversation or credential-adjacent response — including <code>text/event-stream</code> — carries <code>Cache-Control: no-store</code>; only explicit public static-asset paths opt out — per <a href="../http-security-headers/#5-sensitive-responses-are-not-stored">HTTP security headers rule 5</a> and <a href="../sse-response-headers/#1-every-textevent-stream-response-carries-the-three-headers">SSE response headers rule 1</a> (OWASP ASVS 5.0 V14.3.2, CWE-525)</td>
+</tr>
+<tr>
 <td>LLM &amp; agentic security</td>
 <td>Repos whose core function involves LLM agents: <code>robotsix-llmio</code> pinned to a commit SHA in <code>pyproject.toml</code>; llmio level/model selection is an explicit config field (not hard-coded, not env); tracing/provider credentials are <code>SecretStr</code> in the canonical <code>langfuse</code>/<code>openrouter</code> config blocks; destructive git ops default to dry-run; scoped single-repo token (no org/admin scopes). Non-mechanical controls (LLM01/02/05/06/07/08/10, ASI01–ASI10) are covered by the periodic <a href="../mill-agents/#component-security-audit"><code>component-security-audit</code></a> agent — see below</td>
 </tr>

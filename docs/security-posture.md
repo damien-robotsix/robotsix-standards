@@ -647,6 +647,12 @@ stated inline.
   table and referenced from the
   [deployment system](deployment-system.md#provenance-verification-before-rollout).
 
+  The check applies to **every** rollout path, including the deployment
+  system's own self-update. The self-update rules (verify the digest before
+  the swap, a cooldown or human gate, a pinned and maintained updater image)
+  and their dated accepted risk are stated in
+  [deployment system — Self-update path](deployment-system.md#self-update-path).
+
 **Failure prevented:** without signed and verified provenance, an image
 tampered with after the build (a stolen GHCR token, a compromised push from
 outside the reusable workflow) deploys exactly like a genuine one. Unsigned
@@ -731,6 +737,7 @@ dashboard-watching:
 | CVE audit* | `uv audit --preview-features audit-command` at the pinned uv version / `pip-audit` passes in CI |
 | Distribution / registry | No publish to a public package index and no public-registry credentials, per [distribution & packaging rules 4–5](distribution-packaging.md#enforcement). Verified by the `public-registry-check` job (`scripts/check-public-registry.py` in `baseline-check.yml`), which finds no `registry.npmjs.org` / `upload.pypi.org` / `pypi.org/legacy` endpoint, no `npm publish` / `twine upload` / `uv publish` without an approved internal registry, and no `NPM_TOKEN` / `PYPI_TOKEN` secret in workflows, `package.json` `publishConfig`, `.npmrc` or `pyproject.toml` — warning-first, blocking from 2027-01-31 |
 | SLSA Build provenance | Image-shipping repos: the published image index carries BuildKit provenance (`docker buildx imagetools inspect ghcr.io/<owner>/<repo>@<digest> --format '{{ json .Provenance }}'` is non-empty) — Build L1 on either runner class. Once `docker-release.yml` signs it, the deployment system verifies before rollout: public-repo (GitHub-hosted) images with `gh attestation verify oci://ghcr.io/<owner>/<repo>@<digest> --owner <owner> --deny-self-hosted-runners` (Build L3); private-repo (self-hosted) images — which cannot use GitHub attestations on the free plan — with the fleet cosign public key, once the pinned cosign version is confirmed to accept these flags (v2.6.5 does): `cosign verify-attestation --key <cosign.pub> --type slsaprovenance1 --insecure-ignore-tlog=true ghcr.io/<owner>/<repo>@<digest>` (at most Build L2, and Build L1 while the signing key is reachable from co-tenant jobs on the shared runner; self-hosted, key-signed provenance is a dated accepted risk, accepted 2026-10-29, review 2027-01-31, until the key is isolated and the runner is ephemeral/JIT and isolated per job). Signing and verification are a dated accepted risk until then (review 2027-01-31) — per [SLSA Build Track](#slsa-build-track) |
+| Deployment-system self-update | central-deploy's self-update path verifies the new image digest's provenance before the swap and deploys that digest, waits a cooldown or an operator, and runs a digest-pinned, maintained updater image bumped by Dependabot/Renovate — per [deployment system — Self-update path](deployment-system.md#self-update-path). Not met today (one-shot, tag-pinned `containrrr/watchtower:1.7.1`, archived upstream 2025-12-17): a dated accepted risk, accepted 2026-10-31, review 2027-01-31 |
 | Container image scan | Trivy PR-scan and publish workflows present and passing (image-shipping repos only) |
 | Vulnerability disclosure | `SECURITY.md` present at repo root with contact method, response-time expectation, and coordinated-disclosure statement — fail-closed: `security-md-check` in `baseline-check.yml` fails CI (exit 1) when it is missing or incomplete |
 | Config API secret redaction | Deployment system / management surfaces: central-deploy config-read endpoints (`GET /config`, version-history reads, audit-log serialization) route through `mask_secrets()` before serialization; config writes use `apply_update()` merge-on-write; version history stores no secret values — audited per [config standard §3](config-standard.md#how-this-is-enforced) |

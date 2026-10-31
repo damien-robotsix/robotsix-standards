@@ -334,7 +334,7 @@ The management-surface MUSTs in [§3](#3-one-secret-convention) govern
 central-deploy's config API and Configure UI, not this repo — there is no CI
 gate here that can inspect that code, and no pre-commit hook or CI job covers
 them in central-deploy either. Enforcement is therefore by **audit** — checked
-at code review and by the periodic standards-audit agent — against the criteria
+at code review and by the periodic [`component-security-audit`](mill-agents.md#component-security-audit) agent — against the criteria
 below, mirroring the pattern in
 [HTTP security headers](http-security-headers.md#how-this-is-enforced),
 [SSE response headers](sse-response-headers.md#how-this-is-enforced),

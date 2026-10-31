@@ -80,7 +80,7 @@ inside the generator.
 This standard governs downstream deployable components, not this repo, so there
 is no CI gate here that can inspect a component's SSE endpoints. Enforcement is
 by **audit** — checked at component code review and by the periodic
-standards-audit agent — against the criteria below. Each criterion maps to one
+[`component-security-audit`](mill-agents.md#component-security-audit) agent — against the criteria below. Each criterion maps to one
 of the three rules and is verifiable by reading the component's response module:
 `grep` for `text/event-stream` and `StreamingResponse` surfaces every SSE
 response the component emits.

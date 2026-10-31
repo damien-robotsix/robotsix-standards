@@ -150,6 +150,74 @@ the standards pages for the requirements, inspects each sampled repo's
 contents via the mill's GitHub access, and files draft tickets. It cannot
 change any repo; all remediation flows through the normal ticket pipeline.
 
+## Component security audit
+
+**Agent:** `component-security-audit` (defined in
+`.robotsix-mill/agents/component-security-audit.yaml`).
+
+**Purpose:** Re-check fleet components against the **audit-only** security
+criteria, which are design-level MUSTs that no CI gate can inspect. Without this
+agent, those criteria would be checked once at code review and never again.
+*Failure mode this prevents:* a security header, CORS allowlist, fetcher guard
+or agent budget that drifts after merge goes unseen, because nothing re-checks
+it (OWASP Top 10 A02:2025, Security Misconfiguration). A MUST with no recurring
+check fails the enforceability rule the
+[security posture audit](#security-posture-audit-security-posture-audit)
+applies. `fleet-compliance-audit` covers only the mechanically verifiable
+standards. This agent is the periodic check for the design-level ones.
+
+**What it checks:** the "How this is enforced" criteria of each page below,
+applied to the repos each page governs:
+
+- [HTTP security headers](http-security-headers.md#how-this-is-enforced):
+  deployable HTTP components.
+- [CORS policy](cors-policy.md#how-this-is-enforced): deployable HTTP
+  components.
+- [SSE response headers](sse-response-headers.md#how-this-is-enforced):
+  components that emit `text/event-stream`.
+- [SSRF-hardened fetchers](ssrf-hardened-fetchers.md#how-this-is-enforced):
+  every tool that fetches a caller- or model-influenced URL.
+- [Chat access §5, chat observability](chat-access-standard.md#5-chat-observability):
+  central-deploy.
+- [Config standard §3, management-surface secrets](config-standard.md#how-this-is-enforced):
+  central-deploy's config API and Configure UI.
+- [LLM security](component-standard.md#how-this-pages-security-rules-are-enforced)
+  (including LLM05 and LLM06) and the
+  [LLM & agentic security audit](security-posture.md#llm-agentic-security-audit)
+  (LLM01/02/05/06/07/08/10, ASI01–ASI10): LLM repos.
+
+A criterion that does not apply to a repo is skipped, never flagged. A
+design-level criterion the agent cannot judge confidently from the source is
+recorded as inconclusive in its ledger, not filed as a finding.
+
+**Sampling:** each pass audits a rotation subset of roughly 25–33% of the
+in-scope repos (deployable HTTP components, LLM repos, and central-deploy),
+choosing the least-recently-audited ones per its memory ledger. Every in-scope
+repo is covered over three to four passes.
+
+**What it does NOT do:** it never edits, opens PRs against, or remediates
+another repo. It does not repeat the mechanical checks that
+`fleet-compliance-audit` already runs.
+
+**Output:** one draft ticket per repo with gaps, filed on that repo's board.
+Each ticket lists every failing criterion, the page and section it violates,
+the evidence (file and line), observed vs. required, and a concrete
+remediation. A clean pass with no findings is a valid result.
+
+**Cadence:** monthly (2592000 seconds).
+
+**Capability level:** 3. Most criteria are design-level: judging whether
+untrusted data is delimited before prompt assembly, or whether the validated
+address is the address connected to, means reading and reasoning about code
+paths. Matching strings is not enough, so a level-2 agent is too shallow.
+
+**Web knowledge:** Disabled. The agent compares fleet repos against this
+repo's own criteria, not against upstream sources.
+
+**Tools:** Read-only with respect to the fleet. It reads `docs/fleet.md` and
+the standards pages, inspects each sampled repo's source through the mill's
+GitHub access, and files draft tickets.
+
 ## Retired agents
 
 - **`branch-protection-check`** — retirement decided 2026-10-22 by operator decision

@@ -3303,7 +3303,15 @@ implements it: a component defines one pydantic model and calls <code>load_confi
 <li>The SecretStr typing is <strong>machine-checked</strong>. The <code>check-secret-str</code>
   pre-commit hook fails on any config-model field whose name matches a secret
   pattern (<code>api_key</code>, <code>token</code>, <code>password</code>, <code>secret</code>, ...) but is annotated
-  <code>str</code> (or <code>Optional[str]</code>) instead of <code>SecretStr</code>. robotsix-standards
+  <code>str</code> (or <code>Optional[str]</code>) instead of <code>SecretStr</code>. It also fails on a
+  <strong>secret map</strong> typed with <code>str</code> values: a field named <code>keys</code> (the
+  canonical <a href="#8-openrouter-configuration"><code>openrouter.keys</code></a>) or
+  <code>credentials</code>, or matching a secret pattern (<code>api_keys</code>, <code>tokens</code>, ...),
+  annotated <code>dict[str, str]</code> / <code>Mapping[str, str]</code> instead of
+  <code>dict[str, SecretStr]</code> — and on a <strong>secret list</strong> with the same names
+  annotated <code>list[str]</code> / <code>Sequence[str]</code> instead of <code>list[SecretStr]</code>. Any other secret map
+  MUST use <code>SecretStr</code> (or a sub-model with <code>SecretStr</code> fields, like
+  <code>langfuse.projects</code>) as its value type. robotsix-standards
   <strong>publishes</strong> it through its <code>.pre-commit-hooks.yaml</code>. Every repo with a
   pydantic config model references it as a remote hook
   (<code>repo: https://github.com/damien-robotsix/robotsix-standards</code>,
@@ -3317,7 +3325,10 @@ implements it: a component defines one pydantic model and calls <code>load_confi
 <p><em>Failure it prevents:</em> a secret field declared as plain <code>str</code> passes mypy,
   ruff, and the schema-drift check with no signal, so the masked-on-read /
   <code>writeOnly</code> guarantee silently disappears and the secret is stored and
-  logged as plaintext (OWASP Secrets Management).
+  logged as plaintext (OWASP Secrets Management). For a secret map the same
+  failure is worse: <code>keys: dict[str, str]</code> matches no field-name pattern and
+  is a container, so without the map check the fleet's OpenRouter keys pass
+  every gate as plaintext.
 - Secrets live in the <strong>same <code>config.json</code></strong> as ordinary settings — no
   separate secrets file, no <code>EnvStore</code> or env-var injection for component
   config. The one-file rule applies to secrets too: <code>ROBOTSIX_CONFIG_FILE</code>
@@ -3339,6 +3350,18 @@ on every path they serve.</p>
   or UI that reads component config MUST redact every field marked
   <code>writeOnly</code> in the committed <code>config.schema.json</code>. The secret value is
   never echoed — only the key name and its set/unset status may be exposed.
+  <code>writeOnly</code> is not only a field-level marker: pydantic puts it on
+  <code>additionalProperties</code> for a secret map (<code>dict[str, SecretStr]</code>), on
+  <code>items</code> for a secret list, and behind <code>$ref</code>/<code>$defs</code> for a sub-model (each
+  <code>langfuse.projects</code> entry's <code>secret_key</code>). Redaction MUST therefore walk the
+  schema recursively — resolve <code>$ref</code>, descend into <code>properties</code>,
+  <code>additionalProperties</code> (every map value) and <code>items</code> — and mask every value
+  whose resolved subschema is <code>writeOnly</code>. For a map only the keys (aliases)
+  and each value's set/unset status may be exposed.
+  <em>Failure it prevents:</em> a <code>mask_secrets</code> that walks only top-level
+  <code>properties</code> still returns every <code>openrouter.keys</code> value and every
+  <code>langfuse.projects.*.secret_key</code> in cleartext from <code>GET /config</code>, version
+  history and the chat <code>config-target</code> read (CWE-200, CWE-312).
   This includes central-deploy's chat volume-files endpoint
   (<code>GET /chat/services/{name}/volumes/{vol}/files</code>): a read of the file at
   the component's <code>robotsix.deploy.config-target</code> path is a config read and
@@ -3393,20 +3416,37 @@ pydantic idiom — so the emitted JSON Schema carries the grouping as a nested
     <span class="n">log_level</span><span class="p">:</span> <span class="n">LogLevel</span> <span class="o">=</span> <span class="n">LogLevel</span><span class="o">.</span><span class="n">info</span>
     <span class="n">openrouter</span><span class="p">:</span> <span class="n">OpenRouterConfig</span> <span class="o">=</span> <span class="n">OpenRouterConfig</span><span class="p">()</span>
 </code></pre></div>
-<p>The library emits the sub-model as a nested object the panel folds as a group:</p>
+<p>The library emits the sub-model under <code>$defs</code> and references it with <code>$ref</code>;
+the panel resolves the reference and folds the nested object as a group. The
+secret map's <code>writeOnly</code> marker sits on <code>additionalProperties</code> — the schema of
+each map value — not on the <code>keys</code> field itself (abridged pydantic 2 output):</p>
 <div class="highlight"><pre><span></span><code><span class="p">{</span>
-<span class="w">  </span><span class="nt">&quot;properties&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">    </span><span class="nt">&quot;log_level&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;string&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;enum&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;info&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;debug&quot;</span><span class="p">],</span><span class="w"> </span><span class="nt">&quot;default&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;info&quot;</span><span class="p">},</span>
-<span class="w">    </span><span class="nt">&quot;openrouter&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;$defs&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;OpenRouterConfig&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
 <span class="w">      </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;object&quot;</span><span class="p">,</span>
-<span class="w">      </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;openrouter&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;OpenRouterConfig&quot;</span><span class="p">,</span>
 <span class="w">      </span><span class="nt">&quot;properties&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">        </span><span class="nt">&quot;keys&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;object&quot;</span><span class="p">}</span>
+<span class="w">        </span><span class="nt">&quot;keys&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">          </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;object&quot;</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">&quot;additionalProperties&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;string&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;format&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;password&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;writeOnly&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span>
+<span class="w">          </span><span class="p">}</span>
+<span class="w">        </span><span class="p">}</span>
 <span class="w">      </span><span class="p">}</span>
 <span class="w">    </span><span class="p">}</span>
+<span class="w">  </span><span class="p">},</span>
+<span class="w">  </span><span class="nt">&quot;properties&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;log_level&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;string&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;enum&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;info&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;debug&quot;</span><span class="p">],</span><span class="w"> </span><span class="nt">&quot;default&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;info&quot;</span><span class="p">},</span>
+<span class="w">    </span><span class="nt">&quot;openrouter&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="nt">&quot;$ref&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;#/$defs/OpenRouterConfig&quot;</span><span class="p">}</span>
 <span class="w">  </span><span class="p">}</span>
 <span class="p">}</span>
 </code></pre></div>
+<p>A UI or redaction routine built from this schema MUST resolve <code>$ref</code> and
+treat <code>additionalProperties</code> / <code>items</code> as secret when they are <code>writeOnly</code>
+(see <a href="#3-one-secret-convention">§3 Redact on read</a>); reading only a field's own
+keywords makes <code>keys</code> look like a plain, non-secret object.</p>
 <p><strong>Grouping guidance (for fleet repos)</strong></p>
 <ul>
 <li><strong>Keep genuinely related keys in one group.</strong> All LLM/OpenRouter credentials
@@ -3483,8 +3523,10 @@ full model shape, constraints, and rationale.</p>
 top-level <code>openrouter</code> key holding a <code>keys</code> map keyed by the <strong>same
 aliases</strong> as <code>langfuse.projects</code> (see §7).  Each value is an OpenRouter
 API key — declared as <code>SecretStr</code> per §3 so it is masked on read,
-rendered as <code>writeOnly</code> in the JSON Schema, and never echoed by
-<code>GET /config</code>:</p>
+rendered as <code>writeOnly</code> on the map's <code>additionalProperties</code> in the JSON
+Schema (see the <a href="#4-grouping-settings-into-foldable-groups">§4 example</a>),
+and never echoed by <code>GET /config</code>. Redaction MUST descend into the map
+values per §3; the <code>check-secret-str</code> hook fails <code>keys: dict[str, str]</code>:</p>
 <div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">pydantic</span><span class="w"> </span><span class="kn">import</span> <span class="n">BaseModel</span><span class="p">,</span> <span class="n">SecretStr</span>
 
 <span class="k">class</span><span class="w"> </span><span class="nc">OpenRouterConfig</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
@@ -3522,7 +3564,7 @@ below, mirroring the pattern in
 <tbody>
 <tr>
 <td>Redact on read</td>
-<td>Every config-read path — <code>GET /config</code>, version-history reads, audit-log serialization, and the chat volume-files endpoint when it reads the <code>config-target</code> path — routes through <code>mask_secrets()</code> (or an equivalent redaction wrapper) <em>before</em> serialization. <code>grep</code> the deploy system's config-API module for <code>mask_secrets</code>; any GET path that serializes a <code>writeOnly</code> field without it is a violation. The chat volume-files <code>config-target</code> read may instead be refused with <code>403</code> (failing closed when redaction cannot run, per <a href="../chat-access-standard/#52-volumes-read-only">chat access §5.2</a>); a <code>403</code> there is compliant, not a violation.</td>
+<td>Every config-read path — <code>GET /config</code>, version-history reads, audit-log serialization, and the chat volume-files endpoint when it reads the <code>config-target</code> path — routes through <code>mask_secrets()</code> (or an equivalent redaction wrapper) <em>before</em> serialization. <code>grep</code> the deploy system's config-API module for <code>mask_secrets</code>; any GET path that serializes a <code>writeOnly</code> field without it is a violation. Also confirm <code>mask_secrets</code> handles secret maps and sub-models: it MUST resolve <code>$ref</code> and descend into <code>additionalProperties</code> and <code>items</code>. Its unit tests (in robotsix-config, <code>tests/robotsix_config/test_history_secrets.py</code>) MUST include a config with <code>openrouter.keys: dict[str, SecretStr]</code> and a <code>langfuse.projects</code> entry whose <code>secret_key</code> is set, and assert that neither value appears in the redacted output. A <code>mask_secrets</code> that walks only <code>properties</code> is a violation even though the grep passes. The chat volume-files <code>config-target</code> read may instead be refused with <code>403</code> (failing closed when redaction cannot run, per <a href="../chat-access-standard/#52-volumes-read-only">chat access §5.2</a>); a <code>403</code> there is compliant, not a violation.</td>
 </tr>
 <tr>
 <td>Merge on write</td>

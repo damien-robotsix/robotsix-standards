@@ -632,7 +632,7 @@ receiving security patches until someone moves it):
 | First-party git-dependency pins | the scheduled pin-bump workflow (above) |
 | Third-party Python packages (uv lockfile) | Renovate (`uv` manager) — see [CI dependency management](ci-dependency-standard.md) |
 | GitHub Actions SHAs | Dependabot `github-actions` ecosystem |
-| Base-image digests + the `COPY --from` pin | Dependabot `docker` ecosystem |
+| Base-image and uv-image digests, written literally on `FROM` lines | Dependabot `docker` ecosystem — only for pins in the [Dependabot-readable shape](docker-standard.md#build-the-dockerfile); an `ARG`-held digest or an inline `COPY --from=<image>` pin has **no** bumper |
 | Pre-commit hook versions | Dependabot `pre-commit` ecosystem |
 | npm packages (`package-lock.json`) | Dependabot `npm` ecosystem |
 

@@ -135,8 +135,13 @@ vulnerable package before the PR merges.
 ### 3. Automated dependency updates — Renovate + Dependabot
 
 Every pin the standards mandate has exactly one named bumper. Renovate covers
-Python/uv lockfiles; Dependabot covers GitHub Actions SHAs, base-image digests,
-pre-commit hook versions, and npm packages. `renovate.json` declares the `uv`
+Python/uv lockfiles; Dependabot covers GitHub Actions SHAs, base-image and
+uv-image digests, pre-commit hook versions, and npm packages. Dependabot only
+sees an image pin written literally on a `FROM` line — a digest held in an
+`ARG` or an image pulled inline with `COPY --from=<image>` is never bumped, so
+the Dockerfile must use the
+[Dependabot-readable shape](docker-standard.md#build-the-dockerfile) (literal
+`@sha256` on every `FROM`, uv as a digest-pinned named stage). `renovate.json` declares the `uv`
 manager in every Python repo, and `.github/dependabot.yml` declares the
 remaining ecosystems; the baseline-check gate verifies both are present and
 complete. Dependabot and Renovate PRs auto-merge once required checks pass —
@@ -152,7 +157,10 @@ updates and first-party `damien-robotsix/*` packages are exempt — see
 - **How to verify:** `renovate.json` exists in every Python repo (covering the
   `uv` manager); `.github/dependabot.yml` exists and covers `github-actions`
   and `pre-commit` in every repo, plus `npm` in repos with `package.json` and
-  `docker` in image-shipping repos. The Dependabot and Renovate dashboards
+  `docker` in image-shipping repos, and every image-shipping repo's
+  `Dockerfile` has no `FROM …@${…}` line and no `COPY --from=<registry image>`
+  (every external image is a literal `FROM <image>:<tag>@sha256:<digest>`).
+  The Dependabot and Renovate dashboards
   show recent update PRs. The `dependency-cooldown-check` job
   (`scripts/check-dependency-cooldown.py` in `baseline-check.yml`) finds a
   cooldown of at least 3 days on every auto-merge path, or an accepted-risk
@@ -160,7 +168,9 @@ updates and first-party `damien-robotsix/*` packages are exempt — see
   2027-01-31.
 - **Failure prevented:** a pinned digest (base image, action SHA) rots silently
   — the image stops receiving base-OS security patches, an action runs an
-  unmaintained version — with no alert. The cooldown prevents a second
+  unmaintained version — with no alert; this includes a digest that looks
+  pinned and "covered" but sits where Dependabot cannot read it (an `ARG`, a
+  `COPY --from=<image>`). The cooldown prevents a second
   failure: a freshly published malicious release passes CI and is
   auto-merged within hours, before it can be yanked.
 - **Alignment:** OpenSSF Scorecard *Dependency-Update-Tool* check; OWASP Top

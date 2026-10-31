@@ -62,7 +62,15 @@ implements it: a component defines one pydantic model and calls `load_config`.
 - The SecretStr typing is **machine-checked**. The `check-secret-str`
   pre-commit hook fails on any config-model field whose name matches a secret
   pattern (`api_key`, `token`, `password`, `secret`, ...) but is annotated
-  `str` (or `Optional[str]`) instead of `SecretStr`. robotsix-standards
+  `str` (or `Optional[str]`) instead of `SecretStr`. It also fails on a
+  **secret map** typed with `str` values: a field named `keys` (the
+  canonical [`openrouter.keys`](#8-openrouter-configuration)) or
+  `credentials`, or matching a secret pattern (`api_keys`, `tokens`, ...),
+  annotated `dict[str, str]` / `Mapping[str, str]` instead of
+  `dict[str, SecretStr]` — and on a **secret list** with the same names
+  annotated `list[str]` / `Sequence[str]` instead of `list[SecretStr]`. Any other secret map
+  MUST use `SecretStr` (or a sub-model with `SecretStr` fields, like
+  `langfuse.projects`) as its value type. robotsix-standards
   **publishes** it through its `.pre-commit-hooks.yaml`. Every repo with a
   pydantic config model references it as a remote hook
   (`repo: https://github.com/damien-robotsix/robotsix-standards`,
@@ -76,7 +84,10 @@ implements it: a component defines one pydantic model and calls `load_config`.
   *Failure it prevents:* a secret field declared as plain `str` passes mypy,
   ruff, and the schema-drift check with no signal, so the masked-on-read /
   `writeOnly` guarantee silently disappears and the secret is stored and
-  logged as plaintext (OWASP Secrets Management).
+  logged as plaintext (OWASP Secrets Management). For a secret map the same
+  failure is worse: `keys: dict[str, str]` matches no field-name pattern and
+  is a container, so without the map check the fleet's OpenRouter keys pass
+  every gate as plaintext.
 - Secrets live in the **same `config.json`** as ordinary settings — no
   separate secrets file, no `EnvStore` or env-var injection for component
   config. The one-file rule applies to secrets too: `ROBOTSIX_CONFIG_FILE`
@@ -100,6 +111,18 @@ on every path they serve.
   or UI that reads component config MUST redact every field marked
   `writeOnly` in the committed `config.schema.json`. The secret value is
   never echoed — only the key name and its set/unset status may be exposed.
+  `writeOnly` is not only a field-level marker: pydantic puts it on
+  `additionalProperties` for a secret map (`dict[str, SecretStr]`), on
+  `items` for a secret list, and behind `$ref`/`$defs` for a sub-model (each
+  `langfuse.projects` entry's `secret_key`). Redaction MUST therefore walk the
+  schema recursively — resolve `$ref`, descend into `properties`,
+  `additionalProperties` (every map value) and `items` — and mask every value
+  whose resolved subschema is `writeOnly`. For a map only the keys (aliases)
+  and each value's set/unset status may be exposed.
+  *Failure it prevents:* a `mask_secrets` that walks only top-level
+  `properties` still returns every `openrouter.keys` value and every
+  `langfuse.projects.*.secret_key` in cleartext from `GET /config`, version
+  history and the chat `config-target` read (CWE-200, CWE-312).
   This includes central-deploy's chat volume-files endpoint
   (`GET /chat/services/{name}/volumes/{vol}/files`): a read of the file at
   the component's `robotsix.deploy.config-target` path is a config read and
@@ -162,22 +185,40 @@ class MyComponentConfig(BaseModel):
     openrouter: OpenRouterConfig = OpenRouterConfig()
 ```
 
-The library emits the sub-model as a nested object the panel folds as a group:
+The library emits the sub-model under `$defs` and references it with `$ref`;
+the panel resolves the reference and folds the nested object as a group. The
+secret map's `writeOnly` marker sits on `additionalProperties` — the schema of
+each map value — not on the `keys` field itself (abridged pydantic 2 output):
 
 ```json
 {
-  "properties": {
-    "log_level": {"type": "string", "enum": ["info", "debug"], "default": "info"},
-    "openrouter": {
+  "$defs": {
+    "OpenRouterConfig": {
       "type": "object",
-      "title": "openrouter",
+      "title": "OpenRouterConfig",
       "properties": {
-        "keys": {"type": "object"}
+        "keys": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string",
+            "format": "password",
+            "writeOnly": true
+          }
+        }
       }
     }
+  },
+  "properties": {
+    "log_level": {"type": "string", "enum": ["info", "debug"], "default": "info"},
+    "openrouter": {"$ref": "#/$defs/OpenRouterConfig"}
   }
 }
 ```
+
+A UI or redaction routine built from this schema MUST resolve `$ref` and
+treat `additionalProperties` / `items` as secret when they are `writeOnly`
+(see [§3 Redact on read](#3-one-secret-convention)); reading only a field's own
+keywords makes `keys` look like a plain, non-secret object.
 
 **Grouping guidance (for fleet repos)**
 
@@ -261,8 +302,10 @@ The OpenRouter credential block shape is defined in the
 top-level `openrouter` key holding a `keys` map keyed by the **same
 aliases** as `langfuse.projects` (see §7).  Each value is an OpenRouter
 API key — declared as `SecretStr` per §3 so it is masked on read,
-rendered as `writeOnly` in the JSON Schema, and never echoed by
-`GET /config`:
+rendered as `writeOnly` on the map's `additionalProperties` in the JSON
+Schema (see the [§4 example](#4-grouping-settings-into-foldable-groups)),
+and never echoed by `GET /config`. Redaction MUST descend into the map
+values per §3; the `check-secret-str` hook fails `keys: dict[str, str]`:
 
 ```python
 from pydantic import BaseModel, SecretStr
@@ -301,7 +344,7 @@ below, mirroring the pattern in
 
 | Rule | Audit criterion |
 |---|---|
-| Redact on read | Every config-read path — `GET /config`, version-history reads, audit-log serialization, and the chat volume-files endpoint when it reads the `config-target` path — routes through `mask_secrets()` (or an equivalent redaction wrapper) *before* serialization. `grep` the deploy system's config-API module for `mask_secrets`; any GET path that serializes a `writeOnly` field without it is a violation. The chat volume-files `config-target` read may instead be refused with `403` (failing closed when redaction cannot run, per [chat access §5.2](chat-access-standard.md#52-volumes-read-only)); a `403` there is compliant, not a violation. |
+| Redact on read | Every config-read path — `GET /config`, version-history reads, audit-log serialization, and the chat volume-files endpoint when it reads the `config-target` path — routes through `mask_secrets()` (or an equivalent redaction wrapper) *before* serialization. `grep` the deploy system's config-API module for `mask_secrets`; any GET path that serializes a `writeOnly` field without it is a violation. Also confirm `mask_secrets` handles secret maps and sub-models: it MUST resolve `$ref` and descend into `additionalProperties` and `items`. Its unit tests (in robotsix-config, `tests/robotsix_config/test_history_secrets.py`) MUST include a config with `openrouter.keys: dict[str, SecretStr]` and a `langfuse.projects` entry whose `secret_key` is set, and assert that neither value appears in the redacted output. A `mask_secrets` that walks only `properties` is a violation even though the grep passes. The chat volume-files `config-target` read may instead be refused with `403` (failing closed when redaction cannot run, per [chat access §5.2](chat-access-standard.md#52-volumes-read-only)); a `403` there is compliant, not a violation. |
 | Merge on write | Config writes route through `apply_update()` merge semantics (per the [config-ownership](config-ownership.md) helper table), so a partial write that omits a secret preserves the stored value. Version-history persistence stores only the fact that a secret key changed, never its value — `grep` history-write sites for raw secret values reaching storage; the planned `robotsix_config.history` unit test (write a secret, rotate it, assert the old value is absent from `<config>.versions`) will enforce this fleet-wide once the module ships. |
 | UI rendering | The Configure UI form is generated from the committed `config/config.schema.json`; every `writeOnly` field renders masked with a set/unset badge and the value is never echoed in any API response the form consumes. This is a design-level property the auditor reads at code review. |
 

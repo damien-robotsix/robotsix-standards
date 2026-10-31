@@ -11,14 +11,22 @@ secret pattern (``api_key``, ``apikey``, ``token``, ``password``, ``passwd``,
 ``secret``) and whose annotation is ``str`` (or ``Optional[str]`` /
 ``str | None``) instead of ``SecretStr``.
 
-Nested containers are not flagged: ``keys: dict[str, SecretStr]`` is the
-documented pattern for secret maps and is correctly typed (the *value* type is
-what carries the secret).  Fields on classes that do not subclass pydantic's
-``BaseModel`` (directly or through an in-file chain) are also out of scope.
+Secret *maps* are checked too.  ``keys: dict[str, SecretStr]`` (the
+canonical ``openrouter.keys`` map, docs/config-standard.md §8) is the
+documented pattern and passes; but a map field whose name is a secret-map name
+(``keys``, ``credentials``) or matches a secret pattern (``api_keys``,
+``tokens``, ...) and whose *value* type is ``str`` — ``dict[str, str]``,
+``Dict[str, str]``, ``Mapping[str, str]`` (optionally ``Optional[...]`` /
+``... | None``) — is flagged: its values are secrets stored and logged as
+plaintext.  Secret *lists* with the same names are checked the same way:
+``list[str]`` / ``Sequence[str]`` / ``tuple[str, ...]`` is flagged,
+``list[SecretStr]`` passes.  Fields on
+classes that do not subclass pydantic's ``BaseModel`` (directly or through an
+in-file chain) are out of scope.
 
 Exit codes:
   0 — no offending fields found
-  1 — at least one secret-named field is typed ``str``
+  1 — at least one secret-named field (or secret map) is typed ``str``
 """
 
 from __future__ import annotations
@@ -32,6 +40,17 @@ from pathlib import Path
 # Field-name substrings (case-insensitive) that identify a secret.  Kept as a
 # tuple so the constant is immutable (no RUF012 mutable-class-attribute).
 SECRET_PATTERNS = ("api_key", "apikey", "token", "password", "passwd", "secret")
+
+# Exact field names (case-insensitive) that denote a secret *map* even though
+# they match no SECRET_PATTERNS substring — the canonical ``openrouter.keys``
+# map (docs/config-standard.md §8).
+SECRET_MAP_NAMES = ("keys", "credentials")
+
+# Mapping annotations whose second subscript argument is the value type.
+_MAPPING_NAMES = ("dict", "Dict", "Mapping", "MutableMapping")
+
+# Sequence annotations whose single subscript argument is the item type.
+_SEQUENCE_NAMES = ("list", "List", "Sequence", "tuple", "Tuple", "set", "Set")
 
 # Directories skipped during a recursive scan (deps, build/docs output, VCS).
 # A tuple, not `except A, B, C:` (PEP 758): this script runs as a
@@ -65,6 +84,87 @@ def _is_secret_name(name: str) -> bool:
     """True if *name* contains a secret pattern, e.g. ``api_key`` / ``token``."""
     lowered = name.lower()
     return any(pattern in lowered for pattern in SECRET_PATTERNS)
+
+
+def _is_secret_map_name(name: str) -> bool:
+    """True if *name* denotes a secret map, e.g. ``keys`` / ``api_keys``."""
+    return name.lower() in SECRET_MAP_NAMES or _is_secret_name(name)
+
+
+def _strip_optional(annotation: ast.expr) -> ast.expr:
+    """Unwrap ``Optional[X]`` / ``X | None`` / ``None | X`` to ``X``."""
+    if (
+        isinstance(annotation, ast.Subscript)
+        and isinstance(annotation.value, ast.Name)
+        and annotation.value.id == "Optional"
+    ):
+        return annotation.slice
+    if isinstance(annotation, ast.BinOp) and isinstance(annotation.op, ast.BitOr):
+        left, right = annotation.left, annotation.right
+        if isinstance(right, ast.Constant) and right.value is None:
+            return left
+        if isinstance(left, ast.Constant) and left.value is None:
+            return right
+    return annotation
+
+
+def _is_str_valued_map(annotation: ast.expr) -> bool:
+    """True if *annotation* is a mapping whose value type is plain ``str``.
+
+    Matches ``dict[str, str]``, ``Dict[str, str]``, ``Mapping[str, str]``
+    (bare or ``typing.``-qualified), optionally wrapped in ``Optional[...]`` /
+    ``... | None``.  ``dict[str, SecretStr]`` is the correct secret-map type
+    and does not match.
+    """
+    annotation = _strip_optional(annotation)
+    if not isinstance(annotation, ast.Subscript):
+        return False
+    base = annotation.value
+    if isinstance(base, ast.Name):
+        base_name = base.id
+    elif isinstance(base, ast.Attribute):
+        base_name = base.attr
+    else:
+        return False
+    if base_name not in _MAPPING_NAMES:
+        return False
+    args = annotation.slice
+    if not isinstance(args, ast.Tuple) or len(args.elts) != 2:
+        return False
+    return _is_scalar_str(args.elts[1])
+
+
+def _is_str_item_sequence(annotation: ast.expr) -> bool:
+    """True if *annotation* is a sequence whose item type is plain ``str``.
+
+    Matches ``list[str]``, ``List[str]``, ``Sequence[str]``, ``set[str]`` and
+    ``tuple[str, ...]`` (bare or ``typing.``-qualified), optionally wrapped in
+    ``Optional[...]`` / ``... | None``.  ``list[SecretStr]`` is the correct
+    secret-list type and does not match.
+    """
+    annotation = _strip_optional(annotation)
+    if not isinstance(annotation, ast.Subscript):
+        return False
+    base = annotation.value
+    if isinstance(base, ast.Name):
+        base_name = base.id
+    elif isinstance(base, ast.Attribute):
+        base_name = base.attr
+    else:
+        return False
+    if base_name not in _SEQUENCE_NAMES:
+        return False
+    item = annotation.slice
+    if isinstance(item, ast.Tuple):
+        # Only the homogeneous ``tuple[str, ...]`` form is a str sequence.
+        if not (
+            len(item.elts) == 2
+            and isinstance(item.elts[1], ast.Constant)
+            and item.elts[1].value is Ellipsis
+        ):
+            return False
+        item = item.elts[0]
+    return _is_scalar_str(item)
 
 
 def _is_scalar_str(annotation: ast.expr) -> bool:
@@ -136,9 +236,13 @@ def _findings_in_model(
         target = node.target
         if not isinstance(target, ast.Name):
             continue
-        if not _is_secret_name(target.id):
-            continue
-        if node.annotation is not None and _is_scalar_str(node.annotation):
+        name = target.id
+        scalar = _is_secret_name(name) and _is_scalar_str(node.annotation)
+        secret_container = _is_secret_map_name(name) and (
+            _is_str_valued_map(node.annotation)
+            or _is_str_item_sequence(node.annotation)
+        )
+        if scalar or secret_container:
             findings.append(
                 Finding(
                     path=path,

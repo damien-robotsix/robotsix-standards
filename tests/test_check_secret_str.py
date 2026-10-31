@@ -115,6 +115,97 @@ class OpenRouterConfig(BaseModel):
     assert _fields(check_secret_str, source) == []
 
 
+def test_secret_map_with_str_values_is_rejected(
+    check_secret_str: ModuleType,
+) -> None:
+    # The canonical §8 field typed wrongly: `keys` matches no SECRET_PATTERNS
+    # substring and the annotation is a container, so only the secret-map
+    # check catches it.
+    source = """\
+from typing import Dict, Mapping, Optional
+
+from pydantic import BaseModel
+
+
+class OpenRouterConfig(BaseModel):
+    keys: dict[str, str] = {}
+
+
+class OtherConfig(BaseModel):
+    api_keys: Dict[str, str] = {}
+    tokens: Mapping[str, str] | None = None
+    client_secrets: Optional[dict[str, str]] = None
+"""
+    assert _fields(check_secret_str, source) == [
+        "OpenRouterConfig.keys",
+        "OtherConfig.api_keys",
+        "OtherConfig.tokens",
+        "OtherConfig.client_secrets",
+    ]
+
+
+def test_credentials_map_with_str_values_is_rejected(
+    check_secret_str: ModuleType,
+) -> None:
+    # `credentials` matches no SECRET_PATTERNS substring; it is a secret-map
+    # name like `keys`.  The SecretStr-valued form passes.
+    source = """\
+from pydantic import BaseModel, SecretStr
+
+
+class BadConfig(BaseModel):
+    credentials: dict[str, str] = {}
+
+
+class GoodConfig(BaseModel):
+    credentials: dict[str, SecretStr] = {}
+"""
+    assert _fields(check_secret_str, source) == ["BadConfig.credentials"]
+
+
+def test_secret_list_with_str_items_is_rejected(
+    check_secret_str: ModuleType,
+) -> None:
+    source = """\
+from typing import List, Optional, Sequence
+
+from pydantic import BaseModel, SecretStr
+
+
+class BadConfig(BaseModel):
+    tokens: list[str] = []
+    api_keys: List[str] = []
+    keys: Sequence[str] | None = None
+    credentials: Optional[tuple[str, ...]] = None
+
+
+class GoodConfig(BaseModel):
+    tokens: list[SecretStr] = []
+    hosts: list[str] = []
+    secret_pair: tuple[str, int] = ("", 0)
+"""
+    assert _fields(check_secret_str, source) == [
+        "BadConfig.tokens",
+        "BadConfig.api_keys",
+        "BadConfig.keys",
+        "BadConfig.credentials",
+    ]
+
+
+def test_non_secret_str_map_is_accepted(check_secret_str: ModuleType) -> None:
+    # A str-valued map whose name is not a secret name (labels, headers) and a
+    # secret map of nested models are not flagged.
+    source = """\
+from pydantic import BaseModel
+
+
+class LangfuseConfig(BaseModel):
+    labels: dict[str, str] = {}
+    projects: dict[str, "LangfuseProject"] = {}
+"""
+    assert _fields(check_secret_str, source) == []
+
+
 def test_non_model_class_is_ignored(check_secret_str: ModuleType) -> None:
     source = """\
 class NotAPydanticModel:

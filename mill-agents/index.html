@@ -3174,7 +3174,12 @@ applied to the repos each page governs:</p>
 <li><a href="../chat-access-standard/#5-chat-observability">Chat access §5, chat observability</a>:
   central-deploy.</li>
 <li><a href="../config-standard/#how-this-is-enforced">Config standard §3, management-surface secrets</a>:
-  central-deploy's config API and Configure UI.</li>
+  central-deploy's config API and Configure UI, and every deployable
+  component with a <code>/config</code> surface (<code>GET /config</code> goes through
+  <code>robotsix_config.mask_secrets</code>, writes through <code>apply_update</code>, rollback
+  through <code>rollback</code>, and <code>GET /config/versions</code> through <code>read_versions</code>
+  with no secret value in its response; no hand-rolled config serializer;
+  version history stores no secret values).</li>
 <li><a href="../component-standard/#how-this-pages-security-rules-are-enforced">LLM security</a>
   (including LLM05 and LLM06) and the
   <a href="../security-posture/#llm-agentic-security-audit">LLM &amp; agentic security audit</a>

@@ -4284,7 +4284,7 @@ dashboard-watching:</p>
 </tr>
 <tr>
 <td>Config API secret redaction</td>
-<td>Deployment system / management surfaces: central-deploy config-read endpoints (<code>GET /config</code>, version-history reads, audit-log serialization) route through <code>mask_secrets()</code> before serialization; config writes use <code>apply_update()</code> merge-on-write; version history stores no secret values — audited per <a href="../config-standard/#how-this-is-enforced">config standard §3</a></td>
+<td>Deployment system / management surfaces and every component with a <code>/config</code> surface: central-deploy config-read endpoints (<code>GET /config</code>, version-history reads, audit-log serialization) and each component's <code>GET /config</code> responses route through <code>robotsix_config.mask_secrets()</code> before serialization, <code>GET /config/versions</code> is served by <code>read_versions()</code> with no secret value in its response, and rollback goes through <code>rollback()</code> (no hand-rolled serializer of the config model); config writes use <code>apply_update()</code> merge-on-write; version history stores no secret values — audited per <a href="../config-standard/#how-this-is-enforced">config standard §3</a></td>
 </tr>
 <tr>
 <td>Config secrets typed SecretStr</td>
@@ -4292,7 +4292,7 @@ dashboard-watching:</p>
 </tr>
 <tr>
 <td>Config history contains no secret values</td>
-<td>Components with a <code>/config</code> surface: the <code>&lt;config&gt;.versions</code> sidecar's <code>data</code> snapshots carry only a set/unset marker for each <code>SecretStr</code> / <code>writeOnly</code> field, per <a href="../config-ownership/#where-the-history-lives-and-who-implements-it">config ownership</a>. Until the planned <code>robotsix_config.history</code> unit test (write a secret, rotate it, assert the old value is absent from <code>&lt;config&gt;.versions</code>) exists, audit this by code review of the sidecar writer; the test is not yet in place (CWE-312, CWE-226)</td>
+<td>Components with a <code>/config</code> surface: the <code>&lt;config&gt;.versions</code> sidecar's <code>data</code> snapshots carry only a set/unset marker for each <code>SecretStr</code> / <code>writeOnly</code> field, per <a href="../config-ownership/#where-the-history-lives-and-who-implements-it">config ownership</a>. Until the planned <code>robotsix_config.history</code> unit test (write a secret, rotate it, assert the old value is absent from <code>&lt;config&gt;.versions</code>) exists, audit this by code review of the sidecar writer and by the periodic <a href="../mill-agents/#component-security-audit"><code>component-security-audit</code></a> agent (<a href="../config-standard/#how-this-is-enforced">config standard §3</a>); the test is not yet in place (CWE-312, CWE-226)</td>
 </tr>
 <tr>
 <td>Log hygiene</td>

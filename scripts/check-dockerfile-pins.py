@@ -40,7 +40,11 @@ PINNED_IMAGE_RE = re.compile(r"[^\s@$]+:[^\s@$]+@sha256:[0-9a-f]{64}")
 def is_dockerfile(path: Path) -> bool:
     """Return True for ``Dockerfile``, ``Dockerfile.*`` and ``*.Dockerfile``."""
     name = path.name
-    return name == "Dockerfile" or name.startswith("Dockerfile.") or name.endswith(".Dockerfile")
+    return (
+        name == "Dockerfile"
+        or name.startswith("Dockerfile.")
+        or name.endswith(".Dockerfile")
+    )
 
 
 def find_dockerfiles(root: Path) -> list[Path]:
@@ -95,7 +99,11 @@ def check_dockerfile(text: str) -> list[tuple[int, str]]:
                 problems.append((lineno, "FROM without an image reference"))
                 continue
             image = tokens[0]
-            alias = tokens[2].lower() if len(tokens) >= 3 and tokens[1].upper() == "AS" else None
+            alias = (
+                tokens[2].lower()
+                if len(tokens) >= 3 and tokens[1].upper() == "AS"
+                else None
+            )
             first = not seen_from
             seen_from = True
 
@@ -107,11 +115,17 @@ def check_dockerfile(text: str) -> list[tuple[int, str]]:
                 pass
             elif "$" in image:
                 problems.append(
-                    (lineno, f"FROM {image}: image held in an ARG (Dependabot cannot bump it)")
+                    (
+                        lineno,
+                        f"FROM {image}: image held in an ARG (Dependabot cannot bump it)",
+                    )
                 )
             elif not PINNED_IMAGE_RE.fullmatch(image):
                 problems.append(
-                    (lineno, f"FROM {image}: external image must be <image>:<tag>@sha256:<digest>")
+                    (
+                        lineno,
+                        f"FROM {image}: external image must be <image>:<tag>@sha256:<digest>",
+                    )
                 )
             elif first and not image.startswith("python:"):
                 problems.append(
@@ -131,8 +145,10 @@ def check_dockerfile(text: str) -> list[tuple[int, str]]:
                 problems.append(
                     (
                         lineno,
-                        f"COPY {tok}: --from must name a prior stage "
-                        "(an inline registry image is invisible to Dependabot)",
+                        (
+                            f"COPY {tok}: --from must name a prior stage "
+                            "(an inline registry image is invisible to Dependabot)"
+                        ),
                     )
                 )
 

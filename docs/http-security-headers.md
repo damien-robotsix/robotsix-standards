@@ -23,16 +23,29 @@ OWASP suite, `secure` handles CSP construction, deduplication, and
 normalization.
 
 The default preset is **`Preset.BALANCED`** (importable as `Secure.with_default_headers()`),
-which provides a safe, low-friction baseline:
+which provides a safe, low-friction baseline. The table below is exactly what
+`secure` 2.0.1's BALANCED emits — the upstream definition is
+[`preset_kwargs()` in `secure/_internal/presets.py`](https://github.com/TypeError/secure/blob/main/secure/_internal/presets.py),
+and it wins if the two ever disagree. The **Fleet** column names the only rows
+the fleet changes on top of the preset:
 
-| Header | Value |
-|---|---|
-| `X-Content-Type-Options` | `nosniff` |
-| `X-Frame-Options` | `SAMEORIGIN` (or `DENY` if the service is never framed) |
-| `Referrer-Policy` | `strict-origin-when-cross-origin` |
-| `Content-Security-Policy` | `default-src 'self'` (relax per-app for inline assets) |
-| `Permissions-Policy` | `geolocation=(), microphone=(), camera=()` |
-| `Strict-Transport-Security` | `max-age=31536000; includeSubDomains` (effective only over TLS; ignored by browsers on HTTP) |
+| Header | BALANCED value | Fleet |
+|---|---|---|
+| `Cross-Origin-Opener-Policy` | `same-origin` | as preset |
+| `Cross-Origin-Resource-Policy` | `same-origin` | as preset |
+| `Content-Security-Policy` | `default-src 'self'; base-uri 'self'; font-src 'self' https: data:; form-action 'self'; frame-ancestors 'self'; img-src 'self' data:; object-src 'none'; script-src 'self'; script-src-attr 'none'; style-src 'self' https: 'unsafe-inline'; upgrade-insecure-requests` | as preset; relaxations only per [rule 3](#3-csp-relaxation-is-explicit-and-auditable) |
+| `Strict-Transport-Security` | `max-age=31536000; includeSubDomains` | as preset (effective only over TLS; ignored by browsers on HTTP — see [rule 4](#4-hsts-is-emitted-unconditionally-and-takes-effect-over-tls)) |
+| `Permissions-Policy` | `geolocation=(), microphone=(), camera=()` | as preset |
+| `Referrer-Policy` | `strict-origin-when-cross-origin` | as preset |
+| `Server` | empty value (overwrites the server banner) | as preset |
+| `X-Content-Type-Options` | `nosniff` | as preset |
+| `X-Frame-Options` | `SAMEORIGIN` | `DENY` allowed if the service is never framed |
+| `Cache-Control` | *not emitted* | **added:** `no-store, max-age=0` — see [rule 5](#5-sensitive-responses-are-not-stored) |
+
+Note that the BALANCED CSP already allows inline styles (`'unsafe-inline'` in
+`style-src`), `https:`/`data:` fonts and `data:` images; it does **not** allow
+inline scripts. Audit a component's CSP against this value, not against a bare
+`default-src 'self'`.
 
 Services that require a stricter posture — e.g. an admin dashboard that must
 never be framed and must restrict script sources tightly — use
@@ -60,8 +73,10 @@ route handlers that could return a response.
 
 ### 3. CSP relaxation is explicit and auditable
 
-The `default-src 'self'` CSP blocks inline styles and scripts, which some
-frontend frameworks require. When a service needs to relax the CSP, it does so
+The BALANCED CSP blocks inline scripts (`script-src 'self'`,
+`script-src-attr 'none'`) and limits other sources to the values in the
+[rule 1 table](#1-use-the-secure-library-with-presetbalanced-as-the-baseline),
+which some frontend frameworks need loosened. When a service needs to relax the CSP, it does so
 by calling methods on the `Secure` object — e.g.
 `secure_headers.csp.default_src = "'self' 'unsafe-inline'"` — rather than
 disabling the header or building a CSP string by hand. This keeps every CSP
@@ -87,13 +102,65 @@ the BALANCED default qualifies.
 HSTS by scheme, and a service or edge change that drops HSTS on the HTTPS path
 goes unnoticed.
 
+### 5. Sensitive responses are not stored
+
+Every response that is authenticated or personalised, or that carries config,
+conversation (chat transcripts, LLM output) or credential-adjacent data, MUST
+carry `Cache-Control: no-store`, per
+[OWASP ASVS 5.0 V14.3.2](https://owasp.org/www-project-application-security-verification-standard/)
+("sufficient anti-caching HTTP response header fields (i.e.,
+`Cache-Control: no-store`)"). BALANCED emits **no** `Cache-Control` header, so
+following rules 1–2 alone leaves these responses to the browser's heuristic
+caching. `no-cache` does not satisfy this rule: it permits storing the response
+and only requires revalidation before reuse
+([RFC 9111 §5.2.2.4](https://www.rfc-editor.org/rfc/rfc9111#section-5.2.2.4));
+only `no-store` forbids storage
+([RFC 9111 §5.2.2.5](https://www.rfc-editor.org/rfc/rfc9111#section-5.2.2.5)).
+
+The simplest compliant setup — and the fleet default — adds the header to the
+same `Secure` object at the single registration site, so every response
+carries it:
+
+```python
+from secure import CacheControl, Secure
+from secure.middleware import SecureASGIMiddleware
+
+secure_headers = Secure.with_default_headers()
+secure_headers.headers_list.append(CacheControl().no_store().max_age(0))
+app.add_middleware(SecureASGIMiddleware, secure=secure_headers)
+```
+
+**Opt-out for static public assets is explicit.** `SecureASGIMiddleware`
+*overwrites* any `Cache-Control` a route sets, so a hashed `/static/` file
+cannot opt out by setting its own header on the response. A public,
+non-personalised asset path (e.g. content-hashed files under `/static/` with a
+long `max-age`) opts out in one of two ways, both applied at the app-setup site:
+
+1. **Serve the assets from the edge**, outside the component, so the component
+   never emits a `Cache-Control` for them. This is the preferred option.
+2. **Add a path-scoped ASGI middleware** that rewrites the `Cache-Control`
+   header on `http.response.start` messages for requests whose path starts with
+   the asset prefix (e.g. `/static/`). Register it with `app.add_middleware(...)`
+   *after* `SecureASGIMiddleware` so it is the outer layer: Starlette makes the
+   last-added middleware outermost, so its send wrapper sees the headers after
+   `SecureASGIMiddleware` has written its own. The middleware must match the
+   asset prefix only; it must never match an API or HTML route.
+
+That override is the only place a non-`no-store` `Cache-Control` is set. Never
+relax the default for an API or HTML route.
+
+*Failure mode this prevents:* a chat transcript, LLM answer, config view or
+deploy-dashboard response is written to the browser's disk cache, survives
+logout, and is readable later by anyone with access to a shared or
+compromised machine.
+
 ## How this is enforced
 
 This standard governs downstream deployable components, not this repo, so there
 is no CI gate here that can inspect a component's ASGI app. Enforcement is by
 **audit** — checked at component code review and by the periodic
 [`component-security-audit`](mill-agents.md#component-security-audit) agent — against the criteria below. Each criterion maps to one
-of the four rules and is verifiable by reading the component's application-setup
+of the five rules and is verifiable by reading the component's application-setup
 module (the same place [`SecureASGIMiddleware`](#2-integration-one-middleware-registered-once)
 is registered).
 
@@ -103,6 +170,7 @@ is registered).
 | 2. One middleware, registered once | Code review verifies the ASGI app calls `app.add_middleware(SecureASGIMiddleware, ...)` exactly once during application construction, and that no route handler sets security headers itself. |
 | 3. CSP relaxation is explicit | Every CSP relaxation is a method call on the `Secure`/CSP object at the single registration site — `grep` for `csp` in the app-setup module surfaces all relaxations; a hand-built CSP string or a disabled header is a violation. |
 | 4. HSTS emitted, effective over TLS | The configured `Secure` object includes `StrictTransportSecurity` with `max-age` ≥ `31536000` (the BALANCED default qualifies), and no code strips the header or branches on the request scheme to suppress it. Optionally, a deploy smoke check runs `curl -sI https://<host>/health` and asserts a `strict-transport-security` header is present. |
+| 5. Sensitive responses are not stored | The configured `Secure` object includes `CacheControl().no_store()` so every authenticated, personalised, config, conversation or credential-adjacent response carries `Cache-Control: no-store`. `grep` for `Cache-Control`/`CacheControl` in the app-setup module surfaces every opt-out; any opt-out that covers a non-public path, or any `no-cache`-only value on such a response, is a violation. Optionally, a deploy smoke check runs `curl -sI` against an authenticated route and asserts `cache-control` contains `no-store`. |
 
 A component that serves HTTP responses and fails any criterion is
 non-compliant; the fix is always the same — register the shared
@@ -129,6 +197,13 @@ change through the `Secure` object.
 - **Downgrade attacks.** Without `Strict-Transport-Security`, a MITM attacker
   can rewrite HTTPS links to HTTP and intercept traffic that the user believes
   is encrypted.
+- **Sensitive data left in the browser cache.** Without
+  `Cache-Control: no-store`, authenticated JSON and HTML — chat transcripts,
+  LLM output, config views — are stored on disk by the browser and stay
+  readable after logout on a shared or compromised machine.
+- **Audit drift from the real preset.** A header table that does not match
+  what BALANCED emits makes auditors judge components against a CSP and a
+  header set the fleet never ships.
 - **Cross-service inconsistency.** Hand-rolling headers per service produces
   slightly different header sets, different header-name casing, and different
   CSP syntax across the fleet. A single middleware — the same library, the same

@@ -7,7 +7,7 @@
 > [HTTP security headers](http-security-headers.md) standards.
 
 Every `text/event-stream` response a fleet service emits carries three
-proxy-safety headers: `Cache-Control: no-cache`, `Connection: keep-alive`, and
+proxy-safety headers: `Cache-Control: no-store`, `Connection: keep-alive`, and
 `X-Accel-Buffering: no`. A hand-rolled
 `StreamingResponse(media_type="text/event-stream")` — the pattern a service
 uses when it needs a manual heartbeat plus a `request.is_disconnected()` loop —
@@ -25,15 +25,14 @@ are defined by [RFC 9110 — HTTP Semantics](https://www.rfc-editor.org/rfc/rfc9
 
 | Header | Value | Purpose |
 |---|---|---|
-| `Cache-Control` | `no-cache` | Prevents caching intermediaries from holding the stream — any stored copy must be revalidated before reuse, so a stale snapshot is never re-served. |
+| `Cache-Control` | `no-store` | Forbids browsers and caching intermediaries from storing the stream at all, so a stale snapshot is never re-served and streamed content (chat transcripts, LLM output) never lands in a disk cache. `no-cache` is **not** sufficient: it permits storage and only requires revalidation before reuse ([RFC 9111 §5.2.2.4](https://www.rfc-editor.org/rfc/rfc9111#section-5.2.2.4) vs [§5.2.2.5](https://www.rfc-editor.org/rfc/rfc9111#section-5.2.2.5)). This is the SSE case of [HTTP security headers rule 5](http-security-headers.md#5-sensitive-responses-are-not-stored). |
 | `Connection` | `keep-alive` | Keeps the connection open for continuous event delivery instead of tearing it down after the first response segment. |
 | `X-Accel-Buffering` | `no` | Disables nginx response buffering for this response as a per-response override, with no proxy config change required. With nginx's default `proxy_buffering on`, events otherwise accumulate in the proxy buffer — defeating heartbeats and delaying token delivery until the buffer fills or the connection closes. |
 
 `sse-starlette`'s `EventSourceResponse` — the de-facto standard SSE response
 for Starlette/FastAPI — applies this set by default: `Connection: keep-alive`
-and `X-Accel-Buffering: no`, plus `Cache-Control: no-store` (a strictly
-stronger cache-busting directive than `no-cache`, and acceptable under this
-rule). Services that hand-roll their streaming response lose these defaults
+and `X-Accel-Buffering: no`, plus `Cache-Control: no-store` — so it complies
+with this rule unchanged. Services that hand-roll their streaming response lose these defaults
 and must add the headers explicitly.
 
 ### 2. One shared helper — the header set cannot drift per-endpoint
@@ -50,7 +49,7 @@ def sse_response(generator, **kwargs) -> StreamingResponse:
     headers = kwargs.pop("headers", {})
     headers.update(
         {
-            "Cache-Control": "no-cache",
+            "Cache-Control": "no-store",
             "Connection": "keep-alive",
             "X-Accel-Buffering": "no",
         }
@@ -87,7 +86,7 @@ response the component emits.
 
 | Rule | Audit criterion |
 |---|---|
-| 1. Three headers on every stream | Every `text/event-stream` response carries `Cache-Control` (`no-cache` or the stronger `no-store`), `Connection: keep-alive`, and `X-Accel-Buffering: no`. A hand-rolled `StreamingResponse(media_type="text/event-stream")` that goes out with the default header set is a violation. |
+| 1. Three headers on every stream | Every `text/event-stream` response carries `Cache-Control: no-store`, `Connection: keep-alive`, and `X-Accel-Buffering: no`. A `Cache-Control` of `no-cache` alone is a violation (it permits storage). A hand-rolled `StreamingResponse(media_type="text/event-stream")` that goes out with the default header set is a violation. |
 | 2. One shared helper | The header set is defined once — a single `sse_response(...)` factory or `sse-starlette`'s `EventSourceResponse` — and every SSE endpoint routes through it. A `grep` for `text/event-stream` that returns more than one header-setting site (each with its own literal header dict) is a violation. |
 | 3. Hand-rolled loops set headers explicitly | Where a component hand-rolls the streaming loop (manual heartbeat plus `request.is_disconnected()`), the three headers are added at the response boundary — the `sse_response` factory — not omitted because the loop is custom. |
 
@@ -106,6 +105,9 @@ default for every endpoint.
   caching intermediary may hold the unbounded, never-completing stream and
   re-serve a stale snapshot to later clients instead of passing the live
   stream through.
+- **Stored conversation content.** With `no-cache` instead of `no-store`, a
+  browser or proxy may legitimately write the streamed chat transcript or LLM
+  output to its cache, where it outlives the session.
 - **Mid-stream connection teardown.** Without `Connection: keep-alive`, an
   intermediary that honors `Connection: close` semantics tears the stream
   down after the first response segment, breaking long-lived event delivery.

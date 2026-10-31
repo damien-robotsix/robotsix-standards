@@ -278,7 +278,7 @@ system writes the component's `config.json` — secrets included, in cleartext
 
 The §5 MUSTs govern central-deploy's chat observability routes, not this
 repo — no CI gate here can inspect that code. Enforcement is by **audit**, at
-code review and by the periodic standards-audit agent, against these criteria:
+code review and by the periodic [`component-security-audit`](mill-agents.md#component-security-audit) agent, against these criteria:
 
 | Rule | Audit criterion |
 |---|---|

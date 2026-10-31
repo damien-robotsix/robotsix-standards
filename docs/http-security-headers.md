@@ -92,7 +92,7 @@ goes unnoticed.
 This standard governs downstream deployable components, not this repo, so there
 is no CI gate here that can inspect a component's ASGI app. Enforcement is by
 **audit** — checked at component code review and by the periodic
-standards-audit agent — against the criteria below. Each criterion maps to one
+[`component-security-audit`](mill-agents.md#component-security-audit) agent — against the criteria below. Each criterion maps to one
 of the four rules and is verifiable by reading the component's application-setup
 module (the same place [`SecureASGIMiddleware`](#2-integration-one-middleware-registered-once)
 is registered).

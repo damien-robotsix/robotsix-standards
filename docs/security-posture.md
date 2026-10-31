@@ -744,7 +744,7 @@ dashboard-watching:
 | Config secrets typed SecretStr | Repos with a pydantic config model: `.pre-commit-config.yaml` includes the remote `check-secret-str` hook (`repo: https://github.com/damien-robotsix/robotsix-standards`) at a pinned `rev:`, and `config/config.schema.json` marks every secret-named field (`api_key`, `token`, `password`, `secret`, ...) `writeOnly: true`. The second check is a fallback you can grep without running the hook. Per [config standard §3](config-standard.md#3-one-secret-convention) |
 | Config history contains no secret values | Components with a `/config` surface: the `<config>.versions` sidecar's `data` snapshots carry only a set/unset marker for each `SecretStr` / `writeOnly` field, per [config ownership](config-ownership.md#where-the-history-lives-and-who-implements-it). Until the planned `robotsix_config.history` unit test (write a secret, rotate it, assert the old value is absent from `<config>.versions`) exists, audit this by code review of the sidecar writer; the test is not yet in place (CWE-312, CWE-226) |
 | Log hygiene | Deployable HTTP components: a test sends a request carrying `Authorization: Bearer <sentinel>` and asserts the sentinel string is absent from captured log output; a grep/Semgrep rule finds no logging call that passes `request.headers` or `request.url` (e.g. `logger\..*\(.*request\.headers` and `logger\..*\(.*request\.url\b(?!\.path)`); a structlog redaction processor sits at the start of the chain; any per-request DEBUG override accepts only authenticated operator or internal callers — per [logging rule 6](logging.md#6-never-log-sensitive-data) (CWE-532, OWASP A09:2025) |
-| LLM & agentic security | Repos whose core function involves LLM agents: `robotsix-llmio` pinned to a commit SHA in `pyproject.toml`; llmio level/model selection is an explicit config field (not hard-coded, not env); tracing/provider credentials are `SecretStr` in the canonical `langfuse`/`openrouter` config blocks; destructive git ops default to dry-run; scoped single-repo token (no org/admin scopes). Non-mechanical controls (LLM01/02/05/06/07/08/10, ASI01–ASI10) are covered by the periodic standards-audit agent — see below |
+| LLM & agentic security | Repos whose core function involves LLM agents: `robotsix-llmio` pinned to a commit SHA in `pyproject.toml`; llmio level/model selection is an explicit config field (not hard-coded, not env); tracing/provider credentials are `SecretStr` in the canonical `langfuse`/`openrouter` config blocks; destructive git ops default to dry-run; scoped single-repo token (no org/admin scopes). Non-mechanical controls (LLM01/02/05/06/07/08/10, ASI01–ASI10) are covered by the periodic [`component-security-audit`](mill-agents.md#component-security-audit) agent — see below |
 
 *Content-only repos are exempt per the preamble above.
 
@@ -760,7 +760,7 @@ through `robotsix-llmio`. The requirements live in the
 and its [Agentic Applications mapping](component-standard.md#agentic-applications).
 Most of its MUST/MUST NOT controls are design-level rules with no CI gate, so
 enforcement is by **audit** — checked at component code review and by the
-periodic standards-audit agent — against the criteria below, mirroring the
+periodic [`component-security-audit`](mill-agents.md#component-security-audit) agent — against the criteria below, mirroring the
 pattern in [HTTP security headers](http-security-headers.md#how-this-is-enforced),
 [SSE response headers](sse-response-headers.md#how-this-is-enforced), and
 [SSRF-hardened fetchers](ssrf-hardened-fetchers.md#how-this-is-enforced).
@@ -773,7 +773,7 @@ code-review gates already in this standard:
 | LLM04 — supply chain | `robotsix-llmio` is pinned to a full commit SHA (not a branch or tag) in `pyproject.toml`; llmio level/model selection is an explicit config field, not hard-coded in code or read from env. |
 | LLM02/03/08 — secrets & least privilege | Tracing/provider credentials are `SecretStr` fields in the canonical `langfuse`/`openrouter` config blocks; destructive git operations (`push`, `force-push`, branch deletion) default to dry-run; git uses a scoped single-repo token with no org/admin scopes. |
 
-**Periodic standards-audit-agent checks** — design-level controls an auditor
+**Periodic [`component-security-audit`](mill-agents.md#component-security-audit) checks** — design-level controls an auditor
 reads against the criteria below:
 
 | Rule | Audit criterion |

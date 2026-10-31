@@ -172,9 +172,14 @@ grows: GitHub, then OWASP, then readthedocs, each added after it broke a build.
 
 Prefer adding a host to `ignore_urls` the first time it 429s rather than
 retrying the build. But treat a long list as a signal: past roughly half a dozen
-entries the external half of the check is mostly disabled, and `lychee` in a
+entries the external half of the check is mostly disabled. At that point switch
+to the split design: set `validate_external_urls: false` on the htmlproofer
+plugin (so the deploy build checks internal links and anchors only, and
+`ignore_urls` can be dropped) and move external validation to `lychee` in a
 separate job — where a status-code allowlist is expressible and a failure cannot
-block a deploy — is the better tool.
+block a deploy. This repo runs that split: `mkdocs.yml` disables external
+validation, and the `linkcheck` job in `.github/workflows/ci.yml` runs `lychee`
+on pull requests.
 
 **`lychee` (post-build, separate job).**  A standalone Rust link checker
 (`lycheeverse/lychee-action`) that validates the `site/` directory.  Run it

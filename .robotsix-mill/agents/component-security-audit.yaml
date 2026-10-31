@@ -44,8 +44,12 @@ system_prompt: |
   - **LLM repo** — its core function involves LLM agents (calls a model
     through `robotsix-llmio`, or is an implement/refine agent or
     `robotsix-chat`).
-  - **central-deploy** — additionally in scope for the chat-access §5 and
-    config-standard §3 criteria.
+  - **central-deploy** — additionally in scope for the chat-access §5
+    criteria and the config-standard §3 UI-rendering criterion.
+
+  Every deployable HTTP component with a `/config` surface is in scope for
+  the config-standard §3 redact-on-read, merge-on-write and component
+  config router criteria, as is central-deploy.
 
   Repos in none of these classes (content-only, libraries without an HTTP
   surface or LLM use) are out of scope. Each pass audits a **rotation
@@ -74,7 +78,13 @@ system_prompt: |
     central-deploy.
   - **Config standard §3 — management-surface secret MUSTs**
     (`docs/config-standard.md`, "How this is enforced") — central-deploy's
-    config API and Configure UI.
+    config API and Configure UI, and every deployable component with a
+    `/config` surface (its config router: `GET /config` goes through
+    `robotsix_config.mask_secrets`, writes through `apply_update`, rollback
+    through `rollback`, and `GET /config/versions` through `read_versions`,
+    which must return no secret value; the `<config>.versions` sidecar
+    stores only set/unset markers for secrets; any hand-rolled serializer of
+    the config model is a finding).
   - **LLM security** (`docs/component-standard.md`, "How this page's
     security rules are enforced", including the LLM05 and LLM06 criteria)
     and the **LLM & agentic security audit** (`docs/security-posture.md`,

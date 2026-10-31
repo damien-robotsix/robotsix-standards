@@ -11,7 +11,7 @@ Cross-Origin Resource Sharing (CORS) middleware — `Access-Control-Allow-Origin
 blind origin reflection, or `Access-Control-Allow-Credentials: true` on a
 reflected origin — re-opens the exact cross-site request channel that stance
 closed. Missing or misconfigured CORS is a case of
-[OWASP Top 10 A02:2025 — Security Misconfiguration](https://owasp.org/Top10/A02_2025-Security_Misconfiguration/),
+[OWASP Top 10 A02:2025 — Security Misconfiguration](https://owasp.org/Top10/2025/A02_2025-Security_Misconfiguration/),
 which this standard exists to close fleet-wide. Absence of a stated policy reads
 as "anything goes"; this page states the policy so it does not.
 

@@ -4300,7 +4300,7 @@ dashboard-watching:</p>
 </tr>
 <tr>
 <td>LLM &amp; agentic security</td>
-<td>Repos whose core function involves LLM agents: <code>robotsix-llmio</code> pinned to a commit SHA in <code>pyproject.toml</code>; llmio level/model selection is an explicit config field (not hard-coded, not env); tracing/provider credentials are <code>SecretStr</code> in the canonical <code>langfuse</code>/<code>openrouter</code> config blocks; destructive git ops default to dry-run; scoped single-repo token (no org/admin scopes). Non-mechanical controls (LLM01/02/05/06/07/08/10, ASI01–ASI10) are covered by the periodic standards-audit agent — see below</td>
+<td>Repos whose core function involves LLM agents: <code>robotsix-llmio</code> pinned to a commit SHA in <code>pyproject.toml</code>; llmio level/model selection is an explicit config field (not hard-coded, not env); tracing/provider credentials are <code>SecretStr</code> in the canonical <code>langfuse</code>/<code>openrouter</code> config blocks; destructive git ops default to dry-run; scoped single-repo token (no org/admin scopes). Non-mechanical controls (LLM01/02/05/06/07/08/10, ASI01–ASI10) are covered by the periodic <a href="../mill-agents/#component-security-audit"><code>component-security-audit</code></a> agent — see below</td>
 </tr>
 </tbody>
 </table>
@@ -4315,7 +4315,7 @@ through <code>robotsix-llmio</code>. The requirements live in the
 and its <a href="../component-standard/#agentic-applications">Agentic Applications mapping</a>.
 Most of its MUST/MUST NOT controls are design-level rules with no CI gate, so
 enforcement is by <strong>audit</strong> — checked at component code review and by the
-periodic standards-audit agent — against the criteria below, mirroring the
+periodic <a href="../mill-agents/#component-security-audit"><code>component-security-audit</code></a> agent — against the criteria below, mirroring the
 pattern in <a href="../http-security-headers/#how-this-is-enforced">HTTP security headers</a>,
 <a href="../sse-response-headers/#how-this-is-enforced">SSE response headers</a>, and
 <a href="../ssrf-hardened-fetchers/#how-this-is-enforced">SSRF-hardened fetchers</a>.</p>
@@ -4339,7 +4339,7 @@ code-review gates already in this standard:</p>
 </tr>
 </tbody>
 </table>
-<p><strong>Periodic standards-audit-agent checks</strong> — design-level controls an auditor
+<p><strong>Periodic <a href="../mill-agents/#component-security-audit"><code>component-security-audit</code></a> checks</strong> — design-level controls an auditor
 reads against the criteria below:</p>
 <table>
 <thead>

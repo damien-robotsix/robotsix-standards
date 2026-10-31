@@ -3547,7 +3547,7 @@ usage figure attributable to neither.</p>
 central-deploy's config API and Configure UI, not this repo — there is no CI
 gate here that can inspect that code, and no pre-commit hook or CI job covers
 them in central-deploy either. Enforcement is therefore by <strong>audit</strong> — checked
-at code review and by the periodic standards-audit agent — against the criteria
+at code review and by the periodic <a href="../mill-agents/#component-security-audit"><code>component-security-audit</code></a> agent — against the criteria
 below, mirroring the pattern in
 <a href="../http-security-headers/#how-this-is-enforced">HTTP security headers</a>,
 <a href="../sse-response-headers/#how-this-is-enforced">SSE response headers</a>,

@@ -3146,7 +3146,7 @@ of tightening the allowlist.</p>
 <p>This standard governs downstream deployable components, not this repo, so there
 is no CI gate here that can inspect a component's ASGI app. Enforcement is by
 <strong>audit</strong> — advisory for now, with no new script added by this standard —
-checked at component code review and by the periodic standards-audit agent. The
+checked at component code review and by the periodic <a href="../mill-agents/#component-security-audit"><code>component-security-audit</code></a> agent. The
 fleet sweep greps each component for <code>CORSMiddleware</code> and
 <code>Access-Control-Allow-Origin</code>. Any hit must match rule 3: a static allowlist of
 exact origins wired through the framework's standard middleware, with the

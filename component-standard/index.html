@@ -3930,7 +3930,7 @@ untrusted input under <strong>LLM01</strong> and are delimited before injection.
 prevented:</em> a poisoned RAG document containing a backdoor instruction is
 retrieved as context; the delimitation layer treats it as data rather than
 instruction, preventing the model from adopting the backdoor.  <em>Enforced
-by:</em> the periodic standards-audit agent, against the LLM05 criterion in the
+by:</em> the periodic <a href="../mill-agents/#component-security-audit"><code>component-security-audit</code></a> agent, against the LLM05 criterion in the
 <a href="../security-posture/#llm-agentic-security-audit">LLM &amp; agentic security audit</a>.</p>
 <p><strong>LLM06 — Unbounded Consumption.</strong> Agent resource usage — compute, API
 budget, token spend, and spawned subtasks — must be bounded at every level.
@@ -3943,7 +3943,7 @@ confused agent cannot consume unbounded compute or API budget — the request
 cap and job timeout together enforce a hard ceiling on any single agent run.
 <em>Enforced by:</em> <code>scripts/check-workflow-timeouts.py</code> for mechanism (a) on
 GitHub Actions jobs; the rest (request budgets, timeouts on runs outside
-Actions, <code>spawn_subtask</code> bounds) by the periodic standards-audit agent,
+Actions, <code>spawn_subtask</code> bounds) by the periodic <a href="../mill-agents/#component-security-audit"><code>component-security-audit</code></a> agent,
 against the LLM06 criterion in the
 <a href="../security-posture/#llm-agentic-security-audit">LLM &amp; agentic security audit</a>.</p>
 <p><strong>LLM07 — Misinformation.</strong> Model output that represents a decision or
@@ -4099,7 +4099,7 @@ and no persistent process survives the pipeline run.</p>
 repo, so there is no CI gate here that can inspect a component's application
 code. Most of them are also not covered by any pre-commit hook or CI job in the
 component repo, so enforcement is by <strong>audit</strong> — checked at component code
-review and by the periodic standards-audit agent — against the criteria below,
+review and by the periodic <a href="../mill-agents/#component-security-audit"><code>component-security-audit</code></a> agent — against the criteria below,
 mirroring the pattern in
 <a href="../http-security-headers/#how-this-is-enforced">HTTP security headers</a>,
 <a href="../sse-response-headers/#how-this-is-enforced">SSE response headers</a>,

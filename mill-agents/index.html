@@ -2856,6 +2856,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#component-security-audit" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Component security audit
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#retired-agents" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2962,6 +2973,17 @@
     <span class="md-ellipsis">
       
         Fleet compliance audit
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#component-security-audit" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Component security audit
       
     </span>
   </a>
@@ -3125,6 +3147,63 @@ repo's own standards, not upstream sources.</p>
 the standards pages for the requirements, inspects each sampled repo's
 contents via the mill's GitHub access, and files draft tickets. It cannot
 change any repo; all remediation flows through the normal ticket pipeline.</p>
+<h2 id="component-security-audit">Component security audit<a class="headerlink" href="#component-security-audit" title="Permanent link">&para;</a></h2>
+<p><strong>Agent:</strong> <code>component-security-audit</code> (defined in
+<code>.robotsix-mill/agents/component-security-audit.yaml</code>).</p>
+<p><strong>Purpose:</strong> Re-check fleet components against the <strong>audit-only</strong> security
+criteria, which are design-level MUSTs that no CI gate can inspect. Without this
+agent, those criteria would be checked once at code review and never again.
+<em>Failure mode this prevents:</em> a security header, CORS allowlist, fetcher guard
+or agent budget that drifts after merge goes unseen, because nothing re-checks
+it (OWASP Top 10 A02:2025, Security Misconfiguration). A MUST with no recurring
+check fails the enforceability rule the
+<a href="#security-posture-audit-security-posture-audit">security posture audit</a>
+applies. <code>fleet-compliance-audit</code> covers only the mechanically verifiable
+standards. This agent is the periodic check for the design-level ones.</p>
+<p><strong>What it checks:</strong> the "How this is enforced" criteria of each page below,
+applied to the repos each page governs:</p>
+<ul>
+<li><a href="../http-security-headers/#how-this-is-enforced">HTTP security headers</a>:
+  deployable HTTP components.</li>
+<li><a href="../cors-policy/#how-this-is-enforced">CORS policy</a>: deployable HTTP
+  components.</li>
+<li><a href="../sse-response-headers/#how-this-is-enforced">SSE response headers</a>:
+  components that emit <code>text/event-stream</code>.</li>
+<li><a href="../ssrf-hardened-fetchers/#how-this-is-enforced">SSRF-hardened fetchers</a>:
+  every tool that fetches a caller- or model-influenced URL.</li>
+<li><a href="../chat-access-standard/#5-chat-observability">Chat access §5, chat observability</a>:
+  central-deploy.</li>
+<li><a href="../config-standard/#how-this-is-enforced">Config standard §3, management-surface secrets</a>:
+  central-deploy's config API and Configure UI.</li>
+<li><a href="../component-standard/#how-this-pages-security-rules-are-enforced">LLM security</a>
+  (including LLM05 and LLM06) and the
+  <a href="../security-posture/#llm-agentic-security-audit">LLM &amp; agentic security audit</a>
+  (LLM01/02/05/06/07/08/10, ASI01–ASI10): LLM repos.</li>
+</ul>
+<p>A criterion that does not apply to a repo is skipped, never flagged. A
+design-level criterion the agent cannot judge confidently from the source is
+recorded as inconclusive in its ledger, not filed as a finding.</p>
+<p><strong>Sampling:</strong> each pass audits a rotation subset of roughly 25–33% of the
+in-scope repos (deployable HTTP components, LLM repos, and central-deploy),
+choosing the least-recently-audited ones per its memory ledger. Every in-scope
+repo is covered over three to four passes.</p>
+<p><strong>What it does NOT do:</strong> it never edits, opens PRs against, or remediates
+another repo. It does not repeat the mechanical checks that
+<code>fleet-compliance-audit</code> already runs.</p>
+<p><strong>Output:</strong> one draft ticket per repo with gaps, filed on that repo's board.
+Each ticket lists every failing criterion, the page and section it violates,
+the evidence (file and line), observed vs. required, and a concrete
+remediation. A clean pass with no findings is a valid result.</p>
+<p><strong>Cadence:</strong> monthly (2592000 seconds).</p>
+<p><strong>Capability level:</strong> 3. Most criteria are design-level: judging whether
+untrusted data is delimited before prompt assembly, or whether the validated
+address is the address connected to, means reading and reasoning about code
+paths. Matching strings is not enough, so a level-2 agent is too shallow.</p>
+<p><strong>Web knowledge:</strong> Disabled. The agent compares fleet repos against this
+repo's own criteria, not against upstream sources.</p>
+<p><strong>Tools:</strong> Read-only with respect to the fleet. It reads <code>docs/fleet.md</code> and
+the standards pages, inspects each sampled repo's source through the mill's
+GitHub access, and files draft tickets.</p>
 <h2 id="retired-agents">Retired agents<a class="headerlink" href="#retired-agents" title="Permanent link">&para;</a></h2>
 <ul>
 <li><strong><code>branch-protection-check</code></strong> — retirement decided 2026-10-22 by operator decision

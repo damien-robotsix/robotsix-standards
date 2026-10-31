@@ -2853,6 +2853,23 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="Provenance verification before rollout">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#self-update-path" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Self-update path
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -3144,6 +3161,23 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="Provenance verification before rollout">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#self-update-path" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Self-update path
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -3225,7 +3259,9 @@ to "the root compose is dev-only". That compose:</p>
   <a href="../docker-standard/#deploy-updates-are-deliberate">Docker build &amp; release</a>);
   central-deploy itself has no button above it, so a Watchtower presses it.
   Any other Watchtower or registry poller in the fleet is legacy and must be
-  removed.</li>
+  removed. The self-updater is held to the rules in
+  <a href="#self-update-path">Self-update path</a>: it verifies provenance before the
+  swap, and its own image is pinned and maintained.</li>
 </ul>
 <h3 id="config-standard-one-json-file">Config standard (one JSON file)<a class="headerlink" href="#config-standard-one-json-file" title="Permanent link">&para;</a></h3>
 <p>central-deploy is configured by <strong><code>ROBOTSIX_LIFECYCLE_*</code> environment
@@ -3338,6 +3374,59 @@ command, its rationale and its current status are stated once in
 <a href="../security-posture/#slsa-build-track">security posture — SLSA Build Track</a>.
 Failure mode this prevents: an image tampered with after the build is deployed
 exactly like a genuine one.</p>
+<h3 id="self-update-path">Self-update path<a class="headerlink" href="#self-update-path" title="Permanent link">&para;</a></h3>
+<p>central-deploy's own image is the most privileged one in the stack: it holds
+the Docker socket (through the socket proxy) and a read-only bind-mount of the
+host filesystem. Today it is not rolled out through the verify-then-rollout
+path above. The caretaker's self-update phase (when the component's
+auto-update flag is on) and the <code>POST /system/update</code> button both launch a
+one-shot <code>containrrr/watchtower</code> container, which pulls <code>:main</code> and recreates
+central-deploy with no provenance check. The rules for this path:</p>
+<ol>
+<li><strong>Same provenance check, before the swap.</strong> The self-updater runs the
+   check from
+   <a href="../security-posture/#slsa-build-track">security posture — SLSA Build Track</a>
+   against the new image <strong>digest</strong> and refuses the swap on failure. It then
+   deploys that verified digest (<code>image@sha256:…</code>), never the <code>:main</code> tag
+   re-resolved after the check — a tag re-pull reopens the window the check
+   closed. Two shapes satisfy the rule: central-deploy (or a small updater
+   script/sidecar) runs <code>gh attestation verify</code> / <code>cosign verify-attestation</code>
+   and then <code>docker compose up -d</code> on the pinned digest; or auto-update is
+   dropped and the update is operator-triggered, with the verify step in it.</li>
+<li><strong>A human gate or cooldown.</strong> An unattended self-update waits at least one
+   cooldown period after the new digest is first seen (the same 3-day release
+   age as <a href="../security-posture/#3-automated-dependency-updates-renovate-dependabot">dependency updates</a>),
+   or it waits for an operator. A bad or tampered <code>:main</code> push must not be
+   live within one poll interval.</li>
+<li><strong>The updater image is named, digest-pinned and maintained.</strong> The updater
+   talks to the Docker socket, so it is part of the host's trust base: its
+   image is pinned by digest (<code>image:tag@sha256:…</code>) with Dependabot (or
+   Renovate) as the bumper, and it is a project that still ships security
+   fixes. <code>containrrr/watchtower</code> fails the last test — the upstream
+   repository was archived on 2025-12-17, its last release (1.7.1) dates from
+   November 2023, and its README does not recommend it for production. The
+   fleet's <code>containrrr/watchtower:1.7.1</code> reference is tag-pinned only. Replace
+   it with a maintained updater or with the verify-then-deploy script in
+   rule 1 (which needs no third-party updater image).</li>
+</ol>
+<p><strong>Status — dated accepted risk.</strong> None of the three rules is in place yet:
+the self-update path rolls out central-deploy's own image unverified, without
+a cooldown, through an archived, tag-pinned Watchtower. This is a dated
+<strong>accepted risk</strong> (accepted 2026-10-31, review 2027-01-31), aligned with the
+SLSA verification accepted risk and tracked in the
+<a href="../security-posture/#audit">security posture Audit table</a>. Until it is
+lifted, operators should keep the central-deploy component's auto-update flag
+off and trigger the self-update by hand after checking the new digest.</p>
+<p><strong>Failure modes this prevents:</strong> provenance verification that covers every
+image except the one that controls all the others leaves the host one
+tampered <code>:main</code> push away from compromise — the attacker gets the Docker
+socket and the host filesystem in a single poll interval. An unpinned,
+unmaintained updater with socket access is a second direct host-compromise
+path: a tag re-pointed upstream, or a vulnerability that will never be
+patched, runs with the same privileges.</p>
+<p><strong>Alignment:</strong> SLSA v1.x <em>verifying artifacts</em> (every rollout path), OWASP
+Top 10:2025 <em>A08 Software or Data Integrity Failures</em>, OWASP CICD-SEC-3 /
+CICD-SEC-9, OpenSSF Scorecard <em>Pinned-Dependencies</em> and <em>Maintained</em>.</p>
 <h2 id="rule-of-thumb">Rule of thumb<a class="headerlink" href="#rule-of-thumb" title="Permanent link">&para;</a></h2>
 <p>If central-deploy needs a capability, ask whether a component could get it
 through the deploy contract instead. Only what genuinely cannot be expressed

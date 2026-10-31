@@ -4141,6 +4141,11 @@ private-repo image is not at Build L2 and the claim stays at Build L1.</p>
   review 2027-01-31). Both accepted risks are tracked in the <a href="#audit">Audit</a>
   table and referenced from the
   <a href="../deployment-system/#provenance-verification-before-rollout">deployment system</a>.</p>
+<p>The check applies to <strong>every</strong> rollout path, including the deployment
+  system's own self-update. The self-update rules (verify the digest before
+  the swap, a cooldown or human gate, a pinned and maintained updater image)
+  and their dated accepted risk are stated in
+  <a href="../deployment-system/#self-update-path">deployment system — Self-update path</a>.</p>
 <p><strong>Failure prevented:</strong> without signed and verified provenance, an image
 tampered with after the build (a stolen GHCR token, a compromised push from
 outside the reusable workflow) deploys exactly like a genuine one. Unsigned
@@ -4264,6 +4269,10 @@ dashboard-watching:</p>
 <tr>
 <td>SLSA Build provenance</td>
 <td>Image-shipping repos: the published image index carries BuildKit provenance (<code>docker buildx imagetools inspect ghcr.io/&lt;owner&gt;/&lt;repo&gt;@&lt;digest&gt; --format '{{ json .Provenance }}'</code> is non-empty) — Build L1 on either runner class. Once <code>docker-release.yml</code> signs it, the deployment system verifies before rollout: public-repo (GitHub-hosted) images with <code>gh attestation verify oci://ghcr.io/&lt;owner&gt;/&lt;repo&gt;@&lt;digest&gt; --owner &lt;owner&gt; --deny-self-hosted-runners</code> (Build L3); private-repo (self-hosted) images — which cannot use GitHub attestations on the free plan — with the fleet cosign public key, once the pinned cosign version is confirmed to accept these flags (v2.6.5 does): <code>cosign verify-attestation --key &lt;cosign.pub&gt; --type slsaprovenance1 --insecure-ignore-tlog=true ghcr.io/&lt;owner&gt;/&lt;repo&gt;@&lt;digest&gt;</code> (at most Build L2, and Build L1 while the signing key is reachable from co-tenant jobs on the shared runner; self-hosted, key-signed provenance is a dated accepted risk, accepted 2026-10-29, review 2027-01-31, until the key is isolated and the runner is ephemeral/JIT and isolated per job). Signing and verification are a dated accepted risk until then (review 2027-01-31) — per <a href="#slsa-build-track">SLSA Build Track</a></td>
+</tr>
+<tr>
+<td>Deployment-system self-update</td>
+<td>central-deploy's self-update path verifies the new image digest's provenance before the swap and deploys that digest, waits a cooldown or an operator, and runs a digest-pinned, maintained updater image bumped by Dependabot/Renovate — per <a href="../deployment-system/#self-update-path">deployment system — Self-update path</a>. Not met today (one-shot, tag-pinned <code>containrrr/watchtower:1.7.1</code>, archived upstream 2025-12-17): a dated accepted risk, accepted 2026-10-31, review 2027-01-31</td>
 </tr>
 <tr>
 <td>Container image scan</td>

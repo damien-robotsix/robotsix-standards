@@ -64,9 +64,11 @@ implements it: a component defines one pydantic model and calls `load_config`.
   pattern (`api_key`, `token`, `password`, `secret`, ...) but is annotated
   `str` (or `Optional[str]`) instead of `SecretStr`. It also fails on a
   **secret map** typed with `str` values: a field named `keys` (the
-  canonical [`openrouter.keys`](#8-openrouter-configuration)) or matching a
-  secret pattern (`api_keys`, `tokens`, ...) annotated `dict[str, str]` /
-  `Mapping[str, str]` instead of `dict[str, SecretStr]`. Any other secret map
+  canonical [`openrouter.keys`](#8-openrouter-configuration)) or
+  `credentials`, or matching a secret pattern (`api_keys`, `tokens`, ...),
+  annotated `dict[str, str]` / `Mapping[str, str]` instead of
+  `dict[str, SecretStr]` — and on a **secret list** with the same names
+  annotated `list[str]` / `Sequence[str]` instead of `list[SecretStr]`. Any other secret map
   MUST use `SecretStr` (or a sub-model with `SecretStr` fields, like
   `langfuse.projects`) as its value type. robotsix-standards
   **publishes** it through its `.pre-commit-hooks.yaml`. Every repo with a
@@ -342,7 +344,7 @@ below, mirroring the pattern in
 
 | Rule | Audit criterion |
 |---|---|
-| Redact on read | Every config-read path — `GET /config`, version-history reads, audit-log serialization, and the chat volume-files endpoint when it reads the `config-target` path — routes through `mask_secrets()` (or an equivalent redaction wrapper) *before* serialization. `grep` the deploy system's config-API module for `mask_secrets`; any GET path that serializes a `writeOnly` field without it is a violation. Also confirm `mask_secrets` handles secret maps and sub-models: it MUST resolve `$ref` and descend into `additionalProperties` and `items`. Its unit tests MUST include a config with `openrouter.keys: dict[str, SecretStr]` and a `langfuse.projects` entry whose `secret_key` is set, and assert that neither value appears in the redacted output. A `mask_secrets` that walks only `properties` is a violation even though the grep passes. The chat volume-files `config-target` read may instead be refused with `403` (failing closed when redaction cannot run, per [chat access §5.2](chat-access-standard.md#52-volumes-read-only)); a `403` there is compliant, not a violation. |
+| Redact on read | Every config-read path — `GET /config`, version-history reads, audit-log serialization, and the chat volume-files endpoint when it reads the `config-target` path — routes through `mask_secrets()` (or an equivalent redaction wrapper) *before* serialization. `grep` the deploy system's config-API module for `mask_secrets`; any GET path that serializes a `writeOnly` field without it is a violation. Also confirm `mask_secrets` handles secret maps and sub-models: it MUST resolve `$ref` and descend into `additionalProperties` and `items`. Its unit tests (in robotsix-config, `tests/robotsix_config/test_history_secrets.py`) MUST include a config with `openrouter.keys: dict[str, SecretStr]` and a `langfuse.projects` entry whose `secret_key` is set, and assert that neither value appears in the redacted output. A `mask_secrets` that walks only `properties` is a violation even though the grep passes. The chat volume-files `config-target` read may instead be refused with `403` (failing closed when redaction cannot run, per [chat access §5.2](chat-access-standard.md#52-volumes-read-only)); a `403` there is compliant, not a violation. |
 | Merge on write | Config writes route through `apply_update()` merge semantics (per the [config-ownership](config-ownership.md) helper table), so a partial write that omits a secret preserves the stored value. Version-history persistence stores only the fact that a secret key changed, never its value — `grep` history-write sites for raw secret values reaching storage; the planned `robotsix_config.history` unit test (write a secret, rotate it, assert the old value is absent from `<config>.versions`) will enforce this fleet-wide once the module ships. |
 | UI rendering | The Configure UI form is generated from the committed `config/config.schema.json`; every `writeOnly` field renders masked with a set/unset badge and the value is never echoed in any API response the form consumes. This is a design-level property the auditor reads at code review. |
 

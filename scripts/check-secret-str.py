@@ -14,10 +14,13 @@ secret pattern (``api_key``, ``apikey``, ``token``, ``password``, ``passwd``,
 Secret *maps* are checked too.  ``keys: dict[str, SecretStr]`` (the
 canonical ``openrouter.keys`` map, docs/config-standard.md §8) is the
 documented pattern and passes; but a map field whose name is a secret-map name
-(``keys``) or matches a secret pattern (``api_keys``, ``tokens``, ...) and
-whose *value* type is ``str`` — ``dict[str, str]``, ``Dict[str, str]``,
-``Mapping[str, str]`` (optionally ``Optional[...]`` / ``... | None``) — is
-flagged: its values are secrets stored and logged as plaintext.  Fields on
+(``keys``, ``credentials``) or matches a secret pattern (``api_keys``,
+``tokens``, ...) and whose *value* type is ``str`` — ``dict[str, str]``,
+``Dict[str, str]``, ``Mapping[str, str]`` (optionally ``Optional[...]`` /
+``... | None``) — is flagged: its values are secrets stored and logged as
+plaintext.  Secret *lists* with the same names are checked the same way:
+``list[str]`` / ``Sequence[str]`` / ``tuple[str, ...]`` is flagged,
+``list[SecretStr]`` passes.  Fields on
 classes that do not subclass pydantic's ``BaseModel`` (directly or through an
 in-file chain) are out of scope.
 
@@ -41,10 +44,13 @@ SECRET_PATTERNS = ("api_key", "apikey", "token", "password", "passwd", "secret")
 # Exact field names (case-insensitive) that denote a secret *map* even though
 # they match no SECRET_PATTERNS substring — the canonical ``openrouter.keys``
 # map (docs/config-standard.md §8).
-SECRET_MAP_NAMES = ("keys",)
+SECRET_MAP_NAMES = ("keys", "credentials")
 
 # Mapping annotations whose second subscript argument is the value type.
 _MAPPING_NAMES = ("dict", "Dict", "Mapping", "MutableMapping")
+
+# Sequence annotations whose single subscript argument is the item type.
+_SEQUENCE_NAMES = ("list", "List", "Sequence", "tuple", "Tuple", "set", "Set")
 
 # Directories skipped during a recursive scan (deps, build/docs output, VCS).
 # A tuple, not `except A, B, C:` (PEP 758): this script runs as a
@@ -128,6 +134,39 @@ def _is_str_valued_map(annotation: ast.expr) -> bool:
     return _is_scalar_str(args.elts[1])
 
 
+def _is_str_item_sequence(annotation: ast.expr) -> bool:
+    """True if *annotation* is a sequence whose item type is plain ``str``.
+
+    Matches ``list[str]``, ``List[str]``, ``Sequence[str]``, ``set[str]`` and
+    ``tuple[str, ...]`` (bare or ``typing.``-qualified), optionally wrapped in
+    ``Optional[...]`` / ``... | None``.  ``list[SecretStr]`` is the correct
+    secret-list type and does not match.
+    """
+    annotation = _strip_optional(annotation)
+    if not isinstance(annotation, ast.Subscript):
+        return False
+    base = annotation.value
+    if isinstance(base, ast.Name):
+        base_name = base.id
+    elif isinstance(base, ast.Attribute):
+        base_name = base.attr
+    else:
+        return False
+    if base_name not in _SEQUENCE_NAMES:
+        return False
+    item = annotation.slice
+    if isinstance(item, ast.Tuple):
+        # Only the homogeneous ``tuple[str, ...]`` form is a str sequence.
+        if not (
+            len(item.elts) == 2
+            and isinstance(item.elts[1], ast.Constant)
+            and item.elts[1].value is Ellipsis
+        ):
+            return False
+        item = item.elts[0]
+    return _is_scalar_str(item)
+
+
 def _is_scalar_str(annotation: ast.expr) -> bool:
     """True if *annotation* is ``str``, ``Optional[str]``, ``str | None``.
 
@@ -199,10 +238,11 @@ def _findings_in_model(
             continue
         name = target.id
         scalar = _is_secret_name(name) and _is_scalar_str(node.annotation)
-        secret_map = _is_secret_map_name(name) and _is_str_valued_map(
-            node.annotation
+        secret_container = _is_secret_map_name(name) and (
+            _is_str_valued_map(node.annotation)
+            or _is_str_item_sequence(node.annotation)
         )
-        if scalar or secret_map:
+        if scalar or secret_container:
             findings.append(
                 Finding(
                     path=path,

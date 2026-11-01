@@ -7,7 +7,7 @@ privately. **Do not open a public issue.**
 
 ### Contact
 
-Email: [security@robotsix.dev](mailto:security@robotsix.dev)
+Email: [admin@robotsix.net](mailto:admin@robotsix.net)
 
 ### Response Time
 

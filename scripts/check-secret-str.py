@@ -24,6 +24,11 @@ plaintext.  Secret *lists* with the same names are checked the same way:
 classes that do not subclass pydantic's ``BaseModel`` (directly or through an
 in-file chain) are out of scope.
 
+Not flagged: names ending in ``_path``, ``_file``, ``_dir``, ``_url`` or
+``_type`` (a path, URL or label is not the secret itself), and any field whose
+line carries ``# check-secret-str: ignore`` (e.g. an API response model that
+must serialize the plain value).
+
 Exit codes:
   0 — no offending fields found
   1 — at least one secret-named field (or secret map) is typed ``str``
@@ -40,6 +45,18 @@ from pathlib import Path
 # Field-name substrings (case-insensitive) that identify a secret.  Kept as a
 # tuple so the constant is immutable (no RUF012 mutable-class-attribute).
 SECRET_PATTERNS = ("api_key", "apikey", "token", "password", "passwd", "secret")
+
+# Field-name suffixes that name a NON-secret carrier of a secret-sounding word:
+# a file path (``linkedin_token_file``, ``secret_key_path``), a directory, a
+# URL/endpoint (``token_url``) or a label (``token_type`` = "Bearer").  Typing
+# these ``SecretStr`` masks them in GET /config, blocks clearing them and
+# drops them from rollback, for no security gain (2026-10-29 rollout).
+NON_SECRET_SUFFIXES = ("_path", "_file", "_dir", "_url", "_type")
+
+# Inline opt-out for a genuine false positive the suffix rule cannot see, e.g.
+# an API request/response model field that must serialize the plain value.
+# Put it on the field's line (or any line of a multi-line field).
+IGNORE_PRAGMA = "check-secret-str: ignore"
 
 # Exact field names (case-insensitive) that denote a secret *map* even though
 # they match no SECRET_PATTERNS substring — the canonical ``openrouter.keys``
@@ -83,6 +100,8 @@ class Finding:
 def _is_secret_name(name: str) -> bool:
     """True if *name* contains a secret pattern, e.g. ``api_key`` / ``token``."""
     lowered = name.lower()
+    if lowered.endswith(NON_SECRET_SUFFIXES):
+        return False
     return any(pattern in lowered for pattern in SECRET_PATTERNS)
 
 
@@ -225,13 +244,29 @@ def _collect_models(classes: dict[str, ast.ClassDef]) -> set[str]:
     return models
 
 
+def _is_ignored(node: ast.AST, lines: Sequence[str]) -> bool:
+    """True if any source line of *node* carries the inline ignore pragma."""
+    start = getattr(node, "lineno", 0)
+    end = getattr(node, "end_lineno", None) or start
+    return any(
+        IGNORE_PRAGMA in lines[i - 1]
+        for i in range(start, end + 1)
+        if 0 < i <= len(lines)
+    )
+
+
 def _findings_in_model(
-    classdef: ast.ClassDef, path: Path, models: set[str]
+    classdef: ast.ClassDef,
+    path: Path,
+    models: set[str],
+    lines: Sequence[str] = (),
 ) -> list[Finding]:
     """Return findings for secret-named ``str`` fields in one model class."""
     findings: list[Finding] = []
     for node in classdef.body:
         if not isinstance(node, ast.AnnAssign):
+            continue
+        if lines and _is_ignored(node, lines):
             continue
         target = node.target
         if not isinstance(target, ast.Name):
@@ -258,9 +293,11 @@ def _findings_in_model(
 def scan_file(path: Path) -> list[Finding]:
     """Scan one Python file and return secret-named ``str`` field findings."""
     try:
-        tree = ast.parse(path.read_text(encoding="utf-8"), filename=str(path))
+        source = path.read_text(encoding="utf-8")
+        tree = ast.parse(source, filename=str(path))
     except _UNREADABLE:
         return []
+    lines = source.splitlines()
     classes = {
         node.name: node for node in ast.walk(tree) if isinstance(node, ast.ClassDef)
     }
@@ -268,7 +305,7 @@ def scan_file(path: Path) -> list[Finding]:
     findings: list[Finding] = []
     for classdef in classes.values():
         if classdef.name in models:
-            findings.extend(_findings_in_model(classdef, path, models))
+            findings.extend(_findings_in_model(classdef, path, models, lines))
     return findings
 
 

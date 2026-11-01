@@ -62,7 +62,12 @@ implements it: a component defines one pydantic model and calls `load_config`.
 - The SecretStr typing is **machine-checked**. The `check-secret-str`
   pre-commit hook fails on any config-model field whose name matches a secret
   pattern (`api_key`, `token`, `password`, `secret`, ...) but is annotated
-  `str` (or `Optional[str]`) instead of `SecretStr`. It also fails on a
+  `str` (or `Optional[str]`) instead of `SecretStr`. Names ending in `_path`,
+  `_file`, `_dir`, `_url` or `_type` are not secrets (a path, URL or label
+  only *mentions* one: `linkedin_token_file`, `token_type`) and are not
+  flagged; keep them `str`. A genuine false positive — e.g. an API
+  request/response model that must serialize the plain value — is opted
+  out with an inline `# check-secret-str: ignore` on the field. It also fails on a
   **secret map** typed with `str` values: a field named `keys` (the
   canonical [`openrouter.keys`](#8-openrouter-configuration)) or
   `credentials`, or matching a secret pattern (`api_keys`, `tokens`, ...),

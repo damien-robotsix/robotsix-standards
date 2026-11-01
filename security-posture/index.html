@@ -4017,11 +4017,19 @@ repositories</strong>; private or internal repositories require GitHub Enterpris
 Cloud (per the <code>actions/attest-build-provenance</code> README, checked 2026-10-29).
 The fleet does not buy Enterprise Cloud
 (<a href="../free-tier-only/#rules">free-tier-only rule 3</a>), so private-repo images
-cannot use GitHub attestations at all. They are signed instead with a
-<strong>cosign keypair</strong> that the fleet controls (see Build L2 below). Keyless
-cosign against the public Sigstore instance was rejected for private repos:
-the Fulcio certificate and the Rekor entry would publish the private repo and
-workflow identity to a public log. Per runner class:</p>
+cannot use GitHub attestations at all. They are signed instead with
+<strong>keyless cosign</strong> against the public Sigstore instance, using the publish
+job's short-lived GitHub OIDC identity (see Build L2 below). Keyless signing
+writes the Fulcio certificate and a Rekor entry — the private repo name, the
+workflow ref and the commit — to a public transparency log. That publishes
+nothing new: fleet images are <strong>public GHCR packages</strong>
+(<a href="../free-tier-only/#rules">free-tier-only rule 2</a>), and anyone can already
+read the attestation stored next to a public image
+(<code>cosign download attestation</code>), whose SLSA v1 predicate carries the same data
+(<code>buildDefinition.externalParameters</code> with the workflow path and ref,
+<code>resolvedDependencies</code> with the repo URI and commit, <code>runDetails.builder.id</code>).
+A repository whose identity must not be public must not publish to a public
+GHCR package in the first place. Per runner class:</p>
 <table>
 <thead>
 <tr>
@@ -4038,8 +4046,8 @@ workflow identity to a public log. Per runner class:</p>
 </tr>
 <tr>
 <td>Private repo, persistent self-hosted</td>
-<td>at most Build L1</td>
-<td>at most Build L2 (key-based <code>cosign attest</code>), and only once the signing key is kept off the shared runner (see Build L2); L3 only if the runner becomes ephemeral/JIT and isolated per job</td>
+<td>Build L1</td>
+<td>at most Build L2 (keyless <code>cosign attest</code> with the job's GitHub OIDC identity — no long-lived signing key exists to steal); L3 only if the runner becomes ephemeral/JIT and isolated per job</td>
 </tr>
 </tbody>
 </table>
@@ -4062,44 +4070,43 @@ stated inline.</p>
     to the publish job, with <code>subject-digest</code> set to the pushed index digest.</li>
 <li>
 <p><strong>Private repos:</strong> GitHub attestations need Enterprise Cloud (see above),
-    so the publish job would sign the provenance with key-based cosign:
-    <code>cosign attest --key env://COSIGN_PRIVATE_KEY --type slsaprovenance1 --predicate &lt;provenance.json&gt; --tlog-upload=false ghcr.io/&lt;owner&gt;/&lt;repo&gt;@&lt;digest&gt;</code>.
-    <strong>Flags checked against cosign v2.6.5</strong> (<code>cosign attest --help</code>; the release
-    binary's SHA-256 matched the release's <code>cosign_checksums.txt</code>). <code>--key</code>
-    accepts <code>env://&lt;VAR&gt;</code> (the PEM is read from that environment variable),
-    <code>--predicate</code>, <code>--type</code> (<code>slsaprovenance1</code> is in the accepted list) and
-    <code>--tlog-upload=false</code> all exist. The command has not been run against a
-    registry. Two constraints from the help run: cosign rejects a
-    <code>slsaprovenance1</code> predicate that lacks the SLSA v1 <code>buildDefinition</code> and
-    <code>runDetails</code> fields before it signs anything, and the encrypted key's
-    password must come from <code>COSIGN_PASSWORD</code>, because an interactive prompt
-    fails in CI. No cosign version is pinned in the fleet yet: the pin must be
-    v2.6.5, or the flags must be rechecked with <code>cosign attest --help</code> for the
-    version that is pinned, before the signing step lands.
-    The attestation is stored in GHCR next to the image. <code>--tlog-upload=false</code>
-    keeps the private provenance out of the public Rekor log. The fleet
-    signing keypair's master copy lives in the self-hosted Vaultwarden. The
-    private key and its password would reach the publish job as Actions
-    secrets (<code>COSIGN_PRIVATE_KEY</code>, <code>COSIGN_PASSWORD</code>), which are free on private
-    repositories. The deployment system holds only the public key.</p>
-<p><strong>Co-tenant exposure (blocks the L2 claim on the shared runner):</strong> the
-self-hosted runner is shared across repositories and reused between jobs,
-and its jobs are not isolated from one another. An Actions secret is
-delivered into the environment of any job that references it, and a
-different job on the same host can reach that environment or the job
-workspace. A co-tenant job can therefore read <code>COSIGN_PRIVATE_KEY</code> and
-<code>COSIGN_PASSWORD</code>, sign a forged provenance statement for any digest, and
-publish it to GHCR next to a real image. A signature by that key proves
-only that someone holding the key signed it, not that the reusable workflow
-built the image. The key must be kept where no other job on the shared
-runner can read it (for example a signing step on an ephemeral/JIT runner
-used only for that job, or signing outside the runner host). Until then a
-private-repo image is not at Build L2 and the claim stays at Build L1.</p>
+    so the publish job signs the provenance with keyless cosign, which is
+    free and needs no paid plan:
+    <code>cosign attest --yes --type slsaprovenance1 --predicate &lt;provenance.json&gt; ghcr.io/&lt;owner&gt;/&lt;repo&gt;@&lt;digest&gt;</code>.
+    With no <code>--key</code>, cosign requests a short-lived Fulcio certificate for the
+    job's GitHub OIDC token (the workflow already grants <code>id-token: write</code>),
+    signs with an ephemeral key and uploads the entry to the public Rekor log
+    (Rekor upload stays <strong>on</strong>). <code>--yes</code> skips the interactive confirmation
+    that would otherwise fail in CI. The certificate's identity is the
+    reusable workflow's ref (<code>job_workflow_ref</code>), not the caller's, and its
+    GitHub extensions record the caller repository. The flag names are those
+    of cosign v2; this change did not run <code>cosign attest --help</code>. No cosign
+    version is pinned in the fleet yet: recheck the flags with
+    <code>cosign attest --help</code> for the version that is pinned before the signing
+    step lands. Cosign also rejects a <code>slsaprovenance1</code> predicate that lacks
+    the SLSA v1 <code>buildDefinition</code> and <code>runDetails</code> fields before it signs
+    anything. The attestation is stored in GHCR next to the (public) image.
+    No signing secret exists: there is no <code>COSIGN_PRIVATE_KEY</code> or
+    <code>COSIGN_PASSWORD</code> Actions secret, no keypair to hold in Vaultwarden and no
+    key to rotate.</p>
+<p><strong>Co-tenant exposure (residual, does not block L2):</strong> the self-hosted
+runner is shared across repositories and reused between jobs, and its jobs
+are not isolated from one another. With keyless signing there is no
+long-lived key a co-tenant job can copy and reuse later. What remains is
+the publish job's own OIDC request token
+(<code>ACTIONS_ID_TOKEN_REQUEST_TOKEN</code>), which lives only while that job runs:
+a co-tenant job running concurrently on the same host could read it and
+obtain a certificate under the reusable workflow's identity for the
+caller repo during that window. A job from another repository cannot
+otherwise produce a statement that passes the identity-pinned check below.
+This is the tenant-forgery property of Build L3, which the shared runner
+does not provide; it is closed only by an ephemeral/JIT runner isolated
+per job.</p>
 </li>
 </ul>
 <p>On the self-hosted runner the "hosted build platform" property is weaker:
   the platform is an operator-managed host, not GitHub's, so signing there
-  yields at most L2, and only under the key-isolation condition above.
+  yields at most L2.
 - <strong>Build L3 (hardened platform, unforgeable provenance):</strong> not met — L2 is a
   prerequisite. Once the attestation step above lands, L3 is reached <strong>for
   public-repo images built on GitHub-hosted runners</strong> because the signing runs
@@ -4128,27 +4135,31 @@ private-repo image is not at Build L2 and the claim stays at Build L1.</p>
   - <strong>Private-repo images</strong> cannot be verified with <code>gh attestation verify</code>:
     no GitHub attestation exists for them on the free plan, so that check
     would either block every private-repo rollout or be skipped silently.
-    They would be verified with the fleet public key instead:
-    <code>cosign verify-attestation --key &lt;cosign.pub&gt; --type slsaprovenance1 --insecure-ignore-tlog=true ghcr.io/&lt;owner&gt;/&lt;repo&gt;@&lt;digest&gt;</code>.
-    The flags were checked against cosign v2.6.5 (<code>cosign verify-attestation
-    --help</code>): <code>--key</code>, <code>--type</code> and <code>--insecure-ignore-tlog</code> exist under these
-    names. Recheck them against the cosign version the fleet pins before this
-    check is enforced.
-    <code>--insecure-ignore-tlog=true</code> matches the signing side's
-    <code>--tlog-upload=false</code>; the key signature is still checked. Accepting
-    self-hosted, key-signed provenance for private-repo images is a dated
-    <strong>accepted risk</strong> (accepted 2026-10-29, review 2027-01-31). The risk has
-    two parts. First, the signing runner is not isolated per job, so the
-    provenance is at most Build L2 and the claim is Build L1 while the key is
-    reachable from co-tenant jobs. Second, a co-tenant job that reads the
-    private key can forge a statement this check accepts, so a passing
-    private-repo check does not show that the reusable workflow built the
-    image. The risk is lifted only when the signing key is unreachable from
-    every other job and the runner is ephemeral/JIT and isolated per job.
-    Holding a long-lived signing key also carries a risk: anyone who steals it
-    can sign a forged image. Rotate the key on any suspected exposure, on
-    every review date, and whenever a repository sharing the runner is
-    compromised.</p>
+    They are verified against the keyless certificate instead, pinned to the
+    reusable workflow and the caller repository:</p>
+<div class="highlight"><pre><span></span><code>```sh
+cosign verify-attestation --type slsaprovenance1 \
+  --certificate-identity https://github.com/&lt;workflows-owner&gt;/robotsix-github-workflows/.github/workflows/docker-release.yml@&lt;pinned ref&gt; \
+  --certificate-oidc-issuer https://token.actions.githubusercontent.com \
+  --certificate-github-workflow-repository &lt;owner&gt;/&lt;repo&gt; \
+  ghcr.io/&lt;owner&gt;/&lt;repo&gt;@&lt;digest&gt;
+```
+
+The Rekor inclusion proof is checked too (no `--insecure-ignore-tlog`).
+Pinning `--certificate-identity` to the reusable workflow means a
+statement signed by any other workflow fails; pinning
+`--certificate-github-workflow-repository` means a statement made for
+another caller repo fails. The flag names are those of cosign v2; this
+change did not run `cosign verify-attestation --help`. Recheck them
+against the cosign version the fleet pins before this check is enforced.
+Accepting self-hosted, keyless-signed provenance for private-repo images
+is a dated **accepted risk** (accepted 2026-10-29, re-stated 2026-10-30,
+review 2027-01-31). The signing runner is not isolated per job, so the
+provenance is at most Build L2, and a co-tenant job running concurrently
+with the publish job could use that job&#39;s live OIDC request token to sign
+a statement this check accepts (see Build L2). The risk is lifted only
+when the runner is ephemeral/JIT and isolated per job.
+</code></pre></div>
 <p>Until the signing steps above exist there is nothing signed to verify,
   so verification itself is a dated <strong>accepted risk</strong> (accepted 2026-10-28,
   review 2027-01-31). Both accepted risks are tracked in the <a href="#audit">Audit</a>
@@ -4285,7 +4296,7 @@ dashboard-watching:</p>
 </tr>
 <tr>
 <td>SLSA Build provenance</td>
-<td>Image-shipping repos: the published image index carries BuildKit provenance (<code>docker buildx imagetools inspect ghcr.io/&lt;owner&gt;/&lt;repo&gt;@&lt;digest&gt; --format '{{ json .Provenance }}'</code> is non-empty) — Build L1 on either runner class. Once <code>docker-release.yml</code> signs it, the deployment system verifies before rollout: public-repo (GitHub-hosted) images with <code>gh attestation verify oci://ghcr.io/&lt;owner&gt;/&lt;repo&gt;@&lt;digest&gt; --owner &lt;owner&gt; --deny-self-hosted-runners</code> (Build L3); private-repo (self-hosted) images — which cannot use GitHub attestations on the free plan — with the fleet cosign public key, once the pinned cosign version is confirmed to accept these flags (v2.6.5 does): <code>cosign verify-attestation --key &lt;cosign.pub&gt; --type slsaprovenance1 --insecure-ignore-tlog=true ghcr.io/&lt;owner&gt;/&lt;repo&gt;@&lt;digest&gt;</code> (at most Build L2, and Build L1 while the signing key is reachable from co-tenant jobs on the shared runner; self-hosted, key-signed provenance is a dated accepted risk, accepted 2026-10-29, review 2027-01-31, until the key is isolated and the runner is ephemeral/JIT and isolated per job). Signing and verification are a dated accepted risk until then (review 2027-01-31) — per <a href="#slsa-build-track">SLSA Build Track</a></td>
+<td>Image-shipping repos: the published image index carries BuildKit provenance (<code>docker buildx imagetools inspect ghcr.io/&lt;owner&gt;/&lt;repo&gt;@&lt;digest&gt; --format '{{ json .Provenance }}'</code> is non-empty) — Build L1 on either runner class. Once <code>docker-release.yml</code> signs it, the deployment system verifies before rollout: public-repo (GitHub-hosted) images with <code>gh attestation verify oci://ghcr.io/&lt;owner&gt;/&lt;repo&gt;@&lt;digest&gt; --owner &lt;owner&gt; --deny-self-hosted-runners</code> (Build L3); private-repo (self-hosted) images — which cannot use GitHub attestations on the free plan — with keyless cosign pinned to the reusable workflow identity, once the pinned cosign version is confirmed to accept these flags: <code>cosign verify-attestation --type slsaprovenance1 --certificate-identity https://github.com/&lt;workflows-owner&gt;/robotsix-github-workflows/.github/workflows/docker-release.yml@&lt;pinned ref&gt; --certificate-oidc-issuer https://token.actions.githubusercontent.com --certificate-github-workflow-repository &lt;owner&gt;/&lt;repo&gt; ghcr.io/&lt;owner&gt;/&lt;repo&gt;@&lt;digest&gt;</code> (at most Build L2; self-hosted, keyless-signed provenance is a dated accepted risk, accepted 2026-10-29, re-stated 2026-10-30, review 2027-01-31, until the runner is ephemeral/JIT and isolated per job). Signing and verification are a dated accepted risk until then (review 2027-01-31) — per <a href="#slsa-build-track">SLSA Build Track</a></td>
 </tr>
 <tr>
 <td>Deployment-system self-update</td>

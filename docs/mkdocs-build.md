@@ -136,71 +136,82 @@ rendered-HTML link checker — run against the built `site/` directory —
 validates every hyperlink on the published page: internal anchors,
 cross-page links, and external URLs.
 
-Two tools are acceptable.  Both satisfy the rule — choose the one that fits
-the repo's tolerance for external-URL flakiness:
+The standard design splits the check in two: `mkdocs-htmlproofer-plugin`
+validates internal links and anchors during the build, and `lychee` validates
+external URLs in a separate CI job. This repo runs exactly that split.
 
-**`mkdocs-htmlproofer-plugin` (build-time, internal + external).**
+**`mkdocs-htmlproofer-plugin` (build-time, internal links only).**
 A MkDocs plugin that validates the rendered HTML during `mkdocs build`.
-Internal link and anchor failures should be hard errors (`raise_error_after_finish:
-true`).  External URLs that are known to be flaky or rate-limited (GitHub,
-raw.githubusercontent.com, docs.github.com) should be excluded via
-`ignore_urls` so the build remains deterministic:
+Internal link and anchor failures are hard errors
+(`raise_error_after_finish: true`). External validation is switched off with
+`validate_external_urls: false`, so the deploy build is never gated on
+external URL reachability:
 
 ```yaml
 plugins:
   - htmlproofer:
       raise_error_after_finish: true
-      ignore_urls:
-        - "http://localhost*"
-        - "https://raw.githubusercontent.com/*"
-        - "https://github.com/*"
-        - "https://docs.github.com/*"
-        - "https://*.readthedocs.io*"
+      validate_external_urls: false
 ```
 
-**A rate-limit is not a broken link.** Whichever mechanism a repo picks, the
-checker must not fail on `403` or `429`. Both responses mean the server
-answered — the URL resolved, the host is up, and the link is fine; the checker
-was simply throttled or refused anonymous access. Failing on them is the one
-case where the check is guaranteed to be wrong, and it fails *unpredictably*,
-which is worse than not checking at all.
+**A rate-limit is not a broken link.** The external checker must not fail on
+`403` or `429`. Both responses mean the server answered — the URL resolved,
+the host is up, and the link is fine; the checker was simply throttled or
+refused anonymous access. Failing on them is the one case where the check is
+guaranteed to be wrong, and it fails *unpredictably*, which is worse than not
+checking at all.
 
 `lychee` expresses this directly with `--accept 200,206,403,429,503` (see
-below). `mkdocs-htmlproofer-plugin` has no equivalent, so a rate-limited host
-must go in `ignore_urls` instead — which is why the list above exists and why it
-grows: GitHub, then OWASP, then readthedocs, each added after it broke a build.
+below). `mkdocs-htmlproofer-plugin` has no status-code allowlist, which is why
+external validation does not run in it.
 
-Prefer adding a host to `ignore_urls` the first time it 429s rather than
-retrying the build. But treat a long list as a signal: past roughly half a dozen
-entries the external half of the check is mostly disabled. At that point switch
-to the split design: set `validate_external_urls: false` on the htmlproofer
-plugin (so the deploy build checks internal links and anchors only, and
-`ignore_urls` can be dropped) and move external validation to `lychee` in a
-separate job — where a status-code allowlist is expressible and a failure cannot
-block a deploy. This repo runs that split: `mkdocs.yml` disables external
-validation, and the `linkcheck` job in `.github/workflows/ci.yml` runs `lychee`
-on pull requests.
+*Historical note:* this repo previously let htmlproofer validate external URLs
+and excluded each rate-limited host via an `ignore_urls` list (GitHub, then
+OWASP, then readthedocs, each added after it broke a build). Past roughly half
+a dozen entries the external half of the check was mostly disabled, so the
+list was dropped in favour of the split above. A repo still on `ignore_urls`
+should migrate rather than grow the list.
 
-**`lychee` (post-build, separate job).**  A standalone Rust link checker
-(`lycheeverse/lychee-action`) that validates the `site/` directory.  Run it
-in a **separate CI job** from the build-and-deploy job so a flaky external
-URL cannot block the deploy itself:
+**`lychee` (post-build, separate job, external URLs).**  A standalone Rust
+link checker (`lycheeverse/lychee-action`) that validates the built `site/`
+directory.  Run it in a **separate CI job** from the build-and-deploy job so
+a flaky external URL cannot block the deploy itself. The `linkcheck` job in
+this repo's `.github/workflows/ci.yml` builds the docs with
+`mkdocs build --strict` and then passes these arguments:
 
 ```yaml
-linkcheck:
-  runs-on: ubuntu-24.04
-  steps:
-    - uses: actions/checkout@<sha>  # v4
-    - # … build the docs into site/ …
-    - uses: lycheeverse/lychee-action@<sha>  # v2
-      with:
-        fail: true
-        args: >-
-          --accept 200,206,403,429,503
-          --exclude-private
-          --cache
-          site/
+args: >-
+  --accept 200,206,403,429,503
+  --exclude-private
+  --max-retries 3
+  --timeout 30
+  --exclude '^https://damien-robotsix\.github\.io/robotsix-standards/'
+  --exclude '^https://github\.com/damien-robotsix/robotsix-website/'
+  --exclude '^https://github\.com/damien-robotsix/robotsix-standards/compare/v0\.4\.0\.\.\.v0\.5\.0$'
+  --exclude-path 'site/404\.html'
+  --cache
+  site/
 ```
+
+The first two flags and the last two (`--cache`, `site/`) are the minimum
+every repo needs. The others are there for these reasons:
+
+- `--max-retries 3` and `--timeout 30` stop one slow or briefly unreachable
+  host from failing the job.
+- `--exclude` for the site's own `github.io` URLs (canonical `<link>` tags and
+  `sitemap.xml`): htmlproofer already checks internal links in the build, and
+  a new page's live URL returns 404 until it is deployed.
+- `--exclude` for `robotsix-website`: a private fleet repo, so it returns 404
+  to the job token.
+- `--exclude` for the `v0.4.0...v0.5.0` compare link: release-please generated
+  it in `CHANGELOG.md`, but tag `v0.4.0` was never published, and the file is
+  owned by release-please.
+- `--exclude-path 'site/404\.html'`: MkDocs renders the 404 page with
+  root-relative links that only resolve on the served site, not in the local
+  `site/` tree.
+
+Each exclusion must name a link that is not an external dead link. Do not use
+an exclusion to hide a link that is actually broken.
 
 **Separation principle.**  The link-check job must be a distinct CI job from
 the build-and-deploy job (or at least a distinct step whose failure does not

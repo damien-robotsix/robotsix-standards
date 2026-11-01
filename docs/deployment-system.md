@@ -49,7 +49,9 @@ to "the root compose is dev-only". That compose:
   [Docker build & release](docker-standard.md#deploy-updates-are-deliberate));
   central-deploy itself has no button above it, so a Watchtower presses it.
   Any other Watchtower or registry poller in the fleet is legacy and must be
-  removed.
+  removed. The self-updater is held to the rules in
+  [Self-update path](#self-update-path): it verifies provenance before the
+  swap, and its own image is pinned and maintained.
 
 ### Config standard (one JSON file)
 
@@ -159,6 +161,63 @@ command, its rationale and its current status are stated once in
 [security posture — SLSA Build Track](security-posture.md#slsa-build-track).
 Failure mode this prevents: an image tampered with after the build is deployed
 exactly like a genuine one.
+
+### Self-update path
+
+central-deploy's own image is the most privileged one in the stack: it holds
+the Docker socket (through the socket proxy) and a read-only bind-mount of the
+host filesystem. Today it is not rolled out through the verify-then-rollout
+path above. The caretaker's self-update phase (when the component's
+auto-update flag is on) and the `POST /system/update` button both launch a
+one-shot `containrrr/watchtower` container, which pulls `:main` and recreates
+central-deploy with no provenance check. The rules for this path:
+
+1. **Same provenance check, before the swap.** The self-updater runs the
+   check from
+   [security posture — SLSA Build Track](security-posture.md#slsa-build-track)
+   against the new image **digest** and refuses the swap on failure. It then
+   deploys that verified digest (`image@sha256:…`), never the `:main` tag
+   re-resolved after the check — a tag re-pull reopens the window the check
+   closed. Two shapes satisfy the rule: central-deploy (or a small updater
+   script/sidecar) runs `gh attestation verify` / `cosign verify-attestation`
+   and then `docker compose up -d` on the pinned digest; or auto-update is
+   dropped and the update is operator-triggered, with the verify step in it.
+2. **A human gate or cooldown.** An unattended self-update waits at least one
+   cooldown period after the new digest is first seen (the same 3-day release
+   age as [dependency updates](security-posture.md#3-automated-dependency-updates-renovate-dependabot)),
+   or it waits for an operator. A bad or tampered `:main` push must not be
+   live within one poll interval.
+3. **The updater image is named, digest-pinned and maintained.** The updater
+   talks to the Docker socket, so it is part of the host's trust base: its
+   image is pinned by digest (`image:tag@sha256:…`) with Dependabot (or
+   Renovate) as the bumper, and it is a project that still ships security
+   fixes. `containrrr/watchtower` fails the last test — the upstream
+   repository was archived on 2025-12-17, its last release (1.7.1) dates from
+   November 2023, and its README does not recommend it for production. The
+   fleet's `containrrr/watchtower:1.7.1` reference is tag-pinned only. Replace
+   it with a maintained updater or with the verify-then-deploy script in
+   rule 1 (which needs no third-party updater image).
+
+**Status — dated accepted risk.** None of the three rules is in place yet:
+the self-update path rolls out central-deploy's own image unverified, without
+a cooldown, through an archived, tag-pinned Watchtower. This is a dated
+**accepted risk** (accepted 2026-10-31, review 2027-01-31), aligned with the
+SLSA verification accepted risk and tracked in the
+[security posture Audit table](security-posture.md#audit). Until it is
+lifted, operators should keep the central-deploy component's auto-update flag
+off and trigger the self-update by hand after checking the new digest.
+
+**Failure modes this prevents:** provenance verification that covers every
+image except the one that controls all the others leaves the host one
+tampered `:main` push away from compromise — the attacker gets the Docker
+socket and the host filesystem in a single poll interval. An unpinned,
+unmaintained updater with socket access is a second direct host-compromise
+path: a tag re-pointed upstream, or a vulnerability that will never be
+patched, runs with the same privileges.
+
+**Alignment:** SLSA v1.x *verifying artifacts* (every rollout path), OWASP
+Top 10:2025 *A08 Software or Data Integrity Failures*, OWASP CICD-SEC-3 /
+CICD-SEC-9, OpenSSF Scorecard *Pinned-Dependencies* and *Maintained*.
 
 ## Rule of thumb
 

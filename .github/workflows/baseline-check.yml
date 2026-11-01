@@ -191,6 +191,29 @@ jobs:
       - name: Check dependency release-age cooldown
         run: uv run --group docs python scripts/check-dependency-cooldown.py
 
+  dockerfile-pin-check:
+    # Enforcement gate for docs/docker-standard.md (Build) and docs/security-posture.md
+    # gate 3: every external image in a Dockerfile is a literal `FROM <image>:<tag>@sha256:<digest>`
+    # with the python base as the first FROM, so Dependabot's docker ecosystem can
+    # bump it. An ARG-held digest or an inline `COPY --from=<registry image>` is never
+    # bumped. Fail-closed: any violation exits 1. See:
+    #   - scripts/check-dockerfile-pins.py (the gate logic)
+    #   - docs/docker-standard.md#build-the-dockerfile (the standard)
+    permissions:
+      contents: read
+    runs-on: ubuntu-latest
+    timeout-minutes: 5  # fast text parse check; well under 15-minute default
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: astral-sh/setup-uv@1c37ad07a6a961277cf70c0d37d6f313000f5884 # v10.3.0
+        with:
+          enable-cache: true
+          python-version: "3.14"
+      - name: Check Dockerfile pins are Dependabot-readable
+        run: uv run --group docs python scripts/check-dockerfile-pins.py
+
   secrets-patterns-excluded-check:
     # Enforcement gate for docs/secret-files-are-never-tracked.md: every repo
     # ships a reviewed .secrets-patterns-excluded file (newline-separated

@@ -135,8 +135,14 @@ vulnerable package before the PR merges.
 ### 3. Automated dependency updates — Renovate + Dependabot
 
 Every pin the standards mandate has exactly one named bumper. Renovate covers
-Python/uv lockfiles; Dependabot covers GitHub Actions SHAs, base-image digests,
-pre-commit hook versions, and npm packages. `renovate.json` declares the `uv`
+Python/uv lockfiles; Dependabot covers GitHub Actions SHAs, base-image and
+uv-image digests, pre-commit hook versions, and npm packages. Dependabot only
+sees an image pin written literally on a `FROM` line — a digest held in an
+`ARG` or an image pulled inline with `COPY --from=<image>` is never bumped, so
+the Dockerfile must use the
+[Dependabot-readable shape](docker-standard.md#build-the-dockerfile) (literal
+`@sha256` on every external `FROM`, python base as the first `FROM`, uv as a
+digest-pinned named stage). `renovate.json` declares the `uv`
 manager in every Python repo, and `.github/dependabot.yml` declares the
 remaining ecosystems; the baseline-check gate verifies both are present and
 complete. Dependabot and Renovate PRs auto-merge once required checks pass —
@@ -152,7 +158,12 @@ updates and first-party `damien-robotsix/*` packages are exempt — see
 - **How to verify:** `renovate.json` exists in every Python repo (covering the
   `uv` manager); `.github/dependabot.yml` exists and covers `github-actions`
   and `pre-commit` in every repo, plus `npm` in repos with `package.json` and
-  `docker` in image-shipping repos. The Dependabot and Renovate dashboards
+  `docker` in image-shipping repos, and every image-shipping repo's
+  `Dockerfile` has no `FROM …@${…}` line and no `COPY --from=<registry image>`
+  (every external image is a literal `FROM <image>:<tag>@sha256:<digest>`,
+  with the python base as the first `FROM`), verified fail-closed by
+  `scripts/check-dockerfile-pins.py` in `baseline-check.yml`.
+  The Dependabot and Renovate dashboards
   show recent update PRs. The `dependency-cooldown-check` job
   (`scripts/check-dependency-cooldown.py` in `baseline-check.yml`) finds a
   cooldown of at least 3 days on every auto-merge path, or an accepted-risk
@@ -160,7 +171,9 @@ updates and first-party `damien-robotsix/*` packages are exempt — see
   2027-01-31.
 - **Failure prevented:** a pinned digest (base image, action SHA) rots silently
   — the image stops receiving base-OS security patches, an action runs an
-  unmaintained version — with no alert. The cooldown prevents a second
+  unmaintained version — with no alert; this includes a digest that looks
+  pinned and "covered" but sits where Dependabot cannot read it (an `ARG`, a
+  `COPY --from=<image>`). The cooldown prevents a second
   failure: a freshly published malicious release passes CI and is
   auto-merged within hours, before it can be yanked.
 - **Alignment:** OpenSSF Scorecard *Dependency-Update-Tool* check; OWASP Top
@@ -647,6 +660,12 @@ stated inline.
   table and referenced from the
   [deployment system](deployment-system.md#provenance-verification-before-rollout).
 
+  The check applies to **every** rollout path, including the deployment
+  system's own self-update. The self-update rules (verify the digest before
+  the swap, a cooldown or human gate, a pinned and maintained updater image)
+  and their dated accepted risk are stated in
+  [deployment system — Self-update path](deployment-system.md#self-update-path).
+
 **Failure prevented:** without signed and verified provenance, an image
 tampered with after the build (a stolen GHCR token, a compromised push from
 outside the reusable workflow) deploys exactly like a genuine one. Unsigned
@@ -720,6 +739,7 @@ dashboard-watching:
 | Semgrep* | CI calls shared Semgrep workflow; latest CI run uploads Semgrep findings artifact |
 | Dependency review* | CI calls shared `dependency-review` workflow; Dependency graph enabled |
 | Dependabot + Renovate | `.github/dependabot.yml` covers non-uv ecosystems; `renovate.json` present in Python repos; recent update PRs; 3-day release-age cooldown on every auto-merge path, verified by `scripts/check-dependency-cooldown.py` in `baseline-check.yml` (warning-first, blocking from 2027-01-31) |
+| Dockerfile pin shape | Image-shipping repos: every external `FROM` is a literal `<image>:<tag>@sha256:<digest>`, the python base is the first `FROM`, `COPY --from` names only a prior stage (no `ARG`-held digest, no inline registry image) — verified fail-closed by `scripts/check-dockerfile-pins.py` (`dockerfile-pin-check` job in `baseline-check.yml`) |
 | SHA-pinned actions | `grep -r 'uses:' .github/workflows/` — no mutable refs on third-party actions; `scripts/check-workflow-security.py` passes in CI |
 | Workflow linting | `.pre-commit-config.yaml` includes `actionlint`; CI runs `zizmor` (content-only repos exempt from `zizmor`) |
 | Least-privilege permissions | Every workflow has `permissions:` block; `scripts/check-workflow-security.py` passes in CI; `zizmor` reports clean (code repos) |
@@ -731,13 +751,16 @@ dashboard-watching:
 | CVE audit* | `uv audit --preview-features audit-command` at the pinned uv version / `pip-audit` passes in CI |
 | Distribution / registry | No publish to a public package index and no public-registry credentials, per [distribution & packaging rules 4–5](distribution-packaging.md#enforcement). Verified by the `public-registry-check` job (`scripts/check-public-registry.py` in `baseline-check.yml`), which finds no `registry.npmjs.org` / `upload.pypi.org` / `pypi.org/legacy` endpoint, no `npm publish` / `twine upload` / `uv publish` without an approved internal registry, and no `NPM_TOKEN` / `PYPI_TOKEN` secret in workflows, `package.json` `publishConfig`, `.npmrc` or `pyproject.toml` — warning-first, blocking from 2027-01-31 |
 | SLSA Build provenance | Image-shipping repos: the published image index carries BuildKit provenance (`docker buildx imagetools inspect ghcr.io/<owner>/<repo>@<digest> --format '{{ json .Provenance }}'` is non-empty) — Build L1 on either runner class. Once `docker-release.yml` signs it, the deployment system verifies before rollout: public-repo (GitHub-hosted) images with `gh attestation verify oci://ghcr.io/<owner>/<repo>@<digest> --owner <owner> --deny-self-hosted-runners` (Build L3); private-repo (self-hosted) images — which cannot use GitHub attestations on the free plan — with the fleet cosign public key, once the pinned cosign version is confirmed to accept these flags (v2.6.5 does): `cosign verify-attestation --key <cosign.pub> --type slsaprovenance1 --insecure-ignore-tlog=true ghcr.io/<owner>/<repo>@<digest>` (at most Build L2, and Build L1 while the signing key is reachable from co-tenant jobs on the shared runner; self-hosted, key-signed provenance is a dated accepted risk, accepted 2026-10-29, review 2027-01-31, until the key is isolated and the runner is ephemeral/JIT and isolated per job). Signing and verification are a dated accepted risk until then (review 2027-01-31) — per [SLSA Build Track](#slsa-build-track) |
+| Deployment-system self-update | central-deploy's self-update path verifies the new image digest's provenance before the swap and deploys that digest, waits a cooldown or an operator, and runs a digest-pinned, maintained updater image bumped by Dependabot/Renovate — per [deployment system — Self-update path](deployment-system.md#self-update-path). Not met today (one-shot, tag-pinned `containrrr/watchtower:1.7.1`, archived upstream 2025-12-17): a dated accepted risk, accepted 2026-10-31, review 2027-01-31 |
 | Container image scan | Trivy PR-scan and publish workflows present and passing (image-shipping repos only) |
 | Vulnerability disclosure | `SECURITY.md` present at repo root with contact method, response-time expectation, and coordinated-disclosure statement — fail-closed: `security-md-check` in `baseline-check.yml` fails CI (exit 1) when it is missing or incomplete |
-| Config API secret redaction | Deployment system / management surfaces: central-deploy config-read endpoints (`GET /config`, version-history reads, audit-log serialization) route through `mask_secrets()` before serialization; config writes use `apply_update()` merge-on-write; version history stores no secret values — audited per [config standard §3](config-standard.md#how-this-is-enforced) |
+| Config API secret redaction | Deployment system / management surfaces and every component with a `/config` surface: central-deploy config-read endpoints (`GET /config`, version-history reads, audit-log serialization) and each component's `GET /config` responses route through `robotsix_config.mask_secrets()` before serialization, `GET /config/versions` is served by `read_versions()` with no secret value in its response, and rollback goes through `rollback()` (no hand-rolled serializer of the config model); config writes use `apply_update()` merge-on-write; version history stores no secret values — audited per [config standard §3](config-standard.md#how-this-is-enforced) |
 | Config secrets typed SecretStr | Repos with a pydantic config model: `.pre-commit-config.yaml` includes the remote `check-secret-str` hook (`repo: https://github.com/damien-robotsix/robotsix-standards`) at a pinned `rev:`, and `config/config.schema.json` marks every secret-named field (`api_key`, `token`, `password`, `secret`, ...) `writeOnly: true`. The second check is a fallback you can grep without running the hook. Per [config standard §3](config-standard.md#3-one-secret-convention) |
-| Config history contains no secret values | Components with a `/config` surface: the `<config>.versions` sidecar's `data` snapshots carry only a set/unset marker for each `SecretStr` / `writeOnly` field, per [config ownership](config-ownership.md#where-the-history-lives-and-who-implements-it). Until the planned `robotsix_config.history` unit test (write a secret, rotate it, assert the old value is absent from `<config>.versions`) exists, audit this by code review of the sidecar writer; the test is not yet in place (CWE-312, CWE-226) |
+| Config history contains no secret values | Components with a `/config` surface: the `<config>.versions` sidecar's `data` snapshots carry only a set/unset marker for each `SecretStr` / `writeOnly` field, per [config ownership](config-ownership.md#where-the-history-lives-and-who-implements-it). Until the planned `robotsix_config.history` unit test (write a secret, rotate it, assert the old value is absent from `<config>.versions`) exists, audit this by code review of the sidecar writer and by the periodic [`component-security-audit`](mill-agents.md#component-security-audit) agent ([config standard §3](config-standard.md#how-this-is-enforced)); the test is not yet in place (CWE-312, CWE-226) |
+| Chat observability volume reads | Deployment system only (central-deploy): the `/chat/services/{name}/volumes/{vol}/files` handler resolves `path` against the volume root and rejects `..`, absolute paths and escaping symlinks; no write or delete route exists under the chat volumes routes; a test reads the `robotsix.deploy.config-target` path with a sentinel secret and asserts `403` or redacted JSON (via `mask_secrets()`) with the sentinel absent, and `403` for invalid JSON or a missing schema (fail closed); a test asserts `403` for a read inside the `claude-auth` volume and for `*.pem` / `*.key` / `.env` / `.env.*` files, decided on the resolved path. Audited at code review and by the periodic [`component-security-audit`](mill-agents.md#component-security-audit) agent, per [chat access §5](chat-access-standard.md#how-this-is-enforced) (CWE-22, CWE-200, CWE-312, OWASP LLM02:2025) |
 | Log hygiene | Deployable HTTP components: a test sends a request carrying `Authorization: Bearer <sentinel>` and asserts the sentinel string is absent from captured log output; a grep/Semgrep rule finds no logging call that passes `request.headers` or `request.url` (e.g. `logger\..*\(.*request\.headers` and `logger\..*\(.*request\.url\b(?!\.path)`); a structlog redaction processor sits at the start of the chain; any per-request DEBUG override accepts only authenticated operator or internal callers — per [logging rule 6](logging.md#6-never-log-sensitive-data) (CWE-532, OWASP A09:2025) |
-| LLM & agentic security | Repos whose core function involves LLM agents: `robotsix-llmio` pinned to a commit SHA in `pyproject.toml`; llmio level/model selection is an explicit config field (not hard-coded, not env); tracing/provider credentials are `SecretStr` in the canonical `langfuse`/`openrouter` config blocks; destructive git ops default to dry-run; scoped single-repo token (no org/admin scopes). Non-mechanical controls (LLM01/02/05/06/07/08/10, ASI01–ASI10) are covered by the periodic standards-audit agent — see below |
+| Anti-caching on sensitive responses | Deployable HTTP components: the `Secure` object registered with `SecureASGIMiddleware` adds `CacheControl().no_store()`, so every authenticated, personalised, config, conversation or credential-adjacent response — including `text/event-stream` — carries `Cache-Control: no-store`; only explicit public static-asset paths opt out — per [HTTP security headers rule 5](http-security-headers.md#5-sensitive-responses-are-not-stored) and [SSE response headers rule 1](sse-response-headers.md#1-every-textevent-stream-response-carries-the-three-headers) (OWASP ASVS 5.0 V14.3.2, CWE-525) |
+| LLM & agentic security | Repos whose core function involves LLM agents: `robotsix-llmio` pinned to a commit SHA in `pyproject.toml`; llmio level/model selection is an explicit config field (not hard-coded, not env); tracing/provider credentials are `SecretStr` in the canonical `langfuse`/`openrouter` config blocks; destructive git ops default to dry-run; scoped single-repo token (no org/admin scopes). Non-mechanical controls (LLM01/02/05/06/07/08/10, ASI01–ASI10) are covered by the periodic [`component-security-audit`](mill-agents.md#component-security-audit) agent — see below |
 
 *Content-only repos are exempt per the preamble above.
 
@@ -753,7 +776,7 @@ through `robotsix-llmio`. The requirements live in the
 and its [Agentic Applications mapping](component-standard.md#agentic-applications).
 Most of its MUST/MUST NOT controls are design-level rules with no CI gate, so
 enforcement is by **audit** — checked at component code review and by the
-periodic standards-audit agent — against the criteria below, mirroring the
+periodic [`component-security-audit`](mill-agents.md#component-security-audit) agent — against the criteria below, mirroring the
 pattern in [HTTP security headers](http-security-headers.md#how-this-is-enforced),
 [SSE response headers](sse-response-headers.md#how-this-is-enforced), and
 [SSRF-hardened fetchers](ssrf-hardened-fetchers.md#how-this-is-enforced).
@@ -766,7 +789,7 @@ code-review gates already in this standard:
 | LLM04 — supply chain | `robotsix-llmio` is pinned to a full commit SHA (not a branch or tag) in `pyproject.toml`; llmio level/model selection is an explicit config field, not hard-coded in code or read from env. |
 | LLM02/03/08 — secrets & least privilege | Tracing/provider credentials are `SecretStr` fields in the canonical `langfuse`/`openrouter` config blocks; destructive git operations (`push`, `force-push`, branch deletion) default to dry-run; git uses a scoped single-repo token with no org/admin scopes. |
 
-**Periodic standards-audit-agent checks** — design-level controls an auditor
+**Periodic [`component-security-audit`](mill-agents.md#component-security-audit) checks** — design-level controls an auditor
 reads against the criteria below:
 
 | Rule | Audit criterion |

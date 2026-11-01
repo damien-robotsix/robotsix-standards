@@ -3311,7 +3311,19 @@ implements it: a component defines one pydantic model and calls <code>load_confi
   <code>dict[str, SecretStr]</code> — and on a <strong>secret list</strong> with the same names
   annotated <code>list[str]</code> / <code>Sequence[str]</code> instead of <code>list[SecretStr]</code>. Any other secret map
   MUST use <code>SecretStr</code> (or a sub-model with <code>SecretStr</code> fields, like
-  <code>langfuse.projects</code>) as its value type. robotsix-standards
+  <code>langfuse.projects</code>) as its value type. A field whose name only
+  <em>looks</em> secret but holds no secret — e.g. a <code>linkedin_token_file</code> that
+  stores a file path — is exempted by a <strong>same-line pragma</strong> with a
+  mandatory reason:
+  <code>linkedin_token_file: str = ""  # secret-str: not-a-secret (file path)</code>.
+  The pragma without a non-empty reason in the parentheses does not exempt
+  the field, and a pragma on any other line (e.g. the line above) has no
+  effect. <em>Failure mode it prevents:</em> without an escape hatch, a
+  path-valued field must be retyped <code>SecretStr</code>, which breaks
+  robotsix-config semantics — an empty/masked value then means "leave
+  unchanged" (so <code>""</code> can no longer disable the feature), rollback skips
+  it, <code>GET /config</code> masks the path, and the schema marks it <code>writeOnly</code>;
+  the mandatory reason keeps every exemption reviewable. robotsix-standards
   <strong>publishes</strong> it through its <code>.pre-commit-hooks.yaml</code>. Every repo with a
   pydantic config model references it as a remote hook
   (<code>repo: https://github.com/damien-robotsix/robotsix-standards</code>,

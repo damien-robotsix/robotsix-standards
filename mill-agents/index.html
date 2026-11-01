@@ -3125,10 +3125,27 @@ presence (<a href="../python-ci-workflow/">python-ci-workflow</a>), config schem
 (<a href="../ci-lint-pinning/">ci-lint-pinning</a>), and GitHub Actions security
 (<a href="../github-actions-security/">github-actions-security</a>). A check that does
 not apply to a repo is skipped, never flagged.</p>
+<p><strong>Runner-posture check:</strong> on every pass it also runs the self-hosted runner
+visibility check from
+<a href="../repo-baseline/#self-hosted-runner-hardening">repo baseline</a> against
+<strong>every</strong> non-archived fleet repo, not only the rotation sample: no runner
+is registered to a public repo, and every repo with a registered runner is
+private. <em>Failure mode this prevents:</em> a runner left registered to a repo
+made public, which lets any fork pull request run code on the host, would
+otherwise go unnoticed until the next manual host check.</p>
+<p><strong>Runner host checklist reminder:</strong> it does not check the host items
+itself. When the operator's 90-day runner host checklist (owner and items
+in <a href="../repo-baseline/#self-hosted-runner-hardening">repo baseline</a>) falls
+due, it records <code>runner-host-checklist due: &lt;date&gt;</code> in its memory ledger
+instead of filing a draft ticket. A chat periodic session posts the
+reminder to the operator. <em>Failure mode this prevents:</em> a draft with an
+empty <code>draft_repo_ids</code> lands on the robotsix-standards board and is closed
+"no change needed", so the reminder would be silently lost.</p>
 <p><strong>Sampling:</strong> it does not scan the whole fleet every run. Each pass picks a
 rotation subset of roughly 25–33% of the repos — the least-recently-checked
 ones per its memory ledger — so the fleet is covered over three to four
-passes and drift stays visible without a full-fleet scan each month.</p>
+passes and drift stays visible without a full-fleet scan each month. The
+runner-posture check is the one exception and covers every repo.</p>
 <p><strong>What it does NOT do:</strong> it never edits, opens PRs against, or remediates
 another repo. It reads each sampled repo, records per-standard compliance,
 and files draft tickets; the operator remediates.</p>

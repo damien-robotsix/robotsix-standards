@@ -747,6 +747,10 @@ pre-commit install
 ```
 
 CI runs `pre-commit run --all-files` so the hooks and the gates can't drift.
+A CI `SKIP:` list may skip hooks a dedicated CI step already runs, but never a
+secret-scanning hook (`detect-secrets`, `detect-private-key`) — the local hook
+is bypassable with `--no-verify`, so CI is where it is enforced (see
+[secret push protection](security-posture.md#5-secret-push-protection)).
 
 ## Docs
 

@@ -270,7 +270,10 @@ isolation. The rule itself is set out in
   when the repo is public and any job's `runs-on`, or a reusable-workflow
   caller's `runs-on` input, targets `self-hosted`. It also fails when
   visibility is unknown. The runner-registration and fork-PR settings are not in
-  the repo, so they are checked by hand, as the [Audit](#audit) row says.
+  the repo. The `fleet-compliance-audit` mill agent checks runner
+  registration against repo visibility every 30 days. The fork-PR setting
+  and the host items are on the operator's 90-day runner host checklist, as
+  the [Audit](#audit) row says.
   zizmor's `self-hosted-runner` audit runs only in the *auditor* persona,
   so the fleet's pedantic zizmor invocation (gate 4b) does **not** catch
   this. The script is the gate.
@@ -527,8 +530,12 @@ on the fleet's persistent self-hosted runner. That runner is shared across
 repositories and reused between jobs, so it does not give the run isolation SLSA
 Build L3 requires ("the build platform ensures runs cannot influence one
 another"): an earlier job on the host can tamper with the build cache, BuildKit
-state or the toolchain. The provenance `builder.id` and runner environment also
-differ from the GitHub-hosted case.
+state or the toolchain. This runner also falls short of the ephemeral/JIT and
+wipe-between-jobs rules in
+[self-hosted runner hardening](repo-baseline.md#self-hosted-runner-hardening).
+That cross-repo contamination risk (CICD-SEC-7) is its own dated accepted risk,
+separate from the provenance risk on this page. The provenance `builder.id`
+and runner environment also differ from the GitHub-hosted case.
 
 The signing mechanism also depends on **repository visibility**. GitHub
 artifact attestations (`actions/attest-build-provenance`, `gh attestation
@@ -754,7 +761,7 @@ dashboard-watching:
 | SHA-pinned actions | `grep -r 'uses:' .github/workflows/` — no mutable refs on third-party actions; `scripts/check-workflow-security.py` passes in CI |
 | Workflow linting | `.pre-commit-config.yaml` includes `actionlint`; CI runs `zizmor` (content-only repos exempt from `zizmor`) |
 | Least-privilege permissions | Every workflow has `permissions:` block; `scripts/check-workflow-security.py` passes in CI; `zizmor` reports clean (code repos) |
-| Runner isolation | Public repos target no self-hosted runner: `scripts/check-runner-visibility.py` (`runner-visibility-check` job in `baseline-check.yml`) passes. It is fail-closed, and private repos on GitHub-hosted runners only warn. By hand: `gh api repos/<owner>/<repo>/actions/runners` shows no runner registered to any public repo (personal account, so no runner groups); for private repos, "Run workflows from fork pull requests" is off; the runner is ephemeral/JIT — per [repo baseline](repo-baseline.md#self-hosted-runner-hardening) |
+| Runner isolation | Public repos target no self-hosted runner: `scripts/check-runner-visibility.py` (`runner-visibility-check` job in `baseline-check.yml`) passes. It is fail-closed, and private repos on GitHub-hosted runners only warn. Every 30 days, on every fleet repo, the `fleet-compliance-audit` mill agent checks that `gh api repos/<owner>/<repo>/actions/runners` returns `total_count: 0` for each public repo (personal account, so no runner groups) and that `.private` is `true` for each repo with a registered runner. The operator's 90-day runner host checklist (flagged by `fleet-compliance-audit` and posted to the operator by a chat periodic session, not a draft ticket) covers the rest: "Run workflows from fork pull requests" is off on private repos, the runner is ephemeral/JIT or wiped between jobs, the runner user is non-root, the production Docker socket is not shared, and an egress firewall is in place. The persistent shared runner meets neither the ephemeral/JIT rule nor the wipe rule, and this is a dated accepted risk (CICD-SEC-7, accepted 2026-10-29, review 2027-01-31) — per [repo baseline](repo-baseline.md#self-hosted-runner-hardening) |
 | Actions PR approval disabled | `gh api repos/<owner>/<repo>/actions/permissions/workflow -q .can_approve_pull_request_reviews` returns `false`, so `GITHUB_TOKEN` cannot satisfy the required approving review — per [repo baseline](repo-baseline.md#branch-protection); set by the robotsix-github-workflows apply-script; not machine-verified since the watchdog's [retirement](mill-agents.md#retired-agents) — check by hand |
 | Secret push protection | Push protection enabled in repo Security settings; `detect-secrets` in pre-commit; CI runs TruffleHog (content-only repos exempt from TruffleHog) |
 | Credential-file deny list | `.gitignore` covers `.htpasswd`, `.env`/`.env.*`, `wp-config*.php`, `*.pem`, `*.key`, `*secret*`, `*.p12` — verified by `scripts/check-gitignore-denylist.py` in `baseline-check.yml` (warning-first, blocking from 2027-01-31; honors per-repo negating exceptions) — and `.secrets-patterns-excluded` presence and wiring by `scripts/check-secrets-patterns-excluded.py` (same dates) |

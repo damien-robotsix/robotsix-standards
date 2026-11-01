@@ -121,10 +121,29 @@ presence ([python-ci-workflow](python-ci-workflow.md)), config schema sync
 ([github-actions-security](github-actions-security.md)). A check that does
 not apply to a repo is skipped, never flagged.
 
+**Runner-posture check:** on every pass it also runs the self-hosted runner
+visibility check from
+[repo baseline](repo-baseline.md#self-hosted-runner-hardening) against
+**every** non-archived fleet repo, not only the rotation sample: no runner
+is registered to a public repo, and every repo with a registered runner is
+private. *Failure mode this prevents:* a runner left registered to a repo
+made public, which lets any fork pull request run code on the host, would
+otherwise go unnoticed until the next manual host check.
+
+**Runner host checklist reminder:** it does not check the host items
+itself. When the operator's 90-day runner host checklist (owner and items
+in [repo baseline](repo-baseline.md#self-hosted-runner-hardening)) falls
+due, it records `runner-host-checklist due: <date>` in its memory ledger
+instead of filing a draft ticket. A chat periodic session posts the
+reminder to the operator. *Failure mode this prevents:* a draft with an
+empty `draft_repo_ids` lands on the robotsix-standards board and is closed
+"no change needed", so the reminder would be silently lost.
+
 **Sampling:** it does not scan the whole fleet every run. Each pass picks a
 rotation subset of roughly 25–33% of the repos — the least-recently-checked
 ones per its memory ledger — so the fleet is covered over three to four
-passes and drift stays visible without a full-fleet scan each month.
+passes and drift stays visible without a full-fleet scan each month. The
+runner-posture check is the one exception and covers every repo.
 
 **What it does NOT do:** it never edits, opens PRs against, or remediates
 another repo. It reads each sampled repo, records per-standard compliance,

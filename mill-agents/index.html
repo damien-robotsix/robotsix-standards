@@ -3133,6 +3133,14 @@ is registered to a public repo, and every repo with a registered runner is
 private. <em>Failure mode this prevents:</em> a runner left registered to a repo
 made public, which lets any fork pull request run code on the host, would
 otherwise go unnoticed until the next manual host check.</p>
+<p>The check uses two API calls per repo. A public repo (<code>.private</code> is <code>false</code>) must
+report <code>total_count: 0</code> registered runners. A repo with any registered
+runner must have <code>.private</code> set to <code>true</code>. The fix is a GitHub setting, so
+the draft is marked operator action required. If either call fails, is
+unauthorised (401/403/404), is rate-limited or returns unexpected output, the
+repo is recorded as <strong>runner check inconclusive</strong> and re-checked on the next
+pass. An inconclusive result is not compliant, and it is not a finding.
+Reading a failed call as "zero runners" would hide a runner on a public repo.</p>
 <p><strong>Runner host checklist reminder:</strong> it does not check the host items
 itself. When the operator's 90-day runner host checklist (owner and items
 in <a href="../repo-baseline/#self-hosted-runner-hardening">repo baseline</a>) falls
@@ -3147,7 +3155,10 @@ empty <code>draft_repo_ids</code> lands on the robotsix-standards board and is c
 rotation subset of roughly 25–33% of the repos — the least-recently-checked
 ones per its memory ledger — so the fleet is covered over three to four
 passes and drift stays visible without a full-fleet scan each month. The
-runner-posture check is the one exception and covers every repo.</p>
+self-hosted runner posture check is the exception. It runs against
+<strong>every</strong> non-archived fleet repo on <strong>every</strong> pass, because it only costs
+two API calls per repo. A runner on a public repo would otherwise go unseen
+for up to three or four months.</p>
 <p><strong>What it does NOT do:</strong> it never edits, opens PRs against, or remediates
 another repo. It reads each sampled repo, records per-standard compliance,
 and files draft tickets; the operator remediates.</p>
@@ -3155,7 +3166,17 @@ and files draft tickets; the operator remediates.</p>
 check, the standard it violates, observed vs. required, and a concrete
 remediation. The memory ledger carries a per-standard compliance tally so
 drift is visible across passes. A clean pass with no findings is a valid
-result.</p>
+result. Runner posture drafts are filed <strong>first</strong>, before any rotation-sample
+draft. They have their own budget of up to 5 per pass and do not count
+against the rotation's 5-draft cap. A runner finding that does not fit the
+budget is carried in memory and filed first on the next pass. Each draft is
+filed on the audited repo's board, including repos outside this pass's
+rotation. The agent does <strong>not</strong> file a draft for the 90-day runner host
+checklist reminder. Such a draft would land on this board with no repo to
+edit and be closed "no change needed". Once 90 days have passed since the
+last reminder, the agent records <code>runner-host-checklist due: &lt;date&gt;</code> in its
+memory ledger instead, and a chat periodic session sends the reminder to the
+operator.</p>
 <p><strong>Cadence:</strong> monthly (2592000 seconds).</p>
 <p><strong>Capability level:</strong> 2 (intermediate reasoning — mapping repo contents
 against several standards pages and judging applicability per repo requires

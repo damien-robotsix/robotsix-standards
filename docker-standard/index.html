@@ -3126,10 +3126,29 @@ apart across the stack.</p>
   <code>docker</code> ecosystem bumps the digest — see
   <a href="../repo-baseline/#automated-dependency-updates">automated dependency updates</a>;
   an unbumped digest pin silently stops receiving base security patches.)</li>
-<li><strong>Builder stage:</strong> bring in uv
-  (<code>COPY --from=ghcr.io/astral-sh/uv:&lt;x.y.z&gt; /uv /uvx /bin/</code>, pinned to a
-  released version), install <code>git</code> (uv needs it to clone the
-  <code>[tool.uv.sources]</code> git-pinned first-party dependencies), and install the
+<li><strong>Pins written where the bumper reads them:</strong> write every external image
+  reference <strong>literally on a <code>FROM</code> line</strong> as <code>&lt;image&gt;:&lt;tag&gt;@sha256:&lt;digest&gt;</code>.
+  The python base is the <strong>first</strong> <code>FROM</code> line (Dependabot's Docker support
+  reads the first <code>FROM</code> and the external images it names); later python stages
+  reuse it with <code>FROM base</code>, so the digest is written once. Never move a
+  digest or tag into an <code>ARG</code> (<code>FROM python:3.14-slim@${BASE_DIGEST}</code>), and
+  never pull an image inline with <code>COPY --from=&lt;registry&gt;/&lt;image&gt;:&lt;tag&gt;</code>:
+  GitHub documents that Dockerfiles "do not receive updates to images
+  specified with the <code>ARG</code> directive", and Dependabot does not parse
+  <code>COPY --from=&lt;image&gt;</code> (dependabot-core #5103, #7640). <strong>Failure mode:</strong> a
+  pin Dependabot cannot see is never bumped and never flagged — the base image
+  stops receiving OS security patches while gate 3 appears satisfied. The
+  fleet's proven pattern is robotsix-mill's <code>Dockerfile</code>, which writes the
+  literal digest on its <code>FROM python:3.14-slim@sha256:…</code> lines.</li>
+<li><strong>uv as a named stage:</strong> bring in uv through its own stage, pinned by
+  <strong>version and digest</strong> as the uv Docker guide recommends —
+  <code>FROM ghcr.io/astral-sh/uv:&lt;x.y.z&gt;@sha256:&lt;digest&gt; AS uv</code>, placed after the
+  <code>base</code> stage and before the builder, then <code>COPY --from=uv /uv /uvx /bin/</code>
+  (GitHub's documented workaround for <code>COPY --from</code>). <strong>Failure mode:</strong> a
+  tag-only uv pin is mutable — a re-pushed tag silently swaps the binary that
+  writes every installed site-package in the build stage — and an inline
+  <code>COPY --from=&lt;image&gt;</code> pin is invisible to Dependabot, so it never moves.</li>
+<li><strong>Builder stage:</strong> copy uv from the <code>uv</code> stage, install <code>git</code> (uv needs it to clone the
   project <strong>into the system interpreter</strong> from the frozen lockfile:</li>
 </ul>
 <div class="highlight"><pre><span></span><code>uv<span class="w"> </span><span class="nb">export</span><span class="w"> </span>--frozen<span class="w"> </span>--no-emit-project<span class="w"> </span>--format<span class="w"> </span>requirements-txt<span class="w"> </span>-o<span class="w"> </span>/tmp/requirements.txt
@@ -3193,10 +3212,17 @@ uv<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </s
   <a href="../entrypoint-contract/">entrypoint contract</a>.
 - <strong>Port:</strong> <code>EXPOSE</code> the service port.</p>
 <div class="highlight"><pre><span></span><code><span class="c"># syntax=docker/dockerfile:1</span>
-<span class="k">ARG</span><span class="w"> </span><span class="nv">BASE_DIGEST</span><span class="o">=</span>sha256:...<span class="w">        </span>#<span class="w"> </span>pin<span class="w"> </span>the<span class="w"> </span>python:3.14-slim<span class="w"> </span>digest
+<span class="c"># Every image pin is written literally on its FROM line (tag + @sha256 digest),</span>
+<span class="c"># never via ARG or an inline COPY --from=&lt;image&gt;: Dependabot cannot bump those.</span>
 
-<span class="k">FROM</span><span class="w"> </span><span class="s">python:3.14-slim@${BASE_DIGEST}</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="s">builder</span>
-<span class="k">COPY</span><span class="w"> </span>--from<span class="o">=</span>ghcr.io/astral-sh/uv:0.11.26<span class="w"> </span>/uv<span class="w"> </span>/uvx<span class="w"> </span>/bin/
+<span class="c"># The python base is the first FROM, digest written literally; later stages reuse it.</span>
+<span class="k">FROM</span><span class="w"> </span><span class="s">python:3.14-slim@sha256:&lt;digest&gt;</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="s">base</span>
+
+<span class="c"># uv, pinned by version and digest, brought in through a named stage.</span>
+<span class="k">FROM</span><span class="w"> </span><span class="s">ghcr.io/astral-sh/uv:0.11.26@sha256:&lt;uv-digest&gt;</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="s">uv</span>
+
+<span class="k">FROM</span><span class="w"> </span><span class="s">base</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="s">builder</span>
+<span class="k">COPY</span><span class="w"> </span>--from<span class="o">=</span>uv<span class="w"> </span>/uv<span class="w"> </span>/uvx<span class="w"> </span>/bin/
 <span class="k">WORKDIR</span><span class="w"> </span><span class="s">/app</span>
 
 <span class="c"># git: uv must clone the [tool.uv.sources] git-pinned first-party deps.</span>
@@ -3215,7 +3241,7 @@ uv<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </s
 <span class="w">    </span><span class="o">&amp;&amp;</span><span class="w"> </span>uv<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>--system<span class="w"> </span>--no-deps<span class="w"> </span>.<span class="w"> </span><span class="se">\</span>
 <span class="w">    </span><span class="o">&amp;&amp;</span><span class="w"> </span>rm<span class="w"> </span>-f<span class="w"> </span>/tmp/requirements.txt
 
-<span class="k">FROM</span><span class="w"> </span><span class="s">python:3.14-slim@${BASE_DIGEST}</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="s">production</span>
+<span class="k">FROM</span><span class="w"> </span><span class="s">base</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="s">production</span>
 <span class="k">COPY</span><span class="w"> </span>--from<span class="o">=</span>builder<span class="w"> </span>/usr/local/lib/python3.14/site-packages/<span class="w"> </span>/usr/local/lib/python3.14/site-packages/
 <span class="k">COPY</span><span class="w"> </span>--from<span class="o">=</span>builder<span class="w"> </span>/usr/local/bin/robotsix-&lt;name&gt;<span class="w"> </span>/usr/local/bin/robotsix-&lt;name&gt;
 <span class="c"># Standardized layout: app/1000, /home/app. The deployment system sets the</span>

@@ -3609,8 +3609,14 @@ vulnerable package before the PR merges.</p>
 </ul>
 <h3 id="3-automated-dependency-updates-renovate-dependabot">3. Automated dependency updates — Renovate + Dependabot<a class="headerlink" href="#3-automated-dependency-updates-renovate-dependabot" title="Permanent link">&para;</a></h3>
 <p>Every pin the standards mandate has exactly one named bumper. Renovate covers
-Python/uv lockfiles; Dependabot covers GitHub Actions SHAs, base-image digests,
-pre-commit hook versions, and npm packages. <code>renovate.json</code> declares the <code>uv</code>
+Python/uv lockfiles; Dependabot covers GitHub Actions SHAs, base-image and
+uv-image digests, pre-commit hook versions, and npm packages. Dependabot only
+sees an image pin written literally on a <code>FROM</code> line — a digest held in an
+<code>ARG</code> or an image pulled inline with <code>COPY --from=&lt;image&gt;</code> is never bumped, so
+the Dockerfile must use the
+<a href="../docker-standard/#build-the-dockerfile">Dependabot-readable shape</a> (literal
+<code>@sha256</code> on every external <code>FROM</code>, python base as the first <code>FROM</code>, uv as a
+digest-pinned named stage). <code>renovate.json</code> declares the <code>uv</code>
 manager in every Python repo, and <code>.github/dependabot.yml</code> declares the
 remaining ecosystems; the baseline-check gate verifies both are present and
 complete. Dependabot and Renovate PRs auto-merge once required checks pass —
@@ -3626,7 +3632,12 @@ updates and first-party <code>damien-robotsix/*</code> packages are exempt — s
 <li><strong>How to verify:</strong> <code>renovate.json</code> exists in every Python repo (covering the
   <code>uv</code> manager); <code>.github/dependabot.yml</code> exists and covers <code>github-actions</code>
   and <code>pre-commit</code> in every repo, plus <code>npm</code> in repos with <code>package.json</code> and
-  <code>docker</code> in image-shipping repos. The Dependabot and Renovate dashboards
+  <code>docker</code> in image-shipping repos, and every image-shipping repo's
+  <code>Dockerfile</code> has no <code>FROM …@${…}</code> line and no <code>COPY --from=&lt;registry image&gt;</code>
+  (every external image is a literal <code>FROM &lt;image&gt;:&lt;tag&gt;@sha256:&lt;digest&gt;</code>,
+  with the python base as the first <code>FROM</code>), verified fail-closed by
+  <code>scripts/check-dockerfile-pins.py</code> in <code>baseline-check.yml</code>.
+  The Dependabot and Renovate dashboards
   show recent update PRs. The <code>dependency-cooldown-check</code> job
   (<code>scripts/check-dependency-cooldown.py</code> in <code>baseline-check.yml</code>) finds a
   cooldown of at least 3 days on every auto-merge path, or an accepted-risk
@@ -3634,7 +3645,9 @@ updates and first-party <code>damien-robotsix/*</code> packages are exempt — s
   2027-01-31.</li>
 <li><strong>Failure prevented:</strong> a pinned digest (base image, action SHA) rots silently
   — the image stops receiving base-OS security patches, an action runs an
-  unmaintained version — with no alert. The cooldown prevents a second
+  unmaintained version — with no alert; this includes a digest that looks
+  pinned and "covered" but sits where Dependabot cannot read it (an <code>ARG</code>, a
+  <code>COPY --from=&lt;image&gt;</code>). The cooldown prevents a second
   failure: a freshly published malicious release passes CI and is
   auto-merged within hours, before it can be yanked.</li>
 <li><strong>Alignment:</strong> OpenSSF Scorecard <em>Dependency-Update-Tool</em> check; OWASP Top
@@ -4225,6 +4238,10 @@ dashboard-watching:</p>
 <tr>
 <td>Dependabot + Renovate</td>
 <td><code>.github/dependabot.yml</code> covers non-uv ecosystems; <code>renovate.json</code> present in Python repos; recent update PRs; 3-day release-age cooldown on every auto-merge path, verified by <code>scripts/check-dependency-cooldown.py</code> in <code>baseline-check.yml</code> (warning-first, blocking from 2027-01-31)</td>
+</tr>
+<tr>
+<td>Dockerfile pin shape</td>
+<td>Image-shipping repos: every external <code>FROM</code> is a literal <code>&lt;image&gt;:&lt;tag&gt;@sha256:&lt;digest&gt;</code>, the python base is the first <code>FROM</code>, <code>COPY --from</code> names only a prior stage (no <code>ARG</code>-held digest, no inline registry image) — verified fail-closed by <code>scripts/check-dockerfile-pins.py</code> (<code>dockerfile-pin-check</code> job in <code>baseline-check.yml</code>)</td>
 </tr>
 <tr>
 <td>SHA-pinned actions</td>

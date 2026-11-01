@@ -4026,8 +4026,8 @@ receiving security patches until someone moves it):</p>
 <td>Dependabot <code>github-actions</code> ecosystem</td>
 </tr>
 <tr>
-<td>Base-image digests + the <code>COPY --from</code> pin</td>
-<td>Dependabot <code>docker</code> ecosystem</td>
+<td>Base-image and uv-image digests, written literally on <code>FROM</code> lines</td>
+<td>Dependabot <code>docker</code> ecosystem — only for pins in the <a href="../docker-standard/#build-the-dockerfile">Dependabot-readable shape</a> (python base as the first <code>FROM</code>); an <code>ARG</code>-held digest or an inline <code>COPY --from=&lt;image&gt;</code> pin has <strong>no</strong> bumper</td>
 </tr>
 <tr>
 <td>Pre-commit hook versions</td>

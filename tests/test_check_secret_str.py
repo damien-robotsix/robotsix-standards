@@ -258,3 +258,44 @@ def test_hook_script_parses_on_python_310_grammar():
         Path(__file__).resolve().parents[1] / "scripts" / "check-secret-str.py"
     ).read_text()
     ast.parse(src, feature_version=(3, 10))
+
+
+def test_path_file_dir_url_type_suffixes_are_not_secrets(
+    check_secret_str: ModuleType,
+) -> None:
+    """Non-secret carriers of a secret-sounding word (2026-10-29 rollout:
+    linkedin_token_file, secret_key_path, token_type) are not flagged."""
+    source = """\
+from pydantic import BaseModel
+
+
+class Cfg(BaseModel):
+    linkedin_token_file: str = ""
+    secret_key_path: str = "/data/secret.key"
+    token_dir: str | None = None
+    token_url: str = "https://example.com/oauth/token"
+    token_type: str = "Bearer"
+    api_token: str = ""
+"""
+    assert _fields(check_secret_str, source) == ["Cfg.api_token"]
+
+
+def test_inline_ignore_pragma_skips_the_field(check_secret_str: ModuleType) -> None:
+    source = """\
+from pydantic import BaseModel, Field
+
+
+class TokenResponse(BaseModel):
+    access_token: str = Field(  # check-secret-str: ignore  (API response)
+        ..., description="Bearer token returned to the client."
+    )
+    refresh_token: str = Field(
+        ...,
+        description="flagged: no pragma",
+    )
+    id_token: str = Field(
+        ...,
+        description="pragma on a later line of the field",  # check-secret-str: ignore
+    )
+"""
+    assert _fields(check_secret_str, source) == ["TokenResponse.refresh_token"]

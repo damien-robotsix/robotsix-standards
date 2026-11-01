@@ -3739,7 +3739,10 @@ isolation. The rule itself is set out in
   when the repo is public and any job's <code>runs-on</code>, or a reusable-workflow
   caller's <code>runs-on</code> input, targets <code>self-hosted</code>. It also fails when
   visibility is unknown. The runner-registration and fork-PR settings are not in
-  the repo, so they are checked by hand, as the <a href="#audit">Audit</a> row says.
+  the repo. The <code>fleet-compliance-audit</code> mill agent checks runner
+  registration against repo visibility every 30 days. The fork-PR setting
+  and the host items are on the operator's 90-day runner host checklist, as
+  the <a href="#audit">Audit</a> row says.
   zizmor's <code>self-hosted-runner</code> audit runs only in the <em>auditor</em> persona,
   so the fleet's pedantic zizmor invocation (gate 4b) does <strong>not</strong> catch
   this. The script is the gate.</li>
@@ -4008,8 +4011,12 @@ on the fleet's persistent self-hosted runner. That runner is shared across
 repositories and reused between jobs, so it does not give the run isolation SLSA
 Build L3 requires ("the build platform ensures runs cannot influence one
 another"): an earlier job on the host can tamper with the build cache, BuildKit
-state or the toolchain. The provenance <code>builder.id</code> and runner environment also
-differ from the GitHub-hosted case.</p>
+state or the toolchain. This runner also falls short of the ephemeral/JIT and
+wipe-between-jobs rules in
+<a href="../repo-baseline/#self-hosted-runner-hardening">self-hosted runner hardening</a>.
+That cross-repo contamination risk (CICD-SEC-7) is its own dated accepted risk,
+separate from the provenance risk on this page. The provenance <code>builder.id</code>
+and runner environment also differ from the GitHub-hosted case.</p>
 <p>The signing mechanism also depends on <strong>repository visibility</strong>. GitHub
 artifact attestations (<code>actions/attest-build-provenance</code>, <code>gh attestation
 verify</code>) are available on GitHub Free, Pro and Team plans <strong>only for public
@@ -4268,7 +4275,7 @@ dashboard-watching:</p>
 </tr>
 <tr>
 <td>Runner isolation</td>
-<td>Public repos target no self-hosted runner: <code>scripts/check-runner-visibility.py</code> (<code>runner-visibility-check</code> job in <code>baseline-check.yml</code>) passes. It is fail-closed, and private repos on GitHub-hosted runners only warn. By hand: <code>gh api repos/&lt;owner&gt;/&lt;repo&gt;/actions/runners</code> shows no runner registered to any public repo (personal account, so no runner groups); for private repos, "Run workflows from fork pull requests" is off; the runner is ephemeral/JIT — per <a href="../repo-baseline/#self-hosted-runner-hardening">repo baseline</a></td>
+<td>Public repos target no self-hosted runner: <code>scripts/check-runner-visibility.py</code> (<code>runner-visibility-check</code> job in <code>baseline-check.yml</code>) passes. It is fail-closed, and private repos on GitHub-hosted runners only warn. Every 30 days, on every fleet repo, the <code>fleet-compliance-audit</code> mill agent checks that <code>gh api repos/&lt;owner&gt;/&lt;repo&gt;/actions/runners</code> returns <code>total_count: 0</code> for each public repo (personal account, so no runner groups) and that <code>.private</code> is <code>true</code> for each repo with a registered runner. The operator's 90-day runner host checklist (flagged by <code>fleet-compliance-audit</code> and posted to the operator by a chat periodic session, not a draft ticket) covers the rest: "Run workflows from fork pull requests" is off on private repos, the runner is ephemeral/JIT or wiped between jobs, the runner user is non-root, the production Docker socket is not shared, and an egress firewall is in place. The persistent shared runner meets neither the ephemeral/JIT rule nor the wipe rule, and this is a dated accepted risk (CICD-SEC-7, accepted 2026-10-29, review 2027-01-31) — per <a href="../repo-baseline/#self-hosted-runner-hardening">repo baseline</a></td>
 </tr>
 <tr>
 <td>Actions PR approval disabled</td>

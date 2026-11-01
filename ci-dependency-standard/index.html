@@ -3376,7 +3376,7 @@ and a <code>.github/dependabot.yml</code>.</p>
 <p>Dependabot's <code>uv</code> ecosystem produces broken lockfiles — the generated
 <code>uv.lock</code> is not consistent with <code>pyproject.toml</code> constraints, causing
 <code>uv sync --frozen</code> to fail on every Dependabot PR.  The Django project's
-infrastructure team <a href="https://github.com/django/django-docker-box/pull/219">explicitly switched from Dependabot to Renovate</a>
+website team <a href="https://github.com/django/djangoproject.com/issues/2323">opened a migration from Dependabot to Renovate</a>
 in 2025 citing stagnant development and unresolved uv issues.  The failure
 mode is wasted human review time: every Dependabot PR arrives with a red CI,
 requires a manual <code>uv lock</code> fix, and trains reviewers to ignore red CI on

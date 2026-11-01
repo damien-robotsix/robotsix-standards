@@ -24,6 +24,15 @@ plaintext.  Secret *lists* with the same names are checked the same way:
 classes that do not subclass pydantic's ``BaseModel`` (directly or through an
 in-file chain) are out of scope.
 
+A field whose name merely *looks* secret but holds no secret (e.g. a
+``linkedin_token_file`` that stores a file path) is exempted by a same-line
+pragma on its definition, with a mandatory non-empty reason::
+
+    linkedin_token_file: str = ""  # secret-str: not-a-secret (file path)
+
+A pragma without a reason (``# secret-str: not-a-secret`` or ``(...)`` empty)
+does not exempt the field; a pragma on any other line has no effect.
+
 Exit codes:
   0 — no offending fields found
   1 — at least one secret-named field (or secret map) is typed ``str``
@@ -32,7 +41,10 @@ Exit codes:
 from __future__ import annotations
 
 import ast
+import io
+import re
 import sys
+import tokenize
 from collections.abc import Sequence
 from dataclasses import dataclass
 from pathlib import Path
@@ -51,6 +63,12 @@ _MAPPING_NAMES = ("dict", "Dict", "Mapping", "MutableMapping")
 
 # Sequence annotations whose single subscript argument is the item type.
 _SEQUENCE_NAMES = ("list", "List", "Sequence", "tuple", "Tuple", "set", "Set")
+
+# Same-line exemption pragma; the parenthesised reason must be non-blank.
+_PRAGMA_RE = re.compile(r"#\s*secret-str:\s*not-a-secret\s*\((?P<reason>[^)]*)\)")
+
+# Tuple for the same PEP 758 reason as _UNREADABLE.
+_TOKENIZE_ERRORS = (tokenize.TokenError, SyntaxError)
 
 # Directories skipped during a recursive scan (deps, build/docs output, VCS).
 # A tuple, not `except A, B, C:` (PEP 758): this script runs as a
@@ -89,6 +107,27 @@ def _is_secret_name(name: str) -> bool:
 def _is_secret_map_name(name: str) -> bool:
     """True if *name* denotes a secret map, e.g. ``keys`` / ``api_keys``."""
     return name.lower() in SECRET_MAP_NAMES or _is_secret_name(name)
+
+
+def _exempt_lines(source: str) -> set[int]:
+    """Return line numbers carrying a valid ``not-a-secret`` pragma comment.
+
+    Uses ``tokenize`` so only real comments count (a ``#`` inside a string
+    literal never exempts a field).  A pragma with an empty or blank reason is
+    ignored.
+    """
+    lines: set[int] = set()
+    try:
+        tokens = list(tokenize.generate_tokens(io.StringIO(source).readline))
+    except _TOKENIZE_ERRORS:
+        return lines
+    for token in tokens:
+        if token.type != tokenize.COMMENT:
+            continue
+        match = _PRAGMA_RE.search(token.string)
+        if match and match.group("reason").strip():
+            lines.add(token.start[0])
+    return lines
 
 
 def _strip_optional(annotation: ast.expr) -> ast.expr:
@@ -226,15 +265,26 @@ def _collect_models(classes: dict[str, ast.ClassDef]) -> set[str]:
 
 
 def _findings_in_model(
-    classdef: ast.ClassDef, path: Path, models: set[str]
+    classdef: ast.ClassDef,
+    path: Path,
+    models: set[str],
+    exempt: set[int] | None = None,
 ) -> list[Finding]:
-    """Return findings for secret-named ``str`` fields in one model class."""
+    """Return findings for secret-named ``str`` fields in one model class.
+
+    Fields whose definition line(s) carry a valid ``not-a-secret`` pragma
+    (line numbers in *exempt*) are skipped.
+    """
+    exempt = exempt or set()
     findings: list[Finding] = []
     for node in classdef.body:
         if not isinstance(node, ast.AnnAssign):
             continue
         target = node.target
         if not isinstance(target, ast.Name):
+            continue
+        end = node.end_lineno or node.lineno
+        if any(line in exempt for line in range(node.lineno, end + 1)):
             continue
         name = target.id
         scalar = _is_secret_name(name) and _is_scalar_str(node.annotation)
@@ -258,9 +308,11 @@ def _findings_in_model(
 def scan_file(path: Path) -> list[Finding]:
     """Scan one Python file and return secret-named ``str`` field findings."""
     try:
-        tree = ast.parse(path.read_text(encoding="utf-8"), filename=str(path))
+        source = path.read_text(encoding="utf-8")
+        tree = ast.parse(source, filename=str(path))
     except _UNREADABLE:
         return []
+    exempt = _exempt_lines(source)
     classes = {
         node.name: node for node in ast.walk(tree) if isinstance(node, ast.ClassDef)
     }
@@ -268,7 +320,7 @@ def scan_file(path: Path) -> list[Finding]:
     findings: list[Finding] = []
     for classdef in classes.values():
         if classdef.name in models:
-            findings.extend(_findings_in_model(classdef, path, models))
+            findings.extend(_findings_in_model(classdef, path, models, exempt))
     return findings
 
 

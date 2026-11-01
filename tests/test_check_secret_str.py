@@ -230,6 +230,66 @@ class ChildConfig(BaseConfig):
     assert fields == ["BaseConfig.password", "ChildConfig.token"]
 
 
+def test_pragma_with_reason_skips_field(check_secret_str: ModuleType) -> None:
+    source = """\
+from pydantic import BaseModel
+
+
+class LinkedInConfig(BaseModel):
+    linkedin_token_file: str = "/data/token.json"  # secret-str: not-a-secret (file path)
+    linkedin_org_token_file: str = ""  # secret-str: not-a-secret (file path)
+    api_token: str = ""
+"""
+    assert _fields(check_secret_str, source) == ["LinkedInConfig.api_token"]
+
+
+def test_pragma_without_reason_still_fails(check_secret_str: ModuleType) -> None:
+    source = """\
+from pydantic import BaseModel
+
+
+class LinkedInConfig(BaseModel):
+    linkedin_token_file: str = ""  # secret-str: not-a-secret
+    other_token_file: str = ""  # secret-str: not-a-secret ()
+    third_token_file: str = ""  # secret-str: not-a-secret (   )
+"""
+    assert _fields(check_secret_str, source) == [
+        "LinkedInConfig.linkedin_token_file",
+        "LinkedInConfig.other_token_file",
+        "LinkedInConfig.third_token_file",
+    ]
+
+
+def test_pragma_on_another_line_has_no_effect(check_secret_str: ModuleType) -> None:
+    source = """\
+from pydantic import BaseModel
+
+
+class LinkedInConfig(BaseModel):
+    # secret-str: not-a-secret (file path)
+    linkedin_token_file: str = ""
+    api_token: str = ""
+    other: int = 0  # secret-str: not-a-secret (file path)
+"""
+    assert _fields(check_secret_str, source) == [
+        "LinkedInConfig.linkedin_token_file",
+        "LinkedInConfig.api_token",
+    ]
+
+
+def test_pragma_inside_string_literal_has_no_effect(
+    check_secret_str: ModuleType,
+) -> None:
+    source = """\
+from pydantic import BaseModel
+
+
+class LinkedInConfig(BaseModel):
+    api_token: str = "# secret-str: not-a-secret (nope)"
+"""
+    assert _fields(check_secret_str, source) == ["LinkedInConfig.api_token"]
+
+
 def test_main_exit_codes(check_secret_str: ModuleType, tmp_path: Path) -> None:
     clean = _write(
         tmp_path,

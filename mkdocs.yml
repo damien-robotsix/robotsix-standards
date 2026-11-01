@@ -50,27 +50,11 @@ plugins:
   - search
   - htmlproofer:
       raise_error_after_finish: true
-      ignore_urls:
-        - "http://localhost*"
-        - "https://raw.githubusercontent.com/*"
-        - "https://github.com/*"
-        - "https://docs.github.com/*"
-        - "https://owasp.org/*"
-        - "https://genai.owasp.org/*"
-        - "https://cheatsheetseries.owasp.org/*"
-        - "https://damien-robotsix.github.io/*"
-        - "https://woodruffw.github.io/*"
-        # readthedocs rate-limits anonymous traffic with 429. Four pages link
-        # there (towncrier, hypothesis, changelog-driven-releases,
-        # repo-baseline), so an unlucky build fails on all four at once.
-        - "https://*.readthedocs.io*"
-        # hatch.pypa.io sometimes returns transient 503 errors.
-        - "https://hatch.pypa.io/*"
-        # npmjs.com blocks automated link-checker traffic with 403.
-        - "https://www.npmjs.com/*"
-        # slsa.dev sometimes returns transient 504 gateway timeouts;
-        # security-posture.md links to the SLSA spec.
-        - "https://slsa.dev/*"
+      # Internal links and anchors only: the deploy build must never be gated
+      # on external URL reachability. External URLs are checked by the
+      # separate `linkcheck` job in .github/workflows/ci.yml (lychee), which
+      # accepts 403/429/503 instead of needing a growing ignore_urls list.
+      validate_external_urls: false
 
 nav:
   - Home: index.md

@@ -20,7 +20,7 @@ jobs:
     # python-docs.yml reusable causes 'Deployment failed, try again later'
     # from the Pages API for this repo).
     runs-on: ubuntu-latest
-    timeout-minutes: 20  # docs build × up to 3 strict attempts (transient 5xx/429 retry)
+    timeout-minutes: 15
     permissions:
       contents: read
     steps:
@@ -35,43 +35,11 @@ jobs:
       - name: Check lockfile consistency
         run: uv lock --check
       - name: Build docs (strict)
-        # htmlproofer (raise_error_after_finish) hard-fails the build on any invalid
-        # link. A single transient external 5xx/429 (e.g. slsa.dev 504, hatch.pypa.io
-        # 503, readthedocs 429) used to stall unrelated tickets for hours, and each
-        # host was only added to mkdocs.yml ignore_urls after it had already broken
-        # CI. Retry the whole build (with backoff) only when every reported failure
-        # is a transient 5xx/429; a permanent 4xx (404 etc.), a -1 connection error,
-        # or a non-link build error still fails immediately so the link-integrity
-        # gate is preserved. (The plugin's own retry_max_times can't be used here:
-        # it lru-caches each URL's status, so a retry never re-fetches the URL.)
-        run: |
-          set -o pipefail
-          for attempt in 1 2 3; do
-            if uv run --group docs mkdocs build --strict 2>&1 | tee /tmp/mkdocs-build.log; then
-              exit 0
-            fi
-
-            # htmlproofer logs each failed link as:
-            #   invalid url - <url> [<status>] [<src>]
-            # Only 429 / 5xx are transient; any other status (-1, 4xx, ...) is a
-            # permanent failure that must not be retried.
-            permanent=0
-            while read -r status; do
-              case "$status" in
-                429|5[0-9][0-9]) ;;   # transient external 5xx / 429
-                *) permanent=1 ;;    # 404/4xx, -1 connection error, ...
-              esac
-            done < <(grep -oE 'invalid url - .* \[[0-9-]+\]' /tmp/mkdocs-build.log | grep -oE '\[[0-9-]+\]' | tr -d '[]')
-
-            # No failed links at all => the failure is not an external-link issue;
-            # any permanent status => fail now rather than burn retries.
-            if [ "$permanent" = "1" ] || ! grep -qE 'invalid url - ' /tmp/mkdocs-build.log; then
-              exit 1
-            fi
-            echo "Transient external failure (5xx/429) detected; retrying docs build (attempt $attempt of 3)..."
-            sleep $((attempt * 5))
-          done
-          exit 1
+        # htmlproofer validates internal links and anchors only
+        # (validate_external_urls: false in mkdocs.yml); external URLs are
+        # checked by the separate linkcheck job below, so a flaky third-party
+        # host cannot fail this build.
+        run: uv run --group docs mkdocs build --strict
       - name: Run pre-commit hooks (ruff, mypy, markdownlint-cli2, codespell, semgrep)
         uses: tox-dev/action-pre-commit-uv@4de52c139ed1a6963bcc4c30042c4ef9d75d8b11  # v1
         env:
@@ -96,3 +64,47 @@ jobs:
         run: uv run python scripts/check-py-typed-guard.py
       - name: Run unit tests
         run: uv run --group docs --group test python -m pytest
+
+  linkcheck:
+    name: linkcheck
+    # External link validation, split out of the docs build per
+    # docs/mkdocs-build.md: gates pull requests on dead external URLs, but is
+    # not part of docs.yml, so an upstream outage never blocks a deploy.
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: astral-sh/setup-uv@1c37ad07a6a961277cf70c0d37d6f313000f5884 # v10.3.0
+        with:
+          enable-cache: true
+          python-version: "3.14"
+      - name: Build docs into site/
+        run: uv run --group docs mkdocs build --strict
+      # Exclusions (each is not an external dead link):
+      # - this site's own published URLs (canonical <link> tags and
+      #   sitemap.xml): internal links are already validated by htmlproofer in
+      #   the docs build, and a new page's live URL 404s until it is deployed;
+      # - 404.html: mkdocs renders it with root-relative links that only
+      #   resolve on the served site, not in the local site/ tree;
+      # - robotsix-website: a private fleet repo, 404 to the job token;
+      # - the generated CHANGELOG compare link for 0.5.0: tag v0.4.0 was never
+      #   published, and release-please owns that file.
+      - name: Check links (lychee)
+        uses: lycheeverse/lychee-action@e7477775783ea5526144ba13e8db5eec57747ce8 # v2.9.0
+        with:
+          fail: true
+          args: >-
+            --accept 200,206,403,429,503
+            --exclude-private
+            --max-retries 3
+            --timeout 30
+            --exclude '^https://damien-robotsix\.github\.io/robotsix-standards/'
+            --exclude '^https://github\.com/damien-robotsix/robotsix-website/'
+            --exclude '^https://github\.com/damien-robotsix/robotsix-standards/compare/v0\.4\.0\.\.\.v0\.5\.0$'
+            --exclude-path 'site/404\.html'
+            --cache
+            site/

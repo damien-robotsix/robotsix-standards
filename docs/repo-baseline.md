@@ -467,9 +467,13 @@ The two mechanisms are described in turn:
   is `true` for every repo that has a registered runner. Each gap becomes a
   draft ticket.
 - **Manual — the runner host checklist.** The **operator** owns it and runs
-  it **every 90 days**. Each time it falls due, a reminder titled
-  `Runner host checklist due` is posted to the operator by a chat periodic
-  session. It is not a mill draft ticket: a draft with an empty
+  it **every 90 days**. Each time it falls due, the `fleet-compliance-audit`
+  agent records `runner-host-checklist due: <date>` in its memory ledger.
+  The intended delivery channel, a chat periodic session that posts a
+  `Runner host checklist due` reminder to the operator, is **pending
+  operator setup**: it is not configured yet, so until it exists the
+  reminder is recorded in `fleet-compliance-audit` memory only and the
+  operator must read it there. It is not a mill draft ticket: a draft with an empty
   `draft_repo_ids` lands on the robotsix-standards board, where the pipeline
   closes it "no change needed", so the reminder would be lost. The operator
   marks the checklist done once it is complete. The fleet agent does not

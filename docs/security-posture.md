@@ -641,7 +641,15 @@ stated inline.
     would either block every private-repo rollout or be skipped silently.
     They are verified against the keyless certificate instead, pinned to the
     reusable workflow and the caller repository:
-    `cosign verify-attestation --type slsaprovenance1 --certificate-identity https://github.com/<workflows-owner>/robotsix-github-workflows/.github/workflows/docker-release.yml@<pinned ref> --certificate-oidc-issuer https://token.actions.githubusercontent.com --certificate-github-workflow-repository <owner>/<repo> ghcr.io/<owner>/<repo>@<digest>`.
+
+    ```sh
+    cosign verify-attestation --type slsaprovenance1 \
+      --certificate-identity https://github.com/<workflows-owner>/robotsix-github-workflows/.github/workflows/docker-release.yml@<pinned ref> \
+      --certificate-oidc-issuer https://token.actions.githubusercontent.com \
+      --certificate-github-workflow-repository <owner>/<repo> \
+      ghcr.io/<owner>/<repo>@<digest>
+    ```
+
     The Rekor inclusion proof is checked too (no `--insecure-ignore-tlog`).
     Pinning `--certificate-identity` to the reusable workflow means a
     statement signed by any other workflow fails; pinning

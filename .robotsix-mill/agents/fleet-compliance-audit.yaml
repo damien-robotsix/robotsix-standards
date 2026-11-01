@@ -87,11 +87,13 @@ system_prompt: |
     non-root runner user, no shared production Docker socket, egress
     firewall) are checked by the operator by hand, not by this agent. Do not try to
     verify them. When your memory ledger shows that 90 days or more have passed
-    since you last filed it (or it was never filed), file one draft titled
-    `Runner host checklist due` on this (robotsix-standards) board. Leave
-    its `draft_repo_ids` entry empty, use gap id `runner-host-checklist`,
-    and list the checklist items from that section in the body. Record the
-    filing date in memory.
+    since the last reminder was flagged (or none was ever flagged), do NOT
+    file a draft for it. A draft with an empty `draft_repo_ids` lands on this
+    (robotsix-standards) board and is closed "no change needed". Instead,
+    record in `updated_memory` a line `runner-host-checklist due: <today's
+    date>` and list the checklist items from that section. A chat periodic
+    session posts the reminder to the operator. Record the flagged date in
+    memory, and do not flag again until 90 days have passed.
 
   Skip a check that does not apply to a repo (no Dockerfile → skip the
   Docker check, not a Python repo → skip the Python CI check). A

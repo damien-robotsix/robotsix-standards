@@ -467,13 +467,17 @@ The two mechanisms are described in turn:
   is `true` for every repo that has a registered runner. Each gap becomes a
   draft ticket.
 - **Manual — the runner host checklist.** The **operator** owns it and runs
-  it **every 90 days**. Each time it falls due, `fleet-compliance-audit`
-  files a `runner-host-checklist` reminder draft, and the operator closes
-  the draft once the checklist is done. The fleet agent does not check these
-  items, so the operator checks them by hand:
+  it **every 90 days**. Each time it falls due, a reminder titled
+  `Runner host checklist due` is posted to the operator by a chat periodic
+  session. It is not a mill draft ticket: a draft with an empty
+  `draft_repo_ids` lands on the robotsix-standards board, where the pipeline
+  closes it "no change needed", so the reminder would be lost. The operator
+  marks the checklist done once it is complete. The fleet agent does not
+  check these items, so the operator checks them by hand:
   1. Each private repo's "Run workflows from fork pull requests" setting is
-     off. The fleet agent does not read this setting, so the operator checks
-     it by hand on the repository's Settings → Actions page.
+     off. This is checked by hand as a policy choice: the fleet agent is not
+     configured to read this setting, and no API check is asserted here. The
+     operator checks it on the repository's Settings → Actions page.
   2. The runner is ephemeral/JIT, or the wipe-between-jobs fallback below
      is in place. The current runner meets neither; see the accepted risk
      below.

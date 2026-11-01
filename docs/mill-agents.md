@@ -119,12 +119,7 @@ presence ([python-ci-workflow](python-ci-workflow.md)), config schema sync
 ([docker-standard](docker-standard.md)), pre-commit configuration
 ([ci-lint-pinning](ci-lint-pinning.md)), and GitHub Actions security
 ([github-actions-security](github-actions-security.md)). A check that does
-not apply to a repo is skipped, never flagged. On every pass it also checks
-self-hosted runner posture across **all** repos: no runner may be registered
-to a public repo, and a repo with a runner must be private. Every 90 days it
-files a `Runner host checklist due` reminder for the checks only the operator
-can make, per
-[self-hosted runner hardening](repo-baseline.md#self-hosted-runner-hardening).
+not apply to a repo is skipped, never flagged.
 
 **Sampling:** it does not scan the whole fleet every run. Each pass picks a
 rotation subset of roughly 25–33% of the repos — the least-recently-checked

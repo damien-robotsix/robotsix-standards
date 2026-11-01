@@ -3857,9 +3857,13 @@ not all verified the same way, and none is verified by a quarterly audit:</p>
   is <code>true</code> for every repo that has a registered runner. Each gap becomes a
   draft ticket.</li>
 <li><strong>Manual — the runner host checklist.</strong> The <strong>operator</strong> owns it and runs
-  it <strong>every 90 days</strong>. Each time it falls due, a reminder titled
-  <code>Runner host checklist due</code> is posted to the operator by a chat periodic
-  session. It is not a mill draft ticket: a draft with an empty
+  it <strong>every 90 days</strong>. Each time it falls due, the <code>fleet-compliance-audit</code>
+  agent records <code>runner-host-checklist due: &lt;date&gt;</code> in its memory ledger.
+  The intended delivery channel, a chat periodic session that posts a
+  <code>Runner host checklist due</code> reminder to the operator, is <strong>pending
+  operator setup</strong>: it is not configured yet, so until it exists the
+  reminder is recorded in <code>fleet-compliance-audit</code> memory only and the
+  operator must read it there. It is not a mill draft ticket: a draft with an empty
   <code>draft_repo_ids</code> lands on the robotsix-standards board, where the pipeline
   closes it "no change needed", so the reminder would be lost. The operator
   marks the checklist done once it is complete. The fleet agent does not

@@ -3137,8 +3137,10 @@ otherwise go unnoticed until the next manual host check.</p>
 itself. When the operator's 90-day runner host checklist (owner and items
 in <a href="../repo-baseline/#self-hosted-runner-hardening">repo baseline</a>) falls
 due, it records <code>runner-host-checklist due: &lt;date&gt;</code> in its memory ledger
-instead of filing a draft ticket. A chat periodic session posts the
-reminder to the operator. <em>Failure mode this prevents:</em> a draft with an
+instead of filing a draft ticket. Delivery to the operator by a chat
+periodic session is <strong>pending operator setup</strong> — that session is not
+configured yet, so until it exists the reminder lives in this agent's
+memory ledger only. <em>Failure mode this prevents:</em> a draft with an
 empty <code>draft_repo_ids</code> lands on the robotsix-standards board and is closed
 "no change needed", so the reminder would be silently lost.</p>
 <p><strong>Sampling:</strong> it does not scan the whole fleet every run. Each pass picks a

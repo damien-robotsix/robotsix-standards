@@ -3574,18 +3574,47 @@ which is <strong>fail-closed</strong> — it fails CI (exit 1) when a repo lacks
 container image additionally meets the <strong>container-image</strong> gates.</p>
 <h3 id="1-sast-semgrep">1. SAST — Semgrep<a class="headerlink" href="#1-sast-semgrep" title="Permanent link">&para;</a></h3>
 <p>Semgrep analysis runs on every PR and every push to <code>main</code>, via the shared
-security workflow from robotsix-github-workflows. Findings are published as a
-workflow artifact and surfaced through the fleet dashboard — there is no
-dependency on GitHub Code Scanning or the GitHub Security tab.</p>
+security workflow from robotsix-github-workflows. There is no dependency on
+GitHub Code Scanning or the GitHub Security tab.</p>
+<p>The gate <strong>blocks</strong>; it does not merely report:</p>
+<ul>
+<li><strong>Ruleset.</strong> Every repo scans with the same fleet ruleset: the Semgrep
+  registry packs <code>p/default</code> plus the language pack for each language the
+  repo ships (<code>p/python</code> for Python repos). A repo may <em>add</em> rules in a
+  committed <code>.semgrep.yml</code>. It may not drop fleet rules. That way "Semgrep
+  runs" means the same thing in every repo.</li>
+<li><strong>Fail condition.</strong> The Semgrep job exits non-zero, and so fails the PR, on
+  any finding of severity <code>ERROR</code> from that ruleset (<code>semgrep scan --error
+  --severity ERROR</code>). Findings of severity <code>WARNING</code> and <code>INFO</code> are reported
+  but do not block.</li>
+<li><strong>Required status check.</strong> The Semgrep job is a required status check on
+  the default branch, so a failing run blocks the merge.</li>
+<li><strong>False positives.</strong> To accept a false positive, suppress it inline with
+  <code># nosemgrep: &lt;rule-id&gt;</code> and put a justification comment on the same or the
+  preceding line. A bare <code># nosemgrep</code> with no rule id is not allowed: it
+  would silence every rule on that line.</li>
+</ul>
+<p>The findings report is uploaded as a workflow artifact so that non-blocking
+findings can be reviewed. The artifact is informational only. It is not the
+control: the failing job is.</p>
+<p><strong>Rollout status:</strong> robotsix-github-workflows does not yet ship a shared
+Semgrep workflow (its <code>python-security.yml</code> runs TruffleHog and pip-audit
+only). Until it does, this gate defines the requirement that the workflow must
+meet; no fleet repo has been verified against it yet.</p>
 <p>Bandit (Python-specific SAST) runs as a complementary layer via the shared
 <code>python-ci.yml</code> workflow in every Python repo — see
 <a href="../python/#lint-types-and-security-lint">Python practices</a>.</p>
 <ul>
 <li><strong>How to verify:</strong> the repo's CI workflow calls the shared Semgrep workflow.
-  The latest CI run on the default branch uploads a Semgrep findings artifact.</li>
+  The Semgrep job is a required status check on the default branch. It exits
+  non-zero on a blocking (<code>ERROR</code>) finding: this is shown either by the shared
+  workflow's documented fail condition, or by a fixture PR containing a
+  known <code>ERROR</code> finding whose check goes red. Every <code>nosemgrep</code> suppression
+  names a rule id.</li>
 <li><strong>Failure prevented:</strong> a vulnerability that a static-analysis rule would
   catch (SQL injection, path traversal, hardcoded credentials) merges and
-  ships.</li>
+  ships. It also prevents a report-only scan that records high-severity
+  findings while the PR merges anyway.</li>
 <li><strong>Alignment:</strong> <a href="https://owasp.org/www-community/Source_Code_Analysis_Tools">OWASP SAST</a>,
   OpenSSF Scorecard <em>SAST</em> check.</li>
 </ul>
@@ -3796,7 +3825,14 @@ by an open-source, layered secret-scanning stack:</p>
   AGPL-3.0) in the shared security workflow — scans the PR diff and the full
   repo history for secrets that slipped past push protection (e.g. a custom
   pattern GitHub doesn't recognize, or a secret committed before push
-  protection was enabled).</li>
+  protection was enabled). <strong>Fail condition:</strong> the TruffleHog step exits
+  non-zero and fails the job on any <em>verified</em> secret, at minimum. The shared
+  <code>python-security.yml</code> is stricter today: its TruffleHog action runs with the
+  action's default <code>--fail</code> and fails on <em>any</em> finding, verified or
+  unverified. A repo may narrow it to verified-only (for example
+  <code>trufflehog-extra-args: --results=verified</code>), but never disable failing.
+  The security job is a required status check, so a detected secret blocks
+  the merge.</li>
 </ul>
 <h4 id="why-this-stack">Why this stack<a class="headerlink" href="#why-this-stack" title="Permanent link">&para;</a></h4>
 <p>The fleet evaluated three open-source secret scanners for fleet-wide adoption:</p>
@@ -3853,7 +3889,9 @@ and add a self-referential secret-management burden. The OSS stack above
 <ul>
 <li><strong>How to verify:</strong> the repo's Security / Secret scanning settings show "Push
   protection" as enabled. <code>.pre-commit-config.yaml</code> includes <code>detect-secrets</code>.
-  CI calls the shared TruffleHog workflow.</li>
+  CI calls the shared TruffleHog workflow. Its job is a required status check,
+  and the TruffleHog step is not configured to stop failing (no override of
+  the action's <code>--fail</code>).</li>
 <li><strong>Failure prevented:</strong> a credential (API key, token, private key) is
   committed and pushed; even if the commit is later reverted or force-pushed,
   the secret existed in the history and must be assumed compromised.</li>
@@ -4247,7 +4285,7 @@ dashboard-watching:</p>
 <tbody>
 <tr>
 <td>Semgrep*</td>
-<td>CI calls shared Semgrep workflow; latest CI run uploads Semgrep findings artifact</td>
+<td>CI calls shared Semgrep workflow with the fleet ruleset; the Semgrep job is a required status check and exits non-zero on a blocking (<code>ERROR</code>) finding (documented fail condition or fixture PR); every <code>nosemgrep</code> names a rule id</td>
 </tr>
 <tr>
 <td>Dependency review*</td>
@@ -4283,7 +4321,7 @@ dashboard-watching:</p>
 </tr>
 <tr>
 <td>Secret push protection</td>
-<td>Push protection enabled in repo Security settings; <code>detect-secrets</code> in pre-commit; CI runs TruffleHog (content-only repos exempt from TruffleHog)</td>
+<td>Push protection enabled in repo Security settings; <code>detect-secrets</code> in pre-commit; CI runs TruffleHog as a required check that fails on any verified secret, at minimum (content-only repos exempt from TruffleHog)</td>
 </tr>
 <tr>
 <td>Credential-file deny list</td>

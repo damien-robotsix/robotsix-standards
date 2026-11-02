@@ -33,7 +33,7 @@ A multi-stage Dockerfile that keeps build tooling out of the runtime image:
   literal digest on its `FROM python:3.14-slim@sha256:…` lines.
   **Enforcement:** robotsix-standards publishes `scripts/check-dockerfile-pins.py`
   as the remote pre-commit hook `check-dockerfile-pins` (in its
-  `.pre-commit-hooks.yaml`). Every image-shipping repo references it
+  `.pre-commit-hooks.yaml`). Every image-shipping repo must reference it
   (`repo: https://github.com/damien-robotsix/robotsix-standards`,
   `id: check-dockerfile-pins`) pinned to a release-tag `rev:`, as listed in the
   [standard pre-commit set](python.md#pre-commit-hooks), so CI's

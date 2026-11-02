@@ -4045,7 +4045,11 @@ slow duplicate hook buys little). Dev setup is:</p>
 <div class="highlight"><pre><span></span><code>uv<span class="w"> </span>sync
 pre-commit<span class="w"> </span>install
 </code></pre></div>
-<p>CI runs <code>pre-commit run --all-files</code> so the hooks and the gates can't drift.</p>
+<p>CI runs <code>pre-commit run --all-files</code> so the hooks and the gates can't drift.
+A CI <code>SKIP:</code> list may skip hooks a dedicated CI step already runs, but never a
+secret-scanning hook (<code>detect-secrets</code>, <code>detect-private-key</code>) — the local hook
+is bypassable with <code>--no-verify</code>, so CI is where it is enforced (see
+<a href="../security-posture/#5-secret-push-protection">secret push protection</a>).</p>
 <h2 id="docs">Docs<a class="headerlink" href="#docs" title="Permanent link">&para;</a></h2>
 <p><strong>Every repo publishes its docs site</strong>: <code>mkdocs</code> (material theme), built and
 deployed to GitHub Pages by the shared <code>python-docs.yml</code> reusable workflow.

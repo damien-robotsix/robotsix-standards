@@ -3502,11 +3502,15 @@ are lower-risk for a repo with no deployable artifacts and few, simple
 workflows. Content-only repos must still meet SHA-pinning (4a), least-privilege
 permissions (4c) — both enforced by the
 <a href="#workflow-permissions-audit">workflow-permissions audit</a> — plus
-push-protection + detect-secrets (the commit-time and push-time parts of gate
-5), and Dependabot gates. The TruffleHog full-history
-scan is exempt — a docs-only repo with no deployable artifacts and few
-contributors has minimal secret-exposure surface beyond what push protection
-and detect-secrets already catch.</p>
+detect-secrets (the commit-time part of gate 5, also run in CI by
+<code>pre-commit run --all-files</code>), push protection on public repos (the push-time
+part of gate 5), and Dependabot gates. A <strong>public</strong> content-only repo is
+exempt from the TruffleHog CI scan — a docs-only repo with no deployable
+artifacts and few contributors has minimal secret-exposure surface beyond what
+push protection and detect-secrets already catch. A <strong>private</strong> content-only
+repo is <strong>not</strong> exempt: push protection is unavailable on private repos on the
+Free plan (see <a href="#5-secret-push-protection">gate 5</a>), so the CI TruffleHog scan
+is its mandatory server-side secret scan.</p>
 <p>The fleet's security requirements are organizational policy, not repo-specific
 technical gaps. They are defined once here, checked at repo onboarding and
 on-demand via audit, rather than re-audited weekly per repo by a periodic agent.
@@ -3813,10 +3817,10 @@ and enforced on this repo as its reference implementation. It scans every
 <p>This is the mechanism referenced whenever the "workflow-permissions audit" is
 cited as an existing control (e.g. <a href="../scorecard/">scorecard.md</a>, this page).</p>
 <h3 id="5-secret-push-protection">5. Secret push protection<a class="headerlink" href="#5-secret-push-protection" title="Permanent link">&para;</a></h3>
-<p>GitHub secret scanning with <strong>push protection</strong> is enabled on every repo. Push
-protection blocks a commit that contains a detected secret <em>before</em> it reaches
-the remote — the secret never lands in the commit history. This is complemented
-by an open-source, layered secret-scanning stack:</p>
+<p>GitHub secret scanning with <strong>push protection</strong> is enabled on every <strong>public</strong>
+repo. Push protection blocks a commit that contains a detected secret <em>before</em>
+it reaches the remote — the secret never lands in the commit history. This is
+complemented by an open-source, layered secret-scanning stack:</p>
 <ul>
 <li><strong><code>detect-secrets</code> pre-commit hook</strong> (<a href="https://github.com/Yelp/detect-secrets">Yelp/detect-secrets</a>,
   Apache-2.0) with a committed <code>.secrets.baseline</code> — catches credentials at
@@ -3834,6 +3838,21 @@ by an open-source, layered secret-scanning stack:</p>
   The security job is a required status check, so a detected secret blocks
   the merge.</li>
 </ul>
+<p><strong>Private repos are exempt from push protection — and must run the CI secret
+scan instead.</strong> On GitHub, secret scanning and push protection are free only
+for public repos; private repos need the paid GitHub Secret Protection product
+(Team or Enterprise Cloud), which the fleet's Free-plan personal account does
+not have (see <a href="../free-tier-only/">free-tier-only</a> rule 3). The user-level
+"push protection for yourself" setting only covers pushes to public repos. The
+replacement control is <strong>mandatory</strong>: every private repo — content-only /
+docs-only repos included — runs the shared TruffleHog CI secret scan on every
+PR and push to <code>main</code>, and runs the <code>detect-secrets</code> hook in CI via
+<code>pre-commit run --all-files</code> (never listed in the pre-commit step's <code>SKIP:</code>).
+The local hook alone is not enough: a contributor or agent bypasses it with
+<code>--no-verify</code> or by never running <code>pre-commit install</code>. <em>Failure prevented:</em> a
+private repo with neither push protection nor a CI scan has no server-side
+secret check at all, so a secret pushed past a skipped local hook lands in
+history undetected.</p>
 <h4 id="why-this-stack">Why this stack<a class="headerlink" href="#why-this-stack" title="Permanent link">&para;</a></h4>
 <p>The fleet evaluated three open-source secret scanners for fleet-wide adoption:</p>
 <table>
@@ -3887,11 +3906,13 @@ fleet would violate the <a href="#tooling-policy-open-source-preferred">open-sou
 and add a self-referential secret-management burden. The OSS stack above
 (detect-secrets + TruffleHog) is the single fleet-wide secret-scanning path.</p>
 <ul>
-<li><strong>How to verify:</strong> the repo's Security / Secret scanning settings show "Push
-  protection" as enabled. <code>.pre-commit-config.yaml</code> includes <code>detect-secrets</code>.
-  CI calls the shared TruffleHog workflow. Its job is a required status check,
-  and the TruffleHog step is not configured to stop failing (no override of
-  the action's <code>--fail</code>).</li>
+<li><strong>How to verify:</strong> on a public repo, the repo's Security / Secret scanning
+  settings show "Push protection" as enabled (private repos: not applicable on
+  the Free plan). <code>.pre-commit-config.yaml</code> includes <code>detect-secrets</code>, and
+  CI's pre-commit step does not <code>SKIP:</code> it. CI calls the shared TruffleHog
+  workflow — mandatory on every private repo, content-only included. Its job
+  is a required status check, and the TruffleHog step is not configured to
+  stop failing (no override of the action's <code>--fail</code>).</li>
 <li><strong>Failure prevented:</strong> a credential (API key, token, private key) is
   committed and pushed; even if the commit is later reverted or force-pushed,
   the secret existed in the history and must be assumed compromised.</li>
@@ -4321,7 +4342,7 @@ dashboard-watching:</p>
 </tr>
 <tr>
 <td>Secret push protection</td>
-<td>Push protection enabled in repo Security settings; <code>detect-secrets</code> in pre-commit; CI runs TruffleHog as a required check that fails on any verified secret, at minimum (content-only repos exempt from TruffleHog)</td>
+<td>Public repos: push protection enabled in repo Security settings. Private repos: push protection exempt (paid on the Free plan) — CI <strong>must</strong> run the TruffleHog secret scan, docs-only/content-only repos included. All repos: <code>detect-secrets</code> in pre-commit and not in CI's pre-commit <code>SKIP:</code> list; CI runs TruffleHog as a required check that fails on any verified secret, at minimum (only public content-only repos are exempt from TruffleHog)</td>
 </tr>
 <tr>
 <td>Credential-file deny list</td>

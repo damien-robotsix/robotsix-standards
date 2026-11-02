@@ -3040,7 +3040,11 @@ infrastructure don't have that failure mode.</p>
    repos need Enterprise Cloud. Use them on public repos only; private repos
    sign with keyless cosign (the job's GitHub OIDC identity against the free
    public Sigstore instance) instead (see
-   <a href="../security-posture/#slsa-build-track">SLSA Build Track</a>).</li>
+   <a href="../security-posture/#slsa-build-track">SLSA Build Track</a>). GitHub Secret
+   Protection (secret scanning and push protection on private repos) is sold
+   only to Team and Enterprise Cloud organizations, so private repos are exempt
+   from the push-protection rule and must run the CI secret scan instead (see
+   <a href="../security-posture/#5-secret-push-protection">secret push protection</a>).</li>
 <li><strong>No paid or licensed Marketplace Actions.</strong> Third-party Actions from the
    GitHub Marketplace that require a paid subscription, licence key, or
    per-minute billing are forbidden everywhere in the fleet — public repos

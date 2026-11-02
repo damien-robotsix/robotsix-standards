@@ -13,11 +13,15 @@ are lower-risk for a repo with no deployable artifacts and few, simple
 workflows. Content-only repos must still meet SHA-pinning (4a), least-privilege
 permissions (4c) — both enforced by the
 [workflow-permissions audit](#workflow-permissions-audit) — plus
-push-protection + detect-secrets (the commit-time and push-time parts of gate
-5), and Dependabot gates. The TruffleHog full-history
-scan is exempt — a docs-only repo with no deployable artifacts and few
-contributors has minimal secret-exposure surface beyond what push protection
-and detect-secrets already catch.
+detect-secrets (the commit-time part of gate 5, also run in CI by
+`pre-commit run --all-files`), push protection on public repos (the push-time
+part of gate 5), and Dependabot gates. A **public** content-only repo is
+exempt from the TruffleHog CI scan — a docs-only repo with no deployable
+artifacts and few contributors has minimal secret-exposure surface beyond what
+push protection and detect-secrets already catch. A **private** content-only
+repo is **not** exempt: push protection is unavailable on private repos on the
+Free plan (see [gate 5](#5-secret-push-protection)), so the CI TruffleHog scan
+is its mandatory server-side secret scan.
 
 The fleet's security requirements are organizational policy, not repo-specific
 technical gaps. They are defined once here, checked at repo onboarding and
@@ -350,10 +354,10 @@ cited as an existing control (e.g. [scorecard.md](scorecard.md), this page).
 
 ### 5. Secret push protection
 
-GitHub secret scanning with **push protection** is enabled on every repo. Push
-protection blocks a commit that contains a detected secret *before* it reaches
-the remote — the secret never lands in the commit history. This is complemented
-by an open-source, layered secret-scanning stack:
+GitHub secret scanning with **push protection** is enabled on every **public**
+repo. Push protection blocks a commit that contains a detected secret *before*
+it reaches the remote — the secret never lands in the commit history. This is
+complemented by an open-source, layered secret-scanning stack:
 
 - **`detect-secrets` pre-commit hook** ([Yelp/detect-secrets](https://github.com/Yelp/detect-secrets),
   Apache-2.0) with a committed `.secrets.baseline` — catches credentials at
@@ -370,6 +374,22 @@ by an open-source, layered secret-scanning stack:
   `trufflehog-extra-args: --results=verified`), but never disable failing.
   The security job is a required status check, so a detected secret blocks
   the merge.
+
+**Private repos are exempt from push protection — and must run the CI secret
+scan instead.** On GitHub, secret scanning and push protection are free only
+for public repos; private repos need the paid GitHub Secret Protection product
+(Team or Enterprise Cloud), which the fleet's Free-plan personal account does
+not have (see [free-tier-only](free-tier-only.md) rule 3). The user-level
+"push protection for yourself" setting only covers pushes to public repos. The
+replacement control is **mandatory**: every private repo — content-only /
+docs-only repos included — runs the shared TruffleHog CI secret scan on every
+PR and push to `main`, and runs the `detect-secrets` hook in CI via
+`pre-commit run --all-files` (never listed in the pre-commit step's `SKIP:`).
+The local hook alone is not enough: a contributor or agent bypasses it with
+`--no-verify` or by never running `pre-commit install`. *Failure prevented:* a
+private repo with neither push protection nor a CI scan has no server-side
+secret check at all, so a secret pushed past a skipped local hook lands in
+history undetected.
 
 #### Why this stack
 
@@ -404,11 +424,13 @@ fleet would violate the [open-source preferred policy](#tooling-policy-open-sour
 and add a self-referential secret-management burden. The OSS stack above
 (detect-secrets + TruffleHog) is the single fleet-wide secret-scanning path.
 
-- **How to verify:** the repo's Security / Secret scanning settings show "Push
-  protection" as enabled. `.pre-commit-config.yaml` includes `detect-secrets`.
-  CI calls the shared TruffleHog workflow. Its job is a required status check,
-  and the TruffleHog step is not configured to stop failing (no override of
-  the action's `--fail`).
+- **How to verify:** on a public repo, the repo's Security / Secret scanning
+  settings show "Push protection" as enabled (private repos: not applicable on
+  the Free plan). `.pre-commit-config.yaml` includes `detect-secrets`, and
+  CI's pre-commit step does not `SKIP:` it. CI calls the shared TruffleHog
+  workflow — mandatory on every private repo, content-only included. Its job
+  is a required status check, and the TruffleHog step is not configured to
+  stop failing (no override of the action's `--fail`).
 - **Failure prevented:** a credential (API key, token, private key) is
   committed and pushed; even if the commit is later reverted or force-pushed,
   the secret existed in the history and must be assumed compromised.
@@ -803,7 +825,7 @@ dashboard-watching:
 | Least-privilege permissions | Every workflow has `permissions:` block; `scripts/check-workflow-security.py` passes in CI; `zizmor` reports clean (code repos) |
 | Runner isolation | Public repos target no self-hosted runner: `scripts/check-runner-visibility.py` (`runner-visibility-check` job in `baseline-check.yml`) passes. It is fail-closed, and private repos on GitHub-hosted runners only warn. Every 30 days, on every fleet repo, the `fleet-compliance-audit` mill agent checks that `gh api repos/<owner>/<repo>/actions/runners` returns `total_count: 0` for each public repo (personal account, so no runner groups) and that `.private` is `true` for each repo with a registered runner. The operator's 90-day runner host checklist (flagged by `fleet-compliance-audit`, not a draft ticket; the reminder is recorded in `fleet-compliance-audit` memory only, because its chat periodic session delivery channel is pending operator setup) covers the rest: "Run workflows from fork pull requests" is off on private repos, the runner is ephemeral/JIT or wiped between jobs, the runner user is non-root, the production Docker socket is not shared, and an egress firewall is in place. The persistent shared runner meets neither the ephemeral/JIT rule nor the wipe rule, and this is a dated accepted risk (CICD-SEC-7, accepted 2026-10-29, review 2027-01-31) — per [repo baseline](repo-baseline.md#self-hosted-runner-hardening) |
 | Actions PR approval disabled | `gh api repos/<owner>/<repo>/actions/permissions/workflow -q .can_approve_pull_request_reviews` returns `false`, so `GITHUB_TOKEN` cannot satisfy the required approving review — per [repo baseline](repo-baseline.md#branch-protection); set by the robotsix-github-workflows apply-script; not machine-verified since the watchdog's [retirement](mill-agents.md#retired-agents) — check by hand |
-| Secret push protection | Push protection enabled in repo Security settings; `detect-secrets` in pre-commit; CI runs TruffleHog as a required check that fails on any verified secret, at minimum (content-only repos exempt from TruffleHog) |
+| Secret push protection | Public repos: push protection enabled in repo Security settings. Private repos: push protection exempt (paid on the Free plan) — CI **must** run the TruffleHog secret scan, docs-only/content-only repos included. All repos: `detect-secrets` in pre-commit and not in CI's pre-commit `SKIP:` list; CI runs TruffleHog as a required check that fails on any verified secret, at minimum (only public content-only repos are exempt from TruffleHog) |
 | Credential-file deny list | `.gitignore` covers `.htpasswd`, `.env`/`.env.*`, `wp-config*.php`, `*.pem`, `*.key`, `*secret*`, `*.p12` — verified by `scripts/check-gitignore-denylist.py` in `baseline-check.yml` (warning-first, blocking from 2027-01-31; honors per-repo negating exceptions) — and `.secrets-patterns-excluded` presence and wiring by `scripts/check-secrets-patterns-excluded.py` (same dates) |
 | SBOM* | CI uploads CycloneDX artifact |
 | CVE audit* | `uv audit --preview-features audit-command` at the pinned uv version / `pip-audit` passes in CI |

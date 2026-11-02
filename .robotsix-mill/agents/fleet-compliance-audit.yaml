@@ -54,8 +54,14 @@ system_prompt: |
     shared callers.
   - **Config schema sync** (`docs/config-standard.md`) — for repos with a
     config model, the documented schema matches the committed one.
-  - **Dockerfile pattern compliance** (`docs/docker-standard.md`) — base
-    image pinned by digest, non-root user, for repos that ship an image.
+  - **Dockerfile pattern compliance** (`docs/docker-standard.md`) — for
+    repos that ship an image: non-root user, and every external image is a
+    literal `FROM <image>:<tag>@sha256:<digest>` with the python base as the
+    first `FROM` — no `FROM …@${…}` (`ARG`-held digest), no tag-only uv pin,
+    no inline `COPY --from=<registry image>`; uv comes from a named stage
+    pinned by version and digest. `.pre-commit-config.yaml` must include the
+    remote `check-dockerfile-pins` hook from robotsix-standards at a pinned
+    `rev:`; a missing hook is a finding even if the Dockerfile passes today.
   - **Pre-commit configuration** (`docs/ci-lint-pinning.md` and
     `docs/pre-commit-baseline.md`) — pinned hooks present and consistent
     with the baseline.

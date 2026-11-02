@@ -15,9 +15,11 @@ flagged, so the base image silently stops receiving OS security patches.
 **Failure mode prevented:** a base-image or uv pin that Dependabot cannot see
 is never bumped, while gate 3 still appears satisfied.
 
-Fail-closed: any violation exits 1. The script scans every ``Dockerfile`` (or
-``*.Dockerfile`` / ``Dockerfile.*``) in the repository and exits 0 when there is
-none.
+Fail-closed: any violation exits 1. The script checks the Dockerfiles named on
+the command line (pre-commit passes the staged ones when this runs as the
+remote ``check-dockerfile-pins`` hook published in ``.pre-commit-hooks.yaml``);
+with no arguments it scans every ``Dockerfile`` (or ``*.Dockerfile`` /
+``Dockerfile.*``) under the current directory and exits 0 when there is none.
 
 Exits 0 when every Dockerfile uses the Dependabot-readable shape, 1 otherwise.
 """
@@ -26,9 +28,8 @@ from __future__ import annotations
 
 import re
 import sys
+from collections.abc import Sequence
 from pathlib import Path
-
-REPO_ROOT = Path(__file__).resolve().parent.parent
 
 # Directories never scanned (vendored or generated trees, VCS metadata).
 EXCLUDED_DIRS = {".git", ".venv", "venv", "node_modules", "site", "_build"}
@@ -157,20 +158,29 @@ def check_dockerfile(text: str) -> list[tuple[int, str]]:
     return problems
 
 
-def main() -> int:
-    """Check every Dockerfile in the repository for the Dependabot-readable shape.
+def main(argv: Sequence[str] | None = None) -> int:
+    """Check Dockerfiles for the Dependabot-readable pin shape.
+
+    Checks the paths given in ``argv`` (as pre-commit passes them) or, with no
+    paths, every Dockerfile under the current directory — never this script's
+    own checkout, which is a pre-commit cache when run as a remote hook.
 
     Exit codes:
       0 — no Dockerfile, or every Dockerfile uses the readable pin shape
       1 — one or more pins are not written where Dependabot reads them
     """
-    dockerfiles = find_dockerfiles(REPO_ROOT)
+    args = list(argv) if argv is not None else sys.argv[1:]
+    root = Path.cwd()
+    if args:
+        dockerfiles = [Path(arg) for arg in args]
+    else:
+        dockerfiles = [path.relative_to(root) for path in find_dockerfiles(root)]
     print(f"Checked {len(dockerfiles)} Dockerfile(s) for Dependabot-readable pins ...")
 
     failing: list[str] = []
     for path in dockerfiles:
-        rel = path.relative_to(REPO_ROOT).as_posix()
-        for lineno, problem in check_dockerfile(path.read_text()):
+        rel = path.as_posix()
+        for lineno, problem in check_dockerfile(path.read_text(encoding="utf-8")):
             failing.append(f"  {rel}:{lineno}: {problem}")
 
     if failing:

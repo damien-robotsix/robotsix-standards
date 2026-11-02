@@ -31,6 +31,18 @@ A multi-stage Dockerfile that keeps build tooling out of the runtime image:
   stops receiving OS security patches while gate 3 appears satisfied. The
   fleet's proven pattern is robotsix-mill's `Dockerfile`, which writes the
   literal digest on its `FROM python:3.14-slim@sha256:…` lines.
+  **Enforcement:** robotsix-standards publishes `scripts/check-dockerfile-pins.py`
+  as the remote pre-commit hook `check-dockerfile-pins` (in its
+  `.pre-commit-hooks.yaml`). Every image-shipping repo references it
+  (`repo: https://github.com/damien-robotsix/robotsix-standards`,
+  `id: check-dockerfile-pins`) pinned to a release-tag `rev:`, as listed in the
+  [standard pre-commit set](python.md#pre-commit-hooks), so CI's
+  `pre-commit run --all-files` fails closed on any pin in the wrong shape
+  (including the uv-stage rule below). The `dockerfile-pin-check` job in robotsix-standards'
+  own `baseline-check.yml` only self-tests the script — that repo has no
+  Dockerfile. *Failure prevented:* a check that runs only where no Dockerfile
+  exists passes every time, so the rule would be unenforced in every repo it
+  governs.
 - **uv as a named stage:** bring in uv through its own stage, pinned by
   **version and digest** as the uv Docker guide recommends —
   `FROM ghcr.io/astral-sh/uv:<x.y.z>@sha256:<digest> AS uv`, placed after the

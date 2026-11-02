@@ -738,7 +738,12 @@ documented in the template's `.pre-commit-config.yaml`.
   helpers.
 - **Image-shipping repos additionally:** `hadolint` — the
   [Dockerfile pattern](docker-standard.md) is a standard; hadolint keeps it
-  one.
+  one. Also `check-dockerfile-pins`, the remote hook published by
+  robotsix-standards (`repo: https://github.com/damien-robotsix/robotsix-standards`,
+  `rev:` pinned to a release tag, `id: check-dockerfile-pins`). It enforces the
+  [Dependabot-readable pin shape](docker-standard.md#build-the-dockerfile).
+  Without it, an `ARG`-held digest, a tag-only uv pin or an inline
+  `COPY --from=<registry image>` passes hadolint, and the pin is never bumped.
 - **Docs repos additionally:** `markdownlint-cli2` and `codespell` — see the
   [Markdown linting](markdown-linting.md) standard for the full config.
 

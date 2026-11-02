@@ -176,8 +176,8 @@ rotation. The agent does **not** file a draft for the 90-day runner host
 checklist reminder. Such a draft would land on this board with no repo to
 edit and be closed "no change needed". Once 90 days have passed since the
 last reminder, the agent records `runner-host-checklist due: <date>` in its
-memory ledger instead, and a chat periodic session sends the reminder to the
-operator.
+memory ledger instead. Delivery to the operator by a chat periodic session is
+pending operator setup (see *Runner host checklist reminder* above).
 
 **Cadence:** monthly (2592000 seconds).
 

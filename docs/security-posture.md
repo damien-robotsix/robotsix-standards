@@ -97,19 +97,50 @@ container image additionally meets the **container-image** gates.
 ### 1. SAST — Semgrep
 
 Semgrep analysis runs on every PR and every push to `main`, via the shared
-security workflow from robotsix-github-workflows. Findings are published as a
-workflow artifact and surfaced through the fleet dashboard — there is no
-dependency on GitHub Code Scanning or the GitHub Security tab.
+security workflow from robotsix-github-workflows. There is no dependency on
+GitHub Code Scanning or the GitHub Security tab.
+
+The gate **blocks**; it does not merely report:
+
+- **Ruleset.** Every repo scans with the same fleet ruleset: the Semgrep
+  registry packs `p/default` plus the language pack for each language the
+  repo ships (`p/python` for Python repos). A repo may *add* rules in a
+  committed `.semgrep.yml`. It may not drop fleet rules. That way "Semgrep
+  runs" means the same thing in every repo.
+- **Fail condition.** The Semgrep job exits non-zero, and so fails the PR, on
+  any finding of severity `ERROR` from that ruleset (`semgrep scan --error
+  --severity ERROR`). Findings of severity `WARNING` and `INFO` are reported
+  but do not block.
+- **Required status check.** The Semgrep job is a required status check on
+  the default branch, so a failing run blocks the merge.
+- **False positives.** To accept a false positive, suppress it inline with
+  `# nosemgrep: <rule-id>` and put a justification comment on the same or the
+  preceding line. A bare `# nosemgrep` with no rule id is not allowed: it
+  would silence every rule on that line.
+
+The findings report is uploaded as a workflow artifact so that non-blocking
+findings can be reviewed. The artifact is informational only. It is not the
+control: the failing job is.
+
+**Rollout status:** robotsix-github-workflows does not yet ship a shared
+Semgrep workflow (its `python-security.yml` runs TruffleHog and pip-audit
+only). Until it does, this gate defines the requirement that the workflow must
+meet; no fleet repo has been verified against it yet.
 
 Bandit (Python-specific SAST) runs as a complementary layer via the shared
 `python-ci.yml` workflow in every Python repo — see
 [Python practices](python.md#lint-types-and-security-lint).
 
 - **How to verify:** the repo's CI workflow calls the shared Semgrep workflow.
-  The latest CI run on the default branch uploads a Semgrep findings artifact.
+  The Semgrep job is a required status check on the default branch. It exits
+  non-zero on a blocking (`ERROR`) finding: this is shown either by the shared
+  workflow's documented fail condition, or by a fixture PR containing a
+  known `ERROR` finding whose check goes red. Every `nosemgrep` suppression
+  names a rule id.
 - **Failure prevented:** a vulnerability that a static-analysis rule would
   catch (SQL injection, path traversal, hardcoded credentials) merges and
-  ships.
+  ships. It also prevents a report-only scan that records high-severity
+  findings while the PR merges anyway.
 - **Alignment:** [OWASP SAST](https://owasp.org/www-community/Source_Code_Analysis_Tools),
   OpenSSF Scorecard *SAST* check.
 
@@ -331,7 +362,14 @@ by an open-source, layered secret-scanning stack:
   AGPL-3.0) in the shared security workflow — scans the PR diff and the full
   repo history for secrets that slipped past push protection (e.g. a custom
   pattern GitHub doesn't recognize, or a secret committed before push
-  protection was enabled).
+  protection was enabled). **Fail condition:** the TruffleHog step exits
+  non-zero and fails the job on any *verified* secret, at minimum. The shared
+  `python-security.yml` is stricter today: its TruffleHog action runs with the
+  action's default `--fail` and fails on *any* finding, verified or
+  unverified. A repo may narrow it to verified-only (for example
+  `trufflehog-extra-args: --results=verified`), but never disable failing.
+  The security job is a required status check, so a detected secret blocks
+  the merge.
 
 #### Why this stack
 
@@ -368,7 +406,9 @@ and add a self-referential secret-management burden. The OSS stack above
 
 - **How to verify:** the repo's Security / Secret scanning settings show "Push
   protection" as enabled. `.pre-commit-config.yaml` includes `detect-secrets`.
-  CI calls the shared TruffleHog workflow.
+  CI calls the shared TruffleHog workflow. Its job is a required status check,
+  and the TruffleHog step is not configured to stop failing (no override of
+  the action's `--fail`).
 - **Failure prevented:** a credential (API key, token, private key) is
   committed and pushed; even if the commit is later reverted or force-pushed,
   the secret existed in the history and must be assumed compromised.
@@ -754,7 +794,7 @@ dashboard-watching:
 
 | Gate | Check |
 |---|---|
-| Semgrep* | CI calls shared Semgrep workflow; latest CI run uploads Semgrep findings artifact |
+| Semgrep* | CI calls shared Semgrep workflow with the fleet ruleset; the Semgrep job is a required status check and exits non-zero on a blocking (`ERROR`) finding (documented fail condition or fixture PR); every `nosemgrep` names a rule id |
 | Dependency review* | CI calls shared `dependency-review` workflow; Dependency graph enabled |
 | Dependabot + Renovate | `.github/dependabot.yml` covers non-uv ecosystems; `renovate.json` present in Python repos; recent update PRs; 3-day release-age cooldown on every auto-merge path, verified by `scripts/check-dependency-cooldown.py` in `baseline-check.yml` (warning-first, blocking from 2027-01-31) |
 | Dockerfile pin shape | Image-shipping repos: every external `FROM` is a literal `<image>:<tag>@sha256:<digest>`, the python base is the first `FROM`, `COPY --from` names only a prior stage (no `ARG`-held digest, no inline registry image) — verified fail-closed by `scripts/check-dockerfile-pins.py` (`dockerfile-pin-check` job in `baseline-check.yml`) |
@@ -763,7 +803,7 @@ dashboard-watching:
 | Least-privilege permissions | Every workflow has `permissions:` block; `scripts/check-workflow-security.py` passes in CI; `zizmor` reports clean (code repos) |
 | Runner isolation | Public repos target no self-hosted runner: `scripts/check-runner-visibility.py` (`runner-visibility-check` job in `baseline-check.yml`) passes. It is fail-closed, and private repos on GitHub-hosted runners only warn. Every 30 days, on every fleet repo, the `fleet-compliance-audit` mill agent checks that `gh api repos/<owner>/<repo>/actions/runners` returns `total_count: 0` for each public repo (personal account, so no runner groups) and that `.private` is `true` for each repo with a registered runner. The operator's 90-day runner host checklist (flagged by `fleet-compliance-audit`, not a draft ticket; the reminder is recorded in `fleet-compliance-audit` memory only, because its chat periodic session delivery channel is pending operator setup) covers the rest: "Run workflows from fork pull requests" is off on private repos, the runner is ephemeral/JIT or wiped between jobs, the runner user is non-root, the production Docker socket is not shared, and an egress firewall is in place. The persistent shared runner meets neither the ephemeral/JIT rule nor the wipe rule, and this is a dated accepted risk (CICD-SEC-7, accepted 2026-10-29, review 2027-01-31) — per [repo baseline](repo-baseline.md#self-hosted-runner-hardening) |
 | Actions PR approval disabled | `gh api repos/<owner>/<repo>/actions/permissions/workflow -q .can_approve_pull_request_reviews` returns `false`, so `GITHUB_TOKEN` cannot satisfy the required approving review — per [repo baseline](repo-baseline.md#branch-protection); set by the robotsix-github-workflows apply-script; not machine-verified since the watchdog's [retirement](mill-agents.md#retired-agents) — check by hand |
-| Secret push protection | Push protection enabled in repo Security settings; `detect-secrets` in pre-commit; CI runs TruffleHog (content-only repos exempt from TruffleHog) |
+| Secret push protection | Push protection enabled in repo Security settings; `detect-secrets` in pre-commit; CI runs TruffleHog as a required check that fails on any verified secret, at minimum (content-only repos exempt from TruffleHog) |
 | Credential-file deny list | `.gitignore` covers `.htpasswd`, `.env`/`.env.*`, `wp-config*.php`, `*.pem`, `*.key`, `*secret*`, `*.p12` — verified by `scripts/check-gitignore-denylist.py` in `baseline-check.yml` (warning-first, blocking from 2027-01-31; honors per-repo negating exceptions) — and `.secrets-patterns-excluded` presence and wiring by `scripts/check-secrets-patterns-excluded.py` (same dates) |
 | SBOM* | CI uploads CycloneDX artifact |
 | CVE audit* | `uv audit --preview-features audit-command` at the pinned uv version / `pip-audit` passes in CI |

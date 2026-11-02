@@ -126,10 +126,28 @@ The findings report is uploaded as a workflow artifact so that non-blocking
 findings can be reviewed. The artifact is informational only. It is not the
 control: the failing job is.
 
-**Rollout status:** robotsix-github-workflows does not yet ship a shared
-Semgrep workflow (its `python-security.yml` runs TruffleHog and pip-audit
-only). Until it does, this gate defines the requirement that the workflow must
-meet; no fleet repo has been verified against it yet.
+**Rollout status — dated accepted risk.** robotsix-github-workflows does not
+yet ship a shared Semgrep workflow (its `python-security.yml` runs TruffleHog
+and pip-audit only), so no fleet repo can meet this gate yet and none has been
+verified against it. Until it ships, this gate defines the requirement that the
+workflow must meet, and the missing workflow is a dated **accepted risk**
+(accepted 2026-11-02, review 2027-01-31, matching the fleet's other
+`BLOCKING_FROM` flips):
+
+- **Mitigation.** Where a repo already runs Semgrep through its own pre-commit
+  hook (this standards repo does, over `scripts/`), that hook is the interim
+  control. It must use the fleet ruleset (`p/default` plus the language pack)
+  and fail on findings.
+- **Audit until review.** The [Audit](#audit) row reports Semgrep as
+  **pending rollout** rather than failing every repo. A repo that runs a
+  per-repo Semgrep hook with the fleet ruleset is noted as mitigated.
+- **At review.** If the shared workflow has shipped, the Audit row reverts to
+  the full check below and the gate blocks. If not, the risk is re-dated
+  explicitly — it does not lapse silently.
+
+*Failure prevented:* an undated "until it does" turns a blocking gate into a
+standing goal: the Audit row fails in every repo, so it cannot tell a
+compliant repo from a non-compliant one, and nobody owns the date.
 
 Bandit (Python-specific SAST) runs as a complementary layer via the shared
 `python-ci.yml` workflow in every Python repo — see
@@ -816,7 +834,7 @@ dashboard-watching:
 
 | Gate | Check |
 |---|---|
-| Semgrep* | CI calls shared Semgrep workflow with the fleet ruleset; the Semgrep job is a required status check and exits non-zero on a blocking (`ERROR`) finding (documented fail condition or fixture PR); every `nosemgrep` names a rule id |
+| Semgrep* | **Pending rollout** until robotsix-github-workflows ships the shared Semgrep workflow (dated accepted risk, accepted 2026-11-02, review 2027-01-31 — see gate 1 above): report "pending rollout", and "mitigated" where a per-repo Semgrep hook uses the fleet ruleset (`p/default` plus the language pack); every `nosemgrep` names a rule id. Once the workflow ships: CI calls shared Semgrep workflow with the fleet ruleset; the Semgrep job is a required status check and exits non-zero on a blocking (`ERROR`) finding (documented fail condition or fixture PR) |
 | Dependency review* | CI calls shared `dependency-review` workflow; Dependency graph enabled |
 | Dependabot + Renovate | `.github/dependabot.yml` covers non-uv ecosystems; `renovate.json` present in Python repos; recent update PRs; 3-day release-age cooldown on every auto-merge path, verified by `scripts/check-dependency-cooldown.py` in `baseline-check.yml` (warning-first, blocking from 2027-01-31) |
 | Dockerfile pin shape | Image-shipping repos: every external `FROM` is a literal `<image>:<tag>@sha256:<digest>`, the python base is the first `FROM`, `COPY --from` names only a prior stage (no `ARG`-held digest, no inline registry image) — verified fail-closed by `scripts/check-dockerfile-pins.py` (`dockerfile-pin-check` job in `baseline-check.yml`) |

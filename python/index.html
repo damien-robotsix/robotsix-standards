@@ -3811,7 +3811,12 @@ visible directly in the CI log.</p>
 <li><strong><code>command_line = "-m pytest"</code></strong> — tells <code>coverage</code> how the test suite is
     invoked so <code>coverage run</code> can re-execute the same command.</li>
 <li><strong><code>fail_under = 80</code></strong> — the fleet-wide floor; <code>coverage report</code> exits
-    non-zero below it.  Individual repos may raise this but never lower it.</li>
+    non-zero below it.  It must equal the fleet floor (80) — never lower,
+    and never raised per-repo (no ratchet; see the Tests rules above). The
+    shared workflow's <code>coverage-threshold</code> input stays at its default for
+    the same reason.  <em>Failure mode:</em> a per-repo value above 80 becomes a
+    private ratchet that reviewers disagree on and that breaks when the
+    fleet floor moves.</li>
 <li><strong><code>show_missing = true</code></strong> — lists uncovered lines in the terminal report,
     so developers see exactly what to write tests for without opening HTML.</li>
 <li>

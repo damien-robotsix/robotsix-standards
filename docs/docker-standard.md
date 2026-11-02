@@ -38,7 +38,9 @@ A multi-stage Dockerfile that keeps build tooling out of the runtime image:
   `id: check-dockerfile-pins`) pinned to a release-tag `rev:`, as listed in the
   [standard pre-commit set](python.md#pre-commit-hooks), so CI's
   `pre-commit run --all-files` fails closed on any pin in the wrong shape
-  (including the uv-stage rule below). The `dockerfile-pin-check` job in robotsix-standards'
+  (including the uv-stage rule below). Until a robotsix-standards release
+  ships the hook and a repo adds it, that repo's pin shape is unverified.
+  The `dockerfile-pin-check` job in robotsix-standards'
   own `baseline-check.yml` only self-tests the script — that repo has no
   Dockerfile. *Failure prevented:* a check that runs only where no Dockerfile
   exists passes every time, so the rule would be unenforced in every repo it

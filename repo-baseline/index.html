@@ -3575,7 +3575,8 @@ gate set:</p>
   <a href="../mkdocs-build/">MkDocs build integrity</a> standard — <code>--strict</code> build
   mode and a <code>validation:</code> block that catches broken links and dead
   anchors.</li>
-<li><strong>Security:</strong> Semgrep (SAST), zizmor workflow audit, GitHub secret scanning + push protection
+<li><strong>Security:</strong> Semgrep (SAST — rollout pending, see
+  <a href="../security-posture/#1-sast-semgrep">security posture §1</a>), zizmor workflow audit, GitHub secret scanning + push protection
   (complemented by TruffleHog for PR-diff and full-repo scans in the shared
   security workflow), a dependency CVE audit (<code>uv audit --preview-features audit-command</code> at a pinned
   uv version in the CI gate — preview-only, see
@@ -3648,7 +3649,11 @@ dependency that may conflict with self-hosted infrastructure.</p>
 </blockquote>
 <p><strong>Completeness principle:</strong> a gate in this list exists as (part of) a shared
 reusable workflow — if it can't be called from robotsix-github-workflows, it
-isn't a standard gate yet. Gates adopted à la carte drift à la carte: before
+isn't a standard gate yet. The one exception is a gate marked <em>rollout
+pending</em>: it is listed because the shared workflow is committed to, and its
+absence is a dated accepted risk with a review date and a mitigation (today:
+Semgrep — see <a href="../security-posture/#1-sast-semgrep">security posture §1</a>). A
+pending gate with no dated accepted risk is not a standard gate. Gates adopted à la carte drift à la carte: before
 this rule, Semgrep ran in 4 of 13 repos and the weekly image rescan in 3 of 8,
 each a hand-copied workflow file.</p>
 <h3 id="workflow-permissions">Workflow permissions<a class="headerlink" href="#workflow-permissions" title="Permanent link">&para;</a></h3>

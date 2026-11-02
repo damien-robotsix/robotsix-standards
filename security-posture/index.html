@@ -3601,10 +3601,28 @@ GitHub Code Scanning or the GitHub Security tab.</p>
 <p>The findings report is uploaded as a workflow artifact so that non-blocking
 findings can be reviewed. The artifact is informational only. It is not the
 control: the failing job is.</p>
-<p><strong>Rollout status:</strong> robotsix-github-workflows does not yet ship a shared
-Semgrep workflow (its <code>python-security.yml</code> runs TruffleHog and pip-audit
-only). Until it does, this gate defines the requirement that the workflow must
-meet; no fleet repo has been verified against it yet.</p>
+<p><strong>Rollout status — dated accepted risk.</strong> robotsix-github-workflows does not
+yet ship a shared Semgrep workflow (its <code>python-security.yml</code> runs TruffleHog
+and pip-audit only), so no fleet repo can meet this gate yet and none has been
+verified against it. Until it ships, this gate defines the requirement that the
+workflow must meet, and the missing workflow is a dated <strong>accepted risk</strong>
+(accepted 2026-11-02, review 2027-01-31, matching the fleet's other
+<code>BLOCKING_FROM</code> flips):</p>
+<ul>
+<li><strong>Mitigation.</strong> Where a repo already runs Semgrep through its own pre-commit
+  hook (this standards repo does, over <code>scripts/</code>), that hook is the interim
+  control. It must use the fleet ruleset (<code>p/default</code> plus the language pack)
+  and fail on findings.</li>
+<li><strong>Audit until review.</strong> The <a href="#audit">Audit</a> row reports Semgrep as
+  <strong>pending rollout</strong> rather than failing every repo. A repo that runs a
+  per-repo Semgrep hook with the fleet ruleset is noted as mitigated.</li>
+<li><strong>At review.</strong> If the shared workflow has shipped, the Audit row reverts to
+  the full check below and the gate blocks. If not, the risk is re-dated
+  explicitly — it does not lapse silently.</li>
+</ul>
+<p><em>Failure prevented:</em> an undated "until it does" turns a blocking gate into a
+standing goal: the Audit row fails in every repo, so it cannot tell a
+compliant repo from a non-compliant one, and nobody owns the date.</p>
 <p>Bandit (Python-specific SAST) runs as a complementary layer via the shared
 <code>python-ci.yml</code> workflow in every Python repo — see
 <a href="../python/#lint-types-and-security-lint">Python practices</a>.</p>
@@ -4306,7 +4324,7 @@ dashboard-watching:</p>
 <tbody>
 <tr>
 <td>Semgrep*</td>
-<td>CI calls shared Semgrep workflow with the fleet ruleset; the Semgrep job is a required status check and exits non-zero on a blocking (<code>ERROR</code>) finding (documented fail condition or fixture PR); every <code>nosemgrep</code> names a rule id</td>
+<td><strong>Pending rollout</strong> until robotsix-github-workflows ships the shared Semgrep workflow (dated accepted risk, accepted 2026-11-02, review 2027-01-31 — see gate 1 above): report "pending rollout", and "mitigated" where a per-repo Semgrep hook uses the fleet ruleset (<code>p/default</code> plus the language pack); every <code>nosemgrep</code> names a rule id. Once the workflow ships: CI calls shared Semgrep workflow with the fleet ruleset; the Semgrep job is a required status check and exits non-zero on a blocking (<code>ERROR</code>) finding (documented fail condition or fixture PR)</td>
 </tr>
 <tr>
 <td>Dependency review*</td>

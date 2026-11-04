@@ -65,11 +65,6 @@ def check_secret_str() -> ModuleType:
 
 
 @pytest.fixture
-def check_dockerfile_pins() -> ModuleType:
-    return _load_script("check-dockerfile-pins.py", "check_dockerfile_pins")
-
-
-@pytest.fixture
 def check_workflow_security() -> ModuleType:
     return _load_script(
         "check-workflow-security.py", "check_workflow_security"
@@ -101,3 +96,8 @@ def check_runner_visibility() -> ModuleType:
 @pytest.fixture
 def check_public_registry() -> ModuleType:
     return _load_script("check-public-registry.py", "check_public_registry")
+
+
+@pytest.fixture
+def check_dockerfile_pins() -> ModuleType:
+    return _load_script("check-dockerfile-pins.py", "check_dockerfile_pins")

@@ -3,6 +3,38 @@
 
 # Changelog
 
+## [0.12.0](https://github.com/damien-robotsix/robotsix-standards/compare/v0.11.0...v0.12.0) (2026-11-04)
+
+
+### Features
+
+* check-secret-str: add a same-line pragma to exempt path-valued fields named *token*/*key* (20261101T092907Z-check-secret-str-add-a-same-line-pragma-1be4) [WIP] ([#476](https://github.com/damien-robotsix/robotsix-standards/issues/476)) ([0602959](https://github.com/damien-robotsix/robotsix-standards/commit/06029590a59839854c7ce4a90de9e18863c26fc1))
+* Eight standards say a 'periodic standards-audit agent' checks their security rules, but no such agent exists (20261031T124209Z-eight-standards-say-a-periodic-standards-035d) ([#470](https://github.com/damien-robotsix/robotsix-standards/issues/470)) ([9beca2e](https://github.com/damien-robotsix/robotsix-standards/commit/9beca2eb7264cecb63adb813f73684de3321c6dd))
+* Secret maps (`dict[str, SecretStr]`) aren't machine-checked, and the redact-on-read rule doesn't cover them: the OpenRouter keys can be typed `str` or served unmasked (20261030T101305Z-secret-maps-dict-str-secretstr-aren-t-ma-c0cb) ([#468](https://github.com/damien-robotsix/robotsix-standards/issues/468)) ([04626d6](https://github.com/damien-robotsix/robotsix-standards/commit/04626d6af4d583acf097fd0c8b8e3e0abb05e394))
+
+
+### Bug Fixes
+
+* point SECURITY.md at the real admin@robotsix.net contact ([#477](https://github.com/damien-robotsix/robotsix-standards/issues/477)) ([a7f71e0](https://github.com/damien-robotsix/robotsix-standards/commit/a7f71e0199be61970a5d343014867c218d5dd624))
+
+
+### Documentation
+
+* chat-access §5 says the security-posture page covers its check, but that page has no row for it (20261031T214947Z-chat-access-5-says-the-security-posture-7695) ([#473](https://github.com/damien-robotsix/robotsix-standards/issues/473)) ([f272465](https://github.com/damien-robotsix/robotsix-standards/commit/f272465f75a4954181b8c4caabdf2a211d94ed42))
+* Mark the chat-session reminder delivery as pending operator wiring in the standards pages (20261101T185103Z-mark-the-chat-session-reminder-delivery-2120) ([#483](https://github.com/damien-robotsix/robotsix-standards/issues/483)) ([82a1b50](https://github.com/damien-robotsix/robotsix-standards/commit/82a1b507d5c0d102255a2ada7eb448e1f4e2371e))
+* mill-agents.md says a chat session delivers the runner checklist reminder, but the same section says that session isn't set up yet (20261102T075810Z-mill-agents-md-says-a-chat-session-deliv-d1e2) ([#484](https://github.com/damien-robotsix/robotsix-standards/issues/484)) ([4826b42](https://github.com/damien-robotsix/robotsix-standards/commit/4826b42e2be0fd396ebd622c31d119227c67a55f))
+* No standard says pages with private data must stop browsers from caching them, and the header page lists the wrong default headers (20261031T142447Z-no-standard-says-pages-with-private-data-b937) ([#471](https://github.com/damien-robotsix/robotsix-standards/issues/471)) ([2b29cfe](https://github.com/damien-robotsix/robotsix-standards/commit/2b29cfea7c7e4cda62993e6283f769be74fb5785))
+* Nothing re-checks that each component's own config page hides secrets: the security audit only covers central-deploy's config page (20261031T164712Z-nothing-re-checks-that-each-component-s-8529) ([#472](https://github.com/damien-robotsix/robotsix-standards/issues/472)) ([f83a209](https://github.com/damien-robotsix/robotsix-standards/commit/f83a20940d91d12358341711340250c9e5ade070))
+* Private-repo provenance: keyless signing was rejected to keep the repo identity private, but the images and their provenance are public GHCR packages anyway (20261029T140242Z-private-repo-provenance-keyless-signing-6916) ([#479](https://github.com/damien-robotsix/robotsix-standards/issues/479)) ([9b8b043](https://github.com/damien-robotsix/robotsix-standards/commit/9b8b043ff23e0a5712550387d63fe88c0ca2cd15))
+* Reconcile docs/mkdocs-build.md link-validation section with the implemented lychee split (20261101T102857Z-reconcile-docs-mkdocs-build-md-link-vali-432c) ([#475](https://github.com/damien-robotsix/robotsix-standards/issues/475)) ([6a14356](https://github.com/damien-robotsix/robotsix-standards/commit/6a14356dd3f72f4eb7a51f7bdda04fa3498f3b4a))
+* robotsix-standards: resolve the contradictory per-repo coverage-floor rule in docs/python.md (20261102T103059Z-robotsix-standards-resolve-the-contradic-360b) ([#487](https://github.com/damien-robotsix/robotsix-standards/issues/487)) ([d584db9](https://github.com/damien-robotsix/robotsix-standards/commit/d584db963ca34cbaf481971e88872e09ddd3a1cd))
+* scope split from 20261029T140242Z-self-hosted-runner-hardening-the-rules-a-cfe7: docs/mill-agents.md (20261101T185027Z-scope-split-from-20261029t140242z-self-h-bb9c) ([#481](https://github.com/damien-robotsix/robotsix-standards/issues/481)) ([7b4217c](https://github.com/damien-robotsix/robotsix-standards/commit/7b4217c87d7596ffd977b58d34570543826438e5))
+* Semgrep is listed as a required gate, but no shared Semgrep workflow exists and no date is set for when one will (20261102T140808Z-semgrep-is-listed-as-a-required-gate-but-0b86) ([#488](https://github.com/damien-robotsix/robotsix-standards/issues/488)) ([5826d47](https://github.com/damien-robotsix/robotsix-standards/commit/5826d47767b7cddda413f3ded97495b68f05b237))
+* Standardize: library packages attach a NullHandler to their top-level logger (20261030T155913Z-standardize-library-packages-attach-a-nu-5276) ([#462](https://github.com/damien-robotsix/robotsix-standards/issues/462)) ([a045b3c](https://github.com/damien-robotsix/robotsix-standards/commit/a045b3c2eb65b3afc2bd4472118a8f5a68875f2d))
+* The deployment system's own auto-updater pulls new images with no provenance check, and the upstream Watchtower project is no longer maintained (20261030T093104Z-the-deployment-system-s-own-auto-updater-70d7) ([#469](https://github.com/damien-robotsix/robotsix-standards/issues/469)) ([ddc13b6](https://github.com/damien-robotsix/robotsix-standards/commit/ddc13b65d43be27407b9806c00eb035b88deec87))
+* The Semgrep check never fails a pull request: its findings go to a 'fleet dashboard' that doesn't exist, and the audit only checks that a report file was uploaded (20261102T094455Z-the-semgrep-check-never-fails-a-pull-req-ffea) ([#486](https://github.com/damien-robotsix/robotsix-standards/issues/486)) ([741e0df](https://github.com/damien-robotsix/robotsix-standards/commit/741e0df57ccdaaf607e07ee97251d478672976b9))
+* Update the fleet-compliance-audit section of docs/mill-agents.md to match the agent (20261101T185103Z-update-the-fleet-compliance-audit-sectio-3f03) ([#482](https://github.com/damien-robotsix/robotsix-standards/issues/482)) ([8aecc74](https://github.com/damien-robotsix/robotsix-standards/commit/8aecc7488342c6d7b79c9bd276ee4344342d9fc6))
+
 ## [0.11.0](https://github.com/damien-robotsix/robotsix-standards/compare/v0.10.0...v0.11.0) (2026-10-29)
 
 

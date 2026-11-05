@@ -121,10 +121,43 @@ presence ([python-ci-workflow](python-ci-workflow.md)), config schema sync
 ([github-actions-security](github-actions-security.md)). A check that does
 not apply to a repo is skipped, never flagged.
 
+**Runner-posture check:** on every pass it also runs the self-hosted runner
+visibility check from
+[repo baseline](repo-baseline.md#self-hosted-runner-hardening) against
+**every** non-archived fleet repo, not only the rotation sample: no runner
+is registered to a public repo, and every repo with a registered runner is
+private. *Failure mode this prevents:* a runner left registered to a repo
+made public, which lets any fork pull request run code on the host, would
+otherwise go unnoticed until the next manual host check.
+
+The check uses two API calls per repo. A public repo (`.private` is `false`) must
+report `total_count: 0` registered runners. A repo with any registered
+runner must have `.private` set to `true`. The fix is a GitHub setting, so
+the draft is marked operator action required. If either call fails, is
+unauthorised (401/403/404), is rate-limited or returns unexpected output, the
+repo is recorded as **runner check inconclusive** and re-checked on the next
+pass. An inconclusive result is not compliant, and it is not a finding.
+Reading a failed call as "zero runners" would hide a runner on a public repo.
+
+**Runner host checklist reminder:** it does not check the host items
+itself. When the operator's 90-day runner host checklist (owner and items
+in [repo baseline](repo-baseline.md#self-hosted-runner-hardening)) falls
+due, it records `runner-host-checklist due: <date>` in its memory ledger
+instead of filing a draft ticket. Delivery to the operator by a chat
+periodic session is **pending operator setup** — that session is not
+configured yet, so until it exists the reminder lives in this agent's
+memory ledger only. *Failure mode this prevents:* a draft with an
+empty `draft_repo_ids` lands on the robotsix-standards board and is closed
+"no change needed", so the reminder would be silently lost.
+
 **Sampling:** it does not scan the whole fleet every run. Each pass picks a
 rotation subset of roughly 25–33% of the repos — the least-recently-checked
 ones per its memory ledger — so the fleet is covered over three to four
-passes and drift stays visible without a full-fleet scan each month.
+passes and drift stays visible without a full-fleet scan each month. The
+self-hosted runner posture check is the exception. It runs against
+**every** non-archived fleet repo on **every** pass, because it only costs
+two API calls per repo. A runner on a public repo would otherwise go unseen
+for up to three or four months.
 
 **What it does NOT do:** it never edits, opens PRs against, or remediates
 another repo. It reads each sampled repo, records per-standard compliance,
@@ -134,7 +167,17 @@ and files draft tickets; the operator remediates.
 check, the standard it violates, observed vs. required, and a concrete
 remediation. The memory ledger carries a per-standard compliance tally so
 drift is visible across passes. A clean pass with no findings is a valid
-result.
+result. Runner posture drafts are filed **first**, before any rotation-sample
+draft. They have their own budget of up to 5 per pass and do not count
+against the rotation's 5-draft cap. A runner finding that does not fit the
+budget is carried in memory and filed first on the next pass. Each draft is
+filed on the audited repo's board, including repos outside this pass's
+rotation. The agent does **not** file a draft for the 90-day runner host
+checklist reminder. Such a draft would land on this board with no repo to
+edit and be closed "no change needed". Once 90 days have passed since the
+last reminder, the agent records `runner-host-checklist due: <date>` in its
+memory ledger instead. Delivery to the operator by a chat periodic session is
+pending operator setup (see *Runner host checklist reminder* above).
 
 **Cadence:** monthly (2592000 seconds).
 
@@ -149,6 +192,79 @@ repo's own standards, not upstream sources.
 the standards pages for the requirements, inspects each sampled repo's
 contents via the mill's GitHub access, and files draft tickets. It cannot
 change any repo; all remediation flows through the normal ticket pipeline.
+
+## Component security audit
+
+**Agent:** `component-security-audit` (defined in
+`.robotsix-mill/agents/component-security-audit.yaml`).
+
+**Purpose:** Re-check fleet components against the **audit-only** security
+criteria, which are design-level MUSTs that no CI gate can inspect. Without this
+agent, those criteria would be checked once at code review and never again.
+*Failure mode this prevents:* a security header, CORS allowlist, fetcher guard
+or agent budget that drifts after merge goes unseen, because nothing re-checks
+it (OWASP Top 10 A02:2025, Security Misconfiguration). A MUST with no recurring
+check fails the enforceability rule the
+[security posture audit](#security-posture-audit-security-posture-audit)
+applies. `fleet-compliance-audit` covers only the mechanically verifiable
+standards. This agent is the periodic check for the design-level ones.
+
+**What it checks:** the "How this is enforced" criteria of each page below,
+applied to the repos each page governs:
+
+- [HTTP security headers](http-security-headers.md#how-this-is-enforced):
+  deployable HTTP components.
+- [CORS policy](cors-policy.md#how-this-is-enforced): deployable HTTP
+  components.
+- [SSE response headers](sse-response-headers.md#how-this-is-enforced):
+  components that emit `text/event-stream`.
+- [SSRF-hardened fetchers](ssrf-hardened-fetchers.md#how-this-is-enforced):
+  every tool that fetches a caller- or model-influenced URL.
+- [Chat access §5, chat observability](chat-access-standard.md#5-chat-observability):
+  central-deploy.
+- [Config standard §3, management-surface secrets](config-standard.md#how-this-is-enforced):
+  central-deploy's config API and Configure UI, and every deployable
+  component with a `/config` surface (`GET /config` goes through
+  `robotsix_config.mask_secrets`, writes through `apply_update`, rollback
+  through `rollback`, and `GET /config/versions` through `read_versions`
+  with no secret value in its response; no hand-rolled config serializer;
+  version history stores no secret values).
+- [LLM security](component-standard.md#how-this-pages-security-rules-are-enforced)
+  (including LLM05 and LLM06) and the
+  [LLM & agentic security audit](security-posture.md#llm-agentic-security-audit)
+  (LLM01/02/05/06/07/08/10, ASI01–ASI10): LLM repos.
+
+A criterion that does not apply to a repo is skipped, never flagged. A
+design-level criterion the agent cannot judge confidently from the source is
+recorded as inconclusive in its ledger, not filed as a finding.
+
+**Sampling:** each pass audits a rotation subset of roughly 25–33% of the
+in-scope repos (deployable HTTP components, LLM repos, and central-deploy),
+choosing the least-recently-audited ones per its memory ledger. Every in-scope
+repo is covered over three to four passes.
+
+**What it does NOT do:** it never edits, opens PRs against, or remediates
+another repo. It does not repeat the mechanical checks that
+`fleet-compliance-audit` already runs.
+
+**Output:** one draft ticket per repo with gaps, filed on that repo's board.
+Each ticket lists every failing criterion, the page and section it violates,
+the evidence (file and line), observed vs. required, and a concrete
+remediation. A clean pass with no findings is a valid result.
+
+**Cadence:** monthly (2592000 seconds).
+
+**Capability level:** 3. Most criteria are design-level: judging whether
+untrusted data is delimited before prompt assembly, or whether the validated
+address is the address connected to, means reading and reasoning about code
+paths. Matching strings is not enough, so a level-2 agent is too shallow.
+
+**Web knowledge:** Disabled. The agent compares fleet repos against this
+repo's own criteria, not against upstream sources.
+
+**Tools:** Read-only with respect to the fleet. It reads `docs/fleet.md` and
+the standards pages, inspects each sampled repo's source through the mill's
+GitHub access, and files draft tickets.
 
 ## Retired agents
 

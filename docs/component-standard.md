@@ -495,7 +495,7 @@ untrusted input under **LLM01** and are delimited before injection.  *Failure
 prevented:* a poisoned RAG document containing a backdoor instruction is
 retrieved as context; the delimitation layer treats it as data rather than
 instruction, preventing the model from adopting the backdoor.  *Enforced
-by:* the periodic standards-audit agent, against the LLM05 criterion in the
+by:* the periodic [`component-security-audit`](mill-agents.md#component-security-audit) agent, against the LLM05 criterion in the
 [LLM & agentic security audit](security-posture.md#llm-agentic-security-audit).
 
 **LLM06 — Unbounded Consumption.** Agent resource usage — compute, API
@@ -509,7 +509,7 @@ confused agent cannot consume unbounded compute or API budget — the request
 cap and job timeout together enforce a hard ceiling on any single agent run.
 *Enforced by:* `scripts/check-workflow-timeouts.py` for mechanism (a) on
 GitHub Actions jobs; the rest (request budgets, timeouts on runs outside
-Actions, `spawn_subtask` bounds) by the periodic standards-audit agent,
+Actions, `spawn_subtask` bounds) by the periodic [`component-security-audit`](mill-agents.md#component-security-audit) agent,
 against the LLM06 criterion in the
 [LLM & agentic security audit](security-posture.md#llm-agentic-security-audit).
 
@@ -681,7 +681,7 @@ This page's security MUSTs govern downstream deployable components, not this
 repo, so there is no CI gate here that can inspect a component's application
 code. Most of them are also not covered by any pre-commit hook or CI job in the
 component repo, so enforcement is by **audit** — checked at component code
-review and by the periodic standards-audit agent — against the criteria below,
+review and by the periodic [`component-security-audit`](mill-agents.md#component-security-audit) agent — against the criteria below,
 mirroring the pattern in
 [HTTP security headers](http-security-headers.md#how-this-is-enforced),
 [SSE response headers](sse-response-headers.md#how-this-is-enforced),

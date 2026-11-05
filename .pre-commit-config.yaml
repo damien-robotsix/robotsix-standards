@@ -21,7 +21,7 @@ repos:
           )
       - id: detect-private-key
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.17.1
+    rev: v0.17.3
     hooks:
       - id: ruff-check
         args: [--fix, --exit-non-zero-on-fix]
@@ -92,7 +92,9 @@ repos:
   # only runs bandit/pip-audit/trufflehog, so this docs repo carries its own
   # pre-commit hook (the docs-repo equivalent of python-security.yml) scoped
   # to scripts/ — the only first-party Python here (same scope as ruff/mypy).
-  # p/python + p/security-audit resolve anonymously from the Semgrep Registry
+  # The fleet ruleset (p/default + p/python, security-posture gate 1) plus the
+  # repo-added p/security-audit pack (adding rules is allowed; dropping fleet
+  # packs is not) resolve anonymously from the Semgrep Registry
   # (no SEMGREP_APP_TOKEN needed); findings fail the hook so a vulnerable
   # pattern cannot merge (OWASP ASVS 14.2.1, OWASP Top 10 A06:2021).
   #
@@ -116,7 +118,7 @@ repos:
       - id: semgrep
         name: semgrep (SAST, scripts/)
         language: system
-        entry: uv tool run --python 3.13 --with setuptools<81 --from semgrep==1.99.0 semgrep --config p/python --config p/security-audit --error --disable-version-check --quiet
+        entry: uv tool run --python 3.13 --with setuptools<81 --from semgrep==1.99.0 semgrep --config p/default --config p/python --config p/security-audit --error --disable-version-check --quiet
         pass_filenames: true
         require_serial: true
         types: [python]

@@ -20,15 +20,33 @@ infrastructure don't have that failure mode.
    - A repo that runs Actions is either **public**, or runs its Actions on a
      **self-hosted runner** (`runs-on: self-hosted`). Private + GitHub-hosted
      is not allowed — it burns paid minutes.
+   - The two options are exclusive. A **public** repo never uses a
+     self-hosted runner, because fork PRs would run on the host. See
+     [repo baseline — runner choice follows repository visibility](repo-baseline.md#runner-choice-follows-repository-visibility)
+     for the rule and the runner hardening requirements, and
+     [security-posture gate 4d](security-posture.md#4d-runner-isolation)
+     for how it is enforced.
 2. **Container images are free to store and pull.** GHCR is free for **public**
    packages; **private** packages are metered (storage + egress) and the deploy
    server pulls images constantly. Fleet images are therefore **public
    packages** (or served from a self-hosted registry). Package visibility is
    independent of repo visibility — a public repo can still publish a *private*
-   package, so this must be set explicitly.
+   package, so this must be set explicitly. This holds for **private repos**
+   too: their images, and the provenance attestations stored next to them,
+   are public, so the repo name, workflow ref and commit they carry are public
+   as well. That is why private-repo provenance is signed keyless (rule 3).
 3. **No paid GitHub features.** GitHub Advanced Security on private repos,
    larger/GPU hosted runners, Copilot in CI, and GitHub Models are all off the
-   table. CodeQL is free on public repos — keep it there.
+   table. CodeQL is free on public repos — keep it there. GitHub artifact
+   attestations (`actions/attest-build-provenance`) on private or internal
+   repos need Enterprise Cloud. Use them on public repos only; private repos
+   sign with keyless cosign (the job's GitHub OIDC identity against the free
+   public Sigstore instance) instead (see
+   [SLSA Build Track](security-posture.md#slsa-build-track)). GitHub Secret
+   Protection (secret scanning and push protection on private repos) is sold
+   only to Team and Enterprise Cloud organizations, so private repos are exempt
+   from the push-protection rule and must run the CI secret scan instead (see
+   [secret push protection](security-posture.md#5-secret-push-protection)).
 4. **No paid or licensed Marketplace Actions.** Third-party Actions from the
    GitHub Marketplace that require a paid subscription, licence key, or
    per-minute billing are forbidden everywhere in the fleet — public repos

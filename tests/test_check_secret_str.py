@@ -115,6 +115,97 @@ class OpenRouterConfig(BaseModel):
     assert _fields(check_secret_str, source) == []
 
 
+def test_secret_map_with_str_values_is_rejected(
+    check_secret_str: ModuleType,
+) -> None:
+    # The canonical §8 field typed wrongly: `keys` matches no SECRET_PATTERNS
+    # substring and the annotation is a container, so only the secret-map
+    # check catches it.
+    source = """\
+from typing import Dict, Mapping, Optional
+
+from pydantic import BaseModel
+
+
+class OpenRouterConfig(BaseModel):
+    keys: dict[str, str] = {}
+
+
+class OtherConfig(BaseModel):
+    api_keys: Dict[str, str] = {}
+    tokens: Mapping[str, str] | None = None
+    client_secrets: Optional[dict[str, str]] = None
+"""
+    assert _fields(check_secret_str, source) == [
+        "OpenRouterConfig.keys",
+        "OtherConfig.api_keys",
+        "OtherConfig.tokens",
+        "OtherConfig.client_secrets",
+    ]
+
+
+def test_credentials_map_with_str_values_is_rejected(
+    check_secret_str: ModuleType,
+) -> None:
+    # `credentials` matches no SECRET_PATTERNS substring; it is a secret-map
+    # name like `keys`.  The SecretStr-valued form passes.
+    source = """\
+from pydantic import BaseModel, SecretStr
+
+
+class BadConfig(BaseModel):
+    credentials: dict[str, str] = {}
+
+
+class GoodConfig(BaseModel):
+    credentials: dict[str, SecretStr] = {}
+"""
+    assert _fields(check_secret_str, source) == ["BadConfig.credentials"]
+
+
+def test_secret_list_with_str_items_is_rejected(
+    check_secret_str: ModuleType,
+) -> None:
+    source = """\
+from typing import List, Optional, Sequence
+
+from pydantic import BaseModel, SecretStr
+
+
+class BadConfig(BaseModel):
+    tokens: list[str] = []
+    api_keys: List[str] = []
+    keys: Sequence[str] | None = None
+    credentials: Optional[tuple[str, ...]] = None
+
+
+class GoodConfig(BaseModel):
+    tokens: list[SecretStr] = []
+    hosts: list[str] = []
+    secret_pair: tuple[str, int] = ("", 0)
+"""
+    assert _fields(check_secret_str, source) == [
+        "BadConfig.tokens",
+        "BadConfig.api_keys",
+        "BadConfig.keys",
+        "BadConfig.credentials",
+    ]
+
+
+def test_non_secret_str_map_is_accepted(check_secret_str: ModuleType) -> None:
+    # A str-valued map whose name is not a secret name (labels, headers) and a
+    # secret map of nested models are not flagged.
+    source = """\
+from pydantic import BaseModel
+
+
+class LangfuseConfig(BaseModel):
+    labels: dict[str, str] = {}
+    projects: dict[str, "LangfuseProject"] = {}
+"""
+    assert _fields(check_secret_str, source) == []
+
+
 def test_non_model_class_is_ignored(check_secret_str: ModuleType) -> None:
     source = """\
 class NotAPydanticModel:
@@ -139,6 +230,66 @@ class ChildConfig(BaseConfig):
     assert fields == ["BaseConfig.password", "ChildConfig.token"]
 
 
+def test_pragma_with_reason_skips_field(check_secret_str: ModuleType) -> None:
+    source = """\
+from pydantic import BaseModel
+
+
+class LinkedInConfig(BaseModel):
+    linkedin_token_file: str = "/data/token.json"  # secret-str: not-a-secret (file path)
+    linkedin_org_token_file: str = ""  # secret-str: not-a-secret (file path)
+    api_token: str = ""
+"""
+    assert _fields(check_secret_str, source) == ["LinkedInConfig.api_token"]
+
+
+def test_pragma_without_reason_still_fails(check_secret_str: ModuleType) -> None:
+    source = """\
+from pydantic import BaseModel
+
+
+class LinkedInConfig(BaseModel):
+    linkedin_token_file: str = ""  # secret-str: not-a-secret
+    other_token_file: str = ""  # secret-str: not-a-secret ()
+    third_token_file: str = ""  # secret-str: not-a-secret (   )
+"""
+    assert _fields(check_secret_str, source) == [
+        "LinkedInConfig.linkedin_token_file",
+        "LinkedInConfig.other_token_file",
+        "LinkedInConfig.third_token_file",
+    ]
+
+
+def test_pragma_on_another_line_has_no_effect(check_secret_str: ModuleType) -> None:
+    source = """\
+from pydantic import BaseModel
+
+
+class LinkedInConfig(BaseModel):
+    # secret-str: not-a-secret (file path)
+    linkedin_token_file: str = ""
+    api_token: str = ""
+    other: int = 0  # secret-str: not-a-secret (file path)
+"""
+    assert _fields(check_secret_str, source) == [
+        "LinkedInConfig.linkedin_token_file",
+        "LinkedInConfig.api_token",
+    ]
+
+
+def test_pragma_inside_string_literal_has_no_effect(
+    check_secret_str: ModuleType,
+) -> None:
+    source = """\
+from pydantic import BaseModel
+
+
+class LinkedInConfig(BaseModel):
+    api_token: str = "# secret-str: not-a-secret (nope)"
+"""
+    assert _fields(check_secret_str, source) == ["LinkedInConfig.api_token"]
+
+
 def test_main_exit_codes(check_secret_str: ModuleType, tmp_path: Path) -> None:
     clean = _write(
         tmp_path,
@@ -155,3 +306,15 @@ def test_main_exit_codes(check_secret_str: ModuleType, tmp_path: Path) -> None:
 
     assert check_secret_str.main([str(clean)]) == 0
     assert check_secret_str.main([str(dirty)]) == 1
+
+
+def test_hook_script_parses_on_python_310_grammar():
+    """The hook runs under the consumer's python3 (language: script), so it
+    must not use 3.14-only syntax such as PEP 758 `except A, B:`."""
+    import ast
+    from pathlib import Path
+
+    src = (
+        Path(__file__).resolve().parents[1] / "scripts" / "check-secret-str.py"
+    ).read_text()
+    ast.parse(src, feature_version=(3, 10))

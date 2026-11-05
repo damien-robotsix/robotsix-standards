@@ -13,11 +13,15 @@ are lower-risk for a repo with no deployable artifacts and few, simple
 workflows. Content-only repos must still meet SHA-pinning (4a), least-privilege
 permissions (4c) — both enforced by the
 [workflow-permissions audit](#workflow-permissions-audit) — plus
-push-protection + detect-secrets (the commit-time and push-time parts of gate
-5), and Dependabot gates. The TruffleHog full-history
-scan is exempt — a docs-only repo with no deployable artifacts and few
-contributors has minimal secret-exposure surface beyond what push protection
-and detect-secrets already catch.
+detect-secrets (the commit-time part of gate 5, also run in CI by
+`pre-commit run --all-files`), push protection on public repos (the push-time
+part of gate 5), and Dependabot gates. A **public** content-only repo is
+exempt from the TruffleHog CI scan — a docs-only repo with no deployable
+artifacts and few contributors has minimal secret-exposure surface beyond what
+push protection and detect-secrets already catch. A **private** content-only
+repo is **not** exempt: push protection is unavailable on private repos on the
+Free plan (see [gate 5](#5-secret-push-protection)), so the CI TruffleHog scan
+is its mandatory server-side secret scan.
 
 The fleet's security requirements are organizational policy, not repo-specific
 technical gaps. They are defined once here, checked at repo onboarding and
@@ -97,19 +101,68 @@ container image additionally meets the **container-image** gates.
 ### 1. SAST — Semgrep
 
 Semgrep analysis runs on every PR and every push to `main`, via the shared
-security workflow from robotsix-github-workflows. Findings are published as a
-workflow artifact and surfaced through the fleet dashboard — there is no
-dependency on GitHub Code Scanning or the GitHub Security tab.
+security workflow from robotsix-github-workflows. There is no dependency on
+GitHub Code Scanning or the GitHub Security tab.
+
+The gate **blocks**; it does not merely report:
+
+- **Ruleset.** Every repo scans with the same fleet ruleset: the Semgrep
+  registry packs `p/default` plus the language pack for each language the
+  repo ships (`p/python` for Python repos). A repo may *add* rules in a
+  committed `.semgrep.yml`. It may not drop fleet rules. That way "Semgrep
+  runs" means the same thing in every repo.
+- **Fail condition.** The Semgrep job exits non-zero, and so fails the PR, on
+  any finding of severity `ERROR` from that ruleset (`semgrep scan --error
+  --severity ERROR`). Findings of severity `WARNING` and `INFO` are reported
+  but do not block.
+- **Required status check.** The Semgrep job is a required status check on
+  the default branch, so a failing run blocks the merge.
+- **False positives.** To accept a false positive, suppress it inline with
+  `# nosemgrep: <rule-id>` and put a justification comment on the same or the
+  preceding line. A bare `# nosemgrep` with no rule id is not allowed: it
+  would silence every rule on that line.
+
+The findings report is uploaded as a workflow artifact so that non-blocking
+findings can be reviewed. The artifact is informational only. It is not the
+control: the failing job is.
+
+**Rollout status — dated accepted risk.** robotsix-github-workflows does not
+yet ship a shared Semgrep workflow (its `python-security.yml` runs TruffleHog
+and pip-audit only), so no fleet repo can meet this gate yet and none has been
+verified against it. Until it ships, this gate defines the requirement that the
+workflow must meet, and the missing workflow is a dated **accepted risk**
+(accepted 2026-11-02, review 2027-01-31, matching the fleet's other
+`BLOCKING_FROM` flips):
+
+- **Mitigation.** Where a repo already runs Semgrep through its own pre-commit
+  hook (this standards repo does, over `scripts/`), that hook is the interim
+  control. It must use the fleet ruleset (`p/default` plus the language pack)
+  and fail on findings.
+- **Audit until review.** The [Audit](#audit) row reports Semgrep as
+  **pending rollout** rather than failing every repo. A repo that runs a
+  per-repo Semgrep hook with the fleet ruleset is noted as mitigated.
+- **At review.** If the shared workflow has shipped, the Audit row reverts to
+  the full check below and the gate blocks. If not, the risk is re-dated
+  explicitly — it does not lapse silently.
+
+*Failure prevented:* an undated "until it does" turns a blocking gate into a
+standing goal: the Audit row fails in every repo, so it cannot tell a
+compliant repo from a non-compliant one, and nobody owns the date.
 
 Bandit (Python-specific SAST) runs as a complementary layer via the shared
 `python-ci.yml` workflow in every Python repo — see
 [Python practices](python.md#lint-types-and-security-lint).
 
 - **How to verify:** the repo's CI workflow calls the shared Semgrep workflow.
-  The latest CI run on the default branch uploads a Semgrep findings artifact.
+  The Semgrep job is a required status check on the default branch. It exits
+  non-zero on a blocking (`ERROR`) finding: this is shown either by the shared
+  workflow's documented fail condition, or by a fixture PR containing a
+  known `ERROR` finding whose check goes red. Every `nosemgrep` suppression
+  names a rule id.
 - **Failure prevented:** a vulnerability that a static-analysis rule would
   catch (SQL injection, path traversal, hardcoded credentials) merges and
-  ships.
+  ships. It also prevents a report-only scan that records high-severity
+  findings while the PR merges anyway.
 - **Alignment:** [OWASP SAST](https://owasp.org/www-community/Source_Code_Analysis_Tools),
   OpenSSF Scorecard *SAST* check.
 
@@ -135,8 +188,14 @@ vulnerable package before the PR merges.
 ### 3. Automated dependency updates — Renovate + Dependabot
 
 Every pin the standards mandate has exactly one named bumper. Renovate covers
-Python/uv lockfiles; Dependabot covers GitHub Actions SHAs, base-image digests,
-pre-commit hook versions, and npm packages. `renovate.json` declares the `uv`
+Python/uv lockfiles; Dependabot covers GitHub Actions SHAs, base-image and
+uv-image digests, pre-commit hook versions, and npm packages. Dependabot only
+sees an image pin written literally on a `FROM` line — a digest held in an
+`ARG` or an image pulled inline with `COPY --from=<image>` is never bumped, so
+the Dockerfile must use the
+[Dependabot-readable shape](docker-standard.md#build-the-dockerfile) (literal
+`@sha256` on every external `FROM`, python base as the first `FROM`, uv as a
+digest-pinned named stage). `renovate.json` declares the `uv`
 manager in every Python repo, and `.github/dependabot.yml` declares the
 remaining ecosystems; the baseline-check gate verifies both are present and
 complete. Dependabot and Renovate PRs auto-merge once required checks pass —
@@ -152,7 +211,12 @@ updates and first-party `damien-robotsix/*` packages are exempt — see
 - **How to verify:** `renovate.json` exists in every Python repo (covering the
   `uv` manager); `.github/dependabot.yml` exists and covers `github-actions`
   and `pre-commit` in every repo, plus `npm` in repos with `package.json` and
-  `docker` in image-shipping repos. The Dependabot and Renovate dashboards
+  `docker` in image-shipping repos, and every image-shipping repo's
+  `Dockerfile` has no `FROM …@${…}` line and no `COPY --from=<registry image>`
+  (every external image is a literal `FROM <image>:<tag>@sha256:<digest>`,
+  with the python base as the first `FROM`), verified fail-closed by
+  `scripts/check-dockerfile-pins.py` in `baseline-check.yml`.
+  The Dependabot and Renovate dashboards
   show recent update PRs. The `dependency-cooldown-check` job
   (`scripts/check-dependency-cooldown.py` in `baseline-check.yml`) finds a
   cooldown of at least 3 days on every auto-merge path, or an accepted-risk
@@ -160,7 +224,9 @@ updates and first-party `damien-robotsix/*` packages are exempt — see
   2027-01-31.
 - **Failure prevented:** a pinned digest (base image, action SHA) rots silently
   — the image stops receiving base-OS security patches, an action runs an
-  unmaintained version — with no alert. The cooldown prevents a second
+  unmaintained version — with no alert; this includes a digest that looks
+  pinned and "covered" but sits where Dependabot cannot read it (an `ARG`, a
+  `COPY --from=<image>`). The cooldown prevents a second
   failure: a freshly published malicious release passes CI and is
   auto-merged within hours, before it can be yanked.
 - **Alignment:** OpenSSF Scorecard *Dependency-Update-Tool* check; OWASP Top
@@ -240,6 +306,41 @@ blast radius to the minimum.
 - **Alignment:** OpenSSF Scorecard *Token-Permissions* check,
   [GitHub's own guidance](https://docs.github.com/en/actions/security-for-github-actions/security-guides/automatic-token-authentication#permissions-for-the-github_token).
 
+#### 4d. Runner isolation
+
+A **public** repository never runs a job on a self-hosted runner. A
+**private** repository runs on the self-hosted runner, and that runner is
+hardened as described in
+[repo baseline — self-hosted runner hardening](repo-baseline.md#self-hosted-runner-hardening):
+ephemeral or JIT, registered only to the named private repos,
+fork-PR workflows off, a visibility-change procedure, and host and network
+isolation. The rule itself is set out in
+[repo baseline — runner choice follows repository visibility](repo-baseline.md#runner-choice-follows-repository-visibility).
+
+- **How to verify:** `scripts/check-runner-visibility.py` runs as the
+  `runner-visibility-check` job in `baseline-check.yml`. It is
+  **fail-closed from day one**, with no warning-first period. It fails
+  when the repo is public and any job's `runs-on`, or a reusable-workflow
+  caller's `runs-on` input, targets `self-hosted`. It also fails when
+  visibility is unknown. The runner-registration and fork-PR settings are not in
+  the repo. The `fleet-compliance-audit` mill agent checks runner
+  registration against repo visibility every 30 days. The fork-PR setting
+  and the host items are on the operator's 90-day runner host checklist, as
+  the [Audit](#audit) row says.
+  zizmor's `self-hosted-runner` audit runs only in the *auditor* persona,
+  so the fleet's pedantic zizmor invocation (gate 4b) does **not** catch
+  this. The script is the gate.
+- **Failure prevented:** a self-hosted runner on a public repository runs
+  code from any fork pull request on the host. That gives an outsider code
+  execution inside the home network, the highest-impact CI risk in these
+  standards. A persistent runner shared across private repos also lets one
+  compromised build poison or read another.
+- **Alignment:** GitHub's
+  [hardening for self-hosted runners](https://docs.github.com/en/actions/security-for-github-actions/security-guides/security-hardening-for-github-actions#hardening-for-self-hosted-runners)
+  ("self-hosted runners should almost never be used for public
+  repositories"), OpenSSF Scorecard *Dangerous-Workflow*, SLSA Build L3
+  *isolated*, and OWASP CICD-SEC-4 / CICD-SEC-7.
+
 #### Workflow-permissions audit
 
 The **workflow-permissions audit** is the concrete, repo-local enforcement
@@ -271,10 +372,10 @@ cited as an existing control (e.g. [scorecard.md](scorecard.md), this page).
 
 ### 5. Secret push protection
 
-GitHub secret scanning with **push protection** is enabled on every repo. Push
-protection blocks a commit that contains a detected secret *before* it reaches
-the remote — the secret never lands in the commit history. This is complemented
-by an open-source, layered secret-scanning stack:
+GitHub secret scanning with **push protection** is enabled on every **public**
+repo. Push protection blocks a commit that contains a detected secret *before*
+it reaches the remote — the secret never lands in the commit history. This is
+complemented by an open-source, layered secret-scanning stack:
 
 - **`detect-secrets` pre-commit hook** ([Yelp/detect-secrets](https://github.com/Yelp/detect-secrets),
   Apache-2.0) with a committed `.secrets.baseline` — catches credentials at
@@ -283,7 +384,30 @@ by an open-source, layered secret-scanning stack:
   AGPL-3.0) in the shared security workflow — scans the PR diff and the full
   repo history for secrets that slipped past push protection (e.g. a custom
   pattern GitHub doesn't recognize, or a secret committed before push
-  protection was enabled).
+  protection was enabled). **Fail condition:** the TruffleHog step exits
+  non-zero and fails the job on any *verified* secret, at minimum. The shared
+  `python-security.yml` is stricter today: its TruffleHog action runs with the
+  action's default `--fail` and fails on *any* finding, verified or
+  unverified. A repo may narrow it to verified-only (for example
+  `trufflehog-extra-args: --results=verified`), but never disable failing.
+  The security job is a required status check, so a detected secret blocks
+  the merge.
+
+**Private repos are exempt from push protection — and must run the CI secret
+scan instead.** On GitHub, secret scanning and push protection are free only
+for public repos; private repos need the paid GitHub Secret Protection product
+(Team or Enterprise Cloud), which the fleet's Free-plan personal account does
+not have (see [free-tier-only](free-tier-only.md) rule 3). The user-level
+"push protection for yourself" setting only covers pushes to public repos. The
+replacement control is **mandatory**: every private repo — content-only /
+docs-only repos included — runs the shared TruffleHog CI secret scan on every
+PR and push to `main`, and runs the `detect-secrets` hook in CI via
+`pre-commit run --all-files` (never listed in the pre-commit step's `SKIP:`).
+The local hook alone is not enough: a contributor or agent bypasses it with
+`--no-verify` or by never running `pre-commit install`. *Failure prevented:* a
+private repo with neither push protection nor a CI scan has no server-side
+secret check at all, so a secret pushed past a skipped local hook lands in
+history undetected.
 
 #### Why this stack
 
@@ -318,9 +442,13 @@ fleet would violate the [open-source preferred policy](#tooling-policy-open-sour
 and add a self-referential secret-management burden. The OSS stack above
 (detect-secrets + TruffleHog) is the single fleet-wide secret-scanning path.
 
-- **How to verify:** the repo's Security / Secret scanning settings show "Push
-  protection" as enabled. `.pre-commit-config.yaml` includes `detect-secrets`.
-  CI calls the shared TruffleHog workflow.
+- **How to verify:** on a public repo, the repo's Security / Secret scanning
+  settings show "Push protection" as enabled (private repos: not applicable on
+  the Free plan). `.pre-commit-config.yaml` includes `detect-secrets`, and
+  CI's pre-commit step does not `SKIP:` it. CI calls the shared TruffleHog
+  workflow — mandatory on every private repo, content-only included. Its job
+  is a required status check, and the TruffleHog step is not configured to
+  stop failing (no override of the action's `--fail`).
 - **Failure prevented:** a credential (API key, token, private key) is
   committed and pushed; even if the commit is later reverted or force-pushed,
   the secret existed in the history and must be assumed compromised.
@@ -471,44 +599,185 @@ the shared `docker-release.yml` reusable workflow (see
 Build levels are cumulative, and producing provenance is only half the control:
 SLSA makes **verifying** it a separate consumer duty
 ([Verifying artifacts](https://slsa.dev/spec/v1.0/verifying-artifacts)). The
-fleet's posture against each Build level:
+fleet's posture against each Build level.
 
-- **Build L1 (provenance exists):** met — `docker-release.yml` builds on
-  GitHub-hosted runners with `docker buildx build --provenance
-  mode=max --sbom true`. BuildKit attaches an in-toto
-  SLSA provenance statement and an SBOM to the pushed image index.
+The reachable Build level depends on the **runner class** the build runs on.
+[Runner choice follows repository visibility](repo-baseline.md#runner-choice-follows-repository-visibility):
+a **public** repository calls `docker-release.yml` on a GitHub-hosted runner,
+while a **private** repository (e.g. `robotsix-invest`) passes `self-hosted` as
+its `runs-on` input, so its images are built — and, once signing lands, signed —
+on the fleet's persistent self-hosted runner. That runner is shared across
+repositories and reused between jobs, so it does not give the run isolation SLSA
+Build L3 requires ("the build platform ensures runs cannot influence one
+another"): an earlier job on the host can tamper with the build cache, BuildKit
+state or the toolchain. This runner also falls short of the ephemeral/JIT and
+wipe-between-jobs rules in
+[self-hosted runner hardening](repo-baseline.md#self-hosted-runner-hardening).
+That cross-repo contamination risk (CICD-SEC-7) is its own dated accepted risk,
+separate from the provenance risk on this page. The provenance `builder.id`
+and runner environment also differ from the GitHub-hosted case.
+
+The signing mechanism also depends on **repository visibility**. GitHub
+artifact attestations (`actions/attest-build-provenance`, `gh attestation
+verify`) are available on GitHub Free, Pro and Team plans **only for public
+repositories**; private or internal repositories require GitHub Enterprise
+Cloud (per the `actions/attest-build-provenance` README, checked 2026-10-29).
+The fleet does not buy Enterprise Cloud
+([free-tier-only rule 3](free-tier-only.md#rules)), so private-repo images
+cannot use GitHub attestations at all. They are signed instead with
+**keyless cosign** against the public Sigstore instance, using the publish
+job's short-lived GitHub OIDC identity (see Build L2 below). Keyless signing
+writes the Fulcio certificate and a Rekor entry — the private repo name, the
+workflow ref and the commit — to a public transparency log. That publishes
+nothing new: fleet images are **public GHCR packages**
+([free-tier-only rule 2](free-tier-only.md#rules)), and anyone can already
+read the attestation stored next to a public image
+(`cosign download attestation`), whose SLSA v1 predicate carries the same data
+(`buildDefinition.externalParameters` with the workflow path and ref,
+`resolvedDependencies` with the repo URI and commit, `runDetails.builder.id`).
+A repository whose identity must not be public must not publish to a public
+GHCR package in the first place. Per runner class:
+
+| Runner class | Now | After signing lands |
+| --- | --- | --- |
+| Public repo, GitHub-hosted (ephemeral) | Build L1 | Build L3 (`actions/attest-build-provenance` from the isolated reusable workflow) |
+| Private repo, persistent self-hosted | Build L1 | at most Build L2 (keyless `cosign attest` with the job's GitHub OIDC identity — no long-lived signing key exists to steal); L3 only if the runner becomes ephemeral/JIT and isolated per job |
+
+The levels below describe the GitHub-hosted case; the self-hosted caps are
+stated inline.
+
+- **Build L1 (provenance exists):** met — `docker-release.yml` builds with
+  `docker buildx build --provenance mode=max --sbom true` on GitHub-hosted
+  runners (public repos) or the self-hosted runner (private repos). BuildKit
+  attaches an in-toto SLSA provenance statement and an SBOM to the pushed
+  image index on either runner class.
 - **Build L2 (hosted platform, signed provenance):** not met — the BuildKit
   provenance is an **unsigned** in-toto statement. The workflow grants
   `id-token: write` and `attestations: write`, but no step signs the
   provenance: no `actions/attest-build-provenance`, no cosign and no
   `slsa-github-generator`. Anyone who can push to the image can replace an
-  unsigned statement. **Target:** add `actions/attest-build-provenance`
-  (Sigstore keyless signing via the GitHub OIDC token, stored in the GitHub
-  attestations API) to the publish job, with `subject-digest` set to the
-  pushed index digest.
+  unsigned statement. **Target, per repository visibility:**
+  - **Public repos:** add `actions/attest-build-provenance` (Sigstore keyless
+    signing via the GitHub OIDC token, stored in the GitHub attestations API)
+    to the publish job, with `subject-digest` set to the pushed index digest.
+  - **Private repos:** GitHub attestations need Enterprise Cloud (see above),
+    so the publish job signs the provenance with keyless cosign, which is
+    free and needs no paid plan:
+    `cosign attest --yes --type slsaprovenance1 --predicate <provenance.json> ghcr.io/<owner>/<repo>@<digest>`.
+    With no `--key`, cosign requests a short-lived Fulcio certificate for the
+    job's GitHub OIDC token (the workflow already grants `id-token: write`),
+    signs with an ephemeral key and uploads the entry to the public Rekor log
+    (Rekor upload stays **on**). `--yes` skips the interactive confirmation
+    that would otherwise fail in CI. The certificate's identity is the
+    reusable workflow's ref (`job_workflow_ref`), not the caller's, and its
+    GitHub extensions record the caller repository. The flag names are those
+    of cosign v2; this change did not run `cosign attest --help`. No cosign
+    version is pinned in the fleet yet: recheck the flags with
+    `cosign attest --help` for the version that is pinned before the signing
+    step lands. Cosign also rejects a `slsaprovenance1` predicate that lacks
+    the SLSA v1 `buildDefinition` and `runDetails` fields before it signs
+    anything. The attestation is stored in GHCR next to the (public) image.
+    No signing secret exists: there is no `COSIGN_PRIVATE_KEY` or
+    `COSIGN_PASSWORD` Actions secret, no keypair to hold in Vaultwarden and no
+    key to rotate.
+
+    **Co-tenant exposure (residual, does not block L2):** the self-hosted
+    runner is shared across repositories and reused between jobs, and its jobs
+    are not isolated from one another. With keyless signing there is no
+    long-lived key a co-tenant job can copy and reuse later. What remains is
+    the publish job's own OIDC request token
+    (`ACTIONS_ID_TOKEN_REQUEST_TOKEN`), which lives only while that job runs:
+    a co-tenant job running concurrently on the same host could read it and
+    obtain a certificate under the reusable workflow's identity for the
+    caller repo during that window. A job from another repository cannot
+    otherwise produce a statement that passes the identity-pinned check below.
+    This is the tenant-forgery property of Build L3, which the shared runner
+    does not provide; it is closed only by an ephemeral/JIT runner isolated
+    per job.
+
+  On the self-hosted runner the "hosted build platform" property is weaker:
+  the platform is an operator-managed host, not GitHub's, so signing there
+  yields at most L2.
 - **Build L3 (hardened platform, unforgeable provenance):** not met — L2 is a
-  prerequisite. Once the attestation step above lands, L3 is reached because
-  the signing runs inside the shared reusable workflow. A caller cannot run
-  its own steps in that job, and the signing identity is the reusable
+  prerequisite. Once the attestation step above lands, L3 is reached **for
+  public-repo images built on GitHub-hosted runners** because the signing runs
+  inside the shared reusable workflow on an ephemeral runner. A caller cannot
+  run its own steps in that job, and the signing identity is the reusable
   workflow's ref, not the caller's. This matches GitHub's guidance that
-  artifact attestations from an isolated reusable workflow meet Build L3.
+  artifact attestations from an isolated reusable workflow meet Build L3 —
+  guidance that assumes GitHub-hosted, ephemeral runners. **Private-repo
+  images built on the persistent self-hosted runner do not reach L3**: the
+  reusable-workflow signing identity is the same, but the runs are not
+  isolated. L3 for them requires an ephemeral/JIT runner that is isolated per
+  job.
 - **Verification (consumer side):** not in place. **Requirement:** before the
   deployment system rolls out an image, it verifies the image digest's
-  provenance with
-  `gh attestation verify oci://ghcr.io/<owner>/<repo>@<digest> --owner <owner>`
-  (or the equivalent `cosign verify-attestation` with the reusable workflow's
-  certificate identity). It refuses the rollout on failure. Until the
-  attestation step above exists there is nothing signed to verify, so this is
-  a dated **accepted risk** (accepted 2026-10-28, review 2027-01-31). It is
-  tracked in the [Audit](#audit) table and referenced from the
+  provenance and refuses the rollout on failure, with a policy per runner
+  class:
+  - **Public-repo images** are verified with
+    `gh attestation verify oci://ghcr.io/<owner>/<repo>@<digest> --owner <owner> --deny-self-hosted-runners`
+    (or the equivalent `cosign verify-attestation` with the reusable
+    workflow's certificate identity and a runner-environment check). The
+    `--deny-self-hosted-runners` flag matters: the signing identity is the
+    reusable workflow's ref on either runner class, so without a
+    runner-environment check `gh attestation verify` passes for a
+    self-hosted build too and a consumer cannot tell an L3 build from a
+    self-hosted one.
+  - **Private-repo images** cannot be verified with `gh attestation verify`:
+    no GitHub attestation exists for them on the free plan, so that check
+    would either block every private-repo rollout or be skipped silently.
+    They are verified against the keyless certificate instead, pinned to the
+    reusable workflow and the caller repository:
+
+    ```sh
+    cosign verify-attestation --type slsaprovenance1 \
+      --certificate-identity https://github.com/<workflows-owner>/robotsix-github-workflows/.github/workflows/docker-release.yml@<pinned ref> \
+      --certificate-oidc-issuer https://token.actions.githubusercontent.com \
+      --certificate-github-workflow-repository <owner>/<repo> \
+      ghcr.io/<owner>/<repo>@<digest>
+    ```
+
+    The Rekor inclusion proof is checked too (no `--insecure-ignore-tlog`).
+    Pinning `--certificate-identity` to the reusable workflow means a
+    statement signed by any other workflow fails; pinning
+    `--certificate-github-workflow-repository` means a statement made for
+    another caller repo fails. The flag names are those of cosign v2; this
+    change did not run `cosign verify-attestation --help`. Recheck them
+    against the cosign version the fleet pins before this check is enforced.
+    Accepting self-hosted, keyless-signed provenance for private-repo images
+    is a dated **accepted risk** (accepted 2026-10-29, re-stated 2026-10-30,
+    review 2027-01-31). The signing runner is not isolated per job, so the
+    provenance is at most Build L2, and a co-tenant job running concurrently
+    with the publish job could use that job's live OIDC request token to sign
+    a statement this check accepts (see Build L2). The risk is lifted only
+    when the runner is ephemeral/JIT and isolated per job.
+
+  Until the signing steps above exist there is nothing signed to verify,
+  so verification itself is a dated **accepted risk** (accepted 2026-10-28,
+  review 2027-01-31). Both accepted risks are tracked in the [Audit](#audit)
+  table and referenced from the
   [deployment system](deployment-system.md#provenance-verification-before-rollout).
+
+  The check applies to **every** rollout path, including the deployment
+  system's own self-update. The self-update rules (verify the digest before
+  the swap, a cooldown or human gate, a pinned and maintained updater image)
+  and their dated accepted risk are stated in
+  [deployment system — Self-update path](deployment-system.md#self-update-path).
 
 **Failure prevented:** without signed and verified provenance, an image
 tampered with after the build (a stolen GHCR token, a compromised push from
 outside the reusable workflow) deploys exactly like a genuine one. Unsigned
 provenance can be forged along with the image, and provenance that nobody
 verifies blocks nothing. A Build level stated without its mechanism cannot be
-audited.
+audited. A Build level stated without its runner class overclaims: a
+private-repo image built on the shared self-hosted runner passes the same
+`gh attestation verify` check as an isolated GitHub-hosted build, so an L3
+claim that ignores the runner hides a build that an earlier job on the host
+could have tampered with. A signing mechanism stated without the plan it
+needs overclaims too. GitHub attestations on private repos need a paid plan,
+so a private-repo `gh attestation verify` check has nothing to verify. It
+either blocks every rollout or is skipped quietly, and the images stay at
+unsigned Build L1.
 
 **Alignment:** OWASP Top 10:2025 *A03 Software Supply Chain Failures* and *A08
 Software or Data Integrity Failures* (signing plus integrity verification), and
@@ -565,26 +834,31 @@ dashboard-watching:
 
 | Gate | Check |
 |---|---|
-| Semgrep* | CI calls shared Semgrep workflow; latest CI run uploads Semgrep findings artifact |
+| Semgrep* | **Pending rollout** until robotsix-github-workflows ships the shared Semgrep workflow (dated accepted risk, accepted 2026-11-02, review 2027-01-31 — see gate 1 above): report "pending rollout", and "mitigated" where a per-repo Semgrep hook uses the fleet ruleset (`p/default` plus the language pack); every `nosemgrep` names a rule id. Once the workflow ships: CI calls shared Semgrep workflow with the fleet ruleset; the Semgrep job is a required status check and exits non-zero on a blocking (`ERROR`) finding (documented fail condition or fixture PR) |
 | Dependency review* | CI calls shared `dependency-review` workflow; Dependency graph enabled |
 | Dependabot + Renovate | `.github/dependabot.yml` covers non-uv ecosystems; `renovate.json` present in Python repos; recent update PRs; 3-day release-age cooldown on every auto-merge path, verified by `scripts/check-dependency-cooldown.py` in `baseline-check.yml` (warning-first, blocking from 2027-01-31) |
+| Dockerfile pin shape | Image-shipping repos: every external `FROM` is a literal `<image>:<tag>@sha256:<digest>`, the python base is the first `FROM`, `COPY --from` names only a prior stage (no `ARG`-held digest, no inline registry image) — verified fail-closed by `scripts/check-dockerfile-pins.py` (`dockerfile-pin-check` job in `baseline-check.yml`) |
 | SHA-pinned actions | `grep -r 'uses:' .github/workflows/` — no mutable refs on third-party actions; `scripts/check-workflow-security.py` passes in CI |
 | Workflow linting | `.pre-commit-config.yaml` includes `actionlint`; CI runs `zizmor` (content-only repos exempt from `zizmor`) |
 | Least-privilege permissions | Every workflow has `permissions:` block; `scripts/check-workflow-security.py` passes in CI; `zizmor` reports clean (code repos) |
+| Runner isolation | Public repos target no self-hosted runner: `scripts/check-runner-visibility.py` (`runner-visibility-check` job in `baseline-check.yml`) passes. It is fail-closed, and private repos on GitHub-hosted runners only warn. Every 30 days, on every fleet repo, the `fleet-compliance-audit` mill agent checks that `gh api repos/<owner>/<repo>/actions/runners` returns `total_count: 0` for each public repo (personal account, so no runner groups) and that `.private` is `true` for each repo with a registered runner. The operator's 90-day runner host checklist (flagged by `fleet-compliance-audit`, not a draft ticket; the reminder is recorded in `fleet-compliance-audit` memory only, because its chat periodic session delivery channel is pending operator setup) covers the rest: "Run workflows from fork pull requests" is off on private repos, the runner is ephemeral/JIT or wiped between jobs, the runner user is non-root, the production Docker socket is not shared, and an egress firewall is in place. The persistent shared runner meets neither the ephemeral/JIT rule nor the wipe rule, and this is a dated accepted risk (CICD-SEC-7, accepted 2026-10-29, review 2027-01-31) — per [repo baseline](repo-baseline.md#self-hosted-runner-hardening) |
 | Actions PR approval disabled | `gh api repos/<owner>/<repo>/actions/permissions/workflow -q .can_approve_pull_request_reviews` returns `false`, so `GITHUB_TOKEN` cannot satisfy the required approving review — per [repo baseline](repo-baseline.md#branch-protection); set by the robotsix-github-workflows apply-script; not machine-verified since the watchdog's [retirement](mill-agents.md#retired-agents) — check by hand |
-| Secret push protection | Push protection enabled in repo Security settings; `detect-secrets` in pre-commit; CI runs TruffleHog (content-only repos exempt from TruffleHog) |
+| Secret push protection | Public repos: push protection enabled in repo Security settings. Private repos: push protection exempt (paid on the Free plan) — CI **must** run the TruffleHog secret scan, docs-only/content-only repos included. All repos: `detect-secrets` in pre-commit and not in CI's pre-commit `SKIP:` list; CI runs TruffleHog as a required check that fails on any verified secret, at minimum (only public content-only repos are exempt from TruffleHog) |
 | Credential-file deny list | `.gitignore` covers `.htpasswd`, `.env`/`.env.*`, `wp-config*.php`, `*.pem`, `*.key`, `*secret*`, `*.p12` — verified by `scripts/check-gitignore-denylist.py` in `baseline-check.yml` (warning-first, blocking from 2027-01-31; honors per-repo negating exceptions) — and `.secrets-patterns-excluded` presence and wiring by `scripts/check-secrets-patterns-excluded.py` (same dates) |
 | SBOM* | CI uploads CycloneDX artifact |
 | CVE audit* | `uv audit --preview-features audit-command` at the pinned uv version / `pip-audit` passes in CI |
 | Distribution / registry | No publish to a public package index and no public-registry credentials, per [distribution & packaging rules 4–5](distribution-packaging.md#enforcement). Verified by the `public-registry-check` job (`scripts/check-public-registry.py` in `baseline-check.yml`), which finds no `registry.npmjs.org` / `upload.pypi.org` / `pypi.org/legacy` endpoint, no `npm publish` / `twine upload` / `uv publish` without an approved internal registry, and no `NPM_TOKEN` / `PYPI_TOKEN` secret in workflows, `package.json` `publishConfig`, `.npmrc` or `pyproject.toml` — warning-first, blocking from 2027-01-31 |
-| SLSA Build provenance | Image-shipping repos: the published image index carries BuildKit provenance (`docker buildx imagetools inspect ghcr.io/<owner>/<repo>@<digest> --format '{{ json .Provenance }}'` is non-empty) — Build L1. Once `docker-release.yml` signs it, `gh attestation verify oci://ghcr.io/<owner>/<repo>@<digest> --owner <owner>` passes and the deployment system runs that check before rollout. Signing and verification are a dated accepted risk until then (review 2027-01-31) — per [SLSA Build Track](#slsa-build-track) |
+| SLSA Build provenance | Image-shipping repos: the published image index carries BuildKit provenance (`docker buildx imagetools inspect ghcr.io/<owner>/<repo>@<digest> --format '{{ json .Provenance }}'` is non-empty) — Build L1 on either runner class. Once `docker-release.yml` signs it, the deployment system verifies before rollout: public-repo (GitHub-hosted) images with `gh attestation verify oci://ghcr.io/<owner>/<repo>@<digest> --owner <owner> --deny-self-hosted-runners` (Build L3); private-repo (self-hosted) images — which cannot use GitHub attestations on the free plan — with keyless cosign pinned to the reusable workflow identity, once the pinned cosign version is confirmed to accept these flags: `cosign verify-attestation --type slsaprovenance1 --certificate-identity https://github.com/<workflows-owner>/robotsix-github-workflows/.github/workflows/docker-release.yml@<pinned ref> --certificate-oidc-issuer https://token.actions.githubusercontent.com --certificate-github-workflow-repository <owner>/<repo> ghcr.io/<owner>/<repo>@<digest>` (at most Build L2; self-hosted, keyless-signed provenance is a dated accepted risk, accepted 2026-10-29, re-stated 2026-10-30, review 2027-01-31, until the runner is ephemeral/JIT and isolated per job). Signing and verification are a dated accepted risk until then (review 2027-01-31) — per [SLSA Build Track](#slsa-build-track) |
+| Deployment-system self-update | central-deploy's self-update path verifies the new image digest's provenance before the swap and deploys that digest, waits a cooldown or an operator, and runs a digest-pinned, maintained updater image bumped by Dependabot/Renovate — per [deployment system — Self-update path](deployment-system.md#self-update-path). Not met today (one-shot, tag-pinned `containrrr/watchtower:1.7.1`, archived upstream 2025-12-17): a dated accepted risk, accepted 2026-10-31, review 2027-01-31 |
 | Container image scan | Trivy PR-scan and publish workflows present and passing (image-shipping repos only) |
 | Vulnerability disclosure | `SECURITY.md` present at repo root with contact method, response-time expectation, and coordinated-disclosure statement — fail-closed: `security-md-check` in `baseline-check.yml` fails CI (exit 1) when it is missing or incomplete |
-| Config API secret redaction | Deployment system / management surfaces: central-deploy config-read endpoints (`GET /config`, version-history reads, audit-log serialization) route through `mask_secrets()` before serialization; config writes use `apply_update()` merge-on-write; version history stores no secret values — audited per [config standard §3](config-standard.md#how-this-is-enforced) |
+| Config API secret redaction | Deployment system / management surfaces and every component with a `/config` surface: central-deploy config-read endpoints (`GET /config`, version-history reads, audit-log serialization) and each component's `GET /config` responses route through `robotsix_config.mask_secrets()` before serialization, `GET /config/versions` is served by `read_versions()` with no secret value in its response, and rollback goes through `rollback()` (no hand-rolled serializer of the config model); config writes use `apply_update()` merge-on-write; version history stores no secret values — audited per [config standard §3](config-standard.md#how-this-is-enforced) |
 | Config secrets typed SecretStr | Repos with a pydantic config model: `.pre-commit-config.yaml` includes the remote `check-secret-str` hook (`repo: https://github.com/damien-robotsix/robotsix-standards`) at a pinned `rev:`, and `config/config.schema.json` marks every secret-named field (`api_key`, `token`, `password`, `secret`, ...) `writeOnly: true`. The second check is a fallback you can grep without running the hook. Per [config standard §3](config-standard.md#3-one-secret-convention) |
-| Config history contains no secret values | Components with a `/config` surface: the `<config>.versions` sidecar's `data` snapshots carry only a set/unset marker for each `SecretStr` / `writeOnly` field, per [config ownership](config-ownership.md#where-the-history-lives-and-who-implements-it). Until the planned `robotsix_config.history` unit test (write a secret, rotate it, assert the old value is absent from `<config>.versions`) exists, audit this by code review of the sidecar writer; the test is not yet in place (CWE-312, CWE-226) |
+| Config history contains no secret values | Components with a `/config` surface: the `<config>.versions` sidecar's `data` snapshots carry only a set/unset marker for each `SecretStr` / `writeOnly` field, per [config ownership](config-ownership.md#where-the-history-lives-and-who-implements-it). Until the planned `robotsix_config.history` unit test (write a secret, rotate it, assert the old value is absent from `<config>.versions`) exists, audit this by code review of the sidecar writer and by the periodic [`component-security-audit`](mill-agents.md#component-security-audit) agent ([config standard §3](config-standard.md#how-this-is-enforced)); the test is not yet in place (CWE-312, CWE-226) |
+| Chat observability volume reads | Deployment system only (central-deploy): the `/chat/services/{name}/volumes/{vol}/files` handler resolves `path` against the volume root and rejects `..`, absolute paths and escaping symlinks; no write or delete route exists under the chat volumes routes; a test reads the `robotsix.deploy.config-target` path with a sentinel secret and asserts `403` or redacted JSON (via `mask_secrets()`) with the sentinel absent, and `403` for invalid JSON or a missing schema (fail closed); a test asserts `403` for a read inside the `claude-auth` volume and for `*.pem` / `*.key` / `.env` / `.env.*` files, decided on the resolved path. Audited at code review and by the periodic [`component-security-audit`](mill-agents.md#component-security-audit) agent, per [chat access §5](chat-access-standard.md#how-this-is-enforced) (CWE-22, CWE-200, CWE-312, OWASP LLM02:2025) |
 | Log hygiene | Deployable HTTP components: a test sends a request carrying `Authorization: Bearer <sentinel>` and asserts the sentinel string is absent from captured log output; a grep/Semgrep rule finds no logging call that passes `request.headers` or `request.url` (e.g. `logger\..*\(.*request\.headers` and `logger\..*\(.*request\.url\b(?!\.path)`); a structlog redaction processor sits at the start of the chain; any per-request DEBUG override accepts only authenticated operator or internal callers — per [logging rule 6](logging.md#6-never-log-sensitive-data) (CWE-532, OWASP A09:2025) |
-| LLM & agentic security | Repos whose core function involves LLM agents: `robotsix-llmio` pinned to a commit SHA in `pyproject.toml`; llmio level/model selection is an explicit config field (not hard-coded, not env); tracing/provider credentials are `SecretStr` in the canonical `langfuse`/`openrouter` config blocks; destructive git ops default to dry-run; scoped single-repo token (no org/admin scopes). Non-mechanical controls (LLM01/02/05/06/07/08/10, ASI01–ASI10) are covered by the periodic standards-audit agent — see below |
+| Anti-caching on sensitive responses | Deployable HTTP components: the `Secure` object registered with `SecureASGIMiddleware` adds `CacheControl().no_store()`, so every authenticated, personalised, config, conversation or credential-adjacent response — including `text/event-stream` — carries `Cache-Control: no-store`; only explicit public static-asset paths opt out — per [HTTP security headers rule 5](http-security-headers.md#5-sensitive-responses-are-not-stored) and [SSE response headers rule 1](sse-response-headers.md#1-every-textevent-stream-response-carries-the-three-headers) (OWASP ASVS 5.0 V14.3.2, CWE-525) |
+| LLM & agentic security | Repos whose core function involves LLM agents: `robotsix-llmio` pinned to a commit SHA in `pyproject.toml`; llmio level/model selection is an explicit config field (not hard-coded, not env); tracing/provider credentials are `SecretStr` in the canonical `langfuse`/`openrouter` config blocks; destructive git ops default to dry-run; scoped single-repo token (no org/admin scopes). Non-mechanical controls (LLM01/02/05/06/07/08/10, ASI01–ASI10) are covered by the periodic [`component-security-audit`](mill-agents.md#component-security-audit) agent — see below |
 
 *Content-only repos are exempt per the preamble above.
 
@@ -600,7 +874,7 @@ through `robotsix-llmio`. The requirements live in the
 and its [Agentic Applications mapping](component-standard.md#agentic-applications).
 Most of its MUST/MUST NOT controls are design-level rules with no CI gate, so
 enforcement is by **audit** — checked at component code review and by the
-periodic standards-audit agent — against the criteria below, mirroring the
+periodic [`component-security-audit`](mill-agents.md#component-security-audit) agent — against the criteria below, mirroring the
 pattern in [HTTP security headers](http-security-headers.md#how-this-is-enforced),
 [SSE response headers](sse-response-headers.md#how-this-is-enforced), and
 [SSRF-hardened fetchers](ssrf-hardened-fetchers.md#how-this-is-enforced).
@@ -613,7 +887,7 @@ code-review gates already in this standard:
 | LLM04 — supply chain | `robotsix-llmio` is pinned to a full commit SHA (not a branch or tag) in `pyproject.toml`; llmio level/model selection is an explicit config field, not hard-coded in code or read from env. |
 | LLM02/03/08 — secrets & least privilege | Tracing/provider credentials are `SecretStr` fields in the canonical `langfuse`/`openrouter` config blocks; destructive git operations (`push`, `force-push`, branch deletion) default to dry-run; git uses a scoped single-repo token with no org/admin scopes. |
 
-**Periodic standards-audit-agent checks** — design-level controls an auditor
+**Periodic [`component-security-audit`](mill-agents.md#component-security-audit) checks** — design-level controls an auditor
 reads against the criteria below:
 
 | Rule | Audit criterion |

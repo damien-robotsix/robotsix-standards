@@ -180,7 +180,8 @@ gate set:
   [MkDocs build integrity](mkdocs-build.md) standard — `--strict` build
   mode and a `validation:` block that catches broken links and dead
   anchors.
-- **Security:** Semgrep (SAST), zizmor workflow audit, GitHub secret scanning + push protection
+- **Security:** Semgrep (SAST — rollout pending, see
+  [security posture §1](security-posture.md#1-sast-semgrep)), zizmor workflow audit, GitHub secret scanning + push protection
   (complemented by TruffleHog for PR-diff and full-repo scans in the shared
   security workflow), a dependency CVE audit (`uv audit --preview-features audit-command` at a pinned
   uv version in the CI gate — preview-only, see
@@ -255,7 +256,11 @@ named `coverage-data`. The two files are always present when `--cov` is active
 
 **Completeness principle:** a gate in this list exists as (part of) a shared
 reusable workflow — if it can't be called from robotsix-github-workflows, it
-isn't a standard gate yet. Gates adopted à la carte drift à la carte: before
+isn't a standard gate yet. The one exception is a gate marked *rollout
+pending*: it is listed because the shared workflow is committed to, and its
+absence is a dated accepted risk with a review date and a mitigation (today:
+Semgrep — see [security posture §1](security-posture.md#1-sast-semgrep)). A
+pending gate with no dated accepted risk is not a standard gate. Gates adopted à la carte drift à la carte: before
 this rule, Semgrep ran in 4 of 13 repos and the weekly image rescan in 3 of 8,
 each a hand-copied workflow file.
 
@@ -373,6 +378,208 @@ call fails fast instead of using up the whole job ceiling.
 
 Python-specific timeout defaults (lint: 5, type-check: 10, test: 15)
 are listed in [Python CI workflow](python-ci-workflow.md#job-timeout-minutes).
+
+### Runner choice follows repository visibility
+
+**Rule:** In a repository whose GitHub visibility is **private**, every
+job runs on the `self-hosted` runner — inline jobs (`runs-on: self-hosted`)
+and reusable-workflow calls alike. For a shared workflow, pass
+`self-hosted` as its `runs-on` input, and pin a shared-workflow revision
+that has that input (an older pin silently falls back to its
+GitHub-hosted default).
+
+**Rule:** A **public** repository never uses a self-hosted runner. Every
+job stays on a GitHub-hosted runner (`ubuntu-latest` or the shared
+workflow's default).
+
+**Rationale:** GitHub refuses to start GitHub-hosted jobs on the account's
+private repositories ("The job was not started because recent account
+payments have failed or your spending limit needs to be increased" —
+2026-09-18..22 and 2026-10-27..29). The operator decided on 2026-10-29
+that private repositories run CI on the self-hosted runner.
+
+**Portability notes for self-hosted jobs:**
+
+- **Install Python with `actions/setup-python` before any `pip install`.**
+  The runner image's system `python3` is PEP 668 externally-managed, so
+  a bare `pip install` fails with `externally-managed-environment`.
+- **Container actions need the runner work directory mounted at the same
+  path on the host.** A container action receives the workspace as a
+  host-path bind mount; if the runner's work directory is not visible at
+  the identical path on the host, the action sees an empty or missing
+  workspace.
+- **Image builds on the self-hosted runner cap SLSA provenance below L3.**
+  A private image-shipping repo runs `docker-release.yml` on the
+  self-hosted runner, which is persistent and shared across repositories,
+  so its images reach at most SLSA Build L2 once keyless signing lands (a
+  concurrent co-tenant job could still use the publish job's live OIDC
+  request token to forge provenance). Build L3
+  for those images requires an ephemeral (JIT) runner isolated per job;
+  until then self-hosted provenance is a dated accepted risk — see
+  [SLSA Build Track](security-posture.md#slsa-build-track).
+
+> **Failure modes prevented:**
+>
+> - **Private repo CI never goes green.** A workflow written for a private
+>   repository with the default `ubuntu-latest` runner is never started
+>   while GitHub-hosted jobs are refused, so every PR is blocked on checks
+>   that cannot run.
+> - **Fork PRs execute on the home network.** On a public repository, a
+>   self-hosted runner executes code from any fork pull request on the
+>   host, giving an outsider code execution inside the home network.
+> - **Self-hosted jobs fail on environment differences.** A job that
+>   passes on GitHub-hosted runners fails on the self-hosted runner because
+>   system `pip install` is refused (PEP 668) or a container action cannot
+>   see the workspace.
+
+**Enforcement:** `scripts/check-runner-visibility.py`, run by the
+`runner-visibility-check` job in `baseline-check.yml`, reads the repo's
+visibility (`${{ github.event.repository.private }}`) and **fails closed**
+when a public repository has any job whose `runs-on` (string, label list,
+`group:` mapping or expression) names `self-hosted`, or a reusable-workflow
+call that passes `self-hosted` as its `runs-on` / `runner` input. It also
+fails when visibility is unknown. A private repository job on a GitHub-hosted
+runner is a warning annotation only. This is
+[security-posture gate 4d](security-posture.md#4d-runner-isolation).
+
+#### Self-hosted runner hardening
+
+No fleet repository declares the self-hosted runner today: its registration
+and host configuration are set up by hand on the host, outside version
+control. Until a repo declares it, the operator owns it. The rules below are
+not all verified the same way, and none is verified by a quarterly audit:
+
+- **Machine-checked, every 30 days:** runner visibility — no runner is
+  registered to a public repo, and every repo with a registered runner is
+  private. Whether the runner is registered only to the named private repos
+  is not machine-checked; the operator confirms it by hand (see the
+  verification list below).
+- **Operator-checked by hand, every 90 days:** the runner host checklist
+  (fork-PR setting, ephemeral/JIT or wipe, non-root user, Docker socket,
+  egress firewall).
+- **Operator-run at each visibility change:** the visibility-change
+  procedure below. No agent observes a visibility change, so the operator
+  runs it as part of making the repository public or private.
+
+The two mechanisms are described in turn:
+
+- **Automated — the `fleet-compliance-audit` mill agent** (every 30 days,
+  see [mill agents](mill-agents.md#fleet-compliance-audit)) runs the
+  runner-posture check against **every** non-archived fleet repo on each
+  pass. It is not limited to its rotating sample. It checks that
+  `gh api repos/<owner>/<repo>/actions/runners` returns `total_count: 0`
+  for every public repo, and that `gh api repos/<owner>/<repo> -q .private`
+  is `true` for every repo that has a registered runner. Each gap becomes a
+  draft ticket.
+- **Manual — the runner host checklist.** The **operator** owns it and runs
+  it **every 90 days**. Each time it falls due, the `fleet-compliance-audit`
+  agent records `runner-host-checklist due: <date>` in its memory ledger.
+  The intended delivery channel, a chat periodic session that posts a
+  `Runner host checklist due` reminder to the operator, is **pending
+  operator setup**: it is not configured yet, so until it exists the
+  reminder is recorded in `fleet-compliance-audit` memory only and the
+  operator must read it there. It is not a mill draft ticket: a draft with an empty
+  `draft_repo_ids` lands on the robotsix-standards board, where the pipeline
+  closes it "no change needed", so the reminder would be lost. The operator
+  marks the checklist done once it is complete. The fleet agent does not
+  check these items, so the operator checks them by hand:
+  1. Each private repo's "Run workflows from fork pull requests" setting is
+     off. This is checked by hand as a policy choice: the fleet agent is not
+     configured to read this setting, and no API check is asserted here. The
+     operator checks it on the repository's Settings → Actions page.
+  2. The runner is ephemeral/JIT, or the wipe-between-jobs fallback below
+     is in place. The current runner meets neither; see the accepted risk
+     below.
+  3. The runner process runs as a dedicated non-root user without `sudo`.
+  4. The runner does not share the production Docker socket.
+  5. The host egress firewall limits the runner to GitHub, GHCR and package
+     indexes, and gives it no route to management interfaces or production
+     hosts.
+
+*Failure mode this leaves open:* a host setting that drifts (a runner
+re-registered as persistent, a firewall rule dropped) is caught only at the
+next checklist run, up to 90 days later. A runner registered to a public repo
+is caught within 30 days.
+
+**Accepted risk: persistent shared runner (accepted 2026-10-29, review
+2027-01-31).** Today's self-hosted runner is persistent, shared across the
+private repos and reused between jobs. It does not meet the
+ephemeral/JIT rule below. No wipe-between-jobs control (a wiped workspace,
+emptied tool and Docker layer caches, no leftover credentials) is documented
+as in place, so the fallback is not met either. A compromised build in one
+private repo can still poison or read another's workspace, caches or
+credentials (OWASP CICD-SEC-7). The risk is accepted because every repo on
+the runner is a private, operator-owned repo, and fork-PR workflows are off
+there. Before the review date, the runner is either moved to ephemeral/JIT
+registration or given the wipe controls, and checklist item 2 then records
+which one. This risk is separate from the provenance accepted risk in
+[SLSA Build Track](security-posture.md#slsa-build-track), and it is listed in
+the security-posture [Audit](security-posture.md#audit) table.
+
+The fleet lives under the personal account `damien-robotsix`. On a personal
+account, runners are registered **per repository** and runner groups do not
+exist (they are an organization/enterprise feature). To verify:
+
+- For each private repo, `gh api repos/<owner>/<repo> -q .private` returns
+  `true`, and `gh api repos/<owner>/<repo>/actions/runners` lists the
+  runners registered to it.
+- For each public repo, `gh api repos/<owner>/<repo>/actions/runners`
+  returns `total_count: 0`.
+- Each private repo's fork-PR setting is off.
+
+If the fleet moves to an organization, use
+`gh api orgs/<org>/actions/runner-groups` instead to check the group's
+repository list.
+
+- **Ephemeral or just-in-time runners.** Each job runs on a fresh runner:
+  either an ephemeral runner (`--ephemeral`, deregistered after one job) or a
+  just-in-time runner from the `generate-jitconfig` API. If a runner has to be
+  reused, it must at least start each job with a wiped workspace, an emptied
+  tool cache and Docker layer cache, and no credentials (git credentials,
+  `docker login` state, cloud tokens) left over from an earlier job.
+  *Failure prevented:* a persistent runner shared by every private repo
+  carries workspace, caches and credentials between jobs and across repos.
+  A compromised dependency or PR in one private repo can then poison or read
+  another repo's builds. This breaks the SLSA Build L3 *isolated*
+  requirement and is OWASP CICD-SEC-7.
+- **Runner registered only to the named private repos.** On the personal
+  account, the runner is registered per repository, and only to the private
+  repos that need it; it is never registered to a public repository. If the
+  fleet moves to an organization, the runner goes in a runner group whose
+  access is set to **selected repositories** listing only those private
+  repos, and "All repositories" access is never used. *Failure prevented:* a
+  runner registered to a public repo, or to an org-level group without a
+  repository restriction, can be targeted by a public repo. A fork PR there
+  then runs on the home network, whatever the workflow gate says.
+- **Fork-PR workflows disabled on private repos.** Every private repo leaves
+  *Settings → Actions → Fork pull request workflows* ("Run workflows from fork
+  pull requests") **off**. *Failure prevented:* with the setting on, anyone
+  with read access who forks the repo can run arbitrary code on the
+  self-hosted runner. This is poisoned pipeline execution, OWASP CICD-SEC-4.
+- **Visibility-change procedure.** Before a private repository is made
+  public:
+  1. Open a PR that moves every job off `self-hosted`, back to a
+     GitHub-hosted runner or the shared workflow's default.
+  2. Merge it. Then, locally, run
+     `python scripts/check-runner-visibility.py --private false` and confirm
+     it passes. The CI job reads the repo's current visibility and takes no
+     flag, so while the repo is still private it cannot test the public case.
+  3. Remove the runner registration from the repo (or, in an organization,
+     remove the repo from the runner group's selected repositories).
+  4. Only then change the visibility.
+  *Failure prevented:* a repo made public while it still has
+  `runs-on: self-hosted` is open to fork PRs from that moment. The CI gate
+  only sees this on the next run, so the order above closes the gap.
+- **Host and network isolation.** The runner process runs as a dedicated
+  non-root user with no `sudo`. It never shares the Docker socket of the
+  host's production containers: container jobs use a separate, rootless or
+  per-runner Docker daemon. Its egress is limited to what CI needs (GitHub,
+  GHCR, package indexes) by a host firewall. It has no route to the home
+  network's management interfaces, production services or other hosts, and it
+  holds no production secrets. *Failure prevented:* a job that is
+  compromised anyway (a malicious dependency in a private repo) could
+  otherwise control production containers through the shared Docker
+  socket, or move sideways into the home network.
 
 ## Branch protection
 
@@ -494,7 +701,7 @@ receiving security patches until someone moves it):
 | First-party git-dependency pins | the scheduled pin-bump workflow (above) |
 | Third-party Python packages (uv lockfile) | Renovate (`uv` manager) — see [CI dependency management](ci-dependency-standard.md) |
 | GitHub Actions SHAs | Dependabot `github-actions` ecosystem |
-| Base-image digests + the `COPY --from` pin | Dependabot `docker` ecosystem |
+| Base-image and uv-image digests, written literally on `FROM` lines | Dependabot `docker` ecosystem — only for pins in the [Dependabot-readable shape](docker-standard.md#build-the-dockerfile) (python base as the first `FROM`); an `ARG`-held digest or an inline `COPY --from=<image>` pin has **no** bumper |
 | Pre-commit hook versions | Dependabot `pre-commit` ecosystem |
 | npm packages (`package-lock.json`) | Dependabot `npm` ecosystem |
 

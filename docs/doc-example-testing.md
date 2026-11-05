@@ -46,8 +46,8 @@ Two pytest plugins collect and execute Markdown code blocks:
 
 | Plugin | Collection method | Notes |
 |---|---|---|
-| [`pytest-markdown-docs`](https://github.com/JohnNilsson/pytest-markdown-docs) | Collects `python` fenced blocks from `.md` files via `--markdown-docs` flag. | Lightweight; no extra test files needed. |
-| [`mktestdocs`](https://github.com/mktestdocs/mktestdocs) | `check_md_file` fixture runs code blocks from a single Markdown file. | Fine-grained control; pair one test function per doc page. |
+| [`pytest-markdown-docs`](https://github.com/modal-labs/pytest-markdown-docs) | Collects `python` fenced blocks from `.md` files via `--markdown-docs` flag. | Lightweight; no extra test files needed. |
+| [`mktestdocs`](https://github.com/koaning/mktestdocs) | `check_md_file` fixture runs code blocks from a single Markdown file. | Fine-grained control; pair one test function per doc page. |
 
 Either plugin is acceptable. Pick one and use it consistently across the
 fleet. `pytest-markdown-docs` is the lower-friction default for repos that

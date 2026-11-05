@@ -250,7 +250,7 @@ check.
 
 ## How this is enforced
 
-Enforcement is by code review and the periodic standards-audit agent; there is
+Enforcement is by code review and the periodic [`component-security-audit`](mill-agents.md#component-security-audit) agent; there is
 no standalone machine check, because "the address validated is the address
 connected to" is a property of the transport wiring, not a grep-able string.
 An auditor (human or agent) applies these criteria to every tool that fetches

@@ -214,8 +214,18 @@ updates and first-party `damien-robotsix/*` packages are exempt — see
   `docker` in image-shipping repos, and every image-shipping repo's
   `Dockerfile` has no `FROM …@${…}` line and no `COPY --from=<registry image>`
   (every external image is a literal `FROM <image>:<tag>@sha256:<digest>`,
-  with the python base as the first `FROM`), verified fail-closed by
-  `scripts/check-dockerfile-pins.py` in `baseline-check.yml`.
+  with the python base as the first `FROM`). The mechanical check is the
+  remote `check-dockerfile-pins` pre-commit hook
+  (`repo: https://github.com/damien-robotsix/robotsix-standards`, pinned
+  release-tag `rev:`): a repo is verified fail-closed **only once** its
+  `.pre-commit-config.yaml` lists that hook, so CI's
+  `pre-commit run --all-files` re-runs it. **Rollout pending:** no
+  robotsix-standards release ships the hook yet and no image-shipping repo
+  consumes it, so today the Dockerfile shape is **not** mechanically verified
+  anywhere — audit it by reading each `Dockerfile`, and treat a repo without
+  the hook as unverified (the `fleet-compliance-audit` agent flags it).
+  *Failure mode:* reporting the shape as verified before the hook runs in the
+  repo gives false assurance that every pin is bumped.
   The Dependabot and Renovate dashboards
   show recent update PRs. The `dependency-cooldown-check` job
   (`scripts/check-dependency-cooldown.py` in `baseline-check.yml`) finds a
@@ -837,7 +847,7 @@ dashboard-watching:
 | Semgrep* | **Pending rollout** until robotsix-github-workflows ships the shared Semgrep workflow (dated accepted risk, accepted 2026-11-02, review 2027-01-31 — see gate 1 above): report "pending rollout", and "mitigated" where a per-repo Semgrep hook uses the fleet ruleset (`p/default` plus the language pack); every `nosemgrep` names a rule id. Once the workflow ships: CI calls shared Semgrep workflow with the fleet ruleset; the Semgrep job is a required status check and exits non-zero on a blocking (`ERROR`) finding (documented fail condition or fixture PR) |
 | Dependency review* | CI calls shared `dependency-review` workflow; Dependency graph enabled |
 | Dependabot + Renovate | `.github/dependabot.yml` covers non-uv ecosystems; `renovate.json` present in Python repos; recent update PRs; 3-day release-age cooldown on every auto-merge path, verified by `scripts/check-dependency-cooldown.py` in `baseline-check.yml` (warning-first, blocking from 2027-01-31) |
-| Dockerfile pin shape | Image-shipping repos: every external `FROM` is a literal `<image>:<tag>@sha256:<digest>`, the python base is the first `FROM`, `COPY --from` names only a prior stage (no `ARG`-held digest, no inline registry image) — verified fail-closed by `scripts/check-dockerfile-pins.py` (`dockerfile-pin-check` job in `baseline-check.yml`) |
+| Dockerfile pin shape | Image-shipping repos: every external `FROM` is a literal `<image>:<tag>@sha256:<digest>`, the python base is the first `FROM`, `COPY --from` names only a prior stage (no `ARG`-held digest, no inline registry image), and uv comes from a named stage pinned by version and digest — `.pre-commit-config.yaml` includes the remote `check-dockerfile-pins` hook (`repo: https://github.com/damien-robotsix/robotsix-standards`) at a pinned `rev:`, which fails closed on any other shape. Rollout pending: no release ships the hook yet and no image-shipping repo runs it, so a repo without it is **unverified** (check its `Dockerfile` by hand; `fleet-compliance-audit` flags the missing hook). Per [docker standard — Build](docker-standard.md#build-the-dockerfile) |
 | SHA-pinned actions | `grep -r 'uses:' .github/workflows/` — no mutable refs on third-party actions; `scripts/check-workflow-security.py` passes in CI |
 | Workflow linting | `.pre-commit-config.yaml` includes `actionlint`; CI runs `zizmor` (content-only repos exempt from `zizmor`) |
 | Least-privilege permissions | Every workflow has `permissions:` block; `scripts/check-workflow-security.py` passes in CI; `zizmor` reports clean (code repos) |

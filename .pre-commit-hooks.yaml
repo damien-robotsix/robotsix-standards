@@ -5,6 +5,7 @@
 #     rev: <release tag>   # pinned; Renovate/`pre-commit autoupdate` bumps it
 #     hooks:
 #       - id: check-secret-str
+#       - id: check-dockerfile-pins   # image-shipping repos
 #
 # `language: script` runs the entry relative to the root of THIS repo's
 # checkout, so the hook needs no packaging and no install step: the script is
@@ -18,3 +19,13 @@
   entry: scripts/check-secret-str.py
   language: script
   types: [python]
+- id: check-dockerfile-pins
+  name: reject Dockerfile image pins Dependabot cannot read
+  description: >-
+    Fails unless every external image is written literally on a FROM line as
+    <image>:<tag>@sha256:<digest>, the python base is the first FROM, no
+    digest is held in an ARG, and COPY --from names only a prior stage
+    (docs/docker-standard.md, Build).
+  entry: scripts/check-dockerfile-pins.py
+  language: script
+  files: (^|/)(Dockerfile(\..*)?|.*\.Dockerfile)$

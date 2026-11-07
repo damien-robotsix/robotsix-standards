@@ -196,7 +196,9 @@ jobs:
     # gate 3: every external image in a Dockerfile is a literal `FROM <image>:<tag>@sha256:<digest>`
     # with the python base as the first FROM, so Dependabot's docker ecosystem can
     # bump it. An ARG-held digest or an inline `COPY --from=<registry image>` is never
-    # bumped. Fail-closed: any violation exits 1. See:
+    # bumped. Fail-closed: any violation exits 1. This repo has no Dockerfile, so
+    # this job only self-tests the script; fleet repos run it as the remote
+    # `check-dockerfile-pins` pre-commit hook (.pre-commit-hooks.yaml). See:
     #   - scripts/check-dockerfile-pins.py (the gate logic)
     #   - docs/docker-standard.md#build-the-dockerfile (the standard)
     permissions:

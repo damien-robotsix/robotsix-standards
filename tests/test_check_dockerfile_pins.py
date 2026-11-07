@@ -1,10 +1,16 @@
 """Unit tests for the Dockerfile pin-shape gate (scripts/check-dockerfile-pins.py).
 
-This repository ships no Dockerfile, so the CI job always scans zero files;
-these tests exercise the parsing and violation logic directly: file matching
+These tests exercise the parsing and violation logic directly: file matching
 (is_dockerfile / find_dockerfiles), continuation joining
 (logical_instructions), the pin-shape rules (check_dockerfile) and the
 main() exit codes.
+
+docs/docker-standard.md (Build) requires every external image to be written
+literally on a ``FROM`` line as ``<image>:<tag>@sha256:<digest>`` so
+Dependabot can bump it. The gate is published as the remote
+``check-dockerfile-pins`` pre-commit hook, so these tests also cover the
+hook's calling convention: pre-commit passes the matched file paths, and the
+script runs from the consumer repo's root, not from its own checkout.
 """
 
 from __future__ import annotations
@@ -28,6 +34,15 @@ FROM base AS builder
 COPY --from=uv /uv /usr/local/bin/uv
 RUN uv sync
 
+FROM base
+COPY --from=builder /app /app
+"""
+
+GOOD = f"""\
+FROM python:3.14-slim@{DIGEST} AS base
+FROM ghcr.io/astral-sh/uv:0.11.26@{DIGEST} AS uv
+FROM base AS builder
+COPY --from=uv /uv /uvx /bin/
 FROM base
 COPY --from=builder /app /app
 """
@@ -265,8 +280,8 @@ def test_main_no_dockerfiles(
     monkeypatch: pytest.MonkeyPatch,
     capsys: pytest.CaptureFixture[str],
 ) -> None:
-    monkeypatch.setattr(check_dockerfile_pins, "REPO_ROOT", tmp_path)
-    assert check_dockerfile_pins.main() == 0
+    monkeypatch.chdir(tmp_path)
+    assert check_dockerfile_pins.main([]) == 0
     assert "Checked 0 Dockerfile(s)" in capsys.readouterr().out
 
 
@@ -278,8 +293,8 @@ def test_main_valid_dockerfile(
     (tmp_path / "Dockerfile").write_text(
         f"FROM python:3.14-slim@{DIGEST} AS base\nFROM base\n"
     )
-    monkeypatch.setattr(check_dockerfile_pins, "REPO_ROOT", tmp_path)
-    assert check_dockerfile_pins.main() == 0
+    monkeypatch.chdir(tmp_path)
+    assert check_dockerfile_pins.main([]) == 0
 
 
 def test_main_violation(
@@ -292,8 +307,69 @@ def test_main_violation(
     (tmp_path / "docker" / "Dockerfile").write_text(
         "FROM python:3.14-slim@${BASE_DIGEST}\n"
     )
-    monkeypatch.setattr(check_dockerfile_pins, "REPO_ROOT", tmp_path)
-    assert check_dockerfile_pins.main() == 1
+    monkeypatch.chdir(tmp_path)
+    assert check_dockerfile_pins.main([]) == 1
     out = capsys.readouterr().out
     assert "docker/Dockerfile:1:" in out
     assert "held in an ARG" in out
+
+
+def test_readable_shape_passes(check_dockerfile_pins: ModuleType) -> None:
+    assert _problems(check_dockerfile_pins, GOOD) == []
+
+
+@pytest.mark.parametrize(
+    ("text", "fragment"),
+    [
+        ("ARG D\nFROM python:3.14-slim@${D}\n", "ARG"),
+        ("FROM python:3.14-slim\n", "<image>:<tag>@sha256:<digest>"),
+        (
+            (
+                f"FROM python:3.14-slim@{DIGEST} AS base\n"
+                "FROM ghcr.io/astral-sh/uv:0.11.26 AS uv\n"
+            ),
+            "<image>:<tag>@sha256:<digest>",
+        ),
+        (
+            (
+                f"FROM python:3.14-slim@{DIGEST}\n"
+                "COPY --from=ghcr.io/astral-sh/uv:0.11.26 /uv /bin/\n"
+            ),
+            "--from must name a prior stage",
+        ),
+        (
+            f"FROM ghcr.io/astral-sh/uv:0.11.26@{DIGEST} AS uv\n",
+            "first FROM must be the python base",
+        ),
+    ],
+)
+def test_unreadable_pins_fail(
+    check_dockerfile_pins: ModuleType, text: str, fragment: str
+) -> None:
+    problems = _problems(check_dockerfile_pins, text)
+    assert any(fragment in problem for problem in problems), problems
+
+
+def test_main_checks_paths_passed_by_pre_commit(
+    check_dockerfile_pins: ModuleType,
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    monkeypatch.chdir(tmp_path)
+    (tmp_path / "Dockerfile").write_text(GOOD, encoding="utf-8")
+    (tmp_path / "bad.Dockerfile").write_text("FROM python:3.14-slim\n", encoding="utf-8")
+    assert check_dockerfile_pins.main(["Dockerfile"]) == 0
+    assert check_dockerfile_pins.main(["Dockerfile", "bad.Dockerfile"]) == 1
+
+
+def test_main_without_args_scans_cwd(
+    check_dockerfile_pins: ModuleType,
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    monkeypatch.chdir(tmp_path)
+    assert check_dockerfile_pins.main([]) == 0
+    sub = tmp_path / "svc"
+    sub.mkdir()
+    (sub / "Dockerfile").write_text("FROM python:3.14-slim\n", encoding="utf-8")
+    assert check_dockerfile_pins.main([]) == 1

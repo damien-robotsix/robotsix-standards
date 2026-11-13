@@ -45,6 +45,7 @@ EXEMPT = frozenset(
     {
         "index.md",  # site landing page — links, no rules
         "fleet.md",  # fleet status/overview page — no rules
+        "contributing.md",  # symlink to root CONTRIBUTING.md — contributor guide, no rules
         "CHANGELOG.md",  # generated release notes — no rules
         "mill-agents.md",  # Meta nav: repo-operational, not a fleet standard
         "towncrier.md",  # superseded/historical page

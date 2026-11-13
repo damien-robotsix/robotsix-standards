@@ -32,5 +32,5 @@ uv run mkdocs build --strict  # CI-accurate gate
 
 ## Code rules
 
-See **[AGENT.md](AGENT.md)** for the repo's canonical working-knowledge rules
+See **[AGENT.md](https://github.com/damien-robotsix/robotsix-standards/blob/main/AGENT.md)** for the repo's canonical working-knowledge rules
 for both human contributors and AI agents.

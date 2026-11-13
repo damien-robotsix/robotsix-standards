@@ -58,6 +58,7 @@ plugins:
 
 nav:
   - Home: index.md
+  - Contributing: contributing.md
   - The fleet: fleet.md
   - Every repo:
       - Repo baseline: repo-baseline.md

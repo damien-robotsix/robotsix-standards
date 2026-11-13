@@ -18,6 +18,9 @@ consistency: moving between repos is cheap, tooling and workflows are shared
 rather than duplicated, and a config or deploy setup learned once transfers
 everywhere.
 
+To contribute to these standards, see the [Contributing guide](contributing.md)
+for setup and PR workflow.
+
 ## Two scopes
 
 ### Every repository (libraries and deployable components)

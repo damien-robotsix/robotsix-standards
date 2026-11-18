@@ -4,8 +4,8 @@
 This script is the automated enforcement gate referenced by the
 workflow-permissions audit in docs/security-posture.md (gates 4a — actions
 pinned to commit SHAs — and 4c — least-privilege `permissions:` blocks).  It
-runs in CI on PRs (see .github/workflows/baseline-check.yml and
-.github/workflows/ci.yml) and exits non-zero when a workflow file violates
+runs in CI on PRs (see .github/workflows/baseline-check.yml) and exits
+non-zero when a workflow file violates
 either rule.  It is the self-enforcing gate for **content-only repos**, which
 are exempt from the zizmor workflow audit (gate 4b) but must still meet 4a
 and 4c — for code repos zizmor mechanically enforces both, so content-only

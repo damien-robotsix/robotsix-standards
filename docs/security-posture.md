@@ -353,8 +353,8 @@ blocking 4a/4c gate for every repo — code and content-only alike — and every
 repo's 4a/4c requirement stays checkable without human review.
 
 It is implemented as `scripts/check-workflow-security.py`, run in CI on every
-PR (see `.github/workflows/ci.yml` and `.github/workflows/baseline-check.yml`),
-and enforced on this repo as its reference implementation. It scans every
+PR (see `.github/workflows/baseline-check.yml`), and enforced on this repo as
+its reference implementation. It scans every
 `.github/workflows/*.yml` / `*.yaml` file and fails (exit 1) on any violation:
 
 - **4a — SHA-pinned `uses:`:** every `uses:` value (step-level and job-level

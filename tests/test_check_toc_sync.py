@@ -99,7 +99,7 @@ def _point_at(tmp_path, check_toc_sync, monkeypatch, *, readme=README_MD, index=
 
 
 # ---------------------------------------------------------------------------
-# extract_pages / missing_pages / _all_nav_pages
+# extract_pages / missing_pages / extract_nav_pages
 # ---------------------------------------------------------------------------
 
 
@@ -136,7 +136,7 @@ def test_missing_pages_none_missing(tmp_path, check_toc_sync):
 
 def test_all_nav_pages_gathers_every_section(check_toc_sync):
     nav = yaml.safe_load(NAV_YAML)["nav"]
-    pages = check_toc_sync._all_nav_pages(nav)
+    pages = set(check_toc_sync.extract_nav_pages(nav))
     assert {
         "index.md",
         "repo-baseline.md",
@@ -145,6 +145,32 @@ def test_all_nav_pages_gathers_every_section(check_toc_sync):
         "deployment-system.md",
         "changelog-driven-releases.md",
     } <= pages
+
+
+def test_all_nav_pages_see_deeply_nested_sections(check_toc_sync):
+    # The two nav gates used to disagree on recursion depth: the doc-structure
+    # gate recursed arbitrarily deep while this gate handled only two levels.
+    # Both now share the same extractor, so a page nested three levels down
+    # must be visible here too (the audit regression this shared function
+    # prevents: one gate seeing a page the other silently misses).
+    nested = {
+        "nav": [
+            {"Home": "index.md"},
+            {
+                "Every repo": [
+                    {"Repo baseline": "repo-baseline.md"},
+                    {
+                        "Nested section": [
+                            {"Deep page": "deep.md"},
+                        ]
+                    },
+                ]
+            },
+        ]
+    }
+    nav = nested["nav"]
+    pages = set(check_toc_sync.extract_nav_pages(nav))
+    assert {"index.md", "repo-baseline.md", "deep.md"} <= pages
 
 
 # ---------------------------------------------------------------------------

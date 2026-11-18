@@ -88,13 +88,13 @@ def _point_at(tmp_path, check_doc_structure, monkeypatch, **kwargs):
 
 
 # ---------------------------------------------------------------------------
-# extract_pages / page_states_failure_mode
+# extract_nav_pages / page_states_failure_mode
 # ---------------------------------------------------------------------------
 
 
-def test_extract_pages_is_recursive(check_doc_structure):
+def test_extract_nav_pages_is_recursive(check_doc_structure):
     nav = yaml.safe_load(NAV_YAML)["nav"]
-    pages = check_doc_structure.extract_pages(nav)
+    pages = check_doc_structure.extract_nav_pages(nav)
     assert set(pages) == {
         "index.md",
         "repo-baseline.md",

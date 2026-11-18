@@ -17,6 +17,8 @@ from pathlib import Path
 
 import yaml  # type: ignore[import-untyped]
 
+from _docs_utils import extract_nav_pages
+
 REPO_ROOT = Path(__file__).resolve().parent.parent
 
 MKDOCS_YML = REPO_ROOT / "mkdocs.yml"
@@ -117,22 +119,6 @@ def _extract_index_pages(
     return re.findall(r"\]\(([^)]+\.md)\)", section)
 
 
-def _all_nav_pages(nav: list[object]) -> set[str]:
-    """Return the set of all page filenames referenced anywhere in the nav."""
-    pages: set[str] = set()
-    for item in nav:
-        if not isinstance(item, dict):
-            continue
-        for value in item.values():
-            if isinstance(value, list):
-                for sub in value:
-                    if isinstance(sub, dict):
-                        pages.update(sub.values())
-            elif isinstance(value, str):
-                pages.add(value)
-    return pages
-
-
 def main() -> int:
     """Verify the three TOC lists stay synchronized with the mkdocs.yml nav.
 
@@ -176,7 +162,7 @@ def main() -> int:
     readme_content = README_MD.read_text()
     index_content = INDEX_MD.read_text()
 
-    all_nav = _all_nav_pages(nav)
+    all_nav = set(extract_nav_pages(nav))
 
     all_orphaned: list[tuple[str, str, str]] = []
 

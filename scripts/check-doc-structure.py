@@ -34,6 +34,8 @@ from pathlib import Path
 
 import yaml  # type: ignore[import-untyped]
 
+from _docs_utils import extract_nav_pages
+
 REPO_ROOT = Path(__file__).resolve().parent.parent
 
 MKDOCS_YML = REPO_ROOT / "mkdocs.yml"
@@ -69,21 +71,6 @@ ACCEPTED_PHRASINGS = (
 )
 
 
-def extract_pages(nav: list[object]) -> list[str]:
-    """Return every page filename referenced anywhere in the *nav* (recursive)."""
-    pages: list[str] = []
-    for item in nav:
-        if isinstance(item, str):
-            pages.append(item)
-        elif isinstance(item, dict):
-            for value in item.values():
-                if isinstance(value, str):
-                    pages.append(value)
-                elif isinstance(value, list):
-                    pages.extend(extract_pages(value))
-    return pages
-
-
 def page_states_failure_mode(content: str) -> bool:
     """True iff *content* states a failure mode in an accepted phrasing."""
     return bool(MARKER_RE.search(content))
@@ -104,7 +91,7 @@ def main() -> int:
         config = yaml.safe_load(fh)
 
     nav: list[object] = config.get("nav", [])
-    pages = sorted(set(extract_pages(nav)))
+    pages = sorted(set(extract_nav_pages(nav)))
 
     checked = 0
     failing: list[str] = []

@@ -3,8 +3,8 @@
 
 This script is the automated enforcement gate referenced by the
 timeout-minutes rule in docs/repo-baseline.md.  It runs in CI on PRs
-(see .github/workflows/baseline-check.yml and .github/workflows/ci.yml)
-and exits non-zero when a step-running job lacks a `timeout-minutes`
+(see .github/workflows/baseline-check.yml) and exits non-zero when a
+step-running job lacks a `timeout-minutes`
 declaration or carries an unexplained ceiling above 15.
 
 Rules enforced (per docs/repo-baseline.md):

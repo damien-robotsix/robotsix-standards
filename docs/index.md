@@ -177,6 +177,9 @@ for setup and PR workflow.
   `[tool.robotsix.typing]` table declaring which runtime dependencies are typed
   or untyped, so downstream consumers generate their mypy/pyright exemptions
   from an upstream source of truth instead of rediscovering `py.typed` by hand.
+- **[Env/config bootstrap](env-config-bootstrap.md)** — every env-var read
+  (`getenv`/`os.getenv`/`process.env`) is resolved once in a config bootstrap
+  with documented defaults; consumers read from the bootstrap, never inline.
 - **[JavaScript practices](javascript.md)** — vanilla frontend JS as static
   assets, lockfile discipline, vitest coverage floor, eslint/stylelint.
 - **[PHP practices](php.md)** — native `php -l` syntax-check over all `.php`

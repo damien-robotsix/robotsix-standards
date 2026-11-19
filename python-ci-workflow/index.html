@@ -3274,8 +3274,8 @@ minutes and delays the developer's fix loop.</p>
 </tr>
 <tr>
 <td>Test</td>
-<td><code>uv run pytest tests/ --cov=&lt;pkg&gt; --cov-report=xml --cov-report=term-missing</code></td>
-<td>Coverage floor enforced fleet-wide; <code>coverage.xml</code> uploaded as a workflow artifact.</td>
+<td><code>uv run pytest tests/ --cov=&lt;pkg&gt; --cov-fail-under=80 --cov-report=xml --cov-report=term-missing</code></td>
+<td>Coverage floor enforced fleet-wide via <code>--cov-fail-under=80</code> (the shared workflow's <code>coverage-threshold</code> input); <code>coverage.xml</code> uploaded as a workflow artifact.</td>
 </tr>
 </tbody>
 </table>
@@ -3325,7 +3325,10 @@ Every Python repo should call it from its <code>.github/workflows/ci.yml</code>:
 <p>When a repo cannot use the shared workflow (e.g. it has an unusual package
 layout that the shared workflow doesn't support), it must ship a standalone
 <code>ci.yml</code> that runs the same four gates in the same order, using the same <code>uv
-run</code> invocations.  The standalone workflow must still follow the
+run</code> invocations.  The standalone test command must keep <code>--cov-fail-under=80</code>
+— pytest-cov does not read <code>[tool.coverage.report] fail_under</code> from
+<code>pyproject.toml</code> for its exit code, so omitting the flag measures coverage
+without gating it.  The standalone workflow must still follow the
 <a href="../ci-lint-pinning/">CI lint tool pinning</a> rule — every lint tool version
 must match <code>.pre-commit-config.yaml</code>.</p>
 <p>A repo that ships a standalone <code>ci.yml</code> must carry a comment at the top of the

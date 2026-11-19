@@ -3359,11 +3359,11 @@ breaks the build for reasons unrelated to the code change.</p>
 <p>The doc-example test gate runs as part of the standard <code>ci.yml</code> test job —
 it is not a separate workflow. The test command already runs <code>pytest tests/</code>,
 and the doc-example tests live alongside the regular test suite:</p>
-<div class="highlight"><pre><span></span><code>uv<span class="w"> </span>run<span class="w"> </span>pytest<span class="w"> </span>tests/<span class="w"> </span>--cov<span class="o">=</span>&lt;pkg&gt;<span class="w"> </span>--cov-report<span class="o">=</span>xml<span class="w"> </span>--cov-report<span class="o">=</span>term-missing
+<div class="highlight"><pre><span></span><code>uv<span class="w"> </span>run<span class="w"> </span>pytest<span class="w"> </span>tests/<span class="w"> </span>--cov<span class="o">=</span>&lt;pkg&gt;<span class="w"> </span>--cov-fail-under<span class="o">=</span><span class="m">80</span><span class="w"> </span>--cov-report<span class="o">=</span>xml<span class="w"> </span>--cov-report<span class="o">=</span>term-missing
 </code></pre></div>
 <p>If the repo uses <code>pytest-markdown-docs</code>, add the <code>--markdown-docs</code> flag and
 point it at the <code>docs/</code> directory:</p>
-<div class="highlight"><pre><span></span><code>uv<span class="w"> </span>run<span class="w"> </span>pytest<span class="w"> </span>tests/<span class="w"> </span>--markdown-docs<span class="w"> </span>docs/<span class="w"> </span>--cov<span class="o">=</span>&lt;pkg&gt;<span class="w"> </span>--cov-report<span class="o">=</span>xml
+<div class="highlight"><pre><span></span><code>uv<span class="w"> </span>run<span class="w"> </span>pytest<span class="w"> </span>tests/<span class="w"> </span>--markdown-docs<span class="w"> </span>docs/<span class="w"> </span>--cov<span class="o">=</span>&lt;pkg&gt;<span class="w"> </span>--cov-fail-under<span class="o">=</span><span class="m">80</span><span class="w"> </span>--cov-report<span class="o">=</span>xml
 </code></pre></div>
 <p>If the repo uses <code>mktestdocs</code>, the test functions are already collected by
 the standard <code>pytest tests/</code> invocation — no extra flags needed.</p>

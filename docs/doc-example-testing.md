@@ -125,14 +125,14 @@ it is not a separate workflow. The test command already runs `pytest tests/`,
 and the doc-example tests live alongside the regular test suite:
 
 ```bash
-uv run pytest tests/ --cov=<pkg> --cov-report=xml --cov-report=term-missing
+uv run pytest tests/ --cov=<pkg> --cov-fail-under=80 --cov-report=xml --cov-report=term-missing
 ```
 
 If the repo uses `pytest-markdown-docs`, add the `--markdown-docs` flag and
 point it at the `docs/` directory:
 
 ```bash
-uv run pytest tests/ --markdown-docs docs/ --cov=<pkg> --cov-report=xml
+uv run pytest tests/ --markdown-docs docs/ --cov=<pkg> --cov-fail-under=80 --cov-report=xml
 ```
 
 If the repo uses `mktestdocs`, the test functions are already collected by

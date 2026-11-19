@@ -447,16 +447,18 @@ visible directly in the CI log.
 - `pytest`, with coverage gated at **one fleet-wide floor: 80%**, the same in
   every repo. The floor is enforced by the shared `python-ci.yml` workflow —
   it lives in one place, so no repo can slide under it — and
-  `[tool.coverage.report] fail_under = 80` in each repo keeps local runs
-  honest. No per-repo thresholds, no ratchet to maintain: coverage above the
-  floor is welcome, but the gate stops caring beyond 80.
+  `[tool.coverage.report] fail_under = 80` in each repo keeps
+  `coverage report` honest locally. No per-repo thresholds, no ratchet to
+  maintain: coverage above the floor is welcome, but the gate stops caring
+  beyond 80.
 - **The floor moves only fleet-wide.** When every repo measures above a
   higher value, the floor in the shared workflow is raised for everyone at
   once — one PR in robotsix-github-workflows, a deliberate decision. It never
   rises above what the weakest repo clears, and it never moves per-repo.
 - **Standard coverage configuration.** Every Python repo carries this
   `[tool.coverage]` block in `pyproject.toml`.  The shared `python-ci.yml`
-  workflow runs `pytest --cov --cov-report=term-missing --cov-report=xml`;
+  workflow runs `pytest --cov --cov-fail-under=80 --cov-report=term-missing
+  --cov-report=xml`;
   the config below ensures the run is correctly scoped and the reports are
   mergeable and portable.
 
@@ -495,12 +497,20 @@ visible directly in the CI log.
   - **`command_line = "-m pytest"`** — tells `coverage` how the test suite is
     invoked so `coverage run` can re-execute the same command.
   - **`fail_under = 80`** — the fleet-wide floor; `coverage report` exits
-    non-zero below it.  It must equal the fleet floor (80) — never lower,
-    and never raised per-repo (no ratchet; see the Tests rules above). The
-    shared workflow's `coverage-threshold` input stays at its default for
-    the same reason.  *Failure mode:* a per-repo value above 80 becomes a
-    private ratchet that reviewers disagree on and that breaks when the
-    fleet floor moves.
+    non-zero below it.  pytest-cov does not read this config value for its
+    exit code, so **every pytest coverage invocation passes
+    `--cov-fail-under=80`** — the [Makefile `coverage`
+    target](python-makefile-convention.md#coverage), the
+    [Python CI workflow](python-ci-workflow.md) test command, and any local
+    run carry the flag, matching the shared `python-ci.yml` default.  The
+    value must equal the fleet floor (80) — never lower, and never raised
+    per-repo (no ratchet; see the Tests rules above). The shared workflow's
+    `coverage-threshold` input stays at its default for the same reason.
+    *Failure mode:* relying on the config `fail_under` alone leaves
+    `pytest --cov` ungated — coverage is measured but never enforced, so it
+    can silently regress without failing CI.  *Failure mode:* a per-repo
+    value above 80 becomes a private ratchet that reviewers disagree on and
+    that breaks when the fleet floor moves.
   - **`show_missing = true`** — lists uncovered lines in the terminal report,
     so developers see exactly what to write tests for without opening HTML.
   - **`[tool.coverage.paths]`** — maps paths that differ between the local

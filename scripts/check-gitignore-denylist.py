@@ -150,26 +150,3 @@ def main(today: _dt.date | None = None) -> int:
 
 if __name__ == "__main__":  # pragma: no cover
     sys.exit(main())
-# Credential / secret files — deny list (docs/security-posture.md gate 5,
-# "Credential and secret files are never tracked").
-# The sole defense for credential *files* content scanners cannot match.
-.htpasswd
-.env
-.env.*
-wp-config.php
-wp-config*.php
-*.pem
-*.key
-*secret*
-*.p12
-
-# Deliberately tracked files matched by `*secret*` above — secret-scanning
-# tooling and the standards that document it. Re-include so a future
-# same-named file is never silently ignored.
-!.secrets.baseline
-!.secrets-patterns-excluded
-!docs/secret-files-are-never-tracked.md
-!scripts/check-secret-str.py
-!scripts/check-secrets-patterns-excluded.py
-!tests/test_check_secret_str.py
-!tests/test_check_secrets_patterns_excluded.py

@@ -1911,6 +1911,34 @@
   
   
     <li class="md-nav__item">
+      <a href="env-config-bootstrap/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Env/config bootstrap
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="javascript/" class="md-nav__link">
         
   
@@ -3362,6 +3390,9 @@ for setup and PR workflow.</p>
   <code>[tool.robotsix.typing]</code> table declaring which runtime dependencies are typed
   or untyped, so downstream consumers generate their mypy/pyright exemptions
   from an upstream source of truth instead of rediscovering <code>py.typed</code> by hand.</li>
+<li><strong><a href="env-config-bootstrap/">Env/config bootstrap</a></strong> — every env-var read
+  (<code>getenv</code>/<code>os.getenv</code>/<code>process.env</code>) is resolved once in a config bootstrap
+  with documented defaults; consumers read from the bootstrap, never inline.</li>
 <li><strong><a href="javascript/">JavaScript practices</a></strong> — vanilla frontend JS as static
   assets, lockfile discipline, vitest coverage floor, eslint/stylelint.</li>
 <li><strong><a href="php/">PHP practices</a></strong> — native <code>php -l</code> syntax-check over all <code>.php</code>

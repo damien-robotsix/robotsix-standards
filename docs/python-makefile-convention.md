@@ -90,8 +90,14 @@ the workflow explicitly invokes `make test-integration`.
 ```makefile
 .PHONY: coverage
 coverage: ## Run tests with coverage report
-    uv run pytest --cov=src --cov-report=term-missing --cov-report=html tests/ -m 'not integration'
+    uv run pytest --cov=src --cov-report=term-missing --cov-report=html tests/ -m 'not integration' --cov-fail-under=80
 ```
+
+Enforces the fleet-wide 80% floor via `--cov-fail-under=80` — pytest-cov does
+not read the `fail_under` value from `[tool.coverage.report]` for its exit
+code, so the flag is what makes a low-coverage run fail locally, matching the
+[Python CI workflow](python-ci-workflow.md) gate (see
+[Python practices → Tests](python.md#tests)).
 
 ### `docs`
 
@@ -248,7 +254,7 @@ test-integration: ## Run integration tests only
 
 .PHONY: coverage
 coverage: ## Run tests with coverage report
-	uv run pytest --cov=src --cov-report=term-missing --cov-report=html tests/ -m 'not integration'
+	uv run pytest --cov=src --cov-report=term-missing --cov-report=html tests/ -m 'not integration' --cov-fail-under=80
 
 .PHONY: coverage-view
 coverage-view: ## Open coverage HTML report in browser

@@ -22,7 +22,7 @@ The required gates and their minimal invocations:
 | Lint | `uv run ruff check src/ --output-format=github` | `--output-format=github` surfaces annotations in the PR diff. |
 | Format | `uv run ruff format --check src/` | Fails if any file needs formatting; separate from lint so the developer sees check vs. format failures distinctly. |
 | Type-check | `uv run mypy` | Uses per-repo `pyproject.toml` mypy config (see [mypy strictness](mypy.md)). Must run on both `src/` and `tests/`. |
-| Test | `uv run pytest tests/ --cov=<pkg> --cov-report=xml --cov-report=term-missing` | Coverage floor enforced fleet-wide; `coverage.xml` uploaded as a workflow artifact. |
+| Test | `uv run pytest tests/ --cov=<pkg> --cov-fail-under=80 --cov-report=xml --cov-report=term-missing` | Coverage floor enforced fleet-wide via `--cov-fail-under=80` (the shared workflow's `coverage-threshold` input); `coverage.xml` uploaded as a workflow artifact. |
 
 The workflow must use `uv` for all Python tool invocations — no bare `pip
 install`, no `python -m`, no tool installed outside the project's locked
@@ -79,7 +79,10 @@ Every Python repo should call it from its `.github/workflows/ci.yml`:
 When a repo cannot use the shared workflow (e.g. it has an unusual package
 layout that the shared workflow doesn't support), it must ship a standalone
 `ci.yml` that runs the same four gates in the same order, using the same `uv
-run` invocations.  The standalone workflow must still follow the
+run` invocations.  The standalone test command must keep `--cov-fail-under=80`
+— pytest-cov does not read `[tool.coverage.report] fail_under` from
+`pyproject.toml` for its exit code, so omitting the flag measures coverage
+without gating it.  The standalone workflow must still follow the
 [CI lint tool pinning](ci-lint-pinning.md) rule — every lint tool version
 must match `.pre-commit-config.yaml`.
 

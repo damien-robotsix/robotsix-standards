@@ -88,7 +88,11 @@ jobs:
       #   resolve on the served site, not in the local site/ tree;
       # - robotsix-website: a private fleet repo, 404 to the job token;
       # - the generated CHANGELOG compare link for 0.5.0: tag v0.4.0 was never
-      #   published, and release-please owns that file.
+      #   published, and release-please owns that file;
+      # - https://www.rfc-editor.org/rfc/rfc9110: rfc-editor.org is
+      #   intermittently slow and lychee times it out (30s) even though the
+      #   URL is live; the adjacent rfc9111 check succeeds in the same run.
+      #   Not a dead link — exclude the specific URL, not the whole host.
       - name: Check links (lychee)
         uses: lycheeverse/lychee-action@e7477775783ea5526144ba13e8db5eec57747ce8 # v2.9.0
         with:
@@ -101,6 +105,7 @@ jobs:
             --exclude '^https://damien-robotsix\.github\.io/robotsix-standards/'
             --exclude '^https://github\.com/damien-robotsix/robotsix-website/'
             --exclude '^https://github\.com/damien-robotsix/robotsix-standards/compare/v0\.4\.0\.\.\.v0\.5\.0$'
+            --exclude '^https://www\.rfc-editor\.org/rfc/rfc9110$'
             --exclude-path 'site/404\.html'
             --cache
             site/

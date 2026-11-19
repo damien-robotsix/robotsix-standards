@@ -276,6 +276,26 @@ channel for first-party code. Three cases:
   channels for the same value is precisely the "why is this value what it is"
   ambiguity the one-file rule exists to kill.
 
+**A repo without `robotsix-config` still reads its env vars at exactly one
+bootstrap point.** A repo that cannot run the config library — a shared-hosting
+PHP site, a static site; no pydantic model, no `config.json` — takes its
+settings from the environment, and MUST read every env var at **one bootstrap
+module**: the sole file in the repo where `getenv` / `os.environ.get` for
+first-party settings appear, which every consumer imports. Env reads scattered
+ad hoc across the files that use each value are a violation: robotsix-website
+currently reads its five `SURVEY_*` vars at four call sites
+(`www/42/admin/survey_data_base.php`, `www/42/admin/survey_migration.php`,
+`www/42/inc/error_log.php`, `www/42/survey_submit.php`), with the default path
+and fallback duplicated per file.
+
+*Failure prevented:* the same env var is read with a slightly different
+default in every file that needs it, so renaming the var, changing its default
+or its fallback path in one file silently leaves the other call sites stale —
+the "why is this value what it is" ambiguity the one-file rule kills,
+reproduced at smaller scale inside a repo. A single bootstrap module gives the
+operator exactly one documented, greppable place to set, rename or default a
+variable for the whole repo.
+
 ### 6. Calling another service: a `<name>_url` config field
 
 A component that calls another service declares its dependency's base URL as

@@ -3333,6 +3333,11 @@ implements it: a component defines one pydantic model and calls <code>load_confi
   layer.</li>
 <li>The <strong>same filename in every mode</strong> — <code>config.json</code> in local dev <em>and</em> under
   the deployment system.</li>
+<li>The env-overlay / <code>ROBOTSIX_*</code> value-variable rule is <strong>machine-checked</strong>:
+  the <code>check-config-single-source</code> pre-commit hook fails on any <code>ROBOTSIX_*</code>
+  env read outside the two allowed locate/history vars, published via
+  <code>.pre-commit-hooks.yaml</code> and consumed as a remote hook like
+  <code>check-secret-str</code>.</li>
 </ul>
 <h3 id="2-typed-schema-defined-once-reflected-in-the-deploy-ui">2. Typed schema — defined once, reflected in the deploy UI<a class="headerlink" href="#2-typed-schema-defined-once-reflected-in-the-deploy-ui" title="Permanent link">&para;</a></h3>
 <ul>

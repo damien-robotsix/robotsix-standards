@@ -3200,6 +3200,15 @@ unambiguous across every consumer.</p>
 defaults (<code>SURVEY_DB_PATH ?: 'surveys.db'</code> in one, a different path in
 another), and an operator who sets the variable expect both to change finds
 one site ignores it.</p>
+<p>The <code>ROBOTSIX_*</code> namespace is <strong>machine-checked</strong>: the
+<code>check-config-single-source</code> pre-commit hook (published via
+<code>.pre-commit-hooks.yaml</code>, consumed as a remote hook like <code>check-secret-str</code>)
+fails on any <code>ROBOTSIX_*</code> env read that is not one of the two allowed vars —
+<code>ROBOTSIX_CONFIG_FILE</code> (read once in <code>resolve_config_path()</code>) and
+<code>ROBOTSIX_CONFIG_MAX_VERSIONS</code> (read once in the history store loader) — and
+on either allowed var resolved at more than one call site. General per-repo
+config env vars (e.g. <code>SURVEY_*</code>) have no hook and remain self-policing; the
+single-bootstrap rule above is their guardrail.</p>
 <h2 id="canonical-anti-pattern-verified-fleet-example">Canonical anti-pattern (verified fleet example)<a class="headerlink" href="#canonical-anti-pattern-verified-fleet-example" title="Permanent link">&para;</a></h2>
 <p><code>robotsix-website</code> reads the <code>SURVEY_*</code> variables ad hoc in four distinct
 places, each with its own fallback:</p>

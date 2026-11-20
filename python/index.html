@@ -4087,13 +4087,19 @@ documented in the template's <code>.pre-commit-config.yaml</code>.</p>
 <li><strong>Secrets:</strong> <code>detect-secrets</code> (with a committed <code>.secrets.baseline</code>) —
   catches credentials <em>before</em> the commit exists, complementing CI's push
   protection; this matters more when agents author most commits.
-  <strong>Repos with a pydantic config model additionally:</strong> <code>check-secret-str</code>,
-  the remote hook published by robotsix-standards
+  <strong>Repos with a pydantic config model additionally:</strong> <code>check-secret-str</code> and
+  <code>check-config-single-source</code>, the remote hooks published by
+  robotsix-standards
   (<code>repo: https://github.com/damien-robotsix/robotsix-standards</code>, <code>rev:</code>
-  pinned to a release tag, <code>id: check-secret-str</code>). It enforces the
+  pinned to a release tag, <code>id: check-secret-str</code> /
+  <code>id: check-config-single-source</code>). <code>check-secret-str</code> enforces the
   <a href="../config-standard/#3-one-secret-convention">SecretStr MUST</a>. Without it, a
   secret field typed <code>str</code> passes every other hook, and the secret is stored
-  and logged as plaintext.</li>
+  and logged as plaintext. <code>check-config-single-source</code> enforces the
+  <a href="../config-standard/#1-one-file-the-single-source-of-config-values">single-file MUST</a>:
+  it fails on any <code>ROBOTSIX_*</code> env read outside the two allowed locate/history
+  vars, and on those vars resolved at more than one call site (<a href="../env-config-bootstrap/">resolve-once
+  in a config bootstrap</a>).</li>
 <li><strong>Workflows:</strong> <code>actionlint</code> — catches broken workflow/caller YAML at commit
   time.</li>
 <li><strong>Dead code:</strong> <code>vulture</code> — agent-written changes are prone to orphaned

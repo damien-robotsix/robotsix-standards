@@ -53,7 +53,8 @@ only scored it after the fact.
    only by zizmor, which is **warning-only (Phase 2)** outside
    `robotsix-github-workflows` and opted-in repos — a dated
    [accepted risk](github-actions-security.md#accepted-risk-warning-mode-zizmor)
-   (review 2027-01-31), not a blocking replacement. *Failure mode this note
+   (re-stated 2027-01-31, review 2027-04-30) — still accepted because zizmor
+remains warning-only outside opted-in repos, not a blocking replacement. *Failure mode this note
    prevents:* reading the Scorecard drop as if dangerous-workflow patterns
    were blocked fleet-wide. Scorecard's
    *Branch-Protection* check is an **accepted gap**, with no replacement: none of those tools

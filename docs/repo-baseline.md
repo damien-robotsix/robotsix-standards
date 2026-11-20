@@ -501,8 +501,8 @@ re-registered as persistent, a firewall rule dropped) is caught only at the
 next checklist run, up to 90 days later. A runner registered to a public repo
 is caught within 30 days.
 
-**Accepted risk: persistent shared runner (accepted 2026-10-29, review
-2027-01-31).** Today's self-hosted runner is persistent, shared across the
+**Accepted risk: persistent shared runner (accepted 2026-10-29, re-stated
+2027-01-31, review 2027-04-30).** Today's self-hosted runner is persistent, shared across the
 private repos and reused between jobs. It does not meet the
 ephemeral/JIT rule below. No wipe-between-jobs control (a wiped workspace,
 emptied tool and Docker layer caches, no leftover credentials) is documented
@@ -614,7 +614,7 @@ fleet, setting `enforce_admins: true` on every protected branch and
 is created or the required-check set changes.
 
 **Enforcement: unverified — ACCEPTED RISK (accepted 2026-10-22 by the operator,
-re-stated 2026-10-26; review date 2027-01-26).** The apply-script is
+re-stated 2026-10-26, re-stated 2027-01-26, review 2027-04-30).** The apply-script is
 trigger-based; it never re-verifies that protection stayed intact. The periodic
 `branch-protection-check` watchdog was [retired](mill-agents.md#retired-agents)
 (decision 2026-10-22, removal 2026-10-26 / #434) because it never had GitHub API

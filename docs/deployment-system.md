@@ -201,7 +201,7 @@ central-deploy with no provenance check. The rules for this path:
 **Status — dated accepted risk.** None of the three rules is in place yet:
 the self-update path rolls out central-deploy's own image unverified, without
 a cooldown, through an archived, tag-pinned Watchtower. This is a dated
-**accepted risk** (accepted 2026-10-31, review 2027-01-31), aligned with the
+**accepted risk** (accepted 2026-10-31, re-stated 2027-01-31, review 2027-04-30) — still accepted because none of the three self-update rules is in place, aligned with the
 SLSA verification accepted risk and tracked in the
 [security posture Audit table](security-posture.md#audit). Until it is
 lifted, operators should keep the central-deploy component's auto-update flag

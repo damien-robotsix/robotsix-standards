@@ -126,8 +126,11 @@ provides are report-only on that repo:
 stay blocking on every repo through
 [`scripts/check-workflow-security.py`](security-posture.md#workflow-permissions-audit).)
 
-This is a dated **accepted risk**: accepted 2026-10-27, review
-**2027-01-31** (aligned with the blocking date of the fleet's other
+This is a dated **accepted risk**: accepted 2026-10-27, re-stated
+**2027-01-31**, review **2027-04-30** (still accepted because zizmor remains
+warning-only outside `robotsix-github-workflows` and repos opted in with
+`fail-on-finding: true`, so the fleet-wide default is still Phase 2; aligned
+with the blocking date of the fleet's other
 warning-first gates: `public-registry-check`, `gitignore-denylist-check` and
 `secrets-patterns-excluded-check` in `baseline-check.yml`). At
 review, either flip the reusable workflow's `fail-on-finding` default to

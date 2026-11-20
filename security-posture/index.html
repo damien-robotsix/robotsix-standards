@@ -3661,8 +3661,9 @@ yet ship a shared Semgrep workflow (its <code>python-security.yml</code> runs Tr
 and pip-audit only), so no fleet repo can meet this gate yet and none has been
 verified against it. Until it ships, this gate defines the requirement that the
 workflow must meet, and the missing workflow is a dated <strong>accepted risk</strong>
-(accepted 2026-11-02, review 2027-01-31, matching the fleet's other
-<code>BLOCKING_FROM</code> flips):</p>
+(accepted 2026-11-02, re-stated 2027-01-31, review 2027-04-30) — still
+accepted because robotsix-github-workflows still ships no shared Semgrep
+workflow (<code>python-security.yml</code> runs TruffleHog and pip-audit only):</p>
 <ul>
 <li><strong>Mitigation.</strong> Where a repo already runs Semgrep through its own pre-commit
   hook (this standards repo does, over <code>scripts/</code>), that hook is the interim
@@ -3793,7 +3794,8 @@ untrusted checkout of <code>pull_request_target</code> events). zizmor <strong>b
 on <code>robotsix-github-workflows</code> and on repos that opted in with
 <code>fail-on-finding: true</code>; on every other repo it is <strong>warning-only
 (Phase 2)</strong> — findings are CI annotations, not a gate. This is a dated
-accepted risk (review 2027-01-31); see
+accepted risk (re-stated 2027-01-31, review 2027-04-30) — still accepted
+because zizmor remains warning-only outside opted-in repos; see
 <a href="../github-actions-security/#accepted-risk-warning-mode-zizmor">GitHub Actions security — accepted risk</a>.</p>
 <ul>
 <li><strong>How to verify:</strong> <code>.pre-commit-config.yaml</code> includes <code>actionlint</code>. CI
@@ -4292,16 +4294,16 @@ another caller repo fails. The flag names are those of cosign v2; this
 change did not run `cosign verify-attestation --help`. Recheck them
 against the cosign version the fleet pins before this check is enforced.
 Accepting self-hosted, keyless-signed provenance for private-repo images
-is a dated **accepted risk** (accepted 2026-10-29, re-stated 2026-10-30,
-review 2027-01-31). The signing runner is not isolated per job, so the
+is a dated **accepted risk** (accepted 2026-10-29, re-stated 2026-10-30, re-stated 2027-01-31,
+review 2027-04-30). The signing runner is not isolated per job, so the
 provenance is at most Build L2, and a co-tenant job running concurrently
 with the publish job could use that job&#39;s live OIDC request token to sign
 a statement this check accepts (see Build L2). The risk is lifted only
 when the runner is ephemeral/JIT and isolated per job.
 </code></pre></div>
 <p>Until the signing steps above exist there is nothing signed to verify,
-  so verification itself is a dated <strong>accepted risk</strong> (accepted 2026-10-28,
-  review 2027-01-31). Both accepted risks are tracked in the <a href="#audit">Audit</a>
+  so verification itself is a dated <strong>accepted risk</strong> (accepted 2026-10-28, re-stated 2027-01-31,
+  review 2027-04-30). Both accepted risks are tracked in the <a href="#audit">Audit</a>
   table and referenced from the
   <a href="../deployment-system/#provenance-verification-before-rollout">deployment system</a>.</p>
 <p>The check applies to <strong>every</strong> rollout path, including the deployment
@@ -4345,7 +4347,7 @@ fleet's posture against each Source level:</p>
   on every commit to <code>main</code>, but it is <strong>configured, not continuously
   verified</strong>: the apply-script runs only when triggered and no automated check
   re-reads the protection settings. This is a dated <strong>accepted risk</strong>
-  (accepted 2026-10-22, re-stated 2026-10-26, review 2027-01-26; see
+  (accepted 2026-10-22, re-stated 2026-10-26, re-stated 2027-01-26, review 2027-04-30; see
   <a href="../repo-baseline/#branch-protection">repo baseline</a>). Source L3 requires
   continuously enforced technical controls, so it is not reached on two
   counts: SLSA levels are cumulative and Source L2 remains a gap, and the
@@ -4379,7 +4381,7 @@ dashboard-watching:</p>
 <tbody>
 <tr>
 <td>Semgrep*</td>
-<td><strong>Pending rollout</strong> until robotsix-github-workflows ships the shared Semgrep workflow (dated accepted risk, accepted 2026-11-02, review 2027-01-31 — see gate 1 above): report "pending rollout", and "mitigated" where a per-repo Semgrep hook uses the fleet ruleset (<code>p/default</code> plus the language pack); every <code>nosemgrep</code> names a rule id. Once the workflow ships: CI calls shared Semgrep workflow with the fleet ruleset; the Semgrep job is a required status check and exits non-zero on a blocking (<code>ERROR</code>) finding (documented fail condition or fixture PR)</td>
+<td><strong>Pending rollout</strong> until robotsix-github-workflows ships the shared Semgrep workflow (dated accepted risk, accepted 2026-11-02, re-stated 2027-01-31, review 2027-04-30 — still accepted because the shared Semgrep workflow has not shipped — see gate 1 above): report "pending rollout", and "mitigated" where a per-repo Semgrep hook uses the fleet ruleset (<code>p/default</code> plus the language pack); every <code>nosemgrep</code> names a rule id. Once the workflow ships: CI calls shared Semgrep workflow with the fleet ruleset; the Semgrep job is a required status check and exits non-zero on a blocking (<code>ERROR</code>) finding (documented fail condition or fixture PR)</td>
 </tr>
 <tr>
 <td>Dependency review*</td>
@@ -4407,7 +4409,7 @@ dashboard-watching:</p>
 </tr>
 <tr>
 <td>Runner isolation</td>
-<td>Public repos target no self-hosted runner: <code>scripts/check-runner-visibility.py</code> (<code>runner-visibility-check</code> job in <code>baseline-check.yml</code>) passes. It is fail-closed, and private repos on GitHub-hosted runners only warn. Every 30 days, on every fleet repo, the <code>fleet-compliance-audit</code> mill agent checks that <code>gh api repos/&lt;owner&gt;/&lt;repo&gt;/actions/runners</code> returns <code>total_count: 0</code> for each public repo (personal account, so no runner groups) and that <code>.private</code> is <code>true</code> for each repo with a registered runner. The operator's 90-day runner host checklist (flagged by <code>fleet-compliance-audit</code>, not a draft ticket; the reminder is recorded in <code>fleet-compliance-audit</code> memory only, because its chat periodic session delivery channel is pending operator setup) covers the rest: "Run workflows from fork pull requests" is off on private repos, the runner is ephemeral/JIT or wiped between jobs, the runner user is non-root, the production Docker socket is not shared, and an egress firewall is in place. The persistent shared runner meets neither the ephemeral/JIT rule nor the wipe rule, and this is a dated accepted risk (CICD-SEC-7, accepted 2026-10-29, review 2027-01-31) — per <a href="../repo-baseline/#self-hosted-runner-hardening">repo baseline</a></td>
+<td>Public repos target no self-hosted runner: <code>scripts/check-runner-visibility.py</code> (<code>runner-visibility-check</code> job in <code>baseline-check.yml</code>) passes. It is fail-closed, and private repos on GitHub-hosted runners only warn. Every 30 days, on every fleet repo, the <code>fleet-compliance-audit</code> mill agent checks that <code>gh api repos/&lt;owner&gt;/&lt;repo&gt;/actions/runners</code> returns <code>total_count: 0</code> for each public repo (personal account, so no runner groups) and that <code>.private</code> is <code>true</code> for each repo with a registered runner. The operator's 90-day runner host checklist (flagged by <code>fleet-compliance-audit</code>, not a draft ticket; the reminder is recorded in <code>fleet-compliance-audit</code> memory only, because its chat periodic session delivery channel is pending operator setup) covers the rest: "Run workflows from fork pull requests" is off on private repos, the runner is ephemeral/JIT or wiped between jobs, the runner user is non-root, the production Docker socket is not shared, and an egress firewall is in place. The persistent shared runner meets neither the ephemeral/JIT rule nor the wipe rule, and this is a dated accepted risk (CICD-SEC-7, accepted 2026-10-29, re-stated 2027-01-31, review 2027-04-30) — per <a href="../repo-baseline/#self-hosted-runner-hardening">repo baseline</a></td>
 </tr>
 <tr>
 <td>Actions PR approval disabled</td>
@@ -4435,11 +4437,11 @@ dashboard-watching:</p>
 </tr>
 <tr>
 <td>SLSA Build provenance</td>
-<td>Image-shipping repos: the published image index carries BuildKit provenance (<code>docker buildx imagetools inspect ghcr.io/&lt;owner&gt;/&lt;repo&gt;@&lt;digest&gt; --format '{{ json .Provenance }}'</code> is non-empty) — Build L1 on either runner class. Once <code>docker-release.yml</code> signs it, the deployment system verifies before rollout: public-repo (GitHub-hosted) images with <code>gh attestation verify oci://ghcr.io/&lt;owner&gt;/&lt;repo&gt;@&lt;digest&gt; --owner &lt;owner&gt; --deny-self-hosted-runners</code> (Build L3); private-repo (self-hosted) images — which cannot use GitHub attestations on the free plan — with keyless cosign pinned to the reusable workflow identity, once the pinned cosign version is confirmed to accept these flags: <code>cosign verify-attestation --type slsaprovenance1 --certificate-identity https://github.com/&lt;workflows-owner&gt;/robotsix-github-workflows/.github/workflows/docker-release.yml@&lt;pinned ref&gt; --certificate-oidc-issuer https://token.actions.githubusercontent.com --certificate-github-workflow-repository &lt;owner&gt;/&lt;repo&gt; ghcr.io/&lt;owner&gt;/&lt;repo&gt;@&lt;digest&gt;</code> (at most Build L2; self-hosted, keyless-signed provenance is a dated accepted risk, accepted 2026-10-29, re-stated 2026-10-30, review 2027-01-31, until the runner is ephemeral/JIT and isolated per job). Signing and verification are a dated accepted risk until then (review 2027-01-31) — per <a href="#slsa-build-track">SLSA Build Track</a></td>
+<td>Image-shipping repos: the published image index carries BuildKit provenance (<code>docker buildx imagetools inspect ghcr.io/&lt;owner&gt;/&lt;repo&gt;@&lt;digest&gt; --format '{{ json .Provenance }}'</code> is non-empty) — Build L1 on either runner class. Once <code>docker-release.yml</code> signs it, the deployment system verifies before rollout: public-repo (GitHub-hosted) images with <code>gh attestation verify oci://ghcr.io/&lt;owner&gt;/&lt;repo&gt;@&lt;digest&gt; --owner &lt;owner&gt; --deny-self-hosted-runners</code> (Build L3); private-repo (self-hosted) images — which cannot use GitHub attestations on the free plan — with keyless cosign pinned to the reusable workflow identity, once the pinned cosign version is confirmed to accept these flags: <code>cosign verify-attestation --type slsaprovenance1 --certificate-identity https://github.com/&lt;workflows-owner&gt;/robotsix-github-workflows/.github/workflows/docker-release.yml@&lt;pinned ref&gt; --certificate-oidc-issuer https://token.actions.githubusercontent.com --certificate-github-workflow-repository &lt;owner&gt;/&lt;repo&gt; ghcr.io/&lt;owner&gt;/&lt;repo&gt;@&lt;digest&gt;</code> (at most Build L2; self-hosted, keyless-signed provenance is a dated accepted risk, accepted 2026-10-29, re-stated 2026-10-30, re-stated 2027-01-31, review 2027-04-30, until the runner is ephemeral/JIT and isolated per job). Signing and verification are a dated accepted risk until then (re-stated 2027-01-31, review 2027-04-30) — per <a href="#slsa-build-track">SLSA Build Track</a></td>
 </tr>
 <tr>
 <td>Deployment-system self-update</td>
-<td>central-deploy's self-update path verifies the new image digest's provenance before the swap and deploys that digest, waits a cooldown or an operator, and runs a digest-pinned, maintained updater image bumped by Dependabot/Renovate — per <a href="../deployment-system/#self-update-path">deployment system — Self-update path</a>. Not met today (one-shot, tag-pinned <code>containrrr/watchtower:1.7.1</code>, archived upstream 2025-12-17): a dated accepted risk, accepted 2026-10-31, review 2027-01-31</td>
+<td>central-deploy's self-update path verifies the new image digest's provenance before the swap and deploys that digest, waits a cooldown or an operator, and runs a digest-pinned, maintained updater image bumped by Dependabot/Renovate — per <a href="../deployment-system/#self-update-path">deployment system — Self-update path</a>. Not met today (one-shot, tag-pinned <code>containrrr/watchtower:1.7.1</code>, archived upstream 2025-12-17): a dated accepted risk, accepted 2026-10-31, re-stated 2027-01-31, review 2027-04-30</td>
 </tr>
 <tr>
 <td>Container image scan</td>

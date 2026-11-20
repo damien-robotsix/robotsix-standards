@@ -18,3 +18,13 @@
   entry: scripts/check-secret-str.py
   language: script
   types: [python]
+- id: check-config-single-source
+  name: reject ROBOTSIX_* env-overlay / resolve-once violations
+  description: >-
+    Fails on any ROBOTSIX_* env-var read that is not one of the two allowed
+    vars (ROBOTSIX_CONFIG_FILE, ROBOTSIX_CONFIG_MAX_VERSIONS), or on an
+    allowed var resolved at more than one call site (docs/config-standard.md
+    §1, docs/env-config-bootstrap.md).
+  entry: scripts/check-config-single-source.py
+  language: script
+  types: [python]

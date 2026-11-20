@@ -79,6 +79,16 @@ defaults (`SURVEY_DB_PATH ?: 'surveys.db'` in one, a different path in
 another), and an operator who sets the variable expect both to change finds
 one site ignores it.
 
+The `ROBOTSIX_*` namespace is **machine-checked**: the
+`check-config-single-source` pre-commit hook (published via
+`.pre-commit-hooks.yaml`, consumed as a remote hook like `check-secret-str`)
+fails on any `ROBOTSIX_*` env read that is not one of the two allowed vars —
+`ROBOTSIX_CONFIG_FILE` (read once in `resolve_config_path()`) and
+`ROBOTSIX_CONFIG_MAX_VERSIONS` (read once in the history store loader) — and
+on either allowed var resolved at more than one call site. General per-repo
+config env vars (e.g. `SURVEY_*`) have no hook and remain self-policing; the
+single-bootstrap rule above is their guardrail.
+
 ## Canonical anti-pattern (verified fleet example)
 
 `robotsix-website` reads the `SURVEY_*` variables ad hoc in four distinct

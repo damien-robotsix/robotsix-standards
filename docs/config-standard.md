@@ -36,6 +36,11 @@ implements it: a component defines one pydantic model and calls `load_config`.
   layer.
 - The **same filename in every mode** — `config.json` in local dev *and* under
   the deployment system.
+- The env-overlay / `ROBOTSIX_*` value-variable rule is **machine-checked**:
+  the `check-config-single-source` pre-commit hook fails on any `ROBOTSIX_*`
+  env read outside the two allowed locate/history vars, published via
+  `.pre-commit-hooks.yaml` and consumed as a remote hook like
+  `check-secret-str`.
 
 ### 2. Typed schema — defined once, reflected in the deploy UI
 

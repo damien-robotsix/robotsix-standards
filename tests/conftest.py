@@ -65,6 +65,13 @@ def check_secret_str() -> ModuleType:
 
 
 @pytest.fixture
+def check_config_single_source() -> ModuleType:
+    return _load_script(
+        "check-config-single-source.py", "check_config_single_source"
+    )
+
+
+@pytest.fixture
 def check_workflow_security() -> ModuleType:
     return _load_script(
         "check-workflow-security.py", "check_workflow_security"

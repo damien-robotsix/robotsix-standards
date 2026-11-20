@@ -46,6 +46,18 @@ repos:
         entry: python scripts/check-secret-str.py
         language: system
         types: [python]
+  # Config single-source gate (docs/config-standard.md §1,
+  # docs/env-config-bootstrap.md): fails on any ROBOTSIX_* env-var read that is
+  # not one of the two allowed vars (ROBOTSIX_CONFIG_FILE,
+  # ROBOTSIX_CONFIG_MAX_VERSIONS), or on an allowed var resolved at more than
+  # one call site.
+  - repo: local
+    hooks:
+      - id: check-config-single-source
+        name: reject ROBOTSIX_* env-overlay / resolve-once violations
+        entry: python scripts/check-config-single-source.py
+        language: system
+        types: [python]
   - repo: https://github.com/Yelp/detect-secrets
     rev: v1.5.0
     hooks:

@@ -47,5 +47,7 @@ wp-config*.php
 !docs/secret-files-are-never-tracked.md
 !scripts/check-secret-str.py
 !scripts/check-secrets-patterns-excluded.py
+!scripts/normalize-secrets-baseline.py
 !tests/test_check_secret_str.py
 !tests/test_check_secrets_patterns_excluded.py
+!tests/test_normalize_secrets_baseline.py

@@ -67,6 +67,12 @@ repos:
       # file). Path exclusions belong in the pre-commit-native `exclude:` regex
       # below, kept in sync with .secrets-patterns-excluded (which TruffleHog
       # reads directly). See docs/secret-files-are-never-tracked.md.
+      #
+      # The committed .secrets.baseline stores no per-entry line_number and
+      # pins generated_at, so detect-secrets' strict baseline comparison stays
+      # byte-stable across docs edits that shift a flagged line. Regenerate
+      # with `detect-secrets scan --baseline .secrets.baseline` then
+      # `python scripts/normalize-secrets-baseline.py`.
       - id: detect-secrets
         args:
           - '--baseline'

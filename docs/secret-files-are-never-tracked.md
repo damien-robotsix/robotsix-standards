@@ -136,6 +136,39 @@ supports, kept in sync with `.secrets-patterns-excluded`:
       exclude: '\.secrets\.baseline$'
 ```
 
+#### The committed baseline is line-number-free and clock-free
+
+detect-secrets matches a scanned finding to a baseline entry by `filename` +
+`hashed_secret` (and the secret `type`) — never by `line_number`, which is
+informational triage data and not part of the verdict. The committed
+`.secrets.baseline` therefore stores **no per-entry `line_number`** and pins
+`generated_at` to a constant. detect-secrets treats a missing line number as
+"untracked" and skips strict line-number comparison, so editing a docs page
+near a flagged line is a byte-identical no-op for the hook instead of a
+baseline rewrite. A genuinely new secret (same file, new `hashed_secret`)
+still fails the hook.
+
+**Adding or regenerating findings:** run
+`detect-secrets scan --baseline .secrets.baseline` (rekeys the baseline to the
+current files and merges new findings), then `python
+scripts/normalize-secrets-baseline.py` to strip the line numbers and pin the
+timestamp that regeneration adds back. The normalizer also restores the
+canonical trailing newline, so the committed baseline is byte-reproducible from
+this documented procedure — a newline-less baseline would otherwise be rewritten
+by the stock `end-of-file-fixer` pre-commit hook and reintroduce the very
+'files were modified by this hook' churn this rule removes. Commit the
+regenerated baseline with the change that forced it — never as a later
+fix-on-top commit.
+
+*Failure prevented: coordinate/clock drift churning the baseline.* A
+line-numbered baseline makes the stock hook rewrite `.secrets.baseline` (new
+line number, new `generated_at`) whenever any earlier edit shifts a flagged
+line, so pre-commit fails with 'files were modified by this hook' and a plain
+docs edit forces a separate fixing_ci regeneration cycle (three such cycles on
+this repo between 2026-11-01 and 2026-11-21 — PRs #478, #503, #508). With no
+line numbers and a pinned timestamp the strict comparison is byte-stable
+unless a real secret appears.
+
 ## How this is enforced
 
 `scripts/check-secrets-patterns-excluded.py` (the
@@ -145,9 +178,11 @@ It verifies that:
 
 - `.secrets-patterns-excluded` exists at the repo root;
 - every non-comment line compiles as a regular expression (a gitignore-style
-  glob such as `*secret*` fails this check); and
+  glob such as `*secret*` fails this check);
 - `.pre-commit-config.yaml` does not wire the file into detect-secrets via the
-  no-op `--exclude-files .secrets-patterns-excluded` form.
+  no-op `--exclude-files .secrets-patterns-excluded` form; and
+- a committed `.secrets.baseline` is drift-free: no per-entry `line_number`
+  and a pinned `generated_at` (see above), so a docs edit cannot churn it.
 
 Like the `.gitignore` deny-list gate, it has been **warning-first** since
 2026-09: it emits `::warning::` annotations but does not fail the build, so

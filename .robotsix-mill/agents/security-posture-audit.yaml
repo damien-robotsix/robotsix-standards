@@ -67,7 +67,8 @@ system_prompt: |
   - `.pre-commit-config.yaml` — does it include detect-secrets and
     other security-relevant hooks?
 
-  - `.secrets.baseline` — present and referenced by a check?
+  - `.secrets.baseline` — present, line-number-free, and referenced by a
+    check?
 
   - Any `docs/security-posture.md` or equivalent consolidation page
     — does it exist? If not, is the security posture scattered across

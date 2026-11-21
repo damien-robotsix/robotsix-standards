@@ -91,6 +91,11 @@ def check_secrets_patterns_excluded() -> ModuleType:
 
 
 @pytest.fixture
+def normalize_secrets_baseline() -> ModuleType:
+    return _load_script("normalize-secrets-baseline.py", "normalize_secrets_baseline")
+
+
+@pytest.fixture
 def check_dependency_cooldown() -> ModuleType:
     return _load_script("check-dependency-cooldown.py", "check_dependency_cooldown")
 

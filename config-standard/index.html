@@ -3337,7 +3337,14 @@ implements it: a component defines one pydantic model and calls <code>load_confi
   the <code>check-config-single-source</code> pre-commit hook fails on any <code>ROBOTSIX_*</code>
   env read outside the two allowed locate/history vars, published via
   <code>.pre-commit-hooks.yaml</code> and consumed as a remote hook like
-  <code>check-secret-str</code>.</li>
+  <code>check-secret-str</code>. The <strong>no CLI-merge</strong> half is <strong>not machine-checked</strong> —
+  the same <code>--flag</code> can be a config override or a legitimate one-shot option,
+  and telling them apart requires reading the config model — so it is audited
+  by the periodic <a href="../mill-agents/#component-security-audit"><code>component-security-audit</code></a>
+  agent per the <a href="../security-posture/#audit">security-posture audit</a>: a
+  deployable component with a config model reads runtime config values only
+  from the single JSON file and does not override config values from
+  <code>--flag</code> / <code>sys.argv</code> / argparse / click / typer at startup.</li>
 </ul>
 <h3 id="2-typed-schema-defined-once-reflected-in-the-deploy-ui">2. Typed schema — defined once, reflected in the deploy UI<a class="headerlink" href="#2-typed-schema-defined-once-reflected-in-the-deploy-ui" title="Permanent link">&para;</a></h3>
 <ul>

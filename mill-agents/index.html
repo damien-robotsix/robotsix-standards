@@ -3275,6 +3275,10 @@ applied to the repos each page governs:</p>
   through <code>rollback</code>, and <code>GET /config/versions</code> through <code>read_versions</code>
   with no secret value in its response; no hand-rolled config serializer;
   version history stores no secret values).</li>
+<li><a href="../config-standard/#1-one-file-the-single-source-of-config-values">Config standard §1, no CLI-merge</a>:
+  deployable components with a config model read runtime config values only
+  from the single JSON file and do not override config values from
+  <code>--flag</code>/<code>sys.argv</code>/argparse/click/typer at startup.</li>
 <li><a href="../component-standard/#how-this-pages-security-rules-are-enforced">LLM security</a>
   (including LLM05 and LLM06) and the
   <a href="../security-posture/#llm-agentic-security-audit">LLM &amp; agentic security audit</a>

@@ -24,7 +24,7 @@ LINE_NUMBERED = {
             {
                 "type": "Secret Keyword",
                 "filename": "docs/a.md",
-                "hashed_secret": "abc123",
+                "hashed_secret": "abc123",  # pragma: allowlist secret
                 "is_verified": False,
                 "line_number": 357,
             }

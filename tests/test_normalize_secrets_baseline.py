@@ -41,7 +41,7 @@ def test_normalize_strips_line_number_and_pins_timestamp(
     entry = out["results"]["docs/a.md"][0]
     assert "line_number" not in entry
     # Verdict-relevant fields are untouched.
-    assert entry["hashed_secret"] == "abc123"
+    assert entry["hashed_secret"] == "abc123"  # pragma: allowlist secret
     assert entry["is_verified"] is False
     assert entry["type"] == "Secret Keyword"
     assert out["generated_at"] == PINNED

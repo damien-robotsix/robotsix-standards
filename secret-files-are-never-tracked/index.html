@@ -642,6 +642,23 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="detect-secrets (pre-commit hook)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-committed-baseline-is-line-number-free-and-clock-free" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The committed baseline is line-number-free and clock-free
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
         
       </ul>
@@ -3138,6 +3155,23 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="detect-secrets (pre-commit hook)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-committed-baseline-is-line-number-free-and-clock-free" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The committed baseline is line-number-free and clock-free
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
         
       </ul>
@@ -3329,6 +3363,35 @@ supports, kept in sync with <code>.secrets-patterns-excluded</code>:</p>
 <span class="w">      </span><span class="c1"># .secrets-patterns-excluded — NOT `--exclude-files &lt;that file&gt;`.</span>
 <span class="w">      </span><span class="nt">exclude</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;\.secrets\.baseline$&#39;</span>
 </code></pre></div>
+<h4 id="the-committed-baseline-is-line-number-free-and-clock-free">The committed baseline is line-number-free and clock-free<a class="headerlink" href="#the-committed-baseline-is-line-number-free-and-clock-free" title="Permanent link">&para;</a></h4>
+<p>detect-secrets matches a scanned finding to a baseline entry by <code>filename</code> +
+<code>hashed_secret</code> (and the secret <code>type</code>) — never by <code>line_number</code>, which is
+informational triage data and not part of the verdict. The committed
+<code>.secrets.baseline</code> therefore stores <strong>no per-entry <code>line_number</code></strong> and pins
+<code>generated_at</code> to a constant. detect-secrets treats a missing line number as
+"untracked" and skips strict line-number comparison, so editing a docs page
+near a flagged line is a byte-identical no-op for the hook instead of a
+baseline rewrite. A genuinely new secret (same file, new <code>hashed_secret</code>)
+still fails the hook.</p>
+<p><strong>Adding or regenerating findings:</strong> run
+<code>detect-secrets scan --baseline .secrets.baseline</code> (rekeys the baseline to the
+current files and merges new findings), then <code>python
+scripts/normalize-secrets-baseline.py</code> to strip the line numbers and pin the
+timestamp that regeneration adds back. The normalizer also restores the
+canonical trailing newline, so the committed baseline is byte-reproducible from
+this documented procedure — a newline-less baseline would otherwise be rewritten
+by the stock <code>end-of-file-fixer</code> pre-commit hook and reintroduce the very
+'files were modified by this hook' churn this rule removes. Commit the
+regenerated baseline with the change that forced it — never as a later
+fix-on-top commit.</p>
+<p><em>Failure prevented: coordinate/clock drift churning the baseline.</em> A
+line-numbered baseline makes the stock hook rewrite <code>.secrets.baseline</code> (new
+line number, new <code>generated_at</code>) whenever any earlier edit shifts a flagged
+line, so pre-commit fails with 'files were modified by this hook' and a plain
+docs edit forces a separate fixing_ci regeneration cycle (three such cycles on
+this repo between 2026-11-01 and 2026-11-21 — PRs #478, #503, #508). With no
+line numbers and a pinned timestamp the strict comparison is byte-stable
+unless a real secret appears.</p>
 <h2 id="how-this-is-enforced">How this is enforced<a class="headerlink" href="#how-this-is-enforced" title="Permanent link">&para;</a></h2>
 <p><code>scripts/check-secrets-patterns-excluded.py</code> (the
 <code>secrets-patterns-excluded-check</code> job in
@@ -3337,9 +3400,11 @@ It verifies that:</p>
 <ul>
 <li><code>.secrets-patterns-excluded</code> exists at the repo root;</li>
 <li>every non-comment line compiles as a regular expression (a gitignore-style
-  glob such as <code>*secret*</code> fails this check); and</li>
+  glob such as <code>*secret*</code> fails this check);</li>
 <li><code>.pre-commit-config.yaml</code> does not wire the file into detect-secrets via the
-  no-op <code>--exclude-files .secrets-patterns-excluded</code> form.</li>
+  no-op <code>--exclude-files .secrets-patterns-excluded</code> form; and</li>
+<li>a committed <code>.secrets.baseline</code> is drift-free: no per-entry <code>line_number</code>
+  and a pinned <code>generated_at</code> (see above), so a docs edit cannot churn it.</li>
 </ul>
 <p>Like the <code>.gitignore</code> deny-list gate, it has been <strong>warning-first</strong> since
 2026-09: it emits <code>::warning::</code> annotations but does not fail the build, so

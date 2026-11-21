@@ -4086,7 +4086,10 @@ documented in the template's <code>.pre-commit-config.yaml</code>.</p>
 <li><strong>Code:</strong> <code>ruff</code> (with <code>--fix</code>), <code>ruff-format</code>, <code>mypy</code>.</li>
 <li><strong>Secrets:</strong> <code>detect-secrets</code> (with a committed <code>.secrets.baseline</code>) —
   catches credentials <em>before</em> the commit exists, complementing CI's push
-  protection; this matters more when agents author most commits.
+  protection; this matters more when agents author most commits. The committed
+  baseline is keyed on <code>filename</code> + <code>hashed_secret</code>, not on line numbers or a
+  generation timestamp, so a docs edit that shifts a flagged line cannot churn
+  it (<a href="../secret-files-are-never-tracked/">secret files are never tracked</a>).
   <strong>Repos with a pydantic config model additionally:</strong> <code>check-secret-str</code> and
   <code>check-config-single-source</code>, the remote hooks published by
   robotsix-standards

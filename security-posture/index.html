@@ -3899,7 +3899,9 @@ complemented by an open-source, layered secret-scanning stack:</p>
 <ul>
 <li><strong><code>detect-secrets</code> pre-commit hook</strong> (<a href="https://github.com/Yelp/detect-secrets">Yelp/detect-secrets</a>,
   Apache-2.0) with a committed <code>.secrets.baseline</code> — catches credentials at
-  commit time, before the push.</li>
+  commit time, before the push. The baseline records findings by content
+  (<code>filename</code> + <code>hashed_secret</code>), not by line number, so a docs edit cannot
+  churn it (<a href="../secret-files-are-never-tracked/">secret files are never tracked</a>).</li>
 <li><strong>TruffleHog</strong> (<a href="https://github.com/trufflesecurity/trufflehog">trufflesecurity/trufflehog</a>,
   AGPL-3.0) in the shared security workflow — scans the PR diff and the full
   repo history for secrets that slipped past push protection (e.g. a custom

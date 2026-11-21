@@ -152,8 +152,13 @@ still fails the hook.
 `detect-secrets scan --baseline .secrets.baseline` (rekeys the baseline to the
 current files and merges new findings), then `python
 scripts/normalize-secrets-baseline.py` to strip the line numbers and pin the
-timestamp that regeneration adds back. Commit the regenerated baseline with
-the change that forced it — never as a later fix-on-top commit.
+timestamp that regeneration adds back. The normalizer also restores the
+canonical trailing newline, so the committed baseline is byte-reproducible from
+this documented procedure — a newline-less baseline would otherwise be rewritten
+by the stock `end-of-file-fixer` pre-commit hook and reintroduce the very
+'files were modified by this hook' churn this rule removes. Commit the
+regenerated baseline with the change that forced it — never as a later
+fix-on-top commit.
 
 *Failure prevented: coordinate/clock drift churning the baseline.* A
 line-numbered baseline makes the stock hook rewrite `.secrets.baseline` (new

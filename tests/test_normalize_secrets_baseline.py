@@ -74,12 +74,35 @@ def test_main_noop_when_already_normalized(
 ):
     path = tmp_path / ".secrets.baseline"
     normalized = normalize_secrets_baseline.normalize(LINE_NUMBERED)
-    path.write_text(json.dumps(normalized))
+    canonical = json.dumps(normalized, indent=2) + "\n"
+    path.write_text(canonical)
     mtime_ns = path.stat().st_mtime_ns
     assert normalize_secrets_baseline.main(["--baseline", str(path)]) == 0
-    # Idempotent: the already-normalized file is left byte-identical.
+    # Idempotent: the already-canonical file is left byte-identical (content
+    # normalized AND trailing newline present).
+    assert path.read_text() == canonical
     assert path.stat().st_mtime_ns == mtime_ns
     assert "already normalized" in capsys.readouterr().out
+
+
+def test_main_restores_missing_trailing_newline(
+    tmp_path, normalize_secrets_baseline, capsys
+):
+    path = tmp_path / ".secrets.baseline"
+    normalized = normalize_secrets_baseline.normalize(LINE_NUMBERED)
+    # Content is already line-number-free / pinned, but the file does not end
+    # with a newline (as a detect-secrets regeneration or a copy-paste commit
+    # can leave it).  The normalizer must restore the canonical trailing
+    # newline so a stock `end-of-file-fixer` cannot rewrite the committed
+    # baseline and reintroduce the 'files were modified by this hook' churn.
+    path.write_text(json.dumps(normalized, indent=2))
+    assert normalize_secrets_baseline.main(["--baseline", str(path)]) == 0
+    canonical = json.dumps(normalized, indent=2) + "\n"
+    assert path.read_text() == canonical
+    out = capsys.readouterr().out
+    assert "restored canonical trailing newline" in out
+    # Content was already normalized, so only the newline change is reported.
+    assert "line_number" not in out
 
 
 def test_main_fails_on_missing_file(tmp_path, normalize_secrets_baseline):

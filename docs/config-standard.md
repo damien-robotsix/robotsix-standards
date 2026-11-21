@@ -40,7 +40,14 @@ implements it: a component defines one pydantic model and calls `load_config`.
   the `check-config-single-source` pre-commit hook fails on any `ROBOTSIX_*`
   env read outside the two allowed locate/history vars, published via
   `.pre-commit-hooks.yaml` and consumed as a remote hook like
-  `check-secret-str`.
+  `check-secret-str`. The **no CLI-merge** half is **not machine-checked** —
+  the same `--flag` can be a config override or a legitimate one-shot option,
+  and telling them apart requires reading the config model — so it is audited
+  by the periodic [`component-security-audit`](mill-agents.md#component-security-audit)
+  agent per the [security-posture audit](security-posture.md#audit): a
+  deployable component with a config model reads runtime config values only
+  from the single JSON file and does not override config values from
+  `--flag` / `sys.argv` / argparse / click / typer at startup.
 
 ### 2. Typed schema — defined once, reflected in the deploy UI
 

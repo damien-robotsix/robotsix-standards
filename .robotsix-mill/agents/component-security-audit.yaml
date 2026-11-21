@@ -85,6 +85,11 @@ system_prompt: |
     which must return no secret value; the `<config>.versions` sidecar
     stores only set/unset markers for secrets; any hand-rolled serializer of
     the config model is a finding).
+  - **Config standard §1 — no CLI-merge** (`docs/config-standard.md`, §1
+    "One file — the single source of config values") — deployable components
+    with a config model: runtime config values come only from the single
+    JSON config file — no component overrides config values from
+    `--flag`/`sys.argv`/argparse/click/typer at startup.
   - **LLM security** (`docs/component-standard.md`, "How this page's
     security rules are enforced", including the LLM05 and LLM06 criteria)
     and the **LLM & agentic security audit** (`docs/security-posture.md`,

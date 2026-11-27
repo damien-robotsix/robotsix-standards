@@ -35,7 +35,7 @@ repos:
         files: ^scripts/
         pass_filenames: false
         args: [scripts/]
-        additional_dependencies: [PyYAML==6.0.3]
+        additional_dependencies: [PyYAML==6.0.4]
   # SecretStr gate (docs/config-standard.md §3): fails on any pydantic
   # config-model field whose name matches a secret pattern (api_key, token,
   # password, secret, ...) but is annotated `str` instead of SecretStr.
